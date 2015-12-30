@@ -99,9 +99,9 @@
     // 综合
     [self setupTotalRefresh];
     // 价格
-    [self setuoPriceRefresh];
+//    [self setuoPriceRefresh];
     // 筛选
-    [self setuoSelectRefresh];
+//    [self setuoSelectRefresh];
 
 }
 #pragma mark - 刷新
@@ -315,7 +315,7 @@
 
 }
 -(void)getselectDataWithName:(NSString *)goodsName and:(NSString *)param1 and:(NSString *)param2{
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,goodsName:param1?param1:[NSString stringWithFormat:@"%@",param1],@"reservePrice":param2,@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage]} success:^(id result) {
+    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,goodsName:param1?param1:[NSString stringWithFormat:@"%@",param1],@"reservePrice":param2} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *Array = dict[@"rows"];
@@ -325,21 +325,13 @@
                 [_carArray addObject:model];
             }
         }
-        NSInteger pages = [result[@"datas"][@"pages"] integerValue];
-        NSInteger page = [result[@"datas"][@"page"] integerValue];
-        //如果到达最后一页 就消除footer
-        //如果没有达到最后一页 就显示footer
-        self.tableView.legendFooter.hidden = pages==page;
         [self.tableView reloadData];
         // 筛选为空
         [self noselectViewShowAndHidden:_carArray];
+        self.tableView.legendFooter.hidden = YES;
         
-        [self.tableView.legendHeader endRefreshing];
-        [self.tableView.legendFooter endRefreshing];
         } failure:^(NSError *error) {
-        [self.tableView.legendHeader endRefreshing];
-        [self.tableView.legendFooter endRefreshing];
-            
+                    
     }];
 }
 
