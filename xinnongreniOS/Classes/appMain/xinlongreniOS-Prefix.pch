@@ -1,0 +1,126 @@
+//
+//  qianxiheiOS-Prefix.pch
+//  qianxiheiOS
+//
+//  Created by Scarecrow on 15/5/18.
+//  Copyright (c) 2015年 XNRiOS. All rights reserved.
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "MyControl.h"        //封装的控件
+#import "AFNetworking.h"
+#import "SVProgressHUD.h"
+#import "XNR_Enum.h"
+#import "MonitorNetworkViewController.h" //网络监听
+#import "CommonTool.h"
+#import "DatabaseManager.h"  //数据库管理
+#import "DataCenter.h"
+#import "KSHttpRequest.h"
+#import "GBAlipayManager.h"
+#import "BSExtKit.h"
+#import "XNRLoginViewController.h"
+#import "XNRRegisterViewController.h"
+#import "XNRBusinessLogic.h"
+#import "XNRTabBarController.h"
+#import "BMProgressView.h"    // 自定义loadingView
+
+#define sharpAppDelegate [UIApplication sharedApplication].delegate
+#define UM_APPKEY @"5667cfe867e58ebc630024d7"  //友盟appkey
+#define XCODE_COLORS_ESCAPE @"\033["
+
+#define XCODE_COLORS_RESET_FG  XCODE_COLORS_ESCAPE @"fg;" // Clear any foreground color
+#define XCODE_COLORS_RESET_BG  XCODE_COLORS_ESCAPE @"bg;" // Clear any background color
+#define XCODE_COLORS_RESET     XCODE_COLORS_ESCAPE @";"   // Clear any foreground or background color
+#define LogBlue(frmt, ...) NSLog((XCODE_COLORS_ESCAPE @"fg0,0,255;" frmt XCODE_COLORS_RESET), ##__VA_ARGS__)
+#define LogRed(frmt, ...) NSLog((XCODE_COLORS_ESCAPE @"fg255,0,0;" frmt XCODE_COLORS_RESET), ##__VA_ARGS__)
+
+#define PATH_OF_DOCUMENT    [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]
+#define USER [NSUserDefaults standardUserDefaults]
+//适配时放缩比例
+#define SCALE ([UIScreen mainScreen].bounds.size.width/320.0)
+#define TITLECOLOR [UIColor colorWithRed:121/255.0 green:121/255.0 blue:121/255.0 alpha:1];
+#define NOTI_CENTER [NSNotificationCenter defaultCenter]
+
+//网络是否打开
+#define NETWORK_OPEN [[MonitorNetworkViewController sharedInstance] isOpen]
+///0-测试地址 1-生产地址
+#define kYBNetworkRelease 0
+
+#if kYBNetworkRelease
+
+#define HOST @"http://api.xinxinnongren.com"
+
+#else
+
+#define HOST @"http://101.200.194.203"//@"http://192.168.0.66"//
+
+#endif
+
+
+
+//#define HOST @"http://101.200.194.203/"
+#define IMAGEHOST @"http://101.200.194.203"
+
+//设置字体和大小
+#define XNRFont(s) [UIFont fontWithName:@"Arial" size:s+2]
+
+//是否登录
+#define IS_Login  [DataCenter account].loginState
+
+// RGB颜色转换（16进制->10进制）
+#define R_G_B_16(rgbValue)\
+\
+[UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
+green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
+blue:((float)(rgbValue & 0xFF))/255.0 \
+alpha:1.0]
+//生成RGB颜色
+#define MakeColorWithRGB(R,G,B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1]
+//随机色,测试用
+#define RandomColor [UIColor colorWithRed:arc4random_uniform(256)/255.0 green:arc4random_uniform(256)/255.0 blue:arc4random_uniform(256)/255.0 alpha:1]
+
+//是否为4inch
+#define IS_IPHONE4 ([UIScreen mainScreen].bounds.size.height == 480)
+
+#define PATH_OF_DOCUMENT    [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]
+#define USER [NSUserDefaults standardUserDefaults]
+
+//生成RGB颜色
+#define MakeColorWithRGB(R,G,B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1]
+// RGB颜色转换（16进制->10进制）
+#define R_G_B_16(rgbValue)\
+\
+[UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
+green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
+blue:((float)(rgbValue & 0xFF))/255.0 \
+alpha:1.0]
+//获取屏幕尺寸
+#define ScreenWidth   [UIScreen mainScreen].bounds.size.width
+#define ScreenHeight  [UIScreen mainScreen].bounds.size.height
+#define ScreenBounds  [UIScreen mainScreen].bounds
+#define AppKeyWindow  [UIApplication sharedApplication].keyWindow
+#define iOS8 [[UIDevice currentDevice].systemVersion floatValue] >= 8.0
+/**
+ *  4.像素高度转换
+ */
+#define PX_TO_PT(px) px*ScreenWidth/750.0
+
+#define XNRFER @"531680A5"
+#define XNRCAR @"6C7D8F66"
+/**
+ *  自定义Log
+ */
+#ifdef DEBUG
+#define NSLog(...) NSLog(__VA_ARGS__)
+#else
+#define NSLog(...)
+#endif
+
+#endif
