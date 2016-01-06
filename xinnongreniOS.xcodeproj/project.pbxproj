@@ -165,6 +165,7 @@
 		49EDEA021C17D1A400310366 /* XNRHomeSelectedCellectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EDEA011C17D1A400310366 /* XNRHomeSelectedCellectionCell.m */; };
 		49EDEA071C180C6600310366 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EDEA041C180C6600310366 /* libMobClickLibrary.a */; };
 		49EFDA5D1BF5E970006A8CD2 /* XNRMyRepresentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EFDA5C1BF5E970006A8CD2 /* XNRMyRepresentViewController.m */; };
+		49F414FB1C3CA71A001A28CA /* XNRShopCarSectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F414FA1C3CA71A001A28CA /* XNRShopCarSectionModel.m */; };
 		49F6B0E21C295C0000DCF8CF /* XNRNoSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F6B0E11C295C0000DCF8CF /* XNRNoSelectView.m */; };
 		49F6B1981C2A6EE100DCF8CF /* MJPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F6B18A1C2A6EE100DCF8CF /* MJPhoto.m */; };
 		49F6B1991C2A6EE100DCF8CF /* MJPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 49F6B18B1C2A6EE100DCF8CF /* MJPhotoBrowser.bundle */; };
@@ -706,6 +707,8 @@
 		49EDEA061C180C6600310366 /* MobClickSocialAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClickSocialAnalytics.h; sourceTree = "<group>"; };
 		49EFDA5B1BF5E970006A8CD2 /* XNRMyRepresentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMyRepresentViewController.h; sourceTree = "<group>"; };
 		49EFDA5C1BF5E970006A8CD2 /* XNRMyRepresentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMyRepresentViewController.m; sourceTree = "<group>"; };
+		49F414F91C3CA71A001A28CA /* XNRShopCarSectionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRShopCarSectionModel.h; sourceTree = "<group>"; };
+		49F414FA1C3CA71A001A28CA /* XNRShopCarSectionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRShopCarSectionModel.m; sourceTree = "<group>"; };
 		49F6B0E01C295C0000DCF8CF /* XNRNoSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRNoSelectView.h; sourceTree = "<group>"; };
 		49F6B0E11C295C0000DCF8CF /* XNRNoSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRNoSelectView.m; sourceTree = "<group>"; };
 		49F6B1891C2A6EE100DCF8CF /* MJPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhoto.h; sourceTree = "<group>"; };
@@ -1695,6 +1698,8 @@
 				84AAA59B1B439460005AA154 /* CityModel.m */,
 				53445EB01B148712009F79E5 /* XNRShoppingCartModel.h */,
 				53445EB11B148712009F79E5 /* XNRShoppingCartModel.m */,
+				49F414F91C3CA71A001A28CA /* XNRShopCarSectionModel.h */,
+				49F414FA1C3CA71A001A28CA /* XNRShopCarSectionModel.m */,
 				84BCD2471B46B7B100C2CF7E /* XNRCheckOrderModel.h */,
 				84BCD2481B46B7B100C2CF7E /* XNRCheckOrderModel.m */,
 			);
@@ -2518,6 +2523,7 @@
 				49E895FF1BEDC2BB00B3671E /* UIImage+GIF.m in Sources */,
 				1F15331D1B09D54A00CA374B /* XNRMineController.m in Sources */,
 				49E896011BEDC2BB00B3671E /* UIImage+WebP.m in Sources */,
+				49F414FB1C3CA71A001A28CA /* XNRShopCarSectionModel.m in Sources */,
 				1F1532D51B09C58800CA374B /* main.m in Sources */,
 				1FE1D6131B12EE2600F0D158 /* NSObject+MJMember.m in Sources */,
 				49EC52631BEBBA5E00AA8898 /* UIColor+BSExt.m in Sources */,

@@ -17,15 +17,32 @@
     UIView *_bgView;                  //键盘遮罩
     NSMutableArray*_tempShopCarArr;   //本地临时数据
     float *siglePrice;
+    BOOL sort;
 }
 @property (nonatomic,strong) XNRShoppingCartModel *model;
-@property (nonatomic,strong) UIImageView *picImageView;   //图片
-@property (nonatomic,strong) UILabel *goodNameLabel;      //商品
-@property (nonatomic,strong) UILabel *originalPriceLabel; //原价格
-@property (nonatomic,strong) UILabel *presentPriceLabel;  //现价格
-@property (nonatomic,strong) UITextField *numTextField;   //数量
-@property (nonatomic,strong) UIButton *deleteBtn;         //删除
-@property (nonatomic ,weak)  UILabel *depositeLabel;
+@property (nonatomic ,weak) UIButton *selectedBtn;
+@property (nonatomic,weak) UIImageView *picImageView;   //图片
+@property (nonatomic,weak) UILabel *goodNameLabel;      //商品
+@property (nonatomic,weak) UILabel *introduceLabel;     // 商品介绍
+@property (nonatomic,weak) UILabel *presentPriceLabel;  //现价格
+@property (nonatomic,weak) UITextField *numTextField;   //数量
+@property (nonatomic ,weak) UIButton *leftBtn;
+@property (nonatomic ,weak) UIButton *rightBtn;
+
+@property (nonatomic ,weak) UIImageView *selectedImage;
+
+@property (nonatomic ,weak) UILabel *sectionOneLabel;
+@property (nonatomic ,weak) UILabel *sectionTwoLabel;
+@property (nonatomic ,weak) UIView *middleLine;
+@property (nonatomic ,weak) UIView *bottomLine;
+
+@property (nonatomic ,weak) UILabel *subscriptionLabel;
+@property (nonatomic ,weak) UILabel *remainLabel;
+
+
+@property (nonatomic,weak) UIButton *deleteBtn;         //删除
+@property (nonatomic ,weak)  UILabel *depositeLabel;      // 订金
+@property (nonatomic ,weak) UILabel *finalPaymentLabel;   // 尾款
 
 @end
 
@@ -35,7 +52,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        
+        self.contentView.userInteractionEnabled = YES;
         [self createUI];
     }
     return self;
@@ -43,61 +60,145 @@
 
 - (void)createUI
 {
+    // 选择按钮
+    [self createSelectedBtn];
+    // 图片
     [self createPicImageView];
+    // 商品名
     [self createGoodNameLabel];
+    // 价格
     [self createPresentPriceLabel];
-    [self createOriginalPriceLabel];
+    // 数量
     [self createNumTextField];
+    
     [self createDeleteBtn];
     
-    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(10, 89, ScreenWidth-20, 1)];
-    lineView.backgroundColor = [UIColor lightGrayColor];
-    lineView.alpha = 0.3;
+    
+    UILabel *sectionOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(300), ScreenWidth, PX_TO_PT(80))];
+    sectionOneLabel.text = @"阶段一: 订金";
+    sectionOneLabel.textColor = R_G_B_16(0x323232);
+    sectionOneLabel.font = [UIFont systemFontOfSize:14];
+    sectionOneLabel.textAlignment = NSTextAlignmentLeft;
+    self.sectionOneLabel = sectionOneLabel;
+    [self.contentView addSubview:sectionOneLabel];
+    
+
+    UILabel *sectionTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(380), ScreenWidth, PX_TO_PT(80))];
+    sectionTwoLabel.text = @"阶段二: 尾款";
+    sectionTwoLabel.textColor = R_G_B_16(0x323232);
+    sectionTwoLabel.font = [UIFont systemFontOfSize:14];
+    sectionTwoLabel.textAlignment = NSTextAlignmentLeft;
+    self.sectionTwoLabel = sectionTwoLabel;
+    [self.contentView addSubview:sectionTwoLabel];
+    
+    
+    UILabel *subscriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(250), PX_TO_PT(300), PX_TO_PT(250), PX_TO_PT(80))];
+    subscriptionLabel.textColor = R_G_B_16(0xff4e00);
+    subscriptionLabel.font = [UIFont systemFontOfSize:18];
+    subscriptionLabel.textAlignment = NSTextAlignmentRight;
+    self.subscriptionLabel = subscriptionLabel;
+    [self.contentView addSubview:subscriptionLabel];
+    
+    UILabel *remainLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(250), PX_TO_PT(380), PX_TO_PT(250), PX_TO_PT(80))];
+    remainLabel.textColor = R_G_B_16(0x323232);
+    remainLabel.font = [UIFont systemFontOfSize:18];
+    remainLabel.textAlignment = NSTextAlignmentRight;
+    self.remainLabel = remainLabel;
+    [self.contentView addSubview:remainLabel];
+    
+
+    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(300), ScreenWidth, PX_TO_PT(1))];
+    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.contentView addSubview:lineView];
+    
+    UIView *middleLine = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(380), ScreenWidth-PX_TO_PT(64), PX_TO_PT(1))];
+    middleLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    self.middleLine = middleLine;
+    [self.contentView addSubview:middleLine];
+
+    
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(460), ScreenWidth, PX_TO_PT(1))];
+    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    self.bottomLine = bottomLine;
+    [self.contentView addSubview:bottomLine];
 }
+
+#pragma mark - 选择按钮
+-(void)createSelectedBtn{
+    UIButton *selectedBtn = [[UIButton alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(102), PX_TO_PT(36), PX_TO_PT(36))];
+    [selectedBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
+    [selectedBtn setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateSelected];
+    [selectedBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.selectedBtn = selectedBtn;
+//    UIImageView *selectedImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(102), PX_TO_PT(36), PX_TO_PT(36))];
+//    self.selectedImage =  selectedImage;
+    [self.contentView addSubview:selectedBtn];
+
+}
+
+-(void)selectedBtnClick:(UIButton *)sender{
+    if ([self.delegate performSelector:@selector(XNRShoppingCartTableViewCellBtnClick)]) {
+        sender.tag = !sender.tag;
+        if (_model.selectState) {
+            _selectState = YES;
+//            sender.selected = YES;
+//            [self.selectedBtn setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateNormal];
+        }else{
+            _selectState = NO;
+//            sender.selected = NO;
+//            [self.selectedBtn setImage:[UIImage imageNamed:@"shopCar_circle"] forState:UIControlStateNormal];
+        }
+        [self.delegate XNRShoppingCartTableViewCellBtnClick];
+    }
+}
+
 #pragma mark - 图片
 - (void)createPicImageView
 {
-    self.picImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 70, 70)];
-    self.picImageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.contentView addSubview:self.picImageView];
+    UIImageView *picImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(30), PX_TO_PT(180), PX_TO_PT(180))];
+    picImageView.contentMode = UIViewContentModeScaleAspectFit;
+    picImageView.layer.borderWidth = PX_TO_PT(2);
+    picImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    self.picImageView = picImageView;
+    [self.contentView addSubview:picImageView];
 }
 
 #pragma mark - 商品名
 - (void)createGoodNameLabel
 {
-    self.goodNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.picImageView.frame.origin.x+self.picImageView.frame.size.width+10, 10, ScreenWidth-45-70-10, 20)];
-    self.goodNameLabel.textColor = [UIColor blackColor];
-    self.goodNameLabel.numberOfLines = 0;
-    self.goodNameLabel.font = XNRFont(14);
-    [self.contentView addSubview:self.goodNameLabel];
+    UILabel *goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.picImageView.frame) + PX_TO_PT(20), PX_TO_PT(42), ScreenWidth-CGRectGetMaxX(self.picImageView.frame) - PX_TO_PT(52), PX_TO_PT(80))];
+    goodNameLabel.textColor = R_G_B_16(0x323232);
+    goodNameLabel.numberOfLines = 0;
+    goodNameLabel.font = XNRFont(14);
+    self.goodNameLabel = goodNameLabel;
+    [self.contentView addSubview:goodNameLabel];
+    
+    
+    UILabel *introduceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.picImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(self.goodNameLabel.frame) + PX_TO_PT(20), ScreenWidth-CGRectGetMaxX(self.picImageView.frame) - PX_TO_PT(52), PX_TO_PT(70))];
+    introduceLabel.textColor = R_G_B_16(0x909090);
+    introduceLabel.numberOfLines = 0;
+    introduceLabel.font = XNRFont(12);
+    self.introduceLabel = introduceLabel;
+    [self.contentView addSubview:introduceLabel];
+    
 }
 
 #pragma mark - 现价
 - (void)createPresentPriceLabel
 {
-    self.presentPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.picImageView.frame.origin.x+self.picImageView.frame.size.width+10, CGRectGetMaxY(self.goodNameLabel.frame)+ 20, 200, 20)];
-
-    self.presentPriceLabel.textColor = R_G_B_16(0x119f17);
-    self.presentPriceLabel.font = XNRFont(18);
+    UILabel *presentPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(32)-PX_TO_PT(250),CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20),PX_TO_PT(250),PX_TO_PT(48))];
+    presentPriceLabel.textColor = R_G_B_16(0x323232);
+    presentPriceLabel.textAlignment = NSTextAlignmentRight;
+    presentPriceLabel.font = XNRFont(18);
+    self.presentPriceLabel = presentPriceLabel;
     [self.contentView addSubview:self.presentPriceLabel];
 }
-
-#pragma mark - 原价
-- (void)createOriginalPriceLabel
-{
-    self.originalPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.picImageView.frame.origin.x+self.picImageView.frame.size.width+10, self.presentPriceLabel.frame.origin.y+self.presentPriceLabel.frame.size.height, 200, 20)];
-    self.originalPriceLabel.textColor = [UIColor lightGrayColor];
-    self.originalPriceLabel.font = XNRFont(12);
-    [self.contentView addSubview:self.originalPriceLabel];
-}
-
 
 #pragma mark - 删除
 - (void)createDeleteBtn
 {
-    UIImageView *deleteImg = [MyControl createImageViewWithFrame:CGRectMake(ScreenWidth-30, 10, 15, 15) ImageName:@"close_x"];
-    [self.contentView addSubview:deleteImg];
+//    UIImageView *deleteImg = [MyControl createImageViewWithFrame:CGRectMake(ScreenWidth-30, 10, 15, 15) ImageName:@"close_x"];
+//    [self.contentView addSubview:deleteImg];
     
     self.deleteBtn = [MyControl createButtonWithFrame:CGRectMake(ScreenWidth-50, 0, 50, 40) ImageName:@"" Target:self Action:@selector(deleteClick:) Title:nil];
     self.deleteBtn.alpha = 0.5;
@@ -131,31 +232,44 @@
 #pragma mark - 数量
 - (void)createNumTextField
 {
-    UIButton *leftBtn = [MyControl createButtonWithFrame:CGRectMake(ScreenWidth-60-40-10-10, 50, 30,30) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
-    leftBtn.tag = kLeftBtn;
-    [leftBtn setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
+    
+    UIButton *leftBtn = [MyControl createButtonWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20),CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20),PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:nil Title:nil];
+    leftBtn.tag = kRightBtn;
+    [leftBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [leftBtn setImage:[UIImage imageNamed:@"icon_minus"] forState:UIControlStateNormal];
     [leftBtn setHighlighted:NO];
+    self.leftBtn = leftBtn;
     [self.contentView addSubview:leftBtn];
-    
-    _numTextField = [[UITextField alloc]initWithFrame:CGRectMake(leftBtn.frame.origin.x+leftBtn.frame.size.width+5,50,40,30)];
-    _numTextField.textAlignment = NSTextAlignmentCenter;
-    _numTextField.borderStyle = UITextBorderStyleNone;
-//    _numTextField.placeholder = @"0";
-    _numTextField.font = XNRFont(14);
-    _numTextField.delegate = self;
-    _numTextField.textColor = [UIColor redColor];
-    _numTextField.returnKeyType = UIReturnKeyDone;
+
+    UITextField *numTextField = [[UITextField alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame),CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20),PX_TO_PT(84),PX_TO_PT(48))];
+    numTextField.textAlignment = NSTextAlignmentCenter;
+    numTextField.borderStyle = UITextBorderStyleNone;
+    numTextField.font = XNRFont(14);
+    numTextField.delegate = self;
+    numTextField.textColor = R_G_B_16(0x323232);
+    numTextField.returnKeyType = UIReturnKeyDone;
     //设置键盘类型
-    _numTextField.keyboardType=UIKeyboardTypeNumberPad;
-    _numTextField.backgroundColor = R_G_B_16(0xf6f6f6);
-    [self.contentView addSubview:_numTextField];
+    numTextField.keyboardType=UIKeyboardTypeNumberPad;
+    self.numTextField = numTextField;
+    [self.contentView addSubview:numTextField];
     
-    UIButton *rightBtn = [MyControl createButtonWithFrame:CGRectMake(_numTextField.frame.origin.x+_numTextField.frame.size.width+5, 50, 30,30) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
-    rightBtn.tag = kRightBtn;
-    [rightBtn setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
+    UIButton *rightBtn = [MyControl createButtonWithFrame:CGRectMake(CGRectGetMaxX(self.numTextField.frame), CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:nil Title:nil];
+    rightBtn.tag = kLeftBtn;
+    [rightBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+
+    [rightBtn setImage:[UIImage imageNamed:@"icon_plus"] forState:UIControlStateNormal];
     [rightBtn setHighlighted:NO];
+    self.rightBtn = rightBtn;
     [self.contentView addSubview:rightBtn];
     
+    UIView *topline = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20), PX_TO_PT(84), PX_TO_PT(1))];
+    topline.backgroundColor = R_G_B_16(0xc7c7c7);
+    [self.contentView addSubview:topline];
+    
+    
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(67), PX_TO_PT(84), PX_TO_PT(1))];
+    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    [self.contentView addSubview:bottomLine];
 }
 
 #pragma mark - textField代理方法
@@ -175,15 +289,10 @@
     return YES;
 }
 
-
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if ([textField.text isEqualToString:@""]) {
         textField.text = @"0";
-//        self.model.num = @"1";
-//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"数量不能再减少了" message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-//        [alert show];
-        
     }else if([textField.text integerValue] == 0){
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"请输入正确的商品数量哦" message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
         [alert show];
@@ -223,15 +332,16 @@
     });
     
     if (button.tag == kLeftBtn){
+        self.model.num = [NSString stringWithFormat:@"%d",self.model.num.intValue+1];
+
+        }else if (button.tag == kRightBtn) {
         self.model.num = [NSString stringWithFormat:@"%d",self.model.num.intValue-1];
         if (self.model.num.intValue<1) {
             self.model.num = @"1";
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"数量不能再减少了" message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
             [alert show];
         }
-    }
-    else  if (button.tag == kRightBtn) {
-        self.model.num = [NSString stringWithFormat:@"%d",self.model.num.intValue+1];
+
     }
     
     self.changeBottomBlock();
@@ -255,6 +365,21 @@
     _model = model;
     [self resetSubViews];
     [self setSubViews];
+    
+    if (model.selectState) {
+        _selectState = YES;
+        self.selectedBtn.selected = YES;
+//        [self.selectedImage setImage:[UIImage imageNamed:@"shopCar_right"]];
+//        self.selectedImage.image = [UIImage imageNamed:@"shopcar_right"];
+        
+    }else{
+        _selectState = NO;
+        self.selectedBtn.selected = NO;
+//        [self.selectedImage setImage:[UIImage imageNamed:@"shopcar_circle"]];
+//        self.selectedImage.image = [UIImage imageNamed:@"shopCar_circle"];
+        
+    }
+
 }
 
 #pragma mark - 清空以前的数据
@@ -272,14 +397,36 @@
     
     //商品名
     self.goodNameLabel.text = self.model.goodsName;
+    
+    self.introduceLabel.text = self.model.productDesc;
 
     //现价
-        if(!([self.model.deposit floatValue] > 0.00) || self.model.deposit == nil){
-            self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice];
-            
-        }else{
-            self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.floatValue];
-        }
+    self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice];
+
+    // 订金
+    self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.floatValue];
+    
+    // 尾款
+    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice - self.model.deposit.floatValue];
+    if([self.model.deposit floatValue] == 0.00){
+        self.sectionOneLabel.hidden = YES;
+        self.sectionTwoLabel.hidden = YES;
+        self.subscriptionLabel.hidden = YES;
+        self.remainLabel.hidden = YES;
+        self.middleLine.hidden  = YES;
+        self.bottomLine.hidden = YES;
+        
+    }else{
+        self.sectionOneLabel.hidden = NO;
+        self.sectionTwoLabel.hidden = NO;
+        self.subscriptionLabel.hidden = NO;
+        self.remainLabel.hidden = NO;
+        self.middleLine.hidden = NO;
+        self.bottomLine.hidden = NO;
+
+    
+    }
+
 
     
     self.numTextField.text = [NSString stringWithFormat:@"%@",self.model.num];
@@ -287,7 +434,7 @@
     if ([self.numTextField.text isEqualToString:@"0"]) {
         self.numTextField.textColor = [UIColor lightGrayColor];
     }else{
-        self.numTextField.textColor = [UIColor redColor];
+        self.numTextField.textColor = [UIColor lightGrayColor];
     }
 }
 

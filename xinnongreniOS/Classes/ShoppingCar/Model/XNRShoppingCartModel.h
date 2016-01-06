@@ -14,7 +14,7 @@
 @property (nonatomic,copy) NSString *picUrl;         //图片
 @property (nonatomic,copy) NSString *goodName;       //商品
 @property (nonatomic,copy) NSString *presentPrice;   //现价格
-@property (nonatomic,copy) NSString *goodDescription;//商品描述
+@property (nonatomic,copy) NSString *productDesc;//商品描述
 @property (nonatomic,copy) NSString *orderState;     //完成状态(0->已完成；1->待评价)
 @property (nonatomic,copy) NSString *model;
 /**
@@ -105,6 +105,10 @@
 @property (nonatomic ,copy) NSString *brands;
 
 @property (nonatomic ,copy )NSString *name;
+
+@property (nonatomic, assign) BOOL selectState;
+
+@property (nonatomic, assign, getter=ischecking) BOOL checking;
 
 
 @end

@@ -9,12 +9,22 @@
 #import <UIKit/UIKit.h>
 #import "XNRShoppingCartModel.h"
 
+@protocol XNRShoppingCartTableViewCellDelegate <NSObject>
+@optional;
+-(void)XNRShoppingCartTableViewCellBtnClick;
+
+@end
 @interface XNRShoppingCartTableViewCell : UITableViewCell
+
+@property (nonatomic ,assign) id<XNRShoppingCartTableViewCellDelegate>delegate;
 
 //改变底部总计和已节省
 @property (nonatomic, copy) void(^changeBottomBlock)();
 //删除
 @property (nonatomic, copy) void(^deleteBlock)();
+
+@property(assign,nonatomic)BOOL selectState;//选中状态
+
 
 - (void)setCellDataWithShoppingCartModel:(XNRShoppingCartModel *)model;
 

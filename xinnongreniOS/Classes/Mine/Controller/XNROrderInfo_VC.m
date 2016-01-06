@@ -322,7 +322,7 @@
         return;
     }
     
-    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":self.shopCarID,@"addressId":addressId,@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
+    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":self.shopCarID,@"addressId":addressId?addressId:@"",@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
         NSLog(@"%@",result);
         //获取预处理订单id 订单号
         orderDataId = result[@"id"];

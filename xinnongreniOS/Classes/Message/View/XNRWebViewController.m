@@ -19,7 +19,7 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.view.backgroundColor = [UIColor whiteColor];
     [self setNav];
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_model.url]];
