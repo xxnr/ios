@@ -122,6 +122,7 @@
             }
         } else {
             type = XNRferView_DoSelectType;
+            NSLog(@"++++++++++++=========");
 //            [self.imageView1 removeFromSuperview];
 //            [self.imageView2 removeFromSuperview];
 

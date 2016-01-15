@@ -15,7 +15,7 @@
 #import "UPPayPluginDelegate.h"
 
 #define kPayTypeBtn 1000
-#define kSelectedImageView 2000
+#define kSelectedBtn 2000
 #define kMode_Development  @"00"
 @interface XNRPayTypeViewController ()<UPPayPluginDelegate>
 {
@@ -23,11 +23,25 @@
     CGFloat _payType;
 }
 @property (nonatomic,strong)UIButton *confirmButton;
+
 @property (nonatomic,strong)UILabel *payLabel;
+
 @property (nonatomic,strong) XNRPayTypeAlertView *payTypeAlertView;
 
 @property (nonatomic, strong) UIImageView *aplipayImg;
+
 @property (nonatomic, strong) UIImageView *yinlianImg;
+
+@property (nonatomic ,weak) UIView *topView;
+
+@property (nonatomic ,weak) UIButton *tempBtn;
+
+@property (nonatomic, copy) NSString *PaymentId;
+
+@property (nonatomic,copy) NSString *Money;    //价钱
+
+@property (nonatomic ,copy) NSString *Tn;
+
 @end
 
 @implementation XNRPayTypeViewController
@@ -35,171 +49,205 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     _payType=0;
-  
     self.view.backgroundColor = R_G_B_16(0xf2f2f2);
     
     [self setNav];
-    [self createTopBtn];
-    [self createLabel];
-    [self createBottomBtn];
-    //
+    [self createTopView];
+    [self createMidView];
+    [self createBottomView];
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(dealAlipayResult:) name:@"alipayResult" object:nil];
-    
-  
-    
 }
 -(void)dealloc{
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
 }
 #pragma mark-支付成功回调
 -(void)orderSuccessDeal {
     
-    XNROrderSuccessViewController*vc=[[XNROrderSuccessViewController alloc]init];
+    XNROrderSuccessViewController *vc=[[XNROrderSuccessViewController alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:vc animated:YES];
     
 }
-//支付方式
-- (void)createTopBtn
-{
-//    NSArray *picArr = @[@"netBank",@"icon_alipay",@"icon_unionpay"];
-//    NSArray *titleArr = @[@"网站网银支付",@"支付宝支付",@"银行电汇"];
-    NSArray *picArr = @[@"icon_alipay",@"icon_unionpay"];
-    NSArray *titleArr = @[@"支付宝支付",@"银联支付"];
+#pragma mark - 顶部视图
+-(void)createTopView{
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(140))];
+    topView.backgroundColor = R_G_B_16(0xfffaf6);
+    self.topView = topView;
+    [self.view addSubview:topView];
     
-    for (int i=0; i<2; i++) {
-        UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 60*i, ScreenWidth, 60)];
-        bgView.backgroundColor = [UIColor whiteColor];
-        [self.view addSubview:bgView];
-        
-        UIImageView *picImageView = [MyControl createImageViewWithFrame:CGRectMake(10, 10, 40, 40) ImageName:picArr[i]];
-        picImageView.userInteractionEnabled = YES;
-        [bgView addSubview:picImageView];
-        
-        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(picImageView.frame.origin.x+picImageView.frame.size.width+10, 0, 150, 60)];
-        titleLabel.text = titleArr[i];
-        titleLabel.font = XNRFont(18);
-        titleLabel.textColor = [UIColor blackColor];
-        titleLabel.textAlignment = NSTextAlignmentLeft;
-        [bgView addSubview:titleLabel];
+    UILabel *orderNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(22), ScreenWidth, PX_TO_PT(36))];
+    orderNumLabel.textColor = R_G_B_16(0x323232);
+    orderNumLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    orderNumLabel.text = [NSString stringWithFormat:@"订单编号：%@",self.orderID];
+    [topView addSubview:orderNumLabel];
     
-        if (i == 0) {
-            _aplipayImg = [MyControl createImageViewWithFrame:CGRectMake(ScreenWidth-25-10, (60-20)/2.0, 25, 16) ImageName:@"payWaySelect"];
-            _aplipayImg.userInteractionEnabled = YES;
-            _aplipayImg.tag = kSelectedImageView+i;
-            _aplipayImg.hidden = YES;
-            [bgView addSubview:_aplipayImg];
-        }else{
-            _yinlianImg = [MyControl createImageViewWithFrame:CGRectMake(ScreenWidth-25-10, (60-20)/2.0, 25, 16) ImageName:@"payWaySelect"];
-            _yinlianImg.userInteractionEnabled = YES;
-            _yinlianImg.tag = kSelectedImageView+i;
-            _yinlianImg.hidden = YES;
-            [bgView addSubview:_yinlianImg];
-        }
-        UIImageView *selectedImageView = [MyControl createImageViewWithFrame:CGRectMake(ScreenWidth-25-10, (60-20)/2.0, 25, 16) ImageName:@"payWaySelect"];
-        selectedImageView.userInteractionEnabled = YES;
-        selectedImageView.tag = kSelectedImageView+i;
-        selectedImageView.hidden = YES;
-        [bgView addSubview:selectedImageView];
+    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(orderNumLabel.frame) + PX_TO_PT(30), ScreenWidth, PX_TO_PT(36))];
+    priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    priceLabel.text = [NSString stringWithFormat:@"应付金额：%.2f元",self.money.floatValue];
+    
+    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:priceLabel.text];
+    NSDictionary *depositStr=@{
+                               
+                               NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
+                               NSFontAttributeName:[UIFont systemFontOfSize:18]
+                               
+                               };
+    
+    [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(5,AttributedStringDeposit.length-5)];
+    
+    [priceLabel setAttributedText:AttributedStringDeposit];
+    [topView addSubview:priceLabel];
+    
+    for (int i = 0; i<2; i++) {
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, i*PX_TO_PT(140), ScreenWidth, PX_TO_PT(1))];
+        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        [topView addSubview:lineView];
+    }
+}
+#pragma mark - 中部视图
+
+-(void)createMidView{
+    UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.topView.frame) + PX_TO_PT(24), ScreenWidth, PX_TO_PT(552))];
+    midView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:midView];
+    UILabel *payStyleLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(30), ScreenWidth, PX_TO_PT(40))];
+    payStyleLabel.textColor = R_G_B_16(0x323232);
+    payStyleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    payStyleLabel.text = @"请选择支付方式";
+    payStyleLabel.textAlignment = NSTextAlignmentLeft;
+    [midView addSubview:payStyleLabel];
+    
+    UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(102), ScreenWidth-PX_TO_PT(32) * 2, PX_TO_PT(390))];
+    subView.layer.borderWidth = 1.0;
+    subView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    subView.layer.cornerRadius = 5.0;
+    subView.layer.masksToBounds = YES;
+    [midView addSubview:subView];
+    
+    UIImageView *imageView1 = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(24), PX_TO_PT(24), PX_TO_PT(300), PX_TO_PT(50))];
+    [imageView1 setImage:[UIImage imageNamed:@"pay_0"]];
+    [subView addSubview:imageView1];
+    
+    UIImageView *imageView2 = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(24), PX_TO_PT(98)+PX_TO_PT(24), PX_TO_PT(250), PX_TO_PT(50))];
+    [imageView2 setImage:[UIImage imageNamed:@"pay_1"]];
+    [subView addSubview:imageView2];
+
+    
+    UIImageView *imageView3 = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(24), PX_TO_PT(98)*2+PX_TO_PT(14), PX_TO_PT(280), PX_TO_PT(70))];
+    [imageView3 setImage:[UIImage imageNamed:@"pay_2"]];
+    [subView addSubview:imageView3];
+
+    
+    UIImageView *imageView4 = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(24), PX_TO_PT(98)*3+PX_TO_PT(14), PX_TO_PT(310), PX_TO_PT(70))];
+    [imageView4 setImage:[UIImage imageNamed:@"pay_3"]];
+    [subView addSubview:imageView4];
+
+    for (int i = 0; i<4; i++) {
+        UIButton *selectedBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        selectedBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(32)*2-PX_TO_PT(98), PX_TO_PT(98)*i, PX_TO_PT(98), PX_TO_PT(98));
+        selectedBtn.tag = kSelectedBtn + i;
+        [selectedBtn setImage:[UIImage imageNamed:@"shopCar_circle"] forState:UIControlStateNormal];
+        [selectedBtn setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateSelected];
+        [selectedBtn addTarget: self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [subView addSubview:selectedBtn];
         
-        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 59, ScreenWidth, 1)];
-        lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
-        [bgView addSubview:lineView];
-        
-        UIButton *payTypeBtn = [MyControl createButtonWithFrame:CGRectMake(0, 60*i, ScreenWidth, 60) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
-        payTypeBtn.tag = kPayTypeBtn+i;
-        [self.view addSubview:payTypeBtn];
+    }
+    
+    for (int i = 1; i<4; i++) {
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(1))];
+        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        [subView addSubview:lineView];
+    }
+    
+    for (int i = 0; i<2; i++) {
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(552)*i, ScreenWidth, PX_TO_PT(1))];
+        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        [midView addSubview:lineView];
     }
 }
 
+-(void)selectedBtnClick:(UIButton *)button{
+    self.tempBtn.selected = NO;
+    button.selected = YES;
+    self.tempBtn = button;
+    if (button.tag == kSelectedBtn) {
+        _payType = 1;
+        [self payType];
+        NSDictionary *params = @{@"consumer":@"app",@"orderId":self.orderID};
+        [KSHttpRequest post:KAlipay parameters:params success:^(id result) {
+            if ([result[@"code"] integerValue] == 1000) {
+                _PaymentId = result[@"paymentId"];
+                _Money = result[@"price"];
+            }
+        } failure:^(NSError *error) {
+            
+        }];
 
-
-- (void)btnClick:(UIButton *)button
-{
-        if (button.tag == kPayTypeBtn) {
-            _payType=1;
-            _aplipayImg.hidden = NO;
-            _yinlianImg.hidden = YES;
-        }
-        if (button.tag == kPayTypeBtn+1) {
-            _payType=2;
-            _aplipayImg.hidden = YES;
-            _yinlianImg.hidden = NO;
-        }
-
-
-    self.confirmButton.enabled = YES;
-    self.confirmButton.backgroundColor = R_G_B_16(0x00b38a);
-}
-//应付
-- (void)createLabel
-{
-    self.payLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 120, ScreenWidth, 40)];
-    self.payLabel.text = [NSString stringWithFormat:@"应付:  %.2f",self.money.floatValue];
-    self.payLabel.font = XNRFont(20);
-    self.payLabel.textAlignment = NSTextAlignmentLeft;
-    self.payLabel.textColor = [UIColor blackColor];
-    [self.view addSubview:self.payLabel];
-    
-    //设定内容样式
-    NSMutableAttributedString * attributedString =
-    [[NSMutableAttributedString alloc] initWithString:self.payLabel.text];
-    //索引一开始一个字符长度
-    [attributedString addAttribute:NSForegroundColorAttributeName value:R_G_B_16(0xf10000) range:NSMakeRange(5,self.payLabel.text.length-5)];
-    [self.payLabel setAttributedText:attributedString];
-}
-
-//确认
-- (void)createBottomBtn
-{
-    self.confirmButton = [MyControl createButtonWithFrame:CGRectMake(10, self.payLabel.frame.origin.y+self.payLabel.frame.size.height, ScreenWidth-20, 45) ImageName:nil Target:self Action:@selector(confirmClick:) Title:nil];
-    self.confirmButton.backgroundColor = [UIColor lightGrayColor];
-    [self.confirmButton setTitle:@"确认" forState:UIControlStateNormal];
-    [self.confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.confirmButton.layer.masksToBounds = YES;
-    self.confirmButton.layer.cornerRadius = 5;
-    self.confirmButton.titleLabel.font = XNRFont(18);
-    self.confirmButton.enabled = NO;
-    [self.view addSubview:self.confirmButton];
-}
-
-//确认点击
-- (void)confirmClick:(UIButton *)button
-{
-    NSLog(@"确认");
-   
-    [KSHttpRequest post:KUpdateOrderPaytype parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.orderID,@"payType":[NSString stringWithFormat:@"%f",_payType],@"user-agent":@"IOS-v2.0"}success:^(id result) {
-        NSLog(@"%@",result);
         
+    }else if (button.tag == kSelectedBtn + 1){
+        _payType = 2;
+        [self payType];
+        // 获取tn
+        [KSHttpRequest post:KUnionpay parameters:@{@"consumer":@"app",@"responseStyle":@"v1.0",@"orderId":self.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+
+                _Tn = result[@"tn"];
+                
+
+            
+        } failure:^(NSError *error) {
+            
+        }];
+
+    
+    }else if (button.tag == kSelectedBtn + 2){
+    
+    }else{
+    
+    }
+}
+#pragma mark - 支付类型
+-(void)payType{
+    [KSHttpRequest post:KUpdateOrderPaytype parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.orderID,@"payType":[NSString stringWithFormat:@"%f",_payType],@"user-agent":@"IOS-v2.0"}success:^(id result) {
         
     } failure:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:@"网络请求错误"];
-        NSLog(@"%@",error);
-    }];
-
-    
-    if(_payType==0){
         
-    }else if (_payType==1) {
-        NSString *urlStr = [HOST stringByAppendingString:@"/dynamic/alipay/nofity.asp"];
+ }];
+}
+#pragma mark - 底部视图
+-(void)createBottomView{
+    UIButton *goPayBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    goPayBtn.frame = CGRectMake(PX_TO_PT(32), ScreenHeight - PX_TO_PT(32)-PX_TO_PT(89)-64, ScreenWidth - PX_TO_PT(32)*2, PX_TO_PT(89));
+    goPayBtn.backgroundColor = R_G_B_16(0x00b38a);
+    [goPayBtn setTitle:@"去支付" forState:UIControlStateNormal];
+    [goPayBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    goPayBtn.layer.cornerRadius = 5.0;
+    goPayBtn.layer.masksToBounds = YES;
+    [goPayBtn addTarget:self action:@selector(goPayBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:goPayBtn];
+}
+
+#pragma  mark - 去支付
+- (void)goPayBtnClick:(UIButton *)button
+{
+    NSLog(@"去支付");
+   
+    if (_payType == 1) { // 支付宝支付
         [GBAlipayManager alipayWithPartner:PartnerID
                                     seller:SellerID
-                                   tradeNO:self.paymentId
+                                   tradeNO:_PaymentId
                                productName:@"新新农人产品"
                         productDescription:nil
-                                    amount:self.money
-                                 notifyURL:urlStr
+                                    amount:_Money
+                                 notifyURL:KDynamic
                                     itBPay:@"30m"];
 
-    }else if (_payType==2){
-        // 银联支付
-        [UPPayPlugin startPay:self.tn mode:kMode_Development viewController:self delegate:self];
+    }else if (_payType == 2){ // 银联支付
+        [UPPayPlugin startPay:_Tn mode:kMode_Development viewController:self delegate:self];
+        
     }
-
 }
 
 -(void)UPPayPluginResult:(NSString *)result
@@ -236,9 +284,6 @@
         
         NSLog(@"支付失败");
     }
-    
-    
-    
 }
 -(NSString *)generateTradeNO
 {

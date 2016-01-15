@@ -220,13 +220,14 @@
 {
     _fertype = type;
     if (type == XNRferView_DoTotalType) {// 综合
+        isCancel = NO;
         
         [XNRHomeSelectBrandView cancelSelectedBrandView];
         [self.noSelectView removeFromSuperview];
         [self getTotalData];
         
     }else if (type == XNRferView_DoPriceType){ // 价格排序
-        
+        isCancel = NO;
         [XNRHomeSelectBrandView cancelSelectedBrandView];
         [self.noSelectView removeFromSuperview];
         
@@ -240,8 +241,10 @@
         }
         
     }else if(type == XNRferView_DoSelectType){   // 筛选
+        NSLog(@"筛选");
         [_carArray removeAllObjects];
         isCancel = !isCancel;
+        NSLog(@"_____+=====%d",isCancel);
         if (isCancel) {
             __weak typeof(self) weakSelf=self;
             [XNRHomeSelectBrandView showSelectedBrandViewWith:^(NSString *param1, NSString *param2,NSArray *selectedParams) {
@@ -421,12 +424,19 @@
     XNRProductInfo_VC *info_VC = [[XNRProductInfo_VC alloc] init];
     XNRShoppingCartModel *model;
     if (_fertype == XNRferView_DoTotalType) {
-        model = _totalArray[indexPath.row];
-        
+        if (_totalArray.count>0) {
+            model = _totalArray[indexPath.row];
+        }
+
     }else if (_fertype == XNRferView_DoPriceType){
-        model = _ferArray[indexPath.row];
+        if (_ferArray.count>0) {
+            model = _ferArray[indexPath.row];
+
+        }
     }else{
-        model = _carArray[indexPath.row];
+        if (_carArray.count>0) {
+            model = _carArray[indexPath.row];
+        }
     }
 
     info_VC.model = model;

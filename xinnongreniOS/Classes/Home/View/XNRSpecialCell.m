@@ -99,6 +99,18 @@
             
         }];
     } else {
+//        NSMutableArray *goodsArray = [[NSMutableArray alloc] init];
+//        NSDictionary *goodsId = @{@"productId":self.model.goodsId,@"count":@"1"};
+//        [goodsArray addObject:goodsId];
+//        [KSHttpRequest post:KGetShoppingCartOffline parameters:@{@"products":[goodsArray JSONString_Ext]} success:^(id result) {
+//            if ([result[@"code"] integerValue] == 1000) {
+//            [SVProgressHUD  showSuccessWithStatus:@"加入购物车成功"];
+//
+//            }
+//            
+//        } failure:^(NSError *error) {
+//            
+//        }];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             BOOL b;
             DatabaseManager *manager = [DatabaseManager sharedInstance];
@@ -115,15 +127,14 @@
             else{
                 XNRShoppingCartModel *model = [modelArr firstObject];
                 model.num = [NSString stringWithFormat:@"%d",model.num.intValue+1];
-                model.timeStamp = [CommonTool timeSp];  //时间戳
-                model.shoppingCarCount = [manager shoppingCarCount];
+                model.timeStamp = [CommonTool timeSp];  // 时间戳
+                model.shoppingCarCount = [manager shoppingCarCount]; // 累加数
+                model.deposit = self.model.deposit;
                 b = [manager updateShoppingCarWithModel:model];
             }
             if (b) {
-                
                 [SVProgressHUD  showSuccessWithStatus:@"加入购物车成功"];
             }else{
-                
                 [SVProgressHUD showErrorWithStatus:@"加入购物车失败"];
             }
         });
@@ -142,7 +153,7 @@
         self.shopcarBtn.hidden = YES;
     }else{
         self.priceLabel.textColor = R_G_B_16(0xff4e00);
-        self.priceLabel.text = [NSString stringWithFormat:@"%.2f",model.unitPrice];
+        self.priceLabel.text = [NSString stringWithFormat:@"%.2f",model.unitPrice.floatValue];
         self.shopcarBtn.hidden = NO;
     }
 }

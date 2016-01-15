@@ -11,7 +11,7 @@
 
 @protocol XNRShoppingCartTableViewCellDelegate <NSObject>
 @optional;
--(void)XNRShoppingCartTableViewCellBtnClick;
+-(void)XNRShoppingCartTableViewCellBtnClickWith:(NSIndexPath *)indexPath;
 
 @end
 @interface XNRShoppingCartTableViewCell : UITableViewCell
@@ -24,8 +24,10 @@
 @property (nonatomic, copy) void(^deleteBlock)();
 
 @property(assign,nonatomic)BOOL selectState;//选中状态
-
+@property (nonatomic, strong) NSIndexPath *indexPath;
 
 - (void)setCellDataWithShoppingCartModel:(XNRShoppingCartModel *)model;
 
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier andCom:(void(^)(NSIndexPath *indexPath))com;
 @end

@@ -1,4 +1,4 @@
-//
+  //
 //  XNRHomeCollectionViewCell.m
 //  xinnongreniOS
 //
@@ -9,6 +9,7 @@
 #import "XNRHomeCollectionViewCell.h"
 #import "UIImageView+WebCache.h"
 #import "ZSCLabel.h"
+#import "UIFont+BSExt.h"
 @interface XNRHomeCollectionViewCell ()
 {
     NSString *prasale;
@@ -58,7 +59,8 @@
 #pragma mark - 商品名
 - (void)createGoodNameLabel
 {
-    UILabel *goodNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.picImageView.frame),PX_TO_PT(330), PX_TO_PT(90))];
+    UILabel *goodNameLabel = [[UILabel alloc]init];
+//    goodNameLabel.backgroundColor = [UIColor redColor];
     goodNameLabel.textColor = R_G_B_16(0x32323);
     goodNameLabel.font = XNRFont(12);
     goodNameLabel.numberOfLines = 0;
@@ -72,10 +74,10 @@
 #pragma mark - 现价
 - (void)createPresentPriceLabel
 {
-    UILabel *presentPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.goodNameLabel.frame), PX_TO_PT(316), PX_TO_PT(60))];
+    UILabel *presentPriceLabel = [[UILabel alloc]init];
+//    presentPriceLabel.backgroundColor = [UIColor yellowColor];
     presentPriceLabel.textColor = R_G_B_16(0xff4e00);
     presentPriceLabel.font = XNRFont(18);
-    presentPriceLabel.adjustsFontSizeToFitWidth = YES;
     presentPriceLabel.textAlignment = NSTextAlignmentLeft;
     self.presentPriceLabel = presentPriceLabel;
     [self.contentView addSubview:self.presentPriceLabel];
@@ -103,14 +105,17 @@
     [self.picImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
     
     //商品名
+    CGSize maxSize = CGSizeMake(PX_TO_PT(330), MAXFLOAT);
+    CGSize nameSize = [self.model.goodsName sizeWithFont_BSExt:self.goodNameLabel.font maxSize:maxSize];
+    self.goodNameLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20),nameSize.width, nameSize.height);
     self.goodNameLabel.text = self.model.goodsName;
     
     
     //现价
-    if (self.model.unitPrice>1) {
-        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.f",self.model.unitPrice];
+    if (self.model.unitPrice.floatValue>1) {
+        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.f",self.model.unitPrice.floatValue];
     }else{
-        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice];
+        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.floatValue];
     }
     if ([self.model.presale integerValue] == 1) {
         self.presentPriceLabel.text = @"即将上线";
@@ -118,7 +123,7 @@
     }else{
         self.presentPriceLabel.textColor = R_G_B_16(0xff4e00);
     }
-    
-    
+    CGSize priceSize = [self.presentPriceLabel.text sizeWithAttributes:@{NSFontAttributeName:XNRFont(18)}];
+    self.presentPriceLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame)+PX_TO_PT(90), priceSize.width, priceSize.height);
 }
 @end

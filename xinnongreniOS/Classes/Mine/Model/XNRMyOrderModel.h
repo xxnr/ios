@@ -9,30 +9,37 @@
 #import <Foundation/Foundation.h>
 
 @interface XNRMyOrderModel : NSObject
-
 /**
  *  订单ID
  */
 @property (nonatomic,copy) NSString *orderId;
 /**
- *  订单号
+ *  订单中商品数
  */
-@property (copy,nonatomic) NSString *orderNo;
+@property (copy,nonatomic) NSString *count;
 /**
- *  订单金额
+ *  订单总价
  */
-@property (copy,nonatomic) NSString *totalPrice;
+@property (copy,nonatomic) NSString *price;
 /**
- *  订单状态说明
+ *  最后一次支付时的支付类型
  */
-@property (copy,nonatomic) NSString *typeLable;
+@property (copy,nonatomic) NSString *payType;
 /**
- *  状态值
+ *  商品名称
  */
-@property (copy,nonatomic) NSNumber *typeValue;
+@property (copy,nonatomic) NSString *name;
 /**
- *  deposit
+ *  待付金额
  */
-@property (nonatomic, copy) NSString *deposit;
+@property (nonatomic ,copy) NSString *duePrice;
+/**
+ *  订金
+ */
+@property (nonatomic ,copy) NSString *deposit;
+/**
+ *  商品图片
+ */
+@property (nonatomic ,copy) NSString *thumbnail;
 
 @end

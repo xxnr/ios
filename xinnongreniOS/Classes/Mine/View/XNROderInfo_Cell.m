@@ -8,8 +8,6 @@
 
 #import "XNROderInfo_Cell.h"
 
-#define kMakeSureOrderUrl @"api/v2.0/order/confirmeOrder"
-
 @interface XNROderInfo_Cell ()
 {
     UIView*bg;
@@ -84,63 +82,9 @@
         [self.contentView addSubview:self.productNum];
         
     }
-    
-//    if (nil == self.makeSureBtn) {
-//        self.makeSureBtn= [MyControl createButtonWithFrame:CGRectMake(ScreenWidth-20-100-10, 10+75, 100, 30) ImageName:nil Target:self Action:@selector(makeSureBtnClick:) Title:nil];
-//        self.makeSureBtn.backgroundColor=R_G_B_16(0x119f17);
-//        [self.makeSureBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//        self.makeSureBtn.titleLabel.font = XNRFont(16);
-//        self.makeSureBtn.layer.masksToBounds = YES;
-//        self.makeSureBtn.layer.cornerRadius = 5;
-//        self.makeSureBtn.hidden = YES;
-//        [self.contentView addSubview:self.makeSureBtn];
-//    }
-    
 
 }
 
-//- (void)makeSureBtnClick:(UIButton *)button
-//{
-//    if ([self.model.myOrderType isEqualToString:@"待收货"]) {
-//        if (self.model.isSelected == NO) {
-//            NSLog(@"确认收货");
-//            [self requestMakeSureOrder];
-//        }
-//    }
-//    else if ([self.model.myOrderType isEqualToString:@"已完成"])
-//    {
-//        if (self.model.isSelected == NO) {
-//           
-//            [self finfishEvaluation];
-//        }
-//    }
-//    
-//}
-
-//#pragma mark -
-//- (void)finfishEvaluation
-//{
-//    self.commentGoodBlock(self.model);
-//}
-
-//#pragma mark - 确认收货
-//- (void)requestMakeSureOrder
-//{
-//    [SVProgressHUD showWithStatus:@"确认收货中" maskType:SVProgressHUDMaskTypeClear];
-//    [KSHttpRequest post:KConfirmeOrder parameters:@{@"locationUserId":[DataCenter account].userid == nil?@"":[DataCenter account].userid,@"userId":[DataCenter account].userid == nil?@"":[DataCenter account].userid,@"orderSubNo":self.model.orderSubNo == nil?@"":self.model.orderSubNo,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-//        if ([result[@"code"] isEqualToString:@"1000"]) {
-//            self.model.isSelected = YES;
-//            self.refreshBlock();
-//            [SVProgressHUD showSuccessWithStatus:@"确认收货成功"];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"MakeSureOrderSuccess" object:nil];
-//        }else{
-//            [SVProgressHUD showSuccessWithStatus:@"确认收货失败"];
-//        }
-//    } failure:^(NSError *error) {
-//        [SVProgressHUD showSuccessWithStatus:@"确认收货失败"];
-//    }];
-//    
-//}
 
 -(void)setCellDataWithModel:(XNRCheckOrderModel*)model{
     
@@ -157,35 +101,7 @@
 }
 
 #pragma mark - 设置现在的数据
-- (void)setSubViews {
-//    if ([_model.myOrderType isEqualToString:@"待收货"]) {
-//        if (_model.isSelected) {
-//            bg.frame = CGRectMake(0, 0, ScreenWidth-20, 95);
-//            self.makeSureBtn.hidden = YES;
-//        }else{
-//            bg.frame = CGRectMake(0, 0, ScreenWidth-20, 125);
-//            self.makeSureBtn.hidden = NO;
-//            [self.makeSureBtn setTitle:@"确认收货" forState:UIControlStateNormal];
-//            self.makeSureBtn.backgroundColor=R_G_B_16(0x119f17);
-//        }
-//    }
-//    else if ([_model.myOrderType isEqualToString:@"已完成"])
-//    {
-//        if (_model.isSelected) {
-//            bg.frame = CGRectMake(0, 0, ScreenWidth-20, 95);
-//            self.makeSureBtn.hidden = YES;
-//        }else{
-//            bg.frame = CGRectMake(0, 0, ScreenWidth-20, 125);
-//            self.makeSureBtn.hidden = NO;
-//            [self.makeSureBtn setTitle:@"待评价" forState:UIControlStateNormal];
-//            self.makeSureBtn.backgroundColor=R_G_B_16(0x119f17);
-//        }
-//    }
-//    else{
-//        bg.frame = CGRectMake(0, 0, ScreenWidth-20, 95);
-//        self.makeSureBtn.hidden = YES;
-//    }
-    
+- (void)setSubViews {    
     
     self.productTitle.text= _model.goodsName;
     
@@ -197,7 +113,7 @@
         if ([_model.deposit integerValue] == 0 || _model.deposit == nil) {
             self.productPrice.text=[NSString stringWithFormat:@"￥%@",_model.originalPrice];
         }else{
-            self.productPrice.text=[NSString stringWithFormat:@"￥%.2f(订金)",[_model.deposit floatValue]];
+            self.productPrice.text=[NSString stringWithFormat:@"￥%.2f(定金)",[_model.deposit floatValue]];
         }
         
     }else{

@@ -15,7 +15,12 @@
     
 }
 
-
+- (NSMutableArray *)goodsList {
+    if (!_goodsList) {
+        _goodsList = [NSMutableArray array];
+    }
+    return _goodsList;
+}
 
 
 @end

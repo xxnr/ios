@@ -28,35 +28,49 @@
 }
 
 -(void)createUI{
-    CGFloat myRepLabelH = 60;
+    CGFloat myRepLabelH = PX_TO_PT(96);
     UIView *myRepView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, myRepLabelH)];
     myRepView.backgroundColor = [UIColor whiteColor];
     
     [self addSubview:myRepView];
     
-    CGFloat nickNameLabelY = (myRepLabelH - 20)*0.5;
-    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,nickNameLabelY , ScreenWidth/2, 20)];
-    nickNameLabel.textColor = R_G_B_16(0x646464);
-    nickNameLabel.font = [UIFont systemFontOfSize:18];
+    CGFloat nickNameLabelY = (myRepLabelH - PX_TO_PT(60))*0.5;
+    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(200), PX_TO_PT(60))];
+    nickNameLabel.backgroundColor = R_G_B_16(0x00b38a);
+    nickNameLabel.layer.cornerRadius = 5.0;
+    nickNameLabel.layer.masksToBounds = YES;
+    nickNameLabel.textColor = R_G_B_16(0xffffff);
+    nickNameLabel.font = [UIFont systemFontOfSize:16];
+    nickNameLabel.textAlignment = NSTextAlignmentCenter;
     self.nickNameLabel = nickNameLabel;
     [myRepView addSubview:nickNameLabel];
     
-    UILabel *phoneNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2+10, nickNameLabelY, ScreenWidth/2, 20)];
-//    phoneNumLabel.text = self.model.account;
-    phoneNumLabel.textColor = R_G_B_16(0x20b2aa);
+    UILabel *phoneNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, nickNameLabelY, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(60))];
+    phoneNumLabel.textAlignment = NSTextAlignmentRight;
+    phoneNumLabel.textColor = R_G_B_16(0x00b38a);
     phoneNumLabel.font = [UIFont systemFontOfSize:18];
     self.phoneNumLabel = phoneNumLabel;
     [myRepView addSubview:phoneNumLabel];
+    
+    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [myRepView addSubview:topLineView];
+    
+    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, PX_TO_PT(1))];
+    bottomLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [myRepView addSubview:bottomLineView];
 
 
 }
 
 - (void)setModel:(XNRMyRepresentModel *)model {
     _model = model;
-    if (model.nickname && model.nickname.length>0) {
-        self.nickNameLabel.text = model.nickname;
+    if (model.name && model.name.length>0) {
+        self.nickNameLabel.text = model.name;
     }else{
-        self.nickNameLabel.text = @"好友未设置昵称";
+        self.nickNameLabel.text = @"该好友未填姓名";
+        self.nickNameLabel.backgroundColor = R_G_B_16(0xf0f0f0);
+        self.nickNameLabel.textColor = R_G_B_16(0xa2a2a2);
 
     }
 

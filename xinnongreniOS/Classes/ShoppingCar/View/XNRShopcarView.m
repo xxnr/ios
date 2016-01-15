@@ -44,6 +44,7 @@
     
     UILabel *titleLabel1 = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(420))*0.5, CGRectGetMaxY(self.imgView.frame) + PX_TO_PT(80), PX_TO_PT(420), PX_TO_PT(50))];
     titleLabel1.text = @"您的购物车还是空空的哦";
+    titleLabel1.textAlignment = NSTextAlignmentCenter;
     titleLabel1.textColor = R_G_B_16(0x757575);
     titleLabel1.font = [UIFont systemFontOfSize:16];
     titleLabel1.numberOfLines = NO;
@@ -52,6 +53,8 @@
     
     UILabel *titleLabel2 = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(420))*0.5, CGRectGetMaxY(self.titleLabel1.frame), PX_TO_PT(440), PX_TO_PT(50))];
     titleLabel2.text = @"赶快去挑选心仪的商品吧~";
+    titleLabel2.textAlignment = NSTextAlignmentCenter;
+
     titleLabel2.textColor = R_G_B_16(0x757575);
     titleLabel2.font = [UIFont systemFontOfSize:16];
     titleLabel2.numberOfLines = NO;

@@ -19,16 +19,16 @@
 #import "XNRFerViewController.h"
 #import "MJRefresh.h"
 #import "XNRProductInfo_VC.h"
+#import "MJExtension.h"
 
-@interface XNRShoppingCarController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,XNRShopcarViewBtnDelegate,XNRShoppingCartTableViewCellDelegate>
+@interface XNRShoppingCarController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,XNRShopcarViewBtnDelegate>
 {
     NSMutableArray *_dataArr;    //购物车数据
-    NSMutableArray *_brandNameArr;//品牌名字数组
-    NSMutableArray *_cellModelArr;
+    NSMutableArray *_brandNameArr;
     UIButton *_settlementBtn;   //去结算
     UIButton *_deleteBtn;       // 删除
     UILabel *_totalPriceLabel;  //总价
-    CGFloat _totalPrice;      //总价
+    float _totalPrice;      //总价
     NSString*_shoppingCarID;    //购物车id
     NSMutableArray *_modifyDataArr; // 更新的数据
     float totalPrice;
@@ -84,24 +84,24 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+    self.selectedBottomBtn.selected = NO;
+    
+    [self.editeBtn setTitle:@"编辑" forState:UIControlStateNormal];
+    _deleteBtn.hidden = YES;
+    _settlementBtn.hidden = NO;
+    _totalPriceLabel.hidden = NO;
+    
     if (IS_Login) {// 已登录
         // 获取数据从网络
         [self getDataFromNetwork];
-
-//        __weak __typeof(&*self)weakSelf = self;
-//
-//        [self.shoppingCarTableView addLegendHeaderWithRefreshingBlock:^{
-//            [weakSelf getDataFromNetwork];
-//        }];
-        
     }else{// 未登录
         [_dataArr removeAllObjects];
-        [_brandNameArr removeAllObjects];
         // 获取数据从本地数据库
         [self getDataFromDatabase];
         [self.shoppingCarTableView reloadData];
         [self changeBottom];
     }
+
 }
 
 - (void)viewDidLoad {
@@ -110,9 +110,8 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     _dataArr = [[NSMutableArray alloc]init];
-    _brandNameArr = [[NSMutableArray alloc]init];
+    _brandNameArr = [[NSMutableArray alloc] init];
     _modifyDataArr = [[NSMutableArray alloc] init];
-    _cellModelArr = [[NSMutableArray alloc] init];
     
     //创建订单
     [self createShoppingCarTableView];
@@ -127,13 +126,6 @@
 #pragma mark - 创建导航栏
 -(void)createNavgation{
     self.navigationItem.title = @"购物车";
-//    UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//    backButton.frame=CGRectMake(0, 0, 80, 44);
-//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
-//    [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchDown];
-//    [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
-//    UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
-//    self.navigationItem.leftBarButtonItem=leftItem;
     
     UIButton *editeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     editeBtn.frame = CGRectMake(0, 0, 40, 40);
@@ -187,16 +179,14 @@
     allSelectLabel.textColor = R_G_B_16(0x323232);
     [_bottomView addSubview:allSelectLabel];
     
-    
-    
-    _totalPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(440), 0, PX_TO_PT(220), PX_TO_PT(88))];
+    _totalPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(440), 0, PX_TO_PT(200), PX_TO_PT(88))];
     _totalPriceLabel.textColor = R_G_B_16(0x323232);
     _totalPriceLabel.font = XNRFont(14);
     _totalPriceLabel.adjustsFontSizeToFitWidth = YES;
     [_bottomView addSubview:_totalPriceLabel];
     
     _settlementBtn = [MyControl createButtonWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(220), 0, PX_TO_PT(220), PX_TO_PT(88)) ImageName:nil Target:self Action:@selector(settlementBtnClick:) Title:nil];
-    _settlementBtn.backgroundColor = [UIColor lightGrayColor];
+    _settlementBtn.backgroundColor = R_G_B_16(0xfe9b00);
     _settlementBtn.enabled = NO;
     [_settlementBtn setTitle:@"去结算" forState:UIControlStateNormal];
     [_settlementBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -204,7 +194,7 @@
     [_bottomView addSubview:_settlementBtn];
     
     _deleteBtn = [MyControl createButtonWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(220), 0, PX_TO_PT(220), PX_TO_PT(88)) ImageName:nil Target:self Action:@selector(deleteBtnClick:) Title:nil];
-    _deleteBtn.backgroundColor = [UIColor lightGrayColor];
+    _deleteBtn.backgroundColor = R_G_B_16(0xfe9b00);
     _deleteBtn.enabled = NO;
     [_deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
     [_deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -218,54 +208,19 @@
     [_bottomView addSubview:lineView];
 }
 
-#pragma mark -  代理
--(void)XNRShoppingCartTableViewCellBtnClick
-{
-    for (int i = 0; i<_dataArr.count; i++) {
-        NSMutableArray *modelArr = _dataArr[i];
-        for (int j = 0; j<modelArr.count; j++) {
-            XNRShoppingCartModel *model = modelArr[j];
-            if (model.selectState) {
-                model.selectState = NO;
-            }else{
-                model.selectState = YES;
-            }
-            [self.shoppingCarTableView reloadData];
-            [self changeBottom];
-        }
-    }
-//    XNRShoppingCartModel *model = _dataArr[indexPath.section][indexPath.row];
-//    if (model.selectState) {
-//        model.selectState = NO;
-//    }else{
-//        model.selectState = YES;
-//    }
-//    [self.shoppingCarTableView reloadData];
-//    
-//    [self.shoppingCarTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//    
-//    [self changeBottom];
-    
-
-}
+#pragma mark -  底部按钮点击
 
 -(void)selectedClick:(UIButton *)sender{
-    sender.tag = !sender.tag;
-    if (sender.tag) {
-        sender.selected = YES;
-    }else{
-        sender.selected = NO;
-    }
-    for (int i = 0; i<_dataArr.count; i++) {
-        NSLog(@"=======+++++++%@",_dataArr);
-        NSMutableArray *modelArray = _dataArr[i];
-        for (int j = 0; j<modelArray.count; j++) {
-            XNRShoppingCartModel *model = modelArray[j];
-            model.selectState  = sender.tag;
-            NSLog(@"=======+++++++%@",model);
+    
+    sender.selected = !sender.selected;
+    
+    for (XNRShopCarSectionModel *sectionModel in _dataArr) {
+        sectionModel.isSelected = sender.selected;
+        for (XNRShoppingCartModel *shopCar in sectionModel.goodsList) {
+            shopCar.selectState = sender.selected;
         }
-        
     }
+    
     [self changeBottom];
     [self.shoppingCarTableView reloadData];
 
@@ -275,11 +230,18 @@
 {
     //登录
     if (IS_Login) {
-  //打开订单信息页
-    [self openOrder];
+
+        if (_totalPrice == 0) {
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"请至少选择一件商品" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            [alertView show];
+         
+        }else{// 打开订单信息页
+        [self openOrder];
+        }
     }else{ // 未登录
         //登录警告视图
         UIAlertView *alert1 = [[UIAlertView alloc]initWithTitle:@"您尚未登录" message:@"请先前往登录" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alert1.tag = 1000;
         [alert1 show];
 
     }
@@ -287,18 +249,98 @@
 
 #pragma mark - 删除
 -(void)deleteBtnClick:(UIButton *)button{
-
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"确认要删除该商品吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alertView.tag = 1001;
+    [alertView show];
 
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if (alertView.tag == 1000) {
         if (buttonIndex == 1) {
             XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
             login.loginFrom = @"shoppingCar";
             login.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:login animated:YES];
+            
+        }
 
+    }else{
+        if (buttonIndex == 1) {
+            NSMutableArray *arr1 = [NSMutableArray array];
+            NSMutableArray *arr2 = [NSMutableArray array];
+            
+            //1.先删除购物车 中的数据 并且用arr1、arr2记录要删除的数据
+            for (XNRShopCarSectionModel *sectionModel in _dataArr) {
+                
+                if (sectionModel.isSelected) {
+                    if (!IS_Login) { //未登录时 把数据库这条数据删除
+                        for (XNRShoppingCartModel *carModel in sectionModel.goodsList) {
+                            DatabaseManager *manager = [DatabaseManager sharedInstance];
+                            [manager deleteShoppingCarWithModel:carModel];
+                        }
+                    } else { //TODO:服务器调用接口 让服务器把这条数据删除
+                        for (XNRShoppingCartModel *carModel in sectionModel.goodsList) {
+                            [KSHttpRequest post:KUpdateShoppingCart parameters:@{@"userId":[DataCenter account].userid,@"goodsId":carModel.goodsId,@"quantity":@"0"} success:^(id result) {
+                                if ([result[@"code"] integerValue] == 1000) {
+                                    
+                                }
+                            } failure:^(NSError *error) {
+                                
+                            }];
+                        }
+                        
+                        
+                    }
+                    
+                    [arr1 addObject:sectionModel];
+                    
+                } else {
+                    for (XNRShoppingCartModel *model in sectionModel.goodsList) {
+                        if (model.selectState) {
+                            if (!IS_Login) {//未登录时 把数据库这条数据删除
+                                DatabaseManager *manager = [DatabaseManager sharedInstance];
+                                [manager deleteShoppingCarWithModel:model];
+                            } else {
+                                //TODO:服务器调用接口 让服务器把这条数据删除
+                                [KSHttpRequest post:KchangeShopCarNum parameters:@{@"userId":[DataCenter account].userid,@"goodsId":model.goodsId,@"quantity":@"0"} success:^(id result) {
+                                    
+                                } failure:^(NSError *error) {
+                                    
+                                }];
+                            }
+                            [arr2 addObject:model];
+                        }
+                    }
+                }
+            }
+            
+            //2.删除数据源里面的记录的数据
+            for (int i = 0; i < arr1.count; i++) {
+                XNRShopCarSectionModel *sectionModel = arr1[i];
+                [_dataArr removeObject:sectionModel];
+            }
+            for (XNRShopCarSectionModel *sectionModel in _dataArr) {
+                for (XNRShoppingCartModel *cellModel in arr2) {
+                    [sectionModel.goodsList removeObject:cellModel];
+                }
+            }
+            
+            [self.shoppingCarTableView reloadData];
+            if (_dataArr.count == 0) {
+                [self.shopCarView show];
+                self.editeBtn.hidden = YES;
+                self.navigationItem.title = @"购物车";
+            }else{
+                [self.shopCarView removeFromSuperview];
+            }
+
+            
+        }
     }
+    // 改变底部
+    [self changeBottom];
 }
 
 #pragma mark - 跳转订单信息页
@@ -308,111 +350,66 @@
     vc.hidesBottomBarWhenPushed=YES;
     NSMutableArray*arr=[[NSMutableArray alloc]init];
     for (int i = 0; i<_dataArr.count; i++) {
-        NSMutableArray *modelArr = _dataArr[i];
-        for (int j=0; j<modelArr.count; j++) {
-            XNRShoppingCartModel *model = modelArr[j];
-            if(model.num.intValue>0){
-                [arr addObject:model];
+        XNRShopCarSectionModel *sectionModel = _dataArr[i];
+        for (XNRShoppingCartModel *cellModel in sectionModel.goodsList) {
+            if (cellModel.selectState) {
+        
+                NSDictionary *params = @{@"productId":cellModel.goodsId,@"count":cellModel.num};
+                [arr addObject:params];
             }
         }
     }
-    //将所有数据中产品数量大于0的model加入数组等待传值
-//    vc.dataArray=arr;
-    vc.shopCarID=_shoppingCarID;
-    
+    vc.dataArray = arr;
+    vc.totalPrice = _totalPrice;
     [self.navigationController pushViewController:vc animated:YES];
 }
-//#pragma mark - 改变底部视图
-//- (void)changeBottom{
-//    _totalPrice = 0;
-//    for (int i = 0; i<_dataArr.count; i++) {
-//        NSMutableArray *modelArr = _dataArr[i];
-//        for (int j=0; j<modelArr.count; j++) {
-//            XNRShoppingCartModel *model = modelArr[j];
-//            
-//        if ([model.deposit integerValue] == 0 || model.deposit == nil) {
-//            _totalPrice = _totalPrice + model.num.intValue*[[NSString stringWithFormat:@"%.2f",model.unitPrice] floatValue];
-//                }else{
-//                    _totalPrice = _totalPrice + model.num.intValue*[[NSString stringWithFormat:@"%@",model.deposit] integerValue];
-//                }
-//        }
-//    }
-//    _totalPriceLabel.text = [NSString stringWithFormat:@"合计: ￥%.2f",_totalPrice];
-//    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:_totalPriceLabel.text];
-//    NSDictionary *depositStr=@{
-//                               
-//                               NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-//                               NSFontAttributeName:[UIFont systemFontOfSize:18]
-//                               
-//                               };
-//    
-//    [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(3,AttributedStringDeposit.length-3)];
-//    
-//    [_totalPriceLabel setAttributedText:AttributedStringDeposit];
-//    
-//    if (_totalPrice == 0) {
-//        
-//        [self.shopCarView show];
-//        _settlementBtn.enabled = YES;
-//        _settlementBtn.backgroundColor = [UIColor lightGrayColor];
-//    }else{
-//        [self.shopCarView removeFromSuperview];
-//        self.editeBtn.hidden = NO;
-//
-//        _settlementBtn.enabled = YES;
-//        _settlementBtn.backgroundColor = R_G_B_16(0xfe9b00);
-//        
-//        _deleteBtn.enabled = YES;
-//        _deleteBtn.backgroundColor = R_G_B_16(0xfe9b00);
-//    }
-//}
-
 #pragma mark - 获取数据从网络
 - (void)getDataFromNetwork {
     //网络请求成功先删除数据
     [_dataArr removeAllObjects];
-    [_brandNameArr removeAllObjects];
     //改变底部
     [self changeBottom];
+    
     [self.shoppingCarTableView reloadData];
     
     [KSHttpRequest post:KGetShopCartList parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             //网络请求成功先删除数据
             [_dataArr removeAllObjects];
-            [_brandNameArr removeAllObjects];
             
             NSDictionary *datasDic = result[@"datas"];
-            
             _shoppingCarID = datasDic[@"shopCartId"];
             NSArray *rowsArr = datasDic[@"rows"];
             
             for (NSDictionary *subDic in rowsArr) {
+                XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
+                sectionModel.brandName = subDic[@"brandName"];
+                sectionModel.goodsList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"goodsList"]];
+                [_dataArr addObject:sectionModel];
                 
-                XNRShopCarSectionModel *cellModel = [[XNRShopCarSectionModel alloc] init];
-                [cellModel setValuesForKeysWithDictionary:subDic];
-                [_cellModelArr addObject:cellModel];
-                
-                NSArray *goodsListArr = subDic[@"goodsList"];
-                NSMutableArray *tempSubDataArr = [[NSMutableArray alloc]init];
-                
-                for (NSDictionary *subDic2 in goodsListArr) {
-                    XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc]init];
-                    [model setValuesForKeysWithDictionary:subDic2];
+                for (int i = 0; i<sectionModel.goodsList.count; i++) {
+                    XNRShoppingCartModel *model = sectionModel.goodsList[i];
                     model.num = model.goodsCount;
-                    [tempSubDataArr addObject:model];
                 }
-                [_brandNameArr addObject:subDic[@"brandName"]];
-                [_dataArr addObject:tempSubDataArr];
                 
-                
+                NSLog(@"%@",sectionModel.goodsList);
             }
-            //改变底部
+            // 改变底部
             [self changeBottom];
+            
             [self.shoppingCarTableView reloadData];
         }else{
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:result[@"message"] delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil];
             [alert show];
+        }
+        
+        if (_dataArr.count == 0) {
+            [self.shopCarView show];
+            self.editeBtn.hidden = YES;
+            self.navigationItem.title = @"购物车";
+
+        }else{
+            [self.shopCarView removeFromSuperview];
         }
         [self.shoppingCarTableView.header endRefreshing];
     } failure:^(NSError *error) {
@@ -422,26 +419,71 @@
     }];
 }
 
-#pragma mark - 获取数据从数据库
+#pragma mark - 获取数据从数据库(只需要从数据库拿到商品的ID和商品的数量)
 - (void)getDataFromDatabase {
+    [self.shopCarView show];
+
     DatabaseManager *manager = [DatabaseManager sharedInstance];
     //获取所有购物车数据(存的时候已经去重)
     NSArray *allGoodArr = [manager queryAllGood];
-    //品牌名数组
-    NSLog(@"_____%@",allGoodArr);
+    // 存放商品ID和数量
     NSMutableArray *tempMarr = [[NSMutableArray alloc]init];
     for (int i=0; i<allGoodArr.count; i++) {
         XNRShoppingCartModel *model = allGoodArr[i];
-        [tempMarr addObject:model.brandName];
+        NSDictionary *params = @{@"productId":model.goodsId,@"count":model.num};
+        [tempMarr addObject:params];
+        [KSHttpRequest post:KGetShoppingCartOffline parameters:@{@"products":[tempMarr JSONString_Ext]} success:^(id result) {
+            NSMutableArray *goodsArray = [[NSMutableArray alloc] init];
+            if ([result[@"code"] integerValue] == 1000)  {
+                NSDictionary *datas = result[@"datas"];
+                NSArray *rows = datas[@"rows"];
+                for (NSDictionary *subDic in rows) {
+                    XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
+                    sectionModel.brandName = subDic[@"brandName"];
+                    sectionModel.goodsList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"goodsList"]];
+                    [goodsArray addObject:sectionModel];
+                    
+                    // 数组去重
+                    NSSet *set = [NSSet setWithArray:goodsArray];
+                    _dataArr = [[set allObjects] mutableCopy];
+                    
+                    for (int i = 0; i<sectionModel.goodsList.count; i++) {
+                        XNRShoppingCartModel *model = sectionModel.goodsList[i];
+                        model.num = model.goodsCount;
+                    }
+
+                    if (_dataArr.count == 0) {
+                        [self.shopCarView show];
+                        self.editeBtn.hidden = YES;
+                        self.navigationItem.title = @"购物车";
+                        
+                    }else{
+                        [self.shopCarView removeFromSuperview];
+                    }
+            }
+                [self.shoppingCarTableView reloadData];
+        }
+        } failure:^(NSError *error) {
+            
+        }];
     }
-    //数组去重
-    NSSet *set = [NSSet setWithArray:tempMarr];
-    _brandNameArr = [[set allObjects] mutableCopy];
     
-    for (int i = 0; i<_brandNameArr.count; i++) {
-        NSArray *arr = [manager queryTypeGoodWithBrandName:_brandNameArr[i]];
-        [_dataArr addObject:arr];
-    }
+    //数组去重
+//    NSSet *set = [NSSet setWithArray:tempMarr];
+//    _brandNameArr = [[set allObjects] mutableCopy];
+    
+//    for (int i = 0; i<_brandNameArr.count; i++) {
+//        NSArray *arr = [manager queryTypeGoodWithBrandName:_brandNameArr[i]];
+//        
+//        XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
+//        
+//        for (XNRShoppingCartModel *carModel in arr) {
+//            sectionModel.brandName = _brandNameArr[i];
+//            [sectionModel.goodsList addObject:carModel];
+//        }
+//        
+//        [_dataArr addObject:sectionModel];
+//    }
     
 }
 #pragma mark - 创建购物车
@@ -464,81 +506,102 @@
 // 在段头添加任意的视图
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(88))];
-    headView.backgroundColor = [UIColor whiteColor];
-    self.headView = headView;
-    [self.view addSubview:headView];
-    
-    UIButton *selectedHeadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    selectedHeadBtn.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(26), PX_TO_PT(36), PX_TO_PT(36));
-    [selectedHeadBtn setImage:[UIImage imageNamed:@"shopCar_circle"] forState:UIControlStateNormal];
-    [selectedHeadBtn setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateSelected];
-    [selectedHeadBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    self.selectedHeadBtn = selectedHeadBtn;
-    [headView addSubview:selectedHeadBtn];
-    
-    UIImageView *shopcarImage = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(selectedHeadBtn.frame) + PX_TO_PT(20), PX_TO_PT(26), PX_TO_PT(36), PX_TO_PT(36))];
-    [shopcarImage setImage:[UIImage imageNamed:@"shopcar_icon"]];
-    [headView addSubview:shopcarImage];
+    if (_dataArr.count > 0) {
+        XNRShopCarSectionModel *sectionModel = _dataArr[section];
+        
+        UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(88))];
+        headView.backgroundColor = [UIColor whiteColor];
+        self.headView = headView;
+        [self.view addSubview:headView];
+        
+        UIButton *selectedHeadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        selectedHeadBtn.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(26), PX_TO_PT(36), PX_TO_PT(36));
+        [selectedHeadBtn setImage:[UIImage imageNamed:@"shopCar_circle"] forState:UIControlStateNormal];
+        [selectedHeadBtn setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateSelected];
+        selectedHeadBtn.tag = section+1010;
+        [selectedHeadBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        selectedHeadBtn.selected = sectionModel.isSelected;
+        self.selectedHeadBtn = selectedHeadBtn;
+        [headView addSubview:selectedHeadBtn];
+        
+        UIImageView *shopcarImage = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(selectedHeadBtn.frame) + PX_TO_PT(20), PX_TO_PT(26), PX_TO_PT(36), PX_TO_PT(36))];
+        [shopcarImage setImage:[UIImage imageNamed:@"shopcar_icon"]];
+        [headView addSubview:shopcarImage];
+        
+        
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(shopcarImage.frame) + PX_TO_PT(24), PX_TO_PT(28), ScreenWidth, PX_TO_PT(32))];
+        label.text = sectionModel.brandName;
+        label.textColor = R_G_B_16(0x323232);
+        label.font = XNRFont(16);
+        label.textAlignment = NSTextAlignmentLeft;
+        [headView addSubview:label];
+        
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
+        [headView addSubview:lineView1];
+        
+        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
+        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
+        [headView addSubview:lineView2];
+        
+        return headView;
 
-    
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(shopcarImage.frame) + PX_TO_PT(24), PX_TO_PT(28), ScreenWidth, PX_TO_PT(32))];
-    label.text = _brandNameArr[section];
-    label.textColor = R_G_B_16(0x323232);
-    label.font = XNRFont(16);
-    label.textAlignment = NSTextAlignmentLeft;
-    [headView addSubview:label];
-    
-    UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-    lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
-    [headView addSubview:lineView1];
-    
-    UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
-    lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
-    [headView addSubview:lineView2];
-    return headView;
+    } else {
+        return nil;
+    }
 }
-
+#pragma mark - headView的Button的选中
 -(void)selectedBtnClick:(UIButton *)sender{
-        sender.tag = !sender.tag;
-        if (sender.tag) {
-            sender.selected = YES;
-        }else{
-            sender.selected = NO;
-        }
-    // 改变单元格选中状态
-    for (int i = 0; i<_cellModelArr.count; i++) {
-        NSLog(@"=————————————+++++++%@",_cellModelArr);
-            XNRShopCarSectionModel *model = _cellModelArr[i];
-            model.isSelected  = sender.tag;
-
-        NSLog(@"=======+++++++%@",model);
-        NSLog(@"+++++++_____%@",model.cellModelArray);
-
-        }
     
+    XNRShopCarSectionModel *sectionModel = _dataArr[sender.tag-1010];
+    
+    sectionModel.isSelected = !sectionModel.isSelected;
+    
+    for (XNRShoppingCartModel *shopCarModel in sectionModel.goodsList) {
+        shopCarModel.selectState = sectionModel.isSelected;
+    }
+    
+    [self.shoppingCarTableView reloadData];
+    
+    [self valiteAllCarShopModelIsSelected];
     [self changeBottom];
-//    [self.shoppingCarTableView reloadData];
 
 
 }
 #pragma mark - 计算价格
--(void)changeBottom{
+-(void)changeBottom {
+    NSInteger goodsNum = 0;
+    NSInteger goodsNumSelected = 0;
     _totalPrice = 0;
     // 遍历整个数据源，然后判断如果是选中的商品，就计算价格
     for (int i = 0; i<_dataArr.count; i++) {
-        NSMutableArray *modelArray = _dataArr[i];
-        for (int j = 0; j<modelArray.count; j++) {
-            XNRShoppingCartModel *model = modelArray[j];
+        XNRShopCarSectionModel *sectionModel = _dataArr[i];
+        for (int j = 0; j<sectionModel.goodsList.count; j++) {
+            XNRShoppingCartModel *model = sectionModel.goodsList[j];
+            goodsNum = goodsNum + model.num.integerValue;
             if (model.selectState) {
-                // 合计
-                if ([model.deposit integerValue] == 0) {
-                    _totalPrice = _totalPrice + model.num.intValue*[[NSString stringWithFormat:@"%.2f",model.unitPrice] floatValue];
+                // 合计xxxx
+                if (model.deposit && [model.deposit floatValue] > 0) {
+                    _totalPrice = _totalPrice + model.num.intValue*[[NSString stringWithFormat:@"%@",model.deposit] floatValue];
                 }else{
-                    _totalPrice = _totalPrice + model.num.intValue*[[NSString stringWithFormat:@"%@",model.deposit] integerValue];
+                    _totalPrice = _totalPrice + model.num.intValue*[[NSString stringWithFormat:@"%@",model.unitPrice] floatValue];
                 }
-
+                NSLog(@"totalPriceg === %.2f",_totalPrice);
+                goodsNumSelected = goodsNumSelected + model.num.integerValue;
+                [_settlementBtn setTitle:[NSString stringWithFormat:@"去结算(%ld)",(long)goodsNumSelected] forState:UIControlStateNormal];
+                [_deleteBtn setTitle:[NSString stringWithFormat:@"删除(%ld)",(long)goodsNumSelected] forState:UIControlStateNormal];
+                [self.shoppingCarTableView reloadData];
+                
+            }else{
+//                [_settlementBtn setTitle:[NSString stringWithFormat:@"去结算"] forState:UIControlStateNormal];
+//                [_deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
+//                self.navigationItem.title = @"购物车";
             }
+            self.navigationItem.title = [NSString stringWithFormat:@"购物车(%ld)",(long)goodsNum];
+
+            
+            
+
         }
     }
     _totalPriceLabel.text = [NSString stringWithFormat:@"合计: ￥%.2f",_totalPrice];
@@ -554,27 +617,22 @@
     
     [_totalPriceLabel setAttributedText:AttributedStringDeposit];
     
-    //每次算完要重置为0，因为每次的都是全部循环算一遍
-    _totalPrice = 0.00;
+//    //每次算完要重置为0，因为每次的都是全部循环算一遍
     
     if (_dataArr.count == 0) {
-        
-        [self.shopCarView show];
         _settlementBtn.enabled = YES;
-        _settlementBtn.backgroundColor = [UIColor lightGrayColor];
+
     }else{
-        [self.shopCarView removeFromSuperview];
         self.editeBtn.hidden = NO;
         
         _settlementBtn.enabled = YES;
-        _settlementBtn.backgroundColor = R_G_B_16(0xfe9b00);
-        
+
         _deleteBtn.enabled = YES;
-        _deleteBtn.backgroundColor = R_G_B_16(0xfe9b00);
     }
 
-
 }
+
+#pragma mark  - TableViewDelegate
 
 //段头高度
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -600,8 +658,12 @@
 //设置行数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSMutableArray *arr = _dataArr[section];
-    return arr.count;
+    if (_dataArr.count > 0) {
+        XNRShopCarSectionModel *sectionModel = _dataArr[section];
+        return sectionModel.goodsList.count;
+    } else {
+        return 0;
+  }
 }
 
 //行高
@@ -609,8 +671,9 @@
 {
 
     if (_dataArr.count>0) {
-        XNRShoppingCartModel *model = _dataArr[indexPath.section][indexPath.row];
-        NSLog(@"=========%@",_dataArr);
+        XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
+        XNRShoppingCartModel *model = sectionModel.goodsList[indexPath.row];
+        
         if ([model.deposit floatValue] == 0.00) {
             return PX_TO_PT(300);
         }else{
@@ -624,11 +687,16 @@
 //cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRProductInfo_VC *info_VC = [[XNRProductInfo_VC alloc] init];
-    info_VC.hidesBottomBarWhenPushed = YES;
-    XNRShoppingCartModel *model = _dataArr[indexPath.section][indexPath.row];
-    info_VC.model = model;
-    [self.navigationController pushViewController:info_VC animated:YES];
+    if (_dataArr.count > 0) {
+        
+        XNRProductInfo_VC *info_VC = [[XNRProductInfo_VC alloc] init];
+        info_VC.hidesBottomBarWhenPushed = YES;
+        XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
+        XNRShoppingCartModel *model = sectionModel.goodsList[indexPath.row];
+        info_VC.model = model;
+        [self.navigationController pushViewController:info_VC animated:YES];
+
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -639,46 +707,57 @@
     if (!cell)
     {
         //单元格复用cellID要一致
-        cell = [[XNRShoppingCartTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
-        cell.delegate = self;
-        cell.backgroundColor = [UIColor whiteColor];
-    }
-        XNRShoppingCartModel *model = _dataArr[indexPath.section][indexPath.row];
-    
+        cell = [[XNRShoppingCartTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID andCom:^(NSIndexPath *indexPath) {
+            
+            XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
+            XNRShoppingCartModel *cellModel = sectionModel.goodsList[indexPath.row];
+            BOOL isAll = YES;
+            for (XNRShoppingCartModel *carModel in sectionModel.goodsList) {
+                isAll = isAll && carModel.selectState;
+            }
+            
+            if (isAll) {
+                sectionModel.isSelected = cellModel.selectState;
+            } else {
+                sectionModel.isSelected = NO;
+                self.selectedBottomBtn.selected = NO;
+            }
+            
+            [self.shoppingCarTableView reloadData];
+//            [self changeBottom];
+            
+            [self valiteAllCarShopModelIsSelected];
+        }];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        //传递数据模型model
-        [cell setCellDataWithShoppingCartModel:model];
-    
-    cell.changeBottomBlock = ^{
-        [self changeBottom];
-    };
-    cell.deleteBlock = ^{
-        //每个cell对应一个block 不需要传入indexPath
-        NSMutableArray *marr = _dataArr[indexPath.section];
-        if (!IS_Login) {
-            DatabaseManager *manager = [DatabaseManager sharedInstance];
-            //数据库删除
-            [manager deleteShoppingCarWithModel:marr[indexPath.row]];
-        }else{
+        cell.backgroundColor = [UIColor whiteColor];
+        cell.changeBottomBlock = ^{
+            [self changeBottom];
+        };
         
+        
+    }
+    
+    if (_dataArr.count > 0) {
+        cell.indexPath = indexPath;
+        XNRShopCarSectionModel *sectionModle = _dataArr[indexPath.section];
+        if (sectionModle.goodsList.count > 0) {
+            XNRShoppingCartModel *model = sectionModle.goodsList[indexPath.row];
+            
+            //传递数据模型model
+            [cell setCellDataWithShoppingCartModel:model];
         }
-
-        [marr removeObjectAtIndex:indexPath.row];
-        //加删除动画
-        [self.shoppingCarTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-        if (marr.count == 0) {
-            [_dataArr removeObjectAtIndex:indexPath.section];
-            [_brandNameArr removeObjectAtIndex:indexPath.section];
-            [self.shoppingCarTableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationLeft];
-
-        }
-        [self.shoppingCarTableView reloadData];
-        [self changeBottom];
-    };
+    }
     return cell;
 }
-
-
+#pragma mark  - 购物车商品全部选中
+- (void)valiteAllCarShopModelIsSelected {
+    BOOL isAllAll = YES;
+    for (XNRShopCarSectionModel *sectionModel in _dataArr) {
+        isAllAll = isAllAll && sectionModel.isSelected;
+    }
+    
+    self.selectedBottomBtn.selected = isAllAll;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

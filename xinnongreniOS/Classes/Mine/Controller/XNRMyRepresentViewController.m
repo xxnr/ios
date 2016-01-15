@@ -10,7 +10,7 @@
 #import "XNRMyRepresentView.h"
 #import "XNRMyRepresentModel.h"
 #import "XNRMyRepresent_cell.h"
-
+#import "XNRCustomerOrderController.h"
 #define btnTag 1000
 
 @interface XNRMyRepresentViewController ()<UITableViewDelegate,UITableViewDataSource,XNRMyRepresentViewAddBtnDelegate>
@@ -21,7 +21,7 @@
 
 @property (nonatomic, weak) UIButton *leftBtn;
 @property (nonatomic, weak) UIButton *rightBtn;
-@property (nonatomic, weak) UIButton *selectedBtn;
+@property (nonatomic, weak) UIButton *selectedBtn; // 临时button
 @property (nonatomic, strong) XNRMyRepresentView *mrv;
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -36,18 +36,25 @@
 @property (nonatomic, weak) UIView *myRepView;
 
 @property (nonatomic, weak) UIView *headView;
+
+@property (nonatomic ,weak) UIView *topView;
+
+@property (nonatomic ,weak) UIView *myRepTopView;
+
+@property (nonatomic ,weak) UILabel *phoneNumLabel;
 @end
 
 @implementation XNRMyRepresentViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
     _dataArr = [[NSMutableArray alloc] init];
-    self.view.backgroundColor = R_G_B_16(0xf0f0f0);
+    self.view.backgroundColor = R_G_B_16(0xfafafa);
     [self setNavigationbarTitle];
     [self setBottomButton];
     [self createTableView];
 }
 
+#pragma mark -  导航
 -(void)setNavigationbarTitle
 {
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
@@ -73,6 +80,7 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+#pragma mark -  底部按钮
 
 -(void)setBottomButton
 {
@@ -139,7 +147,7 @@
             }
             
             if (_dataArr.count > 0) {
-                [self.customerLabel removeFromSuperview];
+                [self.topView removeFromSuperview];
             }else{
                 [self.headView removeFromSuperview];
                 [self.tableView removeFromSuperview];
@@ -151,21 +159,24 @@
         [self.mrv removeFromSuperview];
         [self.myRepLabel removeFromSuperview];
         [self.myRepView removeFromSuperview];
-        [self.customerLabel removeFromSuperview];
+        [self.topView removeFromSuperview];
         [self createCustomerLabel];
     } else {
         _tableView.hidden = sender.selected;
-        self.customerLabel.hidden = sender.selected;
+        self.topView.hidden = sender.selected;
         [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue]==1000) {
                 self.phoneNum = result[@"datas"][@"inviter"];
                 if (self.phoneNum && self.phoneNum.length>0) {
                     [self.mrv removeFromSuperview];
                     [self createMyRepresentUI];
+                    self.phoneNumLabel.text = _phoneNum;
                     if (result[@"datas"][@"inviterNickname"]) {
                         self.nickNameLabel.text = result[@"datas"][@"inviterNickname"];
                     }else{
-                        self.nickNameLabel.text = @"好友未设置昵称";
+                        self.nickNameLabel.text = @"该好友未填姓名";
+                        self.nickNameLabel.backgroundColor = R_G_B_16(0xf0f0f0);
+                        self.nickNameLabel.textColor = R_G_B_16(0x2a2a2a);
                     }
                 } else {
                     [self.mrv removeFromSuperview];
@@ -188,39 +199,53 @@
         } failure:^(NSError *error) {
             
         }];
-
-        
-
     }
 }
 
 -(void)createCustomerLabel{
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(260))];
+    topView.backgroundColor = R_G_B_16(0xf0f0f0);
+    self.topView = topView;
+    [self.view addSubview:topView];
+    
+    UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(36), PX_TO_PT(140), PX_TO_PT(140))];
+    [iconImageView setImage:[UIImage imageNamed:@"mine_represent"]];
+    [topView addSubview:iconImageView];
     
     CGFloat customerLabelX = 0;
-    CGFloat customerLabelY = ScreenHeight/2-100;
+    CGFloat customerLabelY = CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(20);
     CGFloat customerLabelW = ScreenWidth;
-    CGFloat customerLabelH = 50;
+    CGFloat customerLabelH = 30;
     UILabel *customerLabel = [[UILabel alloc] initWithFrame:CGRectMake(customerLabelX, customerLabelY, customerLabelW, customerLabelH)];
-    customerLabel.text = @"您还没有客户哦~";
-    customerLabel.font = [UIFont systemFontOfSize:18];
-    customerLabel.textColor = R_G_B_16(0x323232);
+    customerLabel.text = @"您没有邀请用户哦~";
+    customerLabel.font = [UIFont systemFontOfSize:16];
+    customerLabel.textColor = R_G_B_16(0x909090);
     customerLabel.textAlignment = NSTextAlignmentCenter;
     self.customerLabel = customerLabel;
-    [self.view addSubview:customerLabel];
+    [topView addSubview:customerLabel];
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, PX_TO_PT(1))];
+    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [topView addSubview:lineView];
 
 }
 
 -(void)createTableView
 {
-    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 100)];
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(260))];
     headView.backgroundColor = R_G_B_16(0xf0f0f0);
     [self.view addSubview:headView];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth-70)*0.5, 10, 70, 70)];
-    [imageView setImage:[UIImage imageNamed:@"头像-拷贝"]];
+    [imageView setImage:[UIImage imageNamed:@"mine_represent"]];
     [headView addSubview:imageView];
+    
+    UILabel *headLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(imageView.frame) + PX_TO_PT(30), ScreenWidth, PX_TO_PT(36))];
+    headLabel.textAlignment = NSTextAlignmentCenter;
+    headLabel.text = [NSString stringWithFormat:@"已邀请%lu位好友",_dataArr.count];
+    [headView addSubview:headLabel];
 
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth, ScreenHeight-PX_TO_PT(100)-100) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64) style:UITableViewStylePlain];
     _tableView.backgroundColor = [UIColor colorWithHexString_Ext:@"#EEEEEE"];
     _tableView.separatorColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -257,8 +282,6 @@
                             [al show];
                             
                         }
-                        
-                        
                     } failure:^(NSError *error) {
                         
                     }];
@@ -297,51 +320,89 @@
 
 
 -(void)createMyRepresentUI {
-//    self.customerLabel.hidden = YES;
-//    self.rightBtn.enabled = NO;
     [self.myRepLabel removeFromSuperview];
     [self.myRepView removeFromSuperview];
     
-    CGFloat margin = 20;
     
-    UILabel *myRepLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 50, ScreenWidth, 20)];
-    myRepLabel.text = @"我的代表:";
-    myRepLabel.font = [UIFont systemFontOfSize:18];
-    myRepLabel.textColor = R_G_B_16(0x323232);
+    UIView *myRepTopView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(260))];
+    myRepTopView.backgroundColor = R_G_B_16(0xf0f0f0);
+    self.myRepTopView = myRepTopView;
+    [self.view addSubview:myRepTopView];
+    
+    UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(36), PX_TO_PT(140), PX_TO_PT(140))];
+    [iconImageView setImage:[UIImage imageNamed:@"mine_represent"]];
+    [myRepTopView addSubview:iconImageView];
+    
+    CGFloat myRepLabelX = 0;
+    CGFloat myRepLabelY = CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(20);
+    CGFloat myRepLabelW = ScreenWidth;
+    CGFloat myRepLabelH = 30;
+    UILabel *myRepLabel = [[UILabel alloc] initWithFrame:CGRectMake(myRepLabelX, myRepLabelY, myRepLabelW, myRepLabelH)];
+    myRepLabel.text = @"我的代表";
+    myRepLabel.font = [UIFont systemFontOfSize:16];
+    myRepLabel.textColor = R_G_B_16(0x909090);
+    myRepLabel.textAlignment = NSTextAlignmentCenter;
     self.myRepLabel = myRepLabel;
-    [self.view addSubview:myRepLabel];
+    [myRepTopView addSubview:myRepLabel];
     
-    CGFloat myRepLabelH = 60;
-    UIView *myRepView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.myRepLabel.frame)+margin, ScreenWidth, myRepLabelH)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, PX_TO_PT(1))];
+    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [myRepTopView addSubview:lineView];
+
+    
+    UIView *myRepView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.myRepTopView.frame), ScreenWidth, PX_TO_PT(96))];
     myRepView.backgroundColor = [UIColor whiteColor];
     self.myRepView = myRepView;
     [self.view addSubview:myRepView];
     
-    CGFloat nickNameLabelY = (myRepLabelH - 20)*0.5;
-    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,nickNameLabelY , ScreenWidth/2, 20)];
-    nickNameLabel.textColor = R_G_B_16(0x646464);
-    nickNameLabel.font = [UIFont systemFontOfSize:18];
+    CGFloat nickNameLabelY = (PX_TO_PT(96) - PX_TO_PT(60))*0.5;
+    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(200), PX_TO_PT(60))];
+    nickNameLabel.backgroundColor = R_G_B_16(0x00b38a);
+    nickNameLabel.layer.cornerRadius = 5.0;
+    nickNameLabel.layer.masksToBounds = YES;
+    nickNameLabel.textColor = R_G_B_16(0xffffff);
+    nickNameLabel.font = [UIFont systemFontOfSize:16];
+    nickNameLabel.textAlignment = NSTextAlignmentCenter;
     self.nickNameLabel = nickNameLabel;
     [myRepView addSubview:nickNameLabel];
     
-    UILabel *phoneNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2+10, nickNameLabelY, ScreenWidth/2, 20)];
-    phoneNumLabel.text = self.phoneNum;
-    phoneNumLabel.textColor = R_G_B_16(0x20b2aa);
+    UILabel *phoneNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, nickNameLabelY, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(60))];
+    phoneNumLabel.textAlignment = NSTextAlignmentRight;
+    phoneNumLabel.textColor = R_G_B_16(0x00b38a);
     phoneNumLabel.font = [UIFont systemFontOfSize:18];
+    self.phoneNumLabel = phoneNumLabel;
     [myRepView addSubview:phoneNumLabel];
     
+    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [myRepView addSubview:topLineView];
+    
+    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, PX_TO_PT(1))];
+    bottomLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [myRepView addSubview:bottomLineView];
+
 }
 
 
 #pragma mark -- tableViewDelegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 44.0;
+    return PX_TO_PT(96);
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _dataArr.count;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    XNRCustomerOrderController *customerVC = [[XNRCustomerOrderController alloc] init];
+    customerVC.hidesBottomBarWhenPushed = YES;
+    XNRMyRepresentModel *model = _dataArr[indexPath.row];
+    customerVC.inviteeId = model.userId;
+    [self.navigationController pushViewController:customerVC animated:YES];
+
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -350,6 +411,7 @@
     XNRMyRepresent_cell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
         cell = [[XNRMyRepresent_cell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     if (_dataArr.count > 0) {
@@ -359,8 +421,6 @@
 
     return cell;
 }
-
-
 
 -(void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

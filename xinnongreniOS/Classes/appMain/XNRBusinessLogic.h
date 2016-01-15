@@ -57,6 +57,11 @@
  */
 #define KUserBindInviter [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/user/bindInviter"]
 /**
+ *  获取被邀请客户的订单列表
+ */
+#define KgetInviteeOrders [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/user/getInviteeOrders"]
+
+/**
  *  用户上传头像
  */
 #define KUserUploadPortrait [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/user/uploadPortrait"]
@@ -195,7 +200,7 @@
 /**
  *  获取订单列表
  */
-#define KGetOderList [NSString stringWithFormat:@"%@/%@",HOST,@"app/order/getOderList"]
+#define KGetOderList [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/order/getAppOrderList"]
 
 /**
  *  生成订单
@@ -215,7 +220,18 @@
  *  银联支付获取tn等信息
  */
 #define KUnionpay [NSString stringWithFormat:@"%@/%@",HOST,@"unionpay"]
-
+/**
+ *  支付宝支付
+ */
+#define KAlipay [NSString stringWithFormat:@"%@/%@",HOST,@"alipay"]
+/**
+ *  支付宝支付成功页面
+ */
+#define KAlipaySuccess [NSString stringWithFormat:@"%@/%@",HOST,@"alipay/success"]
+/**
+ *  支付宝确认
+ */
+#define KDynamic [NSString stringWithFormat:@"%@/%@",HOST,@"dynamic/alipay/nofity.asp"]
 
 
 

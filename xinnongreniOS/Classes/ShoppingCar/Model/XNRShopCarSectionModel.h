@@ -7,18 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-@class XNRShoppingCartModel;
-
+#import "XNRShoppingCartModel.h"
 
 @interface XNRShopCarSectionModel : NSObject
-
-@property (nonatomic, strong) NSMutableArray *cellModelArray;
-
 /**
  *  品牌名
  */
 @property (copy,nonatomic) NSString *brandName;
 
+@property (nonatomic, strong) NSMutableArray *goodsList;
 
 @property (nonatomic ,assign) BOOL isSelected;
 @end

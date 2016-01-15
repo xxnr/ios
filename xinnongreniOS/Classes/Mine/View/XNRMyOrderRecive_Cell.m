@@ -64,7 +64,7 @@
     
     NSLog(@"查看订单");
     
-    self .checkOrderBlock(self.info.orderId,self.info.orderNo);
+//    self .checkOrderBlock(self.info.orderId,self.info.orderNo);
     
 }
 #pragma mark - 设置model数据模型的数据
@@ -85,7 +85,7 @@
 - (void)setSubViews
 {
     self.orderNum.text=[NSString stringWithFormat:@"订单号：%@",self.info.orderId];
-    self.allPrice.text=[NSString stringWithFormat:@"合计：￥%@",self.info.totalPrice];
+//    self.allPrice.text=[NSString stringWithFormat:@"合计：￥%@",self.info.totalPrice];
     
     NSMutableAttributedString*Attributed_orderNum=[[NSMutableAttributedString alloc]initWithString:self.orderNum.text];
     NSDictionary*att_order=@{
@@ -100,11 +100,11 @@
     
     
     
-    NSMutableAttributedString*Attributed_allPrice=[[NSMutableAttributedString alloc]initWithString: self.allPrice.text];
-    [Attributed_allPrice addAttribute:NSFontAttributeName value:XNRFont(10) range:NSMakeRange(3, Attributed_allPrice.length-3)];
-    [Attributed_allPrice addAttribute:NSForegroundColorAttributeName value:R_G_B_16(0x0da014) range:NSMakeRange(3, Attributed_allPrice.length-3)];
-    
-    [self.allPrice setAttributedText:Attributed_allPrice];
+//    NSMutableAttributedString*Attributed_allPrice=[[NSMutableAttributedString alloc]initWithString: self.allPrice.text];
+//    [Attributed_allPrice addAttribute:NSFontAttributeName value:XNRFont(10) range:NSMakeRange(3, Attributed_allPrice.length-3)];
+//    [Attributed_allPrice addAttribute:NSForegroundColorAttributeName value:R_G_B_16(0x0da014) range:NSMakeRange(3, Attributed_allPrice.length-3)];
+//    
+//    [self.allPrice setAttributedText:Attributed_allPrice];
     
     
 }
@@ -113,7 +113,7 @@
 -(void)makesureRecieve{
     
     NSLog(@"确认收货");
-    self .checkOrderBlock(self.info.orderId,self.info.orderNo);
+//    self .checkOrderBlock(self.info.orderId,self.info.orderNo);
     //self.goPayBlock(self.info);
     
 }

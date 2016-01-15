@@ -294,7 +294,7 @@
     
     [_priceLabel setAttributedText:AttributedStringPrice];
     
-    self.depositLabel.text = [NSString stringWithFormat:@"订金:￥%.2f",model.deposit];
+    self.depositLabel.text = [NSString stringWithFormat:@"定金:￥%.2f",model.deposit];
     
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.depositLabel.text];
     NSDictionary *depositStr=@{

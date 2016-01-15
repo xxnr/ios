@@ -8,10 +8,10 @@
 
 #import "XNRMyOrder_VC.h"
 #import "XNRPayTypeViewController.h"
-#import "XNRSendView.h"          //待发货
-#import "XNRReciveView.h"        //待收货
-#import "XNRPayView.h"           //代付款
 #import "XNRServeView.h"         // 全部
+#import "XNRPayView.h"           //代付款
+#import "XNRSendView.h"          //待发货
+#import "XNRReciveView.h"        //已发货
 #import "XNRCommentView.h"       //已完成
 #import "XNREvaluationOrder_VC.h"//评价订单
 #import "XNRCheckOrder_VC.h"     //查看订单
@@ -23,11 +23,11 @@
     UILabel *_tempLabel;
 }
 @property (nonatomic,retain) UIView         *selectLine;
-@property (nonatomic,retain) XNRCommentView *CommentView;//4
-@property (nonatomic,retain) XNRReciveView  *ReciveView;//3
-@property (nonatomic,retain) XNRSendView    *SendView; //2
-@property (nonatomic,retain) XNRServeView   *ServeView;
-@property (nonatomic,retain) XNRPayView     *PayView; //1
+@property (nonatomic,retain) XNRCommentView *CommentView;// 4
+@property (nonatomic,retain) XNRReciveView  *ReciveView;// 3
+@property (nonatomic,retain) XNRSendView    *SendView; // 2
+@property (nonatomic,retain) XNRServeView   *ServeView;// 0
+@property (nonatomic,retain) XNRPayView     *PayView; // 1
 
 @property(nonatomic,retain)UIScrollView*mainScrollView;
 @end
@@ -51,41 +51,16 @@
     self.mainScrollView.backgroundColor =R_G_B_16(0xf4f4f4);
     //取消反弹效果
     self.mainScrollView.bounces = NO;
-    
     [self.view addSubview:self.mainScrollView];
- 
     [self createMidView];
+
     
-    //联系客服
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lianXiKeFu) name:@"LianXiKeFu" object:nil];
-}
-
-- (void)lianXiKeFu
-{
-    if(TARGET_IPHONE_SIMULATOR){
-        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:@"模拟器不支持打电话，请用真机测试\(^o^)/~" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-        [al show];
-        
-    }else {
-        //请求客服电话接口
-        [self networkRequest];
-    }
-
-}
-
--(void)networkRequest
-{
-    UIWebView*phoneCallWebView = [[UIWebView alloc] initWithFrame:CGRectZero];
-    NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",@"4000560371"]];
-    // NSLog(@"电话%@",datasDic[@"value"]);
-    [phoneCallWebView loadRequest:[NSURLRequest requestWithURL:phoneURL]];
-    [self.view addSubview:phoneCallWebView];
 }
 #pragma mark--创建中部视图
 -(void)createMidView{
-    if(nil==self.PayView){
+    if(nil == self.PayView){
         
-        self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64-60*SCALE-5) UrlString:@"pay"];
+        self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64-PX_TO_PT(100)) UrlString:@"pay"];
         __weak __typeof(&*self)weakSelf=self;
         //全部结算
         [self.PayView setAllPayBlock:^(CGFloat allMoney){
@@ -105,7 +80,7 @@
                 vc.money = [NSString stringWithFormat:@"%f",money];
                 vc.paymentId = orderID;
                 vc.orderID = orderNO;
-                vc.tn = result[@"tn"];
+//                vc.tn = result[@"tn"];
                 [weakSelf.navigationController pushViewController:vc animated:YES];
         
                 
@@ -167,7 +142,7 @@
         [self.ReciveView setPayBlock:^(XNRMyOrderModel *model){
             XNRPayTypeViewController*vc=[[XNRPayTypeViewController alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
-            vc.money = model.totalPrice;
+//            vc.money = model.totalPrice;
             [weakSelf.navigationController pushViewController:vc animated:YES];
         }];
     }
@@ -241,8 +216,6 @@
         UIButton*button=[UIButton buttonWithType:UIButtonTypeCustom];
         [button setFrame:CGRectMake(x+i*w, y, w, h)];
        
-//        button.imageEdgeInsets = UIEdgeInsetsMake(-15*SCALE, 0, 0, 0);
-        
         button.tag = KbtnTag + i;
         [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         [midBg addSubview:button];
@@ -269,6 +242,7 @@
     
     
 }
+#pragma mark - 按钮的循环点击
 -(void)buttonClick:(UIButton*)button{
     
     static int index = KbtnTag;
@@ -277,37 +251,28 @@
     
     [UIView animateWithDuration:.3 animations:^{
         self.selectLine.frame=CGRectMake((button.tag-KbtnTag)*ScreenWidth/5.0,  PX_TO_PT(100)-1, ScreenWidth/5.0, 1);
-    
-        
    }];
     [self.mainScrollView setContentOffset:CGPointMake((ScreenWidth+10*SCALE)*(button.tag-KbtnTag),0) animated:NO];
     
     index = (int)button.tag;
     
+    _tempBtn.selected = NO;
+    button.selected = YES;
+    _tempBtn = button;
+
+    
     if(button.tag == KbtnTag){
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
     }
     if(button.tag==KbtnTag+1){
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
     }
 
     if(button.tag==KbtnTag+2){
-        
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
         
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
@@ -316,10 +281,6 @@
 
     if(button.tag==KbtnTag+3){
         
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
@@ -327,16 +288,13 @@
 
     if(button.tag==KbtnTag+4){
         
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
     }
 }
 
+#pragma mark - scrollView左右滑动
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
@@ -407,8 +365,6 @@
         
     self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(100)-1, ScreenWidth/5.0, 1);
     }];
-
-    
 }
 
 - (void)setNavigationbarTitle{

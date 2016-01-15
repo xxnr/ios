@@ -430,7 +430,6 @@
             info.loginState = YES;
             info.password = _newpasswordTextField.text;
             [DataCenter saveAccount:info];
-//            [self dismissViewControllerAnimated:YES completion:nil];
             [self.navigationController popViewControllerAnimated:YES];
             
             

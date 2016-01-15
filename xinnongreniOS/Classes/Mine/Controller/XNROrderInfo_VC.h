@@ -9,8 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @interface XNROrderInfo_VC : UIViewController
-@property(nonatomic,copy) NSString*shopCarID;
-//@property(nonatomic, copy) NSString *addressId;
-//@property(nonatomic,strong) NSMutableArray *dataArray;//保存订单数据
+
+@property (nonatomic ,copy) NSString *shopCarID;
+
+@property(nonatomic,copy) NSString *productId;
+
+@property (nonatomic ,copy) NSString *num;
+
+@property(nonatomic, assign) CGFloat totalPrice;
+
+@property(nonatomic,strong) NSMutableArray *dataArray;
 
 @end

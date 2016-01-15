@@ -36,9 +36,6 @@
         
         //创建订单
         [self createMainTableView];
-       
-        //创建底部视图
-        [self createBottomView];
      
     }
     
@@ -53,7 +50,6 @@
     [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"typeValue":@"1",@"user-agent":@"IOS-v2.0"} success:^(id result) {
        
         if ([result[@"code"] integerValue] == 1000) {
-            LogRed(@"%@",result);
             if (_currentPage == 1) {
                 [_dataArr removeAllObjects];
             }
@@ -204,7 +200,7 @@
         
     }];
     [cell setGoPayBlock:^{
-        self.payBlock([_dataArr[indexPath.row] deposit].floatValue,[_dataArr[indexPath.row] orderNo],[_dataArr[indexPath.row] orderId]);
+//        self.payBlock([_dataArr[indexPath.row] deposit].floatValue,[_dataArr[indexPath.row] orderNo],[_dataArr[indexPath.row] orderId]);
     }];
     
     [cell setCheckOrderBlock:^(NSString *orderID,NSString*orderNO) {
@@ -221,39 +217,16 @@
     
 }
 
-#pragma mark - 创建底部视图
-- (void)createBottomView{
-    
-    UIView *bootomView=[[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight-60*SCALE-5-49-64, ScreenWidth, 49)];
-    bootomView.backgroundColor=[UIColor whiteColor];
-    [self addSubview:bootomView];
-   
-    //联系客服
-    UIButton*contact=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2-100, 15, 80, bootomView.frame.size.height) ImageName:nil Target:self Action:@selector(contactUs) Title:@"联系客服"];
-    contact.center = CGPointMake(ScreenWidth/2.0, bootomView.frame.size.height/2.0);
-    [contact setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-    contact.titleLabel.font=XNRFont(16);
-    [bootomView addSubview:contact];
-    
-}
 #pragma mark--全部结算
 -(void)goPay{
     
     NSLog(@"全部结算");
     CGFloat money = 0;
     for (XNRMyOrderModel *model in _dataArr) {
-        money = model.totalPrice.floatValue + money;
+//        money = model.totalPrice.floatValue + money;
     }
     self.allPayBlock(money);
     
-}
-
-#pragma mark--联系客服
--(void)contactUs{
-    
-    NSLog(@"联系客服");
-    //联系客服
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"LianXiKeFu" object:nil];
 }
 
 @end

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "XNRMyOrderModel.h"
 @interface XNRMyOrderServe_Cell : UITableViewCell
-@property (nonatomic,strong) XNRMyOrderModel*info;
+
 @property (nonatomic,strong) UILabel *orderNum;       //订单号
 @property (nonatomic,strong) UILabel *allPrice;
 @property (nonatomic,copy)   void(^checkOrderBlock)(NSString*orderID,NSString*orderNO);                                        //查看订单                                       //查看订单

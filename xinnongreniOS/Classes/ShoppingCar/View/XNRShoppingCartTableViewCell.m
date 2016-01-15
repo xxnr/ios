@@ -44,14 +44,14 @@
 @property (nonatomic ,weak)  UILabel *depositeLabel;      // 订金
 @property (nonatomic ,weak) UILabel *finalPaymentLabel;   // 尾款
 
+@property (nonatomic, copy) void(^com)(NSIndexPath *indexPath);
 @end
 
 @implementation XNRShoppingCartTableViewCell
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier andCom:(void (^)(NSIndexPath *))com {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.com = com;
         self.contentView.userInteractionEnabled = YES;
         [self createUI];
     }
@@ -75,7 +75,7 @@
     
     
     UILabel *sectionOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(300), ScreenWidth, PX_TO_PT(80))];
-    sectionOneLabel.text = @"阶段一: 订金";
+    sectionOneLabel.text = @"阶段一: 定金";
     sectionOneLabel.textColor = R_G_B_16(0x323232);
     sectionOneLabel.font = [UIFont systemFontOfSize:14];
     sectionOneLabel.textAlignment = NSTextAlignmentLeft;
@@ -124,32 +124,34 @@
 }
 
 #pragma mark - 选择按钮
--(void)createSelectedBtn{
+-(void)createSelectedBtn {
+    
+    UIButton *backgroundBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, PX_TO_PT(30), PX_TO_PT(100), PX_TO_PT(180))];
+    [backgroundBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.contentView addSubview:backgroundBtn];
+    
     UIButton *selectedBtn = [[UIButton alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(102), PX_TO_PT(36), PX_TO_PT(36))];
+    [selectedBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [selectedBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
     [selectedBtn setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateSelected];
-    [selectedBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.selectedBtn = selectedBtn;
 //    UIImageView *selectedImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(102), PX_TO_PT(36), PX_TO_PT(36))];
 //    self.selectedImage =  selectedImage;
-    [self.contentView addSubview:selectedBtn];
+    [backgroundBtn addSubview:selectedBtn];
 
 }
 
 -(void)selectedBtnClick:(UIButton *)sender{
-    if ([self.delegate performSelector:@selector(XNRShoppingCartTableViewCellBtnClick)]) {
-        sender.tag = !sender.tag;
-        if (_model.selectState) {
-            _selectState = YES;
-//            sender.selected = YES;
-//            [self.selectedBtn setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateNormal];
-        }else{
-            _selectState = NO;
-//            sender.selected = NO;
-//            [self.selectedBtn setImage:[UIImage imageNamed:@"shopCar_circle"] forState:UIControlStateNormal];
-        }
-        [self.delegate XNRShoppingCartTableViewCellBtnClick];
+    
+    self.model.selectState = !self.model.selectState;
+    
+    
+    if (self.com) {
+        self.com(self.indexPath);
     }
+    self.changeBottomBlock();
+
 }
 
 #pragma mark - 图片
@@ -179,7 +181,7 @@
     introduceLabel.numberOfLines = 0;
     introduceLabel.font = XNRFont(12);
     self.introduceLabel = introduceLabel;
-    [self.contentView addSubview:introduceLabel];
+//    [self.contentView addSubview:introduceLabel];
     
 }
 
@@ -197,8 +199,6 @@
 #pragma mark - 删除
 - (void)createDeleteBtn
 {
-//    UIImageView *deleteImg = [MyControl createImageViewWithFrame:CGRectMake(ScreenWidth-30, 10, 15, 15) ImageName:@"close_x"];
-//    [self.contentView addSubview:deleteImg];
     
     self.deleteBtn = [MyControl createButtonWithFrame:CGRectMake(ScreenWidth-50, 0, 50, 40) ImageName:@"" Target:self Action:@selector(deleteClick:) Title:nil];
     self.deleteBtn.alpha = 0.5;
@@ -367,17 +367,10 @@
     [self setSubViews];
     
     if (model.selectState) {
-        _selectState = YES;
         self.selectedBtn.selected = YES;
-//        [self.selectedImage setImage:[UIImage imageNamed:@"shopCar_right"]];
-//        self.selectedImage.image = [UIImage imageNamed:@"shopcar_right"];
         
     }else{
-        _selectState = NO;
         self.selectedBtn.selected = NO;
-//        [self.selectedImage setImage:[UIImage imageNamed:@"shopcar_circle"]];
-//        self.selectedImage.image = [UIImage imageNamed:@"shopCar_circle"];
-        
     }
 
 }
@@ -394,21 +387,32 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl];
     //图片
     [self.picImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-    
+    NSLog(@"-----------%@",self.model.goodsName);
     //商品名
     self.goodNameLabel.text = self.model.goodsName;
     
     self.introduceLabel.text = self.model.productDesc;
 
     //现价
-    self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice];
+    self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.floatValue];
 
     // 订金
     self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.floatValue];
     
     // 尾款
-    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice - self.model.deposit.floatValue];
-    if([self.model.deposit floatValue] == 0.00){
+    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.floatValue - self.model.deposit.floatValue];
+    if(self.model.deposit &&[self.model.deposit floatValue]> 0){
+        self.sectionOneLabel.hidden = NO;
+        self.sectionTwoLabel.hidden = NO;
+        self.subscriptionLabel.hidden = NO;
+        self.remainLabel.hidden = NO;
+        self.middleLine.hidden = NO;
+        self.bottomLine.hidden = NO;
+        self.presentPriceLabel.textColor = R_G_B_16(0x323232);
+
+
+    }else{
+        
         self.sectionOneLabel.hidden = YES;
         self.sectionTwoLabel.hidden = YES;
         self.subscriptionLabel.hidden = YES;
@@ -416,19 +420,9 @@
         self.middleLine.hidden  = YES;
         self.bottomLine.hidden = YES;
         
-    }else{
-        self.sectionOneLabel.hidden = NO;
-        self.sectionTwoLabel.hidden = NO;
-        self.subscriptionLabel.hidden = NO;
-        self.remainLabel.hidden = NO;
-        self.middleLine.hidden = NO;
-        self.bottomLine.hidden = NO;
+        self.presentPriceLabel.textColor = R_G_B_16(0xff4e00);
 
-    
     }
-
-
-    
     self.numTextField.text = [NSString stringWithFormat:@"%@",self.model.num];
     
     if ([self.numTextField.text isEqualToString:@"0"]) {

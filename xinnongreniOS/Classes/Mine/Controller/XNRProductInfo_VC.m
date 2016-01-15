@@ -15,6 +15,7 @@
 #import "XNROrderInfo_VC.h"
 #import "XNRProductInfo_model.h"
 #import "XNRProductInfo_cell.h"
+#import "MJExtension.h"
 #define kLeftBtn  3000
 #define kRightBtn 4000
 #define HEIGHT 100
@@ -88,11 +89,11 @@
     // 导航栏
     [self setNavigationbarTitle];
     [self createTableView];
-    //底部视图
+    // 底部视图
     [self createBottomView];
-    //获取网络数据
+    // 获取网络数据
     [self getData];
-    //注册消息通知
+    // 注册消息通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
 }
 
@@ -109,9 +110,12 @@
     
     [SVProgressHUD showWithStatus:@"正在加载中"];
     [KSHttpRequest post:KHomeGetAppProductDetails parameters:@{@"productId":self.model.goodsId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        
+    
        [SVProgressHUD dismiss];
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dic =result[@"datas"];
+            self.model.deposit = dic[@"deposit"];
             XNRProductInfo_model *model = [[XNRProductInfo_model alloc] init];
             [model setValuesForKeysWithDictionary:dic];
             [_goodsArray addObject:model];
@@ -238,10 +242,9 @@
     buyBtn.backgroundColor = [UIColor whiteColor];
     [buyBtn setTitleColor:R_G_B_16(0xfe9b00) forState:UIControlStateNormal];
     buyBtn.titleLabel.font = XNRFont(16);
-    buyBtn.userInteractionEnabled = NO;
     buyBtn.alpha = 0.4;
     self.buyBtn = buyBtn;
-//    [bgView addSubview:buyBtn];
+    [bgView addSubview:buyBtn];
     
     //加入购物车
      UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake((ScreenWidth/3)*2, PX_TO_PT(2), ScreenWidth/3, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
@@ -275,63 +278,89 @@
 #pragma mark - 立即购买
 -(void)buyBtnClick
 {
-    if(IS_Login == YES) {
-        
-    [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":self.model.goodsId,@"userId":[DataCenter account].userid,@"count":self.numTextField.text,@"user-agent":@"IOS-v2.0",@"update_by_add":@"true"} success:^(id result) {
-            NSLog(@"%@",result);
-            if([result[@"code"] integerValue] == 1000){
-            }else {
-                [SVProgressHUD dismiss];
-                UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                [al show];
-            }
+    if (IS_Login) {
+        if(IS_Login == YES) {
             
-        } failure:^(NSError *error) {
+            [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":self.model.goodsId,@"userId":[DataCenter account].userid,@"count":self.numTextField.text,@"user-agent":@"IOS-v2.0",@"update_by_add":@"true"} success:^(id result) {
+                NSLog(@"%@",result);
+                if([result[@"code"] integerValue] == 1000){
+                    
+                }else {
+                    [SVProgressHUD dismiss];
+                    UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+                    [al show];
+                }
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"%@",error);
+                
+            }];
             
-            NSLog(@"%@",error);
             
-        }];
+        } else {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                BOOL b;
+                
+                DatabaseManager *manager = [DatabaseManager sharedInstance];
+                //查询数据库是否有该商品
+                NSArray *modelArr = [manager queryGoodWithModel:self.model];
+                //数据库没有该商品(插入)
+                if (modelArr.count == 0) {
+                    self.model.timeStamp = [CommonTool timeSp];  //时间戳
+                    self.model.shoppingCarCount = [manager shoppingCarCount];
+                    self.model.num=self.numTextField.text;
+                    b = [manager insertShoppingCarWithModel:self.model];
+                }
+                //数据库有该商品(更新)
+                else{
+                    XNRShoppingCartModel *model = [modelArr firstObject];
+                    model.num = [NSString stringWithFormat:@"%d",model.num.intValue+self.numTextField.text.intValue];
+                    
+                    model.timeStamp = [CommonTool timeSp];  //时间戳
+                    model.shoppingCarCount = [manager shoppingCarCount];
+                    
+                    b = [manager updateShoppingCarWithModel:model];
+                }
+                if (b) {
+                    
+                }else{
+                    
+                }
+            });
+        }
+        XNROrderInfo_VC *orderVC = [[XNROrderInfo_VC alloc] init];
+        orderVC.hidesBottomBarWhenPushed = YES;
+        NSMutableArray *datasArray = [[NSMutableArray alloc] init];
+        NSDictionary *params = @{@"productId":self.model.goodsId,@"count":self.numTextField.text};
+        [datasArray addObject:params];
+        orderVC.dataArray = datasArray;
+        if (self.model.deposit && [self.model.deposit floatValue]>0) {
+            orderVC.totalPrice = [self.model.deposit floatValue];
+        }else{
+            orderVC.totalPrice = [self.model.unitPrice floatValue];
+        }
+        [self.navigationController pushViewController:orderVC animated:YES];
 
-        
-    } else {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            BOOL b;
-            
-            DatabaseManager *manager = [DatabaseManager sharedInstance];
-            //查询数据库是否有该商品
-            NSArray *modelArr = [manager queryGoodWithModel:self.model];
-            //数据库没有该商品(插入)
-            if (modelArr.count == 0) {
-                self.model.timeStamp = [CommonTool timeSp];  //时间戳
-                self.model.shoppingCarCount = [manager shoppingCarCount];
-                self.model.num=self.numTextField.text;
-                b = [manager insertShoppingCarWithModel:self.model];
-            }
-            //数据库有该商品(更新)
-            else{
-                XNRShoppingCartModel *model = [modelArr firstObject];
-                model.num = [NSString stringWithFormat:@"%d",model.num.intValue+self.numTextField.text.intValue];
-                
-                model.timeStamp = [CommonTool timeSp];  //时间戳
-                model.shoppingCarCount = [manager shoppingCarCount];
-                
-                b = [manager updateShoppingCarWithModel:model];
-            }
-            if (b) {
-                
-                [SVProgressHUD  showSuccessWithStatus:@"加入购物车成功"];
-            }else{
-                
-                [SVProgressHUD showErrorWithStatus:@"加入购物车失败"];
-            }
-        });
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"您尚未登录" message:@"请先前往登录" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        [alert show];
+    
     }
-    XNROrderInfo_VC *orderVC = [[XNROrderInfo_VC alloc] init];
-    orderVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:orderVC animated:YES];
-
+    
 
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
+        login.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:login animated:YES];
+        
+    }
+}
+
 
 #pragma mark-加入购物车
 
@@ -370,6 +399,7 @@
                 self.model.shoppingCarCount = [manager shoppingCarCount];
                 self.model.num=self.numTextField.text;
                 b = [manager insertShoppingCarWithModel:self.model];
+                NSLog(@"=====__=++%@",self.model);
                 self.model.num = @"0";
             }
             //数据库有该商品(更新)

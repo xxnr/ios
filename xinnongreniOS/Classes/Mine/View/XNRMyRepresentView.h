@@ -28,6 +28,8 @@
 
 @property (nonatomic, strong) XNRMyRepresentViewDataModel *model;
 
+@property (nonatomic ,assign ,readonly) CGRect iconImageViewF;
+
 @property (nonatomic, assign, readonly) CGRect noRepresentLabelF;
 
 @property (nonatomic, assign, readonly) CGRect phoneTextF;
@@ -44,6 +46,8 @@
 
 
 @interface XNRMyRepresentViewDataModel : NSObject
+
+@property (nonatomic ,copy) NSString *iconImageViewData;
 
 @property (nonatomic, copy) NSString *noRepresentLabelData;
 

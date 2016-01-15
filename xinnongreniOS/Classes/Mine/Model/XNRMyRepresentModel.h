@@ -21,5 +21,14 @@
  *  头像
  */
 @property (nonatomic, copy) NSString *photo;
+/**
+ *  姓名
+ */
+@property (nonatomic ,copy) NSString *name;
+
+@property (nonatomic ,copy) NSString *userId;
+
+@property (nonatomic ,assign) int newOrdersNumber;
+
 
 @end

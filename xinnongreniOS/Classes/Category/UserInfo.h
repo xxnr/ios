@@ -89,4 +89,6 @@
 
 @property (nonatomic ,copy) NSString *sexName;
 
+@property (nonatomic ,copy) NSString *cartId;
+
 @end

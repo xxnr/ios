@@ -71,7 +71,7 @@
     
     NSLog(@"查看订单");
     
-    self .checkOrderBlock(self.info.orderId,self.info.orderNo);
+//    self .checkOrderBlock(self.info.orderId,self.info.orderNo);
     
 }
 #pragma mark - 设置model数据模型的数据
@@ -92,7 +92,7 @@
 - (void)setSubViews
 {
     self.orderNum.text=[NSString stringWithFormat:@"订单号：%@",self.info.orderId];
-    self.allPrice.text=[NSString stringWithFormat:@"合计：￥%@",self.info.totalPrice];
+//    self.allPrice.text=[NSString stringWithFormat:@"合计：￥%@",self.info.totalPrice];
     
     NSMutableAttributedString*Attributed_orderNum=[[NSMutableAttributedString alloc]initWithString:self.orderNum.text];
     NSDictionary*att_order=@{
@@ -122,7 +122,7 @@
 //        self.comment.layer.borderWidth=1.0;
 //    } else if ([self.info[@"orderState"] isEqualToString:@"0"]){
     
-        [self.comment setTitle:[self.info.typeValue.stringValue isEqualToString:@"6"]?@"待评价":@"已完成" forState:UIControlStateNormal];
+//        [self.comment setTitle:[self.info.typeValue.stringValue isEqualToString:@"6"]?@"待评价":@"已完成" forState:UIControlStateNormal];
         //self.comment.enabled=NO;
         //self.comment.layer.borderColor=[[UIColor lightGrayColor]CGColor];
         //[self.comment setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];

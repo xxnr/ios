@@ -24,7 +24,7 @@
 /**
  *  单价
  */
-@property (assign,nonatomic) float unitPrice;
+@property (copy,nonatomic) NSString *unitPrice;
 /**
  *  购买可获得积分
  */
@@ -108,7 +108,9 @@
 
 @property (nonatomic, assign) BOOL selectState;
 
-@property (nonatomic, assign, getter=ischecking) BOOL checking;
-
+/**
+ *  商品总数
+ */
+@property (nonatomic ,copy) NSString *totalCount;
 
 @end

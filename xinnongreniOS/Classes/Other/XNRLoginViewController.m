@@ -326,6 +326,7 @@
             info.city = city[@"name"];
             info.county = county[@"name"];
             info.town = town[@"name"];
+            info.cartId = datasDic[@"cartId"];
             [DataCenter saveAccount:info];
              //上传购物车数据
             DatabaseManager *dataM = [DatabaseManager sharedInstance];
@@ -337,10 +338,6 @@
                 
                 [dataM deleteShoppingCar];
             }
-            
-//            XNRTabBarController *tab = (XNRTabBarController *)self.tabBarController;
-//            tab.selectedIndex = 0;
-//            [UIApplication sharedApplication].keyWindow.rootViewController = tab;
             //如果选择记住密码更新本地数据
             if(isRemmeber == YES){
                 [USER setObject:self.passwordTextField.text forKey:@"password"];
@@ -355,7 +352,8 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
 
-            [self.navigationController popToRootViewControllerAnimated:YES];
+//            [self.navigationController popToRootViewControllerAnimated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
         
         }else{
             [SVProgressHUD dismiss];

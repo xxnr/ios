@@ -68,7 +68,6 @@
 {
     NSString *dicString = [NSString stringWithFormat:@"%@",param];
     NSMutableDictionary *dic;
-    [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
     __block BOOL isHadUserId = [dicString rangeOfString:@"userId"].length > 0;
     if (isHadUserId) {
         dic =[NSMutableDictionary dictionaryWithDictionary:param];
@@ -77,6 +76,8 @@
     } else {
         dic = (NSMutableDictionary *)param;
     }
+//    [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
+    
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
