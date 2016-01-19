@@ -12,7 +12,7 @@
 
 @property (nonatomic,strong) UILabel *orderNum;       //订单号
 @property (nonatomic,strong) UILabel *allPrice;
-@property (nonatomic,copy)   void(^checkOrderBlock)(NSString*orderID,NSString*orderNO);                                        //查看订单                                       //查看订单
+@property (nonatomic,copy)   void(^checkOrderBlock)(NSString*orderID);                                        //查看订单                                       //查看订单
 - (void)setCellDataWithShoppingCartModel:(XNRMyOrderModel*)info;
 
 @end

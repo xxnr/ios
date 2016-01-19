@@ -110,9 +110,10 @@
 #pragma mark - 中部视图
 
 -(void)createMidView{
-    UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.topView.frame) + PX_TO_PT(24), ScreenWidth, PX_TO_PT(552))];
+    UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.topView.frame) + PX_TO_PT(24), ScreenWidth, PX_TO_PT(356))];
     midView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:midView];
+    
     UILabel *payStyleLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(30), ScreenWidth, PX_TO_PT(40))];
     payStyleLabel.textColor = R_G_B_16(0x323232);
     payStyleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
@@ -120,7 +121,7 @@
     payStyleLabel.textAlignment = NSTextAlignmentLeft;
     [midView addSubview:payStyleLabel];
     
-    UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(102), ScreenWidth-PX_TO_PT(32) * 2, PX_TO_PT(390))];
+    UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(102), ScreenWidth-PX_TO_PT(32) * 2, PX_TO_PT(196))];
     subView.layer.borderWidth = 1.0;
     subView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     subView.layer.cornerRadius = 5.0;
@@ -138,14 +139,14 @@
     
     UIImageView *imageView3 = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(24), PX_TO_PT(98)*2+PX_TO_PT(14), PX_TO_PT(280), PX_TO_PT(70))];
     [imageView3 setImage:[UIImage imageNamed:@"pay_2"]];
-    [subView addSubview:imageView3];
+//    [subView addSubview:imageView3];
 
     
     UIImageView *imageView4 = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(24), PX_TO_PT(98)*3+PX_TO_PT(14), PX_TO_PT(310), PX_TO_PT(70))];
     [imageView4 setImage:[UIImage imageNamed:@"pay_3"]];
-    [subView addSubview:imageView4];
+//    [subView addSubview:imageView4];
 
-    for (int i = 0; i<4; i++) {
+    for (int i = 0; i<2; i++) {
         UIButton *selectedBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         selectedBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(32)*2-PX_TO_PT(98), PX_TO_PT(98)*i, PX_TO_PT(98), PX_TO_PT(98));
         selectedBtn.tag = kSelectedBtn + i;
@@ -156,14 +157,14 @@
         
     }
     
-    for (int i = 1; i<4; i++) {
+    for (int i = 1; i<2; i++) {
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(1))];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [subView addSubview:lineView];
     }
     
     for (int i = 0; i<2; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(552)*i, ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(356)*i, ScreenWidth, PX_TO_PT(1))];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [midView addSubview:lineView];
     }

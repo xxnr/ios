@@ -214,17 +214,17 @@
         NSLog(@"已登录");
     }else{
         NSLog(@"未登录");
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"您尚未登录" message:@"请先前往登录" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        [alert show];
-    }
-}
+        
+        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"您还没有登录，是否登录？" chooseBtns:@[@"取消",@"确定"]];
+        alertView.chooseBlock = ^void(UIButton *btn){
+            if (btn.tag == 11) {
+            XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
+            login.hidesBottomBarWhenPushed = YES;
+            [self.controller.navigationController pushViewController:login animated:YES];
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1) {
-        XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
-        login.hidesBottomBarWhenPushed = YES;
-        [self.controller.navigationController pushViewController:login animated:YES];
+            }
+        };
+        [alertView BMAlertShow];
     }
 }
 

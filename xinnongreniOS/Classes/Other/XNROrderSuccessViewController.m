@@ -92,9 +92,9 @@
     vc.orderID = self.orderID;
     vc.orderNO = self.paymentId;
     vc.myOrderType = @"确认订单";
-    vc.recieveName = self.recieveName;
-    vc.recievePhone = self.recievePhone;
-    vc.recieveAddress = self.recieveAddress;
+//    vc.recieveName = self.recieveName;
+//    vc.recievePhone = self.recievePhone;
+//    vc.recieveAddress = self.recieveAddress;
     [self.navigationController pushViewController:vc animated:YES];
     
 }

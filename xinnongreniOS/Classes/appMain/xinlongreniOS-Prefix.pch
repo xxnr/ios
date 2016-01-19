@@ -30,6 +30,8 @@
 #import "XNRBusinessLogic.h"
 #import "XNRTabBarController.h"
 #import "BMProgressView.h"    // 自定义loadingView
+#import "MJExtension.h"
+#import "BMAlertView.h"
 
 #define sharpAppDelegate [UIApplication sharedApplication].delegate
 #define UM_APPKEY @"5667cfe867e58ebc630024d7"  //友盟appkey
@@ -70,6 +72,7 @@
 
 //设置字体和大小
 #define XNRFont(s) [UIFont fontWithName:@"Arial" size:s+2]
+
 
 //是否登录
 #define IS_Login  [DataCenter account].loginState

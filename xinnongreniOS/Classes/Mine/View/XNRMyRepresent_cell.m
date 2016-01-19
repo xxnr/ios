@@ -11,7 +11,7 @@
 @interface XNRMyRepresent_cell ()
 @property (nonatomic, weak) UILabel *nickNameLabel;
 @property (nonatomic, weak) UILabel *phoneNumLabel;
-
+@property (nonatomic ,weak) UIImageView *redImageView;
 @end
 
 
@@ -52,6 +52,14 @@
     self.phoneNumLabel = phoneNumLabel;
     [myRepView addSubview:phoneNumLabel];
     
+    // 小红点
+    UIImageView *redImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(188), PX_TO_PT(2), PX_TO_PT(10), PX_TO_PT(10))];
+    redImageView.backgroundColor = [UIColor redColor];
+    redImageView.layer.cornerRadius = PX_TO_PT(5);
+    redImageView.layer.masksToBounds = YES;
+    self.redImageView = redImageView;
+    [nickNameLabel addSubview:redImageView];
+    
     UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
     topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepView addSubview:topLineView];
@@ -72,6 +80,11 @@
         self.nickNameLabel.backgroundColor = R_G_B_16(0xf0f0f0);
         self.nickNameLabel.textColor = R_G_B_16(0xa2a2a2);
 
+    }
+    if (model.newOrdersNumber == 0) {
+        self.redImageView.hidden = YES;
+    }else{
+        self.redImageView.hidden = NO;
     }
 
     self.phoneNumLabel.text = model.account;

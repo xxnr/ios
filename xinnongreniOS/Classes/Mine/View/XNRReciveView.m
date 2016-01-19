@@ -11,16 +11,28 @@
 #import "XNRMyOrderModel.h"
 #import "XNRMyOrderPayCell.h"
 #import "MJRefresh.h"
-#define kReciveViewURL @"app/order/getOderList"  //已发货
+#import "XNRMyOrderSectionModel.h"
+#import "XNROrderEmptyView.h"
+@interface XNRReciveView()
 
+@property (nonatomic, weak)XNROrderEmptyView *orderEmptyView;
+@end
 @implementation XNRReciveView
+
+-(XNROrderEmptyView *)orderEmptyView
+{
+if (!_orderEmptyView) {
+XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
+[self addSubview:orderEmptyView];
+}
+return _orderEmptyView;
+
+}
+
 -(id)initWithFrame:(CGRect)frame UrlString:(NSString *)urlString
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.urlString = urlString;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPage) name:@"MakeSureOrderSuccess" object:nil];
-       
         _dataArr = [[NSMutableArray alloc]init];
         _currentPage = 1;
         //创建订单
@@ -28,55 +40,46 @@
         //获取数据
         [self getData];
         
-        //创建底部视图
-        
-        [self createBottomView];
         
     }
     return self;
 }
 
-//刷新页面
-- (void)refreshPage
-{
-    _currentPage = 1;
-    [self getData];
-}
-
 #pragma mark - 获取数据
 - (void)getData
 {
-    if (_currentPage == 1) {
-        [_dataArr removeAllObjects];
-    }
-    
-    //typeValue说明：1为待支付（代付款）：3为商品准备中（待发货），4已发货（待收货），6已收货（待评价），8退货/换货（退货/售后）
-    [KSHttpRequest post:KGetOderList parameters:@{@"locationUserId":[DataCenter account].userid,@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"typeValue":@"3",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    //typeValue说明：1为待支付（代付款）：3为商品准备中（待发货），4已发货（待收货），6已收货（待评价
+    [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"typeValue":@"3",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datasDic = result[@"datas"];
             NSArray *rowsArr = datasDic[@"rows"];
             for (NSDictionary *subDic in rowsArr) {
-                XNRMyOrderModel *model = [[XNRMyOrderModel alloc]init];
-                [model setValuesForKeysWithDictionary:subDic];
-                [_dataArr addObject:model];
+                XNRMyOrderSectionModel *sectionModel = [[XNRMyOrderSectionModel alloc]init];
+                sectionModel.orderId = subDic[@"orderId"];
+                sectionModel.payType = subDic[@"payType"];
+                
+                NSDictionary *orders = subDic[@"order"];
+                sectionModel.deposit = orders[@"deposit"];
+                sectionModel.totalPrice = orders[@"totalPrice"];
+                NSDictionary *orderStatus = orders[@"orderStatus"];
+                sectionModel.type = orderStatus[@"type"];
+                sectionModel.value = orderStatus[@"value"];
+                
+                sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
+                [_dataArr addObject:sectionModel];
             }
         }
-        //刷新头部
-        [self.tableView.legendHeader endRefreshing];
-        //刷新尾部
-        [self.tableView.legendFooter endRefreshing];
+//        if (_dataArr.count == 0) {
+//            [self.orderEmptyView show];
+//        }else{
+//            [self.orderEmptyView removeFromSuperview];
+//        }
         //刷新列表
         [self.tableView reloadData];
         
     } failure:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:@"网络请求错误"];
-        //刷新头部
-        [self.tableView.legendHeader endRefreshing];
-        //刷新尾部
-        [self.tableView.legendFooter endRefreshing];
-        //刷新列表
-        [self.tableView reloadData];
+        
     }];
 }
 
@@ -85,7 +88,7 @@
 -(void)createMainTableView{
     
     
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-60*SCALE-5-64) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-60*SCALE-5-64) style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.showsVerticalScrollIndicator = YES;
     self.tableView.delegate = self;
@@ -93,40 +96,222 @@
     self.tableView.dataSource = self;
     self.tableView.separatorStyle =UITableViewCellSeparatorStyleNone;
     [self addSubview:self.tableView];
+        
+}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (_dataArr.count > 0) {
+        XNRMyOrderSectionModel *sectionModel = _dataArr[section];
+        
+        UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(89))];
+        headView.backgroundColor = [UIColor whiteColor];
+        //        self.headView = headView;
+        [self addSubview:headView];
+        
+        
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(28), ScreenWidth/2, PX_TO_PT(32))];
+        label.text = [NSString stringWithFormat:@"订单号 : %@",sectionModel.orderId];
+        label.textColor = R_G_B_16(0x323232);
+        label.font = XNRFont(16);
+        label.textAlignment = NSTextAlignmentLeft;
+        [headView addSubview:label];
+        
+        UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0,ScreenWidth/2-PX_TO_PT(32) , PX_TO_PT(89))];
+        payTypeLabel.textColor = R_G_B_16(0x00b38a);
+        payTypeLabel.font = [UIFont systemFontOfSize:14];
+        payTypeLabel.textAlignment = NSTextAlignmentRight;
+        payTypeLabel.text = sectionModel.value;
+        [headView addSubview:payTypeLabel];
+        
+        
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
+        [headView addSubview:lineView1];
+        
+        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89), ScreenWidth, PX_TO_PT(1))];
+        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
+        [headView addSubview:lineView2];
+        
+        return headView;
+        
+    } else {
+        return nil;
+    }
+}
+
+
+
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (_dataArr.count>0) {
+        UIView *bottomView = [[UIView alloc] init];
+        XNRMyOrderSectionModel *sectionModel = _dataArr[section];
+        if (sectionModel.deposit && [sectionModel.deposit integerValue] > 0) {
+            
+            bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(320));
+            bottomView.backgroundColor = [UIColor whiteColor];
+            [self addSubview:bottomView];
+            
+            UILabel *sectionOne = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
+            sectionOne.textColor = R_G_B_16(0x323232);
+            sectionOne.font = [UIFont systemFontOfSize:14];
+            sectionOne.text = @"阶段一: 订金";
+            [bottomView addSubview:sectionOne];
+            
+            UILabel *sectionTwo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(80), ScreenWidth/2, PX_TO_PT(80))];
+            sectionTwo.textColor = R_G_B_16(0x323232);
+            sectionTwo.font = [UIFont systemFontOfSize:14];
+            sectionTwo.text = @"阶段二: 尾款";
+            [bottomView addSubview:sectionTwo];
+            
+            UILabel *sectionThree = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(160), ScreenWidth/2, PX_TO_PT(80))];
+            sectionThree.textColor = R_G_B_16(0x323232);
+            sectionThree.font = [UIFont systemFontOfSize:14];
+            if (sectionModel.payType && [sectionModel.payType integerValue] == 1) {
+                sectionThree.text = @"支付宝支付";
+            }else{
+                sectionThree.text = @"银联支付";
+            }
+            [bottomView addSubview:sectionThree];
+            
+            
+            UILabel *depositLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
+            depositLabel.textColor = R_G_B_16(0x323232);
+            depositLabel.font = [UIFont systemFontOfSize:14];
+            depositLabel.textAlignment = NSTextAlignmentRight;
+            depositLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.deposit.floatValue];
+            [bottomView addSubview:depositLabel];
+            
+            UILabel *remainPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(80), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
+            remainPriceLabel.textColor = R_G_B_16(0x00b38a);
+            remainPriceLabel.font = [UIFont systemFontOfSize:14];
+            remainPriceLabel.textAlignment = NSTextAlignmentRight;
+            remainPriceLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.totalPrice.floatValue - sectionModel.deposit.floatValue];
+            [bottomView addSubview:remainPriceLabel];
+            
+            UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(160), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
+            totalPriceLabel.font = [UIFont systemFontOfSize:14];
+            totalPriceLabel.textAlignment = NSTextAlignmentRight;
+            totalPriceLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.deposit.floatValue];
+            [bottomView addSubview:totalPriceLabel];
+            
+            for (int i = 0; i<3; i++) {
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+                [bottomView addSubview:lineView];
+            }
+            
+        }else{
+            
+            bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(160));
+            bottomView.backgroundColor = [UIColor whiteColor];
+            [self addSubview:bottomView];
+            
+            UILabel *sectionThree = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(0), ScreenWidth/2, PX_TO_PT(80))];
+            sectionThree.textColor = R_G_B_16(0x323232);
+            sectionThree.font = [UIFont systemFontOfSize:14];
+            if (sectionModel.payType && [sectionModel.payType integerValue] == 1) {
+                sectionThree.text = @"支付宝支付";
+            }else{
+                sectionThree.text = @"银联支付";
+            }
+            
+            [bottomView addSubview:sectionThree];
+            
+            UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(0), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
+            totalPriceLabel.font = [UIFont systemFontOfSize:14];
+            totalPriceLabel.textAlignment = NSTextAlignmentRight;
+            totalPriceLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.totalPrice.floatValue];
+            [bottomView addSubview:totalPriceLabel];
+            
+            
+            for (int i = 0; i<2; i++) {
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+                [bottomView addSubview:lineView];
+            }
+            
+            
+        }
+        
+        
+        
+        return bottomView;
+    }else{
+        return nil;
+    }
     
-    //头部刷新
-    __weak __typeof(&*self)weakSelf = self;
-    [self.tableView addLegendHeaderWithRefreshingBlock:^{
-        _currentPage = 1;
-        [weakSelf getData];
-    }];
-    
-    //尾部刷新
-    [self.tableView addLegendFooterWithRefreshingBlock:^{
-        _currentPage = _currentPage + 1;
-        [weakSelf getData];
-    }];
     
 }
+-(void)sectionFourClick{
+    
+}
+
 #pragma mark - tableView代理方法
+
+// 端头高度
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return PX_TO_PT(88);
+    
+}
+
+// 断尾高度
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (_dataArr.count>0) {
+        XNRMyOrderSectionModel *sectionModel = _dataArr[section];
+        if ([sectionModel.type integerValue] ==  1 || [sectionModel.type integerValue] == 2) {
+            if (sectionModel.deposit && [sectionModel.deposit integerValue] > 0) {
+                return PX_TO_PT(320);
+                
+            }else{
+                return PX_TO_PT(160);
+            }
+        }else{
+            if (sectionModel.deposit && [sectionModel.deposit integerValue] >0) {
+                return PX_TO_PT(240);
+            }else{
+                return PX_TO_PT(80);
+            }
+        }
+        
+    }else{
+        return 0;
+    }
+    
+    
+}
+
+// 设置段数
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return _dataArr.count;
+}
 
 //设置行数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _dataArr.count;
+    if (_dataArr.count>0) {
+        XNRMyOrderSectionModel *sectionModel = _dataArr[section];
+        return sectionModel.products.count;
+    }else{
+        return 0;
+    }
 }
 
 //行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 120;
+    return PX_TO_PT(300);
 }
 
 //cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"被点击了");
-    
+    XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
+    self.checkOrderBlock(sectionModel.orderId);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -140,46 +325,14 @@
         cell = [[XNRMyOrderRecive_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
         
     }
-     //确认收货
-    [cell setGoPayBlock:^(XNRMyOrderModel *model){
-        self.payBlock(_dataArr[indexPath.row]);
-    }];
-    //查看订单
-    [cell setCheckOrderBlock:^(NSString *orderID,NSString*orderNO) {
-        self.checkOrderBlock(orderID,orderNO);
-    }];
-    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor=R_G_B_16(0xf4f4f4);
     //传递数据模型model
-    [cell setCellDataWithShoppingCartModel:_dataArr[indexPath.row]];
+    XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
+    XNRMyOrderModel *model = sectionModel.products[indexPath.row];
+    [cell setCellDataWithShoppingCartModel:model];
     
     return cell;
-}
-#pragma mark - 创建底部视图
-- (void)createBottomView{
-    
-    UIView *bootomView=[[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight-60*SCALE-5-49-64, ScreenWidth, 49)];
-    bootomView.backgroundColor=[UIColor whiteColor];
-    [self addSubview:bootomView];
-    
-    //联系客服
-    UIButton*contact=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2-100, 15, 80, bootomView.frame.size.height) ImageName:nil Target:self Action:@selector(contactUs) Title:@"联系客服"];
-    contact.center = CGPointMake(ScreenWidth/2.0, bootomView.frame.size.height/2.0);
-    [contact setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-    contact.titleLabel.font=XNRFont(16);
-    [bootomView addSubview:contact];
-    
-}
-#pragma mark--联系客服
-
--(void)contactUs{
-    NSLog(@"联系客服");
-    
-    //联系客服
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"LianXiKeFu" object:nil];
-    
 }
 
 @end

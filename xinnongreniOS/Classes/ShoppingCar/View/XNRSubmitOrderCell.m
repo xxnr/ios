@@ -111,7 +111,7 @@
     [self.contentView addSubview:midView];
     
     UILabel *sectionOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
-    sectionOneLabel.text = @"阶段一: 定金";
+    sectionOneLabel.text = @"阶段一: 订金";
     sectionOneLabel.textColor = R_G_B_16(0x323232);
     [midView addSubview:sectionOneLabel];
     

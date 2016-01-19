@@ -39,7 +39,7 @@
 /**
  *  订单状态
  */
-@property (nonatomic ,assign) int typeValue;
+@property (nonatomic ,copy) NSString *typeValue;
 
 
 @end

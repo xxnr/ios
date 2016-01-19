@@ -13,6 +13,7 @@
 
 @property (nonatomic,copy) void (^editorBtnBlock)();  //编辑
 @property (nonatomic,copy) void (^deleteCellBlock)(); //删除
+@property (nonatomic,copy) void (^selectedBlock)(); //  选中
 
 - (void)setCellDataWithAddressManageModel:(XNRAddressManageModel *)model;
 

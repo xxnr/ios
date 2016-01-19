@@ -7,14 +7,21 @@
 //
 
 #import "XNROderInfo_Cell.h"
+#import "UIImageView+WebCache.h"
 
 @interface XNROderInfo_Cell ()
-{
-    UIView*bg;
-}
 
-@property (nonatomic,strong) UIButton *makeSureBtn;
-@property (nonatomic ,weak) UILabel *num;
+@property (nonatomic ,weak) UIView *bgView;
+
+@property(nonatomic,strong)  XNRCheckOrderModel*model;
+
+@property (nonatomic ,weak) UIImageView *goodsImageView;
+
+@property (nonatomic ,weak) UILabel *goodsNameLabel;
+
+@property (nonatomic ,weak) UILabel *priceLabel;
+
+@property (nonatomic ,weak) UILabel *numLabel;
 
 @end
 
@@ -29,59 +36,41 @@
     return self;
 }
 -(void)createUI{
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(300))];
+    bgView.backgroundColor = [UIColor whiteColor];
+    [self.contentView addSubview:bgView];
     
-    bg=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth-20, 95)];
-    bg.backgroundColor=[UIColor whiteColor];
-    [self.contentView addSubview:bg];
+    UIImageView *goodsImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(32), PX_TO_PT(180), PX_TO_PT(180))];
+    goodsImageView.layer.borderWidth = 1.0;
+    goodsImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    self.goodsImageView = goodsImageView;
+    [bgView addSubview:goodsImageView];
     
-    UILabel*title=[[UILabel alloc]initWithFrame:CGRectMake(10, 10, 100, 25)];
-    title.font=XNRFont(16);
-    title.textColor=TITLECOLOR;
-    title.text=@"商品名称:";
-    [bg addSubview:title];
+    UILabel *goodsNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(goodsImageView.frame) + PX_TO_PT(20), PX_TO_PT(64), ScreenWidth, PX_TO_PT(32))];
+    goodsNameLabel.textColor = R_G_B_16(0x323232);
+    goodsNameLabel.font = [UIFont systemFontOfSize:16];
+    self.goodsNameLabel = goodsNameLabel;
+    [bgView addSubview:goodsNameLabel];
     
-    UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(10, 10+25, 100, 25)];
-    price.font=XNRFont(16);
-    price.textColor=TITLECOLOR;
-    price.text=@"商品单价:";
-    [bg addSubview:price];
+    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(goodsImageView.frame) + PX_TO_PT(20), PX_TO_PT(200), PX_TO_PT(36))];
+    priceLabel.textColor = R_G_B_16(0x323232);
+    priceLabel.font = [UIFont systemFontOfSize:16];
+    self.priceLabel = priceLabel;
+    [bgView addSubview:priceLabel];
     
-    UILabel*num=[[UILabel alloc]initWithFrame:CGRectMake(10, 10+50, 100, 25)];
-    num.font=XNRFont(16);
-    num.textColor=TITLECOLOR;
-    num.text=@"商品数量:";
-    self.num = num;
-    [bg addSubview:num];
+    UILabel *numLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(goodsImageView.frame) + PX_TO_PT(20), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(36))];
+    numLabel.textColor = R_G_B_16(0x323232);
+    numLabel.font = [UIFont systemFontOfSize:16];
+    numLabel.textAlignment = NSTextAlignmentRight;
+    self.numLabel = numLabel;
+    [bgView addSubview:numLabel];
     
-    
-    if(nil==self.productTitle){
-        
-        self.productTitle=[[UILabel alloc]initWithFrame:CGRectMake(title.frame.size.width, 10, ScreenWidth-20-10-title.frame.size.width, 25)];
-        self.productTitle.textColor=R_G_B_16(0x8b8b8b);
-        self.productTitle.font=XNRFont(16) ;
-        self.productTitle.textAlignment=NSTextAlignmentRight;
-        [self.contentView addSubview:self.productTitle];
+    for (int i = 0; i<2; i++) {
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        [bgView addSubview:lineView];
     }
-    if(nil==self.productPrice){
-        
-        self.productPrice=[[UILabel alloc]initWithFrame:CGRectMake(title.frame.size.width, 10+25, ScreenWidth-20-10-title.frame.size.width, 25)];
-        self.productPrice.font=XNRFont(15);
-        self.productPrice.textAlignment=NSTextAlignmentRight;
-        self.productPrice.textColor=R_G_B_16(0x068c0f);
-        
-        [self.contentView addSubview:self.productPrice];
-        
-    }
-    if(nil==self.productNum){
-        
-        self.productNum=[[UILabel alloc]initWithFrame:CGRectMake(title.frame.size.width, 10+50, ScreenWidth-20-10-title.frame.size.width, 25)];
-        self.productNum.textColor=R_G_B_16(0x068c0f);
-        self.productNum.font=XNRFont(15);
-        self.productNum.textAlignment=NSTextAlignmentRight;
-        
-        [self.contentView addSubview:self.productNum];
-        
-    }
+
 
 }
 
@@ -89,39 +78,27 @@
 -(void)setCellDataWithModel:(XNRCheckOrderModel*)model{
     
     _model = model;
-    [self resetSubViews];
     [self setSubViews];
     
     
 }
-#pragma mark - 清空以前的数据
-- (void)resetSubViews
-{
-    self.makeSureBtn.selected = NO;
-}
-
 #pragma mark - 设置现在的数据
-- (void)setSubViews {    
+- (void)setSubViews {
     
-    self.productTitle.text= _model.goodsName;
+    // 图片
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,_model.imgs];
+    [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    // 商品名
+    self.goodsNameLabel.text = _model.goodsName;
     
-#warning 这个字段需要确认
-//TODO:
-    NSString *unitPrice=@"0";
-    if ([unitPrice isEqualToString:@""] || [unitPrice isEqualToString:@"0"] || unitPrice == nil){
+    // 价格
+    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",_model.deposit.floatValue];
+    
+    // 数量
+    self.numLabel.text = [NSString stringWithFormat:@"x %@",_model.goodsCount];
+
+    
         
-        if ([_model.deposit integerValue] == 0 || _model.deposit == nil) {
-            self.productPrice.text=[NSString stringWithFormat:@"￥%@",_model.originalPrice];
-        }else{
-            self.productPrice.text=[NSString stringWithFormat:@"￥%.2f(定金)",[_model.deposit floatValue]];
-        }
-        
-    }else{
-        self.productPrice.text=@"0";
-    }
-    
-    self.productNum.text = [NSString stringWithFormat:@"%@",_model.goodsCount];
-    
 }
 
 @end

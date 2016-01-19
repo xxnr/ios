@@ -198,33 +198,8 @@
         [al show];
     }else{
 
-        [self commentGoodsRequest];
     }
 
-}
-#pragma mark-提交用户评价数据
--(void)commentGoodsRequest{
-    NSString *url=[HOST stringByAppendingString:@"/app/comment/addGoodsComment"];
-   [SVProgressHUD showWithStatus:@"评价提交中..."];
-    [KSHttpRequest post:url parameters:@{@"locationUserId":[DataCenter account].userid,@"userId":[DataCenter account].userid,@"starValue": [NSString stringWithFormat:@"%.f",starValue],@"nickName":[DataCenter account].nickname,@"goodsId":self.model.goodsId.stringValue,@"content":[KSHttpRequest isBlankString:_textView.text]?@"":_textView.text,@"orderNo":self.orderNO,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-        
-        if([result[@"code"] integerValue] == 1000){
-            
-            [SVProgressHUD  showSuccessWithStatus:@"提交成功"];
-            
-            [self stepIntoMine];
-        }            else {
-            [SVProgressHUD  showSuccessWithStatus:result[@"message"]];
-
-        }
-        
-    } failure:^(NSError *error) {
-        
-        NSLog(@"%@",error);
-        [SVProgressHUD  showErrorWithStatus:@"请求失败"];
-        
-    }];
-    
 }
 -(void)stepIntoMine{
     

@@ -8,6 +8,20 @@
 
 #import "XNRMyOrderSend_Cell.h"
 #import "UIImageView+WebCache.h"
+@interface XNRMyOrderSend_Cell()
+
+@property (nonatomic,strong) XNRMyOrderModel *info;
+
+@property (nonatomic ,weak) UIImageView *iconImageView;
+
+@property (nonatomic ,weak) UILabel *goodsNameLabel;
+
+@property (nonatomic ,weak) UILabel *priceLabel;
+
+@property (nonatomic ,weak) UILabel *numLabel;
+
+
+@end
 @implementation XNRMyOrderSend_Cell
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -21,92 +35,65 @@
 
 - (void)createUI
 {
-    UIView*bg=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 115)];
-    bg.backgroundColor=[UIColor whiteColor];
-    [self.contentView addSubview:bg];
+    UIView *topView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(300))];
+    topView.backgroundColor=[UIColor whiteColor];
+    [self.contentView addSubview:topView];
     
-    //订单号
-    self.orderNum=[[UILabel alloc]initWithFrame:CGRectMake(10, 15, ScreenWidth-20, 30)];
-    self.orderNum.font=XNRFont(15);
-    self.orderNum.userInteractionEnabled=YES;
-    UITapGestureRecognizer*tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(checkOrderClick:)];
-    tap.delegate=self;
-    tap.numberOfTouchesRequired=1;
-    [self.orderNum addGestureRecognizer:tap];
-    self.orderNum.textColor=R_G_B_16(0x4a4a4a);
-    [bg addSubview:self.orderNum];
-    //中间线
-    UIView*mid_line=[[UIView alloc]initWithFrame:CGRectMake(10,115/2, ScreenWidth-20, .5)];
-    mid_line.backgroundColor=[UIColor lightGrayColor];
-    [bg addSubview:mid_line];
-    //合计
-    self.allPrice=[[UILabel alloc]initWithFrame:CGRectMake(10, 75, 130, 20)];
-    self.allPrice.font=XNRFont(13);
-    self.allPrice.textColor=R_G_B_16(0xb1b1b1);
-    //self.allPrice.backgroundColor=[UIColor blackColor];
-    [bg addSubview:self.allPrice];
+    UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(32), PX_TO_PT(180), PX_TO_PT(180))];
+    iconImageView.layer.borderWidth = 1.0;
+    iconImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    self.iconImageView = iconImageView;
+    [topView addSubview:iconImageView];
     
-    //发货中...
-    self.orderState=[[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth-170, 70, 70, 30)];
+    UILabel *goodsNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(iconImageView.frame) + PX_TO_PT(32), PX_TO_PT(32), ScreenWidth - CGRectGetMaxX(iconImageView.frame) -PX_TO_PT(64), PX_TO_PT(100))];
+    goodsNameLabel.textColor = R_G_B_16(0x323232);
+    goodsNameLabel.font = [UIFont systemFontOfSize:16];
+    self.goodsNameLabel = goodsNameLabel;
+    [topView addSubview:goodsNameLabel];
     
-    self.orderState.textColor=[UIColor blackColor];
-    self.orderState.textAlignment = NSTextAlignmentCenter;
-    self.orderState.font=XNRFont(16);
-    [bg addSubview:self.orderState];
+    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(34), PX_TO_PT(200), PX_TO_PT(36))];
+    priceLabel.textColor = R_G_B_16(0x323232);
+    priceLabel.font = [UIFont systemFontOfSize:18];
+    self.priceLabel = priceLabel;
+    [topView addSubview:priceLabel];
     
+    UILabel *numLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(32), ScreenWidth/2 - PX_TO_PT(32), PX_TO_PT(36))];
+    numLabel.textColor = R_G_B_16(0x323232);
+    numLabel.font = [UIFont systemFontOfSize:18];
+    numLabel.textAlignment = NSTextAlignmentRight;
+    self.numLabel = numLabel;
+    [topView addSubview:numLabel];
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(300), ScreenWidth, PX_TO_PT(1))];
+    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [topView addSubview:lineView];
 
+    
     
 }
 
-
-#pragma mark-查看订单
--(void)checkOrderClick:(UITapGestureRecognizer*)TapGesture{
-    
-    NSLog(@"查看订单");
-    
-//     self .checkOrderBlock(self.info.orderId,self.info.orderNo);
-    
-}
 #pragma mark - 设置model数据模型的数据
 - (void)setCellDataWithShoppingCartModel:(XNRMyOrderModel *)info
 {
-    self.info = info;
-    [self resetSubViews];
+    _info = info;
     [self setSubViews];
-}
-
-#pragma mark - 清空以前的数据
-- (void)resetSubViews
-{
-    
 }
 
 #pragma mark - 设置现在的数据
 - (void)setSubViews
 {
-    self.orderNum.text=[NSString stringWithFormat:@"订单号：%@",self.info.orderId];
-//    self.allPrice.text=[NSString stringWithFormat:@"合计：￥%@",self.info.totalPrice];
-    self.orderState.text=@"发货中";
-    NSMutableAttributedString*Attributed_orderNum=[[NSMutableAttributedString alloc]initWithString:self.orderNum.text];
-    NSDictionary*att_order=@{
-                             NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle),
-                             NSForegroundColorAttributeName:R_G_B_16(0x31b1be),
-                             
-                             };
+    // 图片
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,_info.thumbnail];
+    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    // 商品名
+    self.goodsNameLabel.text = _info.name;
     
-    [Attributed_orderNum addAttributes:att_order range:NSMakeRange(4, Attributed_orderNum.length-4)];
+    // 价格
+    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",_info.price.floatValue];
     
-    [self.orderNum setAttributedText:Attributed_orderNum];
+    // 数量
+    self.numLabel.text = [NSString stringWithFormat:@"x %@",_info.count];
     
-    
-    
-//    NSMutableAttributedString*Attributed_allPrice=[[NSMutableAttributedString alloc]initWithString: self.allPrice.text];
-//    [Attributed_allPrice addAttribute:NSFontAttributeName value:XNRFont(10) range:NSMakeRange(3, Attributed_allPrice.length-3)];
-//    [Attributed_allPrice addAttribute:NSForegroundColorAttributeName value:R_G_B_16(0x0da014) range:NSMakeRange(3, Attributed_allPrice.length-3)];
-//    
-//    [self.allPrice setAttributedText:Attributed_allPrice];
-    
-    
-    
+        
 }
 @end

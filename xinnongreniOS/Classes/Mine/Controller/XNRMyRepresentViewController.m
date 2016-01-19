@@ -42,6 +42,8 @@
 @property (nonatomic ,weak) UIView *myRepTopView;
 
 @property (nonatomic ,weak) UILabel *phoneNumLabel;
+
+@property (nonatomic ,weak) UILabel *headLabel;
 @end
 
 @implementation XNRMyRepresentViewController
@@ -128,8 +130,7 @@
     self.selectedBtn.selected = NO;
     sender.selected = YES;
     self.selectedBtn = sender;
-    
-    
+
     if (sender.tag == btnTag) {
         _tableView.hidden = NO;
         [_dataArr removeAllObjects];
@@ -145,8 +146,11 @@
                 UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
                 [al show];
             }
+            self.headLabel.text = [NSString stringWithFormat:@"已邀请%tu位好友",_dataArr.count];
+
             
             if (_dataArr.count > 0) {
+                [self.myRepTopView removeFromSuperview];
                 [self.topView removeFromSuperview];
             }else{
                 [self.headView removeFromSuperview];
@@ -171,8 +175,8 @@
                     [self.mrv removeFromSuperview];
                     [self createMyRepresentUI];
                     self.phoneNumLabel.text = _phoneNum;
-                    if (result[@"datas"][@"inviterNickname"]) {
-                        self.nickNameLabel.text = result[@"datas"][@"inviterNickname"];
+                    if (result[@"datas"][@"name"]) {
+                        self.nickNameLabel.text = result[@"datas"][@"name"];
                     }else{
                         self.nickNameLabel.text = @"该好友未填姓名";
                         self.nickNameLabel.backgroundColor = R_G_B_16(0xf0f0f0);
@@ -242,7 +246,7 @@
     
     UILabel *headLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(imageView.frame) + PX_TO_PT(30), ScreenWidth, PX_TO_PT(36))];
     headLabel.textAlignment = NSTextAlignmentCenter;
-    headLabel.text = [NSString stringWithFormat:@"已邀请%lu位好友",_dataArr.count];
+    self.headLabel = headLabel;
     [headView addSubview:headLabel];
 
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64) style:UITableViewStylePlain];
@@ -322,7 +326,6 @@
 -(void)createMyRepresentUI {
     [self.myRepLabel removeFromSuperview];
     [self.myRepView removeFromSuperview];
-    
     
     UIView *myRepTopView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(260))];
     myRepTopView.backgroundColor = R_G_B_16(0xf0f0f0);

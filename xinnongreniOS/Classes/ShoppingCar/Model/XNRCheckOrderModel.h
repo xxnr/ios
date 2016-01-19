@@ -12,7 +12,7 @@
 /**
  *  商品数
  */
-@property (strong,nonatomic) NSNumber *goodsCount;
+@property (copy,nonatomic) NSString *goodsCount;
 /**
  *  商品名
  */
@@ -24,7 +24,7 @@
 /**
  *  子订单状态
  */
-@property (strong,nonatomic) NSString *orderSubType;
+@property (copy,nonatomic) NSString *orderSubType;
 /**
  *  现价
  */
@@ -44,15 +44,21 @@
 /**
  *  我的订单类型
  */
-@property (copy,nonatomic) NSString *myOrderType;
+@property (copy,nonatomic) NSString *orderType;
 
 @property (nonatomic,assign) BOOL isSelected;
 
-
-@property (strong,nonatomic) NSNumber *goodsId;
+@property (copy,nonatomic) NSString *goodsId;
 
 @property (copy,nonatomic) NSString *habitatId;
 
 @property (copy,nonatomic) NSString *point;
+
+
+@property (nonatomic ,copy) NSString *totalPrice;
+
+@property (nonatomic ,copy) NSString *id;
+
+@property (nonatomic ,copy) NSString *payStatus;
 
 @end

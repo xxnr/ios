@@ -32,7 +32,7 @@
     UIButton *_nameBtn;
     UILabel*countPriceDetail;
     CGFloat _totalPrice;
-
+    NSString *deposit;
     int payType;
 }
 @property (nonatomic ,weak) UIView *headViewNormal;
@@ -198,7 +198,7 @@
     [addressImageView setImage:[UIImage imageNamed:@"orderInfo_address_picture"]];
     [headViewSpecial addSubview:addressImageView];
     
-    _addressDetail = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), CGRectGetMaxY(_recipientNameLabel.frame) +PX_TO_PT(32), ScreenWidth, PX_TO_PT(34))];
+    _addressDetail = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), CGRectGetMaxY(_recipientNameLabel.frame) +PX_TO_PT(32), ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), PX_TO_PT(34))];
     _addressDetail.textColor = R_G_B_16(0xc7c7c7);
     [headViewSpecial addSubview:_addressDetail];
     
@@ -471,6 +471,7 @@
             NSDictionary *subDic = orders[0];
                     //获取预处理订单id 订单号
                     orderDataId = subDic[@"id"];
+                    deposit = subDic[@"deposit"];
                     NSDictionary *payment = subDic[@"payment"];
                     // 支付id
                     paymentId = payment[@"paymentId"];
@@ -481,7 +482,7 @@
             vc.hidesBottomBarWhenPushed = YES;
             vc.orderID = orderDataId;
             vc.paymentId = paymentId;
-            vc.money = [NSString stringWithFormat:@"%.2f",self.totalPrice];
+            vc.money = [NSString stringWithFormat:@"%.2f",deposit.floatValue];
             vc.recieveName = self.recipientNameLabel.text;
             vc.recievePhone = self.recipientPhoneLabel.text;
             vc.recieveAddress = _addressDetail.text;

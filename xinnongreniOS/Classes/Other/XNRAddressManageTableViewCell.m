@@ -73,9 +73,10 @@
     UIButton *selectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     selectBtn.frame = CGRectMake(PX_TO_PT(26), PX_TO_PT(50), PX_TO_PT(36), PX_TO_PT(36));
     [selectBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
-    [selectBtn addTarget:self action:@selector(selectBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [selectBtn setImage:[UIImage imageNamed:@"address_right"] forState:UIControlStateSelected];
+    [selectBtn addTarget:self action:@selector(selectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.selectBtn = selectBtn;
-//    [bgView addSubview:selectBtn];
+    [bgView addSubview:selectBtn];
     // 姓名
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectBtn.frame) + PX_TO_PT(22), PX_TO_PT(30), PX_TO_PT(150), PX_TO_PT(36))];
     nameLabel.textColor = R_G_B_16(0x323232);
@@ -130,9 +131,10 @@
     [bgView addSubview:deleteBtn];
 }
 
--(void)selectBtnClick{
+-(void)selectBtnClick:(UIButton *)button{
+    button.selected = !button.selected;
+    self.selectedBlock();
 
-    [self.selectBtn setImage:[UIImage imageNamed:@"address_right"] forState:UIControlStateNormal];
 }
 
 
@@ -143,7 +145,13 @@
 
 - (void)deleteBtnClick:(UIButton *)button
 {
-    self.deleteCellBlock();
+    BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确认要删除该地址吗?" chooseBtns:@[@"取消",@"确定"]];
+    alertView.chooseBlock = ^void(UIButton *btn){
+        if (btn.tag == 11) {
+            self.deleteCellBlock();
+        }
+    };
+    [alertView BMAlertShow];
 }
 
 #pragma mark - 设置model数据模型的数据

@@ -120,6 +120,8 @@
     // 创建导航栏
     [self createNavgation];
     
+    [self changeBottom];
+    
 }
 
 
@@ -588,14 +590,11 @@
                 }
                 NSLog(@"totalPriceg === %.2f",_totalPrice);
                 goodsNumSelected = goodsNumSelected + model.num.integerValue;
-                [_settlementBtn setTitle:[NSString stringWithFormat:@"去结算(%ld)",(long)goodsNumSelected] forState:UIControlStateNormal];
-                [_deleteBtn setTitle:[NSString stringWithFormat:@"删除(%ld)",(long)goodsNumSelected] forState:UIControlStateNormal];
+                
                 [self.shoppingCarTableView reloadData];
                 
-            }else{
-//                [_settlementBtn setTitle:[NSString stringWithFormat:@"去结算"] forState:UIControlStateNormal];
-//                [_deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
-//                self.navigationItem.title = @"购物车";
+            } else {
+                
             }
             self.navigationItem.title = [NSString stringWithFormat:@"购物车(%ld)",(long)goodsNum];
 
@@ -604,6 +603,10 @@
 
         }
     }
+    
+    [_settlementBtn setTitle:[NSString stringWithFormat:@"去结算%@",(long)goodsNumSelected==0?@"":[NSString stringWithFormat:@"(%ld)",(long)goodsNumSelected]] forState:UIControlStateNormal];
+    [_deleteBtn setTitle:[NSString stringWithFormat:@"删除%@",(long)goodsNumSelected==0?@"":[NSString stringWithFormat:@"(%ld)",(long)goodsNumSelected]] forState:UIControlStateNormal];
+    
     _totalPriceLabel.text = [NSString stringWithFormat:@"合计: ￥%.2f",_totalPrice];
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:_totalPriceLabel.text];
     NSDictionary *depositStr=@{
@@ -724,7 +727,7 @@
             }
             
             [self.shoppingCarTableView reloadData];
-//            [self changeBottom];
+            [self changeBottom];
             
             [self valiteAllCarShopModelIsSelected];
         }];
@@ -737,12 +740,12 @@
         
     }
     
+    
     if (_dataArr.count > 0) {
         cell.indexPath = indexPath;
         XNRShopCarSectionModel *sectionModle = _dataArr[indexPath.section];
         if (sectionModle.goodsList.count > 0) {
             XNRShoppingCartModel *model = sectionModle.goodsList[indexPath.row];
-            
             //传递数据模型model
             [cell setCellDataWithShoppingCartModel:model];
         }

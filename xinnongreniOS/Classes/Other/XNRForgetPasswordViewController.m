@@ -142,12 +142,15 @@
 {
     if(self.phoneNumTextField.text.length==0){
         
-        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入手机号" delegate:self cancelButtonTitle:nil otherButtonTitles:@"知道了", nil];
-        [al show];
+//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"请输入手机号" chooseBtns:@[@"知道了"]];
+        
+//        [alertView BMAlertShow];
         
     }else if ([self validateMobile:self.phoneNumTextField.text]==NO){
-        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入正确的手机号" delegate:self cancelButtonTitle:nil otherButtonTitles:@"知道了", nil];
-        [al show];
+    
+//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"请输入正确的手机号" chooseBtns:@[@"知道了"]];
+//        [alertView BMAlertShow];
+
         
     }else{
         if([[NSUserDefaults standardUserDefaults]objectForKey:@"GBVerifyEnterAgainForgetPassword"] == NO){
@@ -166,13 +169,14 @@
                     
                 }else{
                     
-                    UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                    [al show];
+//                BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:result[@"message"] chooseBtns:@[@"知道了"]];
+//                    
+//                    [alertView BMAlertShow];
+
                     
                 }
             } failure:^(NSError *error) {
                 NSLog(@"%@",error);
-            [SVProgressHUD showErrorWithStatus:@"网络请求失败"];
             }];
             //读秒开始记录时间
             NSDate *datenow = [NSDate date];
@@ -207,16 +211,17 @@
                         
                     }else{
                         
-                        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                        [al show];
+//                        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:result[@"message"] chooseBtns:@[@"知道了"]];
+//                        
+//                        [alertView BMAlertShow];
+
                         
                     }
                     
                 } failure:^(NSError *error) {
-            [SVProgressHUD showErrorWithStatus:@"网络请求失败"];
                     
                     
-                }];
+            }];
             
         }
         
@@ -325,18 +330,28 @@
     
     if(self.phoneNumTextField.text.length==0||self.verifyNumTextField.text.length==0||self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0){
         
-        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:@"请完善您要填写的资料" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-        [al show];
+//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"请完善您要填写的资料" chooseBtns:@[@"知道了"]];
+//        
+//        [alertView BMAlertShow];
+
+        
         
     }else if ([self.newpasswordTextField.text isEqualToString:self.againPasswordTextField.text]==NO){
         
-        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:@"两次填写的密码不一致请认真核对" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-        [al show];
+//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"两次填写的密码不一致请认真核对" chooseBtns:@[@"知道了"]];
+//        
+//        [alertView BMAlertShow];
+
         
     }else if ([self validateMobile:self.phoneNumTextField.text]==NO){
         
         UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"提示" message:@"手机格式错误" delegate:self cancelButtonTitle:nil otherButtonTitles:@"知道了", nil];
         [al show];
+        
+//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"手机格式错误" chooseBtns:@[@"知道了"]];
+//        [alertView BMAlertShow];
+
+        
     }else{
         
         [SVProgressHUD showWithStatus:@"正在加载..."];
@@ -372,8 +387,8 @@
 //            [self.navigationController popToRootViewControllerAnimated:YES];
         }else{
             
-            UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-            [al show];
+//            BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:result[@"message"] chooseBtns:@[@"知道了"]];
+//            [alertView BMAlertShow];
             
             
         }
@@ -381,7 +396,6 @@
         
     } failure:^(NSError *error) {
         
-        [SVProgressHUD showErrorWithStatus:@"网络请求失败"];
         
     }];
 
@@ -438,8 +452,11 @@
     if (textField == self.phoneNumTextField) {
         BOOL flag = [self validateMobile:textField.text];
         if (!flag) {
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"手机号输入格式不正确" delegate:self cancelButtonTitle:@"好" otherButtonTitles:nil];
-            [alert show];
+
+//            BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"手机号输入格式不正确" chooseBtns:@[@"好"]];
+//            [alertView BMAlertShow];
+
+
         }
     }
 }

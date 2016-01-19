@@ -73,7 +73,7 @@
 
 -(void)submitClick{
     
-    if(self.textView.text.length==0){
+    if(self.textView.text.length == 0){
         
         UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"提示" message:@"您还没有输入任何内容" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"返回", nil];
         

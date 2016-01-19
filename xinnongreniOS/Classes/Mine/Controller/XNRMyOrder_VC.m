@@ -16,6 +16,7 @@
 #import "XNREvaluationOrder_VC.h"//评价订单
 #import "XNRCheckOrder_VC.h"     //查看订单
 #import "XNRTabBarController.h"
+
 #define KbtnTag          1000
 #define kLabelTag        2000
 @interface XNRMyOrder_VC ()<UIScrollViewDelegate>{
@@ -28,9 +29,9 @@
 @property (nonatomic,retain) XNRSendView    *SendView; // 2
 @property (nonatomic,retain) XNRServeView   *ServeView;// 0
 @property (nonatomic,retain) XNRPayView     *PayView; // 1
-
 @property(nonatomic,retain)UIScrollView*mainScrollView;
 @end
+
 
 @implementation XNRMyOrder_VC
 
@@ -41,8 +42,8 @@
     
     [self setNavigationbarTitle];
     [self createTopView];
-    self.mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60*SCALE+5,ScreenWidth+10*SCALE,ScreenHeight-64-60*SCALE-5+100)];
-    self.mainScrollView.contentSize=CGSizeMake((ScreenWidth+10*SCALE)*5, ScreenHeight-64-60*SCALE-5);
+    self.mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100),ScreenWidth+10*SCALE,ScreenHeight-64)];
+    self.mainScrollView.contentSize=CGSizeMake((ScreenWidth+10*SCALE)*5, ScreenHeight-64);
     self.mainScrollView.showsHorizontalScrollIndicator = NO;
     self.mainScrollView.showsVerticalScrollIndicator = NO;
     self.mainScrollView.userInteractionEnabled = YES;
@@ -58,48 +59,26 @@
 }
 #pragma mark--创建中部视图
 -(void)createMidView{
-    if(nil == self.PayView){
+    
+    if(nil == self.PayView){ // 待付款
         
-        self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64-PX_TO_PT(100)) UrlString:@"pay"];
+        self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
         __weak __typeof(&*self)weakSelf=self;
-        //全部结算
-        [self.PayView setAllPayBlock:^(CGFloat allMoney){
-            
-            XNRPayTypeViewController*vc=[[XNRPayTypeViewController alloc]init];
-            vc.hidesBottomBarWhenPushed=YES;
-            vc.money = [NSString stringWithFormat:@"%f",allMoney] ;
-            [weakSelf.navigationController pushViewController:vc animated:YES];
-        }];
         //单笔结算
-        [self.PayView setPayBlock:^(CGFloat money,NSString *orderID,NSString *orderNO){
-            [KSHttpRequest post:KUnionpay parameters:@{@"consumer":@"app",@"responseStyle":@"v1.0",@"orderId":orderNO,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-                
-                [SVProgressHUD dismiss];
+        [self.PayView setPayBlock:^(NSString *orderID,NSString *money){
                 XNRPayTypeViewController*vc=[[XNRPayTypeViewController alloc]init];
                 vc.hidesBottomBarWhenPushed=YES;
-                vc.money = [NSString stringWithFormat:@"%f",money];
-                vc.paymentId = orderID;
-                vc.orderID = orderNO;
-//                vc.tn = result[@"tn"];
+                vc.orderID = orderID;
+                vc.money = money;
                 [weakSelf.navigationController pushViewController:vc animated:YES];
         
-                
-                
-            } failure:^(NSError *error) {
-                NSLog(@"+++++%@",error);
             }];
-        }];
         
-        
-        [self.PayView setCheckOrderBlock:^(NSString *orderID,NSString*orderNO) {
+        // 查看订单
+        [self.PayView setCheckOrderBlock:^(NSString *orderID) {
             XNRCheckOrder_VC*vc=[[XNRCheckOrder_VC alloc] init];
             vc.hidesBottomBarWhenPushed = YES;
             vc.orderID=orderID;
-            vc.orderNO=orderNO;
-            vc.recieveName = [DataCenter account].nickname;
-            vc.recievePhone = [DataCenter account].phone;
-            vc.recieveAddress = [DataCenter account].address;
-
             vc.myOrderType = @"待付款";
             vc.isRoot = YES ;
             
@@ -107,95 +86,83 @@
             
         }];
     }
-    if(nil == self.SendView){
-        
-        self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64-60*SCALE-5) UrlString:@"send"];
+    
+    if(nil == self.SendView){ // 代发货
+        // 查看订单
+        self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
         __weak __typeof(&*self)weakSelf=self;
-        [self.SendView setCheckOrderBlock:^(NSString *orderID,NSString*orderNO) {
+        [self.SendView setCheckOrderBlock:^(NSString *orderID) {
             XNRCheckOrder_VC*vc=[[XNRCheckOrder_VC alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
             vc.orderID= orderID;
-            vc.orderNO= orderNO;
             vc.isRoot = YES ;
             vc.myOrderType = @"待发货";
             [weakSelf.navigationController pushViewController:vc animated:YES];
             
         }];
     }
-    if(nil==self.ReciveView){
-        
-        self.ReciveView=[[XNRReciveView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64-60*SCALE-5) UrlString:@"recive"];
+    
+    if(nil==self.ReciveView){ // 已发货
+        self.ReciveView=[[XNRReciveView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"recive"];
         __weak __typeof(&*self)weakSelf=self;
         //查看订单
-        [self.ReciveView setCheckOrderBlock:^(NSString *orderID,NSString*orderNO) {
-            XNRCheckOrder_VC*vc=[[XNRCheckOrder_VC alloc]init];
+        [self.ReciveView setCheckOrderBlock:^(NSString *orderID) {
+            XNRCheckOrder_VC *vc=[[XNRCheckOrder_VC alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
             vc.isRoot = YES ;
             vc.orderID=orderID;
-            vc.orderNO=orderNO;
             vc.myOrderType = @"待收货";
             [weakSelf.navigationController pushViewController:vc animated:YES];
             
         }];
-        //确认收货
-        
-        [self.ReciveView setPayBlock:^(XNRMyOrderModel *model){
-            XNRPayTypeViewController*vc=[[XNRPayTypeViewController alloc]init];
-            vc.hidesBottomBarWhenPushed=YES;
-//            vc.money = model.totalPrice;
-            [weakSelf.navigationController pushViewController:vc animated:YES];
-        }];
     }
-    if(nil==self.CommentView){
+    
+    if(nil==self.CommentView){ // 已完成
         
-        self.CommentView =[[XNRCommentView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64-60*SCALE-5) UrlString:@"comment"];
+        self.CommentView =[[XNRCommentView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"comment"];
         __weak __typeof(&*self)weakSelf=self;
-
-        [self.CommentView setCommentBlock:^{
-        
-            //评价
-            XNREvaluationOrder_VC*vc=[[XNREvaluationOrder_VC alloc]init];
-            [weakSelf.navigationController pushViewController:vc animated:YES];
-        }];
-        
-        [self.CommentView setCheckOrderBlock:^(NSString *orderID,NSString*orderNO) {
-            XNRCheckOrder_VC*vc=[[XNRCheckOrder_VC alloc]init];
+        // 查看订单
+        [self.CommentView setCheckOrderBlock:^(NSString *orderID) {
+            XNRCheckOrder_VC *vc=[[XNRCheckOrder_VC alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
             vc.isRoot = YES ;
             vc.orderID=orderID;
-            vc.orderNO=orderNO;
             vc.myOrderType = @"已完成";
             [weakSelf.navigationController pushViewController:vc animated:YES];
             
         }];
-
-        
-        
     }
-    if(nil==self.ServeView){
-        
-        self.ServeView=[[XNRServeView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64-60*SCALE-5) UrlString:@"serve"];
+    
+    if(nil==self.ServeView){ // 全部
+        // 查看订单
+        self.ServeView=[[XNRServeView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
         __weak __typeof(&*self)weakSelf=self;
-        [self.ServeView setCheckOrderBlock:^(NSString *orderID,NSString*orderNO) {
-            XNRCheckOrder_VC*vc=[[XNRCheckOrder_VC alloc]init];
+        
+        [self.ServeView setPayBlock:^(NSString *orderID,NSString *money){
+            XNRPayTypeViewController*vc = [[XNRPayTypeViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.orderID = orderID;
+            vc.money = money;
+            [weakSelf.navigationController pushViewController:vc animated:YES];
+        }];
+        
+        [self.ServeView setCheckOrderBlock:^(NSString *orderID) {
+            XNRCheckOrder_VC *vc=[[XNRCheckOrder_VC alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
             vc.orderID = orderID;
-            vc.orderNO = orderNO;
+            vc.myOrderType = @"全部";
             vc.isRoot = YES ;
             [weakSelf.navigationController pushViewController:vc animated:YES];
             
         }];
-
-        
-    }
+ }
+    // 滚动视图上添加5个表格视图
     NSArray*arr=@[self.ServeView,self.PayView,self.SendView,self.ReciveView,self.CommentView];
-    
-    //滚动视图上添加5个表格视图
     for (int i=0; i<arr.count; i++)
     {
         UIView *view = arr[i];
         
-        view.frame = CGRectMake((ScreenWidth+10*SCALE)*i, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(100));
+        view.frame = CGRectMake((ScreenWidth+10*SCALE)*i, 0, ScreenWidth, ScreenHeight-64);
         [self.mainScrollView addSubview:view];
     }
     
@@ -239,6 +206,10 @@
     _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(100)-1, ScreenWidth/5.0, 1)];
     _selectLine.backgroundColor=R_G_B_16(0x00b38a);
     [midBg addSubview:_selectLine];
+    
+    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    bottomView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [midBg addSubview:bottomView];
     
     
 }
@@ -384,7 +355,6 @@
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
-    
     
 }
 

@@ -77,7 +77,7 @@
             [_dataArr removeAllObjects];
             NSLog(@"%@",result);
             
-            for(NSDictionary*dic in result[@"datas"][@"rows"]){
+            for(NSDictionary *dic in result[@"datas"][@"rows"]){
                 
                 XNRAddressManageModel *model=[[XNRAddressManageModel alloc]init];
                 if ([dic[@"type"] integerValue] == 1) {
@@ -91,8 +91,8 @@
             
             
         } else {
-            UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-            [al show];
+//            BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:result[@"message"] chooseBtns:@[@"知道了"]];
+//            [alertView BMAlertShow];
         }
         if (_dataArr.count == 0) {
             [self.emptyView show];
@@ -101,7 +101,6 @@
         }
         
     } failure:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:@"网络请求错误"];
         NSLog(@"%@",error);
     }];
 }
@@ -168,10 +167,10 @@
 //cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    for (int i=0; i<_dataArr.count; i++) {
-        XNRAddressManageModel *model = _dataArr[i];
-        model.selected = NO;
-    }
+//    for (int i=0; i<_dataArr.count; i++) {
+//        XNRAddressManageModel *model = _dataArr[i];
+//        model.selected = NO;
+//    }
     XNRAddressManageModel *model = _dataArr[indexPath.row];
     model.selected = YES;
     self.addressChoseBlock(model);
@@ -184,15 +183,25 @@
     static NSString *cellID = @"cell";
     XNRAddressManageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
-        //单元格复用cellID要一致
+        // 单元格复用cellID要一致
         cell = [[XNRAddressManageTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
         cell.contentView.backgroundColor = R_G_B_16(0xfbffff);
     }
     
     XNRAddressManageModel *model = _dataArr[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    // 选中
+    cell.selectedBlock = ^{
+        if (model.selected == YES) {
+            self.addressChoseBlock(model);
+            [self.addressManageTableView reloadData];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    
+    
+    };
+    // 删除
     cell.deleteCellBlock = ^{
-        //删除
         [KSHttpRequest post:KDeleteUserAddress parameters:@{@"userId": [DataCenter account].userid,@"addressId":model.addressId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             NSLog(@"%@",result);
             if([result[@"code"] integerValue] == 1000){
@@ -220,15 +229,8 @@
         }];
    
     };
+    // 编辑
     cell.editorBtnBlock = ^{
-//        XNRAddressSelect_VC*vc=[[XNRAddressSelect_VC alloc]init];
-//        vc.model=model;
-//        vc.from=@"编辑地址";
-//        vc.hidesBottomBarWhenPushed=YES;
-//        vc.addressRefreshBlock = ^(){
-//        [self getData];
-//        };
-//        [self.navigationController pushViewController:vc animated:YES];
         
         XNRAddAddress_VC *VC = [[XNRAddAddress_VC alloc] init];
         VC.model = model;

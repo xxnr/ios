@@ -17,9 +17,9 @@
 @property(nonatomic,copy) NSString*orderID;
 @property(nonatomic,copy) NSString*orderNO;
 
-@property (nonatomic, copy) NSString *recieveName;
-@property (nonatomic, copy) NSString *recievePhone;
-@property (nonatomic, copy) NSString *recieveAddress;
+//@property (nonatomic, copy) NSString *recieveName;
+//@property (nonatomic, copy) NSString *recievePhone;
+//@property (nonatomic, copy) NSString *recieveAddress;
 
 
 @end

@@ -62,8 +62,11 @@
 #pragma mark - 添加警告视图
 - (void)warning
 {
-    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"未连接网络" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
-    [alertView show];
+    
+//    BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"未连接网络" chooseBtns:@[@"确定"]];
+//    
+//    [alertView BMAlertShow];
+
 }
 
 - (void)viewDidLoad {

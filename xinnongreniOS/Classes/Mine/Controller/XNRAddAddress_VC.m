@@ -434,8 +434,8 @@
             }
     
     if (flag == 0) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:title delegate:self cancelButtonTitle:@"好" otherButtonTitles: nil];
-        [alert show];
+//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:title chooseBtns:@[@"好"]];
+//        [alertView BMAlertShow];
         return;
     }
 }

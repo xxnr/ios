@@ -72,24 +72,11 @@
     self.numLabel = numLabel;
     [topView addSubview:numLabel];
     
-    // 没有订金，没有去付款的视图
-//    UIView *noDepositView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(topView.frame), ScreenWidth, PX_TO_PT(80))];
-//    noDepositView.backgroundColor = [UIColor whiteColor];
-//    self.noDepositView = noDepositView;
-//    [self.contentView addSubview:noDepositView];
-//    
-//    UILabel *payStyleLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
-//    payStyleLabel.textColor = R_G_B_16(0x323232);
-//    payStyleLabel.backgroundColor = [UIColor redColor];
-//    payStyleLabel.font = [UIFont systemFontOfSize:16];
-//    self.payStyleLabel = payStyleLabel;
-//    [noDepositView addSubview:payStyleLabel];
-//    
-//    UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
-//    totalPriceLabel.font = [UIFont systemFontOfSize:16];
-//    self.totalPriceLabel = totalPriceLabel;
-//    [noDepositView addSubview:totalPriceLabel];
-}
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(300), ScreenWidth, PX_TO_PT(1))];
+    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [topView addSubview:lineView];
+    
+ }
 
 #pragma mark - 设置model数据模型的数据
 - (void)setCellDataWithShoppingCartModel:(XNRMyOrderModel *)info

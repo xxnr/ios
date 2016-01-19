@@ -67,6 +67,7 @@
             NSArray *rows = datas[@"rows"];
             for (NSDictionary *subDic in rows) {
                 sectionModel.dateCreated = subDic[@"dateCreated"];
+                sectionModel.typeValue = subDic[@"typeValue"];
                 sectionModel.products = (NSMutableArray *)[XNRCustomerOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
                 [_dataArray addObject:sectionModel];
             }
@@ -110,18 +111,18 @@
         [headView addSubview:orderTypeLabel];
         // 订单状态 0:已关闭 1:待支付  2:待发货 3:已发货 4: 已完成
 
-        if (sectionModel.typeValue == 0) {
+        if ([sectionModel.typeValue integerValue] == 0) {
             orderTypeLabel.text = @"已关闭";
-        }else if (sectionModel.typeValue == 1){
+        }else if ([sectionModel.typeValue integerValue] == 1){
             orderTypeLabel.text = @"待支付";
 
-        }else if (sectionModel.typeValue == 2){
+        }else if ([sectionModel.typeValue integerValue] == 2){
             orderTypeLabel.text = @"待发货";
 
-        }else if (sectionModel.typeValue == 3){
+        }else if ([sectionModel.typeValue integerValue] == 3){
             orderTypeLabel.text = @"已发货";
 
-        }else if (sectionModel.typeValue == 4){
+        }else if ([sectionModel.typeValue integerValue] == 4){
             orderTypeLabel.text = @"已完成";
 
         }
@@ -140,8 +141,6 @@
 
 -(void)createHeadView
 {
-
-            
     UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(140))];
     headView.backgroundColor = [UIColor whiteColor];
     self.headView = headView;

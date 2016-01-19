@@ -71,11 +71,10 @@
     // 数量
     [self createNumTextField];
     
-    [self createDeleteBtn];
     
     
     UILabel *sectionOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(300), ScreenWidth, PX_TO_PT(80))];
-    sectionOneLabel.text = @"阶段一: 定金";
+    sectionOneLabel.text = @"阶段一: 订金";
     sectionOneLabel.textColor = R_G_B_16(0x323232);
     sectionOneLabel.font = [UIFont systemFontOfSize:14];
     sectionOneLabel.textAlignment = NSTextAlignmentLeft;
@@ -136,8 +135,7 @@
     [selectedBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
     [selectedBtn setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateSelected];
     self.selectedBtn = selectedBtn;
-//    UIImageView *selectedImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(102), PX_TO_PT(36), PX_TO_PT(36))];
-//    self.selectedImage =  selectedImage;
+
     [backgroundBtn addSubview:selectedBtn];
 
 }
@@ -196,23 +194,6 @@
     [self.contentView addSubview:self.presentPriceLabel];
 }
 
-#pragma mark - 删除
-- (void)createDeleteBtn
-{
-    
-    self.deleteBtn = [MyControl createButtonWithFrame:CGRectMake(ScreenWidth-50, 0, 50, 40) ImageName:@"" Target:self Action:@selector(deleteClick:) Title:nil];
-    self.deleteBtn.alpha = 0.5;
-    [self.contentView addSubview:self.deleteBtn];
-}
-
-- (void)deleteClick:(UIButton *)button
-{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"是否删除该商品" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    [alert show];
-    
-     
-}
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
@@ -232,6 +213,11 @@
 #pragma mark - 数量
 - (void)createNumTextField
 {
+    UIButton *bigLeftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    bigLeftBtn.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame), CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(48), PX_TO_PT(88));
+    bigLeftBtn.tag = kRightBtn;
+    [bigLeftBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:bigLeftBtn];
     
     UIButton *leftBtn = [MyControl createButtonWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20),CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20),PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:nil Title:nil];
     leftBtn.tag = kRightBtn;
@@ -252,6 +238,13 @@
     numTextField.keyboardType=UIKeyboardTypeNumberPad;
     self.numTextField = numTextField;
     [self.contentView addSubview:numTextField];
+    
+    UIButton *bigRightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    bigRightBtn.frame = CGRectMake(CGRectGetMaxX(self.numTextField.frame), CGRectGetMaxY(self.picImageView.frame), CGRectGetMaxX(self.numTextField.frame) + PX_TO_PT(48), PX_TO_PT(88));
+    bigRightBtn.tag = kLeftBtn;
+    [bigRightBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:bigRightBtn];
+
     
     UIButton *rightBtn = [MyControl createButtonWithFrame:CGRectMake(CGRectGetMaxX(self.numTextField.frame), CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:nil Title:nil];
     rightBtn.tag = kLeftBtn;
@@ -343,7 +336,6 @@
         }
 
     }
-    
     self.changeBottomBlock();
     [self setSubViews];
     

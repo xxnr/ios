@@ -460,13 +460,14 @@
         
         //验证手机号输入是否正确
         if (![self validateMobile:self.phoneNumTextField.text]) {
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"手机号输入格式不正确" delegate:self cancelButtonTitle:@"好" otherButtonTitles:nil];
-            [alert show];
+            
+//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"手机号输入格式不正确" chooseBtns:@[@"好"]];
+//            [alertView BMAlertShow];
+            
             return;
         }
         
         
-        //if([self.from isEqualToString:@"新增地址"]||[self.from isEqualToString:@"编辑点击"]){
         
         if ([self.from isEqualToString:@"新增地址"]) {
             //保存地址
@@ -477,22 +478,6 @@
         }
         
         
-        
-       
-            
-        //}
-//        else{
-//
-//        address=[NSString stringWithFormat:@"%@%@%@%@",self.provincesLabel.text,self.cityLabel.text,self.countyLabel.text,self.addressTextField.text];
-//        
-//        NSLog(@"address-->%@",address);
-//        
-//        [USER setObject:address forKey:@"QXHAddress"];
-//        [USER synchronize];
-//        self.addressBlockBlock();
-//        }
-    
-        
         [self.navigationController popViewControllerAnimated:YES];
         
         
@@ -500,6 +485,9 @@
         
         UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"请完善地址信息" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
         [al show];
+        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"请完善地址信息" chooseBtns:@[@"取消",@"确定"]];
+        
+        [alertView BMAlertShow];
         
     }
     
@@ -607,14 +595,6 @@
     [self.phoneNumTextField resignFirstResponder];
 }
 
-#pragma mark -- UIScrollViewDelegate
-
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-//
-//    //回收键盘
-//    [_homeNumField resignFirstResponder];
-//
-//}
 
 -(void)dealKeyBoard:(UIBarButtonItem *)item
 {
