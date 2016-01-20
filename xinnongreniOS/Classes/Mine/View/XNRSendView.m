@@ -107,7 +107,7 @@
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(28), ScreenWidth/2, PX_TO_PT(32))];
         label.text = [NSString stringWithFormat:@"订单号 : %@",sectionModel.orderId];
         label.textColor = R_G_B_16(0x323232);
-        label.font = XNRFont(16);
+        label.font = XNRFont(15);
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
@@ -167,27 +167,27 @@
                 }else{
                     sectionThree.text = @"银联支付";
                 }
-                [bottomView addSubview:sectionThree];
+//                [bottomView addSubview:sectionThree];
                 
                 
                 UILabel *depositLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
                 depositLabel.textColor = R_G_B_16(0x323232);
                 depositLabel.font = [UIFont systemFontOfSize:14];
                 depositLabel.textAlignment = NSTextAlignmentRight;
-                depositLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.deposit.floatValue];
+                depositLabel.text = [NSString stringWithFormat:@"￥%.2f",sectionModel.deposit.floatValue];
                 [bottomView addSubview:depositLabel];
                 
                 UILabel *remainPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(80), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
                 remainPriceLabel.textColor = R_G_B_16(0x00b38a);
                 remainPriceLabel.font = [UIFont systemFontOfSize:14];
                 remainPriceLabel.textAlignment = NSTextAlignmentRight;
-                remainPriceLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.totalPrice.floatValue - sectionModel.deposit.floatValue];
+                remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",sectionModel.totalPrice.floatValue - sectionModel.deposit.floatValue];
                 [bottomView addSubview:remainPriceLabel];
                 
                 UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(160), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
                 totalPriceLabel.font = [UIFont systemFontOfSize:14];
                 totalPriceLabel.textAlignment = NSTextAlignmentRight;
-                totalPriceLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.deposit.floatValue];
+                totalPriceLabel.text = [NSString stringWithFormat:@"总计：￥%.2f",sectionModel.deposit.floatValue];
                 [bottomView addSubview:totalPriceLabel];
                 
                 for (int i = 0; i<3; i++) {
@@ -211,12 +211,12 @@
                     sectionThree.text = @"银联支付";
                 }
                 
-                [bottomView addSubview:sectionThree];
+//                [bottomView addSubview:sectionThree];
                 
                 UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(0), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
                 totalPriceLabel.font = [UIFont systemFontOfSize:14];
                 totalPriceLabel.textAlignment = NSTextAlignmentRight;
-                totalPriceLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.totalPrice.floatValue];
+                totalPriceLabel.text = [NSString stringWithFormat:@"总计：￥%.2f",sectionModel.totalPrice.floatValue];
                 [bottomView addSubview:totalPriceLabel];
                 
                 

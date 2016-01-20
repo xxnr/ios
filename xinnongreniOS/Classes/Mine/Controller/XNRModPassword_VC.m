@@ -18,6 +18,7 @@
     UIView *_newPasswordBg;
     UIView *_againPasswordBg;
     UIView*_makeSurePasswordBg;
+    BOOL isRoot;
 
 }
 
@@ -198,17 +199,11 @@
         if([result[@"code"] isEqualToString:@"1000"]){
             
             [SVProgressHUD showSuccessWithStatus:@"密码修改成功"];
-            
-//            [self.navigationController popToRootViewControllerAnimated:YES];
-            
+        
             XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
+            login.loginFrom = YES;
             [self.navigationController pushViewController:login animated:YES];
-//            [self.navigationController presentViewController:login animated:YES completion:nil];
-//            XNRTabBarController *tab = (XNRTabBarController *)self.tabBarController;
-//            tab.selectedIndex = 3;
-//            [UIApplication sharedApplication].keyWindow.rootViewController = tab;
-
-            
+                        
         }else{
     
             [SVProgressHUD dismiss];

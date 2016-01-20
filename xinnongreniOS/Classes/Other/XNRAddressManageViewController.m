@@ -75,11 +75,11 @@
         [SVProgressHUD dismiss];
         if([result[@"code"] integerValue] == 1000){
             [_dataArr removeAllObjects];
-            NSLog(@"%@",result);
             
             for(NSDictionary *dic in result[@"datas"][@"rows"]){
                 
                 XNRAddressManageModel *model=[[XNRAddressManageModel alloc]init];
+                // 选为默认地址
                 if ([dic[@"type"] integerValue] == 1) {
                     model.selected = YES;
                 }
@@ -101,7 +101,7 @@
         }
         
     } failure:^(NSError *error) {
-        NSLog(@"%@",error);
+        
     }];
 }
 
@@ -133,21 +133,11 @@
     addAddressVC.titleLabel = @"添加收货地址";
     addAddressVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:addAddressVC animated:YES];
-    
-    
+
 }
 
 - (void)backClick:(UIButton *)btn
 {
-//    for(XNRAddressManageModel *model in _dataArr){
-//        if(model.selected == YES){
-//            self.addressChoseBlock(model);
-//            
-//            break;
-//        }
-//    
-//    }
-    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -167,10 +157,6 @@
 //cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    for (int i=0; i<_dataArr.count; i++) {
-//        XNRAddressManageModel *model = _dataArr[i];
-//        model.selected = NO;
-//    }
     XNRAddressManageModel *model = _dataArr[indexPath.row];
     model.selected = YES;
     self.addressChoseBlock(model);
@@ -190,44 +176,57 @@
     
     XNRAddressManageModel *model = _dataArr[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    // 选中
+     // 选中
     cell.selectedBlock = ^{
         if (model.selected == YES) {
             self.addressChoseBlock(model);
             [self.addressManageTableView reloadData];
             [self.navigationController popViewControllerAnimated:YES];
         }
-    
-    
     };
+    
     // 删除
     cell.deleteCellBlock = ^{
-        [KSHttpRequest post:KDeleteUserAddress parameters:@{@"userId": [DataCenter account].userid,@"addressId":model.addressId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-            NSLog(@"%@",result);
-            if([result[@"code"] integerValue] == 1000){
-                //每个cell对应一个block 不需要传入indexPath
-                [_dataArr removeObjectAtIndex:indexPath.row];
-                //加删除动画
-                [self.addressManageTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-                [self.addressManageTableView reloadData];
-                if (_dataArr.count == 0) {
-                    [self.emptyView show];
-                }else{
-                    [self.emptyView removeFromSuperview];
-                }
+        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确认要删除该地址吗?" chooseBtns:@[@"取消",@"确定"]];
+        
+        alertView.chooseBlock = ^void(UIButton *btn){
+            
+            if (btn.tag == 11) {
+                [KSHttpRequest post:KDeleteUserAddress parameters:@{@"userId": [DataCenter account].userid,@"addressId":model.addressId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+                    NSLog(@"%@",result);
+                    if([result[@"code"] integerValue] == 1000){
+                        //每个cell对应一个block 不需要传入indexPath
+                        [_dataArr removeObjectAtIndex:indexPath.row];
+                        //加删除动画
+                        [self.addressManageTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+                        [self.addressManageTableView reloadData];
+                        if (_dataArr.count == 0) {
+                            [self.emptyView show];
+                        }else{
+                            [self.emptyView removeFromSuperview];
+                        }
+                        
+                        if ([model.type integerValue] == 1) {
+                            UserInfo *info = [DataCenter account];
+                            info.address = [DataCenter account].address;
+                            [DataCenter saveAccount:info];
+                            
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
+                        }
+                    }
+                } failure:^(NSError *error) {
+                    [SVProgressHUD showErrorWithStatus:@"删除失败"];
+                }];
+
                 
-                if ([model.type integerValue] == 1) {
-                    UserInfo *info = [DataCenter account];
-                    info.address = [DataCenter account].address;
-                    [DataCenter saveAccount:info];
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
-                }
+                
             }
-        } failure:^(NSError *error) {
-            [SVProgressHUD showErrorWithStatus:@"删除失败"];
-        }];
-   
+            
+        };
+        
+        [alertView BMAlertShow];
+        
+        
     };
     // 编辑
     cell.editorBtnBlock = ^{

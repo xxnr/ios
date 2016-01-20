@@ -88,6 +88,7 @@
     _goodsArray  = [NSMutableArray array];
     // 导航栏
     [self setNavigationbarTitle];
+    // 创建TableView
     [self createTableView];
     // 底部视图
     [self createBottomView];
@@ -102,7 +103,7 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.pagingEnabled = YES;
-    tableView.contentSize = CGSizeMake(ScreenWidth, (ScreenHeight-64)*2);
+    tableView.contentSize = CGSizeMake(ScreenWidth, (ScreenWidth+PX_TO_PT(440))*2);
     self.tableView = tableView;
     [self.view addSubview:tableView];
 }
@@ -153,7 +154,6 @@
         
         [self.tableView reloadData];
     } failure:^(NSError *error) {
-    [SVProgressHUD showErrorWithStatus:@"网络请求失败"];
     NSLog(@"error-->%@",error);
         
     }];
@@ -196,8 +196,6 @@
     [bgExpectView addSubview:lineView];
     
     
-    
-    
     UIButton *leftBtn = [MyControl createButtonWithFrame:CGRectMake(PX_TO_PT(38), PX_TO_PT(16), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
     
     
@@ -205,10 +203,7 @@
     [leftBtn setImage:[UIImage imageNamed:@"icon_minus"] forState:UIControlStateNormal];
     [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateSelected];
     [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateHighlighted];
-    [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateReserved];
     [leftBtn setHighlighted:NO];
-    leftBtn.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
-    leftBtn.layer.borderWidth = 1.0;
     self.leftBtn = leftBtn;
     [bgView addSubview:leftBtn];
    
@@ -234,8 +229,6 @@
     [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateSelected];
     [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateHighlighted];
     [rightBtn setHighlighted:NO];
-    rightBtn.layer.borderWidth = 1.0;
-    rightBtn.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     self.rightBtn = rightBtn;
     [bgView addSubview:rightBtn];
     
@@ -272,9 +265,6 @@
     UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), PX_TO_PT(63), PX_TO_PT(79), PX_TO_PT(1))];
     bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgView addSubview:bottomLine];
-    
-    
-    
 }
 
 #pragma mark - 立即购买
@@ -438,11 +428,8 @@
 }
 #pragma 加减数量
 -(void)btnClick:(UIButton*)button{
-    
- 
     if(button.tag == kLeftBtn){
-
-    
+        
         if([self.numTextField.text integerValue]>1){
         self.numTextField.text = [NSString stringWithFormat:@"%ld",(long)[self.numTextField.text floatValue]-1];
         
@@ -458,7 +445,6 @@
         }
     }else if(button.tag == kRightBtn){
       
-        
         if (self.numTextField.text.length >10) {
             return;
         }
@@ -472,7 +458,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenHeight*2;
+    return (ScreenWidth + PX_TO_PT(440))*2;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -480,8 +466,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.model = _goodsArray[indexPath.row];
     return cell;
-    
-    
+
 }
 
 -(CGFloat)heightWithString:(NSString *)string
@@ -517,8 +502,6 @@
     [shopcarButton setImage:[UIImage imageNamed:@"icon_shopcar_white"] forState:UIControlStateNormal];
     UIBarButtonItem *rightItem=[[UIBarButtonItem alloc]initWithCustomView:shopcarButton];
     self.navigationItem.rightBarButtonItem = rightItem;
-    
-    
 }
 
 -(void)backClick{

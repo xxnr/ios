@@ -71,7 +71,7 @@
     [ferBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateHighlighted];
     ferBtn.titleLabel.font = XNRFont(16);
     ferBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
-    ferBtn.layer.borderWidth = 2.0;
+    ferBtn.layer.borderWidth = 1.0;
     ferBtn.layer.cornerRadius = 5;
     ferBtn.layer.masksToBounds = YES;
     [ferBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -88,7 +88,7 @@
     [carBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateHighlighted];
     carBtn.titleLabel.font = XNRFont(16);
     carBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
-    carBtn.layer.borderWidth = 2.0;
+    carBtn.layer.borderWidth = 1.0;
     carBtn.layer.cornerRadius = 5;
     carBtn.layer.masksToBounds = YES;
     [carBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];

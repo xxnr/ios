@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 @interface XNRLoginViewController : UIViewController
-@property (nonatomic,copy) NSString*loginFrom;
+
+//@property (nonatomic,copy) NSString*loginFrom;
+
+@property (nonatomic,assign) BOOL loginFrom;
 
 
 @end

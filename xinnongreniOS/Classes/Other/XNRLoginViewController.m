@@ -91,8 +91,17 @@
 
 -(void)backBtnClick
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"popToView" object:nil];
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.loginFrom) {
+        XNRTabBarController *tab = (XNRTabBarController *)self.tabBarController;
+        tab.selectedIndex = 0;
+        [UIApplication sharedApplication].keyWindow.rootViewController = tab;
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    }
+
 }
 #pragma mark - 创建中部视图(包含用户名和密码)
 - (void)createMidView
@@ -352,7 +361,6 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
 
-//            [self.navigationController popToRootViewControllerAnimated:YES];
             [self.navigationController popViewControllerAnimated:YES];
         
         }else{
@@ -393,12 +401,6 @@
     
 }
 
-#pragma mark - 返回
-- (void)backClick:(UIButton *)button
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"popToView" object:nil];
-    [self.navigationController popViewControllerAnimated:YES];
-}
 #pragma mark - 正则表达式判断手机号格式
 - (BOOL) validateMobile:(NSString *)mobile
 {

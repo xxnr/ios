@@ -136,8 +136,8 @@
     [downImageView setImage:[UIImage imageNamed:@"orderInfo_down"]];
     [headViewNormal addSubview:downImageView];
     
-    UILabel *addressLabel = [MyControl createLabelWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(96)) Font:16 Text:@"添加收货地址"];
-    addressLabel.textAlignment = NSTextAlignmentCenter;
+    UILabel *addressLabel = [MyControl createLabelWithFrame:CGRectMake(ScreenWidth/3+PX_TO_PT(20), 0, ScreenWidth, PX_TO_PT(96)) Font:16 Text:@"添加收货地址"];
+    addressLabel.textAlignment = NSTextAlignmentLeft;
     addressLabel.font = XNRFont(16);
     addressLabel.textColor = R_G_B_16(0x323232);
     self.addressLabel = addressLabel;
@@ -244,8 +244,9 @@
     [footView addSubview:totalPriceBtn];
     
     // 总计
-    UILabel *totalPricelabel=[MyControl createLabelWithFrame:CGRectMake(ScreenWidth/3, 0, ScreenWidth/3*2, PX_TO_PT(89)) Font:16 Text:@"总计:"];
-    totalPricelabel.font=XNRFont(16);
+    UILabel *totalPricelabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(220)-PX_TO_PT(20), PX_TO_PT(89))];
+    totalPricelabel.font=XNRFont(14);
+    totalPricelabel.textAlignment = NSTextAlignmentRight;
     totalPricelabel.textColor = R_G_B_16(0x323232);
     totalPricelabel.text = [NSString stringWithFormat:@"总计:￥%.2f",self.totalPrice];
     
@@ -253,7 +254,7 @@
     NSDictionary *depositStr=@{
                                
                                NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-                               NSFontAttributeName:[UIFont systemFontOfSize:18]
+                               NSFontAttributeName:[UIFont systemFontOfSize:16]
                                
                                };
     
@@ -269,41 +270,6 @@
     [footView addSubview:lineView];
 
 }
-//#pragma mark - 改变底部视图
-//-(void)changeFoot{
-//    float totalPrice = 0.00;
-//    for (XNRShopCarSectionModel *sectionModel in _dataArr) {
-//        NSLog(@"====***+++=%@",_dataArr);
-//        for (XNRShoppingCartModel *model in sectionModel.goodsList) {
-//            if (model.deposit && [model.deposit floatValue] > 0) {
-//                totalPrice = totalPrice + model.goodsCount.intValue * model.unitPrice.floatValue;
-//            }else{
-//                totalPrice = totalPrice + model.goodsCount.intValue * model.deposit.floatValue;
-//            }
-//        }
-//
-//    }
-//        self.totalPricelabel.text = [NSString stringWithFormat:@"合计：￥%.2f",totalPrice];
-//
-//}
-//#pragma mark-计算商品总额
-//-(CGFloat)computeTotalPrice {
-//    _totalPrice = 0.00;
-//    for (XNRShopCarSectionModel *sectionModel in _dataArr) {
-//        for (XNRShoppingCartModel *model in sectionModel.goodsList) {
-//            if (model.deposit && [model.deposit floatValue] > 0) {
-//                _totalPrice = _totalPrice + model.goodsCount.intValue * model.deposit.floatValue;
-//
-//            }else{
-//                _totalPrice = _totalPrice + model.goodsCount.intValue * model.unitPrice.floatValue;
-//
-//            }
-//        }
-//
-//    }
-//        return _totalPrice;
-//
-//}
 #pragma mark - TableViewDelegate
 
 // 在段头添加任意的视图
@@ -463,8 +429,7 @@
         [al show];
         return;
     }
-    
-    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":addressId?addressId:@"",@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
+    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":addressId?addressId:@"",@"products":[self.idArray JSONString_Ext],@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
         NSLog(@"%@",result);
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *orders = result[@"orders"];

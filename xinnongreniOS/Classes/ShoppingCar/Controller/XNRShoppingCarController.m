@@ -21,6 +21,7 @@
 #import "XNRProductInfo_VC.h"
 #import "MJExtension.h"
 
+
 @interface XNRShoppingCarController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,XNRShopcarViewBtnDelegate>
 {
     NSMutableArray *_dataArr;    //购物车数据
@@ -94,15 +95,16 @@
     if (IS_Login) {// 已登录
         // 获取数据从网络
         [self getDataFromNetwork];
+        [self changeBottom];
+
     }else{// 未登录
         [_dataArr removeAllObjects];
         // 获取数据从本地数据库
         [self getDataFromDatabase];
         [self.shoppingCarTableView reloadData];
-        [self changeBottom];
     }
-
 }
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -119,8 +121,6 @@
     [self createBottomView];
     // 创建导航栏
     [self createNavgation];
-    
-    [self changeBottom];
     
 }
 
@@ -181,9 +181,10 @@
     allSelectLabel.textColor = R_G_B_16(0x323232);
     [_bottomView addSubview:allSelectLabel];
     
-    _totalPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(440), 0, PX_TO_PT(200), PX_TO_PT(88))];
+    _totalPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth-PX_TO_PT(220)-PX_TO_PT(20), PX_TO_PT(88))];
     _totalPriceLabel.textColor = R_G_B_16(0x323232);
     _totalPriceLabel.font = XNRFont(14);
+    _totalPriceLabel.textAlignment = NSTextAlignmentRight;
     _totalPriceLabel.adjustsFontSizeToFitWidth = YES;
     [_bottomView addSubview:_totalPriceLabel];
     
@@ -238,6 +239,7 @@
             [alertView show];
          
         }else{// 打开订单信息页
+            
         [self openOrder];
         }
     }else{ // 未登录
@@ -253,7 +255,7 @@
 -(void)deleteBtnClick:(UIButton *)button{
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"确认要删除该商品吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    alertView.tag = 1001;
+                alertView.tag = 1001;
     [alertView show];
 
 }
@@ -262,7 +264,6 @@
     if (alertView.tag == 1000) {
         if (buttonIndex == 1) {
             XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
-            login.loginFrom = @"shoppingCar";
             login.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:login animated:YES];
             
@@ -330,6 +331,7 @@
             }
             
             [self.shoppingCarTableView reloadData];
+            
             if (_dataArr.count == 0) {
                 [self.shopCarView show];
                 self.editeBtn.hidden = YES;
@@ -350,7 +352,10 @@
     //这个地方做出修改界面逻辑错误先确认订单在提交支付
     XNROrderInfo_VC*vc=[[XNROrderInfo_VC alloc] init];
     vc.hidesBottomBarWhenPushed=YES;
-    NSMutableArray*arr=[[NSMutableArray alloc]init];
+    // 去结算
+    NSMutableArray *arr=[[NSMutableArray alloc]init];
+    // 提交订单
+    NSMutableArray *idArr = [[NSMutableArray alloc] init];
     for (int i = 0; i<_dataArr.count; i++) {
         XNRShopCarSectionModel *sectionModel = _dataArr[i];
         for (XNRShoppingCartModel *cellModel in sectionModel.goodsList) {
@@ -358,10 +363,13 @@
         
                 NSDictionary *params = @{@"productId":cellModel.goodsId,@"count":cellModel.num};
                 [arr addObject:params];
+                NSDictionary *idParams = @{@"id":cellModel.goodsId,@"count":cellModel.num};
+                [idArr addObject:idParams];
             }
         }
     }
     vc.dataArray = arr;
+    vc.idArray = idArr;
     vc.totalPrice = _totalPrice;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -428,6 +436,11 @@
     DatabaseManager *manager = [DatabaseManager sharedInstance];
     //获取所有购物车数据(存的时候已经去重)
     NSArray *allGoodArr = [manager queryAllGood];
+    // 如果购物车为空
+    if (allGoodArr.count == 0) {
+        self.navigationItem.title = @"购物车";
+        self.editeBtn.hidden = YES;
+    }
     // 存放商品ID和数量
     NSMutableArray *tempMarr = [[NSMutableArray alloc]init];
     for (int i=0; i<allGoodArr.count; i++) {
@@ -464,6 +477,7 @@
                     }
             }
                 [self.shoppingCarTableView reloadData];
+                [self changeBottom];
         }
         } failure:^(NSError *error) {
             
@@ -605,6 +619,7 @@
     }
     
     [_settlementBtn setTitle:[NSString stringWithFormat:@"去结算%@",(long)goodsNumSelected==0?@"":[NSString stringWithFormat:@"(%ld)",(long)goodsNumSelected]] forState:UIControlStateNormal];
+    
     [_deleteBtn setTitle:[NSString stringWithFormat:@"删除%@",(long)goodsNumSelected==0?@"":[NSString stringWithFormat:@"(%ld)",(long)goodsNumSelected]] forState:UIControlStateNormal];
     
     _totalPriceLabel.text = [NSString stringWithFormat:@"合计: ￥%.2f",_totalPrice];
@@ -649,7 +664,7 @@
     if (section == _dataArr.count-1) {
         return 0.0;
     }
-    return 10.0;
+        return 10.0;
 }
 
 //设置段数

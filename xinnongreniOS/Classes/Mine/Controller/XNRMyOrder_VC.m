@@ -134,7 +134,6 @@
     }
     
     if(nil==self.ServeView){ // 全部
-        // 查看订单
         self.ServeView=[[XNRServeView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
         __weak __typeof(&*self)weakSelf=self;
         
@@ -145,7 +144,7 @@
             vc.money = money;
             [weakSelf.navigationController pushViewController:vc animated:YES];
         }];
-        
+        // 查看订单
         [self.ServeView setCheckOrderBlock:^(NSString *orderID) {
             XNRCheckOrder_VC *vc=[[XNRCheckOrder_VC alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
@@ -231,7 +230,6 @@
     button.selected = YES;
     _tempBtn = button;
 
-    
     if(button.tag == KbtnTag){
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
@@ -269,11 +267,11 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
-    CGFloat offset = self.mainScrollView.contentOffset.x/(ScreenWidth+10*SCALE);
+    CGFloat offset = self.mainScrollView.contentOffset.x/(ScreenWidth+PX_TO_PT(20));
     
       static int tag = 0;
 
-    if(0<=offset&&offset<0.5){
+    if(0 <= offset&&offset < 0.5){
         tag=0;
         UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
         _tempBtn.selected = NO;
@@ -282,7 +280,7 @@
         
         UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
         _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x11c420);
+        label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
         
     }else if (0.5<=offset&&offset<1.5){
@@ -294,7 +292,7 @@
         
         UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
         _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x11c420);
+        label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
     }else if (1.5<=offset&&offset<2.5){
         tag=2;
@@ -305,7 +303,7 @@
         
         UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
         _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x11c420);
+        label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
     }else if (2.5<=offset&&offset<3.5){
         tag=3;
@@ -316,7 +314,7 @@
         
         UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
         _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x11c420);
+        label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
     }else{
         tag=4;
@@ -327,7 +325,7 @@
         
         UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
         _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x11c420);
+        label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
     }
     
@@ -361,7 +359,6 @@
 -(void)backClick{
     
     [self.navigationController popViewControllerAnimated:YES];
-    
     
 }
 

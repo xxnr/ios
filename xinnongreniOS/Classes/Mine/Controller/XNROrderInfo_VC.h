@@ -20,4 +20,6 @@
 
 @property(nonatomic,strong) NSMutableArray *dataArray;
 
+@property (nonatomic ,strong) NSMutableArray *idArray;
+
 @end

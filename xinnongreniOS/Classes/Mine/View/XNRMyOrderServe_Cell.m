@@ -55,13 +55,14 @@
     
     UILabel *goodsNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(iconImageView.frame) + PX_TO_PT(32), PX_TO_PT(32), ScreenWidth - CGRectGetMaxX(iconImageView.frame) -PX_TO_PT(64), PX_TO_PT(100))];
     goodsNameLabel.textColor = R_G_B_16(0x323232);
+    goodsNameLabel.numberOfLines = 0;
     goodsNameLabel.font = [UIFont systemFontOfSize:16];
     self.goodsNameLabel = goodsNameLabel;
     [topView addSubview:goodsNameLabel];
     
-    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(34), PX_TO_PT(200), PX_TO_PT(36))];
+    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(34),ScreenWidth/2, PX_TO_PT(36))];
     priceLabel.textColor = R_G_B_16(0x323232);
-    priceLabel.font = [UIFont systemFontOfSize:18];
+    priceLabel.font = [UIFont systemFontOfSize:16];
     self.priceLabel = priceLabel;
     [topView addSubview:priceLabel];
     

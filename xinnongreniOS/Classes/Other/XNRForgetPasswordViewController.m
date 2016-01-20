@@ -54,19 +54,15 @@
     [self createLineView];
     [self createFinishButton];
     
-    // 接受登陆界面的跳转
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popToView) name:@"popToView" object:nil];
+//    // 接受登陆界面的跳转
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popToView) name:@"popToView" object:nil];
 }
 
--(void)popToView{
-//    [self.navigationController popToRootViewControllerAnimated:YES];
-    
-        XNRTabBarController *tab = (XNRTabBarController *)self.tabBarController;
-        tab.selectedIndex = 0;
-        [UIApplication sharedApplication].keyWindow.rootViewController = tab;
-
-
-}
+//-(void)popToView{
+//        XNRTabBarController *tab = (XNRTabBarController *)self.tabBarController;
+//        tab.selectedIndex = 0;
+//        [UIApplication sharedApplication].keyWindow.rootViewController = tab;
+//}
 #pragma mark - 创建手机号
 
 -(void)createMidView
@@ -381,10 +377,12 @@
         
         if([result[@"code"] integerValue] == 1000){
             
-            XNRLoginViewController*vc=[[XNRLoginViewController alloc]init];
+            
+            XNRLoginViewController *vc=[[XNRLoginViewController alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
+            vc.loginFrom = YES;
             [self.navigationController pushViewController:vc animated:YES];
-//            [self.navigationController popToRootViewControllerAnimated:YES];
+
         }else{
             
 //            BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:result[@"message"] chooseBtns:@[@"知道了"]];

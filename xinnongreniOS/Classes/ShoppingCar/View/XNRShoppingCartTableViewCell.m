@@ -8,6 +8,7 @@
 
 #import "XNRShoppingCartTableViewCell.h"
 #import "UIImageView+WebCache.h"
+#import "CoreTFManagerVC.h"
 
 #define kLeftBtn  1000
 #define kRightBtn 2000
@@ -58,6 +59,8 @@
     return self;
 }
 
+
+
 - (void)createUI
 {
     // 选择按钮
@@ -70,8 +73,6 @@
     [self createPresentPriceLabel];
     // 数量
     [self createNumTextField];
-    
-    
     
     UILabel *sectionOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(300), ScreenWidth, PX_TO_PT(80))];
     sectionOneLabel.text = @"阶段一: 订金";
@@ -166,7 +167,7 @@
 #pragma mark - 商品名
 - (void)createGoodNameLabel
 {
-    UILabel *goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.picImageView.frame) + PX_TO_PT(20), PX_TO_PT(42), ScreenWidth-CGRectGetMaxX(self.picImageView.frame) - PX_TO_PT(52), PX_TO_PT(80))];
+    UILabel *goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.picImageView.frame) + PX_TO_PT(20), PX_TO_PT(42), ScreenWidth-CGRectGetMaxX(self.picImageView.frame) - PX_TO_PT(52), PX_TO_PT(100))];
     goodNameLabel.textColor = R_G_B_16(0x323232);
     goodNameLabel.numberOfLines = 0;
     goodNameLabel.font = XNRFont(14);
@@ -223,6 +224,7 @@
     leftBtn.tag = kRightBtn;
     [leftBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [leftBtn setImage:[UIImage imageNamed:@"icon_minus"] forState:UIControlStateNormal];
+    [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateSelected];
     [leftBtn setHighlighted:NO];
     self.leftBtn = leftBtn;
     [self.contentView addSubview:leftBtn];
@@ -251,16 +253,16 @@
     [rightBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
 
     [rightBtn setImage:[UIImage imageNamed:@"icon_plus"] forState:UIControlStateNormal];
+    [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateSelected];
     [rightBtn setHighlighted:NO];
     self.rightBtn = rightBtn;
     [self.contentView addSubview:rightBtn];
     
-    UIView *topline = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20), PX_TO_PT(84), PX_TO_PT(1))];
+    UIView *topline = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(21), PX_TO_PT(84), PX_TO_PT(1))];
     topline.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.contentView addSubview:topline];
     
-    
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(67), PX_TO_PT(84), PX_TO_PT(1))];
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame),  CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(66), PX_TO_PT(84), PX_TO_PT(1))];
     bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.contentView addSubview:bottomLine];
 }

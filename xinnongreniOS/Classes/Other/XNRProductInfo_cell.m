@@ -80,6 +80,7 @@
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoTap:)];
     [headView addGestureRecognizer:gestureRecognizer];    //商品图片
     self.headView = headView;
+    
     [self addSubview:headView];
 
     [self createMidView];
@@ -169,6 +170,7 @@
     self.midView = midView;
     [self addSubview:midView];
     
+    
     NSArray *array = @[@"商品描述",@"详细参数",@"服务说明"];
     CGFloat X = 0;
     CGFloat Y = 0;
@@ -195,16 +197,22 @@
             button.selected =YES;
             self.tempBtn = button;
             
-            
             label.textColor = R_G_B_16(0x00b38a);
             self.tempLabel = label;
         }
     }
+    
     UIView *selectLine = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(35), PX_TO_PT(77), PX_TO_PT(180), PX_TO_PT(3))];
     selectLine.backgroundColor = R_G_B_16(0x00b38a);
     self.selectLine = selectLine;
     [midView addSubview:selectLine];
     
+    for (int i = 1; i<3; i++) {
+        UIView *dividedLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3*i, PX_TO_PT(20), PX_TO_PT(1), PX_TO_PT(40))];
+        dividedLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        [midView addSubview:dividedLine];
+        
+    }
 }
 
 -(void)buttonClick:(UIButton *)button
@@ -226,24 +234,19 @@
         titleLabel.textColor = R_G_B_16(0x00b38a);
         self.tempLabel = titleLabel;
         [SVProgressHUD show];
-//        [self.progressView initWithTarget:self color:nil isNavigation:YES];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_model.app_body_url]];
         [self.webView loadRequest:request];
         [SVProgressHUD dismiss];
-//        [self.progressView LoadViewDisappear];
         
     }else if (button.tag == KbtnTag + 1)
     {
         self.tempBtn.selected = NO;
         button.selected = YES;
         self.tempBtn = button;
-//        [SVProgressHUD show];
-        [self.progressView initWithTarget:self color:nil isNavigation:YES];
 
 
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_model.app_standard_url]];
         [self.webView loadRequest:request];
-//        [SVProgressHUD dismiss];
         [self.progressView LoadViewDisappear];
 
 
@@ -261,14 +264,10 @@
         self.tempLabel.textColor = R_G_B_16(0x646464);
         titleLabel.textColor = R_G_B_16(0x00b38a);
         self.tempLabel = titleLabel;
-//        [SVProgressHUD show];
-        [self.progressView initWithTarget:self color:nil isNavigation:YES];
-
 
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_model.app_support_url]];
         [self.webView loadRequest:request];
         [self.progressView LoadViewDisappear];
-//        [SVProgressHUD dismiss];
 
     }
 }
@@ -318,6 +317,7 @@
         self.depositLabel.hidden = YES;
         self.presaleLabel.text = @"即将上线";
     }
+    
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.model.app_body_url]];
     [self.webView loadRequest:request];
     NSLog(@"=====%@",self.model.app_body_url);

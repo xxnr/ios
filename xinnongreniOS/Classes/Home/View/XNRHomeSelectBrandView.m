@@ -230,9 +230,9 @@
     resetBtn.layer.masksToBounds = YES;
     [resetBtn setTitle:@"重置" forState:UIControlStateNormal];
     [resetBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
-    [resetBtn setTitleColor:R_G_B_16(0xfbffff) forState:UIControlStateSelected];
+    [resetBtn setTitleColor:R_G_B_16(0xfbffff) forState:UIControlStateHighlighted];
     [resetBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#ffffff"]] forState:UIControlStateNormal];
-    [resetBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateSelected];
+    [resetBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateHighlighted];
     [resetBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.resetBtn = resetBtn;
     [self addSubview:resetBtn];
@@ -246,9 +246,9 @@
     admireBtn.layer.masksToBounds = YES;
     [admireBtn setTitle:@"确定" forState:UIControlStateNormal];
     [admireBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
-    [admireBtn setTitleColor:R_G_B_16(0xfbffff) forState:UIControlStateSelected];
+    [admireBtn setTitleColor:R_G_B_16(0xfbffff) forState:UIControlStateHighlighted];
     [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#ffffff"]] forState:UIControlStateNormal];
-    [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateSelected];
+    [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateHighlighted];
     [admireBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.admireBtn = admireBtn;
     [self addSubview:admireBtn];
