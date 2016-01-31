@@ -17,12 +17,10 @@
 #import "AppDelegate.h"
 #import "XNRTabBarController.h"
 #import "XNRFerViewController.h"
-#import "MJRefresh.h"
 #import "XNRProductInfo_VC.h"
 #import "MJExtension.h"
 
-
-@interface XNRShoppingCarController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,XNRShopcarViewBtnDelegate>
+@interface XNRShoppingCarController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,XNRShopcarViewBtnDelegate,XNRShoppingCartTableViewCellDelegate,UITextFieldDelegate>
 {
     NSMutableArray *_dataArr;    //购物车数据
     NSMutableArray *_brandNameArr;
@@ -34,6 +32,7 @@
     NSMutableArray *_modifyDataArr; // 更新的数据
     float totalPrice;
     BOOL sort;
+    int currentPage;
 }
 @property (nonatomic,strong) UIView *bottomView; // 底部视图
 
@@ -48,6 +47,8 @@
 @property (nonatomic ,weak) UIButton *selectedBottomBtn;
 
 @property (nonatomic ,weak) UIButton *selectedHeadBtn;
+
+@property (nonatomic ,weak) UITextField *numTextField;
 
 @end
 
@@ -96,16 +97,16 @@
         // 获取数据从网络
         [self getDataFromNetwork];
         [self changeBottom];
+        [self setupShopCarOnLineRefresh];
 
     }else{// 未登录
         [_dataArr removeAllObjects];
         // 获取数据从本地数据库
         [self getDataFromDatabase];
-        [self.shoppingCarTableView reloadData];
+        [self setupShopCarOfflineRefresh];
+//        [self.shoppingCarTableView reloadData];
     }
 }
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = R_G_B_16(0xf2f2f2);
@@ -122,8 +123,113 @@
     // 创建导航栏
     [self createNavgation];
     
+    //观察键盘弹出和消失
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardHide:) name:UIKeyboardWillHideNotification object:nil];
+    
 }
 
+#pragma mark 弹出键盘
+-(void)keyboardShow:(NSNotification*)notification{
+    //计算键盘高度
+    float y=[[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.center=CGPointMake(self.view.center.x, self.view.center.y-y/2);
+    }];
+    
+}
+#pragma mark 隐藏键盘
+-(void)keyboardHide:(NSNotification*)notification{
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.frame=CGRectMake(0, 64, ScreenWidth, ScreenHeight);
+    }];
+}
+
+#pragma mark - 刷新
+-(void)setupShopCarOnLineRefresh{
+    
+    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headOnLineRefresh)];
+    NSMutableArray *idleImage = [NSMutableArray array];
+    
+    for (int i = 1; i<21; i++) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
+        [idleImage addObject:image];
+    }
+    NSMutableArray *RefreshImage = [NSMutableArray array];
+    
+    for (int i = 10; i<21; i++) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
+        [RefreshImage addObject:image];
+        
+    }
+    
+    [header setImages:idleImage forState:MJRefreshStateIdle];
+    
+    [header setImages:RefreshImage forState:MJRefreshStatePulling];
+    
+    [header setImages:RefreshImage forState:MJRefreshStateRefreshing];
+    // 隐藏时
+    header.lastUpdatedTimeLabel.hidden = YES;
+    // 隐藏状态
+    header.stateLabel.hidden = YES;
+    
+    self.shoppingCarTableView.mj_header = header;
+}
+
+-(void)setupShopCarOfflineRefresh{
+    
+    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headOfflineRefresh)];
+    NSMutableArray *idleImage = [NSMutableArray array];
+    
+    for (int i = 1; i<21; i++) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
+        [idleImage addObject:image];
+    }
+    NSMutableArray *RefreshImage = [NSMutableArray array];
+    
+    for (int i = 10; i<21; i++) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
+        [RefreshImage addObject:image];
+        
+    }
+    
+    [header setImages:idleImage forState:MJRefreshStateIdle];
+    
+    [header setImages:RefreshImage forState:MJRefreshStatePulling];
+    
+    [header setImages:RefreshImage forState:MJRefreshStateRefreshing];
+    // 隐藏时
+    header.lastUpdatedTimeLabel.hidden = YES;
+    // 隐藏状态
+    header.stateLabel.hidden = YES;
+    
+    self.shoppingCarTableView.mj_header = header;
+}
+
+
+-(void)headOnLineRefresh{
+    currentPage = 1;
+    [_dataArr removeAllObjects];
+    [self getDataFromNetwork];
+    
+    
+}
+
+-(void)headOfflineRefresh
+{
+    currentPage = 1;
+    [self getDataFromDatabase];
+}
+
+- (void)XNRShoppingCartTableViewCellBtnClickWith:(UITextField *)numTextField {
+    
+}
 
 #pragma mark - 创建导航栏
 -(void)createNavgation{
@@ -169,7 +275,7 @@
     UIButton *selectedBottomBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     selectedBottomBtn.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(26), PX_TO_PT(36), PX_TO_PT(36));
     [selectedBottomBtn setImage:[UIImage imageNamed:@"shopCar_circle"] forState:UIControlStateNormal];
-    [selectedBottomBtn setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateSelected];
+    [selectedBottomBtn setImage:[UIImage imageNamed:@"orange-icon"] forState:UIControlStateSelected];
     [selectedBottomBtn addTarget: self action:@selector(selectedClick:) forControlEvents:UIControlEventTouchUpInside];
     self.selectedBottomBtn = selectedBottomBtn;
     [_bottomView addSubview:selectedBottomBtn];
@@ -235,8 +341,8 @@
     if (IS_Login) {
 
         if (_totalPrice == 0) {
-            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"请至少选择一件商品" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-            [alertView show];
+            
+            [UILabel showMessage:@"请至少选择一件商品"];
          
         }else{// 打开订单信息页
             
@@ -244,9 +350,21 @@
         }
     }else{ // 未登录
         //登录警告视图
-        UIAlertView *alert1 = [[UIAlertView alloc]initWithTitle:@"您尚未登录" message:@"请先前往登录" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        alert1.tag = 1000;
-        [alert1 show];
+        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"您还没有登录，是否登录?" chooseBtns:@[@"取消",@"确定"]];
+        
+        alertView.chooseBlock = ^void(UIButton *btn){
+            
+            if (btn.tag == 11) {
+                
+                XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
+                login.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:login animated:YES];
+                
+            }
+            
+        };
+        
+        [alertView BMAlertShow];
 
     }
 }
@@ -254,23 +372,12 @@
 #pragma mark - 删除
 -(void)deleteBtnClick:(UIButton *)button{
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"确认要删除该商品吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-                alertView.tag = 1001;
-    [alertView show];
-
-}
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag == 1000) {
-        if (buttonIndex == 1) {
-            XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
-            login.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:login animated:YES];
+    BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确认要删除该商品吗?" chooseBtns:@[@"取消",@"确定"]];
+    
+    alertView.chooseBlock = ^void(UIButton *btn){
+        
+        if (btn.tag == 11) {
             
-        }
-
-    }else{
-        if (buttonIndex == 1) {
             NSMutableArray *arr1 = [NSMutableArray array];
             NSMutableArray *arr2 = [NSMutableArray array];
             
@@ -339,12 +446,15 @@
             }else{
                 [self.shopCarView removeFromSuperview];
             }
-
             
         }
-    }
-    // 改变底部
-    [self changeBottom];
+        // 改变底部
+        [self changeBottom];
+        
+    };
+    
+    [alertView BMAlertShow];
+
 }
 
 #pragma mark - 跳转订单信息页
@@ -371,6 +481,7 @@
     vc.dataArray = arr;
     vc.idArray = idArr;
     vc.totalPrice = _totalPrice;
+    vc.isRoot = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark - 获取数据从网络
@@ -379,9 +490,7 @@
     [_dataArr removeAllObjects];
     //改变底部
     [self changeBottom];
-    
     [self.shoppingCarTableView reloadData];
-    
     [KSHttpRequest post:KGetShopCartList parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             //网络请求成功先删除数据
@@ -390,7 +499,6 @@
             NSDictionary *datasDic = result[@"datas"];
             _shoppingCarID = datasDic[@"shopCartId"];
             NSArray *rowsArr = datasDic[@"rows"];
-            
             for (NSDictionary *subDic in rowsArr) {
                 XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
                 sectionModel.brandName = subDic[@"brandName"];
@@ -409,8 +517,8 @@
             
             [self.shoppingCarTableView reloadData];
         }else{
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:result[@"message"] delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil];
-            [alert show];
+            
+            [UILabel showMessage:result[@"message"]];
         }
         
         if (_dataArr.count == 0) {
@@ -421,10 +529,13 @@
         }else{
             [self.shopCarView removeFromSuperview];
         }
-        [self.shoppingCarTableView.header endRefreshing];
+        [self.shoppingCarTableView.mj_header endRefreshing];
+//        [self.shoppingCarTableView.mj_footer endRefreshing];
     } failure:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:@"购物车列表获取失败"];
-        [self.shoppingCarTableView.header endRefreshing];
+        [self.shoppingCarTableView.mj_header endRefreshing];
+//        [self.shoppingCarTableView.mj_footer endRefreshing];
+
+        [UILabel showMessage:@"购物车列表获取失败"];
 
     }];
 }
@@ -432,7 +543,7 @@
 #pragma mark - 获取数据从数据库(只需要从数据库拿到商品的ID和商品的数量)
 - (void)getDataFromDatabase {
     [self.shopCarView show];
-
+    
     DatabaseManager *manager = [DatabaseManager sharedInstance];
     //获取所有购物车数据(存的时候已经去重)
     NSArray *allGoodArr = [manager queryAllGood];
@@ -447,42 +558,45 @@
         XNRShoppingCartModel *model = allGoodArr[i];
         NSDictionary *params = @{@"productId":model.goodsId,@"count":model.num};
         [tempMarr addObject:params];
-        [KSHttpRequest post:KGetShoppingCartOffline parameters:@{@"products":[tempMarr JSONString_Ext]} success:^(id result) {
-            NSMutableArray *goodsArray = [[NSMutableArray alloc] init];
-            if ([result[@"code"] integerValue] == 1000)  {
-                NSDictionary *datas = result[@"datas"];
-                NSArray *rows = datas[@"rows"];
-                for (NSDictionary *subDic in rows) {
-                    XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
-                    sectionModel.brandName = subDic[@"brandName"];
-                    sectionModel.goodsList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"goodsList"]];
-                    [goodsArray addObject:sectionModel];
-                    
-                    // 数组去重
-                    NSSet *set = [NSSet setWithArray:goodsArray];
-                    _dataArr = [[set allObjects] mutableCopy];
-                    
-                    for (int i = 0; i<sectionModel.goodsList.count; i++) {
-                        XNRShoppingCartModel *model = sectionModel.goodsList[i];
-                        model.num = model.goodsCount;
-                    }
-
-                    if (_dataArr.count == 0) {
-                        [self.shopCarView show];
-                        self.editeBtn.hidden = YES;
-                        self.navigationItem.title = @"购物车";
-                        
-                    }else{
-                        [self.shopCarView removeFromSuperview];
-                    }
-            }
-                [self.shoppingCarTableView reloadData];
-                [self changeBottom];
-        }
-        } failure:^(NSError *error) {
-            
-        }];
     }
+    
+    [KSHttpRequest post:KGetShoppingCartOffline parameters:@{@"products":[tempMarr JSONString_Ext]} success:^(id result) {
+        NSMutableArray *goodsArray = [[NSMutableArray alloc] init];
+        if ([result[@"code"] integerValue] == 1000)  {
+            NSDictionary *datas = result[@"datas"];
+            NSArray *rows = datas[@"rows"];
+            for (NSDictionary *subDic in rows) {
+                XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
+                sectionModel.brandName = subDic[@"brandName"];
+                sectionModel.goodsList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"goodsList"]];
+                [goodsArray addObject:sectionModel];
+                
+                // 数组去重
+                NSSet *set = [NSSet setWithArray:goodsArray];
+                _dataArr = [[set allObjects] mutableCopy];
+                
+                for (int i = 0; i<sectionModel.goodsList.count; i++) {
+                    XNRShoppingCartModel *model = sectionModel.goodsList[i];
+                    model.num = model.goodsCount;
+                }
+                
+                if (_dataArr.count == 0) {
+                    [self.shopCarView show];
+                    self.editeBtn.hidden = YES;
+                    self.navigationItem.title = @"购物车";
+                    
+                }else{
+                    [self.shopCarView removeFromSuperview];
+                }
+            }
+            [self.shoppingCarTableView reloadData];
+            [self changeBottom];
+        }
+        [self.shoppingCarTableView.mj_header endRefreshing];
+    } failure:^(NSError *error) {
+        
+    }];
+
     
     //数组去重
 //    NSSet *set = [NSSet setWithArray:tempMarr];
@@ -533,7 +647,7 @@
         UIButton *selectedHeadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         selectedHeadBtn.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(26), PX_TO_PT(36), PX_TO_PT(36));
         [selectedHeadBtn setImage:[UIImage imageNamed:@"shopCar_circle"] forState:UIControlStateNormal];
-        [selectedHeadBtn setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateSelected];
+        [selectedHeadBtn setImage:[UIImage imageNamed:@"orange-icon"] forState:UIControlStateSelected];
         selectedHeadBtn.tag = section+1010;
         [selectedHeadBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         selectedHeadBtn.selected = sectionModel.isSelected;
@@ -747,6 +861,7 @@
             [self valiteAllCarShopModelIsSelected];
         }];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.delegate = self;
         cell.backgroundColor = [UIColor whiteColor];
         cell.changeBottomBlock = ^{
             [self changeBottom];

@@ -461,8 +461,7 @@
         //验证手机号输入是否正确
         if (![self validateMobile:self.phoneNumTextField.text]) {
             
-//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"手机号输入格式不正确" chooseBtns:@[@"好"]];
-//            [alertView BMAlertShow];
+            [UILabel showMessage:@"手机号输入格式不正确"];
             
             return;
         }

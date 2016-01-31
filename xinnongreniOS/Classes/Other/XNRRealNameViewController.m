@@ -232,8 +232,7 @@ typedef enum{
         title= @"身份证不能为空";
     }
     if (flag == 0) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:title delegate:self cancelButtonTitle:@"好" otherButtonTitles: nil];
-        [alert show];
+        [UILabel showMessage:title];
         return;
     }
     
@@ -337,9 +336,7 @@ typedef enum{
         controller.sourceType = UIImagePickerControllerSourceTypeCamera;
         [self presentViewController:controller animated:YES completion:NULL];
     }else{
-        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"模拟其中无法打开照相机,请在真机中使用" message:nil delegate:nil cancelButtonTitle:@"ok"
-                                       otherButtonTitles:nil];
-        [al show];
+        [UILabel showMessage:@"模拟器中无法打开照相机,请在真机中使用"];
         
     }
 }

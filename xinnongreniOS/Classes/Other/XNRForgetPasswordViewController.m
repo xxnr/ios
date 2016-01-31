@@ -136,16 +136,20 @@
 #pragma mark - 验证按钮
 - (void)verifyClick:(UIButton *)button
 {
+    [self.phoneNumTextField resignFirstResponder];
+    [self.verifyNumTextField resignFirstResponder];
+
+    [self.newpasswordTextField resignFirstResponder];
+
+    [self.againPasswordTextField resignFirstResponder];
+
     if(self.phoneNumTextField.text.length==0){
         
-//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"请输入手机号" chooseBtns:@[@"知道了"]];
-        
-//        [alertView BMAlertShow];
+        [UILabel showMessage:@"请输入手机号"];
         
     }else if ([self validateMobile:self.phoneNumTextField.text]==NO){
     
-//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"请输入正确的手机号" chooseBtns:@[@"知道了"]];
-//        [alertView BMAlertShow];
+        [UILabel showMessage:@"手机号格式错误"];
 
         
     }else{
@@ -162,12 +166,11 @@
                 if([result[@"code"] integerValue] == 1000){
                     //请求成功读秒
                    [self readSecond];
+                    [UILabel showMessage:@"成功获取短信，请注意查收"];
                     
                 }else{
                     
-//                BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:result[@"message"] chooseBtns:@[@"知道了"]];
-//                    
-//                    [alertView BMAlertShow];
+                    [UILabel showMessage:result[@"message"]];
 
                     
                 }
@@ -204,12 +207,11 @@
                     if([result[@"code"] integerValue] == 1000){
                         //请求成功读秒
                         [self readSecond];
+                        [UILabel showMessage:@"成功获取短信，请注意查收"];
                         
                     }else{
                         
-//                        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:result[@"message"] chooseBtns:@[@"知道了"]];
-//                        
-//                        [alertView BMAlertShow];
+                        [UILabel showMessage:result[@"message"]];
 
                         
                     }
@@ -243,8 +245,8 @@
     if(_timeCount== -2){
         _timer.fireDate=[NSDate distantFuture]; //暂停定时器
         self.getVerifyButton.enabled = YES;
-        self.getVerifyButton.backgroundColor = R_G_B_16(0x11c422);
-        [self.getVerifyButton setTitle:@"获取验证码" forState:UIControlStateNormal];
+        self.getVerifyButton.backgroundColor = R_G_B_16(0x00b38a);
+        [self.getVerifyButton setTitle:@"免费获取验证码" forState:UIControlStateNormal];
     }
 }
 
@@ -324,34 +326,32 @@
 - (void)finishClick:(UIButton *)button
 {
     
-    if(self.phoneNumTextField.text.length==0||self.verifyNumTextField.text.length==0||self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0){
+    if(self.phoneNumTextField.text.length==0){
         
-//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"请完善您要填写的资料" chooseBtns:@[@"知道了"]];
-//        
-//        [alertView BMAlertShow];
+    [UILabel showMessage:@"请输入手机号"];
 
-        
-        
+    }else if ([self validateMobile:self.phoneNumTextField.text]==NO){
+
+    [UILabel showMessage:@"手机格式错误"];
+
+    }else if (self.verifyNumTextField.text.length==0){
+        [UILabel showMessage:@"请输入验证码"];
+    
+    }else if (self.newpasswordTextField.text.length==0){
+        [UILabel showMessage:@"请输入密码"];
+
+    
+    }else if (self.againPasswordTextField.text.length==0){
+        [UILabel showMessage:@"请输入确认密码"];
+
+    
     }else if ([self.newpasswordTextField.text isEqualToString:self.againPasswordTextField.text]==NO){
         
-//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"两次填写的密码不一致请认真核对" chooseBtns:@[@"知道了"]];
-//        
-//        [alertView BMAlertShow];
-
-        
-    }else if ([self validateMobile:self.phoneNumTextField.text]==NO){
-        
-        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"提示" message:@"手机格式错误" delegate:self cancelButtonTitle:nil otherButtonTitles:@"知道了", nil];
-        [al show];
-        
-//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"手机格式错误" chooseBtns:@[@"知道了"]];
-//        [alertView BMAlertShow];
-
+        [UILabel showMessage:@"两次填写的密码不一致请认真核对"];
         
     }else{
         
-        [SVProgressHUD showWithStatus:@"正在加载..."];
-        
+        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         [KSHttpRequest get:KUserPubkey parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
                 NSLog(@"======%@",result);
                 if ([result[@"code"] integerValue] == 1000) {
@@ -373,10 +373,8 @@
     [KSHttpRequest post:KUserResetpwd parameters:@{@"account":_phoneNumTextField.text, @"newPwd":encry,@"smsCode":_verifyNumTextField.text,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         NSLog(@"%@",result[@"message"]);
         
-        [SVProgressHUD dismiss];
-        
+        [BMProgressView LoadViewDisappear:self.view];
         if([result[@"code"] integerValue] == 1000){
-            
             
             XNRLoginViewController *vc=[[XNRLoginViewController alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
@@ -385,8 +383,7 @@
 
         }else{
             
-//            BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:result[@"message"] chooseBtns:@[@"知道了"]];
-//            [alertView BMAlertShow];
+            [UILabel showMessage:result[@"message"]];
             
             
         }
@@ -451,8 +448,7 @@
         BOOL flag = [self validateMobile:textField.text];
         if (!flag) {
 
-//            BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"手机号输入格式不正确" chooseBtns:@[@"好"]];
-//            [alertView BMAlertShow];
+            [UILabel showMessage:@"手机号输入格式不正确"];
 
 
         }

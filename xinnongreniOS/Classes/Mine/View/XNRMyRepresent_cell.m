@@ -7,6 +7,7 @@
 //
 
 #import "XNRMyRepresent_cell.h"
+#import "UIFont+BSExt.h"
 
 @interface XNRMyRepresent_cell ()
 @property (nonatomic, weak) UILabel *nickNameLabel;
@@ -21,10 +22,15 @@
     if (self) {
         [self createUI];
         self.backgroundColor = [UIColor clearColor];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRedPoint) name:@"removeRedPoint" object:nil];
     }
     return self;
 
 
+}
+
+-(void)removeRedPoint{
+    self.redImageView.hidden = YES;
 }
 
 -(void)createUI{
@@ -35,13 +41,16 @@
     [self addSubview:myRepView];
     
     CGFloat nickNameLabelY = (myRepLabelH - PX_TO_PT(60))*0.5;
-    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(200), PX_TO_PT(60))];
+    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(220), PX_TO_PT(60))];
+//    UILabel *nickNameLabel = [[UILabel alloc] init];
     nickNameLabel.backgroundColor = R_G_B_16(0x00b38a);
     nickNameLabel.layer.cornerRadius = 5.0;
     nickNameLabel.layer.masksToBounds = YES;
+    nickNameLabel.adjustsFontSizeToFitWidth = YES;
     nickNameLabel.textColor = R_G_B_16(0xffffff);
     nickNameLabel.font = [UIFont systemFontOfSize:16];
     nickNameLabel.textAlignment = NSTextAlignmentCenter;
+    [nickNameLabel fitTextWidth_Ext];
     self.nickNameLabel = nickNameLabel;
     [myRepView addSubview:nickNameLabel];
     
@@ -49,13 +58,15 @@
     phoneNumLabel.textAlignment = NSTextAlignmentRight;
     phoneNumLabel.textColor = R_G_B_16(0x00b38a);
     phoneNumLabel.font = [UIFont systemFontOfSize:18];
+    [phoneNumLabel fitTextWidth_Ext];
     self.phoneNumLabel = phoneNumLabel;
     [myRepView addSubview:phoneNumLabel];
     
     // 小红点
-    UIImageView *redImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(188), PX_TO_PT(2), PX_TO_PT(10), PX_TO_PT(10))];
+    UIImageView *redImageView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nickNameLabel.frame)-PX_TO_PT(48), PX_TO_PT(2), PX_TO_PT(24), PX_TO_PT(24))];
+//    UIImageView *redImageView = [[UIImageView alloc] init];
     redImageView.backgroundColor = [UIColor redColor];
-    redImageView.layer.cornerRadius = PX_TO_PT(5);
+    redImageView.layer.cornerRadius = PX_TO_PT(12);
     redImageView.layer.masksToBounds = YES;
     self.redImageView = redImageView;
     [nickNameLabel addSubview:redImageView];
@@ -74,8 +85,17 @@
 - (void)setModel:(XNRMyRepresentModel *)model {
     _model = model;
     if (model.name && model.name.length>0) {
+//        CGSize maxSize = CGSizeMake(MAXFLOAT, PX_TO_PT(60));
+//        CGSize nameSize = [self.model.nickname sizeWithFont_BSExt:self.nickNameLabel.font maxSize:maxSize];
+        
+        
+//        CGSize size = [self.nickNameLabel.text boundingRectWithSize:CGSizeMake(MAXFLOAT, PX_TO_PT(60)) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16]} context:nil].size;
+//        
+//        self.nickNameLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(18),size.width, PX_TO_PT(60));
         self.nickNameLabel.text = model.name;
+        
     }else{
+       
         self.nickNameLabel.text = @"该好友未填姓名";
         self.nickNameLabel.backgroundColor = R_G_B_16(0xf0f0f0);
         self.nickNameLabel.textColor = R_G_B_16(0xa2a2a2);
@@ -84,6 +104,7 @@
     if (model.newOrdersNumber == 0) {
         self.redImageView.hidden = YES;
     }else{
+        self.redImageView.frame = CGRectMake(CGRectGetMaxX(self.nickNameLabel.frame)-PX_TO_PT(56), PX_TO_PT(2), PX_TO_PT(24), PX_TO_PT(24));
         self.redImageView.hidden = NO;
     }
 

@@ -73,7 +73,6 @@
               
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               NSLog(@"error = %@",error);
-              [SVProgressHUD showErrorWithStatus:@"请求失败"];
           }];
     
     

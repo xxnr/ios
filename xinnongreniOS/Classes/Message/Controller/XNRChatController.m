@@ -10,7 +10,6 @@
 #import "XNRMessageModel.h"
 #import "XNRMessageCell.h"
 #import "XNRWebViewController.h"
-#import "MJRefresh.h"
 #define MAX_PAGE_SIZE 10
 
 @interface XNRChatController ()<UITableViewDelegate,UITableViewDataSource>
@@ -39,21 +38,65 @@
     [self createbackBtn];
     [self getData];
 }
-
+#pragma mark - 刷新
 -(void)setupRefresh{
-    __weak __typeof(&*self)weakSelf = self;
-    [self.tableView addLegendHeaderWithRefreshingBlock:^{
-        [_messageArr removeAllObjects];
-        currentPage = 1;
-        [weakSelf getData];
-    }];
-//    [self.tableView.header beginRefreshing];
-    
-    [self.tableView addLegendFooterWithRefreshingBlock:^{
-        currentPage = currentPage + 1;
-        [weakSelf getData];
-    }];
+        MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
+        NSMutableArray *idleImage = [NSMutableArray array];
+        
+        for (int i = 1; i<21; i++) {
+            UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+            
+            [idleImage addObject:image];
+        }
+        NSMutableArray *RefreshImage = [NSMutableArray array];
+        
+        for (int i = 10; i<21; i++) {
+            UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+            
+            [RefreshImage addObject:image];
+            
+        }
+        
+        [header setImages:idleImage forState:MJRefreshStateIdle];
+        
+        [header setImages:RefreshImage forState:MJRefreshStatePulling];
+        
+        [header setImages:RefreshImage forState:MJRefreshStateRefreshing];
+        // 隐藏时
+        header.lastUpdatedTimeLabel.hidden = YES;
+        // 隐藏状态
+        header.stateLabel.hidden = YES;
+        
+        self.tableView.mj_header = header;
+        
+        
+        
+        // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
+        MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
+        // 设置刷新图片
+        [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
+        
+        footer.refreshingTitleHidden = YES;
+        // 设置尾部
+        self.tableView.mj_footer = footer;
+        
+        
+        
 }
+
+-(void)headRefresh{
+    currentPage = 1;
+    [_messageArr removeAllObjects];
+    [self getData];
+    
+    
+}
+-(void)footRefresh{
+    currentPage ++;
+    [self getData];
+    
+}
+
 
 -(void)createbackBtn
 {
@@ -105,7 +148,9 @@
 
 -(void)getData
 {
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [KSHttpRequest get:KMessageNews parameters:@{@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage]} success:^(id result) {
+        
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dicts = result[@"datas"];
             NSArray *array = dicts[@"items"];
@@ -115,19 +160,21 @@
                 [_messageArr addObject:model];
             }
         }
+        //如果到达最后一页 就消除footer
+
         NSInteger pages = [result[@"datas"][@"pages"] integerValue];
         NSInteger page = [result[@"datas"][@"page"] integerValue];
-        //如果到达最后一页 就消除footer
-        //如果没有达到最后一页 就显示footer
-        self.tableView.legendFooter.hidden = pages==page;
+        self.tableView.mj_footer.hidden = pages==page;
 
         [self.tableView reloadData];
-        [self.tableView.header endRefreshing];
-        [self.tableView.footer endRefreshing];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+        [BMProgressView LoadViewDisappear:self.view];
         
     } failure:^(NSError *error) {
-        [self.tableView.header endRefreshing];
-        [self.tableView.footer endRefreshing];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+        [BMProgressView LoadViewDisappear:self.view];
 
 
     }];

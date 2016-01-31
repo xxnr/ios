@@ -34,6 +34,8 @@
     CGFloat _totalPrice;
     NSString *deposit;
     int payType;
+
+    CGFloat _goodsTotalPrice;
 }
 @property (nonatomic ,weak) UIView *headViewNormal;
 @property (nonatomic ,weak) UIView *headViewSpecial;
@@ -49,16 +51,25 @@
 @property (nonatomic,weak) UILabel *totalPricelabel;
 @property (nonatomic ,strong) NSMutableArray *dataArr;
 
+@property (nonatomic ,strong) NSMutableArray *addressArr;
 
+@property (nonatomic ,weak) UILabel *goodsTotalLabel;
+@property (nonatomic ,weak) UILabel *totoalPriceLabel;
 
+@property (nonatomic, strong) XNRAddressManageModel *nextAddresModel;
 @end
 
 @implementation XNROrderInfo_VC
 -(void)viewWillAppear:(BOOL)animated{
      //获取预处理订单信息
     [super viewWillAppear:YES];
+    // 获得订单信息
     [self getData];
+    
     _dataArr = [[NSMutableArray alloc] init];
+    
+    [self.tableview reloadData];
+    
 
 }
 - (void)viewDidLoad {
@@ -70,12 +81,20 @@
     // 中部视图
     [self createMid];
     // 创建头视图
-    [self createHeadView];
+//    [self createHeadView];
 
     // 底部视图
     [self createFoot];
-    // 改变底部视图
-//    [self changeFoot];
+    
+    
+    // 来自购物车页面的话才加载
+    if (self.isRoot) {// 获得地址信息
+        [self getAddressData];
+        _addressArr = [[NSMutableArray alloc] init];
+        
+    }
+    
+
 }
 
 -(void)getData {
@@ -86,26 +105,31 @@
         NSLog(@"---=++--+=%@",result);
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datasDic = result[@"datas"];
-
             NSArray *rowsArr = datasDic[@"rows"];
             for (NSDictionary *subDic in rowsArr) {
                     XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
                     sectionModel.brandName = subDic[@"brandName"];
+                
+                NSArray *goodsList = subDic[@"goodsList"];
+                for (NSDictionary *dict in goodsList) {
+                    sectionModel.goodsCount = dict[@"goodsCount"];
+                    sectionModel.deposit = dict[@"deposit"];
+                    sectionModel.unitPrice = dict[@"unitPrice"];
+                }
 
                     sectionModel.goodsList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"goodsList"]];
                     [_dataArr addObject:sectionModel];
                 
                 for (int i = 0; i<sectionModel.goodsList.count; i++) {
                     XNRShoppingCartModel *model = sectionModel.goodsList[i];
+                
                     model.num = model.totalCount;
                 }
-
-                    
             }
             [self.tableview reloadData];
         }else{
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:result[@"message"] delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil];
-            [alert show];
+            
+            [UILabel showMessage:result[@"message"]];
         }
         
         } failure:^(NSError *error) {
@@ -115,11 +139,45 @@
     
 }
 
+-(void)getAddressData
+{
+    [KSHttpRequest post:KGetUserAddressList parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        if([result[@"code"] integerValue] == 1000){
+            for(NSDictionary *dic in result[@"datas"][@"rows"]){
+                addressId = dic[@"addressId"];
+                XNRAddressManageModel *model=[[XNRAddressManageModel alloc]init];
+                // 选为默认地址
+                if ([dic[@"type"] integerValue] == 1) {
+                    model.selected = YES;
+                }
+                
+                [model setValuesForKeysWithDictionary:dic];
+                [_addressArr addObject:model];
+                
+            }
+            if (_addressArr.count>0) {
+                [self createAddressView:_addressArr];
+            }else{
+                [self createHeadView];
+            }
+            
+            
+        } else {
+            [UILabel showMessage:result[@"message"]];
+        }
+        
+        [self.tableview reloadData];
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
 #pragma mark-创建头视图
 -(void)createHeadView{
     
     UIView *headViewNormal=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(96))];
-    headViewNormal.backgroundColor=R_G_B_16(0xf4f4f4);
+    headViewNormal.backgroundColor=[UIColor clearColor];
     self.headViewNormal = headViewNormal;
     [self.view addSubview:headViewNormal];
     
@@ -157,7 +215,10 @@
 
 }
 #pragma mark - 创建有地址后的视图
--(void)createAddressView{
+-(void)createAddressView:(NSMutableArray *)addressArray{
+    XNRAddressManageModel *model = addressArray[0];
+    model.selected = YES;
+    self.nextAddresModel = model;
     // headViewSpecial
     UIView *headViewSpecial = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(260))];
     headViewSpecial.backgroundColor = [UIColor whiteColor];
@@ -187,10 +248,12 @@
     
     _recipientNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), PX_TO_PT(112), PX_TO_PT(200), PX_TO_PT(36))];
     _recipientNameLabel.textColor = R_G_B_16(0x323232);
+    _recipientNameLabel.text = model.receiptPeople;
     [headViewSpecial addSubview:_recipientNameLabel];
     
     _recipientPhoneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_recipientNameLabel.frame), PX_TO_PT(112), ScreenWidth/2, PX_TO_PT(36))];
     _recipientPhoneLabel.textColor = R_G_B_16(0x323232);
+    _recipientPhoneLabel.text = [NSString stringWithFormat:@"%@",model.receiptPhone];
     [headViewSpecial addSubview:_recipientPhoneLabel];
 
     
@@ -198,9 +261,30 @@
     [addressImageView setImage:[UIImage imageNamed:@"orderInfo_address_picture"]];
     [headViewSpecial addSubview:addressImageView];
     
+    
     _addressDetail = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), CGRectGetMaxY(_recipientNameLabel.frame) +PX_TO_PT(32), ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), PX_TO_PT(34))];
     _addressDetail.textColor = R_G_B_16(0xc7c7c7);
     [headViewSpecial addSubview:_addressDetail];
+
+    NSString *address1 = [NSString stringWithFormat:@"%@%@",model.areaName,model.cityName];
+    NSString *address2 = [NSString stringWithFormat:@"%@%@%@",model.areaName,model.cityName,model.countyName];
+    if ([model.countyName isEqualToString:@""] || model.countyName == nil) {
+        if ([model.townName isEqualToString:@""] || model.townName == nil) {
+            _addressDetail.text = [NSString stringWithFormat:@"%@%@",address1,model.address];
+        }else{
+            _addressDetail.text = [NSString stringWithFormat:@"%@%@%@",address1,model.townName,model.address];
+            
+        }
+        
+    }else{
+        if ([model.townName isEqualToString:@""]|| model.townName == nil) {
+            _addressDetail.text = [NSString stringWithFormat:@"%@%@",address2,model.address];
+        }else{
+            _addressDetail.text = [NSString stringWithFormat:@"%@%@%@",address2,model.townName,model.address];
+            
+        }
+        
+    }
     
     // 箭头
     UIImageView *arrowImageView=[[UIImageView  alloc] init];
@@ -217,7 +301,6 @@
 
 #pragma mark-中部视图
 -(void)createMid{
-
     UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth,ScreenHeight-64-PX_TO_PT(89) ) style:UITableViewStyleGrouped];
     tableview.backgroundColor=[UIColor clearColor];
     tableview.showsHorizontalScrollIndicator=NO;
@@ -304,6 +387,71 @@
         return nil;
     }
 }
+
+// 在断尾添加任意视图
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    
+    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(20))];
+    footView.backgroundColor =  R_G_B_16(0xf4f4f4);
+    [self.view addSubview:footView];
+    
+    return  footView;
+
+//    if (_dataArr.count>0) {
+//        XNRShopCarSectionModel *sectionModel = _dataArr[section];
+//        UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(100))];
+//        footView.backgroundColor = [UIColor whiteColor];
+//        [self.view addSubview:footView];
+//        
+//        UIView *divideView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(20))];
+//        divideView.backgroundColor = R_G_B_16(0xf4f4f4);
+//        [footView addSubview:divideView];
+//        
+//        UILabel *goodsTotalLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
+//        goodsTotalLabel.textColor = R_G_B_16(0x323232);
+//        goodsTotalLabel.font = [UIFont systemFontOfSize:14];
+//        goodsTotalLabel.text = [NSString stringWithFormat:@"共%@件商品",sectionModel.goodsCount];
+//        self.goodsTotalLabel = goodsTotalLabel;
+//        [footView addSubview:goodsTotalLabel];
+//        
+//        
+//        UILabel *totoalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2 - PX_TO_PT(32), PX_TO_PT(80))];
+//        totoalPriceLabel.textAlignment = NSTextAlignmentRight;
+//        totoalPriceLabel.font = [UIFont systemFontOfSize:14];
+//        if (sectionModel.deposit && [sectionModel.deposit floatValue]>0) {
+//            totoalPriceLabel.text = [NSString stringWithFormat:@"合计：%.2f",sectionModel.deposit.floatValue * sectionModel.goodsCount.integerValue];
+//        }else{
+//            totoalPriceLabel.text = [NSString stringWithFormat:@"合计：%.2f",sectionModel.unitPrice.floatValue * sectionModel.goodsCount.integerValue];
+//        }
+//                        NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:totoalPriceLabel.text];
+//                        NSDictionary *depositStr=@{
+//        
+//                                                   NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
+//                                                   // NSFontAttributeName:[UIFont systemFontOfSize:18]
+//        
+//                                                   };
+//        
+//                        [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(3,AttributedStringDeposit.length-3)];
+//        
+//                        [totoalPriceLabel setAttributedText:AttributedStringDeposit];
+//        
+//        self.totoalPriceLabel = totoalPriceLabel;
+//        [footView addSubview:totoalPriceLabel];
+//        
+//        for (int i = 0; i<2; i++) {
+//            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+//            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+//            [footView addSubview:lineView];
+//        }
+//        return footView;
+//
+//    }else{
+//        return nil;
+//    }
+    
+
+}
 //段头高度
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -313,6 +461,7 @@
 //段尾高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+//    return PX_TO_PT(100);
     if (section == _dataArr.count-1) {
         return 0.0;
     }
@@ -351,9 +500,9 @@
         XNRShoppingCartModel *model = sectionModel.goodsList[indexPath.row];
         
         if ([model.deposit floatValue] == 0.00) {
-            return PX_TO_PT(380);
+            return PX_TO_PT(300);
         }else{
-            return PX_TO_PT(540);
+            return PX_TO_PT(460);
         }
     }else{
         return 0;
@@ -381,15 +530,16 @@
 }
 
 #pragma mark-地址管理
--(void)addressManage{
+-(void)addressManage {
     
     XNRAddressManageViewController*vc=[[XNRAddressManageViewController alloc]init];
+    
     [vc setAddressChoseBlock:^(XNRAddressManageModel *model) {
         
+        self.nextAddresModel = model;
         NSLog(@"%@",model.address);
         NSLog(@"%@",model.addressId);
         self.headViewNormal.hidden = YES;
-        [self createAddressView];
         NSString *address1 = [NSString stringWithFormat:@"%@%@",model.areaName,model.cityName];
         NSString *address2 = [NSString stringWithFormat:@"%@%@%@",model.areaName,model.cityName,model.countyName];
         if ([model.countyName isEqualToString:@""] || model.countyName == nil) {
@@ -414,22 +564,21 @@
         address = model.address;
         _nameLabel.hidden = YES;
         addressId = model.addressId;
-
+    
     }];
     vc.hidesBottomBarWhenPushed=YES;
+    
+    vc.addressModel = self.nextAddresModel;
     [self.navigationController pushViewController:vc animated:YES];
-    
-    
 }
 #pragma mark - 提交订单
 -(void)makeSure{
     NSLog(@"确认订单");
     if([self.addressLabel.text isEqualToString:@"添加收货地址"]){
-        UIAlertView *al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:@"请选择一个地址，没有地址我们的服务人员送不到货哦\(^o^)/~" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-        [al show];
+        [UILabel showMessage:@"请选择一个地址，没有地址我们的服务人员送不到货哦"];
         return;
     }
-    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":addressId?addressId:@"",@"products":[self.idArray JSONString_Ext],@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
+    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"products":[self.idArray JSONString_Ext],@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
         NSLog(@"%@",result);
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *orders = result[@"orders"];
@@ -441,7 +590,7 @@
                     // 支付id
                     paymentId = payment[@"paymentId"];
         }
-        [self.tableview reloadData];
+                 [self.tableview reloadData];
         
             XNRPayTypeViewController *vc = [[XNRPayTypeViewController alloc]init];
             vc.hidesBottomBarWhenPushed = YES;

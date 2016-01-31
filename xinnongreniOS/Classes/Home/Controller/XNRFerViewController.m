@@ -12,7 +12,6 @@
 #import "XNRProductInfo_VC.h"
 #import "XNRTabBarController.h"
 #import "XNRHomeSelectBrandView.h"
-#import "MJRefresh.h"
 #import "XNRNoSelectView.h"
 #define MAX_PAGE_SIZE 10
 
@@ -96,8 +95,11 @@
     [self createbackBtn];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [self getData];
-    // 综合
+    // 刷新
     [self setupTotalRefresh];
+    
+
+    // 综合
     // 价格
 //    [self setuoPriceRefresh];
     // 筛选
@@ -106,50 +108,62 @@
 }
 #pragma mark - 刷新
 -(void)setupTotalRefresh{
-    // 下拉刷新
-    __weak __typeof(&*self)weakSelf = self;
-    [self.tableView addLegendHeaderWithRefreshingBlock:^{
-        currentPage = 1;
-        [_totalArray removeAllObjects];
-        [weakSelf getData];
-    }];
     
-    // 上拉加载
-    [self.tableView addLegendFooterWithRefreshingBlock:^{
-        currentPage = currentPage + 1;
-        [weakSelf getData];
-    }];
+    
+    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
+    NSMutableArray *idleImage = [NSMutableArray array];
+    
+    for (int i = 1; i<21; i++) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
+        [idleImage addObject:image];
+    }
+    NSMutableArray *RefreshImage = [NSMutableArray array];
+    
+    for (int i = 10; i<21; i++) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
+        [RefreshImage addObject:image];
+        
+    }
+    
+    [header setImages:idleImage forState:MJRefreshStateIdle];
+    
+    [header setImages:RefreshImage forState:MJRefreshStatePulling];
+    
+    [header setImages:RefreshImage forState:MJRefreshStateRefreshing];
+    // 隐藏时
+    header.lastUpdatedTimeLabel.hidden = YES;
+    // 隐藏状态
+    header.stateLabel.hidden = YES;
+    
+    self.tableView.mj_header = header;
+    
+    
+    
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
+    MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
+        // 设置刷新图片
+    [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
+    
+    footer.refreshingTitleHidden = YES;
+    // 设置尾部
+    self.tableView.mj_footer = footer;
+
+    
+
 }
--(void)setuoPriceRefresh{
+-(void)headRefresh{
+    currentPage = 1;
+    [_totalArray removeAllObjects];
+    [self getData];
     
 
 }
--(void)setuoSelectRefresh{
-    // 下拉刷新
-    __weak __typeof(&*self)weakSelf = self;
-    [self.tableView addLegendHeaderWithRefreshingBlock:^{
-        currentPage = 1;
-        [_carArray removeAllObjects];
-        if ([_classId isEqualToString:XNRFER]) {
-        [weakSelf getselectDataWithName:@"brandName" and:weakSelf.brandName and:weakSelf.reservePrice];
-        }else{
-        [weakSelf getselectDataWithName:@"modelName" and:weakSelf.modelName and:weakSelf.reservePrice];
-
-        }
-    }];
+-(void)footRefresh{
+    currentPage ++;
+    [self getData];
     
-    // 上拉加载
-    [self.tableView addLegendFooterWithRefreshingBlock:^{
-        currentPage = currentPage + 1;
-        if ([_classId isEqualToString:XNRFER]) {
-            [weakSelf getselectDataWithName:@"brandName" and:weakSelf.brandName and:weakSelf.reservePrice];
-        }else{
-            [weakSelf getselectDataWithName:@"modelName" and:weakSelf.modelName and:weakSelf.reservePrice];
-            
-        }
-    }];
-
-
 }
 #pragma mark - 返回顶部啊按钮
 -(void)createbackBtn
@@ -179,7 +193,7 @@
 #pragma mark  - 获得商品数据
 -(void)getData
 {
-    [SVProgressHUD show];
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"brandName":self.brandName?self.brandName:@"",@"modelName":self.modelName?self.modelName:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage]} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
@@ -190,20 +204,20 @@
                 [_totalArray addObject:model];
             }
         }
+        //  如果到达最后一页 就消除footer
         NSInteger pages = [result[@"datas"][@"pages"] integerValue];
         NSInteger page = [result[@"datas"][@"page"] integerValue];
-        //如果到达最后一页 就消除footer
-        //如果没有达到最后一页 就显示footer
-        self.tableView.legendFooter.hidden = pages==page;
-        [self.tableView reloadData];
+        self.tableView.mj_footer.hidden = pages == page;
         
-        [self.tableView.legendHeader endRefreshing];
-        [self.tableView.legendFooter endRefreshing];
-        [SVProgressHUD dismiss];
+        [self.tableView reloadData];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+        
+        [BMProgressView LoadViewDisappear:self.view];
     } failure:^(NSError *error) {
-        [self.tableView.legendHeader endRefreshing];
-        [self.tableView.legendFooter endRefreshing];
-        [SVProgressHUD dismiss];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+        [BMProgressView LoadViewDisappear:self.view];
 
    }];
 }
@@ -264,12 +278,11 @@
 
         }else{
             [XNRHomeSelectBrandView cancelSelectedBrandView];
-
         }
     }
 }
 -(void)getTotalData{
-    [SVProgressHUD show];
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [_totalArray removeAllObjects];
     [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"brandName":self.brandName?self.brandName:@"",@"modelName":self.modelName?self.modelName:@"",@"reservePrice":self.reservePrice?self.reservePrice:@""} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
@@ -284,16 +297,18 @@
         [self.tableView reloadData];
         // 筛选为空
         [self noselectViewShowAndHidden:_totalArray];
-        [SVProgressHUD dismiss];
-        self.tableView.legendFooter.hidden = YES;
+        [BMProgressView LoadViewDisappear:self.view];
+
+//        self.tableView.legendFooter.hidden = YES;
     } failure:^(NSError *error) {
-        [SVProgressHUD dismiss];
+        [BMProgressView LoadViewDisappear:self.view];
+
         
     }];
 }
 -(void)getPriceDataWith:(NSString *)sort{
     [_ferArray removeAllObjects];
-    [SVProgressHUD show];
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"sort":sort,@"brandName":self.brandName?self.brandName:@"",@"modelName":self.modelName?self.modelName:@"",@"reservePrice":self.reservePrice?self.reservePrice:@""} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
@@ -308,18 +323,20 @@
         // 筛选为空
         [self noselectViewShowAndHidden:_ferArray];
         
-        [SVProgressHUD dismiss];
-        self.tableView.legendFooter.hidden = YES;
+        [BMProgressView LoadViewDisappear:self.view];
+//        self.tableView.legendFooter.hidden = YES;
         
     } failure:^(NSError *error) {
-        [SVProgressHUD dismiss];
+        [BMProgressView LoadViewDisappear:self.view];
         
     }];
 
 }
 -(void)getselectDataWithName:(NSString *)goodsName and:(NSString *)param1 and:(NSString *)param2{
+    
     [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,goodsName:param1?param1:[NSString stringWithFormat:@"%@",param1],@"reservePrice":param2} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
+            isCancel = NO;
             NSDictionary *dict = result[@"datas"];
             NSArray *Array = dict[@"rows"];
             for (NSDictionary *dicts in Array) {
@@ -331,7 +348,9 @@
         [self.tableView reloadData];
         // 筛选为空
         [self noselectViewShowAndHidden:_carArray];
-        self.tableView.legendFooter.hidden = YES;
+//        self.tableView.legendFooter.hidden = YES;
+        self.tableView.mj_footer.hidden = YES;
+
         
         } failure:^(NSError *error) {
                     
@@ -341,7 +360,9 @@
 -(void)noselectViewShowAndHidden:(NSMutableArray *)array{
     if (array.count == 0) {
         [self.noSelectView show];
-        [self.tableView.legendFooter endRefreshing];
+//        [self.tableView.legendFooter endRefreshing];
+        self.tableView.mj_footer.hidden = YES;
+
         self.backtoTopBtn.hidden = YES;
     }else{
         [self.noSelectView removeFromSuperview];

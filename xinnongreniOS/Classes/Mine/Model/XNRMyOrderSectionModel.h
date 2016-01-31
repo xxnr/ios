@@ -33,4 +33,6 @@
 
 @property (nonatomic ,copy) NSString *deposit;
 
+@property (nonatomic ,copy) NSString *duePrice;
+
 @end

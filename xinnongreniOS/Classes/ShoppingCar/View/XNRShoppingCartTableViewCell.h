@@ -11,7 +11,7 @@
 
 @protocol XNRShoppingCartTableViewCellDelegate <NSObject>
 @optional;
--(void)XNRShoppingCartTableViewCellBtnClickWith:(NSIndexPath *)indexPath;
+-(void)XNRShoppingCartTableViewCellBtnClickWith:(UITextField *) numTextField;
 
 @end
 @interface XNRShoppingCartTableViewCell : UITableViewCell

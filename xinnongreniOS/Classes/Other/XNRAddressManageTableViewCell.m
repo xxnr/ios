@@ -37,6 +37,7 @@
     if (self) {
         self.userInteractionEnabled = YES;
         [self createUI];
+//        self.selectBtn.selected = self.model.selected;
     }
     return self;
 }
@@ -95,7 +96,7 @@
     defaultLabel.layer.cornerRadius = 3.0;
     defaultLabel.layer.masksToBounds = YES;
     defaultLabel.textAlignment = NSTextAlignmentCenter;
-    defaultLabel.backgroundColor = R_G_B_16(0x00b38a);
+    defaultLabel.backgroundColor = R_G_B_16(0xfe9b00);
     defaultLabel.textColor = [UIColor whiteColor];
     defaultLabel.font = XNRFont(12);
     defaultLabel.text = @"默认";
@@ -103,10 +104,11 @@
     [bgView addSubview:defaultLabel];
     
     // 地址
-    UILabel *addressNamelabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.selectBtn.frame) + PX_TO_PT(22), CGRectGetMaxY(self.nameLabel.frame), ScreenWidth-CGRectGetMaxX(self.selectBtn.frame) + PX_TO_PT(22), 36)];
+    UILabel *addressNamelabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.selectBtn.frame) + PX_TO_PT(22), CGRectGetMaxY(self.nameLabel.frame), ScreenWidth-CGRectGetMaxX(self.selectBtn.frame) -PX_TO_PT(22)-PX_TO_PT(64), 36)];
     addressNamelabel.textColor = R_G_B_16(0x909090);
-    addressNamelabel.adjustsFontSizeToFitWidth = YES;
-    addressNamelabel.numberOfLines = 0;
+//    addressNamelabel.adjustsFontSizeToFitWidth = YES;
+//    addressNamelabel.backgroundColor = [UIColor redColor];
+//    addressNamelabel.numberOfLines = 0;
     addressNamelabel.font = XNRFont(12);
     addressNamelabel.textAlignment = NSTextAlignmentLeft;
     self.addressNamelabel = addressNamelabel;
@@ -132,8 +134,10 @@
 }
 
 -(void)selectBtnClick:(UIButton *)button{
-    button.selected = !button.selected;
-    self.selectedBlock();
+    
+    
+//    button.selected = !button.selected;
+//    self.selectedBlock();
 
 }
 
@@ -158,14 +162,11 @@
 - (void)setCellDataWithAddressManageModel:(XNRAddressManageModel *)model {
     _model = model;
     
-    [self resetSubViews];
+    self.selectBtn.selected = _model.selected;
+    
     [self setSubViews];
 }
 
-#pragma mark - 清空以前的数据
-- (void)resetSubViews {
-    
-}
 
 #pragma mark - 设置现在的数据
 - (void)setSubViews

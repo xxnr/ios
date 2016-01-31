@@ -25,6 +25,8 @@
  */
 +(void)installManagerForVC:(UIViewController *)vc scrollView:(UIScrollView *)scrollView tfModels:(NSArray *(^)())tfModels;
 
++(void)installManagerForVC:(UIViewController *)vc scrollView:(UIScrollView *)scrollView tfModels:(NSArray *(^)())tfModels doneCom:(void(^)())doneCom;
+
 
 /**
  *  卸载

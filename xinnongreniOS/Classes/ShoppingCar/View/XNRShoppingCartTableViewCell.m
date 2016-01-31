@@ -9,16 +9,17 @@
 #import "XNRShoppingCartTableViewCell.h"
 #import "UIImageView+WebCache.h"
 #import "CoreTFManagerVC.h"
-
+#import "XNRToolBar.h"
 #define kLeftBtn  1000
 #define kRightBtn 2000
 
-@interface XNRShoppingCartTableViewCell ()<UITextFieldDelegate,UIAlertViewDelegate>
+@interface XNRShoppingCartTableViewCell ()<UITextFieldDelegate,UIAlertViewDelegate,XNRToolBarBtnDelegate>
 {
     UIView *_bgView;                  //键盘遮罩
     NSMutableArray*_tempShopCarArr;   //本地临时数据
     float *siglePrice;
     BOOL sort;
+    int _keyBoardHeight;
 }
 @property (nonatomic,strong) XNRShoppingCartModel *model;
 @property (nonatomic ,weak) UIButton *selectedBtn;
@@ -40,6 +41,8 @@
 @property (nonatomic ,weak) UILabel *subscriptionLabel;
 @property (nonatomic ,weak) UILabel *remainLabel;
 
+@property (nonatomic ,weak) UIToolbar *toolBar;
+
 
 @property (nonatomic,weak) UIButton *deleteBtn;         //删除
 @property (nonatomic ,weak)  UILabel *depositeLabel;      // 订金
@@ -55,10 +58,12 @@
         self.com = com;
         self.contentView.userInteractionEnabled = YES;
         [self createUI];
+        
     }
     return self;
 }
 
+#pragma mark - keyboard events
 
 
 - (void)createUI
@@ -106,15 +111,21 @@
     self.remainLabel = remainLabel;
     [self.contentView addSubview:remainLabel];
     
-
-    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(300), ScreenWidth, PX_TO_PT(1))];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-    [self.contentView addSubview:lineView];
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(300), ScreenWidth, PX_TO_PT(1))];
+    topView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [self.contentView addSubview:topView];
     
     UIView *middleLine = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(380), ScreenWidth-PX_TO_PT(64), PX_TO_PT(1))];
     middleLine.backgroundColor = R_G_B_16(0xc7c7c7);
     self.middleLine = middleLine;
     [self.contentView addSubview:middleLine];
+    
+
+    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(460), ScreenWidth, PX_TO_PT(1))];
+    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [self.contentView addSubview:lineView];
+    
+    
 
     
     UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(460), ScreenWidth, PX_TO_PT(1))];
@@ -134,7 +145,7 @@
     UIButton *selectedBtn = [[UIButton alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(102), PX_TO_PT(36), PX_TO_PT(36))];
     [selectedBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [selectedBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
-    [selectedBtn setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateSelected];
+    [selectedBtn setImage:[UIImage imageNamed:@"orange-icon"] forState:UIControlStateSelected];
     self.selectedBtn = selectedBtn;
 
     [backgroundBtn addSubview:selectedBtn];
@@ -187,7 +198,7 @@
 #pragma mark - 现价
 - (void)createPresentPriceLabel
 {
-    UILabel *presentPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(32)-PX_TO_PT(250),CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20),PX_TO_PT(250),PX_TO_PT(48))];
+    UILabel *presentPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth/2,CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20),ScreenWidth/2-PX_TO_PT(32),PX_TO_PT(48))];
     presentPriceLabel.textColor = R_G_B_16(0x323232);
     presentPriceLabel.textAlignment = NSTextAlignmentRight;
     presentPriceLabel.font = XNRFont(18);
@@ -240,6 +251,11 @@
     numTextField.keyboardType=UIKeyboardTypeNumberPad;
     self.numTextField = numTextField;
     [self.contentView addSubview:numTextField];
+    // 自定义工具栏
+    XNRToolBar *toolBar = [[XNRToolBar alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(88))];
+    toolBar.delegate = self;
+    numTextField.inputAccessoryView = toolBar;
+    
     
     UIButton *bigRightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     bigRightBtn.frame = CGRectMake(CGRectGetMaxX(self.numTextField.frame), CGRectGetMaxY(self.picImageView.frame), CGRectGetMaxX(self.numTextField.frame) + PX_TO_PT(48), PX_TO_PT(88));
@@ -267,7 +283,13 @@
     [self.contentView addSubview:bottomLine];
 }
 
-#pragma mark - textField代理方法
+-(void)XNRToolBarBtnClick
+{
+    [self dealTap:nil];
+
+}
+
+
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     _bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
@@ -286,11 +308,14 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+
     if ([textField.text isEqualToString:@""]) {
-        textField.text = @"0";
+//        textField.text = @"0";
+        self.model.num = @"1";
     }else if([textField.text integerValue] == 0){
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"请输入正确的商品数量哦" message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-        [alert show];
+//        textField.text = @"1";
+        self.model.num = @"1";
+        [UILabel showMessage:@"请输入正确的商品数量哦"];
         
     }else{
         self.model.num = textField.text;
@@ -333,8 +358,7 @@
         self.model.num = [NSString stringWithFormat:@"%d",self.model.num.intValue-1];
         if (self.model.num.intValue<1) {
             self.model.num = @"1";
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"数量不能再减少了" message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-            [alert show];
+            [UILabel showMessage:@"数量不能再减少了"];
         }
 
     }
@@ -436,7 +460,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshNum" object:self];
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
-        [SVProgressHUD showErrorWithStatus:@"购物车提交失败"];
+        [UILabel showMessage:@"购物车提交失败"];
     }];
 }
 
@@ -444,10 +468,12 @@
     
 }
 
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
     
     // Configure the view for the selected state
 }
+
 
 @end

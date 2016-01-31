@@ -8,7 +8,6 @@
 
 #import "XNRMyscore_VC.h"
 #import "XNRMyscore_Cell.h"
-#import "MJRefresh.h"
 #import "XNRMyScoreModel.h"
 #import "XNRHowToEarnScore_VC.h"
 #define kMyScoreURL @"api/v2.0/point/findPointList" //我的积分
@@ -44,18 +43,18 @@
     
     [self.view addSubview:self.tableview];
     
-    //头部刷新
-    __weak __typeof(&*self)weakSelf = self;
-    [self.tableview addLegendHeaderWithRefreshingBlock:^{
-        _currentPage = 1;
-        [weakSelf getData];
-    }];
-    
-    //尾部刷新
-    [self.tableview addLegendFooterWithRefreshingBlock:^{
-        _currentPage = _currentPage + 1;
-        [weakSelf getData];
-    }];
+//    //头部刷新
+//    __weak __typeof(&*self)weakSelf = self;
+//    [self.tableview addLegendHeaderWithRefreshingBlock:^{
+//        _currentPage = 1;
+//        [weakSelf getData];
+//    }];
+//    
+//    //尾部刷新
+//    [self.tableview addLegendFooterWithRefreshingBlock:^{
+//        _currentPage = _currentPage + 1;
+//        [weakSelf getData];
+//    }];
     
     //创建头部视图
     [self creatHeadView];
@@ -85,23 +84,23 @@
             }
             self.myScore.text= [rowsDic[@"pointLaterTrade"] stringValue];
         } else{
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:result[@"message"] delegate:self cancelButtonTitle:@"好" otherButtonTitles:nil];
-            [alert show];
+           
+            [UILabel showMessage:result[@"message"]];
         }
         
         
         //刷新头部
-        [self.tableview.legendHeader endRefreshing];
+//        [self.tableview.legendHeader endRefreshing];
         //刷新尾部
         // [self.tableview.legendFooter endRefreshing];
         //刷新列表
         [self.tableview reloadData];
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:@"网络请求错误"];
-        //刷新头部
-        [self.tableview.legendHeader endRefreshing];
-        //刷新尾部
-        [self.tableview.legendFooter endRefreshing];
+//        //刷新头部
+//        [self.tableview.legendHeader endRefreshing];
+//        //刷新尾部
+//        [self.tableview.legendFooter endRefreshing];
         //刷新列表
         [self.tableview reloadData];
     }];

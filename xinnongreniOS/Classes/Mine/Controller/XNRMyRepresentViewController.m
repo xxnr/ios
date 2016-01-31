@@ -16,6 +16,7 @@
 @interface XNRMyRepresentViewController ()<UITableViewDelegate,UITableViewDataSource,XNRMyRepresentViewAddBtnDelegate>
 {
     NSMutableArray *_dataArr;
+    int currentPage;
     
 }
 
@@ -47,14 +48,101 @@
 @end
 
 @implementation XNRMyRepresentViewController
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    [self setupCustomerRefresh];
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    [self getCustomerData];
     _dataArr = [[NSMutableArray alloc] init];
     self.view.backgroundColor = R_G_B_16(0xfafafa);
     [self setNavigationbarTitle];
     [self setBottomButton];
     [self createTableView];
 }
+
+#pragma mark - 刷新
+
+-(void)setupCustomerRefresh{
+    
+    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
+    
+    NSMutableArray *idleImage = [NSMutableArray array];
+    
+    
+    
+    for (int i = 1; i<21; i++) {
+        
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
+        
+        
+        [idleImage addObject:image];
+        
+    }
+    
+    NSMutableArray *RefreshImage = [NSMutableArray array];
+    
+    for (int i = 10; i<21; i++) {
+        
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
+        [RefreshImage addObject:image];
+        
+        
+    }
+    
+    [header setImages:idleImage forState:MJRefreshStateIdle];
+    
+    [header setImages:RefreshImage forState:MJRefreshStatePulling];
+    
+    [header setImages:RefreshImage forState:MJRefreshStateRefreshing];
+    
+    // 隐藏时
+    
+    header.lastUpdatedTimeLabel.hidden = YES;
+    
+    // 隐藏状态
+    
+    header.stateLabel.hidden = YES;
+
+    self.tableView.mj_header = header;
+//    [self.tableView.mj_header beginRefreshing];
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
+    
+    MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
+    
+    // 设置刷新图片
+    
+    [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
+
+    footer.refreshingTitleHidden = YES;
+    
+    // 设置尾部
+    
+    self.tableView.mj_footer = footer;
+
+}
+
+-(void)headRefresh{
+    
+    currentPage = 1;
+    [_dataArr removeAllObjects];
+    [self getCustomerData];
+    
+}
+
+-(void)footRefresh{
+    
+    currentPage ++;
+    [self getCustomerData];
+}
+
+
 
 #pragma mark -  导航
 -(void)setNavigationbarTitle
@@ -74,8 +162,6 @@
     [backButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = leftItem;
-    
-    
 }
 
 -(void)backButtonClick
@@ -127,43 +213,18 @@
 }
 
 - (void)bottomBtnClicked:(UIButton *)sender {
+    
     self.selectedBtn.selected = NO;
     sender.selected = YES;
     self.selectedBtn = sender;
 
     if (sender.tag == btnTag) {
+        [self.topView removeFromSuperview];
         _tableView.hidden = NO;
-        [_dataArr removeAllObjects];
-        [KSHttpRequest post:KUserGetInvitee parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-            if ([result[@"code"] integerValue] == 1000) {
-                NSArray *arr = result[@"invitee"];
-                for (NSDictionary *dict in arr) {
-                    XNRMyRepresentModel *model = [[XNRMyRepresentModel alloc] init];
-                    [model setValuesForKeysWithDictionary:dict];
-                    [_dataArr addObject:model];
-                }
-            }else{
-                UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                [al show];
-            }
-            self.headLabel.text = [NSString stringWithFormat:@"已邀请%tu位好友",_dataArr.count];
-
-            
-            if (_dataArr.count > 0) {
-                [self.myRepTopView removeFromSuperview];
-                [self.topView removeFromSuperview];
-            }else{
-                [self.headView removeFromSuperview];
-                [self.tableView removeFromSuperview];
-            }
-            [self.tableView reloadData];
-        } failure:^(NSError *error) {
-            
-        }];
+        [self getCustomerData];
         [self.mrv removeFromSuperview];
         [self.myRepLabel removeFromSuperview];
         [self.myRepView removeFromSuperview];
-        [self.topView removeFromSuperview];
         [self createCustomerLabel];
     } else {
         _tableView.hidden = sender.selected;
@@ -175,10 +236,10 @@
                     [self.mrv removeFromSuperview];
                     [self createMyRepresentUI];
                     self.phoneNumLabel.text = _phoneNum;
-                    if (result[@"datas"][@"name"]) {
-                        self.nickNameLabel.text = result[@"datas"][@"name"];
+                    if (result[@"datas"][@"inviterName"]) {
+                        self.nickNameLabel.text = result[@"datas"][@"inviterName"];
                     }else{
-                        self.nickNameLabel.text = @"该好友未填姓名";
+                        self.nickNameLabel.text = @"好友未填姓名";
                         self.nickNameLabel.backgroundColor = R_G_B_16(0xf0f0f0);
                         self.nickNameLabel.textColor = R_G_B_16(0x2a2a2a);
                     }
@@ -196,14 +257,78 @@
                     mrv.frame = CGRectMake(0, (self.view.bounds.size.height-mrvF.viewH)*0.3, ScreenWidth, mrvF.viewH);
                 }
             }else{
-                UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                [al show];
+               
+                [UILabel showMessage:result[@"message"]];
             
             }
         } failure:^(NSError *error) {
             
         }];
     }
+}
+
+-(void)getCustomerData
+{
+    [_dataArr removeAllObjects];
+    [KSHttpRequest post:KUserGetInvitee parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            NSArray *arr = result[@"invitee"];
+            for (NSDictionary *dict in arr) {
+                XNRMyRepresentModel *model = [[XNRMyRepresentModel alloc] init];
+                [model setValuesForKeysWithDictionary:dict];
+                [_dataArr addObject:model];
+            }
+            self.headLabel.text = [NSString stringWithFormat:@"已邀请%tu位好友",_dataArr.count];
+            
+            NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:self.headLabel.text];
+            
+            NSDictionary *priceStr=@{
+                                     
+                                     NSForegroundColorAttributeName:R_G_B_16(0x00b38a),
+                                     NSFontAttributeName:[UIFont systemFontOfSize:20]
+                                     };
+            
+            [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,1)];
+            
+            
+            
+            [_headLabel setAttributedText:AttributedStringPrice];
+
+        }else{
+            [UILabel showMessage:result[@"message"]];
+        }
+        
+        if (_dataArr.count > 0) {
+            [self.myRepTopView removeFromSuperview];
+            [self.topView removeFromSuperview];
+        }else{
+            [self.headView removeFromSuperview];
+            [self.tableView removeFromSuperview];
+        }
+        [self.tableView reloadData];
+        
+        //  如果到达最后一页 就消除footer
+        
+        NSInteger pages = [result[@"datas"][@"pages"] integerValue];
+        
+        NSInteger page = [result[@"datas"][@"page"] integerValue];
+        
+        self.tableView.mj_footer.hidden = pages == page;
+        
+        [self.tableView.mj_header endRefreshing];
+        
+        [self.tableView.mj_footer endRefreshing];
+        
+
+    } failure:^(NSError *error) {
+    [self.tableView.mj_header endRefreshing];
+        
+    [self.tableView.mj_footer endRefreshing];
+        
+    }];
+
+
+
 }
 
 -(void)createCustomerLabel{
@@ -240,12 +365,14 @@
     headView.backgroundColor = R_G_B_16(0xf0f0f0);
     [self.view addSubview:headView];
     
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth-70)*0.5, 10, 70, 70)];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth-70)*0.5, 10, PX_TO_PT(140), PX_TO_PT(140))];
     [imageView setImage:[UIImage imageNamed:@"mine_represent"]];
     [headView addSubview:imageView];
     
     UILabel *headLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(imageView.frame) + PX_TO_PT(30), ScreenWidth, PX_TO_PT(36))];
+    headLabel.textColor = R_G_B_16(0x646464);
     headLabel.textAlignment = NSTextAlignmentCenter;
+    headLabel.font = [UIFont systemFontOfSize:16];
     self.headLabel = headLabel;
     [headView addSubview:headLabel];
 
@@ -274,16 +401,16 @@
         [KSHttpRequest post:KUserFindAccount parameters:@{@"account":phoneNum,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 if ([self.phoneNum  isEqualToString:[DataCenter account].phone]) {
-                    [SVProgressHUD showErrorWithStatus:@"不能设置自己为新农代表哦"];
+                    [UILabel showMessage:@"不能设置自己为新农代表哦"];
                 }else{
                     [KSHttpRequest post:KUserBindInviter parameters:@{@"userId":[DataCenter account].userid,@"inviter":phoneNum,@"user-agent":@"IOS-v2.0"} success:^(id result) {
                         if ([result[@"code"] integerValue]==1000) {
                             [self.mrv removeFromSuperview];
                             [self createMyRepresentUI];
-                            [SVProgressHUD showSuccessWithStatus:@"设置代表成功"];
+                            [UILabel showMessage:@"设置代表成功"];
                         } else {
-                            UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                            [al show];
+                           
+                            [UILabel showMessage:result[@"message"]];
                             
                         }
                     } failure:^(NSError *error) {
@@ -295,9 +422,8 @@
                
                 
             }else{
-                UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                [al show];
-            
+                
+                [UILabel showMessage:result[@"message"]];
             }
         } failure:^(NSError *error) {
             
@@ -305,8 +431,8 @@
     
     }
     if (flag == 0) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:title delegate:self cancelButtonTitle:@"好" otherButtonTitles: nil];
-        [alert show];
+        
+        [UILabel showMessage:title];
     }
     
 }
@@ -337,13 +463,13 @@
     [myRepTopView addSubview:iconImageView];
     
     CGFloat myRepLabelX = 0;
-    CGFloat myRepLabelY = CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(20);
+    CGFloat myRepLabelY = CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(10);
     CGFloat myRepLabelW = ScreenWidth;
     CGFloat myRepLabelH = 30;
     UILabel *myRepLabel = [[UILabel alloc] initWithFrame:CGRectMake(myRepLabelX, myRepLabelY, myRepLabelW, myRepLabelH)];
     myRepLabel.text = @"我的代表";
     myRepLabel.font = [UIFont systemFontOfSize:16];
-    myRepLabel.textColor = R_G_B_16(0x909090);
+    myRepLabel.textColor = R_G_B_16(0x646464);
     myRepLabel.textAlignment = NSTextAlignmentCenter;
     self.myRepLabel = myRepLabel;
     [myRepTopView addSubview:myRepLabel];
@@ -359,10 +485,11 @@
     [self.view addSubview:myRepView];
     
     CGFloat nickNameLabelY = (PX_TO_PT(96) - PX_TO_PT(60))*0.5;
-    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(200), PX_TO_PT(60))];
+    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(220), PX_TO_PT(60))];
     nickNameLabel.backgroundColor = R_G_B_16(0x00b38a);
     nickNameLabel.layer.cornerRadius = 5.0;
     nickNameLabel.layer.masksToBounds = YES;
+    nickNameLabel.adjustsFontSizeToFitWidth = YES;
     nickNameLabel.textColor = R_G_B_16(0xffffff);
     nickNameLabel.font = [UIFont systemFontOfSize:16];
     nickNameLabel.textAlignment = NSTextAlignmentCenter;
@@ -404,6 +531,7 @@
     customerVC.hidesBottomBarWhenPushed = YES;
     XNRMyRepresentModel *model = _dataArr[indexPath.row];
     customerVC.inviteeId = model.userId;
+    
     [self.navigationController pushViewController:customerVC animated:YES];
 
 }

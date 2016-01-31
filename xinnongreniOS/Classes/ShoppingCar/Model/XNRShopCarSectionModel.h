@@ -18,4 +18,10 @@
 @property (nonatomic, strong) NSMutableArray *goodsList;
 
 @property (nonatomic ,assign) BOOL isSelected;
+
+@property (nonatomic ,copy) NSString *goodsCount;
+
+@property (nonatomic, copy) NSString *unitPrice;
+
+@property (nonatomic,copy) NSString *deposit;
 @end

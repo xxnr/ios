@@ -12,7 +12,7 @@
 #define MARGIN  PX_TO_PT(24)
 @interface XNRAddAddress_VC()<UITextFieldDelegate,XNRAddressManageViewBtnDelegate,XNRTownManagerViewBtnDelegate>
 {
-    int type;
+    int addressType;
 }
 
 @property (nonatomic ,weak) UIView *topBgView;
@@ -47,7 +47,6 @@
 @property (nonatomic ,copy) NSString *county;
 @property (nonatomic ,copy) NSString *towns;
 
-
 @property (nonatomic ,copy) NSString *provinceID;
 @property (nonatomic ,copy) NSString *cityID;
 @property (nonatomic ,copy) NSString *countyID;
@@ -75,8 +74,6 @@
         [self.view addSubview:townManagerView];
     }
     return _townManagerView;
-
-
 }
 
 -(void)XNRAddressManageViewBtnClick:(XNRAddressManageViewType)type
@@ -89,7 +86,12 @@
             self.addressTF.text = [NSString stringWithFormat:@"%@%@%@",@"河南",self.city,self.county];
 
         }else{
-            self.addressTF.text = [NSString stringWithFormat:@"%@%@",@"河南",self.city];
+            if (self.city) {
+                self.addressTF.text = [NSString stringWithFormat:@"%@%@",@"河南",self.city];
+
+            }else{
+                self.addressTF.text = @"";
+            }
         }
 }
     
@@ -109,6 +111,15 @@
     }
 
 }
+#pragma mark - 键盘回收
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
 
 
 -(void)viewDidLoad{
@@ -117,7 +128,20 @@
     [self createTopView];
     [self createMidView];
     [self createBottomView];
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//     
+//                                             selector:@selector(keyboardWillBeHidden:)
+//     
+//                                                 name:UIKeyboardWillHideNotification object:nil];
 
+}
+
+-(void)keyboardWillBeHidden:(NSNotification *)note
+{
+    [self.addressManagerView hide];
+    [self.townManagerView hide];
+    
 }
 -(void)createTopView{
     CGFloat x = PX_TO_PT(20);
@@ -143,6 +167,8 @@
     recivePersonTF.textColor = R_G_B_16(0x909090);
     recivePersonTF.font = XNRFont(14);
     recivePersonTF.text = self.model.receiptPeople;
+    recivePersonTF.delegate = self;
+    recivePersonTF.tag = 1002;
     self.recivePersonTF = recivePersonTF;
     [topBgView addSubview:recivePersonTF];
     // 2.联系电话
@@ -158,6 +184,8 @@
     phoneNumTF.textColor = R_G_B_16(0x909090);
     phoneNumTF.font = XNRFont(14);
     phoneNumTF.text = self.model.receiptPhone;
+    phoneNumTF.delegate = self;
+    phoneNumTF.tag = 1003;
     self.phoneNumTF = phoneNumTF;
     [topBgView addSubview:phoneNumTF];
     // 3.省市区县
@@ -182,8 +210,6 @@
             addressTF.text = [NSString stringWithFormat:@"%@%@",self.model.areaName,self.model.cityName];
         }
     }
-    
-
     self.addressTF = addressTF;
     [topBgView addSubview:addressTF];
     // 4.乡镇
@@ -224,6 +250,8 @@
     detailAddressTF.textColor = R_G_B_16(0x909090);
     detailAddressTF.font = XNRFont(14);
     detailAddressTF.text = self.model.address;
+    detailAddressTF.delegate = self;
+    detailAddressTF.tag = 1004;
     self.detailAddressTF = detailAddressTF;
     [topBgView addSubview:detailAddressTF];
     // 6.邮编
@@ -238,6 +266,8 @@
     emailTF.placeholder = @"(选填)请输入邮政编码";
     emailTF.textColor = R_G_B_16(0x909090);
     emailTF.font = XNRFont(14);
+    emailTF.tag = 1005;
+    emailTF.delegate = self;
 //    emailTF.keyboardType = UIKeyboardTypePhonePad;
 //    emailTF.returnKeyType = UIReturnKeyDone;
 
@@ -258,8 +288,6 @@
 #pragma mark --UITextFieldDelegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-//    [textField resignFirstResponder];
-//    [self.townTF resignFirstResponder];
     if (textField.tag == 1000) {
         [self.townManagerView hide];
         __weak __typeof(&*self)weakSelf = self;
@@ -292,13 +320,20 @@
     
     if (textField.tag == 1001) {
         [self.addressManagerView hide];
-        __weak __typeof(&*self)weakSelf = self;
-
-        [self.townManagerView showWith:^(NSString *townName, NSString *townId) {
-            weakSelf.townID = townId;
-            weakSelf.towns = townName;
-        }];
+        if (self.addressTF.text.length>0) {
+            __weak __typeof(&*self)weakSelf = self;
+            
+            [self.townManagerView showWith:^(NSString *townName, NSString *townId) {
+                weakSelf.townID = townId;
+                weakSelf.towns = townName;
+            }];
+        }
         
+        
+    }
+    if (textField.tag == 1002) {
+        [self.addressManagerView hide];
+        [self.townManagerView hide];
     }
     
     return YES;
@@ -320,6 +355,9 @@
     mySwitch.tintColor = R_G_B_16(0xa2a2a2);
     mySwitch.onTintColor = R_G_B_16(0x00b38a);
     [mySwitch addTarget:self action:@selector(mySwitchChange:) forControlEvents:UIControlEventTouchUpInside];
+    if ([_model.type integerValue] ==  1) {
+        mySwitch.on = YES;
+    }
     [midView addSubview:mySwitch];
     
     for (int i = 0; i<2; i++) {
@@ -332,10 +370,10 @@
 -(void)mySwitchChange:(UISwitch *)mySwitch{
     
     if (mySwitch.isOn) {
-        type = 1;
+        addressType = 1;
         NSLog(@"开启");
     }else{
-        type = 2;
+        addressType = 2;
         NSLog(@"关闭");
     }
 }
@@ -382,9 +420,9 @@
     
     }else{
         if ([self.titleLabel isEqualToString:@"添加收货地址"]) {
-            [KSHttpRequest post:KSaveUserAddress parameters:@{@"userId":[DataCenter account].userid,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@"",@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",type]} success:^(id result) {
+            [KSHttpRequest post:KSaveUserAddress parameters:@{@"userId":[DataCenter account].userid,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@"",@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",addressType]} success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
-                    if (type == 1) {
+                    if (addressType == 1) {
                         UserInfo *info = [DataCenter account];
                         NSString *address1 = [NSString stringWithFormat:@"%@%@",self.model.areaName,self.model.cityName];
                         NSString *address2 = [NSString stringWithFormat:@"%@%@%@",self.model.areaName,self.model.cityName,self.model.countyName];
@@ -419,8 +457,9 @@
             }];
 
         }else{// 更新收货地址
-            [KSHttpRequest post:KUpdateUserAddress parameters:@{@"userId":[DataCenter account].userid,@"addressId":self.model.addressId,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@"",@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",type]} success:^(id result) {
+            [KSHttpRequest post:KUpdateUserAddress parameters:@{@"userId":[DataCenter account].userid,@"addressId":self.model.addressId,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:self.model.cityId,@"countyId":self.countyID?self.countyID:self.model.countyId,@"townId":self.townID?self.townID:self.model.townId,@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",addressType]?[NSString stringWithFormat:@"%d",addressType]:self.model.type} success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
+                    
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"addressRefresh" object:self];
                     
                     [self.navigationController popViewControllerAnimated:YES];
@@ -434,8 +473,9 @@
             }
     
     if (flag == 0) {
-//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:title chooseBtns:@[@"好"]];
-//        [alertView BMAlertShow];
+        
+        [UILabel showMessage:title];
+        
         return;
     }
 }
@@ -483,6 +523,77 @@
     [self.navigationController popViewControllerAnimated:YES];
 
 }
+
+#pragma mark - 键盘躲避
+
+-(void)viewDidAppear:(BOOL)animated{
+    
+    
+    
+    [super viewDidAppear:animated];
+    
+    
+    
+    [CoreTFManagerVC installManagerForVC:self scrollView:nil tfModels:^NSArray *{
+        
+        
+        
+        TFModel *tfm1=[TFModel modelWithTextFiled:self.recivePersonTF inputView:nil name:@"" insetBottom:0];
+        
+        TFModel *tfm2=[TFModel modelWithTextFiled:self.phoneNumTF inputView:nil name:@"" insetBottom:0];
+        
+//        TFModel *tfm3=[TFModel modelWithTextFiled:self.addressTF inputView:nil name:@"" insetBottom:0];
+//        
+//        TFModel *tfm4=[TFModel modelWithTextFiled:self.townTF inputView:nil name:@"" insetBottom:0];
+        
+        TFModel *tfm5=[TFModel modelWithTextFiled:self.detailAddressTF inputView:nil name:@"" insetBottom:0];
+        
+        TFModel *tfm6=[TFModel modelWithTextFiled:self.eMailTF inputView:nil name:@"" insetBottom:0];
+        
+        return @[tfm1,tfm2,tfm5,tfm6];
+        
+        
+    }];
+    
+}
+
+
+
+-(void)viewDidDisappear:(BOOL)animated{
+    
+    
+    
+    [super viewDidDisappear:animated];
+    
+    [CoreTFManagerVC uninstallManagerForVC:self];
+}
+
+
+
+//消失时回收键盘
+
+- (void)viewWillDisappear:(BOOL)animated
+
+{
+    
+    [super viewWillDisappear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
+    [self.recivePersonTF resignFirstResponder];
+    
+    [self.phoneNumTF resignFirstResponder];
+    
+    [self.detailAddressTF resignFirstResponder];
+
+    [self.eMailTF resignFirstResponder];
+
+    
+    
+}
+
+
+
 
 
 

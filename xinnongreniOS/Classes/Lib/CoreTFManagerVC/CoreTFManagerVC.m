@@ -48,6 +48,8 @@
 //window
 @property (nonatomic,strong) UIWindow *window;
 
+@property (nonatomic,copy) void(^doneClickBlock)();                                             //完成
+
 
 @end
 
@@ -94,6 +96,43 @@
     //注册键盘监听
     [tfManagerVC keyboardObserver];
 }
+
++ (void)installManagerForVC:(UIViewController *)vc scrollView:(UIScrollView *)scrollView tfModels:(NSArray *(^)())tfModels doneCom:(void (^)())doneCom {
+    if(vc==nil){
+        NSLog(@"CoreTFManagerVC：安装失败，您传入的控制器不合法，不能为nil");
+        return;
+    }
+    
+    NSArray *tfModelsArray=nil;
+    
+    if(tfModels!=nil) tfModelsArray=tfModels();
+    
+    BOOL res=[self checkTFModels:tfModelsArray];
+    
+    if(!res) return;
+    
+    CoreTFManagerVC *tfManagerVC=[[CoreTFManagerVC alloc] init];
+    tfManagerVC.doneClickBlock = doneCom;
+    
+    //记录自己，保命
+    [vc addChildViewController:tfManagerVC];
+    
+    //记录
+    tfManagerVC.superVC=vc;
+    
+    //scrollView
+    tfManagerVC.scrollView=scrollView;
+    
+    //输入框模型数组
+    if(tfModels!=nil) tfManagerVC.tfModels=tfModels();
+    
+    //注册键盘监听
+    [tfManagerVC keyboardObserver];
+
+    
+    
+}
+
 
 /**
  *  数据合法性校验
@@ -200,8 +239,7 @@
     [mstr insertString:string atIndex:range.location];
     if(mstr.length >20)
     {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"不能超过20个字符长度" message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-        [alert show];
+        [UILabel showMessage:@"不能超过20个字符长度"];
         return NO;
     }
     
@@ -392,8 +430,11 @@
                     }];
                 }
             }
- 
+            
             [weakSelf.currentTFModel.textField resignFirstResponder];
+            if (weakSelf.doneClickBlock) {
+                weakSelf.doneClickBlock();
+            }
         };
         
     }

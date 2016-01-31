@@ -271,6 +271,7 @@
         [self.collectionView reloadData];
         
     }else if(button == self.admireBtn){
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:@"selectBtnChange" object:nil];
         [self loadSeletedDataWith:nil];
         [self cancel];
@@ -303,9 +304,6 @@
         return [[UICollectionViewCell alloc] init];
     }
 }
-
-
-
 
 //delegate
 //选择了某个cell
@@ -352,7 +350,13 @@
     UICollectionReusableView *reusableview = nil;
     if (kind == UICollectionElementKindSectionHeader) {
         XNRHomeSelectedBrandHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewId forIndexPath:indexPath];
-        headerView.selectTitleLabel.text = indexPath.section==0?@"品牌":@"价格";
+        if (self.loadType == eXNRFerType) {
+            headerView.selectTitleLabel.text = indexPath.section==0?@"品牌":@"价格";
+
+        }else if (self.loadType == eXNRCarType){
+            headerView.selectTitleLabel.text = indexPath.section==0?@"车系":@"价格";
+
+        }
         reusableview = headerView;
     }
     return reusableview;
@@ -375,8 +379,6 @@
     
     return isAll||!isNotAll;
 }
-
-
 
 #pragma mark - 请求筛选数据接口 -
 - (void)loadSeletedDataWith:(id)parameObj {

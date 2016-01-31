@@ -63,9 +63,7 @@
 - (void)warning
 {
     
-//    BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"未连接网络" chooseBtns:@[@"确定"]];
-//    
-//    [alertView BMAlertShow];
+    [UILabel showMessage:@"未连接网络"];
 
 }
 

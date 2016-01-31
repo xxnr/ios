@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "XNRAddressManageModel.h"
 @interface XNRAddressManageViewController : UIViewController
+@property (nonatomic, strong) XNRAddressManageModel *addressModel;
 @property(nonatomic,copy)void(^addressChoseBlock)(XNRAddressManageModel*model);
 @end

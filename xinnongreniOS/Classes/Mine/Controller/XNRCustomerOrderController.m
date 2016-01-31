@@ -12,6 +12,9 @@
 #import "XNRCustomerOrderCell.h"
 #import "MJExtension.h"
 @interface XNRCustomerOrderController()<UITableViewDelegate,UITableViewDataSource>
+{
+    int currentPage;
+}
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
@@ -32,51 +35,152 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
-    
-
-
 }
 
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-    [self getData];
-    _dataArray = [[NSMutableArray alloc] init];
     self.view.backgroundColor = [UIColor whiteColor];
+    [self getData];
     [self setNavigationbarTitle];
     [self createHeadView];
     [self createTableView];
+    _dataArray = [[NSMutableArray alloc] init];
+    [self setupCustomerOrderRefresh];
+
+}
+
+-(void)setupCustomerOrderRefresh{
+    
+    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
+    
+    NSMutableArray *idleImage = [NSMutableArray array];
+    
+    
+    
+    for (int i = 1; i<21; i++) {
+        
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
+        
+        
+        [idleImage addObject:image];
+        
+    }
+    
+    NSMutableArray *RefreshImage = [NSMutableArray array];
+    
+    
+    
+    for (int i = 10; i<21; i++) {
+        
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
+        
+        
+        [RefreshImage addObject:image];
+
+    }
+    
+    
+    
+    [header setImages:idleImage forState:MJRefreshStateIdle];
+
+    [header setImages:RefreshImage forState:MJRefreshStatePulling];
+
+    [header setImages:RefreshImage forState:MJRefreshStateRefreshing];
+    
+    // 隐藏时
+    
+    header.lastUpdatedTimeLabel.hidden = YES;
+    
+    // 隐藏状态
+    
+    header.stateLabel.hidden = YES;
+
+    self.tableView.mj_header = header;
+    
+    
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
+    
+    MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
+    
+    // 设置刷新图片
+    
+    [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
+
+    footer.refreshingTitleHidden = YES;
+    
+    // 设置尾部
+    
+    self.tableView.mj_footer = footer;
+}
+
+-(void)headRefresh{
+    
+    currentPage = 1;
+    
+    [_dataArray removeAllObjects];
+    
+    [self getData];
+}
+
+-(void)footRefresh{
+    
+    currentPage ++;
+    
+    [self getData];
+
 }
 
 -(void)getData
 {
-    NSDictionary *params = @{@"inviteeId":self.inviteeId};
+    NSDictionary *params = @{@"inviteeId":self.inviteeId,@"page":[NSString stringWithFormat:@"%d",currentPage]};
     [KSHttpRequest post:KgetInviteeOrders parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datas = result[@"datas"];
-            XNRCustomerOrderSectionModel *sectionModel = [[XNRCustomerOrderSectionModel alloc] init];
-            sectionModel.account = datas[@"account"];
-            sectionModel.nickname = datas[@"nickname"];
-            sectionModel.name = datas[@"name"];
-            sectionModel.total = datas[@"total"];
             
-            self.nameLabel.text = [NSString stringWithFormat:@"姓名：%@",sectionModel.name];
-            self.phoneNum.text = [NSString stringWithFormat:@"手机号：%@",sectionModel.account];
-            self.totalLabel.text = [NSString stringWithFormat:@"%@",sectionModel.total];
-
+            self.nameLabel.text = [NSString stringWithFormat:@"姓名：%@",datas[@"name"]];
+            self.phoneNum.text = [NSString stringWithFormat:@"手机号：%@",datas[@"account"]];
+            self.totalLabel.text = [NSString stringWithFormat:@"%@",datas[@"total"]];
+            
             NSArray *rows = datas[@"rows"];
             for (NSDictionary *subDic in rows) {
+                
+                XNRCustomerOrderSectionModel *sectionModel = [[XNRCustomerOrderSectionModel alloc] init];
+                
+//                sectionModel.account = datas[@"account"];
+//                sectionModel.nickname = datas[@"nickname"];
+//                sectionModel.name = datas[@"name"];
+//                sectionModel.total = datas[@"total"];
+                
                 sectionModel.dateCreated = subDic[@"dateCreated"];
                 sectionModel.typeValue = subDic[@"typeValue"];
                 sectionModel.products = (NSMutableArray *)[XNRCustomerOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
                 [_dataArray addObject:sectionModel];
             }
-            // 刷新
-            [self.tableView reloadData];
-            
+           
         }
         
+        //  如果到达最后一页 就消除footer
+        
+        NSInteger pages = [result[@"datas"][@"pages"] integerValue];
+        
+        NSInteger page = [result[@"datas"][@"page"] integerValue];
+        
+        self.tableView.mj_footer.hidden = pages == page;
+    
+        [self.tableView.mj_header endRefreshing];
+        
+        [self.tableView.mj_footer endRefreshing];
+        // 刷新
+        [self.tableView reloadData];
+        
     } failure:^(NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+        
+        [self.tableView.mj_footer endRefreshing];
+
         
     }];
 
@@ -152,7 +256,7 @@
     self.nameLabel = nameLabel;
     [headView addSubview:nameLabel];
             
-    UILabel *phoneNum = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(30), ScreenWidth/2, PX_TO_PT(32))];
+    UILabel *phoneNum = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(30), ScreenWidth, PX_TO_PT(32))];
     phoneNum.textColor = R_G_B_16(0x323232);
     phoneNum.font = [UIFont systemFontOfSize:16];
     self.phoneNum = phoneNum;
@@ -234,9 +338,14 @@
         cell = [[XNRCustomerOrderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        
+    }
+    if (_dataArray.count>0) {
         XNRCustomerOrderSectionModel *sectionModel = _dataArray[indexPath.section];
-        XNRCustomerOrderModel *model = sectionModel.products[indexPath.row];
-        [cell setCellModelWith:model];
+        if (sectionModel.products.count>0) {
+            XNRCustomerOrderModel *model = sectionModel.products[indexPath.row];
+            [cell setCellDataWithCustomerOrderModel:model];
+        }
     }
     return cell;
 }
@@ -262,6 +371,7 @@
     
 }
 -(void)backButtonClick{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"removeRedPoint" object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

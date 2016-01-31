@@ -43,6 +43,9 @@
  *  省份ID
  */
 @property (copy,nonatomic) NSString *areaId;
+@property (copy,nonatomic) NSString *cityId;
+@property (copy,nonatomic) NSString *countyId;
+@property (copy,nonatomic) NSString *townId;
 
 //附加字段
 @property (nonatomic,assign) BOOL selected;

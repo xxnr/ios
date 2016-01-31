@@ -13,7 +13,8 @@
 #import "XNRPayTypeAlertView.h"
 #import "UPPayPlugin.h"
 #import "UPPayPluginDelegate.h"
-
+#import "XNRCheckOrderSectionModel.h"
+#import "XNRCheckOrderModel.h"
 #define kPayTypeBtn 1000
 #define kSelectedBtn 2000
 #define kMode_Development  @"00"
@@ -21,6 +22,7 @@
 {
     UIImageView *_tempImageView;
     CGFloat _payType;
+    NSMutableArray *_dataArray;
 }
 @property (nonatomic,strong)UIButton *confirmButton;
 
@@ -42,6 +44,12 @@
 
 @property (nonatomic ,copy) NSString *Tn;
 
+@property (nonatomic ,weak) UIButton *selectedBtnOne;
+
+@property (nonatomic ,weak) UIButton *selectedBtnTwo;
+
+@property (nonatomic ,weak) UILabel *priceLabel;
+
 @end
 
 @implementation XNRPayTypeViewController
@@ -51,11 +59,12 @@
     [super viewDidLoad];
     _payType=0;
     self.view.backgroundColor = R_G_B_16(0xf2f2f2);
-    
+    [self getData];
     [self setNav];
     [self createTopView];
     [self createMidView];
     [self createBottomView];
+    _dataArray = [NSMutableArray array];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(dealAlipayResult:) name:@"alipayResult" object:nil];
 }
@@ -70,6 +79,63 @@
     vc.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:vc animated:YES];
     
+}
+
+-(void)getData{
+    [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            
+            XNRCheckOrderSectionModel *sectionModel = [[XNRCheckOrderSectionModel alloc] init];
+            
+            NSDictionary *datasDic = result[@"datas"];
+            sectionModel.address = datasDic[@"rows"][@"address"];
+            sectionModel.id = datasDic[@"rows"][@"id"];
+            sectionModel.recipientName = datasDic[@"rows"][@"recipientName"];
+            sectionModel.recipientPhone = datasDic[@"rows"][@"recipientPhone"];
+            sectionModel.payStatus = datasDic[@"rows"][@"payStatus"];
+            sectionModel.duePrice = datasDic[@"rows"][@"duePrice"];
+            
+            NSDictionary *payment = datasDic[@"rows"][@"payment"];
+            
+            if (payment) {
+                sectionModel.price = payment[@"price"];
+            }
+
+                
+            self.priceLabel.text = [NSString stringWithFormat:@"应付金额：%.2f元",sectionModel.price.floatValue];
+                
+            NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.priceLabel.text];
+            NSDictionary *depositStr=@{
+                                       
+                                       NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
+                                       NSFontAttributeName:[UIFont systemFontOfSize:18]
+                                       
+                                       };
+            
+            [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(5,AttributedStringDeposit.length-5)];
+            
+            [self.priceLabel setAttributedText:AttributedStringDeposit];
+
+            
+            NSDictionary *order = datasDic[@"rows"][@"order"];
+            sectionModel.deposit = order[@"deposit"];
+            sectionModel.totalPrice = order[@"totalPrice"];
+            
+            NSDictionary *orderStatus = order[@"orderStatus"];
+            sectionModel.type = orderStatus[@"type"];
+            sectionModel.value = orderStatus[@"value"];
+            sectionModel.orderGoodsList = (NSMutableArray *)[XNRCheckOrderModel objectArrayWithKeyValuesArray:datasDic[@"rows"][@"orderGoodsList"]];
+            [_dataArray addObject:sectionModel];
+            
+        }
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+    }];
+
+
+
 }
 #pragma mark - 顶部视图
 -(void)createTopView{
@@ -86,20 +152,9 @@
     
     UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(orderNumLabel.frame) + PX_TO_PT(30), ScreenWidth, PX_TO_PT(36))];
     priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-    priceLabel.text = [NSString stringWithFormat:@"应付金额：%.2f元",self.money.floatValue];
-    
-    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:priceLabel.text];
-    NSDictionary *depositStr=@{
-                               
-                               NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-                               NSFontAttributeName:[UIFont systemFontOfSize:18]
-                               
-                               };
-    
-    [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(5,AttributedStringDeposit.length-5)];
-    
-    [priceLabel setAttributedText:AttributedStringDeposit];
+    self.priceLabel = priceLabel;
     [topView addSubview:priceLabel];
+
     
     for (int i = 0; i<2; i++) {
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, i*PX_TO_PT(140), ScreenWidth, PX_TO_PT(1))];
@@ -128,13 +183,27 @@
     subView.layer.masksToBounds = YES;
     [midView addSubview:subView];
     
+    UIButton *alipayBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    alipayBtn.frame = CGRectMake(0, 0, ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(98));
+    alipayBtn.tag = kSelectedBtn;
+    [alipayBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self selectedBtnClick:alipayBtn];
+    [subView addSubview:alipayBtn];
+    
+    UIButton *unionpayBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    unionpayBtn.frame = CGRectMake(0, PX_TO_PT(98), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(98));
+    unionpayBtn.tag = kSelectedBtn+1;
+    [unionpayBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [subView addSubview:unionpayBtn];
+
     UIImageView *imageView1 = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(24), PX_TO_PT(24), PX_TO_PT(300), PX_TO_PT(50))];
     [imageView1 setImage:[UIImage imageNamed:@"pay_0"]];
-    [subView addSubview:imageView1];
+    [alipayBtn addSubview:imageView1];
     
-    UIImageView *imageView2 = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(24), PX_TO_PT(98)+PX_TO_PT(24), PX_TO_PT(250), PX_TO_PT(50))];
+    
+    UIImageView *imageView2 = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(24), PX_TO_PT(24), PX_TO_PT(250), PX_TO_PT(50))];
     [imageView2 setImage:[UIImage imageNamed:@"pay_1"]];
-    [subView addSubview:imageView2];
+    [unionpayBtn addSubview:imageView2];
 
     
     UIImageView *imageView3 = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(24), PX_TO_PT(98)*2+PX_TO_PT(14), PX_TO_PT(280), PX_TO_PT(70))];
@@ -146,16 +215,27 @@
     [imageView4 setImage:[UIImage imageNamed:@"pay_3"]];
 //    [subView addSubview:imageView4];
 
-    for (int i = 0; i<2; i++) {
-        UIButton *selectedBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        selectedBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(32)*2-PX_TO_PT(98), PX_TO_PT(98)*i, PX_TO_PT(98), PX_TO_PT(98));
-        selectedBtn.tag = kSelectedBtn + i;
-        [selectedBtn setImage:[UIImage imageNamed:@"shopCar_circle"] forState:UIControlStateNormal];
-        [selectedBtn setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateSelected];
-        [selectedBtn addTarget: self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        [subView addSubview:selectedBtn];
-        
-    }
+        UIButton *selectedBtnOne = [UIButton buttonWithType:UIButtonTypeCustom];
+        selectedBtnOne.frame = CGRectMake(ScreenWidth-PX_TO_PT(32)*2-PX_TO_PT(98), 0, PX_TO_PT(98), PX_TO_PT(98));
+        selectedBtnOne.tag = kSelectedBtn;
+        [selectedBtnOne setImage:[UIImage imageNamed:@"shopCar_circle"] forState:UIControlStateNormal];
+        [selectedBtnOne setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateSelected];
+        [selectedBtnOne addTarget: self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        self.selectedBtnOne = selectedBtnOne;
+        [self selectedBtnClick:selectedBtnOne];
+        [subView addSubview:selectedBtnOne];
+    
+    
+        UIButton *selectedBtnTwo = [UIButton buttonWithType:UIButtonTypeCustom];
+        selectedBtnTwo.frame = CGRectMake(ScreenWidth-PX_TO_PT(32)*2-PX_TO_PT(98), PX_TO_PT(98), PX_TO_PT(98), PX_TO_PT(98));
+        selectedBtnTwo.tag = kSelectedBtn + 1;
+        [selectedBtnTwo setImage:[UIImage imageNamed:@"shopCar_circle"] forState:UIControlStateNormal];
+        [selectedBtnTwo setImage:[UIImage imageNamed:@"shopcar_right"] forState:UIControlStateSelected];
+        [selectedBtnTwo addTarget: self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        self.selectedBtnTwo = selectedBtnTwo;
+        [subView addSubview:selectedBtnTwo];
+
+    
     
     for (int i = 1; i<2; i++) {
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(1))];
@@ -175,6 +255,8 @@
     button.selected = YES;
     self.tempBtn = button;
     if (button.tag == kSelectedBtn) {
+        self.selectedBtnOne.selected = YES;
+        self.selectedBtnTwo.selected = NO;
         _payType = 1;
         [self payType];
         NSDictionary *params = @{@"consumer":@"app",@"orderId":self.orderID};
@@ -185,10 +267,13 @@
             }
         } failure:^(NSError *error) {
             
-        }];
+            
+    }];
 
         
     }else if (button.tag == kSelectedBtn + 1){
+        self.selectedBtnTwo.selected = YES;
+        self.selectedBtnOne.selected = NO;
         _payType = 2;
         [self payType];
         // 获取tn
@@ -200,7 +285,7 @@
             
         } failure:^(NSError *error) {
             
-        }];
+    }];
 
     
     }else if (button.tag == kSelectedBtn + 2){

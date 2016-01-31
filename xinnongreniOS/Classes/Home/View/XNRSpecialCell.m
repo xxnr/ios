@@ -81,16 +81,18 @@
 
 -(void)shopcarBtnClick
 {
-    [SVProgressHUD showWithStatus:@"加入购物车中..." maskType:SVProgressHUDMaskTypeClear];
+    [BMProgressView showCoverWithTarget:self color:nil isNavigation:NO];
     if(IS_Login == YES) {
         [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":self.model.goodsId,@"userId":[DataCenter account].userid,@"quantity":@"1",@"user-agent":@"IOS-v2.0",@"update_by_add":@"true"} success:^(id result) {
             NSLog(@"%@",result);
             if([result[@"code"] integerValue] == 1000){
-                [SVProgressHUD  showSuccessWithStatus:@"加入购物车成功"];
+                [UILabel showMessage:@"加入购物车成功"];
+                [BMProgressView LoadViewDisappear:self];
             }else {
-                [SVProgressHUD dismiss];
-                UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                [al show];
+                
+                [UILabel showMessage:result[@"message"]];
+                [BMProgressView LoadViewDisappear:self];
+
             }
             
         } failure:^(NSError *error) {
@@ -133,9 +135,12 @@
                 b = [manager updateShoppingCarWithModel:model];
             }
             if (b) {
-                [SVProgressHUD  showSuccessWithStatus:@"加入购物车成功"];
+                [UILabel showMessage:@"加入购物车成功"];
+                [BMProgressView LoadViewDisappear:self];
+
             }else{
-                [SVProgressHUD showErrorWithStatus:@"加入购物车失败"];
+                [UILabel showMessage:@"加入购物车失败"];
+                [BMProgressView LoadViewDisappear:self];
             }
         });
     }

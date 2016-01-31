@@ -27,6 +27,7 @@
 @end
 
 @implementation XNRAddressManageViewController
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
 }
@@ -70,12 +71,13 @@
 - (void)getData
 {
  
-    [SVProgressHUD showWithStatus:nil];
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [KSHttpRequest post:KGetUserAddressList parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-        [SVProgressHUD dismiss];
+        
+        [BMProgressView LoadViewDisappear:self.view];
+
         if([result[@"code"] integerValue] == 1000){
             [_dataArr removeAllObjects];
-            
             for(NSDictionary *dic in result[@"datas"][@"rows"]){
                 
                 XNRAddressManageModel *model=[[XNRAddressManageModel alloc]init];
@@ -91,8 +93,9 @@
             
             
         } else {
-//            BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:result[@"message"] chooseBtns:@[@"知道了"]];
-//            [alertView BMAlertShow];
+            
+            [UILabel showMessage:result[@"message"]];
+            [BMProgressView LoadViewDisappear:self.view];
         }
         if (_dataArr.count == 0) {
             [self.emptyView show];
@@ -138,6 +141,7 @@
 
 - (void)backClick:(UIButton *)btn
 {
+//     [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -157,6 +161,10 @@
 //cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    for (int i = 0; i<_dataArr.count; i++) {
+        XNRAddressManageModel *model = _dataArr[i];
+        model.selected = NO;
+    }
     XNRAddressManageModel *model = _dataArr[indexPath.row];
     model.selected = YES;
     self.addressChoseBlock(model);
@@ -178,6 +186,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
      // 选中
     cell.selectedBlock = ^{
+        
         if (model.selected == YES) {
             self.addressChoseBlock(model);
             [self.addressManageTableView reloadData];
@@ -210,12 +219,12 @@
                             UserInfo *info = [DataCenter account];
                             info.address = [DataCenter account].address;
                             [DataCenter saveAccount:info];
-                            
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
+// #TODO:                [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
                         }
                     }
+                    [self.addressManageTableView reloadData];
                 } failure:^(NSError *error) {
-                    [SVProgressHUD showErrorWithStatus:@"删除失败"];
+                    [UILabel showMessage:@"删除失败"];
                 }];
 
                 
@@ -233,6 +242,7 @@
         
         XNRAddAddress_VC *VC = [[XNRAddAddress_VC alloc] init];
         VC.model = model;
+        VC.isRoot = YES;
         VC.titleLabel = @"编辑收货地址";
         VC.hidesBottomBarWhenPushed = YES;
         VC.addressRefreshBlock = ^(){
@@ -243,6 +253,9 @@
     };
     
     //传递数据模型model
+    for (XNRAddressManageModel *addModel in _dataArr) {
+        addModel.selected = [addModel.addressId isEqualToString:self.addressModel.addressId];
+    }
     [cell setCellDataWithAddressManageModel:model];
     return cell;
 }

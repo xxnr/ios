@@ -15,7 +15,7 @@
 }
 
 @property (nonatomic, copy) void(^payBlock)(NSString *orderID,NSString *money);//去付款
-@property(nonatomic,copy)void(^checkOrderBlock)(NSString*orderID);//查看订单
+@property(nonatomic,copy)void(^checkOrderBlock)(NSString*orderID,NSString *type);//查看订单
 @property (nonatomic,strong) UITableView*tableView;//信息列表
 
 /**

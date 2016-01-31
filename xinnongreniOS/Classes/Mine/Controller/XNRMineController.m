@@ -51,11 +51,12 @@
             if([result[@"code"] integerValue] == 1000){
                 
                 NSDictionary *dict = result[@"datas"];
-//                NSDictionary *address = dict[@"address"];
-//                NSDictionary *city = address[@"city"];
-//                NSDictionary *province = address[@"province"];
-//                NSDictionary *county = address[@"county"];
-//                NSDictionary *town = address[@"town"];
+                NSDictionary *address = dict[@"address"];
+                NSDictionary *province = address[@"province"];
+                NSDictionary *city = address[@"city"];
+                NSDictionary *county = address[@"county"];
+                NSDictionary *town = address[@"town"];
+
                 
                 
                 UserInfo *info = [DataCenter account];
@@ -64,11 +65,8 @@
                 info.nickname = dict[@"nickname"];
                 info.name = dict[@"name"];
                 info.type = dict[@"userType"];
+                info.typeName = dict[@"userTypeInName"];
                 info.sex = dict[@"sex"];
-//                info.province = province[@"name"];
-//                info.city = city[@"name"];
-//                info.county = county[@"name"];
-//                info.town = town[@"name"];
                 [DataCenter saveAccount:info];
                 
                 XNRUserInfoModel *model = [[XNRUserInfoModel alloc] init];
@@ -91,42 +89,35 @@
                     self.introduceLabel.text = [NSString stringWithFormat:@"昵称:%@",dict[@"nickname"]];
                 }
                 // 地区
-                if ([KSHttpRequest isBlankString:[DataCenter account].province]) {
+//                if ([KSHttpRequest isBlankString:[DataCenter account].province]) {
+//                    self.addressLabel.text = [NSString stringWithFormat:@"地区:%@",@"还没有填写哦~"];
+//                }else{
+//                    if ([KSHttpRequest isBlankString:[DataCenter account].county]) {
+//                        self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].town];
+//                    }else{
+//                        NSString *address = [NSString stringWithFormat:@"%@%@",[DataCenter account].county,[DataCenter account].town];
+//                        self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",[DataCenter account].province,[DataCenter account].city,address];
+//                    }
+//                }
+                if ([KSHttpRequest isBlankString:province[@"name"]]) {
                     self.addressLabel.text = [NSString stringWithFormat:@"地区:%@",@"还没有填写哦~"];
                 }else{
-                    if ([KSHttpRequest isBlankString:[DataCenter account].county]) {
-                        self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].town];
+                    if ([KSHttpRequest isBlankString:county[@"name"]]) {
+                        self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",province[@"name"],city[@"name"],town[@"name"]];
                     }else{
-                        NSString *address = [NSString stringWithFormat:@"%@%@",[DataCenter account].county,[DataCenter account].town];
-                        self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",[DataCenter account].province,[DataCenter account].city,address];
+                        NSString *address = [NSString stringWithFormat:@"%@%@",county[@"name"],town[@"name"]];
+                        self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",province[@"name"],city[@"name"],address];
                     }
                 }
-                // 类型
-                if ([[DataCenter account].type integerValue] == 1) {
-                    self.typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"类型:%@",@"其它"]:@"类型:还没有填写哦~";
-                }else if ([[DataCenter account].type integerValue] == 2){
-                    self.typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"类型:%@",@"种植大户"]:@"类型:还没有填写哦~";
-                    
-                }else if ([[DataCenter account].type integerValue] == 3){
-                    self.typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"类型:%@",@"村级经销商"]:@"类型:还没有填写哦~";
-                    
-                }else if ([[DataCenter account].type integerValue] == 4){
-                    self.typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"类型:%@",@"乡镇经销商"]:@"类型:还没有填写哦~";
-                    
-                }else{
-                    self.typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"类型:%@",@"县级经销商"]:@"类型:还没有填写哦~";
-                    
-                }
-
+                self.typeLabel.text = [DataCenter account].typeName?[NSString stringWithFormat:@"类型:%@",[DataCenter account].typeName]:@"类型:还没有填写哦~";
             }else{
-                UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                [al show];
+                [UILabel showMessage:result[@"message"]];
                 
             }
             
         } failure:^(NSError *error) {
             
-            [SVProgressHUD showErrorWithStatus:@"网络请求失败"];
+            [UILabel showMessage:@"网络请求失败"];
             
         }];
 
@@ -405,13 +396,17 @@
         [button addSubview:titleLabel];
         
         // 分割线
-        UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(416), ScreenWidth, 1)];
-        line1.backgroundColor = [UIColor lightGrayColor];
+        UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(416), ScreenWidth, PX_TO_PT(1))];
+        line1.backgroundColor = R_G_B_16(0xc7c7c7);
         [self.mainScrollView addSubview:line1];
         //分割线
-        UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(0,PX_TO_PT(416)+i*PX_TO_PT(88), ScreenWidth, .5)];
-        line2.backgroundColor=[UIColor lightGrayColor];
+        UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(0,PX_TO_PT(416)+i*PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
+        line2.backgroundColor=R_G_B_16(0xc7c7c7);
         [self.mainScrollView addSubview:line2];
+        
+        UIView *line3 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(416)+2*PX_TO_PT(88) + PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+        line3.backgroundColor = R_G_B_16(0xc7c7c7);
+        [self.mainScrollView addSubview:line3];
     }
 }
 
@@ -425,8 +420,25 @@
         [self.navigationController pushViewController:scoreVC animated:YES];
          }else{
 //             [[CommonTool sharedInstance]openLogin:self];
-             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"您尚未登录" message:@"请先前往登录" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-             [alert show];
+//             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"您尚未登录" message:@"请先前往登录" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+//             [alert show];
+             
+             BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"您还没有登录，是否登录?" chooseBtns:@[@"取消",@"确定"]];
+             
+             alertView.chooseBlock = ^void(UIButton *btn){
+                 
+                 if (btn.tag == 11) {
+                     
+                     XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
+                     login.hidesBottomBarWhenPushed = YES;
+                     [self.navigationController pushViewController:login animated:YES];
+
+                     
+                 }
+                 
+             };
+             
+             [alertView BMAlertShow];
     }
       
     }else if (btn.tag==KbtnTag+1){
@@ -442,8 +454,7 @@
     }else if (btn.tag == KbtnTag +2){
         // 客服电话
         if(TARGET_IPHONE_SIMULATOR){
-            UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:@"模拟器不支持打电话，请用真机测试\(^o^)/~" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-            [al show];
+            [UILabel showMessage:@"模拟器不支持打电话，请用真机测试"];
         } else {
             //请求客服电话接口
             [self phoneRequest];

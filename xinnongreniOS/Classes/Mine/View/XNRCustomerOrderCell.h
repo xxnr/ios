@@ -11,6 +11,6 @@
 
 @interface XNRCustomerOrderCell : UITableViewCell
 
--(void)setCellModelWith:(XNRCustomerOrderModel *)model;
+-(void)setCellDataWithCustomerOrderModel:(XNRCustomerOrderModel *)model;
 
 @end

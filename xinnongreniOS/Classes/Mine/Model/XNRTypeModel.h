@@ -10,6 +10,7 @@
 
 @interface XNRTypeModel : NSObject
 
-@property (nonatomic ,copy) NSString *dataId ;
+@property (nonatomic ,copy) NSString *dataId;
+
 
 @end

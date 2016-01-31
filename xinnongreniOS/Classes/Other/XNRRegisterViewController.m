@@ -11,6 +11,7 @@
 #import "YMHProtoclViewController.h"
 #import "KSHttpRequest.h"
 #import "XNRLoginViewController.h"
+#import "XNRFinishMineDataController.h"
 #define kRegisterBtn 1000
 #define kProtocolBtn 2000
 @interface XNRRegisterViewController ()<UITextFieldDelegate>
@@ -182,15 +183,21 @@
 #pragma mark - 验证按钮
 - (void)verifyClick:(UIButton *)button
 {
+    [self.phoneNumTextField resignFirstResponder];
+    [self.verifyNumTextField resignFirstResponder];
+    
+    [self.newpasswordTextField resignFirstResponder];
+    
+    [self.againPasswordTextField resignFirstResponder];
+
     
     if(self.phoneNumTextField.text.length==0){
         
-        UIAlertView *al=[[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入手机号" delegate:self cancelButtonTitle:nil otherButtonTitles:@"知道了", nil];
-        [al show];
+        [UILabel showMessage:@"请输入手机号"];
         
     }else if ([self validateMobile:self.phoneNumTextField.text]==NO){
-        UIAlertView *al=[[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入正确的手机号" delegate:self cancelButtonTitle:nil otherButtonTitles:@"知道了", nil];
-        [al show];
+        
+        [UILabel showMessage:@"请输入正确的手机号"];
         
     }else{
         if([[NSUserDefaults standardUserDefaults]objectForKey:@"GBVerifyEnterAgainRegister"]==NO){
@@ -209,8 +216,7 @@
                     
                 }else{
                     
-                    UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                    [al show];
+                    [UILabel showMessage:result[@"message"]];
                     
                 }
                 
@@ -218,7 +224,6 @@
                 
             } failure:^(NSError *error) {
                 NSLog(@"%@",error);
-            [SVProgressHUD showErrorWithStatus:@"网络请求失败"];
                 
                 
             }];
@@ -252,14 +257,13 @@
                         
                     }else{
                         
-                        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                        [al show];
+                        [UILabel showMessage:result[@"message"]];
                         
                     }
                     
                 } failure:^(NSError *error) {
                     
-                [SVProgressHUD showErrorWithStatus:@"网络错误"];
+                    [UILabel showMessage:@"网络错误"];
                     
                     
                 }];
@@ -288,7 +292,7 @@
     if(_timeCount== -2){
         _timer.fireDate=[NSDate distantFuture]; //暂停定时器
         self.getVerifyButton.enabled = YES;
-        self.getVerifyButton.backgroundColor = R_G_B_16(0x11c422);
+        self.getVerifyButton.backgroundColor = R_G_B_16(0x00b38a);
         [self.getVerifyButton setTitle:@"获取验证码" forState:UIControlStateNormal];
     }
 }
@@ -368,25 +372,24 @@
     [[NSUserDefaults standardUserDefaults]setValue:self.newpasswordTextField.text forKey:@"password"];
         NSLog(@"注册");
         if(self.phoneNumTextField.text.length==0||self.verifyNumTextField.text.length==0||self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0){
-            UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:@"请完善您要填写的资料" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-            [al show];
+            
+            [UILabel showMessage:@"请完善您要填写的资料"];
             
         }else if ([self.newpasswordTextField.text isEqualToString:self.againPasswordTextField.text]==NO){
             
-            UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:@"两次填写的密码不一致请认真核对" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-            [al show];
+    
+            [UILabel showMessage:@"两次填写的密码不一致请认真核对"];
             
         }else if ([self validateMobile:self.phoneNumTextField.text]==NO){
             
-            UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"提示" message:@"手机格式错误" delegate:self cancelButtonTitle:nil otherButtonTitles:@"知道了", nil];
-            [al show];
+            [UILabel showMessage:@"手机格式错误"];
         }else if(self.admireBtn.selected == NO){
-            UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:@"您需要同意注册协议才可继续注册哦~" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-            [al show];
+            
+            [UILabel showMessage:@"您需要同意注册协议才可继续注册哦~"];
         
         }else{
             
-            [SVProgressHUD showWithStatus:@"正在加载..."];
+            [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
             [KSHttpRequest get:KUserPubkey parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
                     NSString *pubKey = result[@"public_key"];
@@ -416,7 +419,7 @@
         NSLog(@"result-->%@",result);
         NSLog(@"%@",result[@"message"]);
         
-        [SVProgressHUD dismiss];
+        [BMProgressView LoadViewDisappear:self.view];
         NSDictionary *datasDic = result[@"datas"];
         if([result[@"code"] isEqualToString:@"1000"]){
             UserInfo *info = [DataCenter account];
@@ -430,22 +433,22 @@
             info.loginState = YES;
             info.password = _newpasswordTextField.text;
             [DataCenter saveAccount:info];
-            [self.navigationController popViewControllerAnimated:YES];
+            // 直接跳转完善资料页面
+            XNRFinishMineDataController *fmdc = [[XNRFinishMineDataController alloc] init];
+            fmdc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:fmdc animated:YES];
+
+//            [self.navigationController popViewControllerAnimated:YES];
             
             
         }else{
             
-            UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-            [al show];
-            
+        [UILabel showMessage:result[@"message"]];
             
         }
         
         
     } failure:^(NSError *error) {
-        
-        [SVProgressHUD showErrorWithStatus:@"网络请求失败" ];
-        
         
     }];
 
@@ -538,8 +541,8 @@
     if (textField == self.phoneNumTextField) {
         BOOL flag = [self validateMobile:textField.text];
         if (!flag) {
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"手机号输入格式不正确" delegate:self cancelButtonTitle:@"好" otherButtonTitles:nil];
-            [alert show];
+            
+            [UILabel showMessage:@"手机号输入格式不正确"];
         }
     }
 }

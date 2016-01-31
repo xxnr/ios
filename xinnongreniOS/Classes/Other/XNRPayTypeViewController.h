@@ -14,7 +14,6 @@
 @property (nonatomic, copy) NSString *paymentId;
 @property (nonatomic,copy) NSString *money;    //价钱
 @property (nonatomic,copy) NSString *orderID;  //订单号
-
 @property (nonatomic, copy) NSString *recieveName;
 @property (nonatomic, copy) NSString *recievePhone;
 @property (nonatomic, copy) NSString *recieveAddress;

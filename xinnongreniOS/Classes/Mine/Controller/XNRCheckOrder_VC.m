@@ -40,12 +40,9 @@
     _dataArray = [[NSMutableArray alloc]init];
      //中部视图
     [self createMid];
-    
-    [self createBottomView];
 
     //获取网络数据
     [self getData];
-    
 }
 
 - (void)getData
@@ -54,20 +51,27 @@
         if ([result[@"code"] integerValue] == 1000) {
             
             XNRCheckOrderSectionModel *sectionModel = [[XNRCheckOrderSectionModel alloc] init];
-            
             NSDictionary *datasDic = result[@"datas"];
             sectionModel.address = datasDic[@"rows"][@"address"];
             sectionModel.id = datasDic[@"rows"][@"id"];
             sectionModel.recipientName = datasDic[@"rows"][@"recipientName"];
             sectionModel.recipientPhone = datasDic[@"rows"][@"recipientPhone"];
             sectionModel.payStatus = datasDic[@"rows"][@"payStatus"];
+            sectionModel.duePrice = datasDic[@"rows"][@"duePrice"];
+            sectionModel.payType = datasDic[@"rows"][@"payType"];
+            
+            NSDictionary *payment = datasDic[@"rows"][@"payment"];
+            sectionModel.price = payment[@"price"];
+
             
             NSDictionary *order = datasDic[@"rows"][@"order"];
-            sectionModel.deposit = order[@"deposit"];
             sectionModel.totalPrice = order[@"totalPrice"];
+            sectionModel.deposit = order[@"deposit"];
+
             
             NSDictionary *orderStatus = order[@"orderStatus"];
             sectionModel.type = orderStatus[@"type"];
+            
             sectionModel.value = orderStatus[@"value"];
             sectionModel.orderGoodsList = (NSMutableArray *)[XNRCheckOrderModel objectArrayWithKeyValuesArray:datasDic[@"rows"][@"orderGoodsList"]];
             [_dataArray addObject:sectionModel];
@@ -81,18 +85,10 @@
     }];
     
 }
-#pragma mark-创建底部视图
--(void)createBottomView{
-    
-    
-    
-}
-
-
 #pragma mark-中部视图
 -(void)createMid{
     
-    self.tableview=[[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame)+PX_TO_PT(24), ScreenWidth,ScreenHeight- CGRectGetMaxY(self.headView.frame)+PX_TO_PT(24)) style:UITableViewStyleGrouped];
+    self.tableview=[[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame)+ PX_TO_PT(24), ScreenWidth,ScreenHeight- CGRectGetMaxY(self.headView.frame)-PX_TO_PT(24)-64) style:UITableViewStyleGrouped];
     self.tableview.showsHorizontalScrollIndicator=NO;
     self.tableview.showsVerticalScrollIndicator=NO;
     self.tableview.delegate=self;
@@ -172,6 +168,8 @@
         addressLabel.textColor = R_G_B_16(0xc7c7c7);
         addressLabel.font = [UIFont systemFontOfSize:16];
         addressLabel.text = sectionModel.address;
+        addressLabel.adjustsFontSizeToFitWidth = YES;
+//        addressLabel.backgroundColor = [UIColor redColor];
         self.addressLabel = addressLabel;
         [addressView addSubview:addressLabel];
         
@@ -190,210 +188,84 @@
         UIView *bottomView = [[UIView alloc] init];
         XNRCheckOrderSectionModel *sectionModel = _dataArray[section];
         if ([sectionModel.type integerValue] ==  1 || [sectionModel.type integerValue] == 2) {
-            if (sectionModel.deposit && [sectionModel.deposit integerValue] > 0) {
-                
-                bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(320));
-                bottomView.backgroundColor = [UIColor whiteColor];
-                [self.view addSubview:bottomView];
-                
-                UILabel *sectionOne = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
-                sectionOne.textColor = R_G_B_16(0x323232);
-                sectionOne.font = [UIFont systemFontOfSize:14];
-                sectionOne.text = @"阶段一: 订金";
-                [bottomView addSubview:sectionOne];
-                
-                UILabel *sectionTwo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(80), ScreenWidth/2, PX_TO_PT(80))];
-                sectionTwo.textColor = R_G_B_16(0x323232);
-                sectionTwo.font = [UIFont systemFontOfSize:14];
-                sectionTwo.text = @"阶段二: 尾款";
-                [bottomView addSubview:sectionTwo];
-                
-                UILabel *sectionThree = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(160), ScreenWidth/2, PX_TO_PT(80))];
-                sectionThree.textColor = R_G_B_16(0x323232);
-                sectionThree.font = [UIFont systemFontOfSize:14];
-                if (sectionModel.payStatus && [sectionModel.payStatus integerValue] == 1) {
-                    sectionThree.text = @"支付宝支付";
-                }else{
-                    sectionThree.text = @"银联支付";
-                }
-                [bottomView addSubview:sectionThree];
-                
-                UIButton *sectionFour = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(250), PX_TO_PT(140), PX_TO_PT(60))];
-                sectionFour.backgroundColor = R_G_B_16(0x00b38a);
-                [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
-                sectionFour.layer.cornerRadius = 5.0;
-                sectionFour.layer.masksToBounds = YES;
-                sectionFour.tag = section + 1000;
-                [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchUpInside];
-                [bottomView addSubview:sectionFour];
-                
-                UILabel *depositLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
-                depositLabel.textColor = R_G_B_16(0x323232);
-                depositLabel.font = [UIFont systemFontOfSize:14];
-                depositLabel.textAlignment = NSTextAlignmentRight;
-                depositLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.deposit.floatValue];
-                [bottomView addSubview:depositLabel];
-                
-                UILabel *remainPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(80), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
-                remainPriceLabel.textColor = R_G_B_16(0x00b38a);
-                remainPriceLabel.font = [UIFont systemFontOfSize:14];
-                remainPriceLabel.textAlignment = NSTextAlignmentRight;
-                remainPriceLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.totalPrice.floatValue - sectionModel.deposit.floatValue];
-                [bottomView addSubview:remainPriceLabel];
-                
-                UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(160), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
-                totalPriceLabel.font = [UIFont systemFontOfSize:14];
-                totalPriceLabel.textAlignment = NSTextAlignmentRight;
-                totalPriceLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.deposit.floatValue];
-                [bottomView addSubview:totalPriceLabel];
-                
-                for (int i = 0; i<4; i++) {
-                    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-                    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-                    [bottomView addSubview:lineView];
-                }
-                
-            }else{
-                
-                bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(160));
-                bottomView.backgroundColor = [UIColor whiteColor];
-                [self.view addSubview:bottomView];
-                
-                UILabel *sectionThree = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(0), ScreenWidth/2, PX_TO_PT(80))];
-                sectionThree.textColor = R_G_B_16(0x323232);
-                sectionThree.font = [UIFont systemFontOfSize:14];
-                if (sectionModel.payStatus && [sectionModel.payStatus integerValue] == 1) {
-                    sectionThree.text = @"支付宝支付";
-                }else{
-                    sectionThree.text = @"银联支付";
-                }
-                
-                [bottomView addSubview:sectionThree];
-                
-                UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(0), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
-                totalPriceLabel.font = [UIFont systemFontOfSize:14];
-                totalPriceLabel.textAlignment = NSTextAlignmentRight;
-                totalPriceLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.totalPrice.floatValue];
-                [bottomView addSubview:totalPriceLabel];
-                
-                UIButton *sectionFour = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
-                sectionFour.backgroundColor = R_G_B_16(0x00b38a);
-                [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
-                sectionFour.layer.cornerRadius = 5.0;
-                sectionFour.layer.masksToBounds = YES;
-                sectionFour.tag = section + 1000;
-                [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchUpInside];
-                [bottomView addSubview:sectionFour];
-                
-                for (int i = 0; i<2; i++) {
-                    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-                    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-                    [bottomView addSubview:lineView];
-                }
-                
-                
+            
+            bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
+            bottomView.backgroundColor = [UIColor whiteColor];
+            [self.view addSubview:bottomView];
+            
+            
+            UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
+            totalPriceLabel.font = [UIFont systemFontOfSize:16];
+            totalPriceLabel.textAlignment = NSTextAlignmentRight;
+            totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.price.floatValue];
+            [bottomView addSubview:totalPriceLabel];
+            
+            NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
+            NSDictionary *priceStr=@{
+                                     
+                                     NSForegroundColorAttributeName:R_G_B_16(0xff4e00)
+                                     
+                                     };
+            
+            [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
+            
+            [totalPriceLabel setAttributedText:AttributedStringPrice];
+            
+            UIButton *sectionFour = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
+            sectionFour.backgroundColor = R_G_B_16(0xfe9b00);
+            [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
+            sectionFour.layer.cornerRadius = 5.0;
+            sectionFour.layer.masksToBounds = YES;
+            sectionFour.titleLabel.font = [UIFont systemFontOfSize:16];
+            sectionFour.tag = section + 1000;
+            [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchUpInside];
+            [bottomView addSubview:sectionFour];
+            
+            
+            for (int i = 0; i<3; i++) {
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+                [bottomView addSubview:lineView];
             }
-        }else{
-            if (sectionModel.deposit && [sectionModel.deposit integerValue] >0) {
-                bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(240));
-                bottomView.backgroundColor = [UIColor whiteColor];
-                [self.view addSubview:bottomView];
-                
-                UILabel *sectionOne = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
-                sectionOne.textColor = R_G_B_16(0x323232);
-                sectionOne.font = [UIFont systemFontOfSize:14];
-                sectionOne.text = @"阶段一: 订金";
-                [bottomView addSubview:sectionOne];
-                
-                UILabel *sectionTwo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(80), ScreenWidth/2, PX_TO_PT(80))];
-                sectionTwo.textColor = R_G_B_16(0x323232);
-                sectionTwo.font = [UIFont systemFontOfSize:14];
-                sectionTwo.text = @"阶段二: 尾款";
-                [bottomView addSubview:sectionTwo];
-                
-                UILabel *sectionThree = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(160), ScreenWidth/2, PX_TO_PT(80))];
-                sectionThree.textColor = R_G_B_16(0x323232);
-                sectionThree.font = [UIFont systemFontOfSize:14];
-                if (sectionModel.payStatus && [sectionModel.payStatus integerValue] == 1) {
-                    sectionThree.text = @"支付宝支付";
-                }else{
-                    sectionThree.text = @"银联支付";
-                }
-                
-                [bottomView addSubview:sectionThree];
-                
-                UILabel *depositLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
-                depositLabel.textColor = R_G_B_16(0x323232);
-                depositLabel.font = [UIFont systemFontOfSize:14];
-                depositLabel.textAlignment = NSTextAlignmentRight;
-                depositLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.deposit.floatValue];
-                [bottomView addSubview:depositLabel];
-                
-                UILabel *remainPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(80), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
-                remainPriceLabel.textColor = R_G_B_16(0x00b38a);
-                remainPriceLabel.font = [UIFont systemFontOfSize:14];
-                remainPriceLabel.textAlignment = NSTextAlignmentRight;
-                remainPriceLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.totalPrice.floatValue - sectionModel.deposit.floatValue];
-                
-                [bottomView addSubview:remainPriceLabel];
-                
-                UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(160), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
-                totalPriceLabel.font = [UIFont systemFontOfSize:14];
-                totalPriceLabel.textAlignment = NSTextAlignmentRight;
-                depositLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.deposit.floatValue];
-                [bottomView addSubview:totalPriceLabel];
-                
-                
-                
-            }else{
-                bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80));
-                bottomView.backgroundColor = [UIColor whiteColor];
-                [self.view addSubview:bottomView];
-                
-                UILabel *sectionThree = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(0), ScreenWidth/2, PX_TO_PT(80))];
-                sectionThree.textColor = R_G_B_16(0x323232);
-                sectionThree.font = [UIFont systemFontOfSize:14];
-                if (sectionModel.payStatus && [sectionModel.payStatus integerValue] == 1) {
-                    sectionThree.text = @"支付宝支付";
-                }else{
-                    sectionThree.text = @"银联支付";
-                }
-                
-                [bottomView addSubview:sectionThree];
-                
-                UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(0), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
-                totalPriceLabel.font = [UIFont systemFontOfSize:14];
-                totalPriceLabel.textAlignment = NSTextAlignmentRight;
-                totalPriceLabel.text = [NSString stringWithFormat:@"%.2f",sectionModel.totalPrice.floatValue];
-                [bottomView addSubview:totalPriceLabel];
-            }
+            
+            UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(160), ScreenWidth, PX_TO_PT(20))];
+            sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
+            [bottomView addSubview:sectionView];
+            
+            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+            sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+            [sectionView addSubview:sectionLine];
+
+            
+            return bottomView;
+            
         }
         
-        return bottomView;
+        
+            return bottomView;
+        
     }else{
         return nil;
     }
-    
-    
     
 }
 
 -(void)sectionFourClick:(UIButton *)sender{
     XNRCheckOrderSectionModel *sectionModel = _dataArray[sender.tag - 1000];
-    if (sectionModel.deposit && [sectionModel.deposit floatValue]>0) {
-        XNRPayTypeViewController*vc = [[XNRPayTypeViewController alloc]init];
+//    if (sectionModel.deposit && [sectionModel.deposit floatValue]>0) {
+        XNRPayTypeViewController *vc = [[XNRPayTypeViewController alloc]init];
         vc.hidesBottomBarWhenPushed = YES;
         vc.orderID = sectionModel.id;
-        vc.money = sectionModel.deposit;
+//        vc.money = sectionModel.deposit;
         [self.navigationController pushViewController:vc animated:YES];
 
-    }else{
-        XNRPayTypeViewController*vc = [[XNRPayTypeViewController alloc]init];
-        vc.hidesBottomBarWhenPushed = YES;
-        vc.orderID = sectionModel.id;
-        vc.money = sectionModel.totalPrice;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
+//    }else{
+//        XNRPayTypeViewController *vc = [[XNRPayTypeViewController alloc]init];
+//        vc.hidesBottomBarWhenPushed = YES;
+//        vc.orderID = sectionModel.id;
+////        vc.money = sectionModel.totalPrice;
+//        [self.navigationController pushViewController:vc animated:YES];
+//    }
 }
 
 
@@ -409,21 +281,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (_dataArray.count>0) {
-        XNRCheckOrderSectionModel *sectionModel = _dataArray[section];
-        if ([sectionModel.type integerValue] ==  1 || [sectionModel.type integerValue] == 2) {
-            if (sectionModel.deposit && [sectionModel.deposit integerValue] > 0) {
-                return PX_TO_PT(320);
-                
-            }else{
-                return PX_TO_PT(160);
-            }
-        }else{
-            if (sectionModel.deposit && [sectionModel.deposit integerValue] >0) {
-                return PX_TO_PT(240);
-            }else{
-                return PX_TO_PT(80);
-            }
-        }
+        return PX_TO_PT(180);
         
     }else{
         return 0;
@@ -452,7 +310,13 @@
 //行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return PX_TO_PT(300);
+    XNRCheckOrderSectionModel *sectionModel = _dataArray[indexPath.section];
+    XNRCheckOrderModel *model = sectionModel.orderGoodsList[indexPath.row];
+    if (model.deposit && [model.deposit floatValue] >0 ) {
+        return PX_TO_PT(460);
+    }else{
+        return PX_TO_PT(300);
+    }
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -492,7 +356,7 @@
     titleLabel.font = [UIFont boldSystemFontOfSize:20];
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.text = self.myOrderType;
+    titleLabel.text = @"订单详情";
     self.navigationItem.titleView = titleLabel;
 
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -516,9 +380,6 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
 
     }
-    
-    
-    
 }
 
 - (void)didReceiveMemoryWarning {

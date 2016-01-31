@@ -101,8 +101,7 @@
 {
     self.userNameLabel.text = [DataCenter account].name?[DataCenter account].name:@"添加";
     self.nickNameLabel.text = [DataCenter account].nickname?[DataCenter account].nickname:@"新新农人";
-//    self.sexLabel.text = [DataCenter account].sex?[NSString stringWithFormat:@"%@",[DataCenter account].sex]:@"添加";
-//    NSString *address = [NSString stringWithFormat:@"%@%@",[DataCenter account].county,[DataCenter account].town];
+
     if ([KSHttpRequest isBlankString:[DataCenter account].county]) {
         if ([KSHttpRequest isBlankString:[DataCenter account].town]) {
             self.areaLabel.text = [NSString stringWithFormat:@"%@%@",[DataCenter account].province,[DataCenter account].city];
@@ -190,7 +189,7 @@
     nickNameLabel.textAlignment = NSTextAlignmentRight;
     nickNameLabel.textColor = R_G_B_16(0x909090);
     if ([KSHttpRequest isBlankString:[DataCenter account].nickname]) {
-        nickNameLabel.text = [NSString stringWithFormat:@"新新农人"];
+        nickNameLabel.text = @"";
     }else{
         nickNameLabel.text = [DataCenter account].nickname;
     }
@@ -246,8 +245,12 @@
 
         //分割线
         UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(0,PX_TO_PT(240)+i*PX_TO_PT(88), ScreenWidth, .5)];
-        line2.backgroundColor=[UIColor lightGrayColor];
+        line2.backgroundColor=R_G_B_16(0xc7c7c7);
         [self.mainScrollView addSubview:line2];
+        
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(240)+3*PX_TO_PT(88)+PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        [self.mainScrollView addSubview:lineView];
 }
     // 显示姓名
     UILabel *userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14), ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
@@ -279,11 +282,6 @@
         }
     
     }
-    
-    
-    
-    
-    
     self.sexLabel = sexLabel;
     [bgView addSubview:sexLabel];
 
@@ -295,15 +293,6 @@
     areaLabel.textColor = R_G_B_16(0x909090);
     [areaLabel fitTextHeight_Ext];
     self.areaLabel = areaLabel;
-//    if ([KSHttpRequest isBlankString:[DataCenter account].county]) {
-//        areaLabel.text = [DataCenter account].province?[NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].town]:@"选择";
-//    }
-//    if ([DataCenter account].town == nil) {
-//    areaLabel.text = [DataCenter account].province?[NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].county]:@"选择";
-//    }else{
-//    NSString *address = [NSString stringWithFormat:@"%@%@",[DataCenter account].county,[DataCenter account].town];
-//    areaLabel.text = [DataCenter account].province?[NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,address]:@"选择";
-//    }
     if ([KSHttpRequest isBlankString:[DataCenter account].county]) {
         if ([KSHttpRequest isBlankString:[DataCenter account].town]) {
             self.areaLabel.text = [DataCenter account].province?[NSString stringWithFormat:@"%@%@",[DataCenter account].province,[DataCenter account].city]:@"选择";
@@ -320,31 +309,31 @@
             self.areaLabel.text = [DataCenter account].province?[NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,address]:@"选择";
         }
     }
-
-    
-
     [bgView addSubview:areaLabel];
 
     // 显示类型
     UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14) + PX_TO_PT(88)*3, ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
     typeLabel.textAlignment = NSTextAlignmentRight;
     typeLabel.textColor = R_G_B_16(0x909090);
+    typeLabel.text = [DataCenter account].typeName?[DataCenter account].typeName:@"选择";
+;
     self.typeLabel = typeLabel;
-    if ([[DataCenter account].type integerValue] == 1) {
-        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"其它"]:@"选择";
-    }else if ([[DataCenter account].type integerValue] == 2){
-        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"种植大户"]:@"选择";
-
-    }else if ([[DataCenter account].type integerValue] == 3){
-        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"村级经销商"]:@"选择";
-
-    }else if ([[DataCenter account].type integerValue] == 4){
-        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"乡镇经销商"]:@"选择";
-
-    }else{
-        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"县级经销商"]:@"选择";
-
-    }
+    
+//    if ([[DataCenter account].type integerValue] == 1) {
+//        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"其它"]:@"选择";
+//    }else if ([[DataCenter account].type integerValue] == 2){
+//        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"种植大户"]:@"选择";
+//
+//    }else if ([[DataCenter account].type integerValue] == 3){
+//        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"村级经销商"]:@"选择";
+//
+//    }else if ([[DataCenter account].type integerValue] == 4){
+//        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"乡镇经销商"]:@"选择";
+//
+//    }else{
+//        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"县级经销商"]:@"选择";
+//
+//    }
     [bgView addSubview:typeLabel];
 
 }
@@ -365,24 +354,32 @@
         addressVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:addressVC animated:YES];
     }else if (button.tag == KbtnTag + 3){
+        
         [self.typeView showWith:^(NSString *typeName,NSString *typeNum) {
+            
             self.typeLabel.text = typeName;
             self.typeNum = typeNum;
+//            [DataCenter account].typeName = typeName;
+            UserInfo *info = [DataCenter account];
+            info.typeName = typeName;
             
+            [DataCenter saveAccount:info];
+
         }];
     }
 }
 
 -(void)XNRTypeViewBtnClick:(XNRTypeViewType)type
 {
-    if (type == leftBtnType) {
+    if (type == LeftBtnType) {
         [self.typeView hide];
-    }else if(type == rightBtnType){
+    }else if(type == RightBtnType){
         [self.typeView hide];
         [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"type":self.typeNum} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 UserInfo *info = [DataCenter account];
                 info.type = self.typeLabel.text;
+                
                 [DataCenter saveAccount:info];
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(RefreshMyAccount) name:@"RefreshMyAccount" object:nil];
 
@@ -569,7 +566,8 @@
  */
 - (void)cropViewController:(PECropViewController *)controller didFinishCroppingImage:(UIImage *)croppedImage
 {
-    [SVProgressHUD showWithStatus:@"正在上传请稍后..." maskType:SVProgressHUDMaskTypeBlack];
+//    [SVProgressHUD showWithStatus:@"正在上传请稍后..." maskType:SVProgressHUDMaskTypeBlack];
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [controller dismissViewControllerAnimated:YES completion:NULL];
     NSString *userId = [DataCenter account].userid;
     NSString *urlString = [NSString stringWithFormat:@"%@",KUserUploadPortrait];
@@ -584,8 +582,8 @@
                     [DataCenter saveAccount:info];
                     // 刷新
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(RefreshMyAccount) name:@"RefreshMyAccount" object:nil];
-                    
-                    [SVProgressHUD showSuccessWithStatus:@"头像上传成功"];
+                    [BMProgressView LoadViewDisappear:self.view];
+                    [UILabel showMessage:@"头像上传成功"];
                     [_icon setImage:croppedImage forState:UIControlStateNormal];
                 }
             } failure:^(NSError *error) {
@@ -594,7 +592,8 @@
                     }
     } failure:^(NSError *error) {
         
-        [SVProgressHUD showErrorWithStatus:@"网络请求失败"];
+        [UILabel showMessage:@"网络请求失败"];
+        [BMProgressView LoadViewDisappear:self.view];
       
         NSLog(@"error = %@",error);
     }];
@@ -620,6 +619,7 @@
     }else{
         UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"模拟其中无法打开照相机,请在真机中使用" message:nil delegate:nil cancelButtonTitle:@"ok"otherButtonTitles:nil];
         [al show];
+        [UILabel showMessage:@"模拟器中无法打开照相机,请在真机中使用"];
         
     }
 }
@@ -679,21 +679,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)getTypeData
-{
-    [KSHttpRequest get:Kusertypes parameters:nil success:^(id result) {
-        if ([result[@"code"] integerValue] == 1000) {
-            NSDictionary *dicts = result[@"datas"];
-            XNRTypeModel *model = [[XNRTypeModel alloc] init];
-            [model setValuesForKeysWithDictionary:dicts];
-            UserInfo *info = [DataCenter account];
-            info.type = dicts[@"1"];
-        }
-        
-    } failure:^(NSError *error) {
-        
-    }];
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

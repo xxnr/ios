@@ -11,7 +11,6 @@
 #import "XNRHomeCollectionViewCell.h"
 #import "XNRHomeCollectionHeaderView.h"
 #import "XNRHomeCollectionFooterView.h"
-#import "MJRefresh.h"
 #import "XNRSignInView.h"
 #import "XNRProductInfo_VC.h"
 #import "XNRLoginViewController.h"
@@ -118,8 +117,7 @@
                 [weakSelf requestSignIn];
             }else{
                 
-                [SVProgressHUD showSuccessWithStatus:@"您今日已签到成功，明天再来呦！"];
-                [weakSelf performSelector:@selector(dismiss) withObject:nil afterDelay:2];
+                [UILabel showMessage:@"您今日已签到成功，明天再来呦！"];
             }
         });
     }
@@ -131,6 +129,7 @@
 
 - (void)requestSignIn
 {
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [KSHttpRequest post:KUserSign parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
@@ -144,19 +143,25 @@
                 [weakSelf.signInView removeFromSuperview];
                 weakSelf.signInView = nil;
             };
-            [SVProgressHUD dismiss];
+            [BMProgressView LoadViewDisappear:self.view];
             //保存签到
             [CommonTool saveSignIn];
         }
         else if([result[@"code"] integerValue] == 1010){
-            [SVProgressHUD showSuccessWithStatus:result[@"message"]];
+            [UILabel showMessage:result[@"message"]];
+            [BMProgressView LoadViewDisappear:self.view];
         }else{
-            [SVProgressHUD showErrorWithStatus:@"未查询到积分规则"];
+            [UILabel showMessage:@"未查询到积分规则"];
+            [BMProgressView LoadViewDisappear:self.view];
+
         }
         
     } failure:^(NSError *error) {
         LogRed(@"%@",error);
-        [SVProgressHUD showErrorWithStatus:@"签到失败"];
+        [UILabel showMessage:@"签到失败"];
+        [BMProgressView LoadViewDisappear:self.view];
+
+
     }];
 }
 
@@ -205,19 +210,45 @@
     self.homeCollectionView.dataSource = self;
     // 注册cell
     [self.homeCollectionView registerClass:[XNRHomeCollectionViewCell class] forCellWithReuseIdentifier:@"myCell"];
+    
     [self.homeCollectionView registerClass:[XNRHomeCollectionHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifierFirst"];
+    
     [self.homeCollectionView registerClass:[XNRCarSelect class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifierSecond"];
+    
     [self.homeCollectionView registerClass:[XNRHomeCollectionFooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterIdentifier"];
+    
     [self.view addSubview:self.homeCollectionView];
     
+        
+    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFerData)];
     
-    //头部刷新
-    __weak __typeof(&*self)weakSelf = self;
-    [self.homeCollectionView addLegendHeaderWithRefreshingBlock:^{
-        // 获取网络数据
-        [weakSelf getFerData];
-    }];
+    NSMutableArray *idleImage = [NSMutableArray array];
+    for (int i = 1; i<21; i++) {
+        
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        [idleImage addObject:image];
+    }
+    
+    NSMutableArray *RefreshImage = [NSMutableArray array];
+    for (int i = 10; i<21; i++) {
+        
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        [RefreshImage addObject:image];
+    }
+    
+    [header setImages:idleImage forState:MJRefreshStateIdle];
+    [header setImages:RefreshImage forState:MJRefreshStatePulling];
+    [header setImages:RefreshImage forState:MJRefreshStateRefreshing];
+    // 隐藏时间
+    header.lastUpdatedTimeLabel.hidden = YES;
+    
+    // 隐藏状态
+    header.stateLabel.hidden = YES;
+    self.homeCollectionView.mj_header = header;
+
 }
+
+
 #pragma mark -- collectionView的代理
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     if (section == 0) {
@@ -237,10 +268,12 @@
             XNRHomeCollectionHeaderView  *headView = (XNRHomeCollectionHeaderView *)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifierFirst" forIndexPath:indexPath];
             headView.com = ^(){
                 XNRFerViewController *ferView = [[XNRFerViewController alloc] init];
-                ferView.type = eXNRFerType;
+                ferView.type = eXNRCarType;
                 ferView.hidesBottomBarWhenPushed = YES;
-                ferView.tempTitle = @"化肥";
-                ferView.classId = @"531680A5";
+                ferView.tempTitle = @"汽车";
+                ferView.classId = @"6C7D8F66";
+//                ferView.classId = @"531680A5";
+
                 for (int i = 0; i<_huafeiArr.count; i++) {
                     ferView.model = _huafeiArr[i];
                 }
@@ -259,12 +292,14 @@
             return headView;
         }else{
             XNRCarSelect *headView = (XNRCarSelect *)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifierSecond" forIndexPath:indexPath];
+            
+            
             headView.con = ^(){
                 XNRFerViewController *ferView = [[XNRFerViewController alloc] init];
-                ferView.type = eXNRCarType;
+                ferView.type = eXNRFerType;
                 ferView.hidesBottomBarWhenPushed = YES;
-                ferView.tempTitle = @"汽车";
-                ferView.classId = @"6C7D8F66";
+                ferView.tempTitle = @"化肥";
+                ferView.classId = @"531680A5";
                 for (int i = 0; i<_carArr.count; i++) {
                 ferView.model = _carArr[i];
                 }
@@ -289,7 +324,7 @@
 
 -(void)dismiss
 {
-    [SVProgressHUD dismiss];
+     [BMProgressView LoadViewDisappear:self.view];
 }
 // 展示Section的个数
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -300,17 +335,17 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     if (section == 0) {
-        if (_huafeiArr.count>6) {
-            return 6;
-        }else{
-            return _huafeiArr.count;
-        }
-        
-    }else{
         if (_carArr.count>6) {
             return 6;
         }else{
             return _carArr.count;
+        }
+        
+    }else{
+        if (_huafeiArr.count>6) {
+            return 6;
+        }else{
+            return _huafeiArr.count;
         }
     }
 }
@@ -321,10 +356,10 @@
     cell.backgroundColor =[UIColor clearColor];
 
     if (indexPath.section == 0) {
-     XNRShoppingCartModel *model = _huafeiArr[indexPath.row];
+     XNRShoppingCartModel *model = _carArr[indexPath.row];
         [cell setCellDataWithShoppingCartModel:model];
     }else{
-    XNRShoppingCartModel *model = _carArr[indexPath.row];
+    XNRShoppingCartModel *model = _huafeiArr[indexPath.row];
         [cell setCellDataWithShoppingCartModel:model];
     }
     return cell;
@@ -358,9 +393,9 @@
 {
     XNRProductInfo_VC*vc=[[XNRProductInfo_VC alloc]init];
     if (indexPath.section == 0) {
-        vc.model=_huafeiArr[indexPath.row];
-    }else{
         vc.model=_carArr[indexPath.row];
+    }else{
+        vc.model=_huafeiArr[indexPath.row];
     }
     
     vc.hidesBottomBarWhenPushed=YES;
@@ -409,6 +444,7 @@
             }
         }
         [self getCarData];
+//        [self.homeCollectionView.mj_header endRefreshing];
         
         } failure:^(NSError *error) {
     }];
@@ -426,10 +462,10 @@
             }
         }
         [self.homeCollectionView reloadData];
-        [self.homeCollectionView.legendHeader endRefreshing];
+        [self.homeCollectionView.mj_header endRefreshing];
+
     } failure:^(NSError *error) {
         
-        [self.homeCollectionView.legendHeader endRefreshing];
 
     }];
 }

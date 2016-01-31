@@ -10,8 +10,9 @@
 @interface XNRTypeView()<UIPickerViewDelegate,UIPickerViewDataSource>
 
 @property (nonatomic ,weak) UIPickerView *pickerView;
-@property (nonatomic ,strong) NSArray *typeArray;
-@property (nonatomic ,strong) NSArray *numArray;
+@property (nonatomic, strong) NSDictionary *subDic;
+@property (nonatomic ,strong) NSMutableArray *typeArray;
+@property (nonatomic ,strong) NSMutableArray *numArray;
 
 @property (nonatomic ,weak) UIButton *leftBtn;
 @property (nonatomic ,weak) UIButton *rightBtn;
@@ -25,7 +26,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
         [self createBtn];
         self.frame = CGRectMake(0, ScreenHeight, ScreenWidth, PX_TO_PT(500));
         self.backgroundColor = [UIColor whiteColor];
@@ -33,12 +33,37 @@
         UIPickerView *pickView = [[UIPickerView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(50), ScreenWidth, PX_TO_PT(300))];
         pickView.delegate = self;
         pickView.dataSource = self;
-        [self addSubview:pickView];    
-        _typeArray = @[@"其它",@"种植大户",@"村级经销商",@"乡镇经销商",@"县级经销商"];
-        _numArray = @[@"1",@"2",@"3",@"4",@"5"];
+        self.pickerView = pickView;
+        [self addSubview:pickView];
+//        _typeArray = @[@"其它",@"种植大户",@"村级经销商",@"乡镇经销商",@"县级经销商"];
+//        _numArray = @[@"1",@"2",@"3",@"4",@"5"];
+        _typeArray = [[NSMutableArray alloc] init];
+        self.subDic = [NSMutableDictionary dictionary];
+        [self getData];
         
     }
     return self;
+}
+
+-(void)getData
+{
+    [KSHttpRequest get:Kusertypes parameters:nil success:^(id result) {
+        
+        if ([result[@"code"] integerValue] == 1000) {
+            
+            NSDictionary *subDic = result[@"data"];
+            
+            for (id key in subDic) {
+                [self.subDic setValue:[NSString stringWithFormat:@"%@",key] forKey:[subDic objectForKey:key]];
+                [_typeArray addObject:[subDic objectForKey:key]];
+            }
+        }
+        
+        [self.pickerView reloadAllComponents];
+    } failure:^(NSError *error) {
+        [UILabel showMessage:@"网络加载失败"];
+    }];
+
 }
 -(void)createBtn{
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -65,9 +90,9 @@
     if ([self.delegate performSelector:@selector(XNRTypeViewBtnClick:)]) {
         XNRTypeViewType type;
         if (button == self.leftBtn) {
-            type = leftBtnType;
+            type = LeftBtnType;
         }else{
-            type = rightBtnType;
+            type = RightBtnType;
         }
         [self.delegate XNRTypeViewBtnClick:type];
 }
@@ -81,9 +106,9 @@
     return 1;
 }
 // 告诉系统有多少行
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     return _typeArray.count;
+
 }
 //告诉每一行显示什么内容
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
@@ -96,15 +121,14 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     NSString *name  = _typeArray[row];
-    NSString *num = _numArray[row];
 
     self.typeLabel.text = name;
     
     if (self.com) {
-        self.com(name,num);
+        self.com(name,[self.subDic objectForKey:name]);
     }
 //    self.typeLabel.text = _typeArray[row];
-    NSLog(@"---%@",name);
+    NSLog(@"---%@----%@",name,[self.subDic objectForKey:name]);
 }
 
 

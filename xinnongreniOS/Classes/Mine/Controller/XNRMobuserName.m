@@ -77,11 +77,10 @@
     
 }
 -(void)finishBtnClick{
+    [self.userNameTF resignFirstResponder];
     if ([self.userNameTF.text isEqualToString:@""] || self.userNameTF.text == nil) {
         NSString *str = @"您还没有填写姓名哦";
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:str delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-        
-        [alert show];
+        [UILabel showMessage:str];
         
     }else{
         [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"userName":self.userNameTF.text} success:^(id result) {
@@ -93,9 +92,8 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
                 [self.navigationController popViewControllerAnimated:YES];
             }else{
-                UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                [al show];
-
+                
+                [UILabel showMessage:result[@"message"]];
             
             }
         } failure:^(NSError *error) {
@@ -143,10 +141,13 @@
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     self.finishBtn.backgroundColor = R_G_B_16(0x00b38a);
-    
     NSString * mstr = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    if (mstr.length>12) {
-        textField.text = [mstr substringFromIndex:12];
+    CGSize textSize = [mstr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0]}];
+    
+    if (textSize.width>PX_TO_PT(210)&&![string isEqualToString:@""]) {
+        [textField resignFirstResponder];
+        mstr = [mstr substringWithRange:NSMakeRange(0, 6)];
+        [UILabel showMessage:[NSString stringWithFormat:@"不能超过%d个汉字",(int)mstr.length]];
         return NO;
     }
     return YES;
@@ -156,6 +157,14 @@
     self.finishBtn.backgroundColor = R_G_B_16(0xe0e0e0);
     return YES;
 }
+//- (void)textFieldDidEndEditing:(UITextField *)textField {
+//    if (textField.text.length>12) {
+//        textField.text = [textField.text substringToIndex:12];
+//    }
+//    
+//    NSLog(@"-=-===%@",textField.text);
+//    [UILabel showMessage:@"不能超过12个字符"];
+//}
 
 
 //-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -198,6 +207,7 @@
 }
 
 -(void)backClick{
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

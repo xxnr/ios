@@ -30,4 +30,11 @@
 
 @property (nonatomic ,strong) NSMutableArray *orderGoodsList;
 
+@property (nonatomic ,copy) NSString *duePrice;
+
+@property (nonatomic ,copy) NSString *price;
+
+@property (nonatomic ,copy) NSString *payType;
+
+
 @end

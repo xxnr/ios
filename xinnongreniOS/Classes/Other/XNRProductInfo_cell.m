@@ -12,7 +12,7 @@
 
 #define KbtnTag 1000
 #define KlabelTag 2000
-@interface XNRProductInfo_cell()
+@interface XNRProductInfo_cell()<UIScrollViewDelegate>
 
 @property (nonatomic, weak) UIImageView *headView;
 @property (nonatomic, weak) UIView *midView;
@@ -91,7 +91,6 @@
 -(void)photoTap:(UITapGestureRecognizer *)tap{
     // 创建浏览器对象
 //    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
-    [BMProgressView showImage:self.headView];
 
 }
 
@@ -159,6 +158,7 @@
     
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.scrollLabel.frame) + PX_TO_PT(80), ScreenWidth, ScreenHeight-64-PX_TO_PT(160))];
     self.webView = webView;
+    webView.scrollView.delegate = self;
     [self addSubview:webView];
     
 }
@@ -233,10 +233,10 @@
         self.tempLabel.textColor = R_G_B_16(0x646464);
         titleLabel.textColor = R_G_B_16(0x00b38a);
         self.tempLabel = titleLabel;
-        [SVProgressHUD show];
+        [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_model.app_body_url]];
         [self.webView loadRequest:request];
-        [SVProgressHUD dismiss];
+        [BMProgressView LoadViewDisappear:self];
         
     }else if (button.tag == KbtnTag + 1)
     {
@@ -244,10 +244,10 @@
         button.selected = YES;
         self.tempBtn = button;
 
-
+        [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_model.app_standard_url]];
         [self.webView loadRequest:request];
-        [self.progressView LoadViewDisappear];
+        [BMProgressView LoadViewDisappear:self];
 
 
         
@@ -264,10 +264,11 @@
         self.tempLabel.textColor = R_G_B_16(0x646464);
         titleLabel.textColor = R_G_B_16(0x00b38a);
         self.tempLabel = titleLabel;
-
+        
+        [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_model.app_support_url]];
         [self.webView loadRequest:request];
-        [self.progressView LoadViewDisappear];
+        [BMProgressView LoadViewDisappear:self];
 
     }
 }
@@ -280,7 +281,7 @@
     [self.headView sd_setImageWithURL:[NSURL URLWithString:imageUrl ] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
     self.goodNameLabel.text = [NSString stringWithFormat:@"%@",model.name];
     self.descriptionLabel.text = [NSString stringWithFormat:@"%@",model.Desc];
-    self.priceLabel.text = [NSString stringWithFormat:@"新农价:￥%@",model.price];
+    self.priceLabel.text = [NSString stringWithFormat:@"￥%@",model.price];
     
     NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:self.priceLabel.text];
     NSDictionary *priceStr=@{
@@ -289,22 +290,33 @@
                           
                           };
     
-    [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(4,AttributedStringPrice.length-4)];
+    [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(0,AttributedStringPrice.length)];
     
     [_priceLabel setAttributedText:AttributedStringPrice];
     
-    self.depositLabel.text = [NSString stringWithFormat:@"订金:￥%.2f",model.deposit];
+//    NSRange range = [self.depositLabel.text rangeOfString:@"."];
+//    if (self.depositLabel.text.length - range.location > 0) {
+//        
+//    }else{
+//        self.depositLabel.text = [NSString stringWithFormat:@"订金:¥%@",[NSString stringWithFormat:@"%f",model.deposit]];
+//    }
     
+    self.depositLabel.text = [NSString stringWithFormat:@"订金:￥%.2f",model.deposit];
+    if ([self.depositLabel.text rangeOfString:@".00"].length == 3) {
+        self.depositLabel.text = [self.depositLabel.text substringToIndex:self.depositLabel.text.length-3];
+    }
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.depositLabel.text];
     NSDictionary *depositStr=@{
-                          
-                          NSForegroundColorAttributeName:R_G_B_16(0xff4e00)
-                          
-                          };
+                               
+                               NSForegroundColorAttributeName:R_G_B_16(0xff4e00)
+                               
+                               };
     
     [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(3,AttributedStringDeposit.length-3)];
     
     [_depositLabel setAttributedText:AttributedStringDeposit];
+
+    
     
     if (model.deposit == 0.00) {
         self.depositLabel.hidden = YES;
@@ -323,6 +335,17 @@
     NSLog(@"=====%@",self.model.app_body_url);
 
     
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+    if (self.webView.scrollView.contentOffset.y<-40) {
+        if ([self.delegate performSelector:@selector(XNRProductInfo_cellScroll)] ) {
+            [self.delegate XNRProductInfo_cellScroll];
+            
+        }
+    }
 }
 
 

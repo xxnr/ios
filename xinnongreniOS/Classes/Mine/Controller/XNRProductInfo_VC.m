@@ -16,17 +16,18 @@
 #import "XNRProductInfo_model.h"
 #import "XNRProductInfo_cell.h"
 #import "MJExtension.h"
+#import "XNRToolBar.h"
 #define kLeftBtn  3000
 #define kRightBtn 4000
 #define HEIGHT 100
-@interface XNRProductInfo_VC ()<UITextFieldDelegate,UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource>{
+@interface XNRProductInfo_VC ()<UITextFieldDelegate,UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource,XNRProductInfo_cellDelegate,XNRToolBarBtnDelegate>{
     CGRect oldTableRect;
     CGFloat preY;
     NSMutableArray *_goodsArray;
 }
 @property(nonatomic,weak) UITableView *tableView;
 @property(nonatomic,weak) UIImageView *headView;
-@property(nonatomic,weak) UITextField*numTextField;
+@property(nonatomic,weak) UITextField *numTextField;
 
 @property (nonatomic,weak) UIButton *buyBtn;   // 立即购买
 @property(nonatomic,weak) UIButton*addBuyCarBtn; // 加入购物车
@@ -56,6 +57,19 @@
         [self.view addSubview:progressView];
     }
     return _progressView;
+}
+
+#pragma mark - 键盘回收
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    
+    [textField resignFirstResponder];
+    if ([self.numTextField.text isEqualToString:@"0"] || [self.numTextField.text isEqualToString:@""]) {
+        self.numTextField.text = @"1";
+    }
+    
+    return YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -96,6 +110,17 @@
     [self getData];
     // 注册消息通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
+    
+    // 键盘即将隐藏, 就会发出UIKeyboardWillHideNotification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+-(void)keyboardWillHide:(NSNotification *)note
+{
+    if ([self.numTextField.text isEqualToString:@"0"] || [self.numTextField.text isEqualToString:@""]) {
+        self.numTextField.text = @"1";
+    }
+
 }
 
 -(void)createTableView{
@@ -108,14 +133,22 @@
     [self.view addSubview:tableView];
 }
 
+-(void)XNRProductInfo_cellScroll
+{
+    CGPoint point = self.tableView.contentOffset;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.tableView.contentOffset = CGPointMake(point.x, 0);
+
+    }];
+}
+
 #pragma mark-获取网络数据
 -(void)getData {
     
-    [SVProgressHUD showWithStatus:@"正在加载中"];
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [KSHttpRequest post:KHomeGetAppProductDetails parameters:@{@"productId":self.model.goodsId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
-    
-       [SVProgressHUD dismiss];
+        [BMProgressView LoadViewDisappear:self.view];
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dic =result[@"datas"];
             self.model.deposit = dic[@"deposit"];
@@ -154,20 +187,30 @@
         
         [self.tableView reloadData];
     } failure:^(NSError *error) {
-    NSLog(@"error-->%@",error);
+        [BMProgressView LoadViewDisappear:self.view];
         
     }];
 }
 
 
 -(void)textFieldChanged:(NSNotification*)noti {
-    if([self.numTextField.text isEqualToString:@"0"]){
+    
+        if([self.numTextField.text isEqualToString:@"0"]){
             self.numTextField.text = @"1";
         }else{
                 self.addBuyCarBtn.enabled = YES;
              }
     if (self.numTextField.text.length>4) {
     self.numTextField.text = [self.numTextField.text substringToIndex:4];
+    }
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    
+    if ([self.numTextField.text isEqualToString:@"0"] || [self.numTextField.text isEqualToString:@""]) {
+        
+        self.numTextField.text = @"1";
     }
 }
 
@@ -221,6 +264,10 @@
     self.numTextField = numTextField;
     [bgView addSubview:numTextField];
     
+    XNRToolBar *toolBar = [[XNRToolBar alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(88))];
+    toolBar.delegate = self;
+    numTextField.inputAccessoryView = toolBar;
+    
     UIButton *rightBtn = [MyControl createButtonWithFrame:CGRectMake(CGRectGetMaxX(self.numTextField.frame), PX_TO_PT(16), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
     
     rightBtn.tag = kRightBtn;
@@ -267,6 +314,11 @@
     [bgView addSubview:bottomLine];
 }
 
+-(void)XNRToolBarBtnClick
+{
+
+}
+
 #pragma mark - 立即购买
 -(void)buyBtnClick
 {
@@ -278,9 +330,9 @@
                 if([result[@"code"] integerValue] == 1000){
                     
                 }else {
-                    [SVProgressHUD dismiss];
-                    UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                    [al show];
+                    
+                    [UILabel showMessage:result[@"message"]];
+                    [BMProgressView LoadViewDisappear:self.view];
                 }
                 
             } failure:^(NSError *error) {
@@ -323,10 +375,20 @@
         }
         XNROrderInfo_VC *orderVC = [[XNROrderInfo_VC alloc] init];
         orderVC.hidesBottomBarWhenPushed = YES;
+        orderVC.isRoot = YES;
+        
         NSMutableArray *datasArray = [[NSMutableArray alloc] init];
+        NSMutableArray *idArray = [[NSMutableArray alloc] init];
+        
         NSDictionary *params = @{@"productId":self.model.goodsId,@"count":self.numTextField.text};
+        NSDictionary *idParams = @{@"id":self.model.goodsId,@"count":self.numTextField.text};
+        
+        [idArray addObject:idParams];
         [datasArray addObject:params];
+        
         orderVC.dataArray = datasArray;
+        orderVC.idArray = idArray;
+        
         if (self.model.deposit && [self.model.deposit floatValue]>0) {
             orderVC.totalPrice = [self.model.deposit floatValue];
         }else{
@@ -335,22 +397,26 @@
         [self.navigationController pushViewController:orderVC animated:YES];
 
     }else{
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"您尚未登录" message:@"请先前往登录" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        [alert show];
-    
-    }
-    
-
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1) {
-        XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
-        login.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:login animated:YES];
+        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"您还没有登录，是否登录?" chooseBtns:@[@"取消",@"确定"]];
         
+        alertView.chooseBlock = ^void(UIButton *btn){
+            
+            if (btn.tag == 11) {
+                
+                XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
+                login.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:login animated:YES];
+                
+            }
+            
+        };
+        
+        [alertView BMAlertShow];
+        
+    
     }
+    
+
 }
 
 
@@ -364,8 +430,8 @@
         self.addBuyCarBtn.enabled = YES;
         [self addShopCarOpeation];
     }else{
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"请输入正确的商品数量哦" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-                [alert show];
+        
+        [UILabel showMessage:@"请输入正确的商品数量"];
     }
 }
 
@@ -373,7 +439,8 @@
 -(void)addShopCarOpeation{
     
     NSLog(@"加入购物车");
-    [SVProgressHUD showWithStatus:@"加入购物车中..." maskType:SVProgressHUDMaskTypeClear];
+//    [SVProgressHUD showWithStatus:@"加入购物车中..." maskType:SVProgressHUDMaskTypeClear];
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     if(IS_Login == YES) {
         
         [self synchShoppingCarDataWith:nil];
@@ -405,24 +472,16 @@
             }
             if (b) {
                 
-                [SVProgressHUD  showSuccessWithStatus:@"加入购物车成功"];
+                [UILabel showMessage:@"加入购物车成功"];
+                [BMProgressView LoadViewDisappear:self.view];
             }else{
                 
-                [SVProgressHUD showErrorWithStatus:@"加入购物车失败"];
+                [UILabel showMessage:@"加入购物车失败"];
+                [BMProgressView LoadViewDisappear:self.view];
+
             }
         });
     }
-    
-//    //tabBar切换动画(跳到购物车页面)
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-//        XNRTabBarController *tab = (XNRTabBarController *)self.tabBarController;
-//        tab.selectedIndex = 2;
-//        CATransition *myTransition=[CATransition animation];
-//        myTransition.duration=0.3;
-//        myTransition.type= @"fade";
-//        [tab.view.superview.layer addAnimation:myTransition forKey:nil];
-//        [self.navigationController popViewControllerAnimated:NO];
-//    });
     
     
 }
@@ -465,6 +524,7 @@
     XNRProductInfo_cell *cell = [XNRProductInfo_cell cellWithTableView:tableView];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.model = _goodsArray[indexPath.row];
+    cell.delegate = self;
     return cell;
 
 }
@@ -530,11 +590,12 @@
     [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":goodsId,@"userId":[DataCenter account].userid,@"count":self.numTextField.text,@"user-agent":@"IOS-v2.0",@"update_by_add":@"true"} success:^(id result) {
         NSLog(@"%@",result);
         if([result[@"code"] integerValue] == 1000){
-            [SVProgressHUD  showSuccessWithStatus:@"加入购物车成功"];
+
+            [UILabel showMessage:@"加入购物车成功"];
+            [BMProgressView LoadViewDisappear:self.view];
         }else {
-            [SVProgressHUD dismiss];
-            UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-            [al show];
+            [UILabel showMessage:result[@"message"]];
+            [BMProgressView LoadViewDisappear:self.view];
         }
         
     } failure:^(NSError *error) {

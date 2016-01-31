@@ -100,10 +100,10 @@
                 [self.navigationController popViewControllerAnimated:YES];
                 
                 [SVProgressHUD showSuccessWithStatus:@"提交成功"];
+                
             }else{
                 
-                UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message: result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                [al show];
+                [UILabel showMessage:result[@"message"]];
                 
 
             }

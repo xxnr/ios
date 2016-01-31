@@ -10,7 +10,7 @@
 @interface XNRLoginViewController : UIViewController
 
 //@property (nonatomic,copy) NSString*loginFrom;
-
+@property (nonatomic, copy) void(^com)();
 @property (nonatomic,assign) BOOL loginFrom;
 
 

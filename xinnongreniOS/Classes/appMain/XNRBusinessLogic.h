@@ -73,6 +73,10 @@
  *  用户签到
  */
 #define KUserSign [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/user/sign"]
+/**
+ *  获取用户类型列表
+ */
+#define Kusertypes [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/usertypes"]
 
 
 /**--------------------

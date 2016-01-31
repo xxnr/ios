@@ -36,7 +36,7 @@
     [self addSubview:imageView];
     
     UILabel *ferLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.imageView.frame)+PX_TO_PT(12), littleY, ScreenWidth/2, littleH)];
-    ferLabel.text = @"化肥精选";
+    ferLabel.text = @"汽车精选";
     ferLabel.textColor = R_G_B_16(0x323232);
     ferLabel.font = [UIFont systemFontOfSize:15];
     [self addSubview:ferLabel];

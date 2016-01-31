@@ -13,8 +13,6 @@
 
 @property (nonatomic ,weak) UIButton *buyCarBtn;
 
-
-
 @end
 
 @implementation XNROrderEmptyView
@@ -23,9 +21,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
-        [self createView];
-        
+
     }
     return self;
 }
@@ -77,6 +73,7 @@
 
 -(void)btnClick:(UIButton *)button
 {
+    
     if ([self.delegate performSelector:@selector(XNROrderEmptyView:)]) {
         XNROrderEmptyViewbuySort type;
         if (button == self.buyFerBtn) {
@@ -92,7 +89,10 @@
 
 -(void)show
 {
-//    self.frame = CGRectMake(0, 64+PX_TO_PT(100), ScreenWidth, ScreenHeight - 64 - PX_TO_PT(100));
+    
+    self.frame = CGRectMake(0, 64+PX_TO_PT(100), ScreenWidth, ScreenHeight - 64 - PX_TO_PT(100));
+    self.userInteractionEnabled = YES;
+    [self createView];
 }
 
 @end

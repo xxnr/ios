@@ -55,7 +55,7 @@
     return self;
     
 }
-
+#pragma mark - 创建按钮
 -(void)createBtn{
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     leftBtn.frame = CGRectMake(0, 0, ScreenWidth/4, PX_TO_PT(50));
@@ -87,7 +87,7 @@
         [self.delegate XNRAddressManageViewBtnClick:type];
     }
 }
-
+#pragma mark - 获得省得数据
 -(void)getPData{
     [KSHttpRequest post:KGetAreaList parameters:nil success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
@@ -154,6 +154,7 @@
 #pragma mark - UIPickerViewDataSource
 // 告诉系统有多少列
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    
     return 3;
 }
 // 告诉系统有多少行
@@ -202,6 +203,7 @@
         self.provinceLabel.text = provinceName;
         provinceName = province.name;
         provinceId = province.ID;
+        
     }
     NSString *cityName;
     NSString *cityId;
@@ -234,7 +236,7 @@
     NSString *address = [NSString stringWithFormat:@"%@%@%@",provinceName,cityName,countyName];
     NSLog(@"%@====",address);
     if (self.com) {
-        self.com(provinceName,cityName,countyName,provinceId,cityId,countyId);
+        self.com(provinceName,cityName,countyName,provinceId?provinceId:@"58054e5ba551445",cityId,countyId);
     }
 }
 

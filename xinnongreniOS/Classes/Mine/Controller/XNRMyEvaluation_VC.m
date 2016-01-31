@@ -9,7 +9,6 @@
 #import "XNRMyEvaluation_VC.h"
 #import "XNRMyEvaluation_Cell.h"
 #import "XNRMyEvaluationInfo_VC.h"
-#import "MJRefresh.h"
 #import "XNRMyEvaluationModel.h"
 #define kMyCommentURL @"app/comment/MyJudgeList"  // 我的评价
 
@@ -39,18 +38,18 @@
     self.tableview.separatorStyle=UITableViewCellSeparatorStyleNone;
     [self setNavigationbarTitle];
     
-    //头部刷新
-    __weak __typeof(&*self)weakSelf = self;
-    [self.tableview addLegendHeaderWithRefreshingBlock:^{
-        _currentPage = 1;
-        [weakSelf getData];
-    }];
-    
-    //尾部刷新
-    [self.tableview addLegendFooterWithRefreshingBlock:^{
-        _currentPage = _currentPage + 1;
-        [weakSelf getData];
-    }];
+//    //头部刷新
+//    __weak __typeof(&*self)weakSelf = self;
+//    [self.tableview addLegendHeaderWithRefreshingBlock:^{
+//        _currentPage = 1;
+//        [weakSelf getData];
+//    }];
+//    
+//    //尾部刷新
+//    [self.tableview addLegendFooterWithRefreshingBlock:^{
+//        _currentPage = _currentPage + 1;
+//        [weakSelf getData];
+//    }];
     
     [self getData];
 }
@@ -78,22 +77,15 @@
                 [_dataArray addObject:model];
             }
         } else{
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:result[@"message"] delegate:self cancelButtonTitle:@"好" otherButtonTitles:nil];
-            [alert show];
+            
+            [UILabel showMessage:result[@"message"]];
         }
         
-        //刷新头部
-        [self.tableview.legendHeader endRefreshing];
-        //刷新尾部
-        [self.tableview.legendFooter endRefreshing];
+    
         //刷新列表
         [self.tableview reloadData];
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:@"网络请求错误"];
-        //刷新头部
-        [self.tableview.legendHeader endRefreshing];
-        //刷新尾部
-        [self.tableview.legendFooter endRefreshing];
         //刷新列表
         [self.tableview reloadData];
     }];

@@ -10,6 +10,7 @@
 #import "AFNetworking.h"
 @interface KSHttpRequest : NSObject
 
+
 /**
  *  一般的get请求
  *

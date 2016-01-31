@@ -19,7 +19,7 @@
 #import "RSA.h"
 #import "XNRProductInfo_VC.h"
 #import "AppDelegate.h"
-
+#import "XNRFinishMineDataController.h"
 @interface XNRLoginViewController ()<UITextFieldDelegate,QCheckBoxDelegate>{
     
     BOOL isRemmeber;
@@ -98,8 +98,11 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
         
     }else{
-        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
         
+    }
+    if (self.com) {
+        self.com();
     }
 
 }
@@ -216,6 +219,9 @@
 
 - (void)forgetClick:(UIButton *)button
 {
+    if (self.com) {
+        self.com();
+    }
     XNRForgetPasswordViewController *vc = [[XNRForgetPasswordViewController alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 
@@ -260,6 +266,9 @@
 #pragma mark - 注册
 - (void)registerClick:(UIButton *)button
 {
+    if (self.com) {
+        self.com();
+    }
     XNRRegisterViewController *vc = [[XNRRegisterViewController alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -267,6 +276,11 @@
 #pragma mark - 登录
 - (void)loginClick:(UIButton *)button
 {
+    if (self.com) {
+        self.com();
+    }
+    [self.usernameTextField resignFirstResponder];
+    [self.passwordTextField resignFirstResponder];
     
     int flag = 1;
     NSString *title;
@@ -283,7 +297,8 @@
         title=@"手机格式错误";
        
     }else{
-        [SVProgressHUD showWithStatus:@"正在登录..."];
+        
+        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:NO];
         [KSHttpRequest get:KUserPubkey parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
             NSLog(@"======%@",result);
             if ([result[@"code"] integerValue] == 1000) {
@@ -291,6 +306,7 @@
                 self.pubKey = pubKey;
                 [self getNetwork];
                 NSLog(@"======%@",pubKey);
+                
             }
             
         } failure:^(NSError *error) {
@@ -301,8 +317,11 @@
     }
 
     if (flag == 0) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:title delegate:self cancelButtonTitle:@"好" otherButtonTitles: nil];
-        [alert show];
+        
+        [UILabel showMessage:title];
+        
+        [BMProgressView LoadViewDisappear:self.view];
+        
         return;
     }
 }
@@ -316,7 +335,7 @@
     [KSHttpRequest post:encode parameters:@{@"account":self.usernameTextField.text,@"password":encryptPassword,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000){
-            [SVProgressHUD dismiss];
+            [BMProgressView LoadViewDisappear:self.view];
             //本地归档保存用户账户信息
             NSDictionary *datasDic = result[@"datas"];
             NSDictionary *address = datasDic[@"userAddress"];
@@ -337,6 +356,7 @@
             info.town = town[@"name"];
             info.cartId = datasDic[@"cartId"];
             [DataCenter saveAccount:info];
+            
              //上传购物车数据
             DatabaseManager *dataM = [DatabaseManager sharedInstance];
             if ([[dataM queryAllGood] count]> 0) {
@@ -347,34 +367,33 @@
                 
                 [dataM deleteShoppingCar];
             }
-            //如果选择记住密码更新本地数据
-            if(isRemmeber == YES){
-                [USER setObject:self.passwordTextField.text forKey:@"password"];
-                [USER setObject:self.usernameTextField.text forKey:@"Account"];
-                [USER boolForKey:@"Login"];
-                [USER setBool:YES forKey:@"Login"];
-                [USER synchronize];
-            }
-            NSLog(@"登录成功");
+            
             
             //发送刷新通知
             [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
+            // 判断资料是否完善
+            if ([datasDic[@"isUserInfoFullFilled"] integerValue] == 0) {
+                XNRFinishMineDataController *fmdc = [[XNRFinishMineDataController alloc] init];
+                fmdc.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:fmdc animated:YES];
+            }else{
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            }
 
-            [self.navigationController popViewControllerAnimated:YES];
         
         }else{
-            [SVProgressHUD dismiss];
             
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
+            [UILabel showMessage:result[@"message"]];
+            [BMProgressView LoadViewDisappear:self.view];
+
             
-            [alert show];
         }
     } failure:^(NSError *error) {
-        [SVProgressHUD dismiss];
         
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"登录失败" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [alert show];
+        [UILabel showMessage:@"登录失败"];
+        [BMProgressView LoadViewDisappear:self.view];
+
     }];
 
 
@@ -388,9 +407,10 @@
         if([result[@"code"] integerValue] == 1000){
 
         }else {
-            [SVProgressHUD dismiss];
-            UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-            [al show];
+            
+            [UILabel showMessage:result[@"message"]];
+            [BMProgressView LoadViewDisappear:self.view];
+
         }
         
     } failure:^(NSError *error) {

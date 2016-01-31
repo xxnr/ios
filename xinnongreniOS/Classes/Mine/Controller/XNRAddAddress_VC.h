@@ -11,7 +11,8 @@
 @interface XNRAddAddress_VC : UIViewController
 
 @property(nonatomic,copy) NSString *titleLabel;
-@property(nonatomic,retain)XNRAddressManageModel*model;
+@property(nonatomic,retain)XNRAddressManageModel *model;
+@property (nonatomic ,assign) BOOL isRoot;
 @property(nonatomic,copy)void(^addressRefreshBlock)(); //界面刷新
 
 @end

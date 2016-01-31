@@ -9,6 +9,7 @@
 #import "KSHttpRequest.h"
 #import "AppDelegate.h"
 @implementation KSHttpRequest
+static int loginCount = 0;
 /**
  *  一般的get请求
  *
@@ -105,11 +106,17 @@
              [DataCenter saveAccount:infos];
              //发送刷新通知
              [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
-
+             
              XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+             vc.com = ^(){
+                 loginCount = 0;
+             };
              vc.hidesBottomBarWhenPushed = YES;
              UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
-             [currentVc.navigationController pushViewController:vc animated:YES];
+             if (loginCount<1) {
+                 [currentVc.navigationController pushViewController:vc animated:YES];
+                 loginCount++;
+             }
          }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         

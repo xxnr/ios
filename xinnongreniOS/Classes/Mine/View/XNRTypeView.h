@@ -11,8 +11,8 @@
 typedef void(^XNRTypeViewBlock)(NSString *typeName,NSString *typeNum);
 
 typedef enum : NSUInteger {
-    leftBtnType,
-    rightBtnType,
+    LeftBtnType,
+    RightBtnType,
 } XNRTypeViewType;
 
 @protocol XNRTypeViewBtnDelegate <NSObject>

@@ -45,7 +45,7 @@
     noRepresentLabel.font = [UIFont systemFontOfSize:16];
     noRepresentLabel.text = @"您还没有设置新农代表";
     noRepresentLabel.textAlignment = NSTextAlignmentCenter;
-    noRepresentLabel.textColor = R_G_B_16(0x323232);
+    noRepresentLabel.textColor = R_G_B_16(0x646464);
     self.noRepresentLabel = noRepresentLabel;
     [self addSubview:noRepresentLabel];
     

@@ -79,10 +79,9 @@
     
 }
 -(void)finishBtnClick{
+    [self.nickNameTF resignFirstResponder];
     if ([self.nickNameTF.text isEqualToString:@""] || self.nickNameTF.text == nil) {
-        NSString *str  = @"请先输入昵称哦";
-        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:str delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-        [al show];
+        [UILabel showMessage:@"请先输入昵称哦"];
     }else{
         [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"nickName":self.nickNameTF.text} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
@@ -94,8 +93,8 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
                 [self.navigationController popViewControllerAnimated:YES];
             }else{
-                UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                [al show];
+               
+                [UILabel showMessage:@"昵称输入过长"];
                 
             }
         } failure:^(NSError *error) {
@@ -124,6 +123,17 @@
     self.finishBtn.backgroundColor = R_G_B_16(0xe0e0e0);
     return YES;
 }
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    
+    
+}
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    return YES;
+}
+
+
+
 -(void)createNav{
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];

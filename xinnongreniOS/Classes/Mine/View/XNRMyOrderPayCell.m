@@ -15,6 +15,11 @@
 @property (nonatomic ,weak) UILabel *priceLabel;
 @property (nonatomic ,weak) UILabel *numLabel;
 
+@property (nonatomic ,weak) UIView *bgView;
+@property (nonatomic ,weak) UILabel *depositLabel;
+@property (nonatomic ,weak) UILabel *remainPriceLabel;
+
+
 @end
 @implementation XNRMyOrderPayCell
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -22,12 +27,14 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
-        [self createUI];
+        [self createTopView];
+        [self createBottomView];
+        
     }
     return self;
 }
 
-- (void)createUI
+- (void)createTopView
 {
     UIView *topView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(300))];
     topView.backgroundColor=[UIColor whiteColor];
@@ -46,16 +53,17 @@
     self.goodsNameLabel = goodsNameLabel;
     [topView addSubview:goodsNameLabel];
     
-    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(34), ScreenWidth, PX_TO_PT(36))];
-    priceLabel.textColor = R_G_B_16(0x323232);
+    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(32), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(36))];
+    priceLabel.textColor = R_G_B_16(0xff4e00);
     priceLabel.font = [UIFont systemFontOfSize:16];
+    priceLabel.textAlignment = NSTextAlignmentRight;
     self.priceLabel = priceLabel;
     [topView addSubview:priceLabel];
     
-    UILabel *numLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(32), ScreenWidth/2 - PX_TO_PT(32), PX_TO_PT(36))];
+    UILabel *numLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(34), ScreenWidth/2 - PX_TO_PT(32), PX_TO_PT(36))];
     numLabel.textColor = R_G_B_16(0x323232);
     numLabel.font = [UIFont systemFontOfSize:18];
-    numLabel.textAlignment = NSTextAlignmentRight;
+    numLabel.textAlignment = NSTextAlignmentLeft;
     self.numLabel = numLabel;
     [topView addSubview:numLabel];
     
@@ -63,6 +71,80 @@
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [topView addSubview:lineView];
 }
+
+-(void)createBottomView
+
+{
+    
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(300), ScreenWidth, PX_TO_PT(160))];
+    
+    bgView.backgroundColor = [UIColor whiteColor];
+    
+    self.bgView = bgView;
+    
+    [self.contentView addSubview:bgView];
+    
+    
+    
+    UILabel *sectionOne = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
+    
+    sectionOne.textColor = R_G_B_16(0x323232);
+    
+    sectionOne.font = [UIFont systemFontOfSize:14];
+    
+    sectionOne.text = @"阶段一: 订金";
+    
+    [bgView addSubview:sectionOne];
+    
+    
+    
+    UILabel *sectionTwo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(80), ScreenWidth/2, PX_TO_PT(80))];
+    
+    sectionTwo.textColor = R_G_B_16(0x323232);
+    
+    sectionTwo.font = [UIFont systemFontOfSize:14];
+    
+    sectionTwo.text = @"阶段二: 尾款";
+    
+    [bgView addSubview:sectionTwo];
+    
+    
+    
+    UILabel *depositLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
+    
+    depositLabel.textColor = R_G_B_16(0x323232);
+    
+    depositLabel.font = [UIFont systemFontOfSize:16];
+    
+    depositLabel.textAlignment = NSTextAlignmentRight;
+    
+    self.depositLabel = depositLabel;
+    
+    [bgView addSubview:depositLabel];
+    
+    
+    
+    UILabel *remainPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(80), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
+    
+    remainPriceLabel.textColor = R_G_B_16(0x323232);
+    
+    remainPriceLabel.font = [UIFont systemFontOfSize:16];
+    
+    remainPriceLabel.textAlignment = NSTextAlignmentRight;
+    
+    self.remainPriceLabel = remainPriceLabel;
+    
+    [bgView addSubview:remainPriceLabel];
+    
+    for (int i = 0; i<3; i++) {
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        [bgView addSubview:lineView];
+    }
+
+}
+
+
 
 #pragma mark - 设置model数据模型的数据
 - (void)setCellDataWithShoppingCartModel:(XNRMyOrderModel *)info
@@ -85,6 +167,26 @@
     
     // 数量
     self.numLabel.text = [NSString stringWithFormat:@"x %@",_info.count];
+    
+    // 订金
+    
+    self.depositLabel.text = [NSString stringWithFormat:@"¥%.2f",_info.deposit.floatValue];
+    
+    // 尾款
+    
+    self.remainPriceLabel.text = [NSString stringWithFormat:@"¥%.2f",_info.price.floatValue - _info.deposit.floatValue];
+    
+    if (_info.deposit && [_info.deposit floatValue]>0) {
+        
+        self.bgView.hidden = NO;
+        
+    }else{
+        
+        self.bgView.hidden = YES;
+        
+    }
+    
+
     
     
 }

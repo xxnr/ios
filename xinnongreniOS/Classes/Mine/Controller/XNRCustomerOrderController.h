@@ -12,4 +12,5 @@
 
 @property (nonatomic ,copy) NSString *inviteeId;
 
+//@property (nonatomic ,assign) NSInteger indexPath;
 @end

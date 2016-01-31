@@ -56,8 +56,7 @@
     
     if(TARGET_IPHONE_SIMULATOR){
         
-        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"必须真机环境" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-        [al show];
+        [UILabel showMessage:@"必须真机环境"];
         
     }else{
 

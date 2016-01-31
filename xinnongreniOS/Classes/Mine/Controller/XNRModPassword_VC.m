@@ -147,17 +147,19 @@
 //完成
 - (void)finishClick:(UIButton *)button
 {
+    [self.newpasswordTextField resignFirstResponder];
+    [self.makeSurePasswordTextField resignFirstResponder];
+    [self.againPasswordTextField resignFirstResponder];
     
     if(self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0 || self.makeSurePasswordTextField.text.length==0)
     {
         
-        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:@"请完善您要填写的资料" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-        [al show];
+        [UILabel showMessage:@"请完善您要填写的资料"];
         
     }
     else if (![self.againPasswordTextField.text isEqualToString:self.makeSurePasswordTextField.text]){
-        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:@"新密码与确认密码不同" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-        [al show];
+       
+        [UILabel showMessage:@"新密码与确认密码不同"];
     }
     else{
         
@@ -189,7 +191,7 @@
     NSString *newPassword = [GBAlipayManager encryptString:newPwd publicKey:self.pubKey];
     
 
-    [SVProgressHUD showWithStatus:@"正在加载..."];
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     NSString *userID = [DataCenter account].userid;
     
     [KSHttpRequest post:KUserModifypwd parameters:@{@"userId":userID, @"oldPwd":oldPassword,@"newPwd":newPassword,@"user-agent":@"IOS-v2.0"} success:^(id result) {
@@ -197,23 +199,26 @@
         NSLog(@"%@",result[@"message"]);
         
         if([result[@"code"] isEqualToString:@"1000"]){
-            
-            [SVProgressHUD showSuccessWithStatus:@"密码修改成功"];
+            [UILabel showMessage:@"密码修改成功"];
         
             XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
             login.loginFrom = YES;
+            // 设为非登录状态
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+
             [self.navigationController pushViewController:login animated:YES];
                         
         }else{
     
-            [SVProgressHUD dismiss];
-            UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"友情提示" message:result[@"message"] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-            [al show];
+            [BMProgressView LoadViewDisappear:self.view];
+            [UILabel showMessage:result[@"message"]];
         }
         
     } failure:^(NSError *error) {
         
-        [SVProgressHUD showErrorWithStatus:@"网络失败"];
+        [UILabel showMessage:@"网络失败"];
         
     }];
 
@@ -256,8 +261,7 @@
 
 - (void)backClick:(UIButton *)btn
 {
-   
- 
+
     [self.navigationController popViewControllerAnimated:YES];
 }
 
