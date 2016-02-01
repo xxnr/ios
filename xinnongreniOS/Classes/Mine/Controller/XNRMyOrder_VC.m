@@ -13,7 +13,6 @@
 #import "XNRSendView.h"          //待发货
 #import "XNRReciveView.h"        //已发货
 #import "XNRCommentView.h"       //已完成
-#import "XNREvaluationOrder_VC.h"//评价订单
 #import "XNRCheckOrder_VC.h"     //查看订单
 #import "XNRTabBarController.h"
 

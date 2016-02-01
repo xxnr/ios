@@ -11,7 +11,6 @@
 #import "UIImageView+WebCache.h"
 #import "CoreTFManagerVC.h"
 #import "XNRTabBarController.h"
-#import "XNRProductInfoDetail_VC.h"
 #import "XNROrderInfo_VC.h"
 #import "XNRProductInfo_model.h"
 #import "XNRProductInfo_cell.h"

@@ -10,13 +10,8 @@
 #import "XNRAddressManageViewController.h"
 #import "XNROderInfo_Cell.h"
 #import "XNRPayTypeViewController.h"
-#import "XNRCheckFee_VC.h"
-#import "XNRLeaveMessage_VC.h"
 #import "XNRTabBarController.h"
 @interface XNRMakeSureOrderInfo_VC ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>{
-    
-    
-    
 }
     
     
@@ -43,8 +38,6 @@
     [self createFoot];
     //底部视图
     [self createBottom];
-    
-    
 }
 #pragma 时间戳转化函数—精确到day
 -(NSString*)timeFromSigntimeToDay:(NSString*)signTime{
@@ -291,22 +284,6 @@
     
 }
 
-#pragma mark-运费查看
--(void)feeCheck{
-    
-    
-    XNRCheckFee_VC*vc=[[XNRCheckFee_VC alloc]init];
-    vc.hidesBottomBarWhenPushed=YES;
-   
-    [self.navigationController pushViewController:vc animated:YES];
-    
-    NSLog(@"运费查看");
-    
-    
-    
-    
-}
-
 #pragma mark- 确认订单
 -(void)makeSure{
     XNRPayTypeViewController*vc=[[XNRPayTypeViewController alloc]init];
@@ -328,9 +305,6 @@
                      width:(CGFloat)width
                   fontSize:(CGFloat)fontSize
 {
-    
-    
-    
     CGRect rect = [string boundingRectWithSize:CGSizeMake(width, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:XNRFont(fontSize)} context:nil];
     
     return rect.size.height;
@@ -353,8 +327,7 @@
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
-    
-    
+
 }
 
 -(void)backClick{

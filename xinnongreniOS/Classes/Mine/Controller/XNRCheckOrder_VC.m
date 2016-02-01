@@ -10,11 +10,8 @@
 #import "XNRAddressManageViewController.h"
 #import "XNROderInfo_Cell.h"
 #import "XNRPayTypeViewController.h"
-#import "XNRCheckFee_VC.h"
-#import "XNRLeaveMessage_VC.h"
 #import "XNRCheckOrderSectionModel.h"
 #import "XNRCheckOrderModel.h"
-#import "XNREvaluationOrder_VC.h"
 #import "MJExtension.h"
 @interface XNRCheckOrder_VC ()<UITableViewDataSource,UITableViewDelegate>{
     
@@ -327,25 +324,18 @@
         cell=[[XNROderInfo_Cell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         
     }
-    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.refreshBlock = ^{
         [self.tableview reloadData];
     };
-    
-    [cell setCommentGoodBlock:^(XNRCheckOrderModel*goodModel) {
-        
-        XNREvaluationOrder_VC*vc=[[XNREvaluationOrder_VC alloc]init];
-        vc.model=goodModel;
-        vc.orderId = _orderID;
-        vc.hidesBottomBarWhenPushed=YES;
-        [self.navigationController pushViewController:vc animated:YES];
-        
-    }];
-    XNRCheckOrderSectionModel *sectionModel = _dataArray[indexPath.section];
-    XNRCheckOrderModel *model = sectionModel.orderGoodsList[indexPath.row];
-    [cell setCellDataWithModel:model];
-//    cell.backgroundColor=R_G_B_16(0xf4f4f4);
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (_dataArray.count>0) {
+        XNRCheckOrderSectionModel *sectionModel = _dataArray[indexPath.section];
+        if (sectionModel.orderGoodsList.count>0) {
+            XNRCheckOrderModel *model = sectionModel.orderGoodsList[indexPath.row];
+            [cell setCellDataWithModel:model];
+
+        }
+    }
     return cell;
     
 }

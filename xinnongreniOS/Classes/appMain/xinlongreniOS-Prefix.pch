@@ -58,7 +58,7 @@
 //网络是否打开
 #define NETWORK_OPEN [[MonitorNetworkViewController sharedInstance] isOpen]
 ///0-测试地址 1-生产地址
-#define kYBNetworkRelease 1
+#define kYBNetworkRelease 0
 
 #if kYBNetworkRelease
 
@@ -73,7 +73,7 @@
 
 
 //#define HOST @"http://101.200.194.203/"
-#define IMAGEHOST @"http://api.xinxinnongren.com"
+#define IMAGEHOST @"http://101.200.194.203"
 
 //设置字体和大小
 #define XNRFont(s) [UIFont fontWithName:@"Arial" size:s+2]

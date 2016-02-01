@@ -9,7 +9,6 @@
 #import "XNRMyscore_VC.h"
 #import "XNRMyscore_Cell.h"
 #import "XNRMyScoreModel.h"
-#import "XNRHowToEarnScore_VC.h"
 #define kMyScoreURL @"api/v2.0/point/findPointList" //我的积分
 
 @interface XNRMyscore_VC ()<UITableViewDataSource,UITableViewDelegate>{
@@ -43,19 +42,6 @@
     
     [self.view addSubview:self.tableview];
     
-//    //头部刷新
-//    __weak __typeof(&*self)weakSelf = self;
-//    [self.tableview addLegendHeaderWithRefreshingBlock:^{
-//        _currentPage = 1;
-//        [weakSelf getData];
-//    }];
-//    
-//    //尾部刷新
-//    [self.tableview addLegendFooterWithRefreshingBlock:^{
-//        _currentPage = _currentPage + 1;
-//        [weakSelf getData];
-//    }];
-    
     //创建头部视图
     [self creatHeadView];
     //获取数据
@@ -88,19 +74,9 @@
             [UILabel showMessage:result[@"message"]];
         }
         
-        
-        //刷新头部
-//        [self.tableview.legendHeader endRefreshing];
-        //刷新尾部
-        // [self.tableview.legendFooter endRefreshing];
-        //刷新列表
         [self.tableview reloadData];
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:@"网络请求错误"];
-//        //刷新头部
-//        [self.tableview.legendHeader endRefreshing];
-//        //刷新尾部
-//        [self.tableview.legendFooter endRefreshing];
         //刷新列表
         [self.tableview reloadData];
     }];
@@ -123,12 +99,6 @@
     titleLabel.text=@"我的积分:";
     
     [myScoreBg addSubview:titleLabel];
-    //如何赚取
-//    UIButton*howEarn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth-150-15, 15, 150, 20) ImageName:nil Target:self Action:@selector(EarnMoney) Title:@"如何赚取积分?"];
-//    
-//    [howEarn setTitleColor:R_G_B_16(0x7e7e7e) forState:UIControlStateNormal];
-//    howEarn.titleLabel.font= XNRFont(16);
-//    [myScoreBg addSubview:howEarn];
     
     //积分数
     self.myScore=[[UILabel alloc]initWithFrame:CGRectMake(15, 45, ScreenWidth-30, 45)];
@@ -138,14 +108,6 @@
     [myScoreBg addSubview:self.myScore];
     self.tableview.tableHeaderView=headView;
     
-}
--(void)EarnMoney{
-    
-    NSLog(@"如何赚取");
-//    XNRHowToEarnScore_VC*vc=[[XNRHowToEarnScore_VC alloc]init];
-//    vc.hidesBottomBarWhenPushed=YES;
-//    [self.navigationController pushViewController:vc animated:YES];
-
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -164,9 +126,13 @@
         
         
     }
-    [cell setCellDataWithModel:_dataArray[indexPath.row]];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.contentView.backgroundColor=[UIColor whiteColor];
+    
+    if (_dataArray.count) {
+        [cell setCellDataWithModel:_dataArray[indexPath.row]];
+
+    }
     
     return cell;
     

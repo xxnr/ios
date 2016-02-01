@@ -11,8 +11,6 @@
 #import "XNROderInfo_Cell.h"
 #import "XNRSubmitOrderCell.h"
 #import "XNRPayTypeViewController.h"
-#import "XNRCheckFee_VC.h"
-#import "XNRLeaveMessage_VC.h"
 #import "XNRMakeSureOrderInfo_VC.h"
 #import "XNRCheckOrderModel.h"
 #import "XNROrderInfoModel.h"  //订单信息模型

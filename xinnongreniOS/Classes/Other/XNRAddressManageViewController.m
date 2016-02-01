@@ -9,7 +9,6 @@
 #import "XNRAddressManageViewController.h"
 #import "XNRAddressManageModel.h"
 #import "XNRAddressManageTableViewCell.h"
-#import "XNRAddressSelect_VC.h"
 #import "XNROrderInfo_VC.h"
 #import "XNRAddAddress_VC.h"
 #import "XNRAddressEmptyView.h"

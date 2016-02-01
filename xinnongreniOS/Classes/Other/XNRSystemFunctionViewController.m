@@ -8,7 +8,6 @@
 
 #import "XNRSystemFunctionViewController.h"
 #import "XNRLoginViewController.h"
-#import "XNRAboutUs_VC.h"
 @interface XNRSystemFunctionViewController ()<UIActionSheetDelegate>
 {
     UIView *_versionBg;
@@ -67,13 +66,6 @@
     [_aboutUsBg addSubview:_aboutUsBtn];
 }
 
-- (void)aboutUsBtnClick:(UIButton *)button
-{
-    NSLog(@"关于我们");
-    XNRAboutUs_VC*vc=[[XNRAboutUs_VC alloc]init];
-    vc.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:vc animated:YES];
-}
 
 #pragma mark--退出登录
 -(void)createQuiteLogin{

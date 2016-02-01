@@ -8,10 +8,7 @@
 
 #import "XNRMyaccount_VC.h"
 #import "PECropViewController.h"
-#import "XNRWrightSendAddress_VC.h"
-#import "XNRCityList_VC.h"
 #import "XNRModPassword_VC.h"
-#import "XNRAddressSelect_VC.h"
 #import "XNRAddressManageViewController.h"
 #import "UIImageView+WebCache.h"
 #import "UIButton+WebCache.h"

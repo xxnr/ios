@@ -9,7 +9,6 @@
 #import "XNRProductInfo_cell.h"
 #import "UIImageView+WebCache.h"
 #import "MJPhotoBrowser.h"
-
 #define KbtnTag 1000
 #define KlabelTag 2000
 @interface XNRProductInfo_cell()<UIScrollViewDelegate>
@@ -36,6 +35,7 @@
 @property (nonatomic, weak) UIWebView *webView;
 
 @property (nonatomic ,weak) BMProgressView *progressView;
+
 
 @end
 
@@ -89,6 +89,7 @@
 }
 
 -(void)photoTap:(UITapGestureRecognizer *)tap{
+
     // 创建浏览器对象
 //    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
 

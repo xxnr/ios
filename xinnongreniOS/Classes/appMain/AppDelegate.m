@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "XNRTabBarController.h"
-#import "GuideView.h"
 #import "XNRLoginViewController.h"
 #import "GBAlipayManager.h"
 #import "XNROrderSuccessViewController.h"
@@ -17,7 +16,7 @@
 #import "MobClick.h"
 #import "XNRNewFeatureViewController.h"
 #import "UMessage.h"
-//#import "IQKeyboardManager.h"
+
 #define GET_PROFILE_LIST app/profile/getProfileList
 #define UMSYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #define _IPHONE80_ 80000
@@ -26,7 +25,7 @@
 {
     NSInteger currentIndex;
 }
-@property (nonatomic,strong)GuideView *guideView;
+
 @property (nonatomic, copy) NSString *pubKey;
 
 @end
@@ -41,7 +40,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // 调用友盟的方法
     [self umengTrack:launchOptions];
-    // 友盟推送
     
     currentIndex = 0;
     // 网络监听
@@ -75,13 +73,10 @@
         UserInfo *info = [[UserInfo alloc]init];
         info.loginState = NO;
         [DataCenter saveAccount:info];
-        //本地存储,存储一个是否再次进入的状态值(布尔型)
+        // 本地存储,存储一个是否再次进入的状态值(布尔型)
         [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"isEnterAgain"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
-    // 键盘的管理
-//    [IQKeyboardManager sharedManager].enable = YES;
-    
     return YES;
 }
 
@@ -143,23 +138,6 @@
     
 }
 
-#pragma mark-->引导页
-- (void)createGuideView
-{
-    self.guideView = [[GuideView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-    __weak __typeof(&*self)weakSelf = self;
-    self.guideView.startBlock = ^{
-        [UIView animateWithDuration:0.5 animations:^{
-            weakSelf.guideView.alpha = 0;
-        } completion:^(BOOL finished) {
-            [weakSelf.guideView removeFromSuperview];
-            weakSelf.guideView = nil;
-        }];
-    };
-    
-    [AppKeyWindow addSubview:self.guideView];
-  
-}
 
 #pragma mark - 设置网络监听
 - (void)monitorNetwork
