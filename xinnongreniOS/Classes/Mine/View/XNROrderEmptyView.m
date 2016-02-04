@@ -89,7 +89,6 @@
 
 -(void)show
 {
-    
     self.frame = CGRectMake(0, 64+PX_TO_PT(100), ScreenWidth, ScreenHeight - 64 - PX_TO_PT(100));
     self.userInteractionEnabled = YES;
     [self createView];

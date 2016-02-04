@@ -35,10 +35,7 @@
  *  收货人名称
  */
 @property (copy,nonatomic) NSString *receiptPeople;
-/**
- *  省份
- */
-@property (copy,nonatomic) NSString *areaName;
+
 /**
  *  省份ID
  */
@@ -49,6 +46,10 @@
 
 //附加字段
 @property (nonatomic,assign) BOOL selected;
+/**
+ *  省
+ */
+@property (nonatomic ,copy) NSString *areaName;
 /**
  *  市
  */

@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XNRUserInfoModel.h"
+
+typedef void(^XNRMobAddressBlock)(NSString *address,NSString *street);
+
+
 @interface XNRMobAddress : UIViewController
+
+@property (nonatomic ,strong) XNRUserInfoModel *model;
+
+@property (nonatomic ,copy) XNRMobAddressBlock com;
 
 
 @end

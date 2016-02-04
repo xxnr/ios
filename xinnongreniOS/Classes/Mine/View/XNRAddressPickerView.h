@@ -20,15 +20,12 @@ typedef enum : NSUInteger {
 @end
 @interface XNRAddressPickerView : UIView
 
-@property (nonatomic, weak) UILabel *provinceLabel;
+@property (nonatomic ,copy) XNRAddressPickerViewBlock com;
 
-@property (nonatomic ,weak) UILabel *cityLabel;
-
-@property (nonatomic, weak) UILabel *countyLabel;
 
 @property (nonatomic ,assign) id<XNRAddressPickerViewBtnDelegate>delegate;
 
--(void)showWith:(XNRAddressPickerViewBlock)com;
+-(void)show;
 
 -(void)hide;
 

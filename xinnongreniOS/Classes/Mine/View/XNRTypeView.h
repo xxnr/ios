@@ -25,9 +25,12 @@ typedef enum : NSUInteger {
 
 @property (nonatomic ,weak) UILabel *typeLabel;
 
+@property (nonatomic ,copy) XNRTypeViewBlock com;
+
 @property (nonatomic ,assign) id<XNRTypeViewBtnDelegate>delegate;
 
--(void)showWith:(XNRTypeViewBlock)com;
+-(void)show;
+
 -(void)hide;
 
 @end

@@ -45,6 +45,7 @@
     [super viewWillAppear:YES];
     if(IS_Login==YES){
         // 获取个人数据
+        [_userArray removeAllObjects];
         [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             
             if([result[@"code"] integerValue] == 1000){
@@ -57,7 +58,6 @@
                 NSDictionary *town = address[@"town"];
 
                 
-                
                 UserInfo *info = [DataCenter account];
                 info.photo = dict[@"photo"];
                 info.phone = dict[@"phone"];
@@ -66,9 +66,19 @@
                 info.type = dict[@"userType"];
                 info.typeName = dict[@"userTypeInName"];
                 info.sex = dict[@"sex"];
+                
+                info.provinceID = province[@"id"];
+                info.cityID = city[@"id"];
+                info.countyID = county[@"id"];
                 [DataCenter saveAccount:info];
                 
+                
                 XNRUserInfoModel *model = [[XNRUserInfoModel alloc] init];
+                model.province = province[@"name"];
+                model.city = city[@"name"];
+                model.county = county[@"name"];
+                model.town = town[@"name"];
+                
                 [model setValuesForKeysWithDictionary:dict];
                 [_userArray addObject:model];
                 // 头像
@@ -87,17 +97,7 @@
                 }else{
                     self.introduceLabel.text = [NSString stringWithFormat:@"昵称:%@",dict[@"nickname"]];
                 }
-                // 地区
-//                if ([KSHttpRequest isBlankString:[DataCenter account].province]) {
-//                    self.addressLabel.text = [NSString stringWithFormat:@"地区:%@",@"还没有填写哦~"];
-//                }else{
-//                    if ([KSHttpRequest isBlankString:[DataCenter account].county]) {
-//                        self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].town];
-//                    }else{
-//                        NSString *address = [NSString stringWithFormat:@"%@%@",[DataCenter account].county,[DataCenter account].town];
-//                        self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",[DataCenter account].province,[DataCenter account].city,address];
-//                    }
-//                }
+                // 地址
                 if ([KSHttpRequest isBlankString:province[@"name"]]) {
                     self.addressLabel.text = [NSString stringWithFormat:@"地区:%@",@"还没有填写哦~"];
                 }else{
@@ -108,6 +108,7 @@
                         self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",province[@"name"],city[@"name"],address];
                     }
                 }
+                // 类型
                 self.typeLabel.text = [DataCenter account].typeName?[NSString stringWithFormat:@"类型:%@",[DataCenter account].typeName]:@"类型:还没有填写哦~";
             }else{
                 [UILabel showMessage:result[@"message"]];
@@ -166,56 +167,8 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(RefreshMyAccount) name:@"RefreshMyAccount" object:nil];
-}
-// 刷新
--(void)RefreshMyAccount{
-    
-        NSString *imageUrl = [NSString stringWithFormat:@"%@%@",IMAGEHOST,[DataCenter account].photo];
-        [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-        } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-            self.icon.image = image;
-        }];
-
-    self.introduceLabel.text = [DataCenter account].nickname?[NSString stringWithFormat:@"昵称:%@",[DataCenter account].nickname]:[NSString stringWithFormat:@"昵称:%@",@"新新农人"];
-    
-      NSString *address = [NSString stringWithFormat:@"%@%@",[DataCenter account].county,[DataCenter account].town];
-    self.addressLabel.text = [DataCenter account].province?[NSString stringWithFormat:@"地区:%@%@%@",[DataCenter account].province,[DataCenter account].city,address]:[NSString stringWithFormat:@"地区:%@",@"还没有填写哦~"];
-
-    if ([[DataCenter account].type integerValue] == 1) {
-        self.typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"类型:%@",@"其它"]:@"类型:还没有填写哦~";
-    }else if ([[DataCenter account].type integerValue] == 2){
-        self.typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"类型:%@",@"种植大户"]:@"类型:还没有填写哦~";
-        
-    }else if ([[DataCenter account].type integerValue] == 3){
-        self.typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"类型:%@",@"村级经销商"]:@"类型:还没有填写哦~";
-        
-    }else if ([[DataCenter account].type integerValue] == 4){
-        self.typeLabel.text =[DataCenter account].type?[NSString stringWithFormat:@"类型:%@",@"乡镇经销商"]:@"类型:还没有填写哦~";
-        
-    }else{
-        self.typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"类型:%@",@"县级经销商"]:@"类型:还没有填写哦~";
-        
-    }
 
 }
-
-//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
-//{
-//    [self.mainScrollView setContentOffset:CGPointMake(ScreenWidth, 600*SCALE) animated:YES];
-//}
-
-//- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView;
-//{
-//    NSLog(@"scrollViewDidEndScrollingAnimation");
-//    [self.mainScrollView setContentOffset:CGPointMake(ScreenWidth, 600*SCALE) animated:YES];
-//
-//}
-//
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView;
-//{
-//
-//}
 
 -(void)createLoginTop
 {
@@ -497,6 +450,8 @@
 -(void)iconClick:(UIButton*)button{
     if(IS_Login==YES){
         XNRMyaccount_VC*vc=[[XNRMyaccount_VC alloc]init];
+        XNRUserInfoModel *Usermodel = [_userArray firstObject];
+        vc.model  = Usermodel;
         vc.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:vc animated:YES];
         

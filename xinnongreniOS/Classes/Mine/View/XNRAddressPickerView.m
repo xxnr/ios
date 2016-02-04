@@ -25,8 +25,15 @@
 
 @property (nonatomic ,strong) NSMutableArray *countyArr;
 
-@property (nonatomic ,copy) XNRAddressPickerViewBlock com;
+@property (nonatomic ,copy) NSString *province;
 
+@property (nonatomic ,copy) NSString *city;
+
+@property (nonatomic ,copy) NSString *county;
+
+@property (nonatomic ,copy) NSString *provinceId;
+@property (nonatomic ,copy) NSString *cityId;
+@property (nonatomic ,copy) NSString *countyId;
 
 @end
 
@@ -37,44 +44,50 @@
     self = [super initWithFrame:frame];
     if ( self) {
         [self createBtn];
-        self.frame = CGRectMake(0, ScreenHeight, ScreenWidth, PX_TO_PT(500));
+         [self createPickView];
+        self.frame = CGRectMake(0, ScreenHeight, ScreenWidth, PX_TO_PT(600));
         self.backgroundColor = [UIColor whiteColor];
         self.userInteractionEnabled = YES;
-        UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(50), ScreenWidth, PX_TO_PT(300))];
-        pickerView.delegate = self;
-        pickerView.dataSource = self;
-        self.pickerView = pickerView;
-        [self addSubview:pickerView];
         
         _provinceArr = [NSMutableArray array];
         _cityArr = [NSMutableArray array];
         _countyArr = [NSMutableArray array];
-        
-        
-        [self getPData];
+       //  获得省的数据
+        [self getProvinceData];
     }
     return self;
 }
 
 -(void)createBtn
 {
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(70))];
+    bgView.backgroundColor = R_G_B_16(0xf4f4f4);
+    [self addSubview:bgView];
+    
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    leftBtn.frame = CGRectMake(0, 0, ScreenWidth/4, PX_TO_PT(50));
+    leftBtn.frame = CGRectMake(0, 0, ScreenWidth/4, PX_TO_PT(70));
     [leftBtn setTitle:@"取消" forState:UIControlStateNormal];
     [leftBtn setTitleColor:R_G_B_16(0x646464) forState:UIControlStateNormal];
     [leftBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.leftBtn = leftBtn;
-    [self addSubview:leftBtn];
+    [bgView addSubview:leftBtn];
     
     
     UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    rightBtn.frame = CGRectMake((ScreenWidth/4)*3,0, ScreenWidth/4, PX_TO_PT(50));
+    rightBtn.frame = CGRectMake((ScreenWidth/4)*3,0, ScreenWidth/4, PX_TO_PT(70));
     [rightBtn setTitle:@"确定" forState:UIControlStateNormal];
     [rightBtn setTitleColor:R_G_B_16(0x646464) forState:UIControlStateNormal];
-    
     [rightBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.rightBtn = rightBtn;
-    [self addSubview:rightBtn];
+    [bgView addSubview:rightBtn];
+    
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    topView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [bgView addSubview:topView];
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(70), ScreenWidth, PX_TO_PT(1))];
+    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [bgView addSubview:lineView];
 }
 
 -(void)BtnClick:(UIButton *)button
@@ -83,8 +96,15 @@
         XNRAddressPickerViewType type;
         if (button == self.leftBtn) {
             type = leftBtnType;
+            
         }else{
+            
             type = rightBtnType;
+            
+            if (self.com) {
+                self.com(self.province,self.city,self.county,self.provinceId,self.cityId,self.countyId);
+            }
+            
         }
         [self.delegate XNRAddressPickerViewBtnClick:type];
     }
@@ -92,7 +112,17 @@
 
 }
 
--(void)getPData{
+-(void)createPickView
+{
+    UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(50), ScreenWidth, PX_TO_PT(500))];
+    pickerView.delegate = self;
+    pickerView.dataSource = self;
+    self.pickerView = pickerView;
+    [self addSubview:pickerView];
+}
+
+-(void)getProvinceData{
+    [_provinceArr removeAllObjects];
     [KSHttpRequest post:KGetAreaList parameters:nil success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
                 NSDictionary *dict = result[@"datas"];
@@ -103,33 +133,37 @@
                     [_provinceArr addObject:province];
                 }
         }
+        XNRProviceModel *province = _provinceArr[0];
+        self.province = province.name;
+        self.provinceId = province.ID;
+        [self getCityDataWith:province.ID];
+        
         [self.pickerView reloadComponent:0];
+        [self.pickerView selectRow:0 inComponent:0 animated:YES];
     } failure:^(NSError *error) {
         
     }];
 
 }
 
-- (void)getCityDataWith:(NSString *)provinceId {
-    [KSHttpRequest post:KGetBusinessByAreaId parameters:@{@"areaId":@"58054e5ba551445"} success:^(id result) {
+- (void)getCityDataWith:(NSString *)provinceId{
+    [_cityArr removeAllObjects];
+    [KSHttpRequest post:KGetBusinessByAreaId parameters:@{@"areaId":provinceId} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *CArr = dict[@"rows"];
-            int i = 0;
             for (NSDictionary *Cdict in CArr) {
                 XNRCityModel *city = [[XNRCityModel alloc] init];
                 [city setValuesForKeysWithDictionary:Cdict];
                 [_cityArr addObject:city];
-                if (i==0) {
-                    [self getCountyDataWith:city.ID];
-                }
-                i++;
             }
         }
+        XNRCityModel *city = _cityArr [0];
+        self.city = city.name;
+        self.cityId = city.ID;
+        [self getCountyDataWith:city.ID];
         [self.pickerView reloadComponent:1];
         [self.pickerView selectRow:0 inComponent:1 animated:YES];
-        XNRCityModel *model = [_cityArr firstObject];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"changeCity" object:model.name];
         
     } failure:^(NSError *error) {
         
@@ -137,8 +171,9 @@
 
 }
 
-- (void)getCountyDataWith:(NSString *)cityId {
-    [KSHttpRequest post:KGetBuildByBusiness parameters:@{@"businessId":cityId} success:^(id result) {
+- (void)getCountyDataWith:(NSString *)cityId{
+    [_countyArr removeAllObjects];
+    [KSHttpRequest post:KGetBuildByBusiness parameters:@{@"businessId":cityId?cityId:@""} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *CArr = dict[@"rows"];
@@ -148,23 +183,20 @@
                 [_countyArr addObject:county];
             }
         }
+        if (_countyArr.count>0) {
+            XNRCountyModel *county = _countyArr[0];
+            self.county = county.name;
+            self.countyId = county.ID;
+
+        }
         [self.pickerView reloadComponent:2];
         [self.pickerView selectRow:0 inComponent:2 animated:YES];
-        NSLog(@"=====_____%@",_countyArr);
-        XNRCountyModel *model = [_countyArr firstObject];
-        if (model.name) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"changeCounty" object:model.name];
-        }else{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"changeCounty" object:@""];
-        }
         
         
     } failure:^(NSError *error) {
         
     }];
 }
-
-
 
 #pragma mark - UIPickerViewDataSource
 // 告诉系统有多少列
@@ -179,7 +211,7 @@
     }else if (1 == component){// 城市列
         return _cityArr.count;
     }else{// 县列表
-        if (_countyArr.count) {
+        if (_countyArr.count>0) {
             return _countyArr.count;
         }else{
             return 0;
@@ -191,16 +223,24 @@
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     if (0 == component) {// 省
-    XNRProviceModel *province = _provinceArr[row];
-    return province.name;
-    }else if (1 == component){// 市
-    XNRCityModel *city = _cityArr[row];
-    return city.name;
+        if (_provinceArr.count>0) {
+            XNRProviceModel *province = _provinceArr[row];
+            return province.name;
+        }else{
+            return nil;
+        }
+       }else if (1 == component){// 市
+           if (_cityArr.count>0) {
+               XNRCityModel *city = _cityArr[row];
+               return city.name;
+           }else{
+               return nil;
+           }
+  
     }else{// 县
         if (_countyArr.count>0) {
             XNRCountyModel *county = _countyArr[row];
             return county.name;
-
         }else{
             return nil;
         }
@@ -209,70 +249,72 @@
 // 监听pickerView的选中
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    // 判断是否修改了第0列
-    NSString *provinceName;
-    NSString *provinceId;
     if (0 == component) {
-        NSInteger selelctIndex = [self.pickerView selectedRowInComponent:0];
-        XNRProviceModel *province = _provinceArr[selelctIndex];
-        [_cityArr removeAllObjects];
-        [_countyArr removeAllObjects];
+        XNRProviceModel *province = _provinceArr[row];
+        [self getProvinceData];
+        self.province = province.name;
+        self.provinceId = province.ID;
         [self getCityDataWith:province.ID];
-        [self.pickerView reloadAllComponents];
-        self.provinceLabel.text = provinceName;
-        provinceName = province.name;
-        provinceId = province.ID;
-    }
-    NSString *cityName;
-    NSString *cityId;
-    if (1 == component){
-      // 获取第一列选中的行
-        [_countyArr removeAllObjects];
-        NSInteger selectIndex = [self.pickerView selectedRowInComponent:1];
-        // 获取第一列选中的行对应的城市
-        XNRCityModel *city = _cityArr[selectIndex];
-        cityName = city.name;
-        self.cityLabel.text = cityName;
-        cityId = city.ID;
-        // 获取对应的县
-        [self getCountyDataWith:city.ID];
-        [self.pickerView selectRow:5 inComponent:2 animated:YES];
-       
-        [self.pickerView reloadComponent:2];
+        
+        if (_cityArr.count>0) {
+            if (_cityArr.count>0) {
+                XNRCityModel *city = _cityArr [0];
+                [self getCountyDataWith:city.ID];
+                self.city = city.name;
+                self.cityId = city.ID;
+            }
+        }
 
-
-    }
-    NSString *countyName;
-    NSString *countyId;
-    if (2 == component) {
-        NSInteger selectIndex = [self.pickerView selectedRowInComponent:2];
         if (_countyArr.count>0) {
-            XNRCountyModel *county = _countyArr[selectIndex];
-            countyName = county.name;
-            self.countyLabel.text = countyName;
-            countyId = county.ID;
-            [self.pickerView reloadAllComponents];
-            
+            XNRCountyModel *county = _countyArr[0];
+            self.county = county.name;
+            self.countyId = county.name;
+
         }
         
-    }
-    NSString *address = [NSString stringWithFormat:@"%@%@%@",provinceName,cityName,countyName];
-    NSLog(@"%@====",address);
-    if (self.com) {
-        self.com(provinceName,cityName,countyName,provinceId,cityId,countyId);
-    }
+        NSLog(@"+++%@====%@+++%@",province.name,self.city,self.county);
 
+    }
+    if (1 == component){
+        self.county = @"";
+        self.countyId = @"";
+        // 获取第一列选中的行对应的城市
+        if (_cityArr.count>0) {
+            XNRCityModel *city = _cityArr[row];
+            // 获取对应的县
+            [self getCountyDataWith:city.ID];
+            self.city = city.name;
+            self.cityId = city.ID;
+        }
+        
+       
+        if (_countyArr.count>0) {
+            XNRCountyModel *county = [_countyArr objectAtIndex:0];
+            self.county = county.name;
+            self.countyId = county.ID;
+        }
+        
     
+    }
+    if (2 == component) {
+        if (_countyArr.count>0) {
+            XNRCountyModel *county = _countyArr[row];
+            self.county = county.name;
+            self.countyId = county.ID;
+        }
+       
+        
+        
+    }
 }
 
 #pragma  mark - function
 
-- (void)showWith:(XNRAddressPickerViewBlock)com{
+- (void)show{
     
-    self.com = com;
+//    self.com = com;
     [UIView animateWithDuration:0.3 animations:^{
-        self.frame = CGRectMake(0, ScreenHeight-PX_TO_PT(500), ScreenWidth, PX_TO_PT(500));
-        [self getCityDataWith:@"58054e5ba551445"];
+        self.frame = CGRectMake(0, ScreenHeight-PX_TO_PT(600), ScreenWidth, PX_TO_PT(600));
         
     }];
 }
@@ -280,7 +322,7 @@
 - (void)hide{
     [UIView animateWithDuration:0.3 animations:^{
         self.alpha = 0;
-        self.frame = CGRectMake(0, ScreenHeight, ScreenWidth, PX_TO_PT(500));
+        self.frame = CGRectMake(0, ScreenHeight, ScreenWidth, PX_TO_PT(600));
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
     }];

@@ -333,11 +333,18 @@
         [self.addressManagerView hide];
         [self.townManagerView hide];
         __weak __typeof(&*self)weakSelf = self;
-        [self.typeView showWith:^(NSString *typeName, NSString *typeNum) {
-            weakSelf.typeName  = typeName;
-            weakSelf.typeNum = typeNum;
+        
+        self.typeView.com = ^(NSString *typeName,NSString *typeNum){
             
-        }];
+            weakSelf.typeName = typeName;
+            weakSelf.typeNum = typeNum;
+            UserInfo *info = [DataCenter account];
+            info.typeName = typeName;
+            [DataCenter saveAccount:info];
+            
+            
+        };
+
 
     }
     

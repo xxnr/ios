@@ -62,6 +62,7 @@
     
     if(nil==self.ServeView){ // 全部
         self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
+        [self.mainScrollView addSubview:self.ServeView];
         __weak __typeof(&*self)weakSelf=self;
         
         [self.ServeView setPayBlock:^(NSString *orderID,NSString *money){
@@ -81,8 +82,9 @@
             [weakSelf.navigationController pushViewController:vc animated:YES];
             
         }];
+        
+    }
  
-        if (IS_Login) {
             if(nil == self.PayView){ // 待付款
                 
                 self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
@@ -155,10 +157,6 @@
                     
                 }];
             }
-
-        }
-        
-     }
     // 滚动视图上添加5个表格视图
     NSArray*arr=@[self.ServeView,self.PayView,self.SendView,self.ReciveView,self.CommentView];
     for (int i=0; i<arr.count; i++)
@@ -199,11 +197,11 @@
         [midBg addSubview:tempTitleLabel];
         
         if (i==0) {
-            button.selected = YES;
-            _tempBtn = button;
-            
-            tempTitleLabel.textColor = R_G_B_16(0x00b38a);
-            _tempLabel = tempTitleLabel;
+//            button.selected = YES;
+//            _tempBtn = button;
+//            tempTitleLabel.textColor = R_G_B_16(0x00b38a);
+//            _tempLabel = tempTitleLabel;
+            [self buttonClick:button];
         }
     }
     _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(100)-1, ScreenWidth/5.0, 1)];
@@ -238,11 +236,65 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
+        
+//        if(nil==self.ServeView){ // 全部
+//            self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
+//            [self.mainScrollView addSubview:self.ServeView];
+//            __weak __typeof(&*self)weakSelf=self;
+//            
+//            [self.ServeView setPayBlock:^(NSString *orderID,NSString *money){
+//                XNRPayTypeViewController *vc = [[XNRPayTypeViewController alloc]init];
+//                vc.hidesBottomBarWhenPushed = YES;
+//                vc.orderID = orderID;
+//                vc.money = money;
+//                [weakSelf.navigationController pushViewController:vc animated:YES];
+//            }];
+//            // 查看订单
+//            [self.ServeView setCheckOrderBlock:^(NSString *orderID,NSString *type) {
+//                XNRCheckOrder_VC *vc=[[XNRCheckOrder_VC alloc]init];
+//                vc.hidesBottomBarWhenPushed=YES;
+//                vc.orderID = orderID;
+//                vc.myOrderType = type;
+//                vc.isRoot = YES ;
+//                [weakSelf.navigationController pushViewController:vc animated:YES];
+//                
+//            }];
+        
+//        }
+
     }
     if(button.tag==KbtnTag+1){
+        
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
+        
+//        if(nil == self.PayView){ // 待付款
+//        self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
+//        [self.mainScrollView addSubview:self.PayView];
+//        __weak __typeof(&*self)weakSelf=self;
+//        //单笔结算
+//        [self.PayView setPayBlock:^(NSString *orderID,NSString *money){
+//        XNRPayTypeViewController*vc=[[XNRPayTypeViewController alloc]init];
+//        vc.hidesBottomBarWhenPushed=YES;
+//        vc.orderID = orderID;
+//        vc.money = money;
+//        [weakSelf.navigationController pushViewController:vc animated:YES];
+//        
+//    }];
+//        
+//            // 查看订单
+//        [self.PayView setCheckOrderBlock:^(NSString *orderID) {
+//        XNRCheckOrder_VC*vc=[[XNRCheckOrder_VC alloc] init];
+//        vc.hidesBottomBarWhenPushed = YES;
+//        vc.orderID=orderID;
+//        vc.myOrderType = @"待付款";
+//        vc.isRoot = YES ;
+//        [weakSelf.navigationController pushViewController:vc animated:YES];
+//                            
+//    }];
+//        }
+
     }
     
     if(button.tag==KbtnTag+2){

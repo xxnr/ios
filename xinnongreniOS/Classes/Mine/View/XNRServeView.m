@@ -70,7 +70,6 @@
         [self createbackBtn];
         //创建订单
         [self createMainTableView];
-        
         [self setupAllViewRefresh];
         
         
@@ -406,13 +405,22 @@
 //行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-    XNRMyOrderModel *model = sectionModel.products[indexPath.row];
-    if (model.deposit && [model.deposit floatValue]>0) {
-        return PX_TO_PT(460);
+    if (_dataArr.count>0) {
+        XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
+        if (sectionModel.products.count>0) {
+            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
+            if (model.deposit && [model.deposit floatValue]>0) {
+                return PX_TO_PT(460);
+            }else{
+                return PX_TO_PT(300);
+            }
+        }else{
+            return 0;
+        }
     }else{
-        return PX_TO_PT(300);
+        return 0;
     }
+    
     
 }
 

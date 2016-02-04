@@ -37,6 +37,15 @@
 @property (nonatomic ,copy) NSString *sex;
 
 @property (nonatomic ,copy) NSString *userType;
+
+@property (nonatomic ,copy) NSString *province;
+@property (nonatomic ,copy) NSString *city;
+@property (nonatomic ,copy) NSString *county;
+@property (nonatomic ,copy) NSString *town;
+
+@property (nonatomic ,copy) NSString *townID;
+
+
 @end
 
 

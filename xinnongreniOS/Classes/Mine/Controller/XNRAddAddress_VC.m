@@ -7,10 +7,10 @@
 //
 
 #import "XNRAddAddress_VC.h"
-#import "XNRAddressManageView.h"
-#import "XNRTownManagerView.h"
+#import "XNRAddressPickerView.h"
+#import "XNRTownPickerView.h"
 #define MARGIN  PX_TO_PT(24)
-@interface XNRAddAddress_VC()<UITextFieldDelegate,XNRAddressManageViewBtnDelegate,XNRTownManagerViewBtnDelegate>
+@interface XNRAddAddress_VC()<UITextFieldDelegate,XNRAddressPickerViewBtnDelegate,XNRTownPickerViewBtnDelegate>
 {
     int addressType;
 }
@@ -31,16 +31,16 @@
 
 @property (nonatomic ,weak) UITextField *recivePersonTF;
 @property (nonatomic ,weak) UITextField *phoneNumTF;
-@property (nonatomic ,weak) UITextField *addressTF;
-@property (nonatomic ,weak) UITextField *townTF;
+@property (nonatomic ,weak) UILabel *addressLabel;
+@property (nonatomic ,weak) UILabel *townLabel;
 @property (nonatomic ,weak) UITextField *detailAddressTF;
 @property (nonatomic ,weak) UITextField *eMailTF;
 
 
 @property (nonatomic ,weak) UIView *midView;
 
-@property (nonatomic ,weak) XNRAddressManageView *addressManagerView;
-@property (nonatomic ,weak) XNRTownManagerView *townManagerView;
+@property (nonatomic ,weak) XNRAddressPickerView *addressManagerView;
+@property (nonatomic ,weak) XNRTownPickerView *townManagerView;
 
 @property (nonatomic ,copy) NSString *province;
 @property (nonatomic ,copy) NSString *city;
@@ -55,9 +55,9 @@
 
 @implementation XNRAddAddress_VC
 
--(XNRAddressManageView *)addressManagerView{
+-(XNRAddressPickerView *)addressManagerView{
     if (!_addressManagerView) {
-        XNRAddressManageView *addressManagerView = [[XNRAddressManageView alloc] init];
+        XNRAddressPickerView *addressManagerView = [[XNRAddressPickerView alloc] init];
         addressManagerView.delegate = self;
         self.addressManagerView = addressManagerView;
         [self.view addSubview:addressManagerView];
@@ -66,9 +66,9 @@
 
 }
 
--(XNRTownManagerView *)townManagerView{
+-(XNRTownPickerView *)townManagerView{
     if (!_townManagerView) {
-        XNRTownManagerView *townManagerView = [[XNRTownManagerView alloc] init];
+        XNRTownPickerView *townManagerView = [[XNRTownPickerView alloc] init];
         townManagerView.delegate = self;
         self.townManagerView = townManagerView;
         [self.view addSubview:townManagerView];
@@ -76,38 +76,24 @@
     return _townManagerView;
 }
 
--(void)XNRAddressManageViewBtnClick:(XNRAddressManageViewType)type
+-(void)XNRAddressPickerViewBtnClick:(XNRAddressPickerViewType)type
 {
     if (type == leftBtnType) {
         [self.addressManagerView hide];
     }else{
+        // 点确定以后，置空
+        self.townLabel.text = @"请选择乡镇";
+        self.townID = @"";
         [self.addressManagerView hide];
-        if (self.county) {
-            self.addressTF.text = [NSString stringWithFormat:@"%@%@%@",@"河南",self.city,self.county];
-
-        }else{
-            if (self.city) {
-                self.addressTF.text = [NSString stringWithFormat:@"%@%@",@"河南",self.city];
-
-            }else{
-                self.addressTF.text = @"";
-            }
-        }
-}
-    
-
+    }
 }
 
--(void)XNRTownManagerViewBtnClick:(XNRTownManagerViewType)type
+-(void)XNRTownPickerViewBtnClick:(XNRTownPickerViewType)type
 {
     if (type == eLeftBtnType) {
         [self.townManagerView hide];
     }else{
         [self.townManagerView hide];
-        if (self.towns) {
-            self.townTF.text = [NSString stringWithFormat:@"%@",self.towns];
-
-        }
     }
 
 }
@@ -128,13 +114,6 @@
     [self createTopView];
     [self createMidView];
     [self createBottomView];
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//     
-//                                             selector:@selector(keyboardWillBeHidden:)
-//     
-//                                                 name:UIKeyboardWillHideNotification object:nil];
-
 }
 
 -(void)keyboardWillBeHidden:(NSNotification *)note
@@ -196,22 +175,35 @@
     self.address = address;
     [topBgView addSubview:address];
     
-    UITextField *addressTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.address.frame), PX_TO_PT(96)*2+MARGIN, ScreenWidth-w, h)];
-    addressTF.placeholder = @"请选择地区";
-    addressTF.textColor = R_G_B_16(0x909090);
-    addressTF.font = XNRFont(14);
-    addressTF.delegate = self;
-    addressTF.inputView = [[UIView alloc] initWithFrame:CGRectZero];
-    addressTF.tag = 1000;
-    if (self.model) {
+    UIButton *addressBtn = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.address.frame), PX_TO_PT(96)*2, ScreenWidth-w, PX_TO_PT(96))];
+    [addressBtn addTarget:self action:@selector(addressBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [topBgView addSubview:addressBtn];
+    
+    UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0, ScreenWidth, PX_TO_PT(96))];
+    addressLabel.textColor = R_G_B_16(0x909090);
+    addressLabel.font = XNRFont(14);
+    if (self.model.areaName) {
         if (self.model.countyName) {
-            addressTF.text = [NSString stringWithFormat:@"%@%@%@",self.model.areaName,self.model.cityName,self.model.countyName];
+            UserInfo *info = [DataCenter account];
+            info.countyID = self.model.countyId;
+            [DataCenter saveAccount:info];
+            
+            addressLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.areaName,_model.cityName,_model.countyName];
         }else{
-            addressTF.text = [NSString stringWithFormat:@"%@%@",self.model.areaName,self.model.cityName];
+            
+            UserInfo *info = [DataCenter account];
+            info.cityID = self.model.cityId;
+            [DataCenter saveAccount:info];
+            addressLabel.text = [NSString stringWithFormat:@"%@%@",_model.areaName,_model.cityName];
         }
+    }else{
+        addressLabel.text = @"请选择地区";
+ 
     }
-    self.addressTF = addressTF;
-    [topBgView addSubview:addressTF];
+
+    self.addressLabel = addressLabel;
+    [addressBtn addSubview:addressLabel];
+    
     // 4.乡镇
     UILabel *town = [[UILabel alloc] initWithFrame:CGRectMake(x, PX_TO_PT(96)*3 + MARGIN, PX_TO_PT(100), h)];
     town.text = @"乡镇:";
@@ -220,22 +212,23 @@
     self.town = town;
     [topBgView addSubview:town];
     
-    UITextField *townTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.town.frame), PX_TO_PT(96)*3+MARGIN, ScreenWidth-w, h)];
-    townTF.placeholder = @"请选择乡镇";
-    townTF.textColor = R_G_B_16(0x909090);
-    townTF.font = XNRFont(14);
-    townTF.delegate = self;
-    townTF.inputView = [[UIView alloc] initWithFrame:CGRectZero];
-
+    UIButton *townBtn = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.town.frame), PX_TO_PT(96)*3, ScreenWidth-w, PX_TO_PT(96))];
+    [townBtn addTarget: self action:@selector(townBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [topBgView addSubview:townBtn];
+    
+    UILabel *townLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(96))];
+    townLabel.text = @"请选择乡镇";
+    townLabel.textColor = R_G_B_16(0x909090);
+    townLabel.font = XNRFont(14);
+    
     if (self.model) {
         if (self.model.townName) {
-            townTF.text = self.model.townName;
+            townLabel.text = self.model.townName;
         }
     }
     
-    townTF.tag = 1001;
-    self.townTF = townTF;
-    [topBgView addSubview:townTF];
+    self.townLabel = townLabel;
+    [townBtn addSubview:townLabel];
     
     // 5.详细地址
     UILabel *detailAddress = [[UILabel alloc] initWithFrame:CGRectMake(x, PX_TO_PT(96)*4+MARGIN,PX_TO_PT(180),h)];
@@ -254,6 +247,7 @@
     detailAddressTF.tag = 1004;
     self.detailAddressTF = detailAddressTF;
     [topBgView addSubview:detailAddressTF];
+    
     // 6.邮编
     UILabel *eMail = [[UILabel alloc] initWithFrame:CGRectMake(x, PX_TO_PT(96)*5+MARGIN,PX_TO_PT(100),h)];
     eMail.text = @"邮编:";
@@ -268,8 +262,6 @@
     emailTF.font = XNRFont(14);
     emailTF.tag = 1005;
     emailTF.delegate = self;
-//    emailTF.keyboardType = UIKeyboardTypePhonePad;
-//    emailTF.returnKeyType = UIReturnKeyDone;
 
     if (self.model.zipCode) {
         emailTF.text = self.model.zipCode;
@@ -285,56 +277,57 @@
     
 }
 
+-(void)addressBtnClick:(UIButton *)button
+{
+    [self.townManagerView hide];
+    [self.recivePersonTF resignFirstResponder];
+    [self.phoneNumTF resignFirstResponder];
+    [self.detailAddressTF resignFirstResponder];
+    [self.eMailTF resignFirstResponder];
+    __weak __typeof(&*self)weakSelf = self;
+    [self.addressManagerView show];
+    self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId){
+        
+        weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
+        
+        weakSelf.provinceID = provinceID;
+        weakSelf.cityID  = cityId;
+        weakSelf.countyID = countyId;
+        
+        UserInfo *info = [DataCenter account];
+        info.province = province;
+        info.city = city;
+        info.county = county;
+        info.countyID = countyId;
+        [DataCenter saveAccount:info];
+    };
+}
+
+-(void)townBtnClick:(UIButton *)button
+{
+    [self.addressManagerView hide];
+    [self.recivePersonTF resignFirstResponder];
+    [self.phoneNumTF resignFirstResponder];
+    [self.detailAddressTF resignFirstResponder];
+    [self.eMailTF resignFirstResponder];
+
+    __weak __typeof(&*self)weakSelf = self;
+    [self.townManagerView show];
+    self.townManagerView.com = ^(NSString *townName,NSString *townId){
+        
+        weakSelf.townLabel.text = townName;
+        weakSelf.townID = townId;
+    
+    };
+    
+
+}
 #pragma mark --UITextFieldDelegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    if (textField.tag == 1000) {
-        [self.townManagerView hide];
-        __weak __typeof(&*self)weakSelf = self;
-
-        [self.addressManagerView showWith:^(NSString *province, NSString *city, NSString *county, NSString *provinceID, NSString *cityId, NSString *countyId) {
-            if (province) {
-                weakSelf.province = province;
-                weakSelf.provinceID = provinceID;
-            }
-            if (city) {
-                weakSelf.cityID = cityId;
-                weakSelf.city = city;
-
-            }
-            if (county) {
-                weakSelf.county = county;
-                weakSelf.countyID = countyId;
-
-            }
-            
-            UserInfo *info = [DataCenter account];
-            info.cityID = cityId;
-            info.countyID = countyId;
-            [DataCenter saveAccount:info];
-            NSLog(@"====%@====%@",info.cityID,info.countyID);
-
-        }];
-        
-    }
     
-    if (textField.tag == 1001) {
-        [self.addressManagerView hide];
-        if (self.addressTF.text.length>0) {
-            __weak __typeof(&*self)weakSelf = self;
-            
-            [self.townManagerView showWith:^(NSString *townName, NSString *townId) {
-                weakSelf.townID = townId;
-                weakSelf.towns = townName;
-            }];
-        }
-        
-        
-    }
-    if (textField.tag == 1002) {
-        [self.addressManagerView hide];
-        [self.townManagerView hide];
-    }
+    
+    
     
     return YES;
 }
@@ -405,7 +398,7 @@
         flag = 0;
         title = @"手机格式错误";
     
-    }else if ([self.addressTF.text isEqualToString:@""] || self.addressTF.text == nil){
+    }else if ([self.addressLabel.text isEqualToString:@""] || self.addressLabel.text == nil){
         flag = 0;
         title = @"请选择城市";
     }

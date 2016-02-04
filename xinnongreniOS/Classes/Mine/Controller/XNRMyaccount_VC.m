@@ -82,41 +82,8 @@
     [self createMid];
     //底部视图
     [self createBottom];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(RefreshMyAccount) name:@"RefreshMyAccount" object:nil];
 }
 
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-//刷新默认发货地址
-- (void)RefreshMyAccount
-{
-    self.userNameLabel.text = [DataCenter account].name?[DataCenter account].name:@"添加";
-    self.nickNameLabel.text = [DataCenter account].nickname?[DataCenter account].nickname:@"新新农人";
-
-    if ([KSHttpRequest isBlankString:[DataCenter account].county]) {
-        if ([KSHttpRequest isBlankString:[DataCenter account].town]) {
-            self.areaLabel.text = [NSString stringWithFormat:@"%@%@",[DataCenter account].province,[DataCenter account].city];
-        }else{
-            self.areaLabel.text = [NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].town];
-        
-        }
-        self.areaLabel.text = [DataCenter account].province?[NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].town]:@"选择";
-    }else{
-        if ([KSHttpRequest isBlankString:[DataCenter account].town]){
-            self.areaLabel.text = [DataCenter account].province?[NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].county]:@"选择";
-
-        }else{
-            NSString *address = [NSString stringWithFormat:@"%@%@",[DataCenter account].county,[DataCenter account].town];
-            self.areaLabel.text = [DataCenter account].province?[NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,address]:@"选择";
-        }
-    }
-}
 -(void)createTop{
     
     CGFloat margin = PX_TO_PT(20);
@@ -179,7 +146,6 @@
     nickLabel.textColor = R_G_B_16(0x323232);
     nickLabel.font = XNRFont(14);
     [nickBtn addSubview:nickLabel];
-    
     
     // 显示昵称
     UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14), ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
@@ -258,7 +224,6 @@
     }else{
         userNameLabel.text = [DataCenter account].name;
     }
-
     self.userNameLabel = userNameLabel;
     [bgView addSubview:userNameLabel];
     
@@ -283,54 +248,29 @@
     [bgView addSubview:sexLabel];
 
     // 显示所在地区
-    UILabel *areaLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(14)+PX_TO_PT(88)*2, ScreenWidth/2-PX_TO_PT(40), PX_TO_PT(60))];
-    areaLabel.font = [UIFont systemFontOfSize:10];
+    UILabel *areaLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2+PX_TO_PT(30), PX_TO_PT(88)*2, ScreenWidth/2-PX_TO_PT(100), PX_TO_PT(88))];
+    areaLabel.font = [UIFont systemFontOfSize:14];
+//    areaLabel.backgroundColor = [UIColor redColor];
     areaLabel.numberOfLines = 0;
-    areaLabel.textAlignment = NSTextAlignmentRight;
+//    areaLabel.textAlignment = NSTextAlignmentRight;
     areaLabel.textColor = R_G_B_16(0x909090);
-    [areaLabel fitTextHeight_Ext];
-    self.areaLabel = areaLabel;
-    if ([KSHttpRequest isBlankString:[DataCenter account].county]) {
-        if ([KSHttpRequest isBlankString:[DataCenter account].town]) {
-            self.areaLabel.text = [DataCenter account].province?[NSString stringWithFormat:@"%@%@",[DataCenter account].province,[DataCenter account].city]:@"选择";
-        }else{
-            self.areaLabel.text = [DataCenter account].province?[NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].town]:@"选择";
-            
-        }
+    [areaLabel fitTextWidth_Ext];
+    if (_model.county) {
+        areaLabel.text = [NSString stringWithFormat:@"%@%@%@%@",_model.province,_model.city,_model.county,_model.town];
     }else{
-        if ([KSHttpRequest isBlankString:[DataCenter account].town]){
-            self.areaLabel.text = [DataCenter account].province?[NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].county]:@"选择";
-            
-        }else{
-            NSString *address = [NSString stringWithFormat:@"%@%@",[DataCenter account].county,[DataCenter account].town];
-            self.areaLabel.text = [DataCenter account].province?[NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,address]:@"选择";
-        }
+        areaLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.province,_model.city,_model.town];
     }
+    
+    self.areaLabel = areaLabel;
     [bgView addSubview:areaLabel];
+
 
     // 显示类型
     UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14) + PX_TO_PT(88)*3, ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
     typeLabel.textAlignment = NSTextAlignmentRight;
     typeLabel.textColor = R_G_B_16(0x909090);
     typeLabel.text = [DataCenter account].typeName?[DataCenter account].typeName:@"选择";
-;
     self.typeLabel = typeLabel;
-    
-//    if ([[DataCenter account].type integerValue] == 1) {
-//        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"其它"]:@"选择";
-//    }else if ([[DataCenter account].type integerValue] == 2){
-//        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"种植大户"]:@"选择";
-//
-//    }else if ([[DataCenter account].type integerValue] == 3){
-//        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"村级经销商"]:@"选择";
-//
-//    }else if ([[DataCenter account].type integerValue] == 4){
-//        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"乡镇经销商"]:@"选择";
-//
-//    }else{
-//        typeLabel.text = [DataCenter account].type?[NSString stringWithFormat:@"县级经销商"]:@"选择";
-//
-//    }
     [bgView addSubview:typeLabel];
 
 }
@@ -348,21 +288,26 @@
     
     }else if (button.tag == KbtnTag +2 ){
         XNRMobAddress *addressVC = [[XNRMobAddress alloc] init];
+        addressVC.model = self.model;
+        addressVC.com = ^(NSString *address,NSString *street){
+            self.areaLabel.text = [NSString stringWithFormat:@"%@%@",address,street];
+        };
         addressVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:addressVC animated:YES];
     }else if (button.tag == KbtnTag + 3){
-        
-        [self.typeView showWith:^(NSString *typeName,NSString *typeNum) {
+        [self.typeView show];
+        self.typeView.com = ^(NSString *typeName,NSString *typeNum){
             
             self.typeLabel.text = typeName;
             self.typeNum = typeNum;
-//            [DataCenter account].typeName = typeName;
             UserInfo *info = [DataCenter account];
             info.typeName = typeName;
             
             [DataCenter saveAccount:info];
-
-        }];
+        
+        
+        };
+        
     }
 }
 
@@ -372,13 +317,12 @@
         [self.typeView hide];
     }else if(type == RightBtnType){
         [self.typeView hide];
-        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"type":self.typeNum} success:^(id result) {
+        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"type":self.typeNum?self.typeNum:@""} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 UserInfo *info = [DataCenter account];
                 info.type = self.typeLabel.text;
                 
                 [DataCenter saveAccount:info];
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(RefreshMyAccount) name:@"RefreshMyAccount" object:nil];
 
             }
             

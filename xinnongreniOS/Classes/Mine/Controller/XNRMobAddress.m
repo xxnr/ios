@@ -21,24 +21,22 @@
 @property (nonatomic ,weak) UILabel *areaLabel;
 @property (nonatomic ,weak) UILabel *addressLabel;
 
-@property (nonatomic ,weak) UILabel *provinceLabel;
-@property (nonatomic ,weak) UILabel *cityLabel;
-@property (nonatomic ,weak) UILabel *countyLabel;
-@property (nonatomic ,weak) UILabel *townLabel;
+@property (nonatomic ,weak) UIButton *streetBtn;
+@property (nonatomic ,weak) UILabel *strLabel;
+@property (nonatomic ,weak) UILabel *streetLabel;
 
 @property (nonatomic ,copy) NSString *provinceID;
 @property (nonatomic ,copy) NSString *cityID;
 @property (nonatomic ,copy) NSString *countyID;
 @property (nonatomic ,copy) NSString *townID;
 
-@property (nonatomic ,weak) UIButton *streetBtn;
-@property (nonatomic ,weak) UILabel *strLabel;
-@property (nonatomic ,weak) UILabel *streetLabel;
+@property (nonatomic ,weak) UIButton *saveAddressBtn;
+
 
 @end
 
 @implementation XNRMobAddress
-
+#pragma mark - 地区选择器
 -(XNRAddressPickerView *)addressPickerView
 {
     if (_addressPickerView == nil) {
@@ -49,6 +47,19 @@
     }
     return _addressPickerView;
 }
+
+-(void)XNRAddressPickerViewBtnClick:(XNRAddressPickerViewType)type
+{
+    if (type == leftBtnType) {
+        [self.addressPickerView hide];
+        
+    }else if (type == rightBtnType){
+        self.streetLabel.text = @"";
+        [self.addressPickerView hide];
+    }
+}
+
+#pragma mark - 街道选择器
 
 -(XNRTownPickerView *)townPickerView
 {
@@ -62,48 +73,6 @@
 
 }
 
--(void)XNRAddressPickerViewBtnClick:(XNRAddressPickerViewType)type
-{
-    if (type == leftBtnType) {
-        [self.addressPickerView hide];
-        
-    }else if (type == rightBtnType){
-        [self.addressPickerView hide];
-        NSDictionary *addressDict = @{@"provinceId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@""};
-        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-        [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
-        [dic setObject:[DataCenter account].token forKey:@"token"];
-        [dic setObject:[DataCenter account].userid forKey:@"userId"];
-        [dic setObject:addressDict forKey:@"address"];
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-        manager.requestSerializer=[AFJSONRequestSerializer serializer];//申明请求的数据是json类型
-        
-        [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
-        manager.requestSerializer.timeoutInterval = 10.f;
-        [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
-        
-        [manager POST:KUserModify parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            UserInfo *info = [DataCenter account];
-            info.province = self.provinceLabel.text;
-            info.city = self.cityLabel.text;
-            info.county = self.countyLabel.text;
-            info.town = self.townLabel.text;
-            [DataCenter saveAccount:info];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
-            if (![KSHttpRequest isBlankString:[DataCenter account].county]) {
-                self.countyLabel.text = [NSString stringWithFormat:@"%@",[DataCenter account].county];
-            }
-            NSLog(@"------%@",[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-        }];
-
-
-    }
-
-}
-
 -(void)XNRTownPickerViewBtnClick:(XNRTownPickerViewType)type
 {
     if (type == eLeftBtnType) {
@@ -113,23 +82,9 @@
     }
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:YES];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCounty:) name:@"changeCounty" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCity:) name:@"changeCity" object:nil];
-}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear: YES];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
--(void)changeCity:(NSNotification *)notiObj{
-    self.cityLabel.text = [NSString stringWithFormat:@"%@",notiObj.object];
-}
-- (void)changeCounty:(NSNotification *)notiObj {
-    NSLog(@"-=-=-=-%@",notiObj);
-        self.countyLabel.text = [NSString stringWithFormat:@"%@",notiObj.object];
 }
 
 -(void)viewDidLoad{
@@ -139,28 +94,7 @@
     [self createView];
 }
 
--(void)createNav{
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-    titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:24];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
-    titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.text = @"修改所在地区";
-    self.navigationItem.titleView = titleLabel;
-    
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 0, 80, 44);
-    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
-    [backBtn addTarget: self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
-    [backBtn setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-    self.navigationItem.leftBarButtonItem = leftItem;
-
-}
--(void)backClick{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
+#pragma mark - 街道，地区
 -(void)createView{
     
     UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(24), ScreenWidth, PX_TO_PT(98)*2)];
@@ -184,39 +118,23 @@
     [addressBtn addSubview:areaLabel];
     
     UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.areaLabel.frame) + PX_TO_PT(32), 0, ScreenWidth-CGRectGetMaxX(self.areaLabel.frame) + PX_TO_PT(32), PX_TO_PT(98))];
-    addressLabel.text = @"选择所在省市区";
     addressLabel.textColor = R_G_B_16(0x909090);
     addressLabel.font = XNRFont(15);
+    if ([DataCenter account].province) {
+        
+        if ([DataCenter account].county) {
+             addressLabel.text = [NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].county];
+        }else{
+             addressLabel.text = [NSString stringWithFormat:@"%@%@",[DataCenter account].province,[DataCenter account].city];
+        }
+       
+    }else{
+        addressLabel.text = @"选择所在省市区";
+        self.streetBtn.enabled = NO;
+    }
     self.addressLabel = addressLabel;
     [addressBtn addSubview:addressLabel];
-    // 省
-    UILabel *provinceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.areaLabel.frame) + PX_TO_PT(32), 0, PX_TO_PT(100), PX_TO_PT(98))];
-    provinceLabel.textColor = R_G_B_16(0x909090);
-    provinceLabel.font = XNRFont(15);
-    if (![KSHttpRequest isBlankString:[DataCenter account].province]) {
-        provinceLabel.text = [NSString stringWithFormat:@"%@",[DataCenter account].province];
-        addressLabel.hidden = YES;
-    }
-    self.provinceLabel = provinceLabel;
-    [addressBtn addSubview:provinceLabel];
-    // 市
-    UILabel *cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.provinceLabel.frame), 0, PX_TO_PT(120), PX_TO_PT(98))];
-    cityLabel.textColor = R_G_B_16(0x909090);
-    cityLabel.font = XNRFont(15);
-    if (![KSHttpRequest isBlankString:[DataCenter account].city ]) {
-        cityLabel.text = [NSString stringWithFormat:@"%@",[DataCenter account].city];
-    }
-    self.cityLabel = cityLabel;
-    [addressBtn addSubview:cityLabel];
-    // 县
-    UILabel *countyLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.cityLabel.frame), 0, PX_TO_PT(180), PX_TO_PT(98))];
-    countyLabel.textColor = R_G_B_16(0x909090);
-    countyLabel.font = XNRFont(15);
-    if (![KSHttpRequest isBlankString:[DataCenter account].county]) {
-        countyLabel.text = [NSString stringWithFormat:@"%@",[DataCenter account].county];
-    }
-    self.countyLabel = countyLabel;
-    [addressBtn addSubview:countyLabel];
+    
     // 街道
     UIButton *streetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     streetBtn.frame = CGRectMake(0, CGRectGetMaxY(self.addressBtn.frame), ScreenWidth, PX_TO_PT(98));
@@ -226,29 +144,25 @@
     [bgView addSubview:streetBtn];
     
     UILabel *strLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, PX_TO_PT(80), PX_TO_PT(98))];
-    strLabel.text = @"街道";
     strLabel.textColor = R_G_B_16(0x323232);
     strLabel.font = XNRFont(15);
+    strLabel.text = @"街道";
     self.strLabel = strLabel;
     [streetBtn addSubview:strLabel];
     
     UILabel *streetLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.strLabel.frame) + PX_TO_PT(32), 0, ScreenWidth-CGRectGetMaxX(self.strLabel.frame) + PX_TO_PT(32), PX_TO_PT(98))];
-    streetLabel.text = @"选择所在街道或乡镇";
     streetLabel.textColor = R_G_B_16(0x909090);
     streetLabel.font = XNRFont(15);
-    self.streetLabel = streetLabel;
-    
-    UILabel *townLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.strLabel.frame) + PX_TO_PT(32), 0, ScreenWidth-CGRectGetMaxX(self.strLabel.frame) + PX_TO_PT(32), PX_TO_PT(98))];
-    townLabel.textColor = R_G_B_16(0x646464);
-    townLabel.font = XNRFont(15);
-    self.townLabel = townLabel;
-    if (![KSHttpRequest isBlankString:[DataCenter account].town]) {
-        streetLabel.hidden = YES;
-        townLabel.text = [NSString stringWithFormat:@"%@",[DataCenter account].town];
-    }
-    [streetBtn addSubview:townLabel];
+    if ([DataCenter account].town) {
+        streetLabel.text = [DataCenter account].town;
+    }else{
+        streetLabel.text = @"选择所在街道或乡镇";
 
+    }
+    self.streetLabel = streetLabel;
     [streetBtn addSubview:streetLabel];
+
+
     for (int i = 0; i<3; i++) {
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, i*PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
@@ -263,83 +177,109 @@
     [saveAddressBtn setTitle:@"保存" forState:UIControlStateNormal];
     [saveAddressBtn setTintColor:R_G_B_16(0xffffff)];
     [saveAddressBtn addTarget:self action:@selector(saveAddressBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    self.saveAddressBtn = saveAddressBtn;
     [self.view addSubview:saveAddressBtn];
     
 }
-// 地区
+// 地区按钮点击
 -(void)addressBtnClick{
-    
-    self.addressLabel.hidden = YES;
+    [self.townPickerView hide];
+    [self.addressPickerView show];
     __weak __typeof(&*self)weakSelf = self;
-
-    [self.addressPickerView showWith:^(NSString *province, NSString *city, NSString *county, NSString *provinceID, NSString *cityId, NSString *countyId) {
-        if (province) {
-            weakSelf.provinceLabel.text = [NSString stringWithFormat:@"%@",province];
-            weakSelf.provinceID = provinceID;
-        }
-        if (city) {
-            weakSelf.cityLabel.text = [NSString stringWithFormat:@"%@",city];
-            weakSelf.cityID = cityId;
-        }
-        if (county) {
-            weakSelf.countyLabel.text = [NSString stringWithFormat:@"%@",county];
-            weakSelf.countyID = countyId;
-        }
+    self.addressPickerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId){
+        
+        
+        weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
+        
+        weakSelf.provinceID = provinceID;
+        weakSelf.cityID = cityId;
+        weakSelf.countyID = countyId;
+        // 保存一下省，市，县的地址和ID
         UserInfo *info = [DataCenter account];
+        info.provinceID = provinceID;
         info.cityID = cityId;
         info.countyID = countyId;
+        
+        info.province = province;
+        info.city = city;
+        info.county = county;
         [DataCenter saveAccount:info];
-        NSLog(@"====%@====%@",info.cityID,info.countyID);
-    }];
+    };
+
 }
-// 街道
+// 街道按钮点击
 -(void)streetBtnClick{
-    self.streetLabel.hidden = YES;
-    [self.addressPickerView hide];
-    __weak __typeof(&*self)weakSelf = self;
-    [self.townPickerView showWith:^(NSString *townName,NSString *townId) {
-        if (townName) {
-            weakSelf.townLabel.text = townName;
-            weakSelf.townID = townId;
-        }else{
-            [weakSelf.addressPickerView hide];
-        }
-    }];
     
+    [self.addressPickerView hide];
+    [self.townPickerView show];
+    
+    __weak __typeof(&*self)weakSelf = self;
+
+    self.townPickerView.com = ^(NSString *townName,NSString *townId){
+        
+        weakSelf.streetLabel.text = [NSString stringWithFormat:@"%@",townName];
+        weakSelf.townID = townId;
+        // 保存一下镇的ID
+        UserInfo *info = [DataCenter account];
+        info.townID = townId;
+        info.town = townName;
+        [DataCenter saveAccount:info];
+    };
 }
-// 保存
+// 保存地址按钮点击
 -(void)saveAddressBtnClick{
     [self.addressPickerView hide];
-    NSDictionary *addressDict = @{@"provinceId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@""};
-    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
-    [dic setObject:[DataCenter account].token forKey:@"token"];
-    [dic setObject:[DataCenter account].userid forKey:@"userId"];
-    [dic setObject:addressDict forKey:@"address"];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.requestSerializer=[AFJSONRequestSerializer serializer];//申明请求的数据是json类型
-
-    [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
-    manager.requestSerializer.timeoutInterval = 10.f;
-    [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    if ([self.addressLabel.text isEqualToString:@""]||[self.streetLabel.text isEqualToString:@""]) {
+        [UILabel showMessage:@"地址不能为空"];
+    }else{
+        self.saveAddressBtn.enabled = YES;
+        NSDictionary *addressDict = @{@"provinceId":[DataCenter account].provinceID?[DataCenter account].provinceID:@"",@"cityId":[DataCenter account].cityID?[DataCenter account].cityID:@"",@"countyId":[DataCenter account].countyID?[DataCenter account].countyID:@"",@"townId":[DataCenter account].townID?[DataCenter account].townID:@""};
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
+        [dic setObject:[DataCenter account].token forKey:@"token"];
+        [dic setObject:[DataCenter account].userid forKey:@"userId"];
+        [dic setObject:addressDict forKey:@"address"];
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        manager.requestSerializer=[AFJSONRequestSerializer serializer];//申明请求的数据是json类型
+        
+        [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+        manager.requestSerializer.timeoutInterval = 10.f;
+        [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+        
+        [manager POST:KUserModify parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            
+            self.com(self.addressLabel.text,self.streetLabel.text);
+            
+            [self.navigationController popViewControllerAnimated:YES];
+            NSLog(@"------%@",[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
     
-     [manager POST:KUserModify parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
-         UserInfo *info = [DataCenter account];
-         info.province = self.provinceLabel.text;
-         info.city = self.cityLabel.text;
-         info.county = self.countyLabel.text;
-         info.town = self.townLabel.text;
-         [DataCenter saveAccount:info];
-         [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
-         [self.navigationController popViewControllerAnimated:YES];
-         NSLog(@"------%@",[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
-     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-         
-     }];
-    
+    }
 }
 
-
-
+-(void)createNav{
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.font = [UIFont boldSystemFontOfSize:24];
+    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.text = @"修改所在地区";
+    self.navigationItem.titleView = titleLabel;
+    
+    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    backBtn.frame = CGRectMake(0, 0, 80, 44);
+    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    [backBtn addTarget: self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
+    [backBtn setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    self.navigationItem.leftBarButtonItem = leftItem;
+    
+}
+-(void)backClick{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 @end

@@ -13,9 +13,6 @@
 #import "XNRShoppingCarController.h"
 #import "XNRMineController.h"
 @interface XNRTabBarController ()
-{
-    
-}
 
 @end
 

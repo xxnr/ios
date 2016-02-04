@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "XNRUserInfoModel.h"
 @interface XNRMyaccount_VC : UIViewController
+
+@property (nonatomic ,copy) NSString *address;
+
+@property (nonatomic, strong) XNRUserInfoModel *model;
+
 
 @end

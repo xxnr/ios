@@ -57,6 +57,14 @@
 @property (nonatomic ,copy) NSString *county;
 @property (nonatomic ,copy) NSString *town;
 
+@property (nonatomic ,copy) NSString *cityID;
+@property (nonatomic ,copy) NSString *countyID;
+@property (nonatomic ,copy) NSString *provinceID;
+@property (nonatomic ,copy) NSString *townID;
+
+
+
+
 //附加属性
 /**
  *  登录密码
@@ -84,9 +92,6 @@
  */
 @property (nonatomic ,copy) NSString *name;
 
-@property (nonatomic ,copy) NSString *cityID;
-
-@property (nonatomic ,copy) NSString *countyID;
 
 @property (nonatomic ,copy) NSString *sexName;
 
