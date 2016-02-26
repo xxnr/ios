@@ -135,7 +135,7 @@
 
 -(void)getData
 {
-    NSDictionary *params = @{@"inviteeId":self.inviteeId,@"page":[NSString stringWithFormat:@"%d",currentPage]};
+    NSDictionary *params = @{@"inviteeId":self.inviteeId,@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"};
     [KSHttpRequest post:KgetInviteeOrders parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datas = result[@"datas"];

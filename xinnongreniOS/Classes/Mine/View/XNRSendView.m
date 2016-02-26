@@ -26,6 +26,7 @@
     
 }
 
+
 -(id)initWithFrame:(CGRect)frame UrlString:(NSString *)urlString
 {
     self = [super initWithFrame:frame];
@@ -44,10 +45,19 @@
     return self;
 }
 
+- (void)showEmptyView {
+    
+    if (_dataArr.count == 0) {
+        [self.orderEmptyView show];
+    }else{
+        [self.orderEmptyView removeFromSuperview];
+    }
+}
+
+
 #pragma mark - 滑动到顶部按钮
 
 -(void)createbackBtn
-
 {
     
     UIButton *backtoTopBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -64,13 +74,9 @@
     
 }
 
-
-
 -(void)backtoTopBtnClick{
     
     [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
-    
-    
     
 }
 
@@ -91,9 +97,6 @@
     }
     
 }
-
-
-
 #pragma mark - 刷新
 
 -(void)setupStaySendRefresh{
@@ -101,13 +104,9 @@
     
     NSMutableArray *idleImage = [NSMutableArray array];
     
-    
-    
     for (int i = 1; i<21; i++) {
         
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
-        
-        
         
         [idleImage addObject:image];
         
@@ -115,17 +114,11 @@
     
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    
-    
     for (int i = 10; i<21; i++) {
         
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
-        
-        
         [RefreshImage addObject:image];
-        
-        
         
     }
     
@@ -133,11 +126,7 @@
     
     [header setImages:idleImage forState:MJRefreshStateIdle];
     
-    
-    
     [header setImages:RefreshImage forState:MJRefreshStatePulling];
-    
-    
     
     [header setImages:RefreshImage forState:MJRefreshStateRefreshing];
     
@@ -149,8 +138,7 @@
     
     header.stateLabel.hidden = YES;
     
-    
-    
+
     self.tableView.mj_header = header;
 
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
@@ -179,10 +167,6 @@
     
     [self getData];
     
-    
-    
-    
-    
 }
 
 -(void)footRefresh{
@@ -190,8 +174,6 @@
     _currentPage ++;
     
     [self getData];
-    
-    
     
 }
 
@@ -241,10 +223,6 @@
         
         
         self.tableView.mj_footer.hidden = pages == page;
-        
-        
-        
-        
         
         [self.tableView.mj_header endRefreshing];
         

@@ -259,7 +259,7 @@
         self.selectedBtnTwo.selected = NO;
         _payType = 1;
         [self payType];
-        NSDictionary *params = @{@"consumer":@"app",@"orderId":self.orderID};
+        NSDictionary *params = @{@"consumer":@"app",@"orderId":self.orderID,@"user-agent":@"IOS-v2.0"};
         [KSHttpRequest post:KAlipay parameters:params success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 _PaymentId = result[@"paymentId"];

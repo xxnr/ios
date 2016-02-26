@@ -83,7 +83,7 @@
 {
     [BMProgressView showCoverWithTarget:self color:nil isNavigation:NO];
     if(IS_Login == YES) {
-        [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":self.model.goodsId,@"userId":[DataCenter account].userid,@"quantity":@"1",@"user-agent":@"IOS-v2.0",@"update_by_add":@"true"} success:^(id result) {
+        [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":self.model.goodsId,@"userId":[DataCenter account].userid,@"quantity":@"1",@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             NSLog(@"%@",result);
             if([result[@"code"] integerValue] == 1000){
                 [UILabel showMessage:@"加入购物车成功"];

@@ -218,7 +218,6 @@
     self.collectionView.collectionViewLayout = collectionViewLayout;
     [self addSubview:self.collectionView];
     
-    
     //TODO:加btn
     CGFloat w = (self.bounds.size.width-3*coll_cell_margin)/2;
     UIButton *resetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -397,6 +396,7 @@
         if (item.isSelected) {
             brandReq = item.titleParam;
             indexPaht1 = item.indexPath;
+            
         }
     }
     

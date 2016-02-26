@@ -85,7 +85,7 @@
                 if ([KSHttpRequest isBlankString:dict[@"photo"]]) {
                     self.icon.image=[UIImage imageNamed:@"icon_head"];
                 }else{
-                    NSString *imageUrl = [NSString stringWithFormat:@"%@%@",IMAGEHOST,dict[@"photo"]];
+                    NSString *imageUrl = [NSString stringWithFormat:@"%@%@",HOST,dict[@"photo"]];
                     [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                     } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
                         self.icon.image = image;
@@ -111,7 +111,8 @@
                 // 类型
                 self.typeLabel.text = [DataCenter account].typeName?[NSString stringWithFormat:@"类型:%@",[DataCenter account].typeName]:@"类型:还没有填写哦~";
             }else{
-                [UILabel showMessage:result[@"message"]];
+                
+//            [UILabel showMessage:result[@"message"]];
                 
             }
             
@@ -213,7 +214,7 @@
         if ([KSHttpRequest isBlankString:[DataCenter account].photo]) {
             self.icon.image=[UIImage imageNamed:@"icon_head"];
         }else{
-            NSString *imageUrl = [NSString stringWithFormat:@"%@%@",IMAGEHOST,[DataCenter account].photo];
+            NSString *imageUrl = [NSString stringWithFormat:@"%@%@",HOST,[DataCenter account].photo];
             [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
             } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
                 self.icon.image = image;

@@ -299,7 +299,7 @@
     }else{
         
         [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:NO];
-        [KSHttpRequest get:KUserPubkey parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        [KSHttpRequest get:KUserPubkey parameters:nil success:^(id result) {
             NSLog(@"======%@",result);
             if ([result[@"code"] integerValue] == 1000) {
                 NSString *pubKey = result[@"public_key"];
@@ -402,7 +402,7 @@
 #pragma mark - 上传购物车数据
 - (void)synchShoppingCarDataWith:(XNRShoppingCartModel *)model
 {
-    [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":model.goodsId,@"userId":[DataCenter account].userid,@"count":@"1",@"user-agent":@"IOS-v2.0",@"update_by_add":@"true"} success:^(id result) {
+    [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":model.goodsId,@"userId":[DataCenter account].userid,@"count":@"1",@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         NSLog(@"%@",result);
         if([result[@"code"] integerValue] == 1000){
 

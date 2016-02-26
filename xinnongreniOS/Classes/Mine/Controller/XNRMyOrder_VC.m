@@ -85,7 +85,7 @@
         
     }
  
-            if(nil == self.PayView){ // 待付款
+    if(nil == self.PayView){ // 待付款
                 
                 self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
                 __weak __typeof(&*self)weakSelf=self;
@@ -237,31 +237,6 @@
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
         
-//        if(nil==self.ServeView){ // 全部
-//            self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
-//            [self.mainScrollView addSubview:self.ServeView];
-//            __weak __typeof(&*self)weakSelf=self;
-//            
-//            [self.ServeView setPayBlock:^(NSString *orderID,NSString *money){
-//                XNRPayTypeViewController *vc = [[XNRPayTypeViewController alloc]init];
-//                vc.hidesBottomBarWhenPushed = YES;
-//                vc.orderID = orderID;
-//                vc.money = money;
-//                [weakSelf.navigationController pushViewController:vc animated:YES];
-//            }];
-//            // 查看订单
-//            [self.ServeView setCheckOrderBlock:^(NSString *orderID,NSString *type) {
-//                XNRCheckOrder_VC *vc=[[XNRCheckOrder_VC alloc]init];
-//                vc.hidesBottomBarWhenPushed=YES;
-//                vc.orderID = orderID;
-//                vc.myOrderType = type;
-//                vc.isRoot = YES ;
-//                [weakSelf.navigationController pushViewController:vc animated:YES];
-//                
-//            }];
-        
-//        }
-
     }
     if(button.tag==KbtnTag+1){
         
@@ -269,32 +244,6 @@
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
         
-//        if(nil == self.PayView){ // 待付款
-//        self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
-//        [self.mainScrollView addSubview:self.PayView];
-//        __weak __typeof(&*self)weakSelf=self;
-//        //单笔结算
-//        [self.PayView setPayBlock:^(NSString *orderID,NSString *money){
-//        XNRPayTypeViewController*vc=[[XNRPayTypeViewController alloc]init];
-//        vc.hidesBottomBarWhenPushed=YES;
-//        vc.orderID = orderID;
-//        vc.money = money;
-//        [weakSelf.navigationController pushViewController:vc animated:YES];
-//        
-//    }];
-//        
-//            // 查看订单
-//        [self.PayView setCheckOrderBlock:^(NSString *orderID) {
-//        XNRCheckOrder_VC*vc=[[XNRCheckOrder_VC alloc] init];
-//        vc.hidesBottomBarWhenPushed = YES;
-//        vc.orderID=orderID;
-//        vc.myOrderType = @"待付款";
-//        vc.isRoot = YES ;
-//        [weakSelf.navigationController pushViewController:vc animated:YES];
-//                            
-//    }];
-//        }
-
     }
     
     if(button.tag==KbtnTag+2){
@@ -302,6 +251,7 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
+        [self.SendView showEmptyView];
     }
     
     if(button.tag==KbtnTag+3){
@@ -309,6 +259,7 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
+        [self.ReciveView showEmptyView];
     }
     
     if(button.tag==KbtnTag+4){
@@ -339,7 +290,7 @@
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
         
-        [self.ReciveView showEmptyView];
+//        [self.ReciveView showEmptyView];
     }else if (0.5<=offset&&offset<1.5){
         tag=1;
         UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
@@ -364,6 +315,8 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
+//        [self.SendView showEmptyView];
+
     }else if (2.5<=offset&&offset<3.5){
         tag=3;
         UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
@@ -375,6 +328,8 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
+        [self.ReciveView showEmptyView];
+
     }else{
         tag=4;
         UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];

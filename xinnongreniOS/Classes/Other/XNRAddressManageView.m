@@ -89,7 +89,7 @@
 }
 #pragma mark - 获得省得数据
 -(void)getPData{
-    [KSHttpRequest post:KGetAreaList parameters:nil success:^(id result) {
+    [KSHttpRequest post:KGetAreaList parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *CArr = dict[@"rows"];
@@ -107,7 +107,7 @@
 }
 
 - (void)getCityDataWith:(NSString *)provinceId {
-    [KSHttpRequest post:KGetBusinessByAreaId parameters:@{@"areaId":@"58054e5ba551445"} success:^(id result) {
+    [KSHttpRequest post:KGetBusinessByAreaId parameters:@{@"areaId":@"58054e5ba551445",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *CArr = dict[@"rows"];
@@ -132,7 +132,7 @@
 }
 
 - (void)getCountyDataWith:(NSString *)cityId {
-    [KSHttpRequest post:KGetBuildByBusiness parameters:@{@"businessId":cityId} success:^(id result) {
+    [KSHttpRequest post:KGetBuildByBusiness parameters:@{@"businessId":cityId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *CArr = dict[@"rows"];

@@ -71,6 +71,7 @@
     }
     return _progressView;
 }
+
 #pragma mark  - 筛选为空的视图
 -(XNRNoSelectView *)noSelectView{
 
@@ -194,7 +195,7 @@
 -(void)getData
 {
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"brandName":self.brandName?self.brandName:@"",@"modelName":self.modelName?self.modelName:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage]} success:^(id result) {
+    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"brandName":self.brandName?self.brandName:@"",@"modelName":self.modelName?self.modelName:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *arr = dict[@"rows"];
@@ -284,7 +285,7 @@
 -(void)getTotalData{
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [_totalArray removeAllObjects];
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"brandName":self.brandName?self.brandName:@"",@"modelName":self.modelName?self.modelName:@"",@"reservePrice":self.reservePrice?self.reservePrice:@""} success:^(id result) {
+    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"brandName":self.brandName?self.brandName:@"",@"modelName":self.modelName?self.modelName:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *arr = dict[@"rows"];
@@ -309,7 +310,7 @@
 -(void)getPriceDataWith:(NSString *)sort{
     [_ferArray removeAllObjects];
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"sort":sort,@"brandName":self.brandName?self.brandName:@"",@"modelName":self.modelName?self.modelName:@"",@"reservePrice":self.reservePrice?self.reservePrice:@""} success:^(id result) {
+    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"sort":sort,@"brandName":self.brandName?self.brandName:@"",@"modelName":self.modelName?self.modelName:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *arr = dict[@"rows"];
@@ -334,7 +335,7 @@
 }
 -(void)getselectDataWithName:(NSString *)goodsName and:(NSString *)param1 and:(NSString *)param2{
     
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,goodsName:param1?param1:[NSString stringWithFormat:@"%@",param1],@"reservePrice":param2} success:^(id result) {
+    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,goodsName:param1?param1:[NSString stringWithFormat:@"%@",param1],@"reservePrice":param2,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             isCancel = NO;
             NSDictionary *dict = result[@"datas"];

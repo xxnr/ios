@@ -86,7 +86,7 @@
 {
     [SVProgressHUD showWithStatus:@"获取支付账户信息"];
     //key:0000关于我们,0001使用帮助,0002热线电话,0003银行账户信息
-    [KSHttpRequest post:[NSString stringWithFormat:@"%@/%@",HOST,kKeFuDianHuaUrl] parameters:@{@"locationUserId":IS_Login?[DataCenter account].userid:@"",@"key":@"0003",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:[NSString stringWithFormat:@"%@/%@",HOST,kKeFuDianHuaUrl] parameters:@{@"locationUserId":IS_Login?[DataCenter account].userid:@"",@"key":@"0003"} success:^(id result) {
         if ([result[@"code"] isEqualToString:@"1000"]) {
             [SVProgressHUD dismiss];
 //            NSDictionary *datasDic = result[@"datas"];

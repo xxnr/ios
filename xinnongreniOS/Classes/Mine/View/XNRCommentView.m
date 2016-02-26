@@ -28,8 +28,17 @@
         [self addSubview:orderEmptyView];
     }
     return _orderEmptyView;
-    
 }
+#pragma mark - 出现空的视图
+- (void)showEmptyView {
+    
+    if (_dataArr.count == 0) {
+        [self.orderEmptyView show];
+    }else{
+        [self.orderEmptyView removeFromSuperview];
+    }
+}
+
 #pragma mark - 图片为空的代理方法
 -(void)XNROrderEmptyView:(XNROrderEmptyViewbuySort)type
 {
@@ -69,15 +78,6 @@
     }
     return self;
 }
-
-- (void)showEmptyView {
-    if (_dataArr.count == 0) {
-        [self.orderEmptyView show];
-    }else{
-        [self.orderEmptyView removeFromSuperview];
-    }
-}
-
 
 #pragma mark - 滑动到顶部按钮
 
@@ -223,7 +223,7 @@
 {
     
     //typeValue说明：1为待支付（代付款）：3为商品准备中（待发货），4已发货（待收货
-    [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"typeValue":@"4"} success:^(id result) {
+    [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"typeValue":@"4",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datasDic = result[@"datas"];
             NSArray *rowsArr = datasDic[@"rows"];
@@ -244,12 +244,12 @@
             }
         }
         NSLog(@"-=-=-=--=%@",_dataArr);
-        if (_dataArr.count == 0) {
-            [self.orderEmptyView show];
-        }else{
+//        if (_dataArr.count == 0) {
+//            [self.orderEmptyView show];
+//        }else{
 //            [self.orderEmptyView removeFromSuperview];
 //            self.orderEmptyView.hidden = YES;
-        }
+//        }
         
 
         //刷新列表

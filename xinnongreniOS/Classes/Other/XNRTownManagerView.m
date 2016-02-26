@@ -46,7 +46,7 @@
 
 -(void)getTownData{
     if (![KSHttpRequest isBlankString:[DataCenter account].cityID]) {
-        [KSHttpRequest post:KGetAreaTown parameters:@{@"cityId":[DataCenter account].cityID} success:^(id result) {
+        [KSHttpRequest post:KGetAreaTown parameters:@{@"cityId":[DataCenter account].cityID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 NSDictionary *dict = result[@"datas"];
                 NSArray *Tarr = dict[@"rows"];
@@ -62,7 +62,7 @@
             
         }];
     }else{
-        [KSHttpRequest post:KGetAreaTown parameters:@{@"countyId":[DataCenter account].countyID?[DataCenter account].countyID:@""} success:^(id result) {
+        [KSHttpRequest post:KGetAreaTown parameters:@{@"countyId":[DataCenter account].countyID?[DataCenter account].countyID:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 NSDictionary *dict = result[@"datas"];
                 NSArray *Tarr = dict[@"rows"];

@@ -98,11 +98,16 @@
 /**
  *  获取商品列表 get
  */
-#define KHomeGetProductsListPage [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/product/getProductsListPage"]
+#define KHomeGetProductsListPage [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/product/getProductsListPage"]
 /**
  *  获取商品详情信息
  */
 #define KHomeGetAppProductDetails [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/product/getAppProductDetails"]
+/**
+ *  获取商品的sku
+ */
+#define KSkuquery [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/SKU/attributes_and_price/query"]
+
 
 /**--------------------
       咨询

@@ -83,7 +83,7 @@
         [UILabel showMessage:str];
         
     }else{
-        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"userName":self.userNameTF.text} success:^(id result) {
+        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"userName":self.userNameTF.text,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 //更新成功保存本地
                 UserInfo *info = [DataCenter account];

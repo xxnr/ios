@@ -10,6 +10,7 @@
 #import "XNRAddressPickerView.h"
 #import "XNRTownPickerView.h"
 #define MARGIN  PX_TO_PT(24)
+#define textFieldTag 1000
 @interface XNRAddAddress_VC()<UITextFieldDelegate,XNRAddressPickerViewBtnDelegate,XNRTownPickerViewBtnDelegate>
 {
     int addressType;
@@ -54,7 +55,7 @@
 @end
 
 @implementation XNRAddAddress_VC
-
+#pragma mark - 地区
 -(XNRAddressPickerView *)addressManagerView{
     if (!_addressManagerView) {
         XNRAddressPickerView *addressManagerView = [[XNRAddressPickerView alloc] init];
@@ -64,16 +65,6 @@
     }
     return _addressManagerView;
 
-}
-
--(XNRTownPickerView *)townManagerView{
-    if (!_townManagerView) {
-        XNRTownPickerView *townManagerView = [[XNRTownPickerView alloc] init];
-        townManagerView.delegate = self;
-        self.townManagerView = townManagerView;
-        [self.view addSubview:townManagerView];
-    }
-    return _townManagerView;
 }
 
 -(void)XNRAddressPickerViewBtnClick:(XNRAddressPickerViewType)type
@@ -87,6 +78,18 @@
         [self.addressManagerView hide];
     }
 }
+
+#pragma mark - 乡镇
+-(XNRTownPickerView *)townManagerView{
+    if (!_townManagerView) {
+        XNRTownPickerView *townManagerView = [[XNRTownPickerView alloc] init];
+        townManagerView.delegate = self;
+        self.townManagerView = townManagerView;
+        [self.view addSubview:townManagerView];
+    }
+    return _townManagerView;
+}
+
 
 -(void)XNRTownPickerViewBtnClick:(XNRTownPickerViewType)type
 {
@@ -116,12 +119,7 @@
     [self createBottomView];
 }
 
--(void)keyboardWillBeHidden:(NSNotification *)note
-{
-    [self.addressManagerView hide];
-    [self.townManagerView hide];
-    
-}
+
 -(void)createTopView{
     CGFloat x = PX_TO_PT(20);
     CGFloat y = PX_TO_PT(28);
@@ -147,7 +145,7 @@
     recivePersonTF.font = XNRFont(14);
     recivePersonTF.text = self.model.receiptPeople;
     recivePersonTF.delegate = self;
-    recivePersonTF.tag = 1002;
+    recivePersonTF.tag = textFieldTag;
     self.recivePersonTF = recivePersonTF;
     [topBgView addSubview:recivePersonTF];
     // 2.联系电话
@@ -164,7 +162,7 @@
     phoneNumTF.font = XNRFont(14);
     phoneNumTF.text = self.model.receiptPhone;
     phoneNumTF.delegate = self;
-    phoneNumTF.tag = 1003;
+    phoneNumTF.tag = textFieldTag +1;
     self.phoneNumTF = phoneNumTF;
     [topBgView addSubview:phoneNumTF];
     // 3.省市区县
@@ -244,7 +242,7 @@
     detailAddressTF.font = XNRFont(14);
     detailAddressTF.text = self.model.address;
     detailAddressTF.delegate = self;
-    detailAddressTF.tag = 1004;
+    detailAddressTF.tag = textFieldTag + 2;
     self.detailAddressTF = detailAddressTF;
     [topBgView addSubview:detailAddressTF];
     
@@ -260,7 +258,7 @@
     emailTF.placeholder = @"(选填)请输入邮政编码";
     emailTF.textColor = R_G_B_16(0x909090);
     emailTF.font = XNRFont(14);
-    emailTF.tag = 1005;
+    emailTF.tag = textFieldTag + 3;
     emailTF.delegate = self;
 
     if (self.model.zipCode) {
@@ -276,7 +274,7 @@
     }
     
 }
-
+#pragma mark - Block的回调
 -(void)addressBtnClick:(UIButton *)button
 {
     [self.townManagerView hide];
@@ -325,10 +323,16 @@
 #pragma mark --UITextFieldDelegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    if (textField.tag == textFieldTag) {
+        
+    }else if (textField.tag == textFieldTag + 1){
+    
+    }else if (textField.tag == textFieldTag + 2){
+    
+    }else{
     
     
-    
-    
+    }
     return YES;
 }
 
@@ -401,19 +405,16 @@
     }else if ([self.addressLabel.text isEqualToString:@""] || self.addressLabel.text == nil){
         flag = 0;
         title = @"请选择城市";
-    }
-//    else if ([self.townTF.text isEqualToString:@""] || self.townTF.text == nil){
-//        flag = 0;
-//        title  = @"请输入您的详细地址";
-//    
-//    }
-    else if ([self.detailAddressTF.text isEqualToString:@""] || self.detailAddressTF.text == nil){
+    }else if ([self.detailAddressTF.text isEqualToString:@""] || self.detailAddressTF.text == nil){
         flag = 0;
         title = @"请输入您的详细地址";
     
     }else{
         if ([self.titleLabel isEqualToString:@"添加收货地址"]) {
-            [KSHttpRequest post:KSaveUserAddress parameters:@{@"userId":[DataCenter account].userid,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@"",@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",addressType]} success:^(id result) {
+            
+            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@"",@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",addressType],@"user-agent":@"IOS-v2.0"};
+            
+            [KSHttpRequest post:KSaveUserAddress parameters:params success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
                     if (addressType == 1) {
                         UserInfo *info = [DataCenter account];
@@ -440,7 +441,6 @@
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"addressRefresh" object:self];
                     
                     [self.navigationController popViewControllerAnimated:YES];
-                    //                self.addressRefreshBlock();
                     
                 }
                 
@@ -450,7 +450,9 @@
             }];
 
         }else{// 更新收货地址
-            [KSHttpRequest post:KUpdateUserAddress parameters:@{@"userId":[DataCenter account].userid,@"addressId":self.model.addressId,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:self.model.cityId,@"countyId":self.countyID?self.countyID:self.model.countyId,@"townId":self.townID?self.townID:self.model.townId,@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",addressType]?[NSString stringWithFormat:@"%d",addressType]:self.model.type} success:^(id result) {
+            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"addressId":self.model.addressId,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:self.model.cityId,@"countyId":self.countyID?self.countyID:self.model.countyId,@"townId":self.townID?self.townID:self.model.townId,@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",addressType]?[NSString stringWithFormat:@"%d",addressType]:self.model.type,@"user-agent":@"IOS-v2.0"};
+            
+            [KSHttpRequest post:KUpdateUserAddress parameters:params success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"addressRefresh" object:self];
@@ -481,15 +483,6 @@
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
 }
-
-//-(void)setModel:(XNRAddressManageModel *)model
-//{
-//    _model = model;
-//    self.recivePersonTF.text = _model.receiptPeople;
-//
-//
-//}
-
 
 
 -(void)createNav{
@@ -534,10 +527,6 @@
         TFModel *tfm1=[TFModel modelWithTextFiled:self.recivePersonTF inputView:nil name:@"" insetBottom:0];
         
         TFModel *tfm2=[TFModel modelWithTextFiled:self.phoneNumTF inputView:nil name:@"" insetBottom:0];
-        
-//        TFModel *tfm3=[TFModel modelWithTextFiled:self.addressTF inputView:nil name:@"" insetBottom:0];
-//        
-//        TFModel *tfm4=[TFModel modelWithTextFiled:self.townTF inputView:nil name:@"" insetBottom:0];
         
         TFModel *tfm5=[TFModel modelWithTextFiled:self.detailAddressTF inputView:nil name:@"" insetBottom:0];
         

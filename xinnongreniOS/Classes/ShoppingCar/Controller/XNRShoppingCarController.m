@@ -392,7 +392,7 @@
                         }
                     } else { //TODO:服务器调用接口 让服务器把这条数据删除
                         for (XNRShoppingCartModel *carModel in sectionModel.goodsList) {
-                            [KSHttpRequest post:KUpdateShoppingCart parameters:@{@"userId":[DataCenter account].userid,@"goodsId":carModel.goodsId,@"quantity":@"0"} success:^(id result) {
+                            [KSHttpRequest post:KUpdateShoppingCart parameters:@{@"userId":[DataCenter account].userid,@"goodsId":carModel.goodsId,@"quantity":@"0",@"user-agent":@"IOS-v2.0"} success:^(id result) {
                                 if ([result[@"code"] integerValue] == 1000) {
                                     
                                 }
@@ -414,7 +414,7 @@
                                 [manager deleteShoppingCarWithModel:model];
                             } else {
                                 //TODO:服务器调用接口 让服务器把这条数据删除
-                                [KSHttpRequest post:KchangeShopCarNum parameters:@{@"userId":[DataCenter account].userid,@"goodsId":model.goodsId,@"quantity":@"0"} success:^(id result) {
+                                [KSHttpRequest post:KchangeShopCarNum parameters:@{@"userId":[DataCenter account].userid,@"goodsId":model.goodsId,@"quantity":@"0",@"user-agent":@"IOS-v2.0"} success:^(id result) {
                                     
                                 } failure:^(NSError *error) {
                                     
@@ -525,7 +525,6 @@
             [self.shopCarView show];
             self.editeBtn.hidden = YES;
             self.navigationItem.title = @"购物车";
-
         }else{
             [self.shopCarView removeFromSuperview];
         }
@@ -560,7 +559,7 @@
         [tempMarr addObject:params];
     }
     
-    [KSHttpRequest post:KGetShoppingCartOffline parameters:@{@"products":[tempMarr JSONString_Ext]} success:^(id result) {
+    [KSHttpRequest post:KGetShoppingCartOffline parameters:@{@"products":[tempMarr JSONString_Ext],@"user-agent":@"IOS-v2.0"} success:^(id result) {
         NSMutableArray *goodsArray = [[NSMutableArray alloc] init];
         if ([result[@"code"] integerValue] == 1000)  {
             NSDictionary *datas = result[@"datas"];

@@ -19,9 +19,11 @@
 
 @interface XNRProductInfo_cell : UITableViewCell
 
+@property (nonatomic ,copy) NSString *goodsId;
+
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 
-@property (nonatomic, strong) XNRProductInfo_model *model;
+-(void)upDataWithModel:(XNRProductInfo_model *)model;
 
 @property (nonatomic ,assign) id<XNRProductInfo_cellDelegate>delegate;
 

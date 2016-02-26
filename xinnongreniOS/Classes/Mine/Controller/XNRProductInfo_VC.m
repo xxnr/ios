@@ -13,6 +13,7 @@
 #import "XNRTabBarController.h"
 #import "XNROrderInfo_VC.h"
 #import "XNRProductInfo_model.h"
+#import "XNRProductPhotoModel.h"
 #import "XNRProductInfo_cell.h"
 #import "MJExtension.h"
 #import "XNRToolBar.h"
@@ -127,7 +128,7 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.pagingEnabled = YES;
-    tableView.contentSize = CGSizeMake(ScreenWidth, (ScreenWidth+PX_TO_PT(440))*2);
+    tableView.contentSize = CGSizeMake(ScreenWidth, (ScreenWidth+PX_TO_PT(455))*2);
     self.tableView = tableView;
     [self.view addSubview:tableView];
 }
@@ -152,11 +153,13 @@
             NSDictionary *dic =result[@"datas"];
             self.model.deposit = dic[@"deposit"];
             XNRProductInfo_model *model = [[XNRProductInfo_model alloc] init];
+            model.min = dic[@"referencePrice"][@"min"];
+            model.max = dic[@"referencePrice"][@"max"];
             [model setValuesForKeysWithDictionary:dic];
-            [_goodsArray addObject:model];
             
-            NSString *imageUrl=[HOST stringByAppendingString:dic[@"imgUrl"]];
-            [self.headView sd_setImageWithURL:[NSURL URLWithString:imageUrl ] placeholderImage:[UIImage imageNamed:@"001"]];
+            model.pictures = (NSMutableArray *)[XNRProductPhotoModel objectArrayWithKeyValuesArray:dic[@"pictures"]];
+            
+            [_goodsArray addObject:model];
             
             if ([dic[@"presale"] integerValue] == 1) {
                 self.addBuyCarBtn.userInteractionEnabled = NO;
@@ -238,57 +241,56 @@
     [bgExpectView addSubview:lineView];
     
     
-    UIButton *leftBtn = [MyControl createButtonWithFrame:CGRectMake(PX_TO_PT(38), PX_TO_PT(16), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
-    
-    
-    leftBtn.tag = kLeftBtn;
-    [leftBtn setImage:[UIImage imageNamed:@"icon_minus"] forState:UIControlStateNormal];
-    [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateSelected];
-    [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateHighlighted];
-    [leftBtn setHighlighted:NO];
-    self.leftBtn = leftBtn;
-    [bgView addSubview:leftBtn];
+//    UIButton *leftBtn = [MyControl createButtonWithFrame:CGRectMake(PX_TO_PT(38), PX_TO_PT(16), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
+//    
+//    
+//    leftBtn.tag = kLeftBtn;
+//    [leftBtn setImage:[UIImage imageNamed:@"icon_minus"] forState:UIControlStateNormal];
+//    [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateSelected];
+//    [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateHighlighted];
+//    [leftBtn setHighlighted:NO];
+//    self.leftBtn = leftBtn;
+//    [bgView addSubview:leftBtn];
    
-    UITextField *numTextField = [[UITextField alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame),PX_TO_PT(16),PX_TO_PT(78),PX_TO_PT(48))];
-    numTextField.textAlignment = NSTextAlignmentCenter;
-    numTextField.borderStyle = UITextBorderStyleNone;
-    numTextField.textColor = R_G_B_16(0x323232);
-    numTextField.text = @"1";
-    numTextField.font = XNRFont(14);
-    numTextField.delegate = self;
-    numTextField.returnKeyType = UIReturnKeyDone;
-    //设置键盘类型
-    numTextField.keyboardType=UIKeyboardTypeNumberPad;
-    numTextField.backgroundColor = [UIColor whiteColor];
-    self.numTextField = numTextField;
-    [bgView addSubview:numTextField];
-    
-    XNRToolBar *toolBar = [[XNRToolBar alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(88))];
-    toolBar.delegate = self;
-    numTextField.inputAccessoryView = toolBar;
-    
-    UIButton *rightBtn = [MyControl createButtonWithFrame:CGRectMake(CGRectGetMaxX(self.numTextField.frame), PX_TO_PT(16), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
-    
-    rightBtn.tag = kRightBtn;
-    
-    [rightBtn setImage:[UIImage imageNamed:@"icon_plus"] forState:UIControlStateNormal];
-    [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateSelected];
-    [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateHighlighted];
-    [rightBtn setHighlighted:NO];
-    self.rightBtn = rightBtn;
-    [bgView addSubview:rightBtn];
+//    UITextField *numTextField = [[UITextField alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame),PX_TO_PT(16),PX_TO_PT(78),PX_TO_PT(48))];
+//    numTextField.textAlignment = NSTextAlignmentCenter;
+//    numTextField.borderStyle = UITextBorderStyleNone;
+//    numTextField.textColor = R_G_B_16(0x323232);
+//    numTextField.text = @"1";
+//    numTextField.font = XNRFont(14);
+//    numTextField.delegate = self;
+//    numTextField.returnKeyType = UIReturnKeyDone;
+//    //设置键盘类型
+//    numTextField.keyboardType=UIKeyboardTypeNumberPad;
+//    numTextField.backgroundColor = [UIColor whiteColor];
+//    self.numTextField = numTextField;
+//    [bgView addSubview:numTextField];
+//    
+//    XNRToolBar *toolBar = [[XNRToolBar alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(88))];
+//    toolBar.delegate = self;
+//    numTextField.inputAccessoryView = toolBar;
+//    
+//    UIButton *rightBtn = [MyControl createButtonWithFrame:CGRectMake(CGRectGetMaxX(self.numTextField.frame), PX_TO_PT(16), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
+//    
+//    rightBtn.tag = kRightBtn;
+//    
+//    [rightBtn setImage:[UIImage imageNamed:@"icon_plus"] forState:UIControlStateNormal];
+//    [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateSelected];
+//    [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateHighlighted];
+//    [rightBtn setHighlighted:NO];
+//    self.rightBtn = rightBtn;
+//    [bgView addSubview:rightBtn];
     
     // 立即购买
-    UIButton *buyBtn = [MyControl createButtonWithFrame:CGRectMake(ScreenWidth/3, 0, ScreenWidth/3, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(buyBtnClick) Title:@"立即购买"];
+    UIButton *buyBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(buyBtnClick) Title:@"立即购买"];
     buyBtn.backgroundColor = [UIColor whiteColor];
     [buyBtn setTitleColor:R_G_B_16(0xfe9b00) forState:UIControlStateNormal];
     buyBtn.titleLabel.font = XNRFont(16);
-    buyBtn.alpha = 0.4;
     self.buyBtn = buyBtn;
     [bgView addSubview:buyBtn];
     
     //加入购物车
-     UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake((ScreenWidth/3)*2, PX_TO_PT(2), ScreenWidth/3, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
+     UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(2), ScreenWidth/2, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
     addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
     [addBuyCarBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     addBuyCarBtn.titleLabel.font=XNRFont(16);
@@ -300,17 +302,17 @@
     line.backgroundColor=R_G_B_16(0xc7c7c7);
     [bgView addSubview:line];
     
-    UIView *leftLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3, 0, PX_TO_PT(1), PX_TO_PT(80))];
-    leftLine.backgroundColor = R_G_B_16(0xc7c7c7);
-    [bgView addSubview:leftLine];
-    
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), PX_TO_PT(16), PX_TO_PT(79), PX_TO_PT(1))];
-    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
-    [bgView addSubview:topLine];
-    
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), PX_TO_PT(63), PX_TO_PT(79), PX_TO_PT(1))];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
-    [bgView addSubview:bottomLine];
+//    UIView *leftLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3, 0, PX_TO_PT(1), PX_TO_PT(80))];
+//    leftLine.backgroundColor = R_G_B_16(0xc7c7c7);
+//    [bgView addSubview:leftLine];
+//    
+//    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), PX_TO_PT(16), PX_TO_PT(79), PX_TO_PT(1))];
+//    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+//    [bgView addSubview:topLine];
+//    
+//    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), PX_TO_PT(63), PX_TO_PT(79), PX_TO_PT(1))];
+//    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+//    [bgView addSubview:bottomLine];
 }
 
 -(void)XNRToolBarBtnClick
@@ -324,7 +326,7 @@
     if (IS_Login) {
         if(IS_Login == YES) {
             
-            [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":self.model.goodsId,@"userId":[DataCenter account].userid,@"count":self.numTextField.text,@"user-agent":@"IOS-v2.0",@"update_by_add":@"true"} success:^(id result) {
+            [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":self.model.goodsId,@"userId":[DataCenter account].userid,@"count":self.numTextField.text,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"} success:^(id result) {
                 NSLog(@"%@",result);
                 if([result[@"code"] integerValue] == 1000){
                     
@@ -405,9 +407,7 @@
                 XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
                 login.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:login animated:YES];
-                
             }
-            
         };
         
         [alertView BMAlertShow];
@@ -509,6 +509,8 @@
         self.numTextField.text=[NSString stringWithFormat:@"%ld",(long)[self.numTextField.text floatValue]+1];
     }
 }
+
+#pragma mark - TableViewDelegate
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _goodsArray.count;
@@ -516,13 +518,15 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return (ScreenWidth + PX_TO_PT(440))*2;
+    return (ScreenWidth + PX_TO_PT(455))*2;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XNRProductInfo_cell *cell = [XNRProductInfo_cell cellWithTableView:tableView];
+    cell.goodsId = _model.goodsId;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.model = _goodsArray[indexPath.row];
+    [cell upDataWithModel:_goodsArray[indexPath.row]];
+//    cell.model = _goodsArray[indexPath.row];
     cell.delegate = self;
     return cell;
 
@@ -586,7 +590,7 @@
     } else {
         goodsId = self.model.goodsId;
     }
-    [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":goodsId,@"userId":[DataCenter account].userid,@"count":self.numTextField.text,@"user-agent":@"IOS-v2.0",@"update_by_add":@"true"} success:^(id result) {
+    [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":goodsId,@"userId":[DataCenter account].userid,@"count":self.numTextField.text,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         NSLog(@"%@",result);
         if([result[@"code"] integerValue] == 1000){
 

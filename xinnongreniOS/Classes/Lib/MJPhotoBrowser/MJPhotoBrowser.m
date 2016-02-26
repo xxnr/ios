@@ -16,6 +16,7 @@
 #define kPhotoViewIndex(photoView) ([photoView tag] - kPhotoViewTagOffset)
 
 @interface MJPhotoBrowser () <MJPhotoViewDelegate>
+
 {
     // 滚动的view
 	UIScrollView *_photoScrollView;
@@ -40,7 +41,7 @@
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     self.view = [[UIView alloc] init];
     self.view.frame = [UIScreen mainScreen].bounds;
-	self.view.backgroundColor = [UIColor blackColor];
+	self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)viewDidLoad
@@ -74,6 +75,7 @@
     _toolbar = [[MJPhotoToolbar alloc] init];
     _toolbar.frame = CGRectMake(0, barY, self.view.frame.size.width, barHeight);
     _toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+//    _toolbar.backgroundColor = [UIColor redColor];
     _toolbar.photos = _photos;
     [self.view addSubview:_toolbar];
     

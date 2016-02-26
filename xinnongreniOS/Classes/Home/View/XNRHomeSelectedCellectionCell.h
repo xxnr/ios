@@ -22,7 +22,6 @@
 
 
 
-
 #import "XNRHomeSelectBrandView.h"
 @interface XNRHomeSelectedBrandItem : NSObject
 
@@ -48,7 +47,6 @@
 - (void)exchangeResModelToItemWith:(NSObject *)obj andIndexPath:(NSIndexPath *)indexPath;
 
 @end
-
 
 
 

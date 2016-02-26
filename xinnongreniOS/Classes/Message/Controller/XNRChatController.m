@@ -69,8 +69,7 @@
         
         self.tableView.mj_header = header;
         
-        
-        
+    
         // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
         MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
         // 设置刷新图片
@@ -80,8 +79,7 @@
         // 设置尾部
         self.tableView.mj_footer = footer;
         
-        
-        
+    
 }
 
 -(void)headRefresh{
@@ -96,8 +94,6 @@
     [self getData];
     
 }
-
-
 -(void)createbackBtn
 {
     UIButton *backtoTopBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -122,8 +118,6 @@
     }
 }
 
-
-
 -(void)setNav{
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
@@ -143,13 +137,12 @@
     _messageArr = [NSMutableArray array];
     self.tableView = tableView;
     [self.view addSubview:tableView];
-
 }
 
 -(void)getData
 {
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
-    [KSHttpRequest get:KMessageNews parameters:@{@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage]} success:^(id result) {
+    [KSHttpRequest get:KMessageNews parameters:@{@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dicts = result[@"datas"];
@@ -180,7 +173,7 @@
     }];
 
 }
-#pragma mark -- 代理
+#pragma mark -- tableView代理
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _messageArr.count;
@@ -197,7 +190,7 @@
     }
     return cell;
 }
-#pragma mark -- 点击事件
+#pragma mark -- tableView点击事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -209,8 +202,6 @@
     [self.navigationController pushViewController:webViewController animated:YES];
     
 }
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

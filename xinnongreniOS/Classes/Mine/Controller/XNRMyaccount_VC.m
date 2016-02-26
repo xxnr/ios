@@ -109,7 +109,7 @@
     UIButton *icon =[MyControl createButtonWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(174), PX_TO_PT(10), PX_TO_PT(100), PX_TO_PT(100)) ImageName:@"my_heagView" Target:self Action:@selector(uploadImage) Title:nil];
     icon.clipsToBounds=YES;
     icon.layer.cornerRadius=PX_TO_PT(100)/2;
-    NSString *urlStr = [NSString stringWithFormat:@"%@%@",IMAGEHOST,[DataCenter account].photo];
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,[DataCenter account].photo];
     if (![KSHttpRequest isBlankString:[DataCenter account].photo]) {
         NSURL *url = [NSURL URLWithString:urlStr];
         [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:url options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
@@ -317,7 +317,7 @@
         [self.typeView hide];
     }else if(type == RightBtnType){
         [self.typeView hide];
-        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"type":self.typeNum?self.typeNum:@""} success:^(id result) {
+        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"type":self.typeNum?self.typeNum:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 UserInfo *info = [DataCenter account];
                 info.type = self.typeLabel.text;
@@ -337,7 +337,7 @@
     if (buttonIndex ==0) {
         
     }else if (buttonIndex == 1){
-        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"false"} success:^(id result) {
+        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"false",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 self.sexLabel.text = @"男";
                 UserInfo *info = [DataCenter account];
@@ -348,7 +348,7 @@
             
         }];
     }else{
-        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"true"} success:^(id result) {
+        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"true",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 self.sexLabel.text = @"女";
                 UserInfo *info = [DataCenter account];
@@ -516,7 +516,7 @@
     NSString *picSize = [CommonTool uploadPicUrl:url params:@{@"user-agent":@"IOS-v2.0",@"token":[DataCenter account].token} file:@"resFile" picImage:croppedImage success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
-            [KSHttpRequest post:KUserModify parameters:@{@"userPhoto":result[@"imageUrl"]} success:^(id result) {
+            [KSHttpRequest post:KUserModify parameters:@{@"userPhoto":result[@"imageUrl"],@"user-agent":@"IOS-v2.0"} success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
                     UserInfo *info = [DataCenter account];
                     info.photo = [NSString stringWithFormat:@"%@",result[@"imageUrl"]];

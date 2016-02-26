@@ -49,12 +49,21 @@
 
 @property (nonatomic, copy) NSString *model;
 
-@property (nonatomic, copy) NSString *ID;
+@property (nonatomic, copy) NSString *_id;
 
 @property (nonatomic ,copy) NSString *Desc;
 
 @property (nonatomic, copy) NSString *presale;
 
+@property (nonatomic, copy) NSString *min;
+
+@property (nonatomic, copy) NSString *max;
+
+@property (nonatomic ,strong) NSMutableArray *pictures;
+
+@property (nonatomic ,strong) NSMutableArray *SKUAttributes;
+
+@property (nonatomic ,strong) NSMutableArray *additions;
 
 
 @end

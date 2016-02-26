@@ -15,6 +15,7 @@ typedef enum : NSUInteger {
 @protocol XNROrderEmptyViewBtnDelegate <NSObject>
 
 @optional;
+
 -(void)XNROrderEmptyView:(XNROrderEmptyViewbuySort) type;
 
 @end

@@ -21,7 +21,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-
+        self.userInteractionEnabled = YES;
+        [self createView];
     }
     return self;
 }
@@ -73,25 +74,20 @@
 
 -(void)btnClick:(UIButton *)button
 {
-    
     if ([self.delegate performSelector:@selector(XNROrderEmptyView:)]) {
         XNROrderEmptyViewbuySort type;
         if (button == self.buyFerBtn) {
             type = XNROrderEmptyView_buyFer;
         }else{
             type = XNROrderEmptyView_buyCar;
-        
         }
         [self.delegate XNROrderEmptyView:type];
     }
-
 }
 
--(void)show
-{
-    self.frame = CGRectMake(0, 64+PX_TO_PT(100), ScreenWidth, ScreenHeight - 64 - PX_TO_PT(100));
-    self.userInteractionEnabled = YES;
-    [self createView];
-}
+//-(void)show
+//{
+//    self.frame = CGRectMake(0, 64+PX_TO_PT(100), ScreenWidth, ScreenHeight - 64 - PX_TO_PT(100));
+//}
 
 @end

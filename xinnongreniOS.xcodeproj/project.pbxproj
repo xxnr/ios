@@ -60,8 +60,16 @@
 		1FE1D8F91B131AFB00F0D158 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FE1D8F71B131AF200F0D158 /* MapKit.framework */; };
 		1FE1D8FC1B131B8D00F0D158 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FE1D8FA1B131B7F00F0D158 /* CoreData.framework */; };
 		49079BD81BF6F89000628039 /* XNRMyRepresentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49079BD71BF6F89000628039 /* XNRMyRepresentView.m */; };
+		491347061C7FFB3400C23343 /* XNRChangeAttributesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 491347051C7FFB3400C23343 /* XNRChangeAttributesModel.m */; };
+		491347091C80017400C23343 /* XNRChangeSubAttributesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 491347081C80017400C23343 /* XNRChangeSubAttributesModel.m */; };
 		4917DBBB1C1BB84E00CE1588 /* XNRTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917DBBA1C1BB84E00CE1588 /* XNRTypeModel.m */; };
 		4917DBBE1C1BC23000CE1588 /* XNRTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917DBBD1C1BC23000CE1588 /* XNRTypeView.m */; };
+		491AF0501C76C5C500AA3CC8 /* XNRPropertyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 491AF04F1C76C5C500AA3CC8 /* XNRPropertyView.m */; };
+		491AF0561C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 491AF0551C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.m */; };
+		491AF0591C79C0E500AA3CC8 /* XNRPropertyBrandView.m in Sources */ = {isa = PBXBuildFile; fileRef = 491AF0581C79C0E500AA3CC8 /* XNRPropertyBrandView.m */; };
+		491AF05C1C7AC14300AA3CC8 /* XNRSKUAttributesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 491AF05B1C7AC14300AA3CC8 /* XNRSKUAttributesModel.m */; };
+		491AF05F1C7C636900AA3CC8 /* XNRPropertyFootView.m in Sources */ = {isa = PBXBuildFile; fileRef = 491AF05E1C7C636800AA3CC8 /* XNRPropertyFootView.m */; };
+		491F37251C7EA1D00072D8B9 /* XNRAddtionsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 491F37241C7EA1D00072D8B9 /* XNRAddtionsModel.m */; };
 		4936F61D1C05CE7A0023183B /* XNRFerSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 4936F61C1C05CE7A0023183B /* XNRFerSelect.m */; };
 		4936F6201C05DA860023183B /* XNRCarSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 4936F61F1C05DA860023183B /* XNRCarSelect.m */; };
 		493771281C19C827008F27F8 /* XNRMobNickNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 493771271C19C827008F27F8 /* XNRMobNickNameController.m */; };
@@ -100,6 +108,7 @@
 		498AB0251BF97FED003827E3 /* XNRUserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 498AB0241BF97FED003827E3 /* XNRUserInfoModel.m */; };
 		499B78C91C1A812F003ECE87 /* XNRProviceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 499B78C81C1A812F003ECE87 /* XNRProviceModel.m */; };
 		499B78D71C1AB454003ECE87 /* XNRCityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 499B78D61C1AB454003ECE87 /* XNRCityModel.m */; };
+		49A7BD8E1C75747900913927 /* XNRProductPhotoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7BD8D1C75747900913927 /* XNRProductPhotoModel.m */; };
 		49ADEE1E1C536CE700525AA8 /* XNRNewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49ADEE1D1C536CE700525AA8 /* XNRNewFeatureViewController.m */; };
 		49CD5E2F1C07FF1B004235C4 /* XNRferView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E2E1C07FF1B004235C4 /* XNRferView.m */; };
 		49CD5E351C0814EC004235C4 /* XNRSpecialCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E341C0814EC004235C4 /* XNRSpecialCell.m */; };
@@ -458,10 +467,26 @@
 		1FE1D8FA1B131B7F00F0D158 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		49079BD61BF6F89000628039 /* XNRMyRepresentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMyRepresentView.h; sourceTree = "<group>"; };
 		49079BD71BF6F89000628039 /* XNRMyRepresentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMyRepresentView.m; sourceTree = "<group>"; };
+		491347041C7FFB3400C23343 /* XNRChangeAttributesModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRChangeAttributesModel.h; sourceTree = "<group>"; };
+		491347051C7FFB3400C23343 /* XNRChangeAttributesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRChangeAttributesModel.m; sourceTree = "<group>"; };
+		491347071C80017400C23343 /* XNRChangeSubAttributesModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRChangeSubAttributesModel.h; sourceTree = "<group>"; };
+		491347081C80017400C23343 /* XNRChangeSubAttributesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRChangeSubAttributesModel.m; sourceTree = "<group>"; };
 		4917DBB91C1BB84E00CE1588 /* XNRTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRTypeModel.h; sourceTree = "<group>"; };
 		4917DBBA1C1BB84E00CE1588 /* XNRTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRTypeModel.m; sourceTree = "<group>"; };
 		4917DBBC1C1BC23000CE1588 /* XNRTypeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRTypeView.h; sourceTree = "<group>"; };
 		4917DBBD1C1BC23000CE1588 /* XNRTypeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRTypeView.m; sourceTree = "<group>"; };
+		491AF04E1C76C5C500AA3CC8 /* XNRPropertyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPropertyView.h; sourceTree = "<group>"; };
+		491AF04F1C76C5C500AA3CC8 /* XNRPropertyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPropertyView.m; sourceTree = "<group>"; };
+		491AF0541C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPropertyCollectionViewCell.h; sourceTree = "<group>"; };
+		491AF0551C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPropertyCollectionViewCell.m; sourceTree = "<group>"; };
+		491AF0571C79C0E500AA3CC8 /* XNRPropertyBrandView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPropertyBrandView.h; sourceTree = "<group>"; };
+		491AF0581C79C0E500AA3CC8 /* XNRPropertyBrandView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPropertyBrandView.m; sourceTree = "<group>"; };
+		491AF05A1C7AC14300AA3CC8 /* XNRSKUAttributesModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSKUAttributesModel.h; sourceTree = "<group>"; };
+		491AF05B1C7AC14300AA3CC8 /* XNRSKUAttributesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSKUAttributesModel.m; sourceTree = "<group>"; };
+		491AF05D1C7C636800AA3CC8 /* XNRPropertyFootView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPropertyFootView.h; sourceTree = "<group>"; };
+		491AF05E1C7C636800AA3CC8 /* XNRPropertyFootView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPropertyFootView.m; sourceTree = "<group>"; };
+		491F37231C7EA1D00072D8B9 /* XNRAddtionsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRAddtionsModel.h; sourceTree = "<group>"; };
+		491F37241C7EA1D00072D8B9 /* XNRAddtionsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRAddtionsModel.m; sourceTree = "<group>"; };
 		4936F61B1C05CE7A0023183B /* XNRFerSelect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRFerSelect.h; sourceTree = "<group>"; };
 		4936F61C1C05CE7A0023183B /* XNRFerSelect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRFerSelect.m; sourceTree = "<group>"; };
 		4936F61E1C05DA860023183B /* XNRCarSelect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCarSelect.h; sourceTree = "<group>"; };
@@ -606,6 +631,8 @@
 		499B78C81C1A812F003ECE87 /* XNRProviceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRProviceModel.m; sourceTree = "<group>"; };
 		499B78D51C1AB454003ECE87 /* XNRCityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCityModel.h; sourceTree = "<group>"; };
 		499B78D61C1AB454003ECE87 /* XNRCityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCityModel.m; sourceTree = "<group>"; };
+		49A7BD8C1C75747900913927 /* XNRProductPhotoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRProductPhotoModel.h; sourceTree = "<group>"; };
+		49A7BD8D1C75747900913927 /* XNRProductPhotoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRProductPhotoModel.m; sourceTree = "<group>"; };
 		49ADEE1C1C536CE700525AA8 /* XNRNewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRNewFeatureViewController.h; sourceTree = "<group>"; };
 		49ADEE1D1C536CE700525AA8 /* XNRNewFeatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRNewFeatureViewController.m; sourceTree = "<group>"; };
 		49CD5E2D1C07FF1B004235C4 /* XNRferView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRferView.h; sourceTree = "<group>"; };
@@ -1439,6 +1466,16 @@
 				4917DBBA1C1BB84E00CE1588 /* XNRTypeModel.m */,
 				53C7C48F1B180F3F00E441BC /* XNRAddressManageModel.h */,
 				53C7C4901B180F3F00E441BC /* XNRAddressManageModel.m */,
+				49A7BD8C1C75747900913927 /* XNRProductPhotoModel.h */,
+				49A7BD8D1C75747900913927 /* XNRProductPhotoModel.m */,
+				491AF05A1C7AC14300AA3CC8 /* XNRSKUAttributesModel.h */,
+				491AF05B1C7AC14300AA3CC8 /* XNRSKUAttributesModel.m */,
+				491F37231C7EA1D00072D8B9 /* XNRAddtionsModel.h */,
+				491F37241C7EA1D00072D8B9 /* XNRAddtionsModel.m */,
+				491347041C7FFB3400C23343 /* XNRChangeAttributesModel.h */,
+				491347051C7FFB3400C23343 /* XNRChangeAttributesModel.m */,
+				491347071C80017400C23343 /* XNRChangeSubAttributesModel.h */,
+				491347081C80017400C23343 /* XNRChangeSubAttributesModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2209,6 +2246,14 @@
 				49F6E23C1C2C7ED100164F2A /* XNRTownManagerView.m */,
 				4938E22B1C306422008DF3BF /* XNRAddressEmptyView.h */,
 				4938E22C1C306422008DF3BF /* XNRAddressEmptyView.m */,
+				491AF04E1C76C5C500AA3CC8 /* XNRPropertyView.h */,
+				491AF04F1C76C5C500AA3CC8 /* XNRPropertyView.m */,
+				491AF0571C79C0E500AA3CC8 /* XNRPropertyBrandView.h */,
+				491AF0581C79C0E500AA3CC8 /* XNRPropertyBrandView.m */,
+				491AF05D1C7C636800AA3CC8 /* XNRPropertyFootView.h */,
+				491AF05E1C7C636800AA3CC8 /* XNRPropertyFootView.m */,
+				491AF0541C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.h */,
+				491AF0551C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -2638,6 +2683,7 @@
 				1FE1D6611B12EE4300F0D158 /* MyControl.m in Sources */,
 				1FE1D6491B12EE3200F0D158 /* AFHTTPSessionManager.m in Sources */,
 				53C550221B50BD8B00964639 /* BeginImageContext.m in Sources */,
+				49A7BD8E1C75747900913927 /* XNRProductPhotoModel.m in Sources */,
 				49F99EEE1C1569BF0000556A /* XNRProductInfo_model.m in Sources */,
 				493AEF2F1C2144FE0088003A /* XNRTownModel.m in Sources */,
 				8446C29B1B1D6D19005CA932 /* POPAnimationExtras.mm in Sources */,
@@ -2686,6 +2732,7 @@
 				49EFE00B1C4CF1E800218C43 /* UIButton+create.m in Sources */,
 				49F7121C1C3F6B6400FC7707 /* XNRSubmitOrderCell.m in Sources */,
 				49CD5E381C093144004235C4 /* XNRFerViewController.m in Sources */,
+				491AF0561C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.m in Sources */,
 				49F6B19D1C2A6EE100DCF8CF /* MJPhotoToolbar.m in Sources */,
 				849B6E501B56650C001C5BF8 /* TAPageControl.m in Sources */,
 				49EC525D1BEBBA5E00AA8898 /* NSData+BSExt.m in Sources */,
@@ -2701,6 +2748,7 @@
 				49EF87F11C4B89D0008C62AE /* XNROrderDetail_VC.m in Sources */,
 				53C7C46E1B16E6D100E441BC /* XNRRealNameViewController.m in Sources */,
 				49EC52681BEBBA5E00AA8898 /* UIView+BSExt.m in Sources */,
+				491347091C80017400C23343 /* XNRChangeSubAttributesModel.m in Sources */,
 				49F6B1981C2A6EE100DCF8CF /* MJPhoto.m in Sources */,
 				4976FC211BE9A2AA0002E8F8 /* Order.m in Sources */,
 				849B6E4F1B56650C001C5BF8 /* TADotView.m in Sources */,
@@ -2715,6 +2763,7 @@
 				1FE1D6471B12EE3200F0D158 /* AFHTTPRequestOperation.m in Sources */,
 				8446C2A31B1D6D19005CA932 /* POPGeometry.mm in Sources */,
 				493AEF231C1DF5260088003A /* XNRAddressPickerView.m in Sources */,
+				491F37251C7EA1D00072D8B9 /* XNRAddtionsModel.m in Sources */,
 				8446C2A71B1D6D19005CA932 /* POPSpringAnimation.mm in Sources */,
 				1FD9F1701B258A2E006CBCD7 /* KSWebController.m in Sources */,
 				49E895FF1BEDC2BB00B3671E /* UIImage+GIF.m in Sources */,
@@ -2731,6 +2780,7 @@
 				49F7A57B1C58469400A1FA45 /* MJRefreshAutoNormalFooter.m in Sources */,
 				49EC525B1BEBBA5E00AA8898 /* BSLanguage.m in Sources */,
 				49F7A5771C58469400A1FA45 /* MJRefreshComponent.m in Sources */,
+				491347061C7FFB3400C23343 /* XNRChangeAttributesModel.m in Sources */,
 				4976FC271BE9A2AA0002E8F8 /* openssl_wrapper.m in Sources */,
 				8446C2A91B1D6D19005CA932 /* TransformationMatrix.cpp in Sources */,
 				49F7A5861C58469400A1FA45 /* UIScrollView+MJRefresh.m in Sources */,
@@ -2753,6 +2803,7 @@
 				49E895F91BEDC2BB00B3671E /* SDWebImageDecoder.m in Sources */,
 				53C5B1581B15C75500C67501 /* XNRHomeCollectionHeaderView.m in Sources */,
 				1FE1D6111B12EE2600F0D158 /* NSObject+MJCoding.m in Sources */,
+				491AF0501C76C5C500AA3CC8 /* XNRPropertyView.m in Sources */,
 				499B78C91C1A812F003ECE87 /* XNRProviceModel.m in Sources */,
 				49EC52601BEBBA5E00AA8898 /* NSObject+BSExt.m in Sources */,
 				1FE1D6511B12EE3200F0D158 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
@@ -2795,6 +2846,7 @@
 				53010F941B1DAD3E00017740 /* CoreTFKeyBoardToolBarView.m in Sources */,
 				53445EAF1B14866A009F79E5 /* XNRShoppingCartTableViewCell.m in Sources */,
 				49EC52611BEBBA5E00AA8898 /* NSString+BSExt.m in Sources */,
+				491AF05C1C7AC14300AA3CC8 /* XNRSKUAttributesModel.m in Sources */,
 				49E895F61BEDC2BB00B3671E /* NSData+ImageContentType.m in Sources */,
 				4976FC381BEA47C50002E8F8 /* XNRShopcarView.m in Sources */,
 				1FE1D64E1B12EE3200F0D158 /* AFURLResponseSerialization.m in Sources */,
@@ -2806,6 +2858,7 @@
 				84A143361B4149FD00A78D36 /* NJKWebViewProgress.m in Sources */,
 				4917DBBB1C1BB84E00CE1588 /* XNRTypeModel.m in Sources */,
 				84B77D011B26BDE6001923E4 /* PEResizeControl.m in Sources */,
+				491AF05F1C7C636900AA3CC8 /* XNRPropertyFootView.m in Sources */,
 				84B77D0C1B26C0F7001923E4 /* SJAvatarBrowser.m in Sources */,
 				49EFE00D1C4CF1E800218C43 /* UIView+Frame.m in Sources */,
 				1F1534181B09D98E00CA374B /* ImagePlayerView.m in Sources */,
@@ -2865,6 +2918,7 @@
 				49EC52661BEBBA5E00AA8898 /* UIImage+BSExt.m in Sources */,
 				493AF2981C27B41D002AEDE7 /* UIView+Frame.m in Sources */,
 				844AFE3D1B141C7A00EE29C8 /* XNRMyscore_VC.m in Sources */,
+				491AF0591C79C0E500AA3CC8 /* XNRPropertyBrandView.m in Sources */,
 				1FE1D64A1B12EE3200F0D158 /* AFNetworkReachabilityManager.m in Sources */,
 				84CDC9AE1B3EA9A000F59064 /* UserInfo.m in Sources */,
 				539CDB9D1B43F37900AB9B65 /* XNRMyScoreModel.m in Sources */,

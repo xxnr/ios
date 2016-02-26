@@ -205,6 +205,8 @@
     UICollectionViewFlowLayout *flowLayout= [[UICollectionViewFlowLayout alloc]init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     self.homeCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64-49) collectionViewLayout:flowLayout];
+    self.homeCollectionView.showsVerticalScrollIndicator = NO;
+
     self.homeCollectionView.backgroundColor = [UIColor clearColor];
     self.homeCollectionView.delegate = self;
     self.homeCollectionView.dataSource = self;

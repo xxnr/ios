@@ -83,7 +83,7 @@
     if ([self.nickNameTF.text isEqualToString:@""] || self.nickNameTF.text == nil) {
         [UILabel showMessage:@"请先输入昵称哦"];
     }else{
-        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"nickName":self.nickNameTF.text} success:^(id result) {
+        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"nickName":self.nickNameTF.text,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 //更新成功保存本地
                 UserInfo *info = [DataCenter account];

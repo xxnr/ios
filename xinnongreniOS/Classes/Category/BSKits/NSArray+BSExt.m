@@ -45,6 +45,7 @@
     NSData * data=[self JSONData_Ext];
     if (data) {
         __autoreleasing  NSString *  string=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        [string stringByReplacingOccurrencesOfString:@"\\" withString:@""];
         return string;
     }
     return nil;

@@ -97,7 +97,7 @@
 
 -(void)getData {
     
-    NSDictionary *params = @{@"products":[self.dataArray JSONString_Ext],@"IOS-v2.0":@"user-agent"};
+    NSDictionary *params = @{@"products":[self.dataArray JSONString_Ext],@"user-agent":@"IOS-v2.0"};
     [KSHttpRequest post:KGetShoppingCartOffline parameters:params success:^(id result) {
         
         NSLog(@"---=++--+=%@",result);

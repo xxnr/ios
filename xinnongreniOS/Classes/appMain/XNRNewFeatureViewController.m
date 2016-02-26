@@ -114,6 +114,9 @@
     [startButton addTarget:self action:@selector(start) forControlEvents:UIControlEventTouchUpInside];
 }
 
+
+
+
 /**
  *  添加pageControl
  */

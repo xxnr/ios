@@ -164,7 +164,7 @@
     else{
         
         // 加密
-        [KSHttpRequest get:KUserPubkey parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        [KSHttpRequest get:KUserPubkey parameters:nil success:^(id result) {
             NSLog(@"======%@",result);
             if ([result[@"code"] integerValue] == 1000) {
                 NSString *pubKey = result[@"public_key"];

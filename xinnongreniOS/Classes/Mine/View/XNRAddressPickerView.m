@@ -123,7 +123,7 @@
 
 -(void)getProvinceData{
     [_provinceArr removeAllObjects];
-    [KSHttpRequest post:KGetAreaList parameters:nil success:^(id result) {
+    [KSHttpRequest post:KGetAreaList parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
                 NSDictionary *dict = result[@"datas"];
                 NSArray *CArr = dict[@"rows"];
@@ -148,7 +148,7 @@
 
 - (void)getCityDataWith:(NSString *)provinceId{
     [_cityArr removeAllObjects];
-    [KSHttpRequest post:KGetBusinessByAreaId parameters:@{@"areaId":provinceId} success:^(id result) {
+    [KSHttpRequest post:KGetBusinessByAreaId parameters:@{@"areaId":provinceId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *CArr = dict[@"rows"];
@@ -173,7 +173,7 @@
 
 - (void)getCountyDataWith:(NSString *)cityId{
     [_countyArr removeAllObjects];
-    [KSHttpRequest post:KGetBuildByBusiness parameters:@{@"businessId":cityId?cityId:@""} success:^(id result) {
+    [KSHttpRequest post:KGetBuildByBusiness parameters:@{@"businessId":cityId?cityId:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *CArr = dict[@"rows"];

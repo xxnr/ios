@@ -206,7 +206,7 @@
             [[NSUserDefaults standardUserDefaults]synchronize];
             
             //第一次点击直接读秒
-            [KSHttpRequest get:KUserSms parameters:@{@"bizcode":@"register",@"tel":self.phoneNumTextField.text,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+            [KSHttpRequest get:KUserSms parameters:@{@"bizcode":@"register",@"tel":self.phoneNumTextField.text} success:^(id result) {
                 
                 NSLog(@"%@",result);
                 
@@ -250,7 +250,7 @@
                 [[NSUserDefaults standardUserDefaults] setObject:timeSp forKey:@"getMessageTimeRegister"];
                 [[NSUserDefaults standardUserDefaults]synchronize];
                 
-                [KSHttpRequest get:KUserSms parameters:@{@"bizcode":@"register",@"tel":self.phoneNumTextField.text,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+                [KSHttpRequest get:KUserSms parameters:@{@"bizcode":@"register",@"tel":self.phoneNumTextField.text} success:^(id result) {
                     if([result[@"code"] isEqualToString:@"1000"]){
                         //请求成功读秒
                         [self readSecond];
@@ -390,7 +390,7 @@
         }else{
             
             [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
-            [KSHttpRequest get:KUserPubkey parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
+            [KSHttpRequest get:KUserPubkey parameters:nil success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
                     NSString *pubKey = result[@"public_key"];
                     self.pubKey = pubKey;
