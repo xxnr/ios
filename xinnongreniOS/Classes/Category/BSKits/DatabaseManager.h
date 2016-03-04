@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "XNRShoppingCartModel.h"
-#import "XNRShopCarSectionModel.h"
 @interface DatabaseManager : NSObject
 
 //单例

@@ -26,7 +26,6 @@
     
     UILabel *label = [[UILabel alloc]init];
 //    CGSize LabelSize = [message sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(290, 9000)];
-    NSLog(@"------+++++%@",message);
     CGSize LabelSize;
     if ([message isKindOfClass:[NSString class]]) {
         

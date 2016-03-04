@@ -229,13 +229,13 @@
 
     self.detailLabel.text = self.model.productDesc;
     
-    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.floatValue];
-    self.numLabel.text = [NSString stringWithFormat:@"x %@",self.model.goodsCount];
+    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue];
+    self.numLabel.text = [NSString stringWithFormat:@"x %@",self.model.count];
     // 订金
     self.depositLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.floatValue];
     
     // 尾款
-    self.remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.floatValue - self.model.deposit.floatValue];
+    self.remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue - self.model.deposit.floatValue];
 //    // 商品件数
 //    self.goodsTotalLabel.text = [NSString stringWithFormat:@"共%@件商品",self.model.goodsCount];
 //    self.goodsTotalLabelMid.text = [NSString stringWithFormat:@"共%@件商品",self.model.goodsCount];

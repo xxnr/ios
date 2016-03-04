@@ -10,9 +10,10 @@
 
 @interface XNRAddtionsModel : NSObject
 
+@property (nonatomic ,assign) BOOL isSelected;
+
 @property (nonatomic ,copy) NSString *price;
 @property (nonatomic ,copy) NSString *name;
 @property (nonatomic ,copy) NSString *_id;
-
 
 @end

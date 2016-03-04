@@ -21,7 +21,11 @@
 
 @property (nonatomic ,copy) NSString *goodsCount;
 
+@property (nonatomic, copy) NSString *price;
 @property (nonatomic, copy) NSString *unitPrice;
 
+
 @property (nonatomic,copy) NSString *deposit;
+
+@property (nonatomic ,strong) NSMutableArray *SKUList;
 @end

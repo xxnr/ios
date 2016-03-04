@@ -65,5 +65,16 @@
 
 @property (nonatomic ,strong) NSMutableArray *additions;
 
+@property (nonatomic ,copy) NSString *market_price;
+
+@property (nonatomic ,copy) NSString *platform_price;
+
+//附加属性
+@property (nonatomic,copy) NSString *num;                 //数量
+@property (nonatomic,copy) NSString *timeStamp;           //时间戳(用于显示添加购物车时间)
+@property (nonatomic,copy) NSString *shoppingCarCount;    //累加数(用于商品排序)
+
+
+
 
 @end

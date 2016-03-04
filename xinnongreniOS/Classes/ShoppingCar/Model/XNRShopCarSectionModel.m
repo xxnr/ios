@@ -22,4 +22,11 @@
     return _goodsList;
 }
 
+-(NSMutableArray *)SKUList{
+    if (!_SKUList) {
+        _SKUList = [NSMutableArray array];
+    }
+    return _SKUList;
+}
+
 @end

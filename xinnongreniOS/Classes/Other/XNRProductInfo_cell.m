@@ -65,7 +65,7 @@
 
 -(XNRPropertyView *)propertyView{
     if (!_propertyView) {
-        XNRPropertyView *propertyView = [[XNRPropertyView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) goodsId:self.goodsId];
+        XNRPropertyView *propertyView = [[XNRPropertyView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) model:self.shopcarModel];
 //        propertyView.goodsId = self.goodsId;
 //        _propertyView = propertyView;
         self.propertyView = propertyView;

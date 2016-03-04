@@ -11,12 +11,12 @@
 @interface XNRShoppingCartModel : NSObject
 
 
-@property (nonatomic,copy) NSString *picUrl;         //图片
-@property (nonatomic,copy) NSString *goodName;       //商品
-@property (nonatomic,copy) NSString *presentPrice;   //现价格
+@property (nonatomic,copy) NSString *picUrl;         //图片C
+@property (nonatomic,copy) NSString *goodName;       //商品C
+@property (nonatomic,copy) NSString *presentPrice;   //现价格C
 @property (nonatomic,copy) NSString *productDesc;//商品描述
 @property (nonatomic,copy) NSString *orderState;     //完成状态(0->已完成；1->待评价)
-@property (nonatomic,copy) NSString *model;
+@property (nonatomic,copy) NSString *model; // C
 /**
  *  类型名
  */
@@ -28,7 +28,7 @@
 /**
  *  购买可获得积分
  */
-@property (copy,nonatomic) NSString *awardPoint;
+@property (copy,nonatomic) NSString *awardPoint;// C
 /**
  *  图片url
  */
@@ -36,23 +36,23 @@
 /**
  *  积分抵用信息
  */
-@property (copy,nonatomic) NSString *allowScore;
+@property (copy,nonatomic) NSString *allowScore;// C
 /**
  *  商品销售数
  */
-@property (copy,nonatomic) NSString *goodsSellCount;
+@property (copy,nonatomic) NSString *goodsSellCount;//C
 /**
  *  原价
  */
-@property (copy,nonatomic) NSString *originalPrice;
+@property (copy,nonatomic) NSString *originalPrice;//C
 /**
  *  品牌ID
  */
-@property (copy,nonatomic) NSString *brandId;
+@property (copy,nonatomic) NSString *brandId;//C
 /**
  *  商品赞数
  */
-@property (copy,nonatomic) NSString *goodsGreatCount;
+@property (copy,nonatomic) NSString *goodsGreatCount;//C
 /**
  *  品牌名
  */
@@ -68,7 +68,7 @@
 /**
  *  商品名
  */
-@property (copy,nonatomic) NSString *goodsName;
+@property (copy,nonatomic) NSString *goodsName;//C
 /**
  *  预售
  */
@@ -89,11 +89,14 @@
 /**
  *  可抵积分
  */
-@property (copy,nonatomic) NSString *point;
+@property (copy,nonatomic) NSString *point;//C
 /**
  *  商品数
  */
-@property (copy,nonatomic) NSString *goodsCount;
+@property (copy,nonatomic) NSString *goodsCount;//C
+
+@property (copy, nonatomic) NSString *count;
+
 /**
  *  订金
  */
@@ -106,6 +109,8 @@
 
 @property (nonatomic ,copy )NSString *name;
 
+@property (nonatomic ,copy) NSString *productName;
+
 @property (nonatomic, assign) BOOL selectState;
 
 /**
@@ -113,4 +118,10 @@
  */
 @property (nonatomic ,copy) NSString *totalCount;
 
+/**
+ *  SKU的属性
+ */
+@property (nonatomic, copy) NSString *_id;
+@property (nonatomic, strong) NSMutableArray *additions;
+@property (nonatomic, strong) NSMutableArray *attributes;
 @end

@@ -60,8 +60,6 @@
 		1FE1D8F91B131AFB00F0D158 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FE1D8F71B131AF200F0D158 /* MapKit.framework */; };
 		1FE1D8FC1B131B8D00F0D158 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FE1D8FA1B131B7F00F0D158 /* CoreData.framework */; };
 		49079BD81BF6F89000628039 /* XNRMyRepresentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49079BD71BF6F89000628039 /* XNRMyRepresentView.m */; };
-		491347061C7FFB3400C23343 /* XNRChangeAttributesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 491347051C7FFB3400C23343 /* XNRChangeAttributesModel.m */; };
-		491347091C80017400C23343 /* XNRChangeSubAttributesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 491347081C80017400C23343 /* XNRChangeSubAttributesModel.m */; };
 		4917DBBB1C1BB84E00CE1588 /* XNRTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917DBBA1C1BB84E00CE1588 /* XNRTypeModel.m */; };
 		4917DBBE1C1BC23000CE1588 /* XNRTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917DBBD1C1BC23000CE1588 /* XNRTypeView.m */; };
 		491AF0501C76C5C500AA3CC8 /* XNRPropertyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 491AF04F1C76C5C500AA3CC8 /* XNRPropertyView.m */; };
@@ -467,10 +465,6 @@
 		1FE1D8FA1B131B7F00F0D158 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		49079BD61BF6F89000628039 /* XNRMyRepresentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMyRepresentView.h; sourceTree = "<group>"; };
 		49079BD71BF6F89000628039 /* XNRMyRepresentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMyRepresentView.m; sourceTree = "<group>"; };
-		491347041C7FFB3400C23343 /* XNRChangeAttributesModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRChangeAttributesModel.h; sourceTree = "<group>"; };
-		491347051C7FFB3400C23343 /* XNRChangeAttributesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRChangeAttributesModel.m; sourceTree = "<group>"; };
-		491347071C80017400C23343 /* XNRChangeSubAttributesModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRChangeSubAttributesModel.h; sourceTree = "<group>"; };
-		491347081C80017400C23343 /* XNRChangeSubAttributesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRChangeSubAttributesModel.m; sourceTree = "<group>"; };
 		4917DBB91C1BB84E00CE1588 /* XNRTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRTypeModel.h; sourceTree = "<group>"; };
 		4917DBBA1C1BB84E00CE1588 /* XNRTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRTypeModel.m; sourceTree = "<group>"; };
 		4917DBBC1C1BC23000CE1588 /* XNRTypeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRTypeView.h; sourceTree = "<group>"; };
@@ -1472,10 +1466,6 @@
 				491AF05B1C7AC14300AA3CC8 /* XNRSKUAttributesModel.m */,
 				491F37231C7EA1D00072D8B9 /* XNRAddtionsModel.h */,
 				491F37241C7EA1D00072D8B9 /* XNRAddtionsModel.m */,
-				491347041C7FFB3400C23343 /* XNRChangeAttributesModel.h */,
-				491347051C7FFB3400C23343 /* XNRChangeAttributesModel.m */,
-				491347071C80017400C23343 /* XNRChangeSubAttributesModel.h */,
-				491347081C80017400C23343 /* XNRChangeSubAttributesModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2748,7 +2738,6 @@
 				49EF87F11C4B89D0008C62AE /* XNROrderDetail_VC.m in Sources */,
 				53C7C46E1B16E6D100E441BC /* XNRRealNameViewController.m in Sources */,
 				49EC52681BEBBA5E00AA8898 /* UIView+BSExt.m in Sources */,
-				491347091C80017400C23343 /* XNRChangeSubAttributesModel.m in Sources */,
 				49F6B1981C2A6EE100DCF8CF /* MJPhoto.m in Sources */,
 				4976FC211BE9A2AA0002E8F8 /* Order.m in Sources */,
 				849B6E4F1B56650C001C5BF8 /* TADotView.m in Sources */,
@@ -2780,7 +2769,6 @@
 				49F7A57B1C58469400A1FA45 /* MJRefreshAutoNormalFooter.m in Sources */,
 				49EC525B1BEBBA5E00AA8898 /* BSLanguage.m in Sources */,
 				49F7A5771C58469400A1FA45 /* MJRefreshComponent.m in Sources */,
-				491347061C7FFB3400C23343 /* XNRChangeAttributesModel.m in Sources */,
 				4976FC271BE9A2AA0002E8F8 /* openssl_wrapper.m in Sources */,
 				8446C2A91B1D6D19005CA932 /* TransformationMatrix.cpp in Sources */,
 				49F7A5861C58469400A1FA45 /* UIScrollView+MJRefresh.m in Sources */,
@@ -2974,8 +2962,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Xinxinnongren Network Technology., Co. Ltd (3GD2Q7M4T8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2996,7 +2984,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "a82a8502-05dc-4153-b43c-e3f349d6688a";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -3018,8 +3006,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Xinxinnongren Network Technology., Co. Ltd (3GD2Q7M4T8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -3033,7 +3021,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "a82a8502-05dc-4153-b43c-e3f349d6688a";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

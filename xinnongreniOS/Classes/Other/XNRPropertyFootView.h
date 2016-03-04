@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+typedef void(^XNRPropertyFootViewBlock)(NSString *numTF);
 
 @interface XNRPropertyFootView : UICollectionReusableView
+
+@property (nonatomic ,copy) XNRPropertyFootViewBlock com;
 
 @end

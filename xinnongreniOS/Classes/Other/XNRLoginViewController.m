@@ -402,8 +402,11 @@
 #pragma mark - 上传购物车数据
 - (void)synchShoppingCarDataWith:(XNRShoppingCartModel *)model
 {
-    [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":model.goodsId,@"userId":[DataCenter account].userid,@"count":@"1",@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    NSDictionary *params = @{@"SKUId":model._id?model._id:@"",@"userId":[DataCenter account].userid,@"quantity":@"1",@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
+    NSLog(@"--=0=9%@",params);
+    [KSHttpRequest post:KAddToCart parameters:params success:^(id result) {
         NSLog(@"%@",result);
+        
         if([result[@"code"] integerValue] == 1000){
 
         }else {

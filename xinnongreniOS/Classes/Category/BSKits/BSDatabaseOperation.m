@@ -155,6 +155,9 @@ static NSString *const DELETE_ITEMS_WITH_PREFIX_SQL = @"DELETE from %@ where id 
         return NO;
     }
     NSError * error;
+    if (!object) {
+        return NO;
+    }
     NSData * data = [NSJSONSerialization dataWithJSONObject:object options:0 error:&error];
     if (error) {
         debugLog(@"ERROR, faild to get json data");

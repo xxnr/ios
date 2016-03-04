@@ -96,43 +96,94 @@
 }
 
 -(void)getData {
-    
-    NSDictionary *params = @{@"products":[self.dataArray JSONString_Ext],@"user-agent":@"IOS-v2.0"};
-    [KSHttpRequest post:KGetShoppingCartOffline parameters:params success:^(id result) {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+    manager.requestSerializer.timeoutInterval = 10.f;
+    [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    NSDictionary *params = @{@"SKUs":self.dataArray,@"user-agent":@"IOS-v2.0"};
+    [manager POST:KGetShoppingCartOffline parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"---------返回数据:---------%@",str);
+        id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
-        NSLog(@"---=++--+=%@",result);
-        if ([result[@"code"] integerValue] == 1000) {
-            NSDictionary *datasDic = result[@"datas"];
-            NSArray *rowsArr = datasDic[@"rows"];
-            for (NSDictionary *subDic in rowsArr) {
-                    XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
-                    sectionModel.brandName = subDic[@"brandName"];
-                
-                NSArray *goodsList = subDic[@"goodsList"];
-                for (NSDictionary *dict in goodsList) {
-                    sectionModel.goodsCount = dict[@"goodsCount"];
-                    sectionModel.deposit = dict[@"deposit"];
-                    sectionModel.unitPrice = dict[@"unitPrice"];
-                }
-
-                    sectionModel.goodsList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"goodsList"]];
-                    [_dataArr addObject:sectionModel];
-                
-                for (int i = 0; i<sectionModel.goodsList.count; i++) {
-                    XNRShoppingCartModel *model = sectionModel.goodsList[i];
-                
-                    model.num = model.totalCount;
-                }
-            }
-            [self.tableview reloadData];
-        }else{
-            
-            [UILabel showMessage:result[@"message"]];
+        NSDictionary *resultDic;
+        if ([resultObj isKindOfClass:[NSDictionary class]]) {
+            resultDic = (NSDictionary *)resultObj;
         }
+        if ([resultObj[@"code"] integerValue] == 1000) {
+                        NSDictionary *datasDic = resultDic[@"datas"];
+                        NSArray *rowsArr = datasDic[@"rows"];
+                        for (NSDictionary *subDic in rowsArr) {
+                                XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
+                                sectionModel.brandName = subDic[@"brandName"];
+            
+                            NSArray *SKUList = subDic[@"SKUList"];
+                            for (NSDictionary *dict in SKUList) {
+                                sectionModel.goodsCount = dict[@"count"];
+                                sectionModel.deposit = dict[@"deposit"];
+                                sectionModel.unitPrice = dict[@"price"];
+                            }
+            
+                                sectionModel.SKUList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"SKUList"]];
+                                [_dataArr addObject:sectionModel];
+            
+                            for (int i = 0; i<sectionModel.SKUList.count; i++) {
+                                XNRShoppingCartModel *model = sectionModel.SKUList[i];
+            
+                                model.num = model.totalCount;
+                            }
+                        }
+                        [self.tableview reloadData];
+                    }else{
+                        
+                        [UILabel showMessage:resultObj[@"message"]];
+                    }
         
-        } failure:^(NSError *error) {
-            NSLog(@"-=-=-=-=====%@,,,,,%@ ",error,error.userInfo);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"===%@",error);
+        
     }];
+
+    
+//    NSDictionary *params = @{@"products":[self.dataArray JSONString_Ext],@"user-agent":@"IOS-v2.0"};
+//    [KSHttpRequest post:KGetShoppingCartOffline parameters:params success:^(id result) {
+//        
+//        NSLog(@"---=++--+=%@",result);
+//        if ([result[@"code"] integerValue] == 1000) {
+//            NSDictionary *datasDic = result[@"datas"];
+//            NSArray *rowsArr = datasDic[@"rows"];
+//            for (NSDictionary *subDic in rowsArr) {
+//                    XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
+//                    sectionModel.brandName = subDic[@"brandName"];
+//                
+//                NSArray *goodsList = subDic[@"goodsList"];
+//                for (NSDictionary *dict in goodsList) {
+//                    sectionModel.goodsCount = dict[@"goodsCount"];
+//                    sectionModel.deposit = dict[@"deposit"];
+//                    sectionModel.unitPrice = dict[@"unitPrice"];
+//                }
+//
+//                    sectionModel.goodsList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"goodsList"]];
+//                    [_dataArr addObject:sectionModel];
+//                
+//                for (int i = 0; i<sectionModel.goodsList.count; i++) {
+//                    XNRShoppingCartModel *model = sectionModel.goodsList[i];
+//                
+//                    model.num = model.totalCount;
+//                }
+//            }
+//            [self.tableview reloadData];
+//        }else{
+//            
+//            [UILabel showMessage:result[@"message"]];
+//        }
+//        
+//        } failure:^(NSError *error) {
+//            NSLog(@"-=-=-=-=====%@,,,,,%@ ",error,error.userInfo);
+//    }];
 
     
 }
@@ -484,7 +535,7 @@
 {
     if (_dataArr.count > 0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[section];
-        return sectionModel.goodsList.count;
+        return sectionModel.SKUList.count;
     } else {
         return 0;
     }
@@ -495,7 +546,7 @@
     
     if (_dataArr.count>0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
-        XNRShoppingCartModel *model = sectionModel.goodsList[indexPath.row];
+        XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
         
         if ([model.deposit floatValue] == 0.00) {
             return PX_TO_PT(300);
@@ -517,7 +568,7 @@
     }
     if (_dataArr.count>0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
-        XNRShoppingCartModel *model = sectionModel.goodsList[indexPath.row];
+        XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
         [cell setCellDataWithModel:model];
     }
     
@@ -576,7 +627,12 @@
         [UILabel showMessage:@"请选择一个地址，没有地址我们的服务人员送不到货哦"];
         return;
     }
-    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"products":[self.idArray JSONString_Ext],@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
+    NSLog(@"909404235%@",self.dataArr);
+    NSDictionary *params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"SKUs":self.dataArray,@"payType":@"1",@"user-agent":@"IOS-v2.0"};
+    NSLog(@"95499504%@",params);
+    
+
+    [KSHttpRequest post:KAddOrder parameters:params success:^(id result) {
         NSLog(@"%@",result);
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *orders = result[@"orders"];
@@ -602,9 +658,11 @@
 
             
         } failure:^(NSError *error) {
+            NSLog(@"%@",error);
+            [UILabel showMessage:@"网络请求失败"];
             
         }];
-        
+    
 }
 
 -(void)select:(UIButton*)button{

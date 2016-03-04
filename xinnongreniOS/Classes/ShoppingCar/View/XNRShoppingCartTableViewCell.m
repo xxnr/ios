@@ -10,6 +10,7 @@
 #import "UIImageView+WebCache.h"
 #import "CoreTFManagerVC.h"
 #import "XNRToolBar.h"
+#import "XNRSKUAttributesModel.h"
 #define kLeftBtn  1000
 #define kRightBtn 2000
 
@@ -186,12 +187,13 @@
     [self.contentView addSubview:goodNameLabel];
     
     
-    UILabel *introduceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.picImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(self.goodNameLabel.frame) + PX_TO_PT(20), ScreenWidth-CGRectGetMaxX(self.picImageView.frame) - PX_TO_PT(52), PX_TO_PT(70))];
+    UILabel *introduceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.picImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(self.goodNameLabel.frame), ScreenWidth-CGRectGetMaxX(self.picImageView.frame) - PX_TO_PT(52), PX_TO_PT(70))];
+//    introduceLabel.backgroundColor = [UIColor redColor];
     introduceLabel.textColor = R_G_B_16(0x909090);
     introduceLabel.numberOfLines = 0;
     introduceLabel.font = XNRFont(12);
     self.introduceLabel = introduceLabel;
-//    [self.contentView addSubview:introduceLabel];
+    [self.contentView addSubview:introduceLabel];
     
 }
 
@@ -245,6 +247,7 @@
     numTextField.borderStyle = UITextBorderStyleNone;
     numTextField.font = XNRFont(14);
     numTextField.delegate = self;
+    numTextField.text = @"1";
     numTextField.textColor = R_G_B_16(0x323232);
     numTextField.returnKeyType = UIReturnKeyDone;
     //设置键盘类型
@@ -405,20 +408,22 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl];
     //图片
     [self.picImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-    NSLog(@"-----------%@",self.model.goodsName);
+    NSLog(@"-----------%@",self.model.attributes);
     //商品名
-    self.goodNameLabel.text = self.model.goodsName;
+    self.goodNameLabel.text = self.model.productName;
     
-    self.introduceLabel.text = self.model.productDesc;
+
+    self.introduceLabel.text = _model.name;
+
 
     //现价
-    self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.floatValue];
+    self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue];
 
     // 订金
     self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.floatValue];
     
     // 尾款
-    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.floatValue - self.model.deposit.floatValue];
+    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue - self.model.deposit.floatValue];
     if(self.model.deposit &&[self.model.deposit floatValue]> 0){
         self.sectionOneLabel.hidden = NO;
         self.sectionTwoLabel.hidden = NO;

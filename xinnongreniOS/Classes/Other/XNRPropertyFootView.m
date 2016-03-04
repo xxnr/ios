@@ -34,6 +34,7 @@
         [self createView];
         // 注册消息通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
+//        self.com (_numTextField.text);
 
         
     }
@@ -59,6 +60,7 @@
         
         self.numTextField.text = @"1";
     }
+    
 }
 
 -(void)createView{
@@ -85,6 +87,11 @@
     numTextField.borderStyle = UITextBorderStyleNone;
     numTextField.textColor = R_G_B_16(0x323232);
     numTextField.text = @"1";
+    if (self.com) {
+        self.com (numTextField.text);
+        
+    }
+
     numTextField.font = XNRFont(14);
     numTextField.delegate = self;
     numTextField.returnKeyType = UIReturnKeyDone;
@@ -139,6 +146,11 @@
 //            self.addBuyCarBtn.enabled=YES;
             
         }
+        if (self.com) {
+        self.com (self.numTextField.text);
+
+        }
+
     }else if(button.tag == kRightBtn){
         
         if (self.numTextField.text.length >10) {
@@ -146,6 +158,11 @@
         }
         self.numTextField.text=[NSString stringWithFormat:@"%ld",(long)[self.numTextField.text floatValue]+1];
     }
+    if (self.com) {
+    self.com (self.numTextField.text);
+
+    }
+
 }
 
 

@@ -9,6 +9,12 @@
 #import "XNRSKUAttributesModel.h"
 
 @implementation XNRSKUAttributesModel
+- (instancetype)init {
+    if (self = [super init]) {
+        
+    }
+    return self;
+}
 
 //防止kvc由于缺少属性报错
 -(void)setValue:(id)value forUndefinedKey:(NSString *)key
@@ -24,5 +30,12 @@
     }
     return _values;
 }
+
+@end
+
+
+
+@implementation XNRSKUCellModel
+
 
 @end

@@ -8,12 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^XNRPropertyViewBlock)(NSString *value1,NSString *value2,NSString *value3);
+
+
 @interface XNRPropertyView : UIView
 
 
 -(void)show;
 
--(instancetype)initWithFrame:(CGRect)frame goodsId:(NSString *)goodsId;
+-(instancetype)initWithFrame:(CGRect)frame model:(XNRShoppingCartModel *)shopcarModel;
+
+@property (nonatomic, assign) XNRPropertyViewBlock com;
 
 
 @end

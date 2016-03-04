@@ -15,5 +15,5 @@
 
 @property (nonatomic ,weak) UILabel *itemTitleLabel;
 
-
+- (void)updateCellWithCellModel:(NSObject *)cellM;
 @end

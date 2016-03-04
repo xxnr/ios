@@ -13,7 +13,15 @@
 
 -(void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
+    
 }
 
+-(NSMutableArray *)additions
+{
+    if (!_additions) {
+        _additions = [NSMutableArray array];
+    }
+    return _additions;
+}
 
 @end

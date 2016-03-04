@@ -14,6 +14,7 @@
 #import "XNROrderInfo_VC.h"
 #import "XNRProductInfo_model.h"
 #import "XNRProductPhotoModel.h"
+#import "XNRSKUAttributesModel.h"
 #import "XNRProductInfo_cell.h"
 #import "MJExtension.h"
 #import "XNRToolBar.h"
@@ -151,13 +152,16 @@
         [BMProgressView LoadViewDisappear:self.view];
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dic =result[@"datas"];
-            self.model.deposit = dic[@"deposit"];
+//            self.model.deposit = dic[@"deposit"];
             XNRProductInfo_model *model = [[XNRProductInfo_model alloc] init];
             model.min = dic[@"referencePrice"][@"min"];
             model.max = dic[@"referencePrice"][@"max"];
+            model._id = dic[@"_id"];
+            
             [model setValuesForKeysWithDictionary:dic];
             
             model.pictures = (NSMutableArray *)[XNRProductPhotoModel objectArrayWithKeyValuesArray:dic[@"pictures"]];
+            model.SKUAttributes =  (NSMutableArray *)[XNRSKUAttributesModel objectArrayWithKeyValuesArray:dic[@"SKUAttributes"]];
             
             [_goodsArray addObject:model];
             
@@ -302,17 +306,6 @@
     line.backgroundColor=R_G_B_16(0xc7c7c7);
     [bgView addSubview:line];
     
-//    UIView *leftLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3, 0, PX_TO_PT(1), PX_TO_PT(80))];
-//    leftLine.backgroundColor = R_G_B_16(0xc7c7c7);
-//    [bgView addSubview:leftLine];
-//    
-//    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), PX_TO_PT(16), PX_TO_PT(79), PX_TO_PT(1))];
-//    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
-//    [bgView addSubview:topLine];
-//    
-//    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), PX_TO_PT(63), PX_TO_PT(79), PX_TO_PT(1))];
-//    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
-//    [bgView addSubview:bottomLine];
 }
 
 -(void)XNRToolBarBtnClick
@@ -411,14 +404,8 @@
         };
         
         [alertView BMAlertShow];
-        
-    
     }
-    
-
 }
-
-
 #pragma mark-加入购物车
 
 -(void)addBuyCar
@@ -524,6 +511,7 @@
 {
     XNRProductInfo_cell *cell = [XNRProductInfo_cell cellWithTableView:tableView];
     cell.goodsId = _model.goodsId;
+    cell.shopcarModel = _model;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell upDataWithModel:_goodsArray[indexPath.row]];
 //    cell.model = _goodsArray[indexPath.row];

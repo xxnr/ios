@@ -61,7 +61,7 @@
 
 //查询某个商品
 - (NSArray *)queryGoodWithModel:(XNRShoppingCartModel *)model {
-    BSDatabaseOperationItem *item = [store getBSDatabaseOperationItemById:model.goodsId fromTable:tableName];
+    BSDatabaseOperationItem *item = [store getBSDatabaseOperationItemById:model._id fromTable:tableName];
     
     NSDictionary *dic = (NSDictionary *)item.itemObject;
     NSArray *oneItem;
@@ -86,7 +86,8 @@
 - (BOOL)insertShoppingCarWithModel:(XNRShoppingCartModel *)model {
     NSLog(@"++++++++++新增商品:%@",model);
     NSDictionary *dic  = [model keyValues];
-    return [store putObject:dic withId:model.goodsId intoTable:tableName];
+    NSLog(@"------======+++++++%@",dic);
+    return [store putObject:dic withId:model._id intoTable:tableName];
 }
 
 //更新购物车数据
@@ -107,7 +108,7 @@
 
 //删除某个商品
 -(BOOL)deleteShoppingCarWithModel:(XNRShoppingCartModel *)model {
-    return [store deleteObjectById:model.goodsId fromTable:tableName];
+    return [store deleteObjectById:model._id fromTable:tableName];
 }
 
 //获取累加数

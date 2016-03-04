@@ -142,19 +142,19 @@
 /**
  *  获取购物车列表
  */
-#define KGetShopCartList [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/shopCart/getShopCartList"]
+#define KGetShopCartList [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/cart/getShoppingCart"]
 /**
  *  修改购物车商品数量
  */
-#define KchangeShopCarNum [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/shopCart/changeNum"]
+#define KchangeShopCarNum [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/cart/changeNum"]
 /**
  *  添加购物车
  */
-#define KAddToCart [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/shopCart/addToCart"]
+#define KAddToCart [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/cart/addToCart"]
 /**
  *  根据商品ID list获取购物车列表
  */
-#define KGetShoppingCartOffline [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/getShoppingCartOffline"]
+#define KGetShoppingCartOffline [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/cart/getShoppingCartOffline"]
 /**--------------------
   收货地址，地理位置相关
  --------------------*/
@@ -214,7 +214,7 @@
 /**
  *  生成订单
  */
-#define KAddOrder [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/order/addOrder"]
+#define KAddOrder [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/order/addOrder"]
 
 /**
  *  获取订单详情
