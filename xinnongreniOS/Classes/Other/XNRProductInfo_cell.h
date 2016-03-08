@@ -10,6 +10,9 @@
 #import "XNRProductInfo_model.h"
 #import "XNRShoppingCartModel.h"
 
+typedef void(^XNRProductInfo_cellBlock)(NSMutableArray *_dataArray,CGFloat totalPrice);
+
+
 @protocol XNRProductInfo_cellDelegate <NSObject>
 
 @optional;
@@ -19,6 +22,8 @@
 @end
 
 @interface XNRProductInfo_cell : UITableViewCell
+
+@property (nonatomic ,copy) XNRProductInfo_cellBlock con;
 
 @property (nonatomic ,copy) NSString *goodsId;
 

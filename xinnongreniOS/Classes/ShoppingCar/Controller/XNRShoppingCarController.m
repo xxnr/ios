@@ -125,29 +125,7 @@
     // 创建导航栏
     [self createNavgation];
     
-    //观察键盘弹出和消失
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardShow:) name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardHide:) name:UIKeyboardWillHideNotification object:nil];
-    
 }
-
-//#pragma mark 弹出键盘
-//-(void)keyboardShow:(NSNotification*)notification{
-//    //计算键盘高度
-//    float y=[[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-//    
-//    [UIView animateWithDuration:0.3 animations:^{
-//        self.view.center=CGPointMake(self.view.center.x, self.view.center.y-y/2);
-//    }];
-//    
-//}
-//#pragma mark 隐藏键盘
-//-(void)keyboardHide:(NSNotification*)notification{
-//    
-//    [UIView animateWithDuration:0.3 animations:^{
-//        self.view.frame=CGRectMake(0, 64, ScreenWidth, ScreenHeight);
-//    }];
-//}
 
 #pragma mark - 刷新
 -(void)setupShopCarOnLineRefresh{
@@ -470,22 +448,21 @@
     // 去结算
     NSMutableArray *arr=[[NSMutableArray alloc]init];
     // 提交订单
-    NSMutableArray *idArr = [[NSMutableArray alloc] init];
     for (int i = 0; i<_dataArr.count; i++) {
         XNRShopCarSectionModel *sectionModel = _dataArr[i];
         for (XNRShoppingCartModel *cellModel in sectionModel.SKUList) {
             if (cellModel.selectState) {
-        
-                NSDictionary *params = @{@"_id":cellModel._id,@"count":cellModel.num,@"addtions":cellModel.additions};
+                
+                NSDictionary *params = @{@"_id":cellModel._id,@"count":cellModel.num,@"additions":cellModel.additions};
+                
                 [arr addObject:params];
-                NSDictionary *idParams = @{@"id":cellModel._id,@"count":cellModel.num};
-                [idArr addObject:idParams];
+                NSLog(@"9053539fjdi%@",arr);
             }
         }
     }
     vc.dataArray = arr;
-    vc.idArray = idArr;
     vc.totalPrice = _totalPrice;
+
     vc.isRoot = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -496,9 +473,8 @@
     //改变底部
     [self changeBottom];
     [self.shoppingCarTableView reloadData];
-    [KSHttpRequest get:KGetShopCartList parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest get:KGetShopCartList parameters:@{@"userId":[DataCenter account].userid,@"token":[DataCenter account].token,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
-            NSLog(@"%@",result);
             //网络请求成功先删除数据
             [_dataArr removeAllObjects];
             
@@ -563,6 +539,7 @@
     for (int i=0; i<allGoodArr.count; i++) {
         XNRShoppingCartModel *model = allGoodArr[i];
         NSDictionary *params = @{@"_id":model._id,@"count":model.num?model.num:@"1",@"additions":model.additions};
+        NSLog(@"898990======%@",params);
         [tempMarr addObject:params];
     }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -720,7 +697,7 @@
                 if (model.deposit && [model.deposit floatValue] > 0) {
                     _totalPrice = _totalPrice + model.num.intValue*[[NSString stringWithFormat:@"%@",model.deposit] floatValue];
                 }else{
-                    _totalPrice = _totalPrice + model.num.intValue*[[NSString stringWithFormat:@"%@",model.unitPrice] floatValue];
+                    _totalPrice = _totalPrice + model.num.intValue*[[NSString stringWithFormat:@"%@",model.price] floatValue];
                 }
                 NSLog(@"totalPriceg === %.2f",_totalPrice);
                 goodsNumSelected = goodsNumSelected + model.num.integerValue;
@@ -809,9 +786,9 @@
         XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
         
         if ([model.deposit floatValue] == 0.00) {
-            return PX_TO_PT(300);
+            return PX_TO_PT(350);
         }else{
-            return PX_TO_PT(460);
+            return PX_TO_PT(510);
         }
     }else{
         return 0;

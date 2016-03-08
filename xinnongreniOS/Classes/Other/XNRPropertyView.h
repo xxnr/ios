@@ -7,18 +7,29 @@
 //
 
 #import <UIKit/UIKit.h>
+typedef enum : NSUInteger {
+    XNRFirstType,
+    XNRSecondType,
+} XNRPropertyViewType ;
 
-typedef void(^XNRPropertyViewBlock)(NSString *value1,NSString *value2,NSString *value3);
+
+typedef void(^XNRPropertyViewBlock)(NSMutableArray *dataArray,CGFloat totalPrice);
+
+typedef void(^XNRPropertyViewValueBlock)(NSMutableArray *attributes,NSMutableArray *addtions);
+
 
 
 @interface XNRPropertyView : UIView
-
 
 -(void)show;
 
 -(instancetype)initWithFrame:(CGRect)frame model:(XNRShoppingCartModel *)shopcarModel;
 
-@property (nonatomic, assign) XNRPropertyViewBlock com;
+@property (nonatomic, copy) XNRPropertyViewBlock com;
+
+@property (nonatomic ,copy) XNRPropertyViewValueBlock valueBlock;
+
+@property (nonatomic ,assign) XNRPropertyViewType type;
 
 
 @end

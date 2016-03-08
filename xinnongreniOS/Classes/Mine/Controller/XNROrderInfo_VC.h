@@ -20,8 +20,6 @@
 
 @property(nonatomic,strong) NSMutableArray *dataArray;
 
-@property (nonatomic ,strong) NSMutableArray *idArray;
-
 @property (nonatomic ,assign) BOOL isRoot;
 
 @end

@@ -14,7 +14,7 @@
 #import "XNRProductPhotoModel.h"
 #import "XNRSKUAttributesModel.h"
 #import "UIImageView+WebCache.h"
-
+#import "XNRShopCarSectionModel.h"
 
 #define coll_cell_margin 15
 #define cellId @"selected_cell"
@@ -30,6 +30,7 @@
     NSString *_numText;
     NSString * _min;
     NSString * _max;
+    CGFloat _totalPrice;
 }
 
 @property (nonatomic ,weak) UIView *coverView;
@@ -46,12 +47,15 @@
 
 @property (nonatomic ,strong) NSMutableArray *goodsArray;
 
-//@property (nonatomic ,copy) NSString *goodsId;
-
 @property (nonatomic ,strong) XNRShoppingCartModel *shopcarModel;
 
 @property (nonatomic ,weak) UIButton *addBuyCarBtn;
 
+@property (nonatomic ,strong) NSMutableArray *dataArr;
+
+@property (nonatomic ,weak) UIView *bgExpectView;
+
+@property (nonatomic , weak) UIView *bgView;
 
 @end
 
@@ -66,7 +70,10 @@
         self.shopcarModel = shopcarModel;
         // 获得商品属性数据
         [self getData];
+        
         _goodsArray = [NSMutableArray array];
+        
+        _dataArr = [NSMutableArray array];
         
         UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
         UIView *coverView = [[UIView alloc] initWithFrame:window.bounds];
@@ -77,14 +84,17 @@
         self.coverView = coverView;
         [window addSubview:coverView];
         
-        
         UIView *attributesView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenHeight, ScreenWidth, PX_TO_PT(980))];
         attributesView.backgroundColor = R_G_B_16(0xfafafa);
         self.attributesView = attributesView;
         [window addSubview:attributesView];
         
-        [self createView];
-        
+        if (_type == XNRFirstType) {
+            [self createFirstView];
+
+        }else if (_type == XNRSecondType){
+            [self createSecondView];
+        }
     }
     return self;
 
@@ -92,7 +102,6 @@
 #pragma mark - 数据请求
 -(void)getData
 {
-    
     [KSHttpRequest post:KHomeGetAppProductDetails parameters:@{@"productId":self.shopcarModel.goodsId?self.shopcarModel.goodsId:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
@@ -112,20 +121,40 @@
                     [skuModel.values replaceObjectAtIndex:i withObject:cellModel];
                  }
             }
-            
             self.nameLabel.text = [NSString stringWithFormat:@"%@",dic[@"name"]];
             
             if ([dic[@"referencePrice"][@"min"] floatValue] == [dic[@"referencePrice"][@"max"] floatValue]) {
                 self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[dic[@"referencePrice"][@"min"] floatValue]];
-            }else{
-                self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f - %.2f",[dic[@"referencePrice"][@"min"] floatValue],[dic[@"referencePrice"][@"max"] floatValue]];
-            }
+                if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
+                    self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
+                }
 
+            }else{
+                NSString *minPrice = [NSString stringWithFormat:@"%.2f",[dic[@"referencePrice"][@"min"] floatValue]];
+                NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[dic[@"referencePrice"][@"max"] floatValue]];
+                if ([minPrice rangeOfString:@".00"].length == 3) {
+                    minPrice = [minPrice substringToIndex:minPrice.length-3];
+                }
+                if ([maxPrice rangeOfString:@".00"].length == 3) {
+                    maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
+                }
+                self.priceLabel.text = [NSString stringWithFormat:@"¥ %@ - %@",minPrice,maxPrice];
+
+            }
+            if ([dic[@"presale"] integerValue] == 1) {
+                self.bgExpectView.hidden = NO;
+                self.bgView.hidden = YES;
+                
+            }else{
+                self.bgExpectView.hidden = YES;
+                self.bgView.hidden = NO;
+            }
 
             NSString *imageUrl=[HOST stringByAppendingString:dic[@"thumbnail"]];
             [self.imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
             
             [_goodsArray addObject:model];
+            
             [self createCollectionView];
             
             [self.collectionView reloadData];
@@ -134,11 +163,10 @@
     } failure:^(NSError *error) {
         
     }];
-
     
 }
 
--(void)createView{
+-(void)createFirstView{
     
     UIView *bgTopView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(220))];
     bgTopView.backgroundColor = R_G_B_16(0xffffff);
@@ -176,55 +204,142 @@
 
     UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(980)-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
     bgView.backgroundColor=[UIColor whiteColor];
-//    self.bgView = bgView;
+    self.bgView = bgView;
     [self.attributesView addSubview:bgView];
     
-    // 立即购买
-    UIButton *buyBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(buyBtnClick) Title:@"立即购买"];
-    buyBtn.backgroundColor = [UIColor whiteColor];
-    [buyBtn setTitleColor:R_G_B_16(0xfe9b00) forState:UIControlStateNormal];
-    buyBtn.titleLabel.font = XNRFont(16);
-//    self.buyBtn = buyBtn;
-    [bgView addSubview:buyBtn];
-    
-    //加入购物车
-    UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(2), ScreenWidth/2, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
-    addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
-    [addBuyCarBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    addBuyCarBtn.titleLabel.font=XNRFont(16);
-//    self.addBuyCarBtn = addBuyCarBtn;
-    [bgView addSubview:addBuyCarBtn];
-    
-    //分割线
-    UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,PX_TO_PT(1) )];
-    line.backgroundColor=R_G_B_16(0xc7c7c7);
-    [bgView addSubview:line];
-}
+        // 立即购买
+        UIButton *buyBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(buyBtnClick) Title:@"立即购买"];
+        buyBtn.backgroundColor = [UIColor whiteColor];
+        [buyBtn setTitleColor:R_G_B_16(0xfe9b00) forState:UIControlStateNormal];
+        buyBtn.titleLabel.font = XNRFont(16);
+        //    self.buyBtn = buyBtn;
+        [bgView addSubview:buyBtn];
+        
+        //加入购物车
+        UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(2), ScreenWidth/2, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
+        addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
+        [addBuyCarBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        addBuyCarBtn.titleLabel.font=XNRFont(16);
+        //    self.addBuyCarBtn = addBuyCarBtn;
+        [bgView addSubview:addBuyCarBtn];
+        
+        //分割线
+        UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,PX_TO_PT(1) )];
+        line.backgroundColor=R_G_B_16(0xc7c7c7);
+        [bgView addSubview:line];
+        
+        UIView *bgExpectView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(980)-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
+        bgExpectView.backgroundColor = [UIColor whiteColor];
+        self.bgExpectView = bgExpectView;
+        [self.attributesView addSubview:bgExpectView];
+        
+        UILabel *expectLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80))];
+        expectLabel.text = @"敬请期待";
+        expectLabel.textAlignment = NSTextAlignmentCenter;
+        expectLabel.textColor = R_G_B_16(0x323232);
+        expectLabel.font = [UIFont systemFontOfSize:14];
+        [bgExpectView addSubview:expectLabel];
+        
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        [bgExpectView addSubview:lineView];
 
--(void)buyBtnClick
+//        // 确定
+//        UIButton *admireBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(admireBtnClick) Title:@"确定"];
+//        admireBtn.backgroundColor = R_G_B_16(0xfe9b00);
+//        [admireBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        admireBtn.titleLabel.font=XNRFont(16);
+//        [bgView addSubview:admireBtn];
+
+    
+
+}
+-(void)createSecondView{
+
+}
+#pragma mark - 确定
+-(void)admireBtnClick
 {
 
+}
+#pragma mark - 立即购买
+-(void)buyBtnClick
+{
+//    XNRProductInfo_model *infoModel = [_goodsArray lastObject];
+    if ([self.shopcarModel._id isEqualToString:@""] || self.shopcarModel._id == nil) {
+        [UILabel showMessage:@"请选择商品信息"];
+    }else{
+        if (!IS_Login) {
+            [UILabel showMessage:@"您还没有登录"];
+        }else{
+            NSMutableArray *SKUs = [NSMutableArray array];
+            NSDictionary *param = @{@"_id":self.shopcarModel._id?self.shopcarModel._id:@"",@"count":_numText?_numText:@"1",@"additions":self.shopcarModel.additions};
+            [SKUs addObject:param];
+            NSLog(@"854990===%@-=-=-=",SKUs);
+            
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+            manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+            [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+            manager.requestSerializer.timeoutInterval = 10.f;
+            [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+            [manager POST:KGetShoppingCartOffline parameters:@{@"SKUs":SKUs,@"user-agent":@"IOS-v2.0"} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                NSLog(@"---------返回数据:---------%@",str);
+                id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+                
+                NSDictionary *resultDic;
+                if ([resultObj isKindOfClass:[NSDictionary class]]) {
+                    resultDic = (NSDictionary *)resultObj;
+                }
+                if ([resultObj[@"code"] integerValue] == 1000) {
+                    NSDictionary *datasDic = resultDic[@"datas"];
+                    NSArray *rowsArr = datasDic[@"rows"];
+                    for (NSDictionary *subDic in rowsArr) {
+                        XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
+                        sectionModel.brandName = subDic[@"brandName"];
+                        
+                        NSArray *SKUList = subDic[@"SKUList"];
+                        for (NSDictionary *dict in SKUList) {
+                            sectionModel.goodsCount = dict[@"count"];
+                            sectionModel.deposit = dict[@"deposit"];
+                            sectionModel.unitPrice = dict[@"price"];
+                        }
+                        
+                        sectionModel.SKUList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"SKUList"]];
+                        [_dataArr addObject:sectionModel];
+                        
+                        for (int i = 0; i<sectionModel.SKUList.count; i++) {
+                            XNRShoppingCartModel *model = sectionModel.SKUList[i];
+                            model.num = model.totalCount;
+                        }
+                    }
+                    // 订单页的跳转
+                    [self cancelBtnClick];
+                    self.com(SKUs,_totalPrice);
+                }else{
+                    
+                    [UILabel showMessage:resultObj[@"message"]];
+                }
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"===%@",error);
+                
+            }];
+        }
+    }
 }
 
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
-    NSLog(@"加入购物车");
-    [self addShopCarOpeation];
-}
-
-#pragma mark-加入购物车
--(void)addShopCarOpeation{
-    NSLog(@"加入购物车");
-    XNRProductInfo_model *infoModel = [_goodsArray lastObject];
-    if (infoModel.additions.count == 0) {
+    if ([self.shopcarModel._id isEqualToString:@""] || self.shopcarModel._id == nil) {
         [UILabel showMessage:@"请选择商品信息"];
     }else{
-        // [SVProgressHUD showWithStatus:@"加入购物车中..." maskType:SVProgressHUDMaskTypeClear];
-        [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
         if(IS_Login == YES) {
             
-            [self synchShoppingCarDataWith:nil];
+            [self synchShoppingCarData];
             
         } else {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -252,66 +367,100 @@
                 if (b) {
                     
                     [UILabel showMessage:@"加入购物车成功"];
-                    [BMProgressView LoadViewDisappear:self];
+                    [self cancelBtnClick];
                 }else{
                     
                     [UILabel showMessage:@"加入购物车失败"];
-                    [BMProgressView LoadViewDisappear:self];
+                    [self cancelBtnClick];
                 }
             });
         }
-
-    
+        
+        
     }
+
 }
 
-- (void)synchShoppingCarDataWith:(XNRShoppingCartModel *)model
+// 上传购物车数据
+- (void)synchShoppingCarData
 {
     XNRProductInfo_model *infoModel = [_goodsArray lastObject];
     NSMutableArray *addtionArray = [NSMutableArray array];
     for (XNRAddtionsModel *addtionModel in infoModel.additions) {
         
         if (addtionModel.isSelected) {
-            [addtionArray addObject:addtionModel._id];
+            [addtionArray addObject:addtionModel.ref];
             NSLog(@"0-=9=90%@",addtionArray);
         }
     }
-    NSDictionary *params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"userId":[DataCenter account].userid,@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0",@"token":[DataCenter account].token};
+    NSDictionary *params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"userId":[DataCenter account].userid,@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
     NSLog(@"())__)%@",params);
-
-    [KSHttpRequest post:KAddToCart parameters:params success:^(id result) {
-        NSLog(@"%@",result);
-        if([result[@"code"] integerValue] == 1000){
-            [UILabel showMessage:@"加入购物车成功"];
-            [BMProgressView LoadViewDisappear:self];
-        }else {
-            [UILabel showMessage:result[@"message"]];
-            [BMProgressView LoadViewDisappear:self];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+    manager.requestSerializer.timeoutInterval = 10.f;
+    [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    
+    [manager POST:KAddToCart parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"---------返回数据:---------%@",str);
+        id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        
+        NSDictionary *resultDic;
+        if ([resultObj isKindOfClass:[NSDictionary class]]) {
+            resultDic = (NSDictionary *)resultObj;
         }
-    } failure:^(NSError *error) {
-        NSLog(@"_____%@",error);
+        if ([resultObj[@"code"] integerValue] == 1000) {
+            [UILabel showMessage:@"加入购物车成功"];
+            // 把选择的属性值传过去
+            [self pressAttributes];
+            [self cancelBtnClick];
+            [BMProgressView LoadViewDisappear:self];
+            
+            
+        }else{
+        [UILabel showMessage:resultObj[@"message"]];
+        [self cancelBtnClick];
+        [BMProgressView LoadViewDisappear:self];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"===%@",error);
         
     }];
-    
+}
+#pragma mark - 把属性值传过去
+-(void)pressAttributes{
+    XNRProductInfo_model *infoModel = [_goodsArray lastObject];
+    NSMutableArray *attributesArray = [NSMutableArray array];
+    NSString * attributeStr = @"";
+    for (XNRSKUAttributesModel *skuModel in infoModel.SKUAttributes) {
+        for (XNRSKUCellModel *cellModel in skuModel.values) {
+            if (cellModel.isSelected) {
+                attributeStr = [attributeStr stringByAppendingString:cellModel.cellValue];
+                [attributesArray addObject:attributeStr];
+                NSLog(@"0-=--------9909%@",attributesArray);
+                
+            }
+            NSLog(@"9090%@", attributeStr);
+        }
+    }
+    NSString *addtionStr = @"";
+    NSMutableArray *addtionArray = [NSMutableArray array];
+    for (XNRAddtionsModel *addtionModel in infoModel.additions) {
+        
+        if (addtionModel.isSelected) {
+            addtionStr = [addtionStr stringByAppendingString:addtionModel.name];
+            [addtionArray addObject:addtionStr];
+            NSLog(@"0-=9=90%@",addtionArray);
+        }
+    }
+    self.valueBlock(attributesArray,addtionArray);
 }
 
--(void)cancelBtnClick{
-    
-    [UIView animateWithDuration:.3 animations:^{
-        self.attributesView.frame = CGRectMake(0, ScreenHeight+30, ScreenWidth, PX_TO_PT(980));
-    } completion:^(BOOL finished) {
-        self.coverView.hidden = YES;
-
-    }];
-}
-
--(void)show{
-    self.coverView.hidden = NO;
-    [UIView animateWithDuration:.3 animations:^{
-        self.attributesView.frame= CGRectMake(0, ScreenHeight-PX_TO_PT(980), ScreenWidth, PX_TO_PT(980));
-    }];
-}
-
+#pragma mark - createCollectionView
 -(void)createCollectionView
 {
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
@@ -443,10 +592,21 @@
                 // 价格区间改变
                 if ([price[@"min"] floatValue] == [price[@"max"] floatValue]) {
                     self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[price[@"min"] floatValue]];
-                }else{
-                    self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f - %.2f",[price[@"min"] floatValue],[price[@"max"] floatValue]];
+                    if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
+                        self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
+                    }
+
+                } else {
+                    NSString *minPrice = [NSString stringWithFormat:@"%.2f",[price[@"min"] floatValue]];
+                    NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[price[@"max"] floatValue]];
+                    if ([minPrice rangeOfString:@".00"].length == 3) {
+                        minPrice = [minPrice substringToIndex:minPrice.length-3];
+                    }
+                    if ([maxPrice rangeOfString:@".00"].length == 3) {
+                        maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
+                    }
+                    self.priceLabel.text = [NSString stringWithFormat:@"¥ %@ - %@",minPrice,maxPrice];
                 }
-                
                 NSArray *attributes = datas[@"attributes"];
                 NSDictionary *skuDict = datas[@"SKU"];
                 NSArray *addtions = skuDict[@"additions"];
@@ -455,8 +615,6 @@
                 
                 // 添加到购物车模型里面，方便加入到数据库
                 self.shopcarModel._id = skuDict[@"_id"];
-                
-                
                 XNRProductInfo_model *newInfoModel = [[XNRProductInfo_model alloc] init];
                 newInfoModel.SKUAttributes = (NSMutableArray *)[XNRSKUAttributesModel objectArrayWithKeyValuesArray:attributes];
                 newInfoModel.market_price = SKUprice[@"market_price"];
@@ -508,7 +666,6 @@
                     }
                 }
                 
-                
                 //5. 添加辅助分区（选完所有的基本分区后添加 少于所有基本分区数量就取消辅助分区）
                 if (attributesArray.count==infoModel.SKUAttributes.count) {
                     infoModel.additions = newInfoModel.additions;
@@ -518,44 +675,44 @@
                 
                 [self.collectionView reloadData];
             }
-            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"===%@",error);
             
         }];
     } else { // 选择了 addtion section（附加选项） 分区
-        
+        NSMutableArray *addtionArray = [NSMutableArray array];
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        CGFloat currentPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
         for (XNRAddtionsModel *addtionCellModel in infoModel.additions) {
+            
             if (addtionCellModel.isSelected&&indexPath.item == [infoModel.additions indexOfObject:addtionCellModel]) {
                 addtionCellModel.isSelected = NO;
-                if (addtionCellModel.isSelected == NO) {
-                    self.priceLabel.text = [NSString stringWithFormat:@"%.2f",[_min floatValue]];
-                }
             } else {
                 if (!addtionCellModel.isSelected) {
                     addtionCellModel.isSelected = indexPath.item == [infoModel.additions indexOfObject:addtionCellModel];
-                    
-                    if (addtionCellModel.isSelected) {
-                        self.priceLabel.text = [NSString stringWithFormat:@"%.2f",[addtionCellModel.price floatValue] + [_min floatValue]];
-                        NSMutableArray *addtionsArray = [NSMutableArray array];
-                        [addtionsArray addObject:addtionCellModel];
-                        NSLog(@"----=====%@---",addtionsArray);
-                        self.shopcarModel.additions = (NSMutableArray *)[XNRAddtionsModel keyValuesArrayWithObjectArray:addtionsArray];
-                        
-                    }else{
-                    
-                    }
-
-                    
-                    }
-                            }
+                }
+            }
+            
+            //计算总价
+            if (indexPath.item == [infoModel.additions indexOfObject:addtionCellModel]) {
+                CGFloat addPrice = [addtionCellModel.price floatValue];
+                _totalPrice = currentPrice+addPrice;
+                if (addtionCellModel.isSelected) {
+                    self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",currentPrice+addPrice];
+                    [dict setValue:addtionCellModel._id forKey:@"_id"];
+                    [dict setValue:addtionCellModel.name forKey:@"name"];
+                    [dict setValue:addtionCellModel.price forKey:@"price"];
+                    [addtionArray addObject:dict];
+                } else if (!addtionCellModel.isSelected) {
+                    self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",currentPrice-addPrice];
+                    [addtionArray removeObject:dict];
+                }
+            }
         }
+        self.shopcarModel.additions = [NSMutableArray arrayWithArray:addtionArray];
+        NSLog(@"1024%@",addtionArray);
         [self.collectionView reloadData];
     }
-}
-//取消选择了某个cell
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
 }
 
 #pragma mark  - UICollectionViewDelegateFlowLayout
@@ -593,8 +750,24 @@
 }
 //定义每个UICollectionViewCell 的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat cellW = (ScreenWidth-4*coll_cell_margin)/3;
-    currentSize = CGSizeMake(cellW,cellW / 3);
+    XNRProductInfo_model *infoModel = [_goodsArray lastObject];
+    if (infoModel.SKUAttributes.count>indexPath.section) {
+        XNRSKUAttributesModel *skuModel = infoModel.SKUAttributes[indexPath.section];
+        XNRSKUCellModel *model = skuModel.values[indexPath.item];
+        CGSize valueSize = [model.cellValue sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
+        currentSize = CGSizeMake(valueSize.width + PX_TO_PT(15), valueSize.height+PX_TO_PT(15));
+
+    }else if (infoModel.SKUAttributes.count<=indexPath.section){
+        XNRAddtionsModel *addtionModel = infoModel.additions[indexPath.item];
+        NSString *addtionStr = [NSString stringWithFormat:@"%@%@",addtionModel.name,addtionModel.price];
+        CGSize valueSize = [addtionStr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
+        currentSize = CGSizeMake(valueSize.width+PX_TO_PT(15), valueSize.height+PX_TO_PT(15));
+
+    }else{
+        currentSize = CGSizeMake(0, 0);
+    
+    }
+    
     return currentSize;
 }
 ////定义每个Section 的 margin
@@ -609,7 +782,6 @@
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
     return coll_cell_margin;
 }
-
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableview = nil;
@@ -650,6 +822,25 @@
     }
     return reusableview;
 }
+
+-(void)cancelBtnClick{
+    
+    [UIView animateWithDuration:.3 animations:^{
+        self.attributesView.frame = CGRectMake(0, ScreenHeight+30, ScreenWidth, PX_TO_PT(980));
+    } completion:^(BOOL finished) {
+        [self pressAttributes];
+        self.coverView.hidden = YES;
+        
+    }];
+}
+
+-(void)show{
+    self.coverView.hidden = NO;
+    [UIView animateWithDuration:.3 animations:^{
+        self.attributesView.frame= CGRectMake(0, ScreenHeight-PX_TO_PT(980), ScreenWidth, PX_TO_PT(980));
+    }];
+}
+
 
 
 @end

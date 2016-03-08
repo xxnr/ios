@@ -15,5 +15,8 @@
 @property (nonatomic ,copy) NSString *price;
 @property (nonatomic ,copy) NSString *name;
 @property (nonatomic ,copy) NSString *_id;
+@property (nonatomic ,copy) NSString *ref;
+
+
 
 @end

@@ -12,10 +12,13 @@
 #import "MJPhoto.h"
 #import "XNRProductPhotoModel.h"
 #import "XNRPropertyView.h"
+#import "MWPhotoBrowser.h"
+#import "AppDelegate.h"
+
 #define KbtnTag 1000
 #define KlabelTag 2000
-@interface XNRProductInfo_cell()<UIScrollViewDelegate>
-
+@interface XNRProductInfo_cell()<UIScrollViewDelegate,MWPhotoBrowserDelegate>
+@property (nonatomic, strong) NSMutableArray *picBrowserList;
 @property (nonatomic, weak) UIImageView *headView;
 @property (nonatomic, weak) UIView *midView;
 @property (nonatomic, weak) UIButton *button;
@@ -49,11 +52,18 @@
 
 @property (nonatomic ,weak) UILabel *noLabel;
 
+@property (nonatomic, weak) UILabel *propertyLabel;
+
 
 @end
 
 @implementation XNRProductInfo_cell
-
+- (NSMutableArray *)picBrowserList {
+    if (!_picBrowserList) {
+        _picBrowserList = [NSMutableArray array];
+    }
+    return _picBrowserList;
+}
 -(BMProgressView *)progressView{
     if (!_progressView) {
         BMProgressView *progressView = [[BMProgressView alloc] init];
@@ -66,8 +76,24 @@
 -(XNRPropertyView *)propertyView{
     if (!_propertyView) {
         XNRPropertyView *propertyView = [[XNRPropertyView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) model:self.shopcarModel];
-//        propertyView.goodsId = self.goodsId;
-//        _propertyView = propertyView;
+        __weak __typeof(self)weakSelf = self;
+        // 传回来的属性
+        propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions){
+            NSString *  attributeStr = [attributes lastObject];
+            NSString *addtionStr = [addtions lastObject];
+            if ([attributeStr isEqualToString:@""] && [addtionStr isEqualToString:@""]) {
+                weakSelf.propertyLabel.text = @"请选择商品属性";
+            }
+            if ([addtionStr isEqualToString:@""] || addtionStr == nil) {
+                weakSelf.propertyLabel.text = [NSString stringWithFormat:@"%@",attributeStr];
+            }else{
+                weakSelf.propertyLabel.text = [NSString stringWithFormat:@"%@ %@",attributeStr,addtionStr];
+            }
+        };
+        // 立即购买的跳转，包括传值
+        propertyView.com = ^(NSMutableArray *dataArray,CGFloat totalPrice){
+            weakSelf.con(dataArray,totalPrice);
+        };
         self.propertyView = propertyView;
         [self addSubview:propertyView];
     }
@@ -107,32 +133,40 @@
 }
 
 -(void)photoTap:(UITapGestureRecognizer *)tap{
-
+    
      // 创建浏览器对象
-    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
-    NSMutableArray *photos = [NSMutableArray array];
+    [self.picBrowserList removeAllObjects];
     NSInteger count = _model.pictures.count;
     for (int i = 0; i<count; i++) {
         XNRProductPhotoModel *photoModel = _model.pictures[i];
-        
-        MJPhoto *photo = [[MJPhoto alloc] init];
-        photo.url = [NSURL URLWithString:[HOST stringByAppendingString:photoModel.originalUrl]];
-        
-//        photo.srcImageView = self.subviews[i];
-
-        [photos addObject:photo];
+        MWPhoto *photo=[MWPhoto photoWithURL:[NSURL URLWithString:[HOST stringByAppendingString:photoModel.originalUrl]]];
+        [self.picBrowserList addObject:photo];
     }
-    browser.photos = photos;
     
-    [browser show];
+    MWPhotoBrowser *photoBrowser=[[MWPhotoBrowser alloc] initWithDelegate:self];
+    photoBrowser.displayActionButton=NO;
+    photoBrowser.alwaysShowControls=NO;
+    [photoBrowser setCurrentPhotoIndex:self.pageControl.currentPage];
+    [[[AppDelegate shareAppDelegate].tabBarController selectedViewController] pushViewController:photoBrowser animated:YES];
     
 }
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
+    return [_picBrowserList count];
+}
+- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index{
+    return _picBrowserList[index];
+}
+- (NSString *)photoBrowser:(MWPhotoBrowser *)photoBrowser titleForPhotoAtIndex:(NSUInteger)index{
+    return [NSString stringWithFormat:@"%ld/%ld",(long)index+1,(long)[_picBrowserList count]];
+}
+
 
 -(void)createHeadView
 {
     
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth);
+//    scrollView.backgroundColor = [UIColor redColor];
     scrollView.tag = 1000;
     scrollView.delegate = self;
     self.scrollView = scrollView;
@@ -180,18 +214,25 @@
     bgTopView.backgroundColor = R_G_B_16(0xfafafa);
     [self.contentView addSubview:bgTopView];
 
-    UILabel *goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), ScreenWidth+PX_TO_PT(20), ScreenWidth-PX_TO_PT(32), PX_TO_PT(70))];
+    UILabel *goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), ScreenWidth, ScreenWidth-PX_TO_PT(32), PX_TO_PT(70))];
     goodNameLabel.textColor = R_G_B_16(0x323232);
     goodNameLabel.font = XNRFont(16);
     goodNameLabel.numberOfLines = 0;
     self.goodNameLabel = goodNameLabel;
     [self addSubview:goodNameLabel];
     
-    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(goodNameLabel.frame) + PX_TO_PT(20), ScreenWidth, PX_TO_PT(30))];
+    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(goodNameLabel.frame), ScreenWidth, PX_TO_PT(30))];
     priceLabel.font = XNRFont(14);
     priceLabel.textColor = R_G_B_16(0x646464);
     self.priceLabel = priceLabel;
     [self addSubview:priceLabel];
+    
+    UILabel *depositLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(self.goodNameLabel.frame)-PX_TO_PT(10), ScreenWidth*0.5, PX_TO_PT(50))];
+    depositLabel.textColor = R_G_B_16(0x646464);
+    priceLabel.font = XNRFont(16);
+    self.depositLabel = depositLabel;
+    [self addSubview:depositLabel];
+
     
     UILabel *marketPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(priceLabel.frame) + PX_TO_PT(10), ScreenWidth, PX_TO_PT(24))];
     marketPriceLabel.font = XNRFont(12);
@@ -223,11 +264,12 @@
     [bgView addSubview:propertyBtn];
     
     
-    UILabel *propertyLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth, PX_TO_PT(90))];
+    UILabel *propertyLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth-PX_TO_PT(56), PX_TO_PT(90))];
     propertyLabel.text = @"请选择商品属性";
     propertyLabel.textAlignment = NSTextAlignmentLeft;
     propertyLabel.textColor = R_G_B_16(0x323232);
     propertyLabel.font = XNRFont(14);
+    self.propertyLabel = propertyLabel;
     [propertyBtn addSubview:propertyLabel];
     
     
@@ -242,12 +284,7 @@
 //    self.priceLabel = priceLabel;
 //    [self addSubview:priceLabel];
     
-//    UILabel *depositLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(self.descriptionLabel.frame) + PX_TO_PT(20), ScreenWidth*0.5, PX_TO_PT(110))];
-//    depositLabel.textColor = R_G_B_16(0x646464);
-//    priceLabel.font = XNRFont(16);
-//    self.depositLabel = depositLabel;
-//    [self addSubview:depositLabel];
-//    
+//
 //    UILabel *presaleLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.descriptionLabel.frame), ScreenWidth, PX_TO_PT(110))];
 //    presaleLabel.textColor = R_G_B_16(0xff4e00);
 //    presaleLabel.font = XNRFont(16);
@@ -402,72 +439,57 @@
             headView.width = imageW;
             headView.height = imageH;
             headView.x =i * imageW;
-            
             headView.userInteractionEnabled = YES;
             UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoTap:)];
             [headView addGestureRecognizer:gestureRecognizer];    //商品图片
             XNRProductPhotoModel *photoModel = model.pictures[i];
+            
             NSString *imageUrl=[HOST stringByAppendingString:photoModel.imgUrl];
             [self.headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-
             self.headView = headView;
             [self.scrollView addSubview:headView];
-            
-            
         }
-        
         // 3.设置其他属性
         self.scrollView.contentSize = CGSizeMake(model.pictures.count * imageW, 0);
         self.scrollView.pagingEnabled = YES;
         self.scrollView.showsHorizontalScrollIndicator = NO;
         self.scrollView.bounces = NO;
-        
         [self setupPageController];
 
-    
     self.goodNameLabel.text = [NSString stringWithFormat:@"%@",model.name];
     self.descriptionLabel.text = [NSString stringWithFormat:@"%@",model.Desc];
     if ([model.min floatValue]== [model.max floatValue]) {
-        self.priceLabel.text = [NSString stringWithFormat:@"新农价：￥%@",model.min];
+        self.priceLabel.text = [NSString stringWithFormat:@"￥%@",model.min];
 
     }else{
-        self.priceLabel.text = [NSString stringWithFormat:@"新农价：￥%@ - ￥%@",model.min,model.max];
-
+        self.priceLabel.text = [NSString stringWithFormat:@"￥%@ - %@",model.min,model.max];
     }
-    
-    
     NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:self.priceLabel.text];
     NSDictionary *priceStr=@{
                           
                           NSForegroundColorAttributeName:R_G_B_16(0xff4e00)
                           
                           };
-    
-    [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(4,AttributedStringPrice.length - 4)];
+    [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(0,AttributedStringPrice.length)];
     
     [_priceLabel setAttributedText:AttributedStringPrice];
     
-//    NSRange range = [self.depositLabel.text rangeOfString:@"."];
-//    if (self.depositLabel.text.length - range.location > 0) {
-//        
-//    }else{
-//        self.depositLabel.text = [NSString stringWithFormat:@"订金:¥%@",[NSString stringWithFormat:@"%f",model.deposit]];
-//    }
     
     self.depositLabel.text = [NSString stringWithFormat:@"订金:￥%.2f",model.deposit];
+    
     if ([self.depositLabel.text rangeOfString:@".00"].length == 3) {
         self.depositLabel.text = [self.depositLabel.text substringToIndex:self.depositLabel.text.length-3];
     }
-//    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.depositLabel.text];
-//    NSDictionary *depositStr=@{
-//                               
-//                               NSForegroundColorAttributeName:R_G_B_16(0xff4e00)
-//                               
-//                               };
-//    
-//    [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(3,AttributedStringDeposit.length-3)];
-//    
-//    [_depositLabel setAttributedText:AttributedStringDeposit];
+    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.depositLabel.text];
+    NSDictionary *depositStr=@{
+                               
+                               NSForegroundColorAttributeName:R_G_B_16(0xff4e00)
+                               
+                               };
+    
+    [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(3,AttributedStringDeposit.length-3)];
+    
+    [_depositLabel setAttributedText:AttributedStringDeposit];
 
     
     
@@ -489,7 +511,7 @@
 
     
 }
-#pragma scrollView的代理
+#pragma mark -  scrollView的代理
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (scrollView.tag == 1000) {

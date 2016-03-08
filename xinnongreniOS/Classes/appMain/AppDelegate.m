@@ -16,6 +16,7 @@
 #import "MobClick.h"
 #import "XNRNewFeatureViewController.h"
 #import "UMessage.h"
+#import "IQKeyboardManager.h"
 
 #define GET_PROFILE_LIST app/profile/getProfileList
 #define UMSYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
@@ -38,8 +39,12 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // 键盘的管理
+    IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
+    manager.enable = YES;
     // 调用友盟的方法
     [self umengTrack:launchOptions];
+    
     currentIndex = 0;
     // 网络监听
     [self monitorNetwork];

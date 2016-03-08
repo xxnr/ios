@@ -20,6 +20,7 @@
 #import "XNRProductInfo_VC.h"
 #import "AppDelegate.h"
 #import "XNRFinishMineDataController.h"
+#import "XNRAddtionsModel.h"
 @interface XNRLoginViewController ()<UITextFieldDelegate,QCheckBoxDelegate>{
     
     BOOL isRemmeber;
@@ -358,14 +359,14 @@
             [DataCenter saveAccount:info];
             
              //上传购物车数据
-            DatabaseManager *dataM = [DatabaseManager sharedInstance];
-            if ([[dataM queryAllGood] count]> 0) {
+            DatabaseManager *dataManager = [DatabaseManager sharedInstance];
+            if ([[dataManager queryAllGood] count]> 0) {
                 
-                for (XNRShoppingCartModel *model in [dataM queryAllGood]) {
+                for (XNRShoppingCartModel *model in [dataManager queryAllGood]) {
                     [self synchShoppingCarDataWith:model];
                 }
-                
-                [dataM deleteShoppingCar];
+                // 清空购物车列表
+                [dataManager deleteShoppingCar];
             }
             
             
@@ -402,25 +403,61 @@
 #pragma mark - 上传购物车数据
 - (void)synchShoppingCarDataWith:(XNRShoppingCartModel *)model
 {
-    NSDictionary *params = @{@"SKUId":model._id?model._id:@"",@"userId":[DataCenter account].userid,@"quantity":@"1",@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
+    NSMutableArray *addtionsArray = [NSMutableArray array];
+//    for (XNRAddtionsModel *addtionModel in model.additions) {
+//            [addtionsArray addObject:addtionModel._id];
+//            NSLog(@"=+++__+_++ERTYU%@",model.additions);
+//
+//    }
+//    XNRAddtionsModel *addtionModel = [model.additions lastObject];
+//    [addtionsArray addObject:addtionModel._id];
+    NSDictionary *params = @{@"SKUId":model._id?model._id:@"",@"userId":[DataCenter account].userid,@"quantity":model.num,@"additions":addtionsArray,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
     NSLog(@"--=0=9%@",params);
-    [KSHttpRequest post:KAddToCart parameters:params success:^(id result) {
-        NSLog(@"%@",result);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+    manager.requestSerializer.timeoutInterval = 10.f;
+    [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    
+    [manager POST:KAddToCart parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"---------返回数据:---------%@",str);
+        id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
-        if([result[@"code"] integerValue] == 1000){
-
-        }else {
-            
-            [UILabel showMessage:result[@"message"]];
-            [BMProgressView LoadViewDisappear:self.view];
-
+        NSDictionary *resultDic;
+        if ([resultObj isKindOfClass:[NSDictionary class]]) {
+            resultDic = (NSDictionary *)resultObj;
         }
-        
-    } failure:^(NSError *error) {
-        
-        NSLog(@"%@",error);
+        if ([resultObj[@"code"] integerValue] == 1000) {
+            
+            
+        }else{
+            
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"===%@",error);
         
     }];
+
+//    [KSHttpRequest post:KAddToCart parameters:params success:^(id result) {
+//        NSLog(@"%@",result);
+//        
+//        if([result[@"code"] integerValue] == 1000){
+//
+//        }else {
+//            
+//            [UILabel showMessage:result[@"message"]];
+//            [BMProgressView LoadViewDisappear:self.view];
+//
+//        }
+//        
+//    } failure:^(NSError *error) {
+//        
+//        NSLog(@"%@",error);
+//        
+//    }];
     
 }
 

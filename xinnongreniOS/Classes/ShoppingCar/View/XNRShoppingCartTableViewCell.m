@@ -29,6 +29,8 @@
 @property (nonatomic,weak) UILabel *introduceLabel;     // 商品介绍
 @property (nonatomic,weak) UILabel *presentPriceLabel;  //现价格
 @property (nonatomic,weak) UITextField *numTextField;   //数量
+@property (nonatomic,weak) UILabel *addtionsLabel;
+@property (nonatomic,weak) UILabel *addtionPriceLabel;
 @property (nonatomic ,weak) UIButton *leftBtn;
 @property (nonatomic ,weak) UIButton *rightBtn;
 
@@ -79,8 +81,10 @@
     [self createPresentPriceLabel];
     // 数量
     [self createNumTextField];
+    // 附加选项
+    [self createAddtionsLabel];
     
-    UILabel *sectionOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(300), ScreenWidth, PX_TO_PT(80))];
+    UILabel *sectionOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(350), ScreenWidth, PX_TO_PT(80))];
     sectionOneLabel.text = @"阶段一: 订金";
     sectionOneLabel.textColor = R_G_B_16(0x323232);
     sectionOneLabel.font = [UIFont systemFontOfSize:14];
@@ -89,7 +93,7 @@
     [self.contentView addSubview:sectionOneLabel];
     
 
-    UILabel *sectionTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(380), ScreenWidth, PX_TO_PT(80))];
+    UILabel *sectionTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(430), ScreenWidth, PX_TO_PT(80))];
     sectionTwoLabel.text = @"阶段二: 尾款";
     sectionTwoLabel.textColor = R_G_B_16(0x323232);
     sectionTwoLabel.font = [UIFont systemFontOfSize:14];
@@ -98,38 +102,36 @@
     [self.contentView addSubview:sectionTwoLabel];
     
     
-    UILabel *subscriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(250), PX_TO_PT(300), PX_TO_PT(250), PX_TO_PT(80))];
+    UILabel *subscriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(250), PX_TO_PT(350), PX_TO_PT(250), PX_TO_PT(80))];
     subscriptionLabel.textColor = R_G_B_16(0xff4e00);
     subscriptionLabel.font = [UIFont systemFontOfSize:18];
     subscriptionLabel.textAlignment = NSTextAlignmentRight;
     self.subscriptionLabel = subscriptionLabel;
     [self.contentView addSubview:subscriptionLabel];
     
-    UILabel *remainLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(250), PX_TO_PT(380), PX_TO_PT(250), PX_TO_PT(80))];
+    UILabel *remainLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(250), PX_TO_PT(430), PX_TO_PT(250), PX_TO_PT(80))];
     remainLabel.textColor = R_G_B_16(0x323232);
     remainLabel.font = [UIFont systemFontOfSize:18];
     remainLabel.textAlignment = NSTextAlignmentRight;
     self.remainLabel = remainLabel;
     [self.contentView addSubview:remainLabel];
     
-    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(300), ScreenWidth, PX_TO_PT(1))];
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(350), ScreenWidth, PX_TO_PT(1))];
     topView.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.contentView addSubview:topView];
     
-    UIView *middleLine = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(380), ScreenWidth-PX_TO_PT(64), PX_TO_PT(1))];
+    UIView *middleLine = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(430), ScreenWidth-PX_TO_PT(64), PX_TO_PT(1))];
     middleLine.backgroundColor = R_G_B_16(0xc7c7c7);
     self.middleLine = middleLine;
     [self.contentView addSubview:middleLine];
     
 
-    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(460), ScreenWidth, PX_TO_PT(1))];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-    [self.contentView addSubview:lineView];
+//    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(460), ScreenWidth, PX_TO_PT(1))];
+//    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+//    [self.contentView addSubview:lineView];
     
     
-
-    
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(460), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(510), ScreenWidth, PX_TO_PT(1))];
     bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
     self.bottomLine = bottomLine;
     [self.contentView addSubview:bottomLine];
@@ -156,8 +158,6 @@
 -(void)selectedBtnClick:(UIButton *)sender{
     
     self.model.selectState = !self.model.selectState;
-    
-    
     if (self.com) {
         self.com(self.indexPath);
     }
@@ -206,6 +206,25 @@
     presentPriceLabel.font = XNRFont(18);
     self.presentPriceLabel = presentPriceLabel;
     [self.contentView addSubview:self.presentPriceLabel];
+}
+// 附加选项
+-(void)createAddtionsLabel
+{
+    UILabel *addtionsLabel = [MyControl createLabelWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), CGRectGetMaxY(self.presentPriceLabel.frame)+ PX_TO_PT(20), ScreenWidth/2, PX_TO_PT(48)) Font:14 Text:nil];
+    addtionsLabel.textAlignment = NSTextAlignmentLeft;
+    addtionsLabel.textColor = R_G_B_16(0x323232);
+    self.addtionsLabel = addtionsLabel;
+    [self.contentView addSubview:addtionsLabel];
+    
+    UILabel *addtionPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth/2,CGRectGetMaxY(self.presentPriceLabel.frame) + PX_TO_PT(20),ScreenWidth/2-PX_TO_PT(32),PX_TO_PT(48))];
+    addtionPriceLabel.textColor = R_G_B_16(0x323232);
+    addtionPriceLabel.textAlignment = NSTextAlignmentRight;
+    addtionPriceLabel.font = XNRFont(18);
+    self.addtionPriceLabel = addtionPriceLabel;
+    [self.contentView addSubview:self.addtionPriceLabel];
+    
+
+
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -291,7 +310,6 @@
     [self dealTap:nil];
 
 }
-
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
@@ -408,14 +426,28 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl];
     //图片
     [self.picImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-    NSLog(@"-----------%@",self.model.attributes);
+    NSLog(@"-----------%@",self.model.additions);
     //商品名
     self.goodNameLabel.text = self.model.productName;
-    
-
-    self.introduceLabel.text = _model.name;
-
-
+    // 属性
+    NSMutableString *displayStr = [[NSMutableString alloc] initWithString:@""];
+    for (NSDictionary *subDic in self.model.attributes) {
+        [displayStr appendString:[NSString stringWithFormat:@" %@:%@",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
+    }
+    self.introduceLabel.text = displayStr;
+    // 附加选项
+    NSMutableString *addtionStr = [[NSMutableString alloc] initWithString:@""];
+    NSString *price;
+    CGFloat totalPrice = 0;
+    for (NSDictionary *subDic in self.model.additions) {
+        [addtionStr appendString:[NSString stringWithFormat:@" %@",[subDic objectForKey:@"name"]]];
+        price = [NSString stringWithFormat:@"%@",[subDic objectForKey:@"price"]];
+        totalPrice = totalPrice + [price floatValue];
+    }
+    // 附加选项
+    self.addtionsLabel.text = [NSString stringWithFormat:@"附加项目:%@",addtionStr];
+    // 附加选项价格
+    self.addtionPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",totalPrice];
     //现价
     self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue];
 
@@ -423,7 +455,15 @@
     self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.floatValue];
     
     // 尾款
-    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue - self.model.deposit.floatValue];
+    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue + totalPrice - self.model.deposit.floatValue];
+    if (self.model.additions.count == 0) {
+        self.addtionsLabel.hidden = YES;
+        self.addtionPriceLabel.hidden  = YES;
+    }else{
+        self.addtionsLabel.hidden = NO;
+        self.addtionPriceLabel.hidden  = NO;
+    
+    }
     if(self.model.deposit &&[self.model.deposit floatValue]> 0){
         self.sectionOneLabel.hidden = NO;
         self.sectionTwoLabel.hidden = NO;

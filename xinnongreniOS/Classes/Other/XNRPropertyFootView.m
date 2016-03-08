@@ -34,7 +34,6 @@
         [self createView];
         // 注册消息通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
-//        self.com (_numTextField.text);
 
         
     }
@@ -50,6 +49,10 @@
     }
     if (self.numTextField.text.length>4) {
         self.numTextField.text = [self.numTextField.text substringToIndex:4];
+    }
+    if (self.com) {
+        self.com (self.numTextField.text);
+        
     }
 }
 

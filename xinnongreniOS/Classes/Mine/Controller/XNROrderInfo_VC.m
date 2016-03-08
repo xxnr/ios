@@ -91,11 +91,10 @@
         _addressArr = [[NSMutableArray alloc] init];
         
     }
-    
-
 }
 
 -(void)getData {
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -104,9 +103,13 @@
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     NSDictionary *params = @{@"SKUs":self.dataArray,@"user-agent":@"IOS-v2.0"};
+    NSLog(@"---------返回数据:+_-------%@",params);
+
     [manager POST:KGetShoppingCartOffline parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"---------返回数据:---------%@",str);
+        NSLog(@"---------params:+_-------%@",params);
+        NSLog(@"---------返回数据:+_-------%@",str);
+
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -146,45 +149,6 @@
         NSLog(@"===%@",error);
         
     }];
-
-    
-//    NSDictionary *params = @{@"products":[self.dataArray JSONString_Ext],@"user-agent":@"IOS-v2.0"};
-//    [KSHttpRequest post:KGetShoppingCartOffline parameters:params success:^(id result) {
-//        
-//        NSLog(@"---=++--+=%@",result);
-//        if ([result[@"code"] integerValue] == 1000) {
-//            NSDictionary *datasDic = result[@"datas"];
-//            NSArray *rowsArr = datasDic[@"rows"];
-//            for (NSDictionary *subDic in rowsArr) {
-//                    XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
-//                    sectionModel.brandName = subDic[@"brandName"];
-//                
-//                NSArray *goodsList = subDic[@"goodsList"];
-//                for (NSDictionary *dict in goodsList) {
-//                    sectionModel.goodsCount = dict[@"goodsCount"];
-//                    sectionModel.deposit = dict[@"deposit"];
-//                    sectionModel.unitPrice = dict[@"unitPrice"];
-//                }
-//
-//                    sectionModel.goodsList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"goodsList"]];
-//                    [_dataArr addObject:sectionModel];
-//                
-//                for (int i = 0; i<sectionModel.goodsList.count; i++) {
-//                    XNRShoppingCartModel *model = sectionModel.goodsList[i];
-//                
-//                    model.num = model.totalCount;
-//                }
-//            }
-//            [self.tableview reloadData];
-//        }else{
-//            
-//            [UILabel showMessage:result[@"message"]];
-//        }
-//        
-//        } failure:^(NSError *error) {
-//            NSLog(@"-=-=-=-=====%@,,,,,%@ ",error,error.userInfo);
-//    }];
-
     
 }
 
@@ -549,9 +513,18 @@
         XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
         
         if ([model.deposit floatValue] == 0.00) {
-            return PX_TO_PT(300);
+            if (model.additions.count == 0) {
+                return PX_TO_PT(300);
+            }else{
+                return PX_TO_PT(300)+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
+            }
         }else{
-            return PX_TO_PT(460);
+            if (model.additions.count == 0) {
+                return PX_TO_PT(460);
+
+            }else{
+                return PX_TO_PT(460)+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
+            }
         }
     }else{
         return 0;
@@ -571,7 +544,6 @@
         XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
         [cell setCellDataWithModel:model];
     }
-    
     cell.backgroundColor=R_G_B_16(0xf4f4f4);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
