@@ -9,7 +9,7 @@
 #import "XNRMakeSureOrderInfo_VC.h"
 #import "XNRAddressManageViewController.h"
 #import "XNROderInfo_Cell.h"
-#import "XNRPayTypeViewController.h"
+#import "XNRPayType_VC.h"
 #import "XNRTabBarController.h"
 @interface XNRMakeSureOrderInfo_VC ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>{
 }
@@ -285,10 +285,10 @@
 }
 
 #pragma mark- 确认订单
--(void)makeSure{
-    XNRPayTypeViewController*vc=[[XNRPayTypeViewController alloc]init];
+-(void)makeSure:(UIButton *)sender{
+    XNRPayType_VC*vc=[[XNRPayType_VC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
-    vc.money= [NSString stringWithFormat:@"%f",[self computeTotalPrice]];
+    vc.payMoney= [NSString stringWithFormat:@"%f",[self computeTotalPrice]];
     vc.orderID = [DataCenter account].orderId;
     vc.fromType = @"确认订单";
     [self.navigationController pushViewController:vc animated:YES];

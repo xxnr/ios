@@ -356,6 +356,7 @@
             info.county = county[@"name"];
             info.town = town[@"name"];
             info.cartId = datasDic[@"cartId"];
+            
             [DataCenter saveAccount:info];
             
              //上传购物车数据

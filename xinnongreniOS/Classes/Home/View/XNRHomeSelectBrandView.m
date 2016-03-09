@@ -102,13 +102,22 @@
                 for (NSDictionary *dicts in Farray) {
                     XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
                     [model setValuesForKeysWithDictionary:dicts];
+                    
+//                    NSString *brandId = model.brandId;
+//                    [KSHttpRequest get:[NSString stringWithFormat:@"%@/brands?category=化肥&brand=%@",KHomeProducts,brandId] parameters:nil success:^(id result) {
+//                        if ([result[@"code"] integerValue] == 1000) {
+//                            NSArray *att = result[@"attributes"];
+//                            
+//                        }
+//                    } failure:<#^(NSError *error)failure#>]
                     [resArr addObject:model];
                 }
             }
             
             for (int i = 0; i < 2; i++) {
                 NSMutableArray *sectionDataArr = [NSMutableArray array];
-                if (i == 0) {
+                if (i == 0)
+                {
                     XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc] init];
                     itemData.titleStr = @"全部";
                     itemData.isSelected = YES;
@@ -116,6 +125,7 @@
                     itemData.indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                     [sectionDataArr addObject:itemData];
                 }
+
                 int sectionCoutn = i == 0 ? (int)resArr.count : 5;
                 for (int j = 0; j < sectionCoutn; j++) {
                     XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc] init];
@@ -125,7 +135,23 @@
                         if (resArr.count > 0) {
                             [itemData exchangeResModelToItemWith:[resArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
                         }
-                    } else {
+                    }
+//                    else if( i == 1)
+//                    {
+//                        [KSHttpRequest get:[NSString stringWithFormat:@"%@/brands?category=化肥&brand=0",KHomeProducts] parameters:nil success:^(id result) {
+//                            if ([result[@"code"] integerValue] == 1000) {
+//                                NSArray *att = result[@"attributes"];
+//                                NSDictionary *dic = att[0];
+//                                NSString *name = dic[@"_id"][@"name"];
+//                                NSArray *values = dic[@"values"];
+//                                [itemData exchangeResModelToItemWith:[values objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
+//                            }
+//                        } failure:^(NSError *error) {
+//                            
+//                        }];
+//                    }
+                    else
+                    {
                         itemData.indexPath = [NSIndexPath indexPathForItem:j inSection:i];
                     }
                     [sectionDataArr addObject:itemData];
@@ -172,9 +198,26 @@
                         if (resArr.count > 0) {
                             [itemData exchangeResModelToItemWith:[resArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
                         }
-                    } else {
+                        
+//                        else if( i == 1)
+//                        {
+//                            [KSHttpRequest get:[NSString stringWithFormat:@"%@/brands?category=汽车&brand=0",KHomeProducts] parameters:nil success:^(id result) {
+//                                if ([result[@"code"] integerValue] == 1000) {
+//                                    NSArray *att = result[@"attributes"];
+//                                    NSDictionary *dic = att[0];
+//                                    NSString *name = dic[@"_id"][@"name"];
+//                                    NSArray *values = dic[@"values"];
+//                                    [itemData exchangeResModelToItemWith:[values objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
+//                                }
+//                            } failure:^(NSError *error) {
+//                                
+//                            }];
+//                        }
+
+                        
+                     else {
                         itemData.indexPath = [NSIndexPath indexPathForItem:j inSection:i];
-                    }
+                     }}
                     [sectionDataArr addObject:itemData];
                 }
                 [self.selecteItemArr addObject:sectionDataArr];

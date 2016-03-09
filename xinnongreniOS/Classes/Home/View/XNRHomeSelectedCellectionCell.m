@@ -58,6 +58,7 @@
 @property(nonatomic ,strong)  NSArray *section2Items;
 @property (nonatomic ,strong) NSArray *section2Params;
 @end
+
 @implementation XNRHomeSelectedBrandItem
 
 - (NSMutableArray *)itemsArr {
@@ -79,7 +80,7 @@
 - (NSArray *)section0Params {
     if (!_section0Params) {
         _section0Params = [NSArray array];
-        //        _section0Params = @[[NSNull null],@"好苗子",@"天南一家",@"施莱德",@"中化化肥",@"天智",@"磷联",@"个肥"];
+//        _section0Params = @[[NSNull null],@"好苗子",@"天南一家",@"施莱德",@"中化化肥",@"天智",@"磷联",@"个肥"];
     }
     return _section0Params;
 }
@@ -110,7 +111,6 @@
 
 
 - (void)getItemDataValueWith:(NSIndexPath *)indexPath {
-    
     
     self.titleStr = [self.itemsArr[indexPath.section] objectAtIndex:indexPath.item];
     if (indexPath.section == 0) {

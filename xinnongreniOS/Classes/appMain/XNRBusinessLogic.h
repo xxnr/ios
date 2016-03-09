@@ -179,7 +179,10 @@
  */
 #define Kusertypes [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/usertypes"]
 
-
+/**
+ * 判断用户是否在白名单
+ */
+#define KisInWhiteList [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/user/isInWhiteList"]
 
 /**
  *  获取全国省的list
@@ -243,5 +246,8 @@
 #define KDynamic [NSString stringWithFormat:@"%@/%@",HOST,@"dynamic/alipay/nofity.asp"]
 
 
-
+/**
+ *  获取支付的最小额度
+ */
+#define KgetMinPayPrice [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/getMinPayPrice/"]
 #endif

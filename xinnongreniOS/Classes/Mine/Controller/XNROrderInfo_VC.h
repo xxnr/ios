@@ -22,4 +22,6 @@
 
 @property (nonatomic ,assign) BOOL isRoot;
 
+@property (nonatomic , strong) NSMutableArray *idArray;
+
 @end

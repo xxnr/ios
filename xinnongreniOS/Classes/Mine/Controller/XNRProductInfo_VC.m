@@ -137,6 +137,8 @@
     
     // 键盘即将隐藏, 就会发出UIKeyboardWillHideNotification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+//    self.numTextField = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, 12, 12)];;
 }
 
 -(void)keyboardWillHide:(NSNotification *)note
@@ -264,10 +266,52 @@
     [bgExpectView addSubview:lineView];
     
     
+
     UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight-64-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
     bgView.backgroundColor=[UIColor whiteColor];
     self.bgView = bgView;
     [self.view addSubview:bgView];
+
+    UIButton *leftBtn = [MyControl createButtonWithFrame:CGRectMake(PX_TO_PT(38), PX_TO_PT(16), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
+    
+    
+    leftBtn.tag = kLeftBtn;
+    [leftBtn setImage:[UIImage imageNamed:@"icon_minus"] forState:UIControlStateNormal];
+    [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateSelected];
+    [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateHighlighted];
+    [leftBtn setHighlighted:NO];
+    self.leftBtn = leftBtn;
+    [bgView addSubview:leftBtn];
+   
+    UITextField *numTextField = [[UITextField alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame),PX_TO_PT(16),PX_TO_PT(78),PX_TO_PT(48))];
+    numTextField.textAlignment = NSTextAlignmentCenter;
+    numTextField.borderStyle = UITextBorderStyleNone;
+    numTextField.textColor = R_G_B_16(0x323232);
+    numTextField.text = @"1";
+    numTextField.font = XNRFont(14);
+    numTextField.delegate = self;
+    numTextField.returnKeyType = UIReturnKeyDone;
+    //设置键盘类型
+    numTextField.keyboardType=UIKeyboardTypeNumberPad;
+    numTextField.backgroundColor = [UIColor whiteColor];
+    self.numTextField = numTextField;
+    [bgView addSubview:numTextField];
+    
+    XNRToolBar *toolBar = [[XNRToolBar alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(88))];
+    toolBar.delegate = self;
+    numTextField.inputAccessoryView = toolBar;
+    
+    UIButton *rightBtn = [MyControl createButtonWithFrame:CGRectMake(CGRectGetMaxX(self.numTextField.frame), PX_TO_PT(16), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
+    
+    rightBtn.tag = kRightBtn;
+    
+    [rightBtn setImage:[UIImage imageNamed:@"icon_plus"] forState:UIControlStateNormal];
+    [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateSelected];
+    [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateHighlighted];
+    [rightBtn setHighlighted:NO];
+    self.rightBtn = rightBtn;
+    [bgView addSubview:rightBtn];
+    
 
     // 立即购买
     UIButton *buyBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(buyBtnClick) Title:@"立即购买"];
@@ -301,6 +345,100 @@
 -(void)buyBtnClick
 {
     [self.propertyControllerView show:XNRBuyType];
+//    [self.propertyView show];
+//    if (IS_Login) {
+//        if(IS_Login == YES) {
+//            
+//            [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":self.model.goodsId,@"userId":[DataCenter account].userid,@"count":self.numTextField.text,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+//                NSLog(@"%@",result);
+//                if([result[@"code"] integerValue] == 1000){
+//                    
+//                }else {
+//                    
+//                    [UILabel showMessage:result[@"message"]];
+//                    [BMProgressView LoadViewDisappear:self.view];
+//                }
+//                
+//            } failure:^(NSError *error) {
+//                
+//                NSLog(@"%@",error);
+//                
+//            }];
+//            
+//            
+//        } else {
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//                BOOL b;
+//                
+//                DatabaseManager *manager = [DatabaseManager sharedInstance];
+//                //查询数据库是否有该商品
+//                NSArray *modelArr = [manager queryGoodWithModel:self.model];
+//                //数据库没有该商品(插入)
+//                if (modelArr.count == 0) {
+//                    self.model.timeStamp = [CommonTool timeSp];  //时间戳
+//                    self.model.shoppingCarCount = [manager shoppingCarCount];
+//                    self.model.num=self.numTextField.text;
+//                    b = [manager insertShoppingCarWithModel:self.model];
+//                }
+//                //数据库有该商品(更新)
+//                else{
+//                    XNRShoppingCartModel *model = [modelArr firstObject];
+//                    model.num = [NSString stringWithFormat:@"%d",model.num.intValue+self.numTextField.text.intValue];
+//                    
+//                    model.timeStamp = [CommonTool timeSp];  //时间戳
+//                    model.shoppingCarCount = [manager shoppingCarCount];
+//                    
+//                    b = [manager updateShoppingCarWithModel:model];
+//                }
+//                if (b) {
+//                    
+//                }else{
+//                    
+//                }
+//            });
+//        }
+//        
+//
+//        XNROrderInfo_VC *orderVC = [[XNROrderInfo_VC alloc] init];
+//        orderVC.hidesBottomBarWhenPushed = YES;
+//        orderVC.isRoot = YES;
+//        
+//        NSMutableArray *datasArray = [[NSMutableArray alloc] init];
+//        NSMutableArray *idArray = [[NSMutableArray alloc] init];
+//        
+//        NSDictionary *params = @{@"productId":self.model.goodsId,@"count":self.numTextField.text};
+//        NSDictionary *idParams = @{@"id":self.model.goodsId,@"count":self.numTextField.text};
+//        
+//        [idArray addObject:idParams];
+//        [datasArray addObject:params];
+//        
+//        orderVC.dataArray = datasArray;
+//        orderVC.idArray = idArray;
+//        
+//        if (self.model.deposit && [self.model.deposit floatValue]>0) {
+//            orderVC.totalPrice = [self.model.deposit floatValue];
+//        }else{
+//            orderVC.totalPrice = [self.model.unitPrice floatValue];
+//        }
+//        [self.navigationController pushViewController:orderVC animated:YES];
+//
+//    }else{
+//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"您还没有登录，是否登录?" chooseBtns:@[@"取消",@"确定"]];
+//        
+//        alertView.chooseBlock = ^void(UIButton *btn){
+//            
+//            if (btn.tag == 11) {
+//                
+//                XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
+//                login.hidesBottomBarWhenPushed = YES;
+//                [self.navigationController pushViewController:login animated:YES];
+//            }
+//        };
+//        
+//        [alertView BMAlertShow];
+//        
+//    
+//    }
 }
 #pragma mark-加入购物车
 

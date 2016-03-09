@@ -9,7 +9,7 @@
 #import "XNRCheckOrder_VC.h"
 #import "XNRAddressManageViewController.h"
 #import "XNROderInfo_Cell.h"
-#import "XNRPayTypeViewController.h"
+#import "XNRPayType_VC.h"
 #import "XNRCheckOrderSectionModel.h"
 #import "XNRCheckOrderModel.h"
 #import "MJExtension.h"
@@ -250,14 +250,14 @@
 -(void)sectionFourClick:(UIButton *)sender{
     XNRCheckOrderSectionModel *sectionModel = _dataArray[sender.tag - 1000];
 //    if (sectionModel.deposit && [sectionModel.deposit floatValue]>0) {
-        XNRPayTypeViewController *vc = [[XNRPayTypeViewController alloc]init];
+        XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
         vc.hidesBottomBarWhenPushed = YES;
         vc.orderID = sectionModel.id;
-//        vc.money = sectionModel.deposit;
+        vc.payMoney = sectionModel.deposit;
         [self.navigationController pushViewController:vc animated:YES];
 
 //    }else{
-//        XNRPayTypeViewController *vc = [[XNRPayTypeViewController alloc]init];
+//        XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
 //        vc.hidesBottomBarWhenPushed = YES;
 //        vc.orderID = sectionModel.id;
 ////        vc.money = sectionModel.totalPrice;
@@ -371,6 +371,7 @@
 
     }
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

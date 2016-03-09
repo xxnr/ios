@@ -14,6 +14,14 @@
 #import "XNRProductPhotoModel.h"
 #import "XNRSKUAttributesModel.h"
 #import "UIImageView+WebCache.h"
+
+#import "XNRShopCarSectionModel.h"
+
+//#import "XNRChangeAttributesModel.h"
+
+
+#import "XNRPayType_VC.h"
+#import "XNROrderInfo_VC.h"
 #import "XNRShopCarSectionModel.h"
 
 #define coll_cell_margin 15
@@ -259,7 +267,6 @@
 #pragma mark - 确定
 -(void)admireBtnClick
 {
-
 }
 #pragma mark - 立即购买
 -(void)buyBtnClick
