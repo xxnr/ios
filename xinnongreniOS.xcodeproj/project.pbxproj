@@ -174,6 +174,7 @@
 		49CD5E381C093144004235C4 /* XNRFerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E371C093144004235C4 /* XNRFerViewController.m */; };
 		49CD5E3B1C0BE7F1004235C4 /* XNRMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E3A1C0BE7F1004235C4 /* XNRMessageModel.m */; };
 		49CD5E3E1C0BEC4E004235C4 /* XNRMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E3D1C0BEC4E004235C4 /* XNRMessageCell.m */; };
+		49D8920F1C8FB6C200B742C4 /* XNRPropertyControllerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8920E1C8FB6C200B742C4 /* XNRPropertyControllerView.m */; };
 		49E164861C12F0F00063E6EC /* XNRWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E164851C12F0F00063E6EC /* XNRWebViewController.m */; };
 		49E895D11BEDAC3400B3671E /* BSDatabaseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E895CE1BEDAC3400B3671E /* BSDatabaseOperation.m */; };
 		49E895D21BEDAC3400B3671E /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E895D01BEDAC3400B3671E /* DatabaseManager.m */; };
@@ -793,6 +794,8 @@
 		49CD5E3A1C0BE7F1004235C4 /* XNRMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMessageModel.m; sourceTree = "<group>"; };
 		49CD5E3C1C0BEC4E004235C4 /* XNRMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMessageCell.h; sourceTree = "<group>"; };
 		49CD5E3D1C0BEC4E004235C4 /* XNRMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMessageCell.m; sourceTree = "<group>"; };
+		49D8920D1C8FB6C100B742C4 /* XNRPropertyControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPropertyControllerView.h; sourceTree = "<group>"; };
+		49D8920E1C8FB6C200B742C4 /* XNRPropertyControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPropertyControllerView.m; sourceTree = "<group>"; };
 		49E164841C12F0F00063E6EC /* XNRWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XNRWebViewController.h; path = ../View/XNRWebViewController.h; sourceTree = "<group>"; };
 		49E164851C12F0F00063E6EC /* XNRWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XNRWebViewController.m; path = ../View/XNRWebViewController.m; sourceTree = "<group>"; };
 		49E895CD1BEDAC3400B3671E /* BSDatabaseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSDatabaseOperation.h; sourceTree = "<group>"; };
@@ -2589,6 +2592,8 @@
 				4938E22C1C306422008DF3BF /* XNRAddressEmptyView.m */,
 				491AF04E1C76C5C500AA3CC8 /* XNRPropertyView.h */,
 				491AF04F1C76C5C500AA3CC8 /* XNRPropertyView.m */,
+				49D8920D1C8FB6C100B742C4 /* XNRPropertyControllerView.h */,
+				49D8920E1C8FB6C200B742C4 /* XNRPropertyControllerView.m */,
 				491AF0571C79C0E500AA3CC8 /* XNRPropertyBrandView.h */,
 				491AF0581C79C0E500AA3CC8 /* XNRPropertyBrandView.m */,
 				491AF05D1C7C636800AA3CC8 /* XNRPropertyFootView.h */,
@@ -3065,6 +3070,7 @@
 				49F99EEE1C1569BF0000556A /* XNRProductInfo_model.m in Sources */,
 				493AEF2F1C2144FE0088003A /* XNRTownModel.m in Sources */,
 				8446C29B1B1D6D19005CA932 /* POPAnimationExtras.mm in Sources */,
+				49D8920F1C8FB6C200B742C4 /* XNRPropertyControllerView.m in Sources */,
 				49E896031BEDC2BB00B3671E /* UIImageView+WebCache.m in Sources */,
 				4976FC261BE9A2AA0002E8F8 /* NSDataEx.m in Sources */,
 				49F6B19B1C2A6EE100DCF8CF /* MJPhotoLoadingView.m in Sources */,
