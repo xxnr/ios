@@ -448,6 +448,7 @@
     // 去结算
     NSMutableArray *arr=[[NSMutableArray alloc]init];
     // 提交订单
+    NSMutableArray *idArr = [[NSMutableArray alloc] init];
     for (int i = 0; i<_dataArr.count; i++) {
         XNRShopCarSectionModel *sectionModel = _dataArr[i];
         for (XNRShoppingCartModel *cellModel in sectionModel.SKUList) {
@@ -456,13 +457,15 @@
                 NSDictionary *params = @{@"_id":cellModel._id,@"count":cellModel.num,@"additions":cellModel.additions};
                 
                 [arr addObject:params];
+                NSDictionary *idParams = @{@"id":cellModel.goodsId,@"count":cellModel.num};
+                [idArr addObject:idParams];
                 NSLog(@"9053539fjdi%@",arr);
             }
         }
     }
     vc.dataArray = arr;
     vc.totalPrice = _totalPrice;
-
+    vc.idArray = idArr;
     vc.isRoot = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }

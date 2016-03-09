@@ -7,13 +7,15 @@
 //
 
 #import "XNRMyOrder_VC.h"
-#import "XNRPayTypeViewController.h"
+#import "XNRPayType_VC.h"
 #import "XNRServeView.h"         // 全部
 #import "XNRPayView.h"           //代付款
 #import "XNRSendView.h"          //待发货
 #import "XNRReciveView.h"        //已发货
 #import "XNRCommentView.h"       //已完成
 #import "XNRCheckOrder_VC.h"     //查看订单
+#import "XNRTabBarController.h"
+#import "XNRMineController.h"
 #import "XNRTabBarController.h"
 
 #define KbtnTag          1000
@@ -66,10 +68,10 @@
         __weak __typeof(&*self)weakSelf=self;
         
         [self.ServeView setPayBlock:^(NSString *orderID,NSString *money){
-            XNRPayTypeViewController*vc = [[XNRPayTypeViewController alloc]init];
+            XNRPayType_VC*vc = [[XNRPayType_VC alloc]init];
             vc.hidesBottomBarWhenPushed = YES;
             vc.orderID = orderID;
-            vc.money = money;
+            vc.payMoney = money;
             [weakSelf.navigationController pushViewController:vc animated:YES];
         }];
         // 查看订单
@@ -91,10 +93,10 @@
                 __weak __typeof(&*self)weakSelf=self;
                 //单笔结算
                 [self.PayView setPayBlock:^(NSString *orderID,NSString *money){
-                    XNRPayTypeViewController*vc=[[XNRPayTypeViewController alloc]init];
+                    XNRPayType_VC*vc=[[XNRPayType_VC alloc]init];
                     vc.hidesBottomBarWhenPushed=YES;
                     vc.orderID = orderID;
-                    vc.money = money;
+                    vc.payMoney = money;
                     [weakSelf.navigationController pushViewController:vc animated:YES];
                     
                 }];
@@ -372,9 +374,22 @@
 }
 
 -(void)backClick{
+
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[XNRMineController class]]) {
+            [self.navigationController popToViewController:vc animated:YES];
+            return;
+        }
+    }
     
-    [self.navigationController popViewControllerAnimated:YES];
     
+   UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    XNRTabBarController *tabVC = (XNRTabBarController *)window.rootViewController;
+    tabVC.selectedIndex = 3;
+
+    //首页的控制器返回到rootVC
+    [self.navigationController popToRootViewControllerAnimated:NO];
+
 }
 
 - (void)didReceiveMemoryWarning {

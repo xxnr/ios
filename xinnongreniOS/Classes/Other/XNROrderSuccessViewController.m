@@ -8,11 +8,12 @@
 
 #import "XNROrderSuccessViewController.h"
 #import "XNRCheckOrder_VC.h"
+#import "XNRMyOrder_VC.h"
 @interface XNROrderSuccessViewController ()
 
 @property (nonatomic,strong) UILabel *titleLabel;
-@property (nonatomic,strong) UIButton *leftBtn;
-@property (nonatomic,strong) UIButton *rightBtn;
+//@property (nonatomic,strong) UIButton *leftBtn;
+//@property (nonatomic,strong) UIButton *rightBtn;
 
 @end
 
@@ -20,66 +21,62 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor whiteColor];
+
+    self.view.backgroundColor = R_G_B_16(0xFAFAFA);
     
     [self setNav];
-    [self createTitle];
-    [self createLeftBtn];
-    [self createRightBtn];
+
+    [self createCenter];
+    [self createBtn];
 }
 
-- (void)createTitle
+-(void)createCenter
 {
-    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 30, ScreenWidth, 35)];
-    self.titleLabel.text = @"您的订单成功";
-    self.titleLabel.font = XNRFont(26);
-    self.titleLabel.textColor = R_G_B_16(0x00bc00);
-    self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:self.titleLabel];
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(123), PX_TO_PT(170), PX_TO_PT(140), PX_TO_PT(140))];
+    imageView.image = [UIImage imageNamed:@"pay-right-btn"];
+    [self.view addSubview:imageView];
+    
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(311), PX_TO_PT(185), PX_TO_PT(290), PX_TO_PT(35))];
+    label.text = @"您已完成本次支付";
+    label.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    label.textColor = R_G_B_16(0x00B38A);
+    [self.view addSubview:label];
+    
+    UILabel *payMoney = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(311), PX_TO_PT(244), PX_TO_PT(350), PX_TO_PT(27))];
+    float f = [self.money floatValue];
+    payMoney.text = [NSString stringWithFormat:@"支付金额：¥%.2f元",f];
+    payMoney.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    [self.view addSubview:payMoney];
+
+}
+-(void)createBtn
+{
+    UIButton *leftBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(149), PX_TO_PT(440), PX_TO_PT(181), PX_TO_PT(61))];
+    [leftBtn setTitle:@"返回订单列表" forState:UIControlStateNormal];
+    leftBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+    [leftBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [leftBtn setBackgroundColor:R_G_B_16(0xFDA940)];
+    leftBtn.layer.cornerRadius = 6;
+    [leftBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:leftBtn];
+    
+    UIButton *rightBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(389), PX_TO_PT(440), PX_TO_PT(181), PX_TO_PT(61))];
+    [rightBtn setTitle:@"查看该笔订单" forState:UIControlStateNormal];
+    rightBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+    [rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [rightBtn setBackgroundColor:R_G_B_16(0xFDA940)];
+    rightBtn.layer.cornerRadius = 6;
+    [rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:rightBtn];
+
 }
 
-- (void)createLeftBtn
-{
-    self.leftBtn = [MyControl createButtonWithFrame:CGRectMake(35, self.titleLabel.frame.origin.y+self.titleLabel.frame.size.height+50, (ScreenWidth-100)/2.0, 35) ImageName:nil Target:self Action:@selector(leftBtnClick:) Title:@"联系客服"];
-    self.leftBtn.backgroundColor = R_G_B_16(0xed2a4a);
-    self.leftBtn.layer.masksToBounds = YES;
-    self.leftBtn.layer.cornerRadius = 5;
-    [self.leftBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.view addSubview:self.leftBtn];
-}
 
-- (void)leftBtnClick:(UIButton *)button
+-(void)leftBtnClick:(UIButton *)button
 {
-    NSLog(@"联系客服");
-    
-    
-    if(TARGET_IPHONE_SIMULATOR){
-        
-        [UILabel showMessage:@"必须真机环境"];
-        
-    }else{
-
-    UIWebView*phoneCallWebView = [[UIWebView alloc] initWithFrame:CGRectZero];
-   
-    NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",@"4000560371"]];
-    [phoneCallWebView loadRequest:[NSURLRequest requestWithURL:phoneURL]];
-    
-    [self.view addSubview:phoneCallWebView];
-    
-    
-    }
-    
-}
-
-- (void)createRightBtn
-{
-    self.rightBtn = [MyControl createButtonWithFrame:CGRectMake(self.leftBtn.frame.origin.x+self.leftBtn.frame.size.width+30, self.titleLabel.frame.origin.y+self.titleLabel.frame.size.height+50, (ScreenWidth-100)/2.0, 35) ImageName:nil Target:self Action:@selector(rightBtnClick:) Title:@"查看订单"];
-    self.rightBtn.backgroundColor = R_G_B_16(0x696969);
-    self.rightBtn.layer.masksToBounds = YES;
-    self.rightBtn.layer.cornerRadius = 5;
-    [self.rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.view addSubview:self.rightBtn];
+    XNRMyOrder_VC *orderVC=[[XNRMyOrder_VC alloc]init];
+    orderVC.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:orderVC animated:NO];
 }
 
 - (void)rightBtnClick:(UIButton *)button
@@ -101,7 +98,7 @@
 #pragma mark - 设置导航
 - (void)setNav
 {
-    self.navigationItem.title = @"订单成功";
+    self.navigationItem.title = @"支付完成";
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
@@ -124,7 +121,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 /*
 #pragma mark - Navigation
 

@@ -10,13 +10,15 @@
 #import "XNRAddressManageViewController.h"
 #import "XNROderInfo_Cell.h"
 #import "XNRSubmitOrderCell.h"
-#import "XNRPayTypeViewController.h"
 #import "XNRMakeSureOrderInfo_VC.h"
 #import "XNRCheckOrderModel.h"
 #import "XNROrderInfoModel.h"  //订单信息模型
 #import "XNRShoppingCartModel.h"
 #import "XNRShopCarSectionModel.h"
 #import "MJExtension.h"
+#import "XNRPayType_VC.h"
+#import "XNRSelPayOrder_VC.h"
+#import "XNRAddOrderModel.h"
 @interface XNROrderInfo_VC ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>{
     
     NSString *orderDataId;    //订单id
@@ -55,6 +57,12 @@
 @property (nonatomic ,weak) UILabel *totoalPriceLabel;
 
 @property (nonatomic, strong) XNRAddressManageModel *nextAddresModel;
+
+@property (nonatomic, assign)NSInteger numOrder;
+
+@property (nonatomic, strong)XNRAddOrderModel *addorderModel1;
+
+@property (nonatomic, strong)XNRAddOrderModel *addorderModel2;
 @end
 
 @implementation XNROrderInfo_VC
@@ -67,7 +75,7 @@
     _dataArr = [[NSMutableArray alloc] init];
     
     [self.tableview reloadData];
-    
+
 
 }
 - (void)viewDidLoad {
@@ -592,6 +600,8 @@
     vc.addressModel = self.nextAddresModel;
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+
 #pragma mark - 提交订单
 -(void)makeSure{
     NSLog(@"确认订单");
@@ -599,44 +609,83 @@
         [UILabel showMessage:@"请选择一个地址，没有地址我们的服务人员送不到货哦"];
         return;
     }
-    NSLog(@"909404235%@",self.dataArr);
-    NSDictionary *params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"SKUs":self.dataArray,@"payType":@"1",@"user-agent":@"IOS-v2.0"};
-    NSLog(@"95499504%@",params);
-    
 
-    [KSHttpRequest post:KAddOrder parameters:params success:^(id result) {
+    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"products":[self.idArray JSONString_Ext],@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
+
         NSLog(@"%@",result);
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *orders = result[@"orders"];
-            NSDictionary *subDic = orders[0];
+            NSLog(@"%d",orders.count);
+            NSLog(@"%ld",self.numOrder);
+                if (orders.count == 1) {
+                    self.numOrder = 1;
+                    NSDictionary *subDic = orders[0];
                     //获取预处理订单id 订单号
                     orderDataId = subDic[@"id"];
                     deposit = subDic[@"deposit"];
                     NSDictionary *payment = subDic[@"payment"];
                     // 支付id
                     paymentId = payment[@"paymentId"];
-        }
-                 [self.tableview reloadData];
-        
-            XNRPayTypeViewController *vc = [[XNRPayTypeViewController alloc]init];
-            vc.hidesBottomBarWhenPushed = YES;
-            vc.orderID = orderDataId;
-            vc.paymentId = paymentId;
-            vc.money = [NSString stringWithFormat:@"%.2f",deposit.floatValue];
-            vc.recieveName = self.recipientNameLabel.text;
-            vc.recievePhone = self.recipientPhoneLabel.text;
-            vc.recieveAddress = _addressDetail.text;
-            [self.navigationController pushViewController:vc animated:YES];
+                    
+                    [self.tableview reloadData];
+                    
+                }
+                else if (orders.count == 2)
+                {
+                    self.numOrder = 2;
+                    //第一个订单
+                    self.addorderModel1 = [[XNRAddOrderModel alloc]init];
+                    self.addorderModel1.orderID = orders[0][@"id"];
+//                    addorderModel1.paymentId = orders[0][@"payment"][@"paymentId"];
+                    NSString *deposit1 = orders[0][@"payment"][@"price"];
+                    self.addorderModel1.money = [NSString stringWithFormat:@"%.2f",deposit1.floatValue];
+                    
+                    //第二个订单
+                    self.addorderModel2 = [[XNRAddOrderModel alloc]init];
+                    self.addorderModel2.orderID = orders[1][@"id"];
+//                    addorderModel2.paymentId = orders[1][@"payment"][@"paymentId"];
+                    NSString *deposit2 = orders[1][@"payment"][@"price"];
+                    self.addorderModel2.money = [NSString stringWithFormat:@"%.2f",deposit2.floatValue];
 
+                    [self.tableview reloadData];
+
+//
+                }
+                [self selectVC];
             
-        } failure:^(NSError *error) {
-            NSLog(@"%@",error);
-            [UILabel showMessage:@"网络请求失败"];
+        }
+    } failure:^(NSError *error) {
             
         }];
-    
+    [self selectVC];
+
 }
 
+-(void)selectVC
+{
+    if (self.numOrder == 1) {
+        XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        vc.orderID = orderDataId;
+        vc.paymentId = paymentId;
+        vc.payMoney = [NSString stringWithFormat:@"%.2f",deposit.floatValue];
+        vc.recieveName = self.recipientNameLabel.text;
+        vc.recievePhone = self.recipientPhoneLabel.text;
+        vc.recieveAddress = _addressDetail.text;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else if (self.numOrder == 2)
+    {
+        //                选择支付订单controller
+        XNRSelPayOrder_VC *selVC = [[XNRSelPayOrder_VC alloc]init];
+        selVC.addOrderModel1 =self.addorderModel1;
+        selVC.addOrderModel2 = self.addorderModel2;
+        
+        [self.navigationController pushViewController:selVC animated:YES];
+        
+    }
+
+}
 -(void)select:(UIButton*)button{
     button.selected=!button.selected;
     if(button.selected==NO){
@@ -671,7 +720,6 @@
     
     [self.navigationController popViewControllerAnimated:YES];
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
