@@ -58,7 +58,7 @@
                   moduleName = "xinnongreniOS"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/yangning/Documents/ios/xinnongreniOS/Classes/Home/Controller/XNRFerViewController.m"
-                  timestampString = "479280275.898735"
+                  timestampString = "479285737.04214"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "265"
@@ -73,7 +73,7 @@
                   moduleName = "xinnongreniOS"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/yangning/Documents/ios/xinnongreniOS/Classes/Home/Controller/XNRFerViewController.m"
-                  timestampString = "479280275.899138"
+                  timestampString = "479285737.042565"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "265"
@@ -321,68 +321,6 @@
             endingLineNumber = "309"
             landmarkName = "-getDataWith:"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__38-[XNRHomeSelectBrandView getDataWith:]_block_invoke_2"
-                  moduleName = "xinnongreniOS"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yangning/Documents/ios/xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
-                  timestampString = "479280275.9122"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "311"
-                  endingLineNumber = "311"
-                  offsetFromSymbolStart = "1477">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__copy_helper_block_203"
-                  moduleName = "xinnongreniOS"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yangning/Documents/ios/xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
-                  timestampString = "479280275.912412"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_204"
-                  moduleName = "xinnongreniOS"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yangning/Documents/ios/xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
-                  timestampString = "479280275.912641"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__38-[XNRHomeSelectBrandView getDataWith:]_block_invoke206"
-                  moduleName = "xinnongreniOS"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yangning/Documents/ios/xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
-                  timestampString = "479280275.912833"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "311"
-                  endingLineNumber = "311"
-                  offsetFromSymbolStart = "44">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -479,6 +417,38 @@
             endingLineNumber = "305"
             landmarkName = "-getDataWith:"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[XNRHomeSelectBrandView btnClick:]"
+                  moduleName = "xinnongreniOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yangning/Documents/ios/xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
+                  timestampString = "479285737.373268"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "305"
+                  endingLineNumber = "305"
+                  offsetFromSymbolStart = "626">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[XNRHomeSelectBrandView btnClick:]"
+                  moduleName = "xinnongreniOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yangning/Documents/ios/xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
+                  timestampString = "479285737.373616"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "305"
+                  endingLineNumber = "305"
+                  offsetFromSymbolStart = "648">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
