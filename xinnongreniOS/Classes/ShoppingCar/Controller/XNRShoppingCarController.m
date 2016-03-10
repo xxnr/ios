@@ -456,6 +456,7 @@
                 
                 NSDictionary *params = @{@"_id":cellModel._id,@"count":cellModel.num,@"additions":cellModel.additions};
                 [arr addObject:params];
+
             }
         }
     }

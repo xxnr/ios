@@ -606,8 +606,8 @@
         [UILabel showMessage:@"请选择一个地址，没有地址我们的服务人员送不到货哦"];
         return;
     }
-    
-    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"products":self.dataArray,@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
+
+    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"products":[self.dataArray JSONString_Ext],@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
 
         NSLog(@"%@",result);
         if ([result[@"code"] integerValue] == 1000) {
