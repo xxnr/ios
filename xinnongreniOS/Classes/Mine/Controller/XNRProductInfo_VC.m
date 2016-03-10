@@ -431,7 +431,6 @@
     };
     cell.delegate = self;
     return cell;
-
 }
 
 -(CGFloat)heightWithString:(NSString *)string

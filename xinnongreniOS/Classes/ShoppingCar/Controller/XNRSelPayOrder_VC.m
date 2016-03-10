@@ -50,6 +50,11 @@
     self.str2 = [NSMutableString string];
     self.payType1.textAlignment = UITextAlignmentRight;
     self.payType2.textAlignment = UITextAlignmentRight;
+
+    self.orderDetailLabel1.layer.cornerRadius = 10;
+    self.orderDetailLabel2.layer.cornerRadius = 10;
+    self.orderDetailLabel1.layer.masksToBounds = YES;
+    self.orderDetailLabel2.layer.masksToBounds = YES;
     // Do any additional setup after loading the view from its nib.
 }
 -(NSMutableArray *)dataArray
@@ -197,7 +202,8 @@
         if ((i+1) < orderGoodList.count) {
             [self.str1 appendString:@","];
         }
-        self.orderDetailLabel1.text = self.str1;
+        NSString *str = [NSString stringWithFormat:@"  %@",self.str1];
+        self.orderDetailLabel1.text = str;
 
     }
 }
@@ -262,7 +268,11 @@
         if ((i+1) < orderGoodList.count) {
             [self.str2 appendString:@","];
         }
-        self.orderDetailLabel2.text = self.str2;
+        NSString *str = [NSString stringWithFormat:@"  %@",self.str2];
+        self.orderDetailLabel2.text = str;
+        self.orderDetailLabel2.layer.cornerRadius = 10;
+
+//        self.orderDetailLabel2.text = self.str2;
         
     }
 }

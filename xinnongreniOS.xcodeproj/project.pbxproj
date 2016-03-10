@@ -407,6 +407,7 @@
 		84FE64491B183D8000F0C67C /* XNRMyOrderRecive_Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FE64481B183D8000F0C67C /* XNRMyOrderRecive_Cell.m */; };
 		84FE644C1B183DB300F0C67C /* XNRMYOrderComment_Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FE644B1B183DB300F0C67C /* XNRMYOrderComment_Cell.m */; };
 		84FE644F1B183DD300F0C67C /* XNRMyOrderServe_Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FE644E1B183DD300F0C67C /* XNRMyOrderServe_Cell.m */; };
+		9C4FCB451C8FFDFD00C5B427 /* XNBrandsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */; };
 		9CC0CE5E1C855A5C008D5228 /* XNRPayType_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE5D1C855A5C008D5228 /* XNRPayType_VC.m */; };
 		9CC0CE651C87F49C008D5228 /* XNRPayOrder_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE631C87F49C008D5228 /* XNRPayOrder_VC.m */; };
 		9CC0CE6A1C87FF3C008D5228 /* XNRSelPayOrder_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE681C87FF3C008D5228 /* XNRSelPayOrder_VC.m */; };
@@ -1240,6 +1241,8 @@
 		84FE644B1B183DB300F0C67C /* XNRMYOrderComment_Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMYOrderComment_Cell.m; sourceTree = "<group>"; };
 		84FE644D1B183DD300F0C67C /* XNRMyOrderServe_Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMyOrderServe_Cell.h; sourceTree = "<group>"; };
 		84FE644E1B183DD300F0C67C /* XNRMyOrderServe_Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMyOrderServe_Cell.m; sourceTree = "<group>"; };
+		9C4FCB431C8FFDFD00C5B427 /* XNBrandsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNBrandsModel.h; sourceTree = "<group>"; };
+		9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNBrandsModel.m; sourceTree = "<group>"; };
 		9CC0CE5C1C855A5C008D5228 /* XNRPayType_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPayType_VC.h; sourceTree = "<group>"; };
 		9CC0CE5D1C855A5C008D5228 /* XNRPayType_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPayType_VC.m; sourceTree = "<group>"; };
 		9CC0CE621C87F49C008D5228 /* XNRPayOrder_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPayOrder_VC.h; sourceTree = "<group>"; };
@@ -1474,6 +1477,8 @@
 			children = (
 				53E269E01B467A5400E57814 /* XNRCyclePicModel.h */,
 				53E269E11B467A5400E57814 /* XNRCyclePicModel.m */,
+				9C4FCB431C8FFDFD00C5B427 /* XNBrandsModel.h */,
+				9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3173,6 +3178,7 @@
 				491611281C8D189400F1E243 /* IQKeyboardManager.m in Sources */,
 				49E896011BEDC2BB00B3671E /* UIImage+WebP.m in Sources */,
 				49F414FB1C3CA71A001A28CA /* XNRShopCarSectionModel.m in Sources */,
+				9C4FCB451C8FFDFD00C5B427 /* XNBrandsModel.m in Sources */,
 				1F1532D51B09C58800CA374B /* main.m in Sources */,
 				1FE1D6131B12EE2600F0D158 /* NSObject+MJMember.m in Sources */,
 				49EC52631BEBBA5E00AA8898 /* UIColor+BSExt.m in Sources */,

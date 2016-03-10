@@ -86,6 +86,8 @@
 
 @property (nonatomic, assign) BOOL isFirst;
 
+@property (nonatomic,assign) BOOL isFull;
+
 @property (nonatomic, assign) BOOL ispayType;
 
 @property (nonatomic, strong) UITextField *myTextField;
@@ -103,13 +105,15 @@
     _payType=0;
     self.view.backgroundColor = R_G_B_16(0xFAFAFA);
     self.minPrice = @"3000";
-    [self getData];
+
 //    [self getMinPayPrice];
+    [self getData];
 
     [self setNav];
     [self createTopView];
     [self createMidView];
     [self createBottomView];
+
     _dataArray = [NSMutableArray array];
     self.myTextField =[[UITextField alloc]initWithFrame:CGRectMake(PX_TO_PT(252), PX_TO_PT(35), PX_TO_PT(226), PX_TO_PT(40))];
     self.myTextField.delegate = self;
@@ -147,6 +151,7 @@
             {
                 self.minPrice = @"3000";
             }
+            
         }
         
         //分次付款的金额显示
@@ -290,18 +295,18 @@
 -(void)isPaySubOrderType
 {
     UILabel *ordertotal = [[UILabel alloc] init];
-    ordertotal.frame = CGRectMake(PX_TO_PT(400), PX_TO_PT(40), ScreenWidth - PX_TO_PT(400), PX_TO_PT(26));
-    
+    ordertotal.frame = CGRectMake(PX_TO_PT(500), PX_TO_PT(40), ScreenWidth - PX_TO_PT(545), PX_TO_PT(26));
+//    ordertotal.backgroundColor = [UIColor blackColor];
     if ([self.paySubOrderType isEqualToString:@"deposit"]) {
-        ordertotal.text = [NSString stringWithFormat:@"阶段一：订金 "];
+        ordertotal.text = @"阶段一：订金 ";
     }
     else if ([self.paySubOrderType isEqualToString:@"full"])
     {
-        ordertotal.text = [NSString stringWithFormat:@"订单总额 "];
+        ordertotal.text = @"订单总额 ";
     }
     else if ([self.paySubOrderType isEqualToString:@"balance"])
     {
-        ordertotal.text = [NSString stringWithFormat:@"阶段二：尾款 "];
+        ordertotal.text = @"阶段二：尾款 ";
     }
     
     ordertotal.font = [UIFont systemFontOfSize:PX_TO_PT(29)];
@@ -483,6 +488,7 @@
         selbtn.frame = CGRectMake(PX_TO_PT(630),PX_TO_PT(25) , PX_TO_PT(37), PX_TO_PT(37));
         selbtn.tag = kSelectedBtn+i;
         selbtn.userInteractionEnabled = NO;
+//        selbtn.enabled = NO;
         [selbtn setImage:[UIImage imageNamed:@"未选"] forState:UIControlStateNormal];
         [selbtn setImage:[UIImage imageNamed:@"勾选"] forState:UIControlStateSelected];
         [selbtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -499,8 +505,10 @@
         }
         else
         {
-            btn.userInteractionEnabled = NO;
+//            btn.userInteractionEnabled = NO;
             selbtn.userInteractionEnabled = NO;
+            btn.enabled = NO;
+            selbtn.enabled = NO;
         }
         
         if (i == 0 || i == 1) {
@@ -536,8 +544,10 @@
     
     
     if (button.tag == 0) {
+        self.isFull = YES;
         self.sepMoneyView.hidden = YES;
         self.fullMoney.hidden = NO;
+
         [UIView animateWithDuration:0.2 animations:^{
             selLine.x = 0;
             self.showMoney.frame = CGRectMake(0, PX_TO_PT(390), ScreenWidth, PX_TO_PT(95));
@@ -553,6 +563,7 @@
     {
         _Money = [self.sepMoney.text substringFromIndex:1];
         NSLog(@"%@",_Money);
+        self.isFull = NO;
         self.sepMoneyView.hidden = NO;
         self.fullMoney.hidden = YES;
         [UIView animateWithDuration:0.2 animations:^{
@@ -570,10 +581,15 @@
 -(void)setSepMoney
 {
     self.sepMoneyView = [[UIView alloc]init];
+//    if (self.minPrice >= self.holdPrice) {
+//        self.btn2.enabled = NO;
+//    }
     [KSHttpRequest post:KisInWhiteList parameters:nil success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
-            self.btn1.userInteractionEnabled = NO;
-            self.btn2.userInteractionEnabled = NO;
+//            self.btn1.userInteractionEnabled = NO;
+//            self.btn2.userInteractionEnabled = NO;
+            self.btn1.enabled = NO;
+            self.btn2.enabled = NO;
             self.isInWhiteList = YES;
             self.sepMoney.hidden = YES;
 //            self.fullMoney.hidden = YES;
@@ -627,27 +643,24 @@
 
     self.btn1 = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(200), PX_TO_PT(24), PX_TO_PT(51), PX_TO_PT(51))];
     self.btn1.tag = 3;
-    self.btn1.layer.cornerRadius = 6;
-    self.btn1.backgroundColor = R_G_B_16(0xFE9B00);
-    UIView *view1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(12), PX_TO_PT(22), PX_TO_PT(27), PX_TO_PT(2))];
-    view1.backgroundColor = [UIColor whiteColor];
-    [self.btn1 addSubview:view1];
+    self.btn1.enabled = NO;
+    [self.btn1 setImage:[UIImage imageNamed:@"01_discount_default1"] forState:UIControlStateNormal];
+    [self.btn1 setImage:[UIImage imageNamed:@"05_discount_press1"] forState:UIControlStateSelected];
+    [self.btn1 setImage:[UIImage imageNamed:@"03_discount_gray1"] forState:UIControlStateDisabled];
     [self.btn1 addTarget:self action:@selector(reviseMoney:) forControlEvents:UIControlEventTouchDown];
     [self.sepMoneyView addSubview:self.btn1];
     
     self.btn2 = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(480), PX_TO_PT(24), PX_TO_PT(51), PX_TO_PT(51))];
     self.btn2.tag = 4;
-    self.btn2.layer.cornerRadius = 6;
-    self.btn2.backgroundColor = R_G_B_16(0xFE9B00);
-    UIView *view2 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(12), PX_TO_PT(22), PX_TO_PT(27), PX_TO_PT(2))];
-    view2.backgroundColor = [UIColor whiteColor];
-    [self.btn2 addSubview:view2];
-    UIView *view3 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(25), PX_TO_PT(10), PX_TO_PT(2), PX_TO_PT(27))];
-    view3.backgroundColor = [UIColor whiteColor];
-    [self.btn2 addSubview:view3];
-    
+    [self.btn2 setImage:[UIImage imageNamed:@"02_discount_default2"] forState:UIControlStateNormal];
+    [self.btn2 setImage: [UIImage imageNamed:@"06_discount_press2"] forState:UIControlStateSelected];
+    [self.btn2 setImage:[UIImage imageNamed:@"04_discount_gray2"] forState:UIControlStateDisabled];
     [self.btn2 addTarget:self action:@selector(reviseMoney:) forControlEvents:UIControlEventTouchDown];
     [self.sepMoneyView addSubview:self.btn2];
+    if ([_Money integerValue] == [self.holdPrice integerValue]) {
+        self.btn2.enabled = NO;
+    }
+
     
     UILabel *str = [[UILabel alloc]initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(20))];
     str.backgroundColor = [UIColor whiteColor];
@@ -672,13 +685,14 @@
 -(void)reviseMoney:(UIButton *)sender
 {
     NSString *s =[self.sepMoney.text substringFromIndex:1];
-    sender.userInteractionEnabled = YES;
+    sender.enabled = YES;
     if (sender.tag == 3 && ([s integerValue] <= [self.minPrice integerValue])) {
-        sender.userInteractionEnabled = NO;
+        sender.enabled = NO;
     }
     else if (sender.tag == 4 && ([s integerValue]+500) > [self.holdPrice integerValue])
     {
         _Money = self.holdPrice;
+        sender.enabled = NO;
         self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.holdPrice floatValue]];
     }
     else if ([self.holdPrice integerValue] < [self.minPrice integerValue])
@@ -690,17 +704,30 @@
     {
         NSInteger mon = [s integerValue];
         if (sender.tag == 3) {
+            self.btn2.enabled = YES;
             mon -= 500;
         }
         else if(sender.tag == 4) {
+            self.btn1.enabled = YES;
             mon += 500;
+        }
+        
+        if (mon >= [self.holdPrice integerValue]) {
+            self.btn2.enabled = NO;
+        }
+        else if(mon <= [self.minPrice integerValue])
+        {
+            self.btn1.enabled = NO;
         }
         _Money = [NSString stringWithFormat:@"%ld",mon];
         self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[_Money floatValue]];
     }
-    sender.userInteractionEnabled = YES;
+    
+//    sender.userInteractionEnabled = YES;
+//    sender.enabled = YES;
 
 }
+
 -(void)selectedBtnClick:(UIButton *)button{
     
     if(!self.isFirst)
@@ -799,6 +826,16 @@
 #pragma  mark - 去支付
 - (void)goPayBtnClick:(UIButton *)button
 {
+    if (_isInWhiteList && !self.isFull)  {
+        if ([self.myTextField.text floatValue] == 0.00) {
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入金额" delegate:nil
+                                                     cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            [alertView show];
+            return;
+        }
+        
+        _Money = self.myTextField.text;
+    }
     _ispayType = YES;
     [self setselPayType];
     NSLog(@"去支付");

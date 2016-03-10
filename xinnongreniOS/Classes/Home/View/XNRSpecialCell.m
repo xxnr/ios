@@ -66,12 +66,12 @@
     self.priceLabel = priceLabel;
     [self addSubview:priceLabel];
     
-    UIButton *shopcarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    shopcarBtn.frame = CGRectMake(CGRectGetMaxX(self.priceLabel.frame) + PX_TO_PT(150),CGRectGetMaxY(self.detailLabel.frame), PX_TO_PT(100), PX_TO_PT(100));
-    [shopcarBtn setImage:[UIImage imageNamed:@"icon_shoppcar"] forState:UIControlStateNormal];
-    [shopcarBtn addTarget:self action:@selector(shopcarBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    self.shopcarBtn = shopcarBtn;
-    [self addSubview:shopcarBtn];
+//    UIButton *shopcarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    shopcarBtn.frame = CGRectMake(CGRectGetMaxX(self.priceLabel.frame) + PX_TO_PT(150),CGRectGetMaxY(self.detailLabel.frame), PX_TO_PT(100), PX_TO_PT(100));
+//    [shopcarBtn setImage:[UIImage imageNamed:@"icon_shoppcar"] forState:UIControlStateNormal];
+//    [shopcarBtn addTarget:self action:@selector(shopcarBtnClick) forControlEvents:UIControlEventTouchUpInside];
+//    self.shopcarBtn = shopcarBtn;
+//    [self addSubview:shopcarBtn];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.image.frame) + PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
@@ -79,73 +79,73 @@
     
 }
 
--(void)shopcarBtnClick
-{
-    [BMProgressView showCoverWithTarget:self color:nil isNavigation:NO];
-    if(IS_Login == YES) {
-        [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":self.model.goodsId,@"userId":[DataCenter account].userid,@"quantity":@"1",@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"} success:^(id result) {
-            NSLog(@"%@",result);
-            if([result[@"code"] integerValue] == 1000){
-                [UILabel showMessage:@"加入购物车成功"];
-                [BMProgressView LoadViewDisappear:self];
-            }else {
-                
-                [UILabel showMessage:result[@"message"]];
-                [BMProgressView LoadViewDisappear:self];
-
-            }
-            
-        } failure:^(NSError *error) {
-            
-            NSLog(@"%@",error);
-            
-        }];
-    } else {
-//        NSMutableArray *goodsArray = [[NSMutableArray alloc] init];
-//        NSDictionary *goodsId = @{@"productId":self.model.goodsId,@"count":@"1"};
-//        [goodsArray addObject:goodsId];
-//        [KSHttpRequest post:KGetShoppingCartOffline parameters:@{@"products":[goodsArray JSONString_Ext]} success:^(id result) {
-//            if ([result[@"code"] integerValue] == 1000) {
-//            [SVProgressHUD  showSuccessWithStatus:@"加入购物车成功"];
+//-(void)shopcarBtnClick
+//{
+//    [BMProgressView showCoverWithTarget:self color:nil isNavigation:NO];
+//    if(IS_Login == YES) {
+//        [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":self.model.goodsId,@"userId":[DataCenter account].userid,@"quantity":@"1",@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+//            NSLog(@"%@",result);
+//            if([result[@"code"] integerValue] == 1000){
+//                [UILabel showMessage:@"加入购物车成功"];
+//                [BMProgressView LoadViewDisappear:self];
+//            }else {
+//                
+//                [UILabel showMessage:result[@"message"]];
+//                [BMProgressView LoadViewDisappear:self];
 //
 //            }
 //            
 //        } failure:^(NSError *error) {
 //            
+//            NSLog(@"%@",error);
+//            
 //        }];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            BOOL b;
-            DatabaseManager *manager = [DatabaseManager sharedInstance];
-            //查询数据库是否有该商品
-            NSArray *modelArr = [manager queryGoodWithModel:self.model];
-            //数据库没有该商品(插入)
-            if (modelArr.count == 0) {
-                self.model.num = @"1";
-                self.model.timeStamp = [CommonTool timeSp];  //时间戳
-                self.model.shoppingCarCount = [manager shoppingCarCount];
-                b = [manager insertShoppingCarWithModel:self.model];
-            }
-            //数据库有该商品(更新)
-            else{
-                XNRShoppingCartModel *model = [modelArr firstObject];
-                model.num = [NSString stringWithFormat:@"%d",model.num.intValue+1];
-                model.timeStamp = [CommonTool timeSp];  // 时间戳
-                model.shoppingCarCount = [manager shoppingCarCount]; // 累加数
-                model.deposit = self.model.deposit;
-                b = [manager updateShoppingCarWithModel:model];
-            }
-            if (b) {
-                [UILabel showMessage:@"加入购物车成功"];
-                [BMProgressView LoadViewDisappear:self];
-
-            }else{
-                [UILabel showMessage:@"加入购物车失败"];
-                [BMProgressView LoadViewDisappear:self];
-            }
-        });
-    }
-
-}
+//    } else {
+////        NSMutableArray *goodsArray = [[NSMutableArray alloc] init];
+////        NSDictionary *goodsId = @{@"productId":self.model.goodsId,@"count":@"1"};
+////        [goodsArray addObject:goodsId];
+////        [KSHttpRequest post:KGetShoppingCartOffline parameters:@{@"products":[goodsArray JSONString_Ext]} success:^(id result) {
+////            if ([result[@"code"] integerValue] == 1000) {
+////            [SVProgressHUD  showSuccessWithStatus:@"加入购物车成功"];
+////
+////            }
+////            
+////        } failure:^(NSError *error) {
+////            
+////        }];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//            BOOL b;
+//            DatabaseManager *manager = [DatabaseManager sharedInstance];
+//            //查询数据库是否有该商品
+//            NSArray *modelArr = [manager queryGoodWithModel:self.model];
+//            //数据库没有该商品(插入)
+//            if (modelArr.count == 0) {
+//                self.model.num = @"1";
+//                self.model.timeStamp = [CommonTool timeSp];  //时间戳
+//                self.model.shoppingCarCount = [manager shoppingCarCount];
+//                b = [manager insertShoppingCarWithModel:self.model];
+//            }
+//            //数据库有该商品(更新)
+//            else{
+//                XNRShoppingCartModel *model = [modelArr firstObject];
+//                model.num = [NSString stringWithFormat:@"%d",model.num.intValue+1];
+//                model.timeStamp = [CommonTool timeSp];  // 时间戳
+//                model.shoppingCarCount = [manager shoppingCarCount]; // 累加数
+//                model.deposit = self.model.deposit;
+//                b = [manager updateShoppingCarWithModel:model];
+//            }
+//            if (b) {
+//                [UILabel showMessage:@"加入购物车成功"];
+//                [BMProgressView LoadViewDisappear:self];
+//
+//            }else{
+//                [UILabel showMessage:@"加入购物车失败"];
+//                [BMProgressView LoadViewDisappear:self];
+//            }
+//        });
+//    }
+//
+//}
 
 -(void)setCellDataWithShoppingCartModel:(XNRShoppingCartModel *)model
 {
