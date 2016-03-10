@@ -16,6 +16,9 @@
 @property (nonatomic ,copy) NSString *name;
 @property (nonatomic ,copy) NSString *_id;
 @property (nonatomic ,copy) NSString *ref;
+@property (nonatomic ,copy) NSString *brand;
+@property (nonatomic ,copy) NSString *category;
+
 
 
 

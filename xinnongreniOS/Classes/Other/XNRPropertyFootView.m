@@ -34,25 +34,23 @@
         [self createView];
         // 注册消息通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
-
-        
     }
     return self;
 }
+
 
 -(void)textFieldChanged:(NSNotification*)noti {
     
     if([self.numTextField.text isEqualToString:@"0"]){
         self.numTextField.text = @"1";
     }else{
-//        self.addBuyCarBtn.enabled = YES;
+        
     }
     if (self.numTextField.text.length>4) {
         self.numTextField.text = [self.numTextField.text substringToIndex:4];
     }
     if (self.com) {
         self.com (self.numTextField.text);
-        
     }
 }
 
@@ -104,9 +102,6 @@
     self.numTextField = numTextField;
     [bgView addSubview:numTextField];
     
-//    XNRToolBar *toolBar = [[XNRToolBar alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(88))];
-//    toolBar.delegate = self;
-//    numTextField.inputAccessoryView = toolBar;
     
     UIButton *rightBtn = [MyControl createButtonWithFrame:CGRectMake(CGRectGetMaxX(self.numTextField.frame), PX_TO_PT(26), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
     
@@ -118,9 +113,6 @@
     rightBtn.tag = kRightBtn;
     self.rightBtn = rightBtn;
     [bgView addSubview:rightBtn];
-//    UIView *leftLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3, 0, PX_TO_PT(1), PX_TO_PT(80))];
-//    leftLine.backgroundColor = R_G_B_16(0xc7c7c7);
-//    [bgView addSubview:leftLine];
     
     UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), PX_TO_PT(26), PX_TO_PT(79), PX_TO_PT(1))];
     topLine.backgroundColor = R_G_B_16(0xc7c7c7);

@@ -59,6 +59,12 @@
 
 @property (nonatomic, copy) NSString *max;
 
+@property (nonatomic, copy) NSString *marketMin;
+
+@property (nonatomic, copy) NSString *marketMax;
+
+
+
 @property (nonatomic ,strong) NSMutableArray *pictures;
 
 @property (nonatomic ,strong) NSMutableArray *SKUAttributes;

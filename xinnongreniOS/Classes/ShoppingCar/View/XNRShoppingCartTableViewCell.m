@@ -179,7 +179,7 @@
 #pragma mark - 商品名
 - (void)createGoodNameLabel
 {
-    UILabel *goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.picImageView.frame) + PX_TO_PT(20), PX_TO_PT(42), ScreenWidth-CGRectGetMaxX(self.picImageView.frame) - PX_TO_PT(52), PX_TO_PT(100))];
+    UILabel *goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.picImageView.frame) + PX_TO_PT(20), PX_TO_PT(30), ScreenWidth-CGRectGetMaxX(self.picImageView.frame) - PX_TO_PT(52), PX_TO_PT(100))];
     goodNameLabel.textColor = R_G_B_16(0x323232);
     goodNameLabel.numberOfLines = 0;
     goodNameLabel.font = XNRFont(14);
@@ -187,7 +187,7 @@
     [self.contentView addSubview:goodNameLabel];
     
     
-    UILabel *introduceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.picImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(self.goodNameLabel.frame), ScreenWidth-CGRectGetMaxX(self.picImageView.frame) - PX_TO_PT(52), PX_TO_PT(70))];
+    UILabel *introduceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.picImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(self.goodNameLabel.frame)-PX_TO_PT(20), ScreenWidth-CGRectGetMaxX(self.picImageView.frame) - PX_TO_PT(52), PX_TO_PT(120))];
 //    introduceLabel.backgroundColor = [UIColor redColor];
     introduceLabel.textColor = R_G_B_16(0x909090);
     introduceLabel.numberOfLines = 0;

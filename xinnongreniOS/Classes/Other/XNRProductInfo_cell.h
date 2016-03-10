@@ -11,6 +11,8 @@
 #import "XNRShoppingCartModel.h"
 
 typedef void(^XNRProductInfo_cellBlock)(NSMutableArray *_dataArray,CGFloat totalPrice);
+typedef void(^XNRProductInfo_cellLoginBlock)();
+
 
 
 @protocol XNRProductInfo_cellDelegate <NSObject>
@@ -25,6 +27,8 @@ typedef void(^XNRProductInfo_cellBlock)(NSMutableArray *_dataArray,CGFloat total
 
 @property (nonatomic ,copy) XNRProductInfo_cellBlock con;
 
+@property (nonatomic ,copy) XNRProductInfo_cellLoginBlock logincom;
+
 @property (nonatomic ,copy) NSString *goodsId;
 
 @property (nonatomic ,strong) XNRShoppingCartModel *shopcarModel;
@@ -34,5 +38,9 @@ typedef void(^XNRProductInfo_cellBlock)(NSMutableArray *_dataArray,CGFloat total
 -(void)upDataWithModel:(XNRProductInfo_model *)model;
 
 @property (nonatomic ,assign) id<XNRProductInfo_cellDelegate>delegate;
+
+@property (nonatomic ,strong) NSMutableArray *attributes;
+@property (nonatomic ,strong) NSMutableArray *additions;
+
 
 @end
