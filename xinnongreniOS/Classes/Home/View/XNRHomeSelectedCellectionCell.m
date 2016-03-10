@@ -84,6 +84,19 @@
     }
     return _section0Params;
 }
+-(NSArray *)section2Items{
+    if (!_section2Items) {
+        _section2Items = [NSArray array];
+    }
+    return _section2Items;
+}
+-(NSArray *)section2Params
+{
+    if (!_section2Params) {
+        _section2Params  = [NSArray array];
+    }
+    return _section2Params;
+}
 - (NSArray *)section1Items {
     if (!_section1Items) {
         if (self.dataType == eXNRFerType) {
@@ -115,13 +128,18 @@
     self.titleStr = [self.itemsArr[indexPath.section] objectAtIndex:indexPath.item];
     if (indexPath.section == 0) {
         self.titleParam = [self.section0Params objectAtIndex:indexPath.item];
-    } else {
+    }
+    else if(indexPath.section == 1)
+    {
+        self.titleParam = [self.section2Params objectAtIndex:indexPath.item];
+    }
+    else {
         self.titleParam = [self.section1Params objectAtIndex:indexPath.item];
     }
     self.category = indexPath.section + 1;
-    if (indexPath.item == 0) {
-        self.isSelected = YES;
-    }
+//    if (indexPath.item == 0) {
+//        self.isSelected = YES;
+//    }
 }
 
 - (void)setIndexPath:(NSIndexPath *)indexPath {
