@@ -382,7 +382,7 @@
                     self.shopcarModel.num = _numText?_numText:@"1";
                     b = [manager insertShoppingCarWithModel:self.shopcarModel];
                     NSLog(@"=====__=++%@",self.shopcarModel);
-                    self.shopcarModel.num = @"0";
+//                    self.shopcarModel.num = @"0";
                 }
                 //数据库有该商品(更新)
                 else{
@@ -472,6 +472,7 @@
         }
     }
     NSDictionary *params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"userId":[DataCenter account].userid,@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
+    
     NSLog(@"())__)%@",params);
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
