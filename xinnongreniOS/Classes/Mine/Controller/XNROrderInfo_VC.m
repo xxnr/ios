@@ -86,9 +86,6 @@
     
     // 中部视图
     [self createMid];
-    // 创建头视图
-//    [self createHeadView];
-
     // 底部视图
     [self createFoot];
     
@@ -609,14 +606,14 @@
         [UILabel showMessage:@"请选择一个地址，没有地址我们的服务人员送不到货哦"];
         return;
     }
-
-    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"products":[self.idArray JSONString_Ext],@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
+    
+    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"products":self.dataArray,@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
 
         NSLog(@"%@",result);
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *orders = result[@"orders"];
-            NSLog(@"%d",orders.count);
-            NSLog(@"%ld",self.numOrder);
+            NSLog(@"%tu",orders.count);
+            NSLog(@"%d",(int)self.numOrder);
                 if (orders.count == 1) {
                     self.numOrder = 1;
                     NSDictionary *subDic = orders[0];
@@ -649,7 +646,8 @@
 
                     [self.tableview reloadData];
 
-//
+                }else{
+                    [UILabel showMessage:result[@"message"]];
                 }
                 [self selectVC];
             

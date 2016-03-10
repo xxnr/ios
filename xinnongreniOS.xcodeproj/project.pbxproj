@@ -174,7 +174,6 @@
 		49CD5E381C093144004235C4 /* XNRFerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E371C093144004235C4 /* XNRFerViewController.m */; };
 		49CD5E3B1C0BE7F1004235C4 /* XNRMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E3A1C0BE7F1004235C4 /* XNRMessageModel.m */; };
 		49CD5E3E1C0BEC4E004235C4 /* XNRMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E3D1C0BEC4E004235C4 /* XNRMessageCell.m */; };
-		49D8920F1C8FB6C200B742C4 /* XNRPropertyControllerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8920E1C8FB6C200B742C4 /* XNRPropertyControllerView.m */; };
 		49E164861C12F0F00063E6EC /* XNRWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E164851C12F0F00063E6EC /* XNRWebViewController.m */; };
 		49E895D11BEDAC3400B3671E /* BSDatabaseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E895CE1BEDAC3400B3671E /* BSDatabaseOperation.m */; };
 		49E895D21BEDAC3400B3671E /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E895D01BEDAC3400B3671E /* DatabaseManager.m */; };
@@ -798,8 +797,6 @@
 		49CD5E3A1C0BE7F1004235C4 /* XNRMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMessageModel.m; sourceTree = "<group>"; };
 		49CD5E3C1C0BEC4E004235C4 /* XNRMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMessageCell.h; sourceTree = "<group>"; };
 		49CD5E3D1C0BEC4E004235C4 /* XNRMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMessageCell.m; sourceTree = "<group>"; };
-		49D8920D1C8FB6C100B742C4 /* XNRPropertyControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPropertyControllerView.h; sourceTree = "<group>"; };
-		49D8920E1C8FB6C200B742C4 /* XNRPropertyControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPropertyControllerView.m; sourceTree = "<group>"; };
 		49E164841C12F0F00063E6EC /* XNRWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XNRWebViewController.h; path = ../View/XNRWebViewController.h; sourceTree = "<group>"; };
 		49E164851C12F0F00063E6EC /* XNRWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XNRWebViewController.m; path = ../View/XNRWebViewController.m; sourceTree = "<group>"; };
 		49E895CD1BEDAC3400B3671E /* BSDatabaseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSDatabaseOperation.h; sourceTree = "<group>"; };
@@ -2610,8 +2607,6 @@
 				4938E22C1C306422008DF3BF /* XNRAddressEmptyView.m */,
 				491AF04E1C76C5C500AA3CC8 /* XNRPropertyView.h */,
 				491AF04F1C76C5C500AA3CC8 /* XNRPropertyView.m */,
-				49D8920D1C8FB6C100B742C4 /* XNRPropertyControllerView.h */,
-				49D8920E1C8FB6C200B742C4 /* XNRPropertyControllerView.m */,
 				491AF0571C79C0E500AA3CC8 /* XNRPropertyBrandView.h */,
 				491AF0581C79C0E500AA3CC8 /* XNRPropertyBrandView.m */,
 				491AF05D1C7C636800AA3CC8 /* XNRPropertyFootView.h */,
@@ -3022,12 +3017,9 @@
 				491610DC1C8C422200F1E243 /* PlayButtonOverlayLarge@3x.png in Resources */,
 				1FE1D66A1B12F1DE00F0D158 /* XNRShoppingCarController.xib in Resources */,
 				49F7A5B51C5906C200A1FA45 /* 加载8.png in Resources */,
-
 				491610E91C8C422200F1E243 /* VideoOverlay.png in Resources */,
 				491610E61C8C422200F1E243 /* UIBarButtonItemGrid.png in Resources */,
-
 				9CC0CE6B1C87FF3C008D5228 /* XNRSelPayOrder_VC.xib in Resources */,
-
 				8446C2961B1D6D19005CA932 /* InfoPlist.strings in Resources */,
 				491610EB1C8C422200F1E243 /* VideoOverlay@3x.png in Resources */,
 				491610E51C8C422200F1E243 /* UIBarButtonItemArrowRight@3x.png in Resources */,
@@ -3093,7 +3085,6 @@
 				49F99EEE1C1569BF0000556A /* XNRProductInfo_model.m in Sources */,
 				493AEF2F1C2144FE0088003A /* XNRTownModel.m in Sources */,
 				8446C29B1B1D6D19005CA932 /* POPAnimationExtras.mm in Sources */,
-				49D8920F1C8FB6C200B742C4 /* XNRPropertyControllerView.m in Sources */,
 				49E896031BEDC2BB00B3671E /* UIImageView+WebCache.m in Sources */,
 				4976FC261BE9A2AA0002E8F8 /* NSDataEx.m in Sources */,
 				49F6B19B1C2A6EE100DCF8CF /* MJPhotoLoadingView.m in Sources */,
@@ -3201,11 +3192,8 @@
 				1F16AF531B259F67002C1E73 /* YMHProtoclViewController.m in Sources */,
 				84BCD2491B46B7B100C2CF7E /* XNRCheckOrderModel.m in Sources */,
 				49E895F81BEDC2BB00B3671E /* SDWebImageCompat.m in Sources */,
-
 				491610FD1C8C454300F1E243 /* MBProgressHUD.m in Sources */,
-
 				9CC0CE6A1C87FF3C008D5228 /* XNRSelPayOrder_VC.m in Sources */,
-
 				49F6B0E21C295C0000DCF8CF /* XNRNoSelectView.m in Sources */,
 				5383E1851B4E080B0058FE3F /* XNROrderInfoModel.m in Sources */,
 				4917DBBE1C1BC23000CE1588 /* XNRTypeView.m in Sources */,
@@ -3507,7 +3495,7 @@
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_All_1/UMessage_Sdk_Demo/UMessage_Sdk_Demo/UMessage_Sdk_1.2.6",
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_1.2.6",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ksfc.xxnr;
 				PRODUCT_NAME = xinnongreniOS;
@@ -3549,7 +3537,7 @@
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_All_1/UMessage_Sdk_Demo/UMessage_Sdk_Demo/UMessage_Sdk_1.2.6",
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_1.2.6",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ksfc.xxnr;
 				PRODUCT_NAME = xinnongreniOS;

@@ -455,17 +455,12 @@
             if (cellModel.selectState) {
                 
                 NSDictionary *params = @{@"_id":cellModel._id,@"count":cellModel.num,@"additions":cellModel.additions};
-                
                 [arr addObject:params];
-                NSDictionary *idParams = @{@"id":cellModel.goodsId,@"count":cellModel.num};
-                [idArr addObject:idParams];
-                NSLog(@"9053539fjdi%@",arr);
             }
         }
     }
     vc.dataArray = arr;
     vc.totalPrice = _totalPrice;
-    vc.idArray = idArr;
     vc.isRoot = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }

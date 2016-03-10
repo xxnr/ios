@@ -12,24 +12,24 @@ typedef enum : NSUInteger {
     XNRSecondType,
 } XNRPropertyViewType ;
 
-
 typedef void(^XNRPropertyViewBlock)(NSMutableArray *dataArray,CGFloat totalPrice);
 
 typedef void(^XNRPropertyViewValueBlock)(NSMutableArray *attributes,NSMutableArray *addtions);
+
+typedef void(^XNRPropertyViewLoginBlock)();
 
 
 
 @interface XNRPropertyView : UIView
 
--(void)show;
+-(void)show:(XNRPropertyViewType)buyType;
 
--(instancetype)initWithFrame:(CGRect)frame model:(XNRShoppingCartModel *)shopcarModel;
+-(instancetype)initWithFrame:(CGRect)frame model:(XNRShoppingCartModel *)shopcarModel andType:(XNRPropertyViewType)type;
 
 @property (nonatomic, copy) XNRPropertyViewBlock com;
 
 @property (nonatomic ,copy) XNRPropertyViewValueBlock valueBlock;
 
-@property (nonatomic ,assign) XNRPropertyViewType type;
-
+@property (nonatomic ,copy) XNRPropertyViewLoginBlock loginBlock;
 
 @end

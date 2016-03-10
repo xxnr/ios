@@ -18,7 +18,7 @@
 #import "XNRProductInfo_cell.h"
 #import "MJExtension.h"
 #import "XNRToolBar.h"
-#import "XNRPropertyControllerView.h"
+#import "XNRPropertyView.h"
 #define kLeftBtn  3000
 #define kRightBtn 4000
 #define HEIGHT 100
@@ -47,7 +47,11 @@
 @property (nonatomic ,weak) UIView *bgView;
 @property (nonatomic ,weak) UIView *bgExpectView;
 
-@property (nonatomic ,weak) XNRPropertyControllerView *propertyControllerView;
+@property (nonatomic ,strong) NSMutableArray *attributes;
+@property (nonatomic ,strong) NSMutableArray *additions;
+
+
+@property (nonatomic ,weak) XNRPropertyView *propertyView;
 @end
 
 @implementation XNRProductInfo_VC
@@ -61,26 +65,29 @@
     return _progressView;
 }
 
--(XNRPropertyControllerView *)propertyControllerView{
-    if (!_propertyControllerView) {
-      XNRPropertyControllerView *propertyControllerView = [[XNRPropertyControllerView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) model:self.model];
+-(XNRPropertyView *)propertyView{
+    if (!_propertyView) {
+      XNRPropertyView *propertyView = [[XNRPropertyView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) model:self.model andType:XNRSecondType];
         __weak __typeof(self)weakSelf = self;
         // 传回来的属性
-        propertyControllerView.com = ^(NSMutableArray *attributes,NSMutableArray *addtions){
+        propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions){
+            _attributes = attributes;
+            _additions = addtions;
             
     };
         // 跳转
-        propertyControllerView.valueBlock = ^(NSMutableArray *dataArray,CGFloat totalPrice){
+        propertyView.com = ^(NSMutableArray *dataArray,CGFloat totalPrice){
             XNROrderInfo_VC *orderVC = [[XNROrderInfo_VC alloc] init];
             orderVC.dataArray = dataArray;
             orderVC.totalPrice = totalPrice;
+            orderVC.isRoot = YES;
             [weakSelf.navigationController pushViewController:orderVC animated:YES];
         
         };
-        self.propertyControllerView = propertyControllerView;
-        [self.view addSubview:propertyControllerView];
+        self.propertyView = propertyView;
+        [self.view addSubview:propertyView];
     }
-    return _propertyControllerView;
+    return _propertyView;
 }
 
 #pragma mark - 键盘回收
@@ -179,8 +186,12 @@
             NSDictionary *dic =result[@"datas"];
 //            self.model.deposit = dic[@"deposit"];
             XNRProductInfo_model *model = [[XNRProductInfo_model alloc] init];
-            model.min = dic[@"referencePrice"][@"min"];
-            model.max = dic[@"referencePrice"][@"max"];
+            model.min = dic[@"SKUPrice"][@"min"];
+            model.max = dic[@"SKUPrice"][@"max"];
+            
+            model.marketMin = dic[@"SKUMarketPrice"][@"min"];
+            model.marketMax = dic[@"SKUMarketPrice"][@"max"];
+
             model._id = dic[@"_id"];
             
             [model setValuesForKeysWithDictionary:dic];
@@ -344,107 +355,14 @@
 #pragma mark - 立即购买
 -(void)buyBtnClick
 {
-    [self.propertyControllerView show:XNRBuyType];
-//    [self.propertyView show];
-//    if (IS_Login) {
-//        if(IS_Login == YES) {
-//            
-//            [KSHttpRequest post:KAddToCart parameters:@{@"goodsId":self.model.goodsId,@"userId":[DataCenter account].userid,@"count":self.numTextField.text,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"} success:^(id result) {
-//                NSLog(@"%@",result);
-//                if([result[@"code"] integerValue] == 1000){
-//                    
-//                }else {
-//                    
-//                    [UILabel showMessage:result[@"message"]];
-//                    [BMProgressView LoadViewDisappear:self.view];
-//                }
-//                
-//            } failure:^(NSError *error) {
-//                
-//                NSLog(@"%@",error);
-//                
-//            }];
-//            
-//            
-//        } else {
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-//                BOOL b;
-//                
-//                DatabaseManager *manager = [DatabaseManager sharedInstance];
-//                //查询数据库是否有该商品
-//                NSArray *modelArr = [manager queryGoodWithModel:self.model];
-//                //数据库没有该商品(插入)
-//                if (modelArr.count == 0) {
-//                    self.model.timeStamp = [CommonTool timeSp];  //时间戳
-//                    self.model.shoppingCarCount = [manager shoppingCarCount];
-//                    self.model.num=self.numTextField.text;
-//                    b = [manager insertShoppingCarWithModel:self.model];
-//                }
-//                //数据库有该商品(更新)
-//                else{
-//                    XNRShoppingCartModel *model = [modelArr firstObject];
-//                    model.num = [NSString stringWithFormat:@"%d",model.num.intValue+self.numTextField.text.intValue];
-//                    
-//                    model.timeStamp = [CommonTool timeSp];  //时间戳
-//                    model.shoppingCarCount = [manager shoppingCarCount];
-//                    
-//                    b = [manager updateShoppingCarWithModel:model];
-//                }
-//                if (b) {
-//                    
-//                }else{
-//                    
-//                }
-//            });
-//        }
-//        
-//
-//        XNROrderInfo_VC *orderVC = [[XNROrderInfo_VC alloc] init];
-//        orderVC.hidesBottomBarWhenPushed = YES;
-//        orderVC.isRoot = YES;
-//        
-//        NSMutableArray *datasArray = [[NSMutableArray alloc] init];
-//        NSMutableArray *idArray = [[NSMutableArray alloc] init];
-//        
-//        NSDictionary *params = @{@"productId":self.model.goodsId,@"count":self.numTextField.text};
-//        NSDictionary *idParams = @{@"id":self.model.goodsId,@"count":self.numTextField.text};
-//        
-//        [idArray addObject:idParams];
-//        [datasArray addObject:params];
-//        
-//        orderVC.dataArray = datasArray;
-//        orderVC.idArray = idArray;
-//        
-//        if (self.model.deposit && [self.model.deposit floatValue]>0) {
-//            orderVC.totalPrice = [self.model.deposit floatValue];
-//        }else{
-//            orderVC.totalPrice = [self.model.unitPrice floatValue];
-//        }
-//        [self.navigationController pushViewController:orderVC animated:YES];
-//
-//    }else{
-//        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"您还没有登录，是否登录?" chooseBtns:@[@"取消",@"确定"]];
-//        
-//        alertView.chooseBlock = ^void(UIButton *btn){
-//            
-//            if (btn.tag == 11) {
-//                
-//                XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
-//                login.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:login animated:YES];
-//            }
-//        };
-//        
-//        [alertView BMAlertShow];
-//        
-//    
-//    }
+    [self.propertyView show:XNRFirstType];
+    
 }
 #pragma mark-加入购物车
 
 -(void)addBuyCar
 {
-    [self.propertyControllerView show:XNRAddToCartType];
+    [self.propertyView show:XNRSecondType];
     NSLog(@"加入购物车");
 }
 
@@ -489,15 +407,27 @@
     XNRProductInfo_cell *cell = [XNRProductInfo_cell cellWithTableView:tableView];
     cell.goodsId = _model.goodsId;
     cell.shopcarModel = _model;
+    cell.attributes = _attributes;
+    cell.additions = _additions;
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell upDataWithModel:_goodsArray[indexPath.row]];
-//    cell.model = _goodsArray[indexPath.row];
+    // 提交订单页面的跳转
+    __weak __typeof(self)weakSelf = self;
+
     cell.con = ^(NSMutableArray *_dataArray,CGFloat totalPrice){
         
     XNROrderInfo_VC *infoVC  = [[XNROrderInfo_VC alloc] init];
     infoVC.dataArray = _dataArray;
     infoVC.totalPrice = totalPrice;
-    [self.navigationController pushViewController:infoVC animated:YES];
+    infoVC.isRoot = YES;
+    [weakSelf.navigationController pushViewController:infoVC animated:YES];
+    };
+    // 登录页面的跳转
+    cell.logincom = ^(){
+    XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
+    login.hidesBottomBarWhenPushed = YES;
+    [weakSelf.navigationController pushViewController:login animated:YES];
     };
     cell.delegate = self;
     return cell;
