@@ -8,9 +8,10 @@
 
 #import "XNRHomeSelectBrandView.h"
 #import "XNRHomeSelectedCellectionCell.h"
-#import "XNBrandsModel.h"
+
 
 #define coll_cell_margin 20
+#define row_cell_margin 10
 #define cellId @"selected_cell"
 #define headerViewId @"selectedHeaderView"
 
@@ -45,6 +46,10 @@
 @property (nonatomic, strong)NSArray *param;//
 
 @property (nonatomic, strong)NSMutableArray *kinds;
+
+@property (nonatomic, strong)NSMutableDictionary *currentTx;
+
+@property (nonatomic, strong)NSString *currentCategory;
 @end
 
 @implementation XNRHomeSelectBrandView
@@ -101,7 +106,7 @@
         self.gxArr = [NSMutableArray array];
         self.txArr = [NSMutableArray array];
         self.kinds = [NSMutableArray array];
-        
+        self.currentTx = [NSMutableDictionary dictionary];
         self.backgroundColor = R_G_B_16(0xf0f0f0);
         self.loadType = type;
         _param = param;
@@ -132,6 +137,7 @@
 {
     NSLog(@"-=-=-=-=-=-=-=%@",params);
     if (self.loadType == eXNRFerType) {
+        self.currentCategory = _categorys[1];
         NSString *url = [NSString stringWithFormat:@"%@/brands?category=%@",KHomeProducts,_categorys[1]];
         [KSHttpRequest get:url parameters:nil success:^(id result) {
             
@@ -208,6 +214,7 @@
     }
     
     else if(self.loadType == eXNRCarType){
+        self.currentCategory = _categorys[0];
         // 获取汽车类别的属性
         NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
         [param setObject:_categorys[0] forKey:@"category"];
@@ -222,9 +229,9 @@
                 for (NSDictionary *dicts in brands)
                 {
                     i++;
-                    XNBrandsModel *model = [[XNBrandsModel alloc] init];
+                    XNRHomeSelectedBrandItem *model = [[XNRHomeSelectedBrandItem alloc] init];
                     model.brandsId = dicts[@"_id"];
-                    model.name = dicts[@"name"];
+                    model.titleStr = dicts[@"name"];
                     [self.resArr addObject:model];
                     
                 }
@@ -234,12 +241,20 @@
                     if ([result[@"code"]integerValue] == 1000) {
                         NSArray *arr = result[@"attributes"];
                         
+                        NSArray *values = arr[0][@"values"];
+                        for (NSString *str in values) {
+                            XNRHomeSelectedBrandItem *model = [[XNRHomeSelectedBrandItem alloc]init];
+                            model.titleStr = str;
+                            
+                            [self.gxArr addObject:model];
+                            
+                        }
                         [self.kinds addObject:arr[0][@"_id"][@"name"]];
-                        [self.gxArr setArray:arr[0][@"values"]];
+//                        [self.gxArr setArray:arr[0][@"values"]];
                         
                         
                         //把品牌 车型 价格各数组添加到self.selecteItemArr 数组中
-                        for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < 4; i++) {
                             NSMutableArray *sectionDataArr = [NSMutableArray array];
                             //                if (i == 0) {
                             //                    XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc] init];
@@ -257,7 +272,12 @@
                             {
                                 sectionCoutn = self.gxArr.count;
                             }
-                            else if (i == 2)
+                            else if(i == 2)
+                            {
+                                sectionCoutn = 0;
+                                
+                            }
+                            else
                             {
                                 sectionCoutn = 5;
                             }
@@ -274,12 +294,18 @@
                                 else if (i == 1)
                                 {
                                     //
-                                    if (self.resArr.count > 0)
+                                    if (self.gxArr.count > 0)
                                     {
                                         [itemData exchangeResModelToItemWith:[self.gxArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
                                     }
                                 }
                                 else if (i == 2)
+                                {
+                                    if (self.txArr.count > 0) {
+                                        [itemData exchangeResModelToItemWith:[self.txArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
+                                    }
+                                }
+                                else if (i == 3)
                                 {
                                     itemData.indexPath = [NSIndexPath indexPathForItem:j inSection:i];
                                 }
@@ -299,7 +325,7 @@
                 
                 //                //获取汽车品牌下的特有属性
                 //                for (int i = 0; i < self.resArr.count; i++) {
-                //                    XNBrandsModel *mod = self.resArr[i];
+                //                    XNRHomeSelectedBrandItem *mod = self.resArr[i];
                 //                    [param setObject:mod.brandsId forKey:@"brand"];
                 //                    [KSHttpRequest get:KAttibutes parameters:param success:^(id result) {
                 //                        if ([result[@"code"]integerValue] == 1000) {
@@ -347,7 +373,7 @@
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, self.bounds.size.height) collectionViewLayout:collectionViewLayout];
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, self.bounds.size.height - PX_TO_PT(300)) collectionViewLayout:collectionViewLayout];
     collectionView.delegate = self;
     collectionView.dataSource = self;
     [collectionView registerClass:[XNRHomeSelectedBrandHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewId];
@@ -360,7 +386,7 @@
     //TODO:加btn
     CGFloat w = (self.bounds.size.width-3*coll_cell_margin)/2;
     UIButton *resetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    resetBtn.frame = CGRectMake(PX_TO_PT(32),PX_TO_PT(800),w,w/4);
+    resetBtn.frame = CGRectMake(PX_TO_PT(32),PX_TO_PT(980),w,w/4);
     resetBtn.titleLabel.font = XNRFont(14);
     resetBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
     resetBtn.layer.borderWidth = 1.0;
@@ -376,7 +402,7 @@
     [self addSubview:resetBtn];
     
     UIButton *admireBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    admireBtn.frame = CGRectMake(CGRectGetMaxX(self.resetBtn.frame) + coll_cell_margin, PX_TO_PT(800),w , w/4);
+    admireBtn.frame = CGRectMake(CGRectGetMaxX(self.resetBtn.frame) + coll_cell_margin, PX_TO_PT(980),w , w/4);
     admireBtn.titleLabel.font = XNRFont(14);
     admireBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
     admireBtn.layer.borderWidth = 1.0;
@@ -449,10 +475,20 @@
     XNRHomeSelectedBrandItem *selectedItem = [self.selecteItemArr[indexPath.section] objectAtIndex:indexPath.item];
 //    NSArray *arr = self.selecteItemArr[indexPath.section];
 //    for (XNRHomeSelectedBrandItem *cellItem in arr) {
-//        if (cellItem.isSelected) {
+//        if (cellItem.isSelected && ) {
 //            cellItem.isSelected = NO;
 //        }
 //    }
+    
+    if (indexPath.section == 3) {
+            NSArray *arr = self.selecteItemArr[indexPath.section];
+            for (XNRHomeSelectedBrandItem *cellItem in arr) {
+                if (cellItem.isSelected) {
+                    cellItem.isSelected = NO;
+                }
+            }
+    }
+    
     if (selectedItem.isSelected == YES) {
         selectedItem.isSelected = NO;
     }
@@ -460,13 +496,59 @@
     {
         selectedItem.isSelected = YES;
     }
+    if (indexPath.section == 0 && selectedItem.isSelected == YES) {
+        
+        //  获取特有属性
+        [KSHttpRequest get:KAttibutes parameters:@{@"category":self.currentCategory,@"brand":selectedItem.brandsId} success:^(id result) {
+            NSMutableArray *txs = [NSMutableArray array];
+            if ([result[@"code"] integerValue] == 1000) {
+                NSArray *arr = result[@"attributes"];
+                [self.kinds addObject: arr[0][@"_id"][@"name"] ];
+                NSArray *values = arr[0][@"values"];
+                int i=0;
+                for (NSString *str in values) {
+                    XNRHomeSelectedBrandItem *model = [[XNRHomeSelectedBrandItem alloc]init];
+                    model.titleStr = str;
+                    
+                     [model exchangeResModelToItemWith:model andIndexPath:[NSIndexPath indexPathForItem:i+1 inSection:2]];
+                    [self.txArr addObject:model];
+                    [txs addObject:model];
+                    i++;
+                }
+                [self.selecteItemArr setObject:self.txArr atIndexedSubscript:2];
+                [self.currentTx setObject:txs forKey:selectedItem.brandsId];
+//                XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc]init];
+//                NSMutableArray *sectionDataArr = [NSMutableArray array];
+//                for (int i=0; i < self.txArr.count; i++) {
+//                    [itemData exchangeResModelToItemWith:[self.txArr objectAtIndex:i] andIndexPath:[NSIndexPath indexPathForItem:i+1 inSection:2]];
+//                    [sectionDataArr addObject:itemData];
+//                }
+                [self.collectionView reloadData];
+
+            }
+        } failure:^(NSError *error) {
+            
+        }];
+
+    }
+    else if (indexPath.section == 0 && selectedItem.isSelected == NO)
+    {
+        NSArray *arr = [self.currentTx valueForKey:selectedItem.brandsId];
+        for (int i=0; i<arr.count; i++) {
+            [self.txArr removeObject:arr[i]];
+        }
+        [self.selecteItemArr setObject:self.txArr atIndexedSubscript:2];
+        [self.collectionView reloadData];
+
+    }
     [self.collectionView reloadData];
+
 }
 //取消选择了某个cell
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    [cell setBackgroundColor:[UIColor redColor]];
-}
+//- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+//    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+//    [cell setBackgroundColor:[UIColor redColor]];
+//}
 
 
 //UICollectionViewDelegateFlowLayout
@@ -482,7 +564,7 @@
 }
 //每个section中不同的行之间的行间距
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return coll_cell_margin;
+    return row_cell_margin;
 }
 //每个item之间的间距
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
@@ -502,7 +584,18 @@
         {
             headerView.selectTitleLabel.text = self.kinds[0];
         }
-        else
+        else if (indexPath.section == 2)
+        {
+            
+            if (self.kinds[1]) {
+                headerView.selectTitleLabel.text = self.kinds[1];
+            }
+//            else
+//            {
+//                headerView.hidden = YES;
+//            }
+        }
+        else if (indexPath.section == 3)
         {
             headerView.selectTitleLabel.text = @"价格";
 
@@ -519,6 +612,10 @@
     return reusableview;
 }////返回头headerView的大小
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
+    NSArray *arr = self.selecteItemArr[2];
+    if (section == 2 && arr.count == 0) {
+        return CGSizeMake(ScreenWidth, 0);
+    }
     return CGSizeMake(self.bounds.size.width, 44.0);
 }
 

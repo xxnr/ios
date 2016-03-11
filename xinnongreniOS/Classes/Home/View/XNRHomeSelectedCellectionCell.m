@@ -57,6 +57,9 @@
 
 @property(nonatomic ,strong)  NSArray *section2Items;
 @property (nonatomic ,strong) NSArray *section2Params;
+
+@property(nonatomic, strong) NSArray *section3Items;
+@property (nonatomic, strong)NSArray *Section3Params;
 @end
 
 @implementation XNRHomeSelectedBrandItem
@@ -67,6 +70,10 @@
         [_itemsArr addObject:self.section0Items];
         [_itemsArr addObject:self.section1Items];
         [_itemsArr addObject:self.section2Items];
+        [_itemsArr addObject:self.section3Items];
+//        [_itemsArr addObject:self.section0Params];
+//        [_itemsArr addObject:self.section1Params];
+//        [_itemsArr addObject:self.section2Params];
     }
     return _itemsArr;
 }
@@ -100,26 +107,45 @@
 }
 - (NSArray *)section2Items {
     if (!_section2Items) {
-        if (self.dataType == eXNRFerType) {
-            _section2Items = @[@"全部",@"0-1000元",@"1000-2000元",@"2000-3000元",@"3000元以上"];
-        }else{
-            _section2Items = @[@"全部",@"0-5万元",@"5-6万元",@"6-7万元",@"7万元以上"];
-        }
+        _section2Items = [NSArray array];
+
     }
     return _section2Items;
 }
 - (NSArray *)section2Params {
     if (!_section2Params) {
-        if (self.dataType == eXNRFerType) {
-            _section2Params = @[[NSNull null],@"0,1000",@"1000,2000",@"2000,3000",@"3000,1000000"];
-        }else if (self.dataType == eXNRCarType){
-            _section2Params = @[[NSNull null],@"0,50000",@"50000,60000",@"60000,70000",@"70000,1000000"];
-        }
-    }
+        _section2Params = [NSArray array];
+        
+     }
     return _section2Params;
 }
 
+-(NSArray *)section3Items
+{
+    if (!_section3Items) {
+        if (self.dataType == eXNRFerType) {
+            _section3Items = @[@"全部",@"0-1000元",@"1000-2000元",@"2000-3000元",@"3000元以上"];
+        }else{
+            _section3Items = @[@"全部",@"0-5万元",@"5-6万元",@"6-7万元",@"7万元以上"];
+        }
+    }
+    return _section3Items;
 
+}
+
+-(NSArray *)section3Params
+{
+    if (!_Section3Params) {
+        if (self.dataType == eXNRFerType) {
+            _Section3Params = @[[NSNull null],@"0,1000",@"1000,2000",@"2000,3000",@"3000,1000000"];
+        }else if (self.dataType == eXNRCarType){
+            _Section3Params = @[[NSNull null],@"0,50000",@"50000,60000",@"60000,70000",@"70000,1000000"];
+        }
+    }
+    return _Section3Params;
+
+    
+}
 
 
 - (void)getItemDataValueWith:(NSIndexPath *)indexPath {
@@ -132,8 +158,12 @@
     {
         self.titleParam = [self.section1Params objectAtIndex:indexPath.item];
     }
-    else {
+    else if(indexPath.section == 2)
+    {
         self.titleParam = [self.section2Params objectAtIndex:indexPath.item];
+    }
+    else {
+        self.titleParam = [self.Section3Params objectAtIndex:indexPath.item];
     }
     self.category = indexPath.section + 1;
     //    if (indexPath.item == 0) {
@@ -150,11 +180,12 @@
 
 
 - (void)exchangeResModelToItemWith:(NSObject *)obj andIndexPath:(NSIndexPath *)indexPath {
-    if ([obj isKindOfClass:[XNRShoppingCartModel class]]) {
-        XNBrandsModel *model = (XNBrandsModel *)obj;
-        self.brandName = model.name;
-        self.titleStr = model.name;
-        self.titleParam = model.name;
+    if ([obj isKindOfClass:[XNRHomeSelectedBrandItem class]]) {
+        XNRHomeSelectedBrandItem *model = (XNRHomeSelectedBrandItem *)obj;
+        self.brandsId = model.brandsId;
+        self.brandName = model.titleStr;
+        self.titleStr = model.titleStr;
+        self.titleParam = model.titleStr;
     }
     _indexPath = indexPath;
 }
@@ -168,7 +199,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self == [super initWithFrame:frame]) {
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
-        titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
         titleLabel.textColor = R_G_B_16(0x646464);
         titleLabel.backgroundColor = [UIColor clearColor];
         self.selectTitleLabel = titleLabel;
