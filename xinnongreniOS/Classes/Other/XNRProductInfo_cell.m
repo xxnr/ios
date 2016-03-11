@@ -80,9 +80,21 @@
         XNRPropertyView *propertyView = [[XNRPropertyView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) model:self.shopcarModel andType:XNRFirstType];
         __weak __typeof(self)weakSelf = self;
         // 传回来的属性
-        propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions){
+        propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice){
             NSString *  attributeStr = [attributes lastObject];
             NSString *addtionStr = [addtions lastObject];
+            self.priceLabel.text = [NSString stringWithFormat:@"%@",price];
+            self.marketPriceLabel.text = [NSString stringWithFormat:@"%@",marketPrice];
+            NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:self.priceLabel.text];
+            NSDictionary *priceStr=@{
+                                     
+                                     NSForegroundColorAttributeName:R_G_B_16(0xff4e00)
+                                     
+                                     };
+            [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(0,AttributedStringPrice.length)];
+            
+            [self.priceLabel setAttributedText:AttributedStringPrice];
+
             if ([attributeStr isEqualToString:@""] && [addtionStr isEqualToString:@""]) {
                 weakSelf.propertyLabel.text = @"请选择商品属性";
             }
@@ -181,15 +193,17 @@
 }
 -(void)setupPageController
 {
-    UILabel *noLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(112), ScreenWidth-80, PX_TO_PT(80), PX_TO_PT(80))];
-    noLabel.text = [NSString stringWithFormat:@"1/%tu",_model.pictures.count];
-    noLabel.textAlignment = NSTextAlignmentCenter;
-    noLabel.layer.cornerRadius = PX_TO_PT(40);
-    noLabel.layer.masksToBounds = YES;
-    noLabel.backgroundColor = R_G_B_16(0x00b38a);
-    noLabel.textColor = [UIColor whiteColor];
-    self.noLabel = noLabel;
-    [self addSubview:noLabel];
+    if (_model.pictures.count>1) {
+        UILabel *noLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(112), ScreenWidth-80, PX_TO_PT(80), PX_TO_PT(80))];
+        noLabel.text = [NSString stringWithFormat:@"1/%tu",_model.pictures.count];
+        noLabel.textAlignment = NSTextAlignmentCenter;
+        noLabel.layer.cornerRadius = PX_TO_PT(40);
+        noLabel.layer.masksToBounds = YES;
+        noLabel.backgroundColor = R_G_B_16(0x00b38a);
+        noLabel.textColor = [UIColor whiteColor];
+        self.noLabel = noLabel;
+        [self addSubview:noLabel];
+    }
     // 1.添加
     UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenWidth-30, ScreenWidth, 30)];
     bgView.backgroundColor = [UIColor lightGrayColor];
@@ -233,17 +247,23 @@
     self.priceLabel = priceLabel;
     [self addSubview:priceLabel];
     
+    UILabel *presaleLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(goodNameLabel.frame), ScreenWidth, PX_TO_PT(30))];
+    presaleLabel.textColor = R_G_B_16(0x989898);
+    presaleLabel.font = XNRFont(16);
+    self.presaleLabel = presaleLabel;
+    [self addSubview:presaleLabel];
+
+    
     UILabel *depositLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(self.goodNameLabel.frame)-PX_TO_PT(10), ScreenWidth*0.5, PX_TO_PT(50))];
-    depositLabel.textColor = R_G_B_16(0x646464);
+    depositLabel.textColor = R_G_B_16(0x323232);
     priceLabel.font = XNRFont(16);
     self.depositLabel = depositLabel;
     [self addSubview:depositLabel];
-
+    
     
     UILabel *marketPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(priceLabel.frame)+PX_TO_PT(10), ScreenWidth, PX_TO_PT(32))];
     marketPriceLabel.font = XNRFont(14);
     marketPriceLabel.textColor = R_G_B_16(0x909090);
-//    marketPriceLabel.backgroundColor = [UIColor redColor];
     self.marketPriceLabel = marketPriceLabel;
     [self addSubview:marketPriceLabel];
     
@@ -270,11 +290,15 @@
     [propertyBtn addTarget: self action:@selector(propertyBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [bgView addSubview:propertyBtn];
     
+    
+    
     UILabel *propertyLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth-PX_TO_PT(56), PX_TO_PT(90))];
     propertyLabel.text = @"请选择商品属性";
     propertyLabel.textAlignment = NSTextAlignmentLeft;
+    propertyLabel.numberOfLines = 0;
     propertyLabel.textColor = R_G_B_16(0x323232);
     propertyLabel.font = XNRFont(14);
+//    propertyLabel.backgroundColor = [UIColor redColor];
     self.propertyLabel = propertyLabel;
     [propertyBtn addSubview:propertyLabel];
     
@@ -291,11 +315,6 @@
 //    [self addSubview:priceLabel];
     
 //
-//    UILabel *presaleLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.descriptionLabel.frame), ScreenWidth, PX_TO_PT(110))];
-//    presaleLabel.textColor = R_G_B_16(0xff4e00);
-//    presaleLabel.font = XNRFont(16);
-//    self.presaleLabel = presaleLabel;
-//    [self addSubview:presaleLabel];
     
     UILabel *scrollLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(bgView.frame), ScreenWidth, PX_TO_PT(120))];
     scrollLabel.textColor = R_G_B_16(0x323232);
@@ -441,17 +460,19 @@
         for (int i = 0; i<model.pictures.count; i++) {
             UIImageView *headView = [[UIImageView alloc] init];
             // 设置frame
-            headView.y = 0;
-            headView.width = imageW;
-            headView.height = imageH;
-            headView.x =i * imageW;
+//            headView.y = 0;
+//            headView.width = imageW;
+//            headView.height = imageH;
+//            headView.x =i * imageW;
+            headView.frame = CGRectMake(i*imageW, 0, imageW, imageH);
             headView.userInteractionEnabled = YES;
             UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoTap:)];
             [headView addGestureRecognizer:gestureRecognizer];    //商品图片
             XNRProductPhotoModel *photoModel = model.pictures[i];
             
             NSString *imageUrl=[HOST stringByAppendingString:photoModel.imgUrl];
-            [self.headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+            NSLog(@"jkdlsfkd%@",imageUrl);
+            [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
             self.headView = headView;
             [self.scrollView addSubview:headView];
         }
@@ -526,6 +547,7 @@
     if ([model.presale integerValue] == 1) {
         self.priceLabel.hidden = YES;
         self.depositLabel.hidden = YES;
+        self.marketPriceLabel.hidden = YES;
         self.presaleLabel.text = @"即将上线";
     }
     

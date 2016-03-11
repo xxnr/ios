@@ -15,8 +15,10 @@
 #import "XNRSKUAttributesModel.h"
 #import "UIImageView+WebCache.h"
 #import "XNRShopCarSectionModel.h"
+#import "IQKeyboardManager.h"
 
 #define coll_cell_margin  PX_TO_PT(20)
+#define coll_section_margin PX_TO_PT(40)
 #define cellId @"selected_cell"
 #define headerViewId @"selectedHeaderView"
 #define footViewId @"selectedFootView"
@@ -55,6 +57,8 @@
 
 @property (nonatomic ,weak) UIButton *addBuyCarBtn;
 
+@property (nonatomic ,weak) UIButton *cancelBtn;
+
 @property (nonatomic ,strong) NSMutableArray *dataArr;
 
 @property (nonatomic ,weak) UIView *bgExpectView;
@@ -62,6 +66,8 @@
 @property (nonatomic , weak) UIView *bgView;
 
 @property (nonatomic ,assign) XNRPropertyViewType type;
+
+@property (nonatomic ,copy) NSString *marketPrice;
 
 @end
 
@@ -132,15 +138,36 @@
             }
             self.nameLabel.text = [NSString stringWithFormat:@"%@",dic[@"name"]];
             
-            if ([dic[@"referencePrice"][@"min"] floatValue] == [dic[@"referencePrice"][@"max"] floatValue]) {
-                self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[dic[@"referencePrice"][@"min"] floatValue]];
+//            if ([dic[@"SKUMarketPrice"][@"min"] floatValue] == [dic[@"SKUMarketPrice"][@"max"] floatValue]) {
+//                _marketPrice = [NSString stringWithFormat:@"¥ %.2f",[dic[@"SKUMarketPrice"][@"min"] floatValue]];
+//                if ([_marketPrice rangeOfString:@".00"].length == 3) {
+//                    _marketPrice = [self.priceLabel.text substringToIndex:_marketPrice.length-3];
+//                }
+//                
+//            }else{
+//                NSString *minPrice = [NSString stringWithFormat:@"%.2f",[dic[@"SKUMarketPrice"][@"min"] floatValue]];
+//                NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[dic[@"SKUMarketPrice"][@"max"] floatValue]];
+//                if ([minPrice rangeOfString:@".00"].length == 3) {
+//                    minPrice = [minPrice substringToIndex:minPrice.length-3];
+//                }
+//                if ([maxPrice rangeOfString:@".00"].length == 3) {
+//                    maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
+//                }
+//                _marketPrice = [NSString stringWithFormat:@"¥ %@ - %@",minPrice,maxPrice];
+//                
+//            }
+
+            
+            
+            if ([dic[@"SKUPrice"][@"min"] floatValue] == [dic[@"SKUPrice"][@"max"] floatValue]) {
+                self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[dic[@"SKUPrice"][@"min"] floatValue]];
                 if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
                     self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
                 }
 
             }else{
-                NSString *minPrice = [NSString stringWithFormat:@"%.2f",[dic[@"referencePrice"][@"min"] floatValue]];
-                NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[dic[@"referencePrice"][@"max"] floatValue]];
+                NSString *minPrice = [NSString stringWithFormat:@"%.2f",[dic[@"SKUPrice"][@"min"] floatValue]];
+                NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[dic[@"SKUPrice"][@"max"] floatValue]];
                 if ([minPrice rangeOfString:@".00"].length == 3) {
                     minPrice = [minPrice substringToIndex:minPrice.length-3];
                 }
@@ -192,6 +219,7 @@
     UIButton *cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(54), PX_TO_PT(20), PX_TO_PT(34), PX_TO_PT(34))];
     [cancelBtn setImage:[UIImage imageNamed:@"details--close"] forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    self.cancelBtn = cancelBtn;
     [self.attributesView addSubview:cancelBtn];
     
     
@@ -238,15 +266,15 @@
     [bgView addSubview:line];
     
     UIView *bgExpectView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(980)-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
-    bgExpectView.backgroundColor = [UIColor whiteColor];
+    bgExpectView.backgroundColor = R_G_B_16(0xc7c7c7);
     self.bgExpectView = bgExpectView;
     [self.attributesView addSubview:bgExpectView];
     
     UILabel *expectLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80))];
     expectLabel.text = @"敬请期待";
     expectLabel.textAlignment = NSTextAlignmentCenter;
-    expectLabel.textColor = R_G_B_16(0x323232);
-    expectLabel.font = [UIFont systemFontOfSize:14];
+    expectLabel.textColor = R_G_B_16(0x909090);
+    expectLabel.font = [UIFont systemFontOfSize:18];
     [bgExpectView addSubview:expectLabel];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
@@ -288,10 +316,10 @@
     }else{
         if (!IS_Login) {
             BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"您还没有登录，是否登录？" chooseBtns:@[@"取消",@"确定"]];
-            __weak __typeof(self)weakSelf = self;
+//            __weak __typeof(self)weakSelf = self;
             alertView.chooseBlock = ^void(UIButton *btn){
                 if (btn.tag == 11) {
-                    weakSelf.loginBlock();
+//                    weakSelf.loginBlock();
                 }
             };
             [alertView BMAlertShow];
@@ -514,11 +542,11 @@
 -(void)pressAttributes{
     XNRProductInfo_model *infoModel = [_goodsArray lastObject];
     NSMutableArray *attributesArray = [NSMutableArray array];
-    NSString * attributeStr = @"";
+    NSString * attributeStr = @"已选择";
     for (XNRSKUAttributesModel *skuModel in infoModel.SKUAttributes) {
         for (XNRSKUCellModel *cellModel in skuModel.values) {
             if (cellModel.isSelected) {
-                attributeStr = [attributeStr stringByAppendingString:cellModel.cellValue];
+                attributeStr = [attributeStr stringByAppendingString:[NSString stringWithFormat:@"“%@”",cellModel.cellValue]];
                 [attributesArray addObject:attributeStr];
                 NSLog(@"0-=--------9909%@",attributesArray);
             }
@@ -530,13 +558,14 @@
     for (XNRAddtionsModel *addtionModel in infoModel.additions) {
         
         if (addtionModel.isSelected) {
-            addtionStr = [addtionStr stringByAppendingString:addtionModel.name];
+            addtionStr = [addtionStr stringByAppendingString:[NSString stringWithFormat:@"“%@”",addtionModel.name]];
             [addtionArray addObject:addtionStr];
             NSLog(@"0-=9=90%@",addtionArray);
         }
     }
     if (attributesArray.count>0) {
-        self.valueBlock(attributesArray,addtionArray);
+        self.valueBlock(attributesArray,addtionArray,self.priceLabel.text,_marketPrice);
+        
     }
     
 }
@@ -545,7 +574,7 @@
 {
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, PX_TO_PT(220), ScreenWidth-2*coll_cell_margin, PX_TO_PT(680)) collectionViewLayout:collectionViewLayout];
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(220), ScreenWidth-2*PX_TO_PT(30), PX_TO_PT(680)) collectionViewLayout:collectionViewLayout];
     collectionView.showsVerticalScrollIndicator = NO;
     collectionView.delegate = self;
     collectionView.dataSource = self;
@@ -669,6 +698,27 @@
             if ([resultObj[@"code"] integerValue] == 1000) {
                 NSDictionary *datas = resultObj[@"data"];
                 NSDictionary *price = datas[@"price"];
+                NSDictionary *marketPrice = datas[@"market_price"];
+                
+                if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
+                    _marketPrice = [NSString stringWithFormat:@"¥ %.2f",[marketPrice[@"min"] floatValue]];
+                    if ([_marketPrice rangeOfString:@".00"].length == 3) {
+                        _marketPrice = [self.priceLabel.text substringToIndex:_marketPrice.length-3];
+                    }
+                    
+                }else{
+                    NSString *minPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"min"] floatValue]];
+                    NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] floatValue]];
+                    if ([minPrice rangeOfString:@".00"].length == 3) {
+                        minPrice = [minPrice substringToIndex:minPrice.length-3];
+                    }
+                    if ([maxPrice rangeOfString:@".00"].length == 3) {
+                        maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
+                    }
+                    _marketPrice = [NSString stringWithFormat:@"¥ %@ - %@",minPrice,maxPrice];
+                    
+                }
+
                 // 价格区间改变
                 if ([price[@"min"] floatValue] == [price[@"max"] floatValue]) {
                     self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[price[@"min"] floatValue]];
@@ -803,7 +853,7 @@
 #pragma mark  - UICollectionViewDelegateFlowLayout
 //返回头部headerView的大小
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
-    return CGSizeMake(ScreenWidth, PX_TO_PT(88));
+    return CGSizeMake(ScreenWidth, PX_TO_PT(102));
 }
 // 返回尾部footView的大小
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
@@ -815,7 +865,7 @@
     if (infoModel.additions.count>0) {
         if (section == infoModel.SKUAttributes.count) {
             
-            return CGSizeMake(ScreenWidth, PX_TO_PT(100));
+            return CGSizeMake(ScreenWidth, PX_TO_PT(140));
         } else {
             
             return CGSizeZero;
@@ -824,7 +874,7 @@
     }else{
         if (section == infoModel.SKUAttributes.count - 1) {
             
-            return CGSizeMake(ScreenWidth, PX_TO_PT(100));
+            return CGSizeMake(ScreenWidth, PX_TO_PT(140));
         } else {
             
             return CGSizeZero;
@@ -840,13 +890,13 @@
         XNRSKUAttributesModel *skuModel = infoModel.SKUAttributes[indexPath.section];
         XNRSKUCellModel *model = skuModel.values[indexPath.item];
         CGSize valueSize = [model.cellValue sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
-        currentSize = CGSizeMake(valueSize.width + PX_TO_PT(10), valueSize.height+PX_TO_PT(10));
+        currentSize = CGSizeMake(valueSize.width + PX_TO_PT(20), valueSize.height+PX_TO_PT(20));
 
     }else if (infoModel.SKUAttributes.count<=indexPath.section){
         XNRAddtionsModel *addtionModel = infoModel.additions[indexPath.item];
-        NSString *addtionStr = [NSString stringWithFormat:@"%@(%@)",addtionModel.name,addtionModel.price];
+        NSString *addtionStr = [NSString stringWithFormat:@"%@(+%@)",addtionModel.name,addtionModel.price];
         CGSize valueSize = [addtionStr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
-        currentSize = CGSizeMake(valueSize.width+ PX_TO_PT(10), valueSize.height+ PX_TO_PT(10));
+        currentSize = CGSizeMake(valueSize.width+ PX_TO_PT(20), valueSize.height+ PX_TO_PT(20));
 
     }else{
         currentSize = CGSizeMake(0, 0);
@@ -857,7 +907,7 @@
 }
 ////定义每个Section 的 margin
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(0, 0, 0, coll_cell_margin);//分别为上、左、下、右
+    return UIEdgeInsetsMake(0, 0, 0, 0);//分别为上、左、下、右
 }
 ////每个section中不同的行之间的行间距
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
@@ -915,6 +965,9 @@
         self.attributesView.frame = CGRectMake(0, ScreenHeight+30, ScreenWidth, PX_TO_PT(980));
     } completion:^(BOOL finished) {
         [self pressAttributes];
+        // 把键盘退掉
+        IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
+        [manager resignFirstResponder];
         self.coverView.hidden = YES;
         
     }];
@@ -927,7 +980,5 @@
         self.attributesView.frame= CGRectMake(0, ScreenHeight-PX_TO_PT(980), ScreenWidth, PX_TO_PT(980));
     }];
 }
-
-
 
 @end

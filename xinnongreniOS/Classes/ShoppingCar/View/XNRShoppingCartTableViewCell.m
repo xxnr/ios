@@ -452,10 +452,10 @@
     self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue];
 
     // 订金
-    self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.floatValue];
+    self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.floatValue *[_model.num floatValue]];
     
     // 尾款
-    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue + totalPrice - self.model.deposit.floatValue];
+    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",(self.model.price.floatValue + totalPrice - self.model.deposit.floatValue)*[_model.num floatValue]];
     if (self.model.additions.count == 0) {
         self.addtionsLabel.hidden = YES;
         self.addtionPriceLabel.hidden  = YES;
@@ -486,13 +486,17 @@
         self.presentPriceLabel.textColor = R_G_B_16(0xff4e00);
 
     }
-    self.numTextField.text = [NSString stringWithFormat:@"%@",self.model.num];
-    
-    if ([self.numTextField.text isEqualToString:@"0"]) {
-        self.numTextField.textColor = [UIColor lightGrayColor];
+    if (_model.num == 0) {
+        self.numTextField.text = @"1";
     }else{
-        self.numTextField.textColor = [UIColor lightGrayColor];
+        self.numTextField.text = [NSString stringWithFormat:@"%@",self.model.num];
     }
+    
+//    if ([self.numTextField.text isEqualToString:@"0"]) {
+//        self.numTextField.textColor = [UIColor lightGrayColor];
+//    }else{
+//        self.numTextField.textColor = [UIColor lightGrayColor];
+//    }
 }
 
 

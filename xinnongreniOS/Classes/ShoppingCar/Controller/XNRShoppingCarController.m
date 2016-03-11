@@ -373,14 +373,12 @@
                     NSDictionary *params1 = @{@"userId":[DataCenter account].userid,@"SKUId":carModel._id,@"quantity":@"0",@"additions":carModel.additions,@"user-agent":@"IOS-v2.0"};
                             [KSHttpRequest post:KchangeShopCarNum parameters:params1 success:^(id result) {
                                 if ([result[@"code"] integerValue] == 1000) {
-                                    
+                                    [UILabel showMessage:@"删除成功"];
                                 }
                             } failure:^(NSError *error) {
                                 
                             }];
                         }
-                        
-                        
                     }
                     
                     [arr1 addObject:sectionModel];
@@ -396,7 +394,7 @@
                                 NSDictionary *params2 = @{@"userId":[DataCenter account].userid,@"SKUId":model._id,@"quantity":@"0",@"additions":model.additions,@"user-agent":@"IOS-v2.0"};
                                 [KSHttpRequest post:KchangeShopCarNum parameters:params2 success:^(id result) {
                                     if ([result[@"code"] integerValue] == 1000) {
-                                        [UILabel showMessage:result[@"message"]];
+                                        [UILabel showMessage:@"删除成功"];
                                     }
                                     
                                 } failure:^(NSError *error) {
@@ -585,8 +583,6 @@
                 }else{
                     [self.shopCarView removeFromSuperview];
                 }
-
-
             }
             [self.shoppingCarTableView reloadData];
             [self changeBottom];

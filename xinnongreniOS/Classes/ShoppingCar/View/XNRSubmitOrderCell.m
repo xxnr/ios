@@ -46,6 +46,8 @@
 
 @property (nonatomic ,weak) UIView *addtionView;
 
+@property (nonatomic,weak) UILabel *addtionLabel;
+
 @property (nonatomic ,strong) XNRShoppingCartModel *model;
 
 @end
@@ -87,7 +89,6 @@
     brandNameLabel.textColor = R_G_B_16(0x323232);
     brandNameLabel.font = XNRFont(14);
     brandNameLabel.numberOfLines = 0;
-    
     self.brandNameLabel = brandNameLabel;
     [topView addSubview:brandNameLabel];
     
@@ -132,8 +133,9 @@
             addtionLabel.backgroundColor = R_G_B_16(0xe0e0e0);
             addtionLabel.layer.cornerRadius = 5.0;
             addtionLabel.layer.masksToBounds = YES;
+            self.addtionLabel = addtionLabel;
             [addtionView addSubview:addtionLabel];
-            
+        
             NSDictionary *subDic = addtionsModel.additions[i];
             
             UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(45))];
@@ -150,11 +152,12 @@
             priceLabel.text = [NSString stringWithFormat:@"¥:%@",subDic[@"price"]];
             [addtionLabel addSubview:priceLabel];
             
-//            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(45)+i*PX_TO_PT(45), ScreenWidth-PX_TO_PT(64), PX_TO_PT(3))];
-//            lineView.backgroundColor = [UIColor redColor];
-//            [addtionView addSubview:lineView];
+            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(priceLabel.frame)*i, ScreenWidth-PX_TO_PT(64), PX_TO_PT(10))];
+            lineView.backgroundColor = [UIColor redColor];
+            [addtionView addSubview:lineView];
 
         }
+        
     }
 }
 -(void)createMidView:(XNRShoppingCartModel *)addtionsArray{
@@ -172,8 +175,6 @@
         [self.contentView addSubview:midView];
         
     }
-    
-    
     UILabel *sectionOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
     sectionOneLabel.text = @"阶段一: 订金";
     sectionOneLabel.font = [UIFont systemFontOfSize:14];
@@ -317,10 +318,10 @@
     self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue];
     self.numLabel.text = [NSString stringWithFormat:@"x %@",self.model.count];
     // 订金
-    self.depositLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.floatValue];
+    self.depositLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.floatValue*[_model.count floatValue]];
     
     // 尾款
-    self.remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue+totalPrice - self.model.deposit.floatValue];
+    self.remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",(self.model.price.floatValue+totalPrice - self.model.deposit.floatValue) * [_model.count floatValue]];
 //    // 商品件数
 //    self.goodsTotalLabel.text = [NSString stringWithFormat:@"共%@件商品",self.model.goodsCount];
 //    self.goodsTotalLabelMid.text = [NSString stringWithFormat:@"共%@件商品",self.model.goodsCount];

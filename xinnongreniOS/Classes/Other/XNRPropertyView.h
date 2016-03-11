@@ -14,7 +14,7 @@ typedef enum : NSUInteger {
 
 typedef void(^XNRPropertyViewBlock)(NSMutableArray *dataArray,CGFloat totalPrice);
 
-typedef void(^XNRPropertyViewValueBlock)(NSMutableArray *attributes,NSMutableArray *addtions);
+typedef void(^XNRPropertyViewValueBlock)(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice);
 
 typedef void(^XNRPropertyViewLoginBlock)();
 

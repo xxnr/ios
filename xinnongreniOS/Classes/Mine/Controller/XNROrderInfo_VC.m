@@ -674,7 +674,7 @@
     }
     else if (self.numOrder == 2)
     {
-        //                选择支付订单controller
+        // 选择支付订单controller
         XNRSelPayOrder_VC *selVC = [[XNRSelPayOrder_VC alloc]init];
         selVC.addOrderModel1 =self.addorderModel1;
         selVC.addOrderModel2 = self.addorderModel2;
@@ -703,7 +703,6 @@
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"提交订单";
     self.navigationItem.titleView = titleLabel;
-    
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0, 80, 44);
