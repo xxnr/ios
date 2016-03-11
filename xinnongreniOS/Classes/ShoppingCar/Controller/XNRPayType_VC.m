@@ -843,9 +843,9 @@
         
         _Money = self.myTextField.text;
     }
-//    _ispayType = YES;
-//    [self setselPayType];
-//    NSLog(@"去支付");
+    _ispayType = YES;
+    [self setselPayType];
+    NSLog(@"去支付");
 //
 //    NSLog(@"%ld",[_Money integerValue]);
     
@@ -864,16 +864,16 @@
 //        
 //    }
     
-    XNROrderSuccessViewController*vc=[[XNROrderSuccessViewController alloc]init];
-    vc.money = _Money;
-    vc.orderID = self.orderID;
-    vc.fromType = self.fromType;
-    vc.paymentId = self.paymentId;
-    vc.recieveName = self.recieveName;
-    vc.recievePhone = self.recievePhone;
-    vc.recieveAddress = self.recieveAddress;
-    vc.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:vc animated:YES];
+//    XNROrderSuccessViewController*vc=[[XNROrderSuccessViewController alloc]init];
+//    vc.money = _Money;
+//    vc.orderID = self.orderID;
+//    vc.fromType = self.fromType;
+//    vc.paymentId = self.paymentId;
+//    vc.recieveName = self.recieveName;
+//    vc.recievePhone = self.recievePhone;
+//    vc.recieveAddress = self.recieveAddress;
+//    vc.hidesBottomBarWhenPushed=YES;
+//    [self.navigationController pushViewController:vc animated:YES];
     
 }
 

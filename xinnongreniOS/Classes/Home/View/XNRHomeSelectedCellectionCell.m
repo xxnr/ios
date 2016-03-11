@@ -102,11 +102,6 @@
     if (!_section2Items) {
         if (self.dataType == eXNRFerType) {
             _section2Items = @[@"全部",@"0-1000元",@"1000-2000元",@"2000-3000元",@"3000元以上"];
-<<<<<<< HEAD
-            
-=======
-
->>>>>>> master
         }else{
             _section2Items = @[@"全部",@"0-5万元",@"5-6万元",@"6-7万元",@"7万元以上"];
         }
@@ -117,11 +112,6 @@
     if (!_section2Params) {
         if (self.dataType == eXNRFerType) {
             _section2Params = @[[NSNull null],@"0,1000",@"1000,2000",@"2000,3000",@"3000,1000000"];
-<<<<<<< HEAD
-            
-=======
-
->>>>>>> master
         }else if (self.dataType == eXNRCarType){
             _section2Params = @[[NSNull null],@"0,50000",@"50000,60000",@"60000,70000",@"70000,1000000"];
         }
