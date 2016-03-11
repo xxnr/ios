@@ -373,14 +373,12 @@
                     NSDictionary *params1 = @{@"userId":[DataCenter account].userid,@"SKUId":carModel._id,@"quantity":@"0",@"additions":carModel.additions,@"user-agent":@"IOS-v2.0"};
                             [KSHttpRequest post:KchangeShopCarNum parameters:params1 success:^(id result) {
                                 if ([result[@"code"] integerValue] == 1000) {
-                                    
+                                    [UILabel showMessage:@"删除成功"];
                                 }
                             } failure:^(NSError *error) {
                                 
                             }];
                         }
-                        
-                        
                     }
                     
                     [arr1 addObject:sectionModel];
@@ -396,7 +394,7 @@
                                 NSDictionary *params2 = @{@"userId":[DataCenter account].userid,@"SKUId":model._id,@"quantity":@"0",@"additions":model.additions,@"user-agent":@"IOS-v2.0"};
                                 [KSHttpRequest post:KchangeShopCarNum parameters:params2 success:^(id result) {
                                     if ([result[@"code"] integerValue] == 1000) {
-                                        [UILabel showMessage:result[@"message"]];
+                                        [UILabel showMessage:@"删除成功"];
                                     }
                                     
                                 } failure:^(NSError *error) {
@@ -448,23 +446,19 @@
     // 去结算
     NSMutableArray *arr=[[NSMutableArray alloc]init];
     // 提交订单
-    NSMutableArray *idArr = [[NSMutableArray alloc] init];
     for (int i = 0; i<_dataArr.count; i++) {
         XNRShopCarSectionModel *sectionModel = _dataArr[i];
         for (XNRShoppingCartModel *cellModel in sectionModel.SKUList) {
             if (cellModel.selectState) {
                 
                 NSDictionary *params = @{@"_id":cellModel._id,@"count":cellModel.num,@"additions":cellModel.additions};
-                
                 [arr addObject:params];
 
-                NSLog(@"9053539fjdi%@",arr);
             }
         }
     }
     vc.dataArray = arr;
     vc.totalPrice = _totalPrice;
-//    vc.idArray = idArr;
     vc.isRoot = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -589,8 +583,6 @@
                 }else{
                     [self.shopCarView removeFromSuperview];
                 }
-
-
             }
             [self.shoppingCarTableView reloadData];
             [self changeBottom];

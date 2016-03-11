@@ -358,11 +358,17 @@
     cell.backgroundColor =[UIColor clearColor];
 
     if (indexPath.section == 0) {
-     XNRShoppingCartModel *model = _carArr[indexPath.row];
-        [cell setCellDataWithShoppingCartModel:model];
+        if (_carArr.count>0) {
+            XNRShoppingCartModel *model = _carArr[indexPath.row];
+            [cell setCellDataWithShoppingCartModel:model];
+
+        }
     }else{
-    XNRShoppingCartModel *model = _huafeiArr[indexPath.row];
-        [cell setCellDataWithShoppingCartModel:model];
+        if (_huafeiArr.count>0) {
+            XNRShoppingCartModel *model = _huafeiArr[indexPath.row];
+            [cell setCellDataWithShoppingCartModel:model];
+
+        }
     }
     return cell;
 }
@@ -434,6 +440,7 @@
 #pragma mark - 获取汽车化肥数据
 -(void)getFerData
 {
+    [_huafeiArr removeAllObjects];
     [KSHttpRequest post:KHomeGetProductsListPage parameters:@{@"locationUserId":IS_Login?[DataCenter account].userid:@"",@"classId":@"531680A5",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dicts = result[@"datas"];
@@ -453,6 +460,7 @@
 }
 -(void)getCarData
 {
+    [_carArr removeAllObjects];
     [KSHttpRequest post:KHomeGetProductsListPage parameters:@{@"locationUserId":IS_Login?[DataCenter account].userid:@"",@"classId":@"6C7D8F66",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dicts = result[@"datas"];

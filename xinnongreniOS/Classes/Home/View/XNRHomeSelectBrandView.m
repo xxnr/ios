@@ -8,6 +8,7 @@
 
 #import "XNRHomeSelectBrandView.h"
 #import "XNRHomeSelectedCellectionCell.h"
+#import "XNBrandsModel.h"
 
 
 #define coll_cell_margin 20
@@ -50,6 +51,7 @@
 @property (nonatomic, strong)NSMutableDictionary *currentTx;
 
 @property (nonatomic, strong)NSString *currentCategory;
+
 @end
 
 @implementation XNRHomeSelectBrandView
@@ -107,6 +109,7 @@
         self.txArr = [NSMutableArray array];
         self.kinds = [NSMutableArray array];
         self.currentTx = [NSMutableDictionary dictionary];
+
         self.backgroundColor = R_G_B_16(0xf0f0f0);
         self.loadType = type;
         _param = param;
@@ -127,7 +130,6 @@
             
             _param = [NSArray array];
             [self getDataWith:_param];
-            
         }
     } failure:^(NSError *error) {
         
@@ -137,6 +139,7 @@
 {
     NSLog(@"-=-=-=-=-=-=-=%@",params);
     if (self.loadType == eXNRFerType) {
+
         self.currentCategory = _categorys[1];
         NSString *url = [NSString stringWithFormat:@"%@/brands?category=%@",KHomeProducts,_categorys[1]];
         [KSHttpRequest get:url parameters:nil success:^(id result) {
@@ -148,13 +151,6 @@
                     XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
                     [model setValuesForKeysWithDictionary:dicts];
                     
-                    //                    NSString *brandId = model.brandId;
-                    //                    [KSHttpRequest get:[NSString stringWithFormat:@"%@/brands?category=化肥&brand=%@",KHomeProducts,brandId] parameters:nil success:^(id result) {
-                    //                        if ([result[@"code"] integerValue] == 1000) {
-                    //                            NSArray *att = result[@"attributes"];
-                    //
-                    //                        }
-                    //                    } failure:<#^(NSError *error)failure#>]
                     [self.resArr addObject:model];
                 }
             }
@@ -170,7 +166,7 @@
                     itemData.indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                     [sectionDataArr addObject:itemData];
                 }
-                
+
                 int sectionCoutn = i == 0 ? (int)self.resArr.count : 5;
                 for (int j = 0; j < sectionCoutn; j++) {
                     XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc] init];
@@ -214,16 +210,19 @@
     }
     
     else if(self.loadType == eXNRCarType){
+
         self.currentCategory = _categorys[0];
+
         // 获取汽车类别的属性
         NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
         [param setObject:_categorys[0] forKey:@"category"];
         [param setObject:@"0" forKey:@"brand"];
         [KSHttpRequest get:KBrands parameters:param success:^(id result) {
-            
+
             
             if ([result[@"code"] integerValue] == 1000) {
         
+
                 NSArray *brands = result[@"brands"];
                 int i = 0;
                 for (NSDictionary *dicts in brands)
@@ -240,7 +239,7 @@
                 [KSHttpRequest get:KAttibutes parameters:param success:^(id result) {
                     if ([result[@"code"]integerValue] == 1000) {
                         NSArray *arr = result[@"attributes"];
-                        
+      
                         NSArray *values = arr[0][@"values"];
                         for (NSString *str in values) {
                             XNRHomeSelectedBrandItem *model = [[XNRHomeSelectedBrandItem alloc]init];
@@ -301,6 +300,7 @@
                                 }
                                 else if (i == 2)
                                 {
+
                                     if (self.txArr.count > 0) {
                                         [itemData exchangeResModelToItemWith:[self.txArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
                                     }
@@ -313,7 +313,6 @@
                             }
                             [self.selecteItemArr addObject:sectionDataArr];
                         }
-                        
                     }
                     [self configSearchAndSelectViewWith:params];
                     
@@ -322,22 +321,8 @@
                 } failure:^(NSError *error) {
                     
                 }];
-                
-                //                //获取汽车品牌下的特有属性
-                //                for (int i = 0; i < self.resArr.count; i++) {
-                //                    XNRHomeSelectedBrandItem *mod = self.resArr[i];
-                //                    [param setObject:mod.brandsId forKey:@"brand"];
-                //                    [KSHttpRequest get:KAttibutes parameters:param success:^(id result) {
-                //                        if ([result[@"code"]integerValue] == 1000) {
-                //                            NSArray *arr = result[@"attributes"];
-                //                            [self.txArr addObject:arr[i][@"values"]];
-                //
-                //
-                //                        }
-                //                    } failure:^(NSError *error) {
-                //
-                //                    }];
-                //
+
+
                 [self configSearchAndSelectViewWith:params];
                 
                 [self.collectionView reloadData];
@@ -348,7 +333,6 @@
         } failure:^(NSError *error) {
             
         }];
-        
         
     }
     
@@ -373,7 +357,12 @@
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     
+<<<<<<< Updated upstream
+
+=======
+>>>>>>> Stashed changes
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, self.bounds.size.height - PX_TO_PT(300)) collectionViewLayout:collectionViewLayout];
+
     collectionView.delegate = self;
     collectionView.dataSource = self;
     [collectionView registerClass:[XNRHomeSelectedBrandHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewId];
@@ -386,7 +375,12 @@
     //TODO:加btn
     CGFloat w = (self.bounds.size.width-3*coll_cell_margin)/2;
     UIButton *resetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+<<<<<<< Updated upstream
+
+=======
+>>>>>>> Stashed changes
     resetBtn.frame = CGRectMake(PX_TO_PT(32),PX_TO_PT(980),w,w/4);
+
     resetBtn.titleLabel.font = XNRFont(14);
     resetBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
     resetBtn.layer.borderWidth = 1.0;
@@ -403,6 +397,10 @@
     
     UIButton *admireBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     admireBtn.frame = CGRectMake(CGRectGetMaxX(self.resetBtn.frame) + coll_cell_margin, PX_TO_PT(980),w , w/4);
+<<<<<<< Updated upstream
+
+=======
+>>>>>>> Stashed changes
     admireBtn.titleLabel.font = XNRFont(14);
     admireBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
     admireBtn.layer.borderWidth = 1.0;
@@ -576,7 +574,6 @@
     UICollectionReusableView *reusableview = nil;
     if (kind == UICollectionElementKindSectionHeader) {
         XNRHomeSelectedBrandHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewId forIndexPath:indexPath];
-
         if (indexPath.section == 0) {
             headerView.selectTitleLabel.text = @"品牌";
         }

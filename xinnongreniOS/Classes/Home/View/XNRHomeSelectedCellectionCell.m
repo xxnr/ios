@@ -70,10 +70,12 @@
         [_itemsArr addObject:self.section0Items];
         [_itemsArr addObject:self.section1Items];
         [_itemsArr addObject:self.section2Items];
+
         [_itemsArr addObject:self.section3Items];
 //        [_itemsArr addObject:self.section0Params];
 //        [_itemsArr addObject:self.section1Params];
 //        [_itemsArr addObject:self.section2Params];
+
     }
     return _itemsArr;
 }
@@ -92,7 +94,10 @@
     }
     return _section0Params;
 }
--(NSArray *)section1Items{
+
+
+- (NSArray *)section1Items {
+
     if (!_section1Items) {
         _section1Items = [NSArray array];
     }
@@ -156,6 +161,7 @@
     }
     else if(indexPath.section == 1)
     {
+
         self.titleParam = [self.section1Params objectAtIndex:indexPath.item];
     }
     else if(indexPath.section == 2)
@@ -169,6 +175,7 @@
     //    if (indexPath.item == 0) {
     //        self.isSelected = YES;
     //    }
+
 }
 
 - (void)setIndexPath:(NSIndexPath *)indexPath {
@@ -180,6 +187,7 @@
 
 
 - (void)exchangeResModelToItemWith:(NSObject *)obj andIndexPath:(NSIndexPath *)indexPath {
+
     if ([obj isKindOfClass:[XNRHomeSelectedBrandItem class]]) {
         XNRHomeSelectedBrandItem *model = (XNRHomeSelectedBrandItem *)obj;
         self.brandsId = model.brandsId;

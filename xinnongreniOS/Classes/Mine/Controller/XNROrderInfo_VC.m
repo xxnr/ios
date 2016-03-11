@@ -86,9 +86,6 @@
     
     // 中部视图
     [self createMid];
-    // 创建头视图
-//    [self createHeadView];
-
     // 底部视图
     [self createFoot];
     
@@ -615,8 +612,8 @@
         NSLog(@"%@",result);
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *orders = result[@"orders"];
-            NSLog(@"%d",orders.count);
-            NSLog(@"%ld",self.numOrder);
+            NSLog(@"%tu",orders.count);
+            NSLog(@"%d",(int)self.numOrder);
                 if (orders.count == 1) {
                     self.numOrder = 1;
                     NSDictionary *subDic = orders[0];
@@ -649,7 +646,8 @@
 
                     [self.tableview reloadData];
 
-//
+                }else{
+                    [UILabel showMessage:result[@"message"]];
                 }
                 [self selectVC];
             
@@ -676,7 +674,7 @@
     }
     else if (self.numOrder == 2)
     {
-        //                选择支付订单controller
+        // 选择支付订单controller
         XNRSelPayOrder_VC *selVC = [[XNRSelPayOrder_VC alloc]init];
         selVC.addOrderModel1 =self.addorderModel1;
         selVC.addOrderModel2 = self.addorderModel2;
@@ -705,7 +703,6 @@
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"提交订单";
     self.navigationItem.titleView = titleLabel;
-    
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0, 80, 44);
