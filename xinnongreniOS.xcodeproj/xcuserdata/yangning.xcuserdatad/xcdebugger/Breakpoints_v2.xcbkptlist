@@ -14,7 +14,13 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "575"
+<<<<<<< HEAD
             endingLineNumber = "575">
+=======
+            endingLineNumber = "575"
+            landmarkName = "-collectionView:viewForSupplementaryElementOfKind:atIndexPath:"
+            landmarkType = "5">
+>>>>>>> yn_ios
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -29,8 +35,13 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "462"
             endingLineNumber = "462"
+<<<<<<< HEAD
             landmarkName = "@implementation XNRHomeSelectBrandView"
             landmarkType = "3">
+=======
+            landmarkName = "-collectionView:cellForItemAtIndexPath:"
+            landmarkType = "5">
+>>>>>>> yn_ios
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
