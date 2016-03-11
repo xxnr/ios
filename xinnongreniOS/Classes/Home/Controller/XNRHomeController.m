@@ -358,11 +358,17 @@
     cell.backgroundColor =[UIColor clearColor];
 
     if (indexPath.section == 0) {
-     XNRShoppingCartModel *model = _carArr[indexPath.row];
-        [cell setCellDataWithShoppingCartModel:model];
+        if (_carArr.count>0) {
+            XNRShoppingCartModel *model = _carArr[indexPath.row];
+            [cell setCellDataWithShoppingCartModel:model];
+
+        }
     }else{
-    XNRShoppingCartModel *model = _huafeiArr[indexPath.row];
-        [cell setCellDataWithShoppingCartModel:model];
+        if (_huafeiArr.count>0) {
+            XNRShoppingCartModel *model = _huafeiArr[indexPath.row];
+            [cell setCellDataWithShoppingCartModel:model];
+
+        }
     }
     return cell;
 }

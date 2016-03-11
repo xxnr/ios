@@ -64,8 +64,8 @@
     goodNameLabel.textColor = R_G_B_16(0x32323);
     goodNameLabel.font = XNRFont(12);
     goodNameLabel.numberOfLines = 0;
-    goodNameLabel.adjustsFontSizeToFitWidth = YES;
-    [goodNameLabel fitTextHeight_Ext];
+//    goodNameLabel.adjustsFontSizeToFitWidth = YES;
+//    [goodNameLabel fitTextHeight_Ext];
     
     self.goodNameLabel = goodNameLabel;
     [self.contentView addSubview:self.goodNameLabel];

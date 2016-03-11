@@ -50,7 +50,6 @@
 @property (nonatomic ,strong) NSMutableArray *attributes;
 @property (nonatomic ,strong) NSMutableArray *additions;
 
-
 @property (nonatomic ,weak) XNRPropertyView *propertyView;
 @end
 
@@ -70,7 +69,7 @@
       XNRPropertyView *propertyView = [[XNRPropertyView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) model:self.model andType:XNRSecondType];
         __weak __typeof(self)weakSelf = self;
         // 传回来的属性
-        propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions){
+        propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice){
             _attributes = attributes;
             _additions = addtions;
             
@@ -145,7 +144,6 @@
     // 键盘即将隐藏, 就会发出UIKeyboardWillHideNotification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-//    self.numTextField = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, 12, 12)];;
 }
 
 -(void)keyboardWillHide:(NSNotification *)note
@@ -174,7 +172,6 @@
 
     }];
 }
-
 #pragma mark-获取网络数据
 -(void)getData {
     
@@ -224,9 +221,7 @@
                 self.bgView.hidden = NO;
                 self.bgExpectView.hidden = YES;
             }
-
         }
-        
         [self.tableView reloadData];
     } failure:^(NSError *error) {
         [BMProgressView LoadViewDisappear:self.view];
@@ -261,30 +256,27 @@
     
     
     UIView *bgExpectView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenHeight-64-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
-    bgExpectView.backgroundColor = [UIColor whiteColor];
+    bgExpectView.backgroundColor = R_G_B_16(0xc7c7c7);
     self.bgExpectView = bgExpectView;
     [self.view addSubview:bgExpectView];
     
     UILabel *expectLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80))];
     expectLabel.text = @"敬请期待";
     expectLabel.textAlignment = NSTextAlignmentCenter;
-    expectLabel.textColor = R_G_B_16(0x323232);
-    expectLabel.font = [UIFont systemFontOfSize:14];
+    expectLabel.textColor = R_G_B_16(0x909090);
+    expectLabel.font = [UIFont systemFontOfSize:18];
     [bgExpectView addSubview:expectLabel];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgExpectView addSubview:lineView];
     
-    
-
     UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight-64-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
     bgView.backgroundColor=[UIColor whiteColor];
     self.bgView = bgView;
     [self.view addSubview:bgView];
 
     UIButton *leftBtn = [MyControl createButtonWithFrame:CGRectMake(PX_TO_PT(38), PX_TO_PT(16), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
-    
     
     leftBtn.tag = kLeftBtn;
     [leftBtn setImage:[UIImage imageNamed:@"icon_minus"] forState:UIControlStateNormal];
@@ -323,7 +315,6 @@
     self.rightBtn = rightBtn;
     [bgView addSubview:rightBtn];
     
-
     // 立即购买
     UIButton *buyBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(buyBtnClick) Title:@"立即购买"];
     buyBtn.backgroundColor = [UIColor whiteColor];
@@ -346,7 +337,6 @@
     [bgView addSubview:line];
     
 }
-
 -(void)XNRToolBarBtnClick
 {
 
@@ -359,13 +349,11 @@
     
 }
 #pragma mark-加入购物车
-
 -(void)addBuyCar
 {
     [self.propertyView show:XNRSecondType];
     NSLog(@"加入购物车");
 }
-
 #pragma 加减数量
 -(void)btnClick:(UIButton*)button{
     if(button.tag == kLeftBtn){
