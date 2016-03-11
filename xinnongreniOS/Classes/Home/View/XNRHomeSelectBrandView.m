@@ -26,23 +26,27 @@
 
 @property (nonatomic, strong) NSMutableArray *selecteItemArr;
 
-@property (nonatomic, weak) UIButton *resetBtn;
+@property (nonatomic, weak) UIButton *resetBtn;//重置按钮
 
-@property (nonatomic, weak) UIButton *admireBtn;
+@property (nonatomic, weak) UIButton *admireBtn;//确定按钮
 
 @property (nonatomic, copy) brandViewBlock com;
 
-@property (nonatomic, assign)XNRType loadType;
 
-@property (nonatomic, strong)NSMutableArray *categorys;
 
-@property (nonatomic ,strong)NSMutableArray *resArr;
+@property (nonatomic, assign)XNRType loadType;//类型
 
-@property (nonatomic, strong)NSMutableArray *gxArr;
+@property (nonatomic, strong)NSMutableArray *categorys;//类型，汽车 or 化肥
 
-@property (nonatomic, strong)NSMutableArray *txArr;
+@property (nonatomic ,strong)NSMutableArray *resArr;//品牌数组
 
-@property (nonatomic, strong)NSArray *param;
+@property (nonatomic, strong)NSMutableArray *gxArr;//共有属性数组
+
+@property (nonatomic, strong)NSMutableArray *txArr;//特有属性数组
+
+@property (nonatomic, strong)NSArray *param;//
+
+@property (nonatomic, strong)NSMutableArray *kinds;
 @end
 
 @implementation XNRHomeSelectBrandView
@@ -98,6 +102,8 @@
         self.resArr = [NSMutableArray array];
         self.gxArr = [NSMutableArray array];
         self.txArr = [NSMutableArray array];
+        self.kinds = [NSMutableArray array];
+
         
         self.backgroundColor = R_G_B_16(0xf0f0f0);
         self.loadType = type;
@@ -229,8 +235,10 @@
                 [KSHttpRequest get:KAttibutes parameters:param success:^(id result) {
                     if ([result[@"code"]integerValue] == 1000) {
                         NSArray *arr = result[@"attributes"];
-                        [self.gxArr setArray:arr[0][@"values"]];
+
                         
+                        [self.kinds addObject:arr[0][@"_id"][@"name"]];
+                        [self.gxArr setArray:arr[0][@"values"]];
                         
                         //把品牌 车型 价格各数组添加到self.selecteItemArr 数组中
                         for (int i = 0; i < 3; i++) {
@@ -283,6 +291,10 @@
                         }
 
                     }
+                    [self configSearchAndSelectViewWith:params];
+                    
+                    [self.collectionView reloadData];
+
                 } failure:^(NSError *error) {
                     
                 }];
@@ -304,6 +316,7 @@
 //
                 [self configSearchAndSelectViewWith:params];
                 [self.collectionView reloadData];
+
                 }
             
             
@@ -477,13 +490,25 @@
     UICollectionReusableView *reusableview = nil;
     if (kind == UICollectionElementKindSectionHeader) {
         XNRHomeSelectedBrandHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewId forIndexPath:indexPath];
-        if (self.loadType == eXNRFerType) {
-            headerView.selectTitleLabel.text = indexPath.section==0?@"品牌":@"价格";
 
-        }else if (self.loadType == eXNRCarType){
-            headerView.selectTitleLabel.text = indexPath.section==0?@"车系":@"价格";
-
+        if (indexPath.section == 0) {
+            headerView.selectTitleLabel.text = @"品牌";
         }
+        else if (indexPath.section == 1)
+        {
+            headerView.selectTitleLabel.text = self.kinds[0];
+        }
+        else
+        {
+            headerView.selectTitleLabel.text = @"价格";
+        }
+//        if (self.loadType == eXNRFerType) {
+//            headerView.selectTitleLabel.text = indexPath.section==0?@"品牌":@"价格";
+//
+//        }else if (self.loadType == eXNRCarType){
+//            headerView.selectTitleLabel.text = indexPath.section==0?@"车系":@"价格";
+//
+//        }
         reusableview = headerView;
     }
     return reusableview;

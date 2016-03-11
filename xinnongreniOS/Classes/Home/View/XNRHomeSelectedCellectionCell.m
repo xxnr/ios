@@ -7,7 +7,7 @@
 //
 
 #import "XNRHomeSelectedCellectionCell.h"
-
+#import "XNBrandsModel.h"
 @implementation XNRHomeSelectedCellectionCell
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -66,6 +66,7 @@
         _itemsArr = [NSMutableArray array];
         [_itemsArr addObject:self.section0Items];
         [_itemsArr addObject:self.section1Items];
+        [_itemsArr addObject:self.section2Items];
     }
     return _itemsArr;
 }
@@ -84,40 +85,42 @@
     }
     return _section0Params;
 }
--(NSArray *)section2Items{
-    if (!_section2Items) {
-        _section2Items = [NSArray array];
-    }
-    return _section2Items;
-}
--(NSArray *)section2Params
-{
-    if (!_section2Params) {
-        _section2Params  = [NSArray array];
-    }
-    return _section2Params;
-}
-- (NSArray *)section1Items {
-    if (!_section1Items) {
-        if (self.dataType == eXNRFerType) {
-            _section1Items = @[@"全部",@"0-1000元",@"1000-2000元",@"2000-3000元",@"3000元以上"];
 
-        }else{
-            _section1Items = @[@"全部",@"0-5万元",@"5-6万元",@"6-7万元",@"7万元以上"];
-        }
+- (NSArray *)section1Items {
+
+    if (!_section1Items) {
+        _section1Items = [NSArray array];
     }
     return _section1Items;
 }
-- (NSArray *)section1Params {
+-(NSArray *)section1Params
+{
     if (!_section1Params) {
-        if (self.dataType == eXNRFerType) {
-            _section1Params = @[[NSNull null],@"0,1000",@"1000,2000",@"2000,3000",@"3000,1000000"];
-
-        }else if (self.dataType == eXNRCarType){
-            _section1Params = @[[NSNull null],@"0,50000",@"50000,60000",@"60000,70000",@"70000,1000000"];
-        }
+        _section1Params  = [NSArray array];
     }
     return _section1Params;
+}
+- (NSArray *)section2Items {
+    if (!_section2Items) {
+        if (self.dataType == eXNRFerType) {
+            _section2Items = @[@"全部",@"0-1000元",@"1000-2000元",@"2000-3000元",@"3000元以上"];
+
+        }else{
+            _section2Items = @[@"全部",@"0-5万元",@"5-6万元",@"6-7万元",@"7万元以上"];
+        }
+    }
+    return _section2Items;
+}
+- (NSArray *)section2Params {
+    if (!_section2Params) {
+        if (self.dataType == eXNRFerType) {
+            _section2Params = @[[NSNull null],@"0,1000",@"1000,2000",@"2000,3000",@"3000,1000000"];
+
+        }else if (self.dataType == eXNRCarType){
+            _section2Params = @[[NSNull null],@"0,50000",@"50000,60000",@"60000,70000",@"70000,1000000"];
+        }
+    }
+    return _section2Params;
 }
 
 
@@ -131,11 +134,13 @@
     }
     else if(indexPath.section == 1)
     {
-        self.titleParam = [self.section2Params objectAtIndex:indexPath.item];
-    }
-    else {
+
         self.titleParam = [self.section1Params objectAtIndex:indexPath.item];
     }
+    else {
+        self.titleParam = [self.section2Params objectAtIndex:indexPath.item];
+    }
+
     self.category = indexPath.section + 1;
 //    if (indexPath.item == 0) {
 //        self.isSelected = YES;
@@ -144,15 +149,15 @@
 
 - (void)setIndexPath:(NSIndexPath *)indexPath {
     _indexPath = indexPath;
-    if (!(indexPath.row == 0 && indexPath.section == 0)) {
+//    if (!(indexPath.row == 0 && indexPath.section == 0)) {
         [self getItemDataValueWith:indexPath];
-    }
+//    }
 }
 
 
 - (void)exchangeResModelToItemWith:(NSObject *)obj andIndexPath:(NSIndexPath *)indexPath {
     if ([obj isKindOfClass:[XNRShoppingCartModel class]]) {
-        XNRShoppingCartModel *model = (XNRShoppingCartModel *)obj;
+        XNBrandsModel *model = (XNBrandsModel *)obj;
         self.brandName = model.name;
         self.titleStr = model.name;
         self.titleParam = model.name;

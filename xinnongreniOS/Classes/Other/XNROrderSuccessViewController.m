@@ -113,6 +113,12 @@
 - (void)backClick:(UIButton *)btn
 {
 //    [self.navigationController popViewControllerAnimated:YES];
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[XNRMyOrder_VC class]]) {
+            [self.navigationController popToViewController:vc animated:YES];
+            return;
+        }
+    }
     [self.navigationController popToRootViewControllerAnimated:YES];
 
 }

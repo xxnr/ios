@@ -459,6 +459,7 @@
     }
     vc.dataArray = arr;
     vc.totalPrice = _totalPrice;
+
     vc.isRoot = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
