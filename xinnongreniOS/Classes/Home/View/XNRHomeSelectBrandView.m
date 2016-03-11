@@ -26,23 +26,23 @@
 
 @property (nonatomic, strong) NSMutableArray *selecteItemArr;
 
-@property (nonatomic, weak) UIButton *resetBtn;
+@property (nonatomic, weak) UIButton *resetBtn;//重置按钮
 
-@property (nonatomic, weak) UIButton *admireBtn;
+@property (nonatomic, weak) UIButton *admireBtn;//确定按钮
 
 @property (nonatomic, copy) brandViewBlock com;
 
-@property (nonatomic, assign)XNRType loadType;
+@property (nonatomic, assign)XNRType loadType;//类型
 
-@property (nonatomic, strong)NSMutableArray *categorys;
+@property (nonatomic, strong)NSMutableArray *categorys;//类型，汽车 or 化肥
 
-@property (nonatomic ,strong)NSMutableArray *resArr;
+@property (nonatomic ,strong)NSMutableArray *resArr;//品牌数组
 
-@property (nonatomic, strong)NSMutableArray *gxArr;
+@property (nonatomic, strong)NSMutableArray *gxArr;//共有属性数组
 
-@property (nonatomic, strong)NSMutableArray *txArr;
+@property (nonatomic, strong)NSMutableArray *txArr;//特有属性数组
 
-@property (nonatomic, strong)NSArray *param;
+@property (nonatomic, strong)NSArray *param;//
 @end
 
 @implementation XNRHomeSelectBrandView
@@ -54,7 +54,7 @@
     selectedView.com = com;
     selectedView.tag = 10240;
     [target addSubview:selectedView];
-
+    
     [UIView animateWithDuration:0.3 animations:^{
         selectedView.frame = displayRect;
         [selectedView.collectionView reloadData];
@@ -64,7 +64,7 @@
     UIWindow *kXNRWindow = [[[UIApplication sharedApplication] delegate] window];
     XNRHomeSelectBrandView *selectedView = [[XNRHomeSelectBrandView alloc] initWithFrame:displayRect];
     selectedView = [kXNRWindow viewWithTag:10240];
-//    self.frame = displayRect;
+    //    self.frame = displayRect;
     [UIView animateWithDuration:0.3 animations:^{
         selectedView.frame = initialRect;
         [selectedView.collectionView reloadData];
@@ -72,7 +72,7 @@
     }completion:^(BOOL finished) {
         [selectedView removeFromSuperview];
     }];
-
+    
 }
 
 // 点击确定按钮，请求接口，然后再cancel
@@ -81,7 +81,7 @@
         self.frame = initialRect;
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
-
+        
     }];
     
 }
@@ -119,7 +119,7 @@
             
             _param = [NSArray array];
             [self getDataWith:_param];
-
+            
         }
     } failure:^(NSError *error) {
         
@@ -139,13 +139,13 @@
                     XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
                     [model setValuesForKeysWithDictionary:dicts];
                     
-//                    NSString *brandId = model.brandId;
-//                    [KSHttpRequest get:[NSString stringWithFormat:@"%@/brands?category=化肥&brand=%@",KHomeProducts,brandId] parameters:nil success:^(id result) {
-//                        if ([result[@"code"] integerValue] == 1000) {
-//                            NSArray *att = result[@"attributes"];
-//                            
-//                        }
-//                    } failure:<#^(NSError *error)failure#>]
+                    //                    NSString *brandId = model.brandId;
+                    //                    [KSHttpRequest get:[NSString stringWithFormat:@"%@/brands?category=化肥&brand=%@",KHomeProducts,brandId] parameters:nil success:^(id result) {
+                    //                        if ([result[@"code"] integerValue] == 1000) {
+                    //                            NSArray *att = result[@"attributes"];
+                    //
+                    //                        }
+                    //                    } failure:<#^(NSError *error)failure#>]
                     [self.resArr addObject:model];
                 }
             }
@@ -161,7 +161,7 @@
                     itemData.indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                     [sectionDataArr addObject:itemData];
                 }
-
+                
                 int sectionCoutn = i == 0 ? (int)self.resArr.count : 5;
                 for (int j = 0; j < sectionCoutn; j++) {
                     XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc] init];
@@ -172,20 +172,20 @@
                             [itemData exchangeResModelToItemWith:[self.resArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
                         }
                     }
-//                    else if( i == 1)
-//                    {
-//                        [KSHttpRequest get:[NSString stringWithFormat:@"%@/brands?category=化肥&brand=0",KHomeProducts] parameters:nil success:^(id result) {
-//                            if ([result[@"code"] integerValue] == 1000) {
-//                                NSArray *att = result[@"attributes"];
-//                                NSDictionary *dic = att[0];
-//                                NSString *name = dic[@"_id"][@"name"];
-//                                NSArray *values = dic[@"values"];
-//                                [itemData exchangeResModelToItemWith:[values objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
-//                            }
-//                        } failure:^(NSError *error) {
-//                            
-//                        }];
-//                    }
+                    //                    else if( i == 1)
+                    //                    {
+                    //                        [KSHttpRequest get:[NSString stringWithFormat:@"%@/brands?category=化肥&brand=0",KHomeProducts] parameters:nil success:^(id result) {
+                    //                            if ([result[@"code"] integerValue] == 1000) {
+                    //                                NSArray *att = result[@"attributes"];
+                    //                                NSDictionary *dic = att[0];
+                    //                                NSString *name = dic[@"_id"][@"name"];
+                    //                                NSArray *values = dic[@"values"];
+                    //                                [itemData exchangeResModelToItemWith:[values objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
+                    //                            }
+                    //                        } failure:^(NSError *error) {
+                    //
+                    //                        }];
+                    //                    }
                     else
                     {
                         itemData.indexPath = [NSIndexPath indexPathForItem:j inSection:i];
@@ -211,7 +211,7 @@
         [param setObject:@"0" forKey:@"brand"];
         [KSHttpRequest get:KBrands parameters:param success:^(id result) {
             
-     
+            
             if ([result[@"code"] integerValue] == 1000) {
                 NSArray *brands = result[@"brands"];
                 int i = 0;
@@ -222,9 +222,9 @@
                     model.brandsId = dicts[@"_id"];
                     model.name = dicts[@"name"];
                     [self.resArr addObject:model];
-               
+                    
                 }
-            
+                
                 //获取汽车类别的共有属性
                 [KSHttpRequest get:KAttibutes parameters:param success:^(id result) {
                     if ([result[@"code"]integerValue] == 1000) {
@@ -281,30 +281,31 @@
                             }
                             [self.selecteItemArr addObject:sectionDataArr];
                         }
-
+                        
                     }
                 } failure:^(NSError *error) {
                     
                 }];
-
-//                //获取汽车品牌下的特有属性
-//                for (int i = 0; i < self.resArr.count; i++) {
-//                    XNBrandsModel *mod = self.resArr[i];
-//                    [param setObject:mod.brandsId forKey:@"brand"];
-//                    [KSHttpRequest get:KAttibutes parameters:param success:^(id result) {
-//                        if ([result[@"code"]integerValue] == 1000) {
-//                            NSArray *arr = result[@"attributes"];
-//                            [self.txArr addObject:arr[i][@"values"]];
-//                            
-//
-//                        }
-//                    } failure:^(NSError *error) {
-//                        
-//                    }];
-//
+                
+                //                //获取汽车品牌下的特有属性
+                //                for (int i = 0; i < self.resArr.count; i++) {
+                //                    XNBrandsModel *mod = self.resArr[i];
+                //                    [param setObject:mod.brandsId forKey:@"brand"];
+                //                    [KSHttpRequest get:KAttibutes parameters:param success:^(id result) {
+                //                        if ([result[@"code"]integerValue] == 1000) {
+                //                            NSArray *arr = result[@"attributes"];
+                //                            [self.txArr addObject:arr[i][@"values"]];
+                //
+                //
+                //                        }
+                //                    } failure:^(NSError *error) {
+                //
+                //                    }];
+                //
                 [self configSearchAndSelectViewWith:params];
+                
                 [self.collectionView reloadData];
-                }
+            }
             
             
             
@@ -312,7 +313,7 @@
             
         }];
         
-      
+        
     }
     
 }
@@ -402,10 +403,10 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"selectBtnChange" object:nil];
         [self loadSeletedDataWith:nil];
         [self cancel];
-   
+        
     }
-
-
+    
+    
 }
 
 //dataSource
@@ -436,13 +437,19 @@
 //选择了某个cell
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     XNRHomeSelectedBrandItem *selectedItem = [self.selecteItemArr[indexPath.section] objectAtIndex:indexPath.item];
-    NSArray *arr = self.selecteItemArr[indexPath.section];
-    for (XNRHomeSelectedBrandItem *cellItem in arr) {
-        if (cellItem.isSelected) {
-            cellItem.isSelected = NO;
-        }
+//    NSArray *arr = self.selecteItemArr[indexPath.section];
+//    for (XNRHomeSelectedBrandItem *cellItem in arr) {
+//        if (cellItem.isSelected) {
+//            cellItem.isSelected = NO;
+//        }
+//    }
+    if (selectedItem.isSelected == YES) {
+        selectedItem.isSelected = NO;
     }
-    selectedItem.isSelected = YES;
+    else
+    {
+        selectedItem.isSelected = YES;
+    }
     [self.collectionView reloadData];
 }
 //取消选择了某个cell
@@ -479,10 +486,10 @@
         XNRHomeSelectedBrandHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewId forIndexPath:indexPath];
         if (self.loadType == eXNRFerType) {
             headerView.selectTitleLabel.text = indexPath.section==0?@"品牌":@"价格";
-
+            
         }else if (self.loadType == eXNRCarType){
             headerView.selectTitleLabel.text = indexPath.section==0?@"车系":@"价格";
-
+            
         }
         reusableview = headerView;
     }
