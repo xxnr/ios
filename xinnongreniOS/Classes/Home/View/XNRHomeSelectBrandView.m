@@ -344,7 +344,7 @@
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, self.bounds.size.height) collectionViewLayout:collectionViewLayout];
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, self.bounds.size.height - 100) collectionViewLayout:collectionViewLayout];
     collectionView.delegate = self;
     collectionView.dataSource = self;
     [collectionView registerClass:[XNRHomeSelectedBrandHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewId];
@@ -357,7 +357,7 @@
     //TODO:加btn
     CGFloat w = (self.bounds.size.width-3*coll_cell_margin)/2;
     UIButton *resetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    resetBtn.frame = CGRectMake(PX_TO_PT(32),PX_TO_PT(800),w,w/4);
+    resetBtn.frame = CGRectMake(PX_TO_PT(32),PX_TO_PT(850),w,w/4);
     resetBtn.titleLabel.font = XNRFont(14);
     resetBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
     resetBtn.layer.borderWidth = 1.0;
@@ -373,7 +373,7 @@
     [self addSubview:resetBtn];
     
     UIButton *admireBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    admireBtn.frame = CGRectMake(CGRectGetMaxX(self.resetBtn.frame) + coll_cell_margin, PX_TO_PT(800),w , w/4);
+    admireBtn.frame = CGRectMake(CGRectGetMaxX(self.resetBtn.frame) + coll_cell_margin, PX_TO_PT(850),w , w/4);
     admireBtn.titleLabel.font = XNRFont(14);
     admireBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
     admireBtn.layer.borderWidth = 1.0;
