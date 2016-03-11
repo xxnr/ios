@@ -10,6 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectedCellectionCell.m"
             timestampString = "479276946.197196"
@@ -140,6 +141,8 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
 >>>>>>> master
+=======
+>>>>>>> master
             filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
             timestampString = "479296019.584094"
             startingColumnNumber = "9223372036854775807"
@@ -164,6 +167,7 @@
             endingLineNumber = "454"
             landmarkName = "-collectionView:didSelectItemAtIndexPath:"
             landmarkType = "5">
+<<<<<<< HEAD
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -180,6 +184,8 @@
             endingLineNumber = "202"
             landmarkName = "-getDataWith:"
             landmarkType = "5">
+=======
+>>>>>>> master
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -192,8 +198,13 @@
             timestampString = "479295912.242577"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
+<<<<<<< HEAD
             startingLineNumber = "237"
             endingLineNumber = "237"
+=======
+            startingLineNumber = "202"
+            endingLineNumber = "202"
+>>>>>>> master
             landmarkName = "-getDataWith:"
             landmarkType = "5">
          </BreakpointContent>
@@ -204,6 +215,7 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+<<<<<<< HEAD
             filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectedCellectionCell.m"
             timestampString = "479295413.492399"
             startingColumnNumber = "9223372036854775807"
@@ -211,6 +223,15 @@
             startingLineNumber = "42"
             endingLineNumber = "42"
             landmarkName = "-updateCellStateAndDataWith:"
+=======
+            filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
+            timestampString = "479295912.242577"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
+            landmarkName = "-getDataWith:"
+>>>>>>> master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -221,11 +242,19 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectedCellectionCell.m"
+<<<<<<< HEAD
             timestampString = "479295415.458001"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "43"
             endingLineNumber = "43"
+=======
+            timestampString = "479295413.492399"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+>>>>>>> master
             landmarkName = "-updateCellStateAndDataWith:"
             landmarkType = "5">
          </BreakpointContent>
@@ -236,6 +265,7 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+<<<<<<< HEAD
             filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
             timestampString = "479296019.584094"
             startingColumnNumber = "9223372036854775807"
@@ -243,6 +273,15 @@
             startingLineNumber = "432"
             endingLineNumber = "432"
             landmarkName = "-collectionView:cellForItemAtIndexPath:"
+=======
+            filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectedCellectionCell.m"
+            timestampString = "479295415.458001"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "-updateCellStateAndDataWith:"
+>>>>>>> master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -256,9 +295,15 @@
             timestampString = "479296019.584094"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
+<<<<<<< HEAD
             startingLineNumber = "446"
             endingLineNumber = "446"
             landmarkName = "-collectionView:didSelectItemAtIndexPath:"
+=======
+            startingLineNumber = "432"
+            endingLineNumber = "432"
+            landmarkName = "-collectionView:cellForItemAtIndexPath:"
+>>>>>>> master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -269,12 +314,21 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
+<<<<<<< HEAD
             timestampString = "479295827.769576"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "198"
             endingLineNumber = "198"
             landmarkName = "-getDataWith:"
+=======
+            timestampString = "479296019.584094"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "446"
+            endingLineNumber = "446"
+            landmarkName = "-collectionView:didSelectItemAtIndexPath:"
+>>>>>>> master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -284,6 +338,40 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+            filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
+<<<<<<< HEAD
+            timestampString = "479296235.598556"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "434"
+            endingLineNumber = "434"
+            landmarkName = "-collectionView:cellForItemAtIndexPath:"
+=======
+            timestampString = "479295827.769576"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
+            landmarkName = "-getDataWith:"
+>>>>>>> master
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+<<<<<<< HEAD
+            filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectedCellectionCell.m"
+            timestampString = "479296417.116919"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
+            landmarkName = "-exchangeResModelToItemWith:andIndexPath:"
+=======
             filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
             timestampString = "479296235.598556"
             startingColumnNumber = "9223372036854775807"
@@ -291,6 +379,7 @@
             startingLineNumber = "434"
             endingLineNumber = "434"
             landmarkName = "-collectionView:cellForItemAtIndexPath:"
+>>>>>>> master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -300,6 +389,8 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+<<<<<<< HEAD
+=======
             filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectedCellectionCell.m"
             timestampString = "479296417.116919"
             startingColumnNumber = "9223372036854775807"
@@ -316,15 +407,20 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+>>>>>>> master
             filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
             timestampString = "479296759.32392"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> master
             startingLineNumber = "436"
             endingLineNumber = "436"
             landmarkName = "@implementation XNRHomeSelectBrandView"
             landmarkType = "3">
+<<<<<<< HEAD
 =======
             startingLineNumber = "305"
             endingLineNumber = "305"
@@ -362,6 +458,8 @@
                   offsetFromSymbolStart = "648">
                </Location>
             </Locations>
+>>>>>>> master
+=======
 >>>>>>> master
          </BreakpointContent>
       </BreakpointProxy>

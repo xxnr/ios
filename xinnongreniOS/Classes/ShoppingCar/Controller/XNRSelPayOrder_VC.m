@@ -11,6 +11,7 @@
 #import "XNRCheckOrderModel.h"
 #import "XNROrderInfo_VC.h"
 #import "XNRPayType_VC.h"
+#import "XNRShoppingCarController.h"
 @interface XNRSelPayOrder_VC ()
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UILabel *orderIDLabel1;
@@ -72,7 +73,9 @@
 }
 -(void)setTop
 {
+    self.topView.frame = CGRectMake(0, 0, ScreenWidth,62);
     UIImageView *bgImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"矩形背景1"]];
+    
     bgImageView.frame = self.topView.frame;
     [self.topView addSubview:bgImageView];
     
@@ -111,11 +114,15 @@
 - (void)backClick:(UIButton *)btn
 {
 
+    //返回到购物车页面
     for (UIViewController *vc in self.navigationController.viewControllers) {
-        if ([vc isKindOfClass:[XNROrderInfo_VC class]]) {
+        if ([vc isKindOfClass:[XNRShoppingCarController class]]) {
             [self.navigationController popToViewController:vc animated:YES];
+            return;
         }
     }
+    
+
 }
 
 - (IBAction)pay1Btn:(UIButton *)sender {
@@ -188,7 +195,11 @@
 {
     self.orderIDLabel1.text = self.addOrderModel1.orderID;
     if ([paySubOrderType isEqualToString:@"deposit"]) {
-        self.payType1.text = @"分阶段：订金";
+        self.payType1.text = @"阶段一：订金";
+    }
+    else if ([paySubOrderType isEqualToString:@"balance"])
+    {
+        self.payType1.text = @"阶段二：尾款";
     }
     else if ([paySubOrderType isEqualToString:@"full"])
     {

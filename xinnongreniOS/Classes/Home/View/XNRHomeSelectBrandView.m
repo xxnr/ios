@@ -43,6 +43,11 @@
 @property (nonatomic, strong)NSMutableArray *txArr;//特有属性数组
 
 @property (nonatomic, strong)NSArray *param;//
+<<<<<<< HEAD
+=======
+
+@property (nonatomic, strong)NSMutableArray *kinds;
+>>>>>>> master
 @end
 
 @implementation XNRHomeSelectBrandView
@@ -98,6 +103,7 @@
         self.resArr = [NSMutableArray array];
         self.gxArr = [NSMutableArray array];
         self.txArr = [NSMutableArray array];
+        self.kinds = [NSMutableArray array];
         
         self.backgroundColor = R_G_B_16(0xf0f0f0);
         self.loadType = type;
@@ -213,6 +219,7 @@
             
             
             if ([result[@"code"] integerValue] == 1000) {
+        
                 NSArray *brands = result[@"brands"];
                 int i = 0;
                 for (NSDictionary *dicts in brands)
@@ -229,6 +236,8 @@
                 [KSHttpRequest get:KAttibutes parameters:param success:^(id result) {
                     if ([result[@"code"]integerValue] == 1000) {
                         NSArray *arr = result[@"attributes"];
+                        
+                        [self.kinds addObject:arr[0][@"_id"][@"name"]];
                         [self.gxArr setArray:arr[0][@"values"]];
                         
                         
@@ -283,9 +292,14 @@
                         }
                         
                     }
+                    [self configSearchAndSelectViewWith:params];
+                    
+                    [self.collectionView reloadData];
+
                 } failure:^(NSError *error) {
                     
                 }];
+<<<<<<< HEAD
                 
                 //                //获取汽车品牌下的特有属性
                 //                for (int i = 0; i < self.resArr.count; i++) {
@@ -306,6 +320,25 @@
                 
                 [self.collectionView reloadData];
             }
+=======
+
+//                //获取汽车品牌下的特有属性
+//                for (int i = 0; i < self.resArr.count; i++) {
+//                    XNBrandsModel *mod = self.resArr[i];
+//                    [param setObject:mod.brandsId forKey:@"brand"];
+//                    [KSHttpRequest get:KAttibutes parameters:param success:^(id result) {
+//                        if ([result[@"code"]integerValue] == 1000) {
+//                            NSArray *arr = result[@"attributes"];
+//                            [self.txArr addObject:arr[i][@"values"]];
+//                            
+//
+//                        }
+//                    } failure:^(NSError *error) {
+//                        
+//                    }];
+//
+                }
+>>>>>>> master
             
             
             
@@ -484,13 +517,34 @@
     UICollectionReusableView *reusableview = nil;
     if (kind == UICollectionElementKindSectionHeader) {
         XNRHomeSelectedBrandHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewId forIndexPath:indexPath];
+<<<<<<< HEAD
         if (self.loadType == eXNRFerType) {
             headerView.selectTitleLabel.text = indexPath.section==0?@"品牌":@"价格";
             
         }else if (self.loadType == eXNRCarType){
             headerView.selectTitleLabel.text = indexPath.section==0?@"车系":@"价格";
             
+=======
+
+        if (indexPath.section == 0) {
+            headerView.selectTitleLabel.text = @"品牌";
         }
+        else if (indexPath.section == 1)
+        {
+            headerView.selectTitleLabel.text = self.kinds[0];
+        }
+        else
+        {
+            headerView.selectTitleLabel.text = @"价格";
+>>>>>>> master
+        }
+//        if (self.loadType == eXNRFerType) {
+//            headerView.selectTitleLabel.text = indexPath.section==0?@"品牌":@"价格";
+//
+//        }else if (self.loadType == eXNRCarType){
+//            headerView.selectTitleLabel.text = indexPath.section==0?@"车系":@"价格";
+//
+//        }
         reusableview = headerView;
     }
     return reusableview;
