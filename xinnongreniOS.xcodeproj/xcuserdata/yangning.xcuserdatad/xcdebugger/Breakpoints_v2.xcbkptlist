@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
-            timestampString = "479380083.176883"
+            timestampString = "479384139.83553"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "575"
-            endingLineNumber = "575"
-            landmarkName = "-collectionView:viewForSupplementaryElementOfKind:atIndexPath:"
+            startingLineNumber = "565"
+            endingLineNumber = "565"
+            landmarkName = "-collectionView:layout:minimumLineSpacingForSectionAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
-            timestampString = "479380083.176883"
+            timestampString = "479384139.83553"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "462"
-            endingLineNumber = "462"
-            landmarkName = "-collectionView:cellForItemAtIndexPath:"
+            startingLineNumber = "452"
+            endingLineNumber = "452"
+            landmarkName = "-collectionView:numberOfItemsInSection:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
