@@ -142,7 +142,7 @@
 -(void)getMinPayPrice
 {
     [KSHttpRequest post:KgetMinPayPrice parameters:@{@"token":[DataCenter account].token,@"orderId":self.orderID} success:^(id result) {
-        if ([result[@"code"] integerValue] == 1000) {
+        if ([result[@"code"] floatValue] == 1000) {
 
             if (result[@"payprice"] != nil) {
                 self.minPrice = [NSString stringWithFormat:@"%@",result[@"payprice"]];
@@ -657,7 +657,7 @@
     [self.btn2 setImage:[UIImage imageNamed:@"04_discount_gray2"] forState:UIControlStateDisabled];
     [self.btn2 addTarget:self action:@selector(reviseMoney:) forControlEvents:UIControlEventTouchDown];
     [self.sepMoneyView addSubview:self.btn2];
-    if ([_Money integerValue] == [self.holdPrice integerValue]) {
+    if ([_Money floatValue] == [self.holdPrice floatValue]) {
         self.btn2.enabled = NO;
     }
 
@@ -686,40 +686,47 @@
 {
     NSString *s =[self.sepMoney.text substringFromIndex:1];
     sender.enabled = YES;
-    if (sender.tag == 3 && ([s integerValue] <= [self.minPrice integerValue])) {
+    if (sender.tag == 3 && ([s floatValue] <= [self.minPrice floatValue])) {
         sender.enabled = NO;
     }
-    else if (sender.tag == 4 && ([s integerValue]+500) > [self.holdPrice integerValue])
+    else if(sender.tag == 3 && ([s floatValue] - 500) < [self.minPrice floatValue])
+    {
+        _Money = self.minPrice;
+        sender.enabled = NO;
+        self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.minPrice floatValue]];
+
+    }
+    else if (sender.tag == 4 && ([s floatValue]+500) > [self.holdPrice floatValue])
     {
         _Money = self.holdPrice;
         sender.enabled = NO;
         self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.holdPrice floatValue]];
     }
-    else if ([self.holdPrice integerValue] < [self.minPrice integerValue])
+    else if ([self.holdPrice floatValue] < [self.minPrice floatValue])
     {
         _Money = self.holdPrice;
         self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.holdPrice floatValue]];
     }
     else
     {
-        NSInteger mon = [s integerValue];
+       float mon = [s floatValue];
         if (sender.tag == 3) {
             self.btn2.enabled = YES;
-            mon -= 500;
+            mon -= 500.00;
         }
         else if(sender.tag == 4) {
             self.btn1.enabled = YES;
-            mon += 500;
+            mon += 500.00;
         }
         
-        if (mon >= [self.holdPrice integerValue]) {
+        if (mon >= [self.holdPrice floatValue]) {
             self.btn2.enabled = NO;
         }
-        else if(mon <= [self.minPrice integerValue])
+        else if(mon <= [self.minPrice floatValue])
         {
             self.btn1.enabled = NO;
         }
-        _Money = [NSString stringWithFormat:@"%ld",mon];
+        _Money = [NSString stringWithFormat:@"%.2f",mon];
         self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[_Money floatValue]];
     }
     
@@ -836,9 +843,9 @@
         
         _Money = self.myTextField.text;
     }
-    _ispayType = YES;
-    [self setselPayType];
-    NSLog(@"去支付");
+//    _ispayType = YES;
+//    [self setselPayType];
+//    NSLog(@"去支付");
 //
 //    NSLog(@"%ld",[_Money integerValue]);
     
@@ -857,16 +864,16 @@
 //        
 //    }
     
-//    XNROrderSuccessViewController*vc=[[XNROrderSuccessViewController alloc]init];
-//    vc.money = _Money;
-//    vc.orderID = self.orderID;
-//    vc.fromType = self.fromType;
-//    vc.paymentId = self.paymentId;
-//    vc.recieveName = self.recieveName;
-//    vc.recievePhone = self.recievePhone;
-//    vc.recieveAddress = self.recieveAddress;
-//    vc.hidesBottomBarWhenPushed=YES;
-//    [self.navigationController pushViewController:vc animated:YES];
+    XNROrderSuccessViewController*vc=[[XNROrderSuccessViewController alloc]init];
+    vc.money = _Money;
+    vc.orderID = self.orderID;
+    vc.fromType = self.fromType;
+    vc.paymentId = self.paymentId;
+    vc.recieveName = self.recieveName;
+    vc.recievePhone = self.recievePhone;
+    vc.recieveAddress = self.recieveAddress;
+    vc.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 
