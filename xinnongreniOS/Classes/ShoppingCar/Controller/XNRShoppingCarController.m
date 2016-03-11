@@ -448,7 +448,6 @@
     // 去结算
     NSMutableArray *arr=[[NSMutableArray alloc]init];
     // 提交订单
-    NSMutableArray *idArr = [[NSMutableArray alloc] init];
     for (int i = 0; i<_dataArr.count; i++) {
         XNRShopCarSectionModel *sectionModel = _dataArr[i];
         for (XNRShoppingCartModel *cellModel in sectionModel.SKUList) {
