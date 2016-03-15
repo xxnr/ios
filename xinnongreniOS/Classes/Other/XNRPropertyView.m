@@ -285,7 +285,7 @@
     [bgView addSubview:line];
     
     UIView *bgExpectView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(980)-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
-    bgExpectView.backgroundColor = R_G_B_16(0xc7c7c7);
+    bgExpectView.backgroundColor = R_G_B_16(0xe2e2e2);
     self.bgExpectView = bgExpectView;
     [self.attributesView addSubview:bgExpectView];
     

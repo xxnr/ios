@@ -29,6 +29,8 @@
 @property (nonatomic, assign) BOOL isSelected;
 
 @property (nonatomic, copy) NSString *titleStr;   // 品牌名字
+@property (nonatomic, copy)NSString *brandsId; //  品牌的ID
+
 @property (nonatomic, copy) NSString *titleParam; // 过滤以后的参数
 
 @property (nonatomic, copy) NSString *imageName;
