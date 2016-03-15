@@ -218,8 +218,6 @@
 		49EC52771BEBD10B00AA8898 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EC52761BEBD10B00AA8898 /* libxml2.tbd */; };
 		49EC52791BEBD11500AA8898 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EC52781BEBD11500AA8898 /* libstdc++.tbd */; };
 		49EC527B1BEBD11E00AA8898 /* libstdc++.6.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EC527A1BEBD11E00AA8898 /* libstdc++.6.tbd */; };
-		49EDE9FF1C17D18C00310366 /* XNRHomeSelectBrandView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EDE9FE1C17D18C00310366 /* XNRHomeSelectBrandView.m */; };
-		49EDEA021C17D1A400310366 /* XNRHomeSelectedCellectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EDEA011C17D1A400310366 /* XNRHomeSelectedCellectionCell.m */; };
 		49EDEA071C180C6600310366 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EDEA041C180C6600310366 /* libMobClickLibrary.a */; };
 		49EE99601C4793020064692B /* XNRCustomerOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EE995F1C4793020064692B /* XNRCustomerOrderController.m */; };
 		49EE99631C4794630064692B /* XNRCustomerOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EE99621C4794630064692B /* XNRCustomerOrderCell.m */; };
@@ -413,6 +411,9 @@
 		9CC0CE6A1C87FF3C008D5228 /* XNRSelPayOrder_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE681C87FF3C008D5228 /* XNRSelPayOrder_VC.m */; };
 		9CC0CE6B1C87FF3C008D5228 /* XNRSelPayOrder_VC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CC0CE691C87FF3C008D5228 /* XNRSelPayOrder_VC.xib */; };
 		9CC0CE6E1C8811EE008D5228 /* XNRAddOrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE6D1C8811EE008D5228 /* XNRAddOrderModel.m */; };
+		9CF8AC071C981D5500F27563 /* XNRSelectItemArrModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AC061C981D5500F27563 /* XNRSelectItemArrModel.m */; };
+		9CF8AC0C1C981DB300F27563 /* XNRHomeSelectBrandView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AC091C981DB200F27563 /* XNRHomeSelectBrandView.m */; };
+		9CF8AC0D1C981DB300F27563 /* XNRHomeSelectedCellectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AC0B1C981DB300F27563 /* XNRHomeSelectedCellectionCell.m */; };
 		C54CFAFA1B2AC30C004D5C54 /* checkbox1_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = C54CFAF41B2AC30C004D5C54 /* checkbox1_checked.png */; };
 		C54CFAFB1B2AC30C004D5C54 /* checkbox1_checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C54CFAF51B2AC30C004D5C54 /* checkbox1_checked@2x.png */; };
 		C54CFAFC1B2AC30C004D5C54 /* checkbox1_unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = C54CFAF61B2AC30C004D5C54 /* checkbox1_unchecked.png */; };
@@ -882,10 +883,6 @@
 		49EC52761BEBD10B00AA8898 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		49EC52781BEBD11500AA8898 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		49EC527A1BEBD11E00AA8898 /* libstdc++.6.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.tbd"; path = "usr/lib/libstdc++.6.tbd"; sourceTree = SDKROOT; };
-		49EDE9FD1C17D18300310366 /* XNRHomeSelectBrandView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRHomeSelectBrandView.h; sourceTree = "<group>"; };
-		49EDE9FE1C17D18C00310366 /* XNRHomeSelectBrandView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRHomeSelectBrandView.m; sourceTree = "<group>"; };
-		49EDEA001C17D19B00310366 /* XNRHomeSelectedCellectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRHomeSelectedCellectionCell.h; sourceTree = "<group>"; };
-		49EDEA011C17D1A400310366 /* XNRHomeSelectedCellectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRHomeSelectedCellectionCell.m; sourceTree = "<group>"; };
 		49EDEA041C180C6600310366 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		49EDEA051C180C6600310366 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		49EDEA061C180C6600310366 /* MobClickSocialAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClickSocialAnalytics.h; sourceTree = "<group>"; };
@@ -1252,6 +1249,12 @@
 		9CC0CE691C87FF3C008D5228 /* XNRSelPayOrder_VC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XNRSelPayOrder_VC.xib; sourceTree = "<group>"; };
 		9CC0CE6C1C8811EE008D5228 /* XNRAddOrderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRAddOrderModel.h; sourceTree = "<group>"; };
 		9CC0CE6D1C8811EE008D5228 /* XNRAddOrderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRAddOrderModel.m; sourceTree = "<group>"; };
+		9CF8AC051C981D5500F27563 /* XNRSelectItemArrModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSelectItemArrModel.h; sourceTree = "<group>"; };
+		9CF8AC061C981D5500F27563 /* XNRSelectItemArrModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSelectItemArrModel.m; sourceTree = "<group>"; };
+		9CF8AC081C981DB200F27563 /* XNRHomeSelectBrandView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRHomeSelectBrandView.h; sourceTree = "<group>"; };
+		9CF8AC091C981DB200F27563 /* XNRHomeSelectBrandView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRHomeSelectBrandView.m; sourceTree = "<group>"; };
+		9CF8AC0A1C981DB200F27563 /* XNRHomeSelectedCellectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRHomeSelectedCellectionCell.h; sourceTree = "<group>"; };
+		9CF8AC0B1C981DB300F27563 /* XNRHomeSelectedCellectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRHomeSelectedCellectionCell.m; sourceTree = "<group>"; };
 		C54CFAF41B2AC30C004D5C54 /* checkbox1_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox1_checked.png; sourceTree = "<group>"; };
 		C54CFAF51B2AC30C004D5C54 /* checkbox1_checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox1_checked@2x.png"; sourceTree = "<group>"; };
 		C54CFAF61B2AC30C004D5C54 /* checkbox1_unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox1_unchecked.png; sourceTree = "<group>"; };
@@ -1475,6 +1478,8 @@
 		1F1532FC1B09D1E200CA374B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9CF8AC051C981D5500F27563 /* XNRSelectItemArrModel.h */,
+				9CF8AC061C981D5500F27563 /* XNRSelectItemArrModel.m */,
 				53E269E01B467A5400E57814 /* XNRCyclePicModel.h */,
 				53E269E11B467A5400E57814 /* XNRCyclePicModel.m */,
 				9C4FCB431C8FFDFD00C5B427 /* XNBrandsModel.h */,
@@ -1486,10 +1491,10 @@
 		1F1532FD1B09D1E200CA374B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				49EDE9FD1C17D18300310366 /* XNRHomeSelectBrandView.h */,
-				49EDE9FE1C17D18C00310366 /* XNRHomeSelectBrandView.m */,
-				49EDEA001C17D19B00310366 /* XNRHomeSelectedCellectionCell.h */,
-				49EDEA011C17D1A400310366 /* XNRHomeSelectedCellectionCell.m */,
+				9CF8AC081C981DB200F27563 /* XNRHomeSelectBrandView.h */,
+				9CF8AC091C981DB200F27563 /* XNRHomeSelectBrandView.m */,
+				9CF8AC0A1C981DB200F27563 /* XNRHomeSelectedCellectionCell.h */,
+				9CF8AC0B1C981DB300F27563 /* XNRHomeSelectedCellectionCell.m */,
 				53C5B14C1B15973700C67501 /* XNRHomeCollectionViewCell.h */,
 				53C5B14D1B15973700C67501 /* XNRHomeCollectionViewCell.m */,
 				53C5B1561B15C75500C67501 /* XNRHomeCollectionHeaderView.h */,
@@ -3076,6 +3081,7 @@
 				491611241C8D189400F1E243 /* IQUITextFieldView+Additions.m in Sources */,
 				49EC525C1BEBBA5E00AA8898 /* NSArray+BSExt.m in Sources */,
 				49EE99631C4794630064692B /* XNRCustomerOrderCell.m in Sources */,
+				9CF8AC071C981D5500F27563 /* XNRSelectItemArrModel.m in Sources */,
 				49EC52621BEBBA5E00AA8898 /* UIApplication+BSExt.m in Sources */,
 				49E895FE1BEDC2BB00B3671E /* UIButton+WebCache.m in Sources */,
 				84B77CFF1B26BDE6001923E4 /* PECropViewController.m in Sources */,
@@ -3095,13 +3101,13 @@
 				49F6B19B1C2A6EE100DCF8CF /* MJPhotoLoadingView.m in Sources */,
 				49EF87EB1C48AC9E008C62AE /* XNRMyOrderSectionModel.m in Sources */,
 				49079BD81BF6F89000628039 /* XNRMyRepresentView.m in Sources */,
+				9CF8AC0C1C981DB300F27563 /* XNRHomeSelectBrandView.m in Sources */,
 				49F7A57D1C58469400A1FA45 /* MJRefreshBackGifFooter.m in Sources */,
 				49E896021BEDC2BB00B3671E /* UIImageView+HighlightedWebCache.m in Sources */,
 				49EC526B1BEBBF4500AA8898 /* KeychainItemWrapper.m in Sources */,
 				8446C2A11B1D6D19005CA932 /* POPCustomAnimation.mm in Sources */,
 				53FE38B01B188F2A00AEDC66 /* ZSCLabel.m in Sources */,
 				8446C29E1B1D6D19005CA932 /* POPAnimator.mm in Sources */,
-				49EDE9FF1C17D18C00310366 /* XNRHomeSelectBrandView.m in Sources */,
 				49E895D11BEDAC3400B3671E /* BSDatabaseOperation.m in Sources */,
 				4938E22D1C306422008DF3BF /* XNRAddressEmptyView.m in Sources */,
 				53ECB0FA1B1C57C100E15843 /* XNRSignInView.m in Sources */,
@@ -3190,6 +3196,7 @@
 				49F7A57B1C58469400A1FA45 /* MJRefreshAutoNormalFooter.m in Sources */,
 				49EC525B1BEBBA5E00AA8898 /* BSLanguage.m in Sources */,
 				49F7A5771C58469400A1FA45 /* MJRefreshComponent.m in Sources */,
+				9CF8AC0D1C981DB300F27563 /* XNRHomeSelectedCellectionCell.m in Sources */,
 				491610EE1C8C422200F1E243 /* MWGridViewController.m in Sources */,
 				4976FC271BE9A2AA0002E8F8 /* openssl_wrapper.m in Sources */,
 				8446C2A91B1D6D19005CA932 /* TransformationMatrix.cpp in Sources */,
@@ -3223,7 +3230,6 @@
 				1FE1D6511B12EE3200F0D158 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				49F6E23A1C2C6D4D00164F2A /* XNRAddressManageView.m in Sources */,
 				49EFE0091C4CF1E800218C43 /* BMAlertView.m in Sources */,
-				49EDEA021C17D1A400310366 /* XNRHomeSelectedCellectionCell.m in Sources */,
 				49E895F51BEDC2BB00B3671E /* MKAnnotationView+WebCache.m in Sources */,
 				8446C2991B1D6D19005CA932 /* POPAnimation.mm in Sources */,
 				84B77D081B26C0B1001923E4 /* ZSCPicShowView.m in Sources */,
