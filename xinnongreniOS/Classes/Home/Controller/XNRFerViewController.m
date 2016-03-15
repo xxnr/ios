@@ -13,6 +13,9 @@
 #import "XNRTabBarController.h"
 #import "XNRHomeSelectBrandView.h"
 #import "XNRNoSelectView.h"
+
+#import "XNRSelectItemArrModel.h"
+
 #define MAX_PAGE_SIZE 10
 
 @interface XNRFerViewController()<UITableViewDelegate,UITableViewDataSource,XNRferViewAddBtnDelegate>
@@ -47,6 +50,14 @@
 @property (nonatomic, strong) NSArray *selectedItemArr;
 
 @property (nonatomic ,weak) XNRHomeSelectBrandView *selectBrandView;
+
+@property (nonatomic,strong)NSArray *brands;
+@property (nonatomic,strong)NSArray *gxArr;
+@property (nonatomic,strong)NSArray *txArr;
+@property (nonatomic,strong)NSArray *kinds;
+@property (nonatomic,strong)NSArray *atts;
+@property (nonatomic,strong)NSArray *showTxArr;
+@property (nonatomic,strong)NSString *kind;
 
 @end
 
@@ -93,6 +104,7 @@
     _totalArray = [NSMutableArray array];
     _ferArray  = [NSMutableArray array];
     _carArray = [NSMutableArray array];
+    _atts = [NSArray array];
     [self createbackBtn];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [self getData];
@@ -257,23 +269,44 @@
         
     }else if(type == XNRferView_DoSelectType){   // 筛选
         NSLog(@"筛选");
+        self.kind = @"车系";
         [_carArray removeAllObjects];
         isCancel = !isCancel;
         NSLog(@"_____+=====%d",isCancel);
         if (isCancel) {
             __weak typeof(self) weakSelf=self;
-            [XNRHomeSelectBrandView showSelectedBrandViewWith:^(NSString *param1, NSString *param2,NSArray *selectedParams) {
+//            [XNRHomeSelectBrandView showSelectedBrandViewWith:^(NSString *param1, NSString *param2,NSArray *selectedParams) {
+//                weakSelf.selectedItemArr = selectedParams;
+//                if ([_classId isEqualToString:XNRFER]) {
+//                    weakSelf.brandName = param1;
+//                    weakSelf.reservePrice = param2;
+//                    [weakSelf getselectDataWithName:@"brandName" and:param1 and:param2];
+//                }else{
+//                    weakSelf.modelName = param1;
+//                    weakSelf.reservePrice = param2;
+//                    [weakSelf getselectDataWithName:@"modelName" and:param1 and:param2];
+//                }
+            [XNRHomeSelectBrandView showSelectedBrandViewWith:^(NSArray *param1, NSArray *param2, NSArray *param3, NSString *param4, NSArray *kinds,NSArray *selectedParams,NSArray *txarr){
                 weakSelf.selectedItemArr = selectedParams;
+                weakSelf.showTxArr = txarr;
+                weakSelf.kind = kinds[1];
                 if ([_classId isEqualToString:XNRFER]) {
-                    weakSelf.brandName = param1;
-                    weakSelf.reservePrice = param2;
-                    [weakSelf getselectDataWithName:@"brandName" and:param1 and:param2];
+
+                    weakSelf.brands = param1;
+                    weakSelf.gxArr = param2;
+                    weakSelf.txArr = param3;
+                    weakSelf.reservePrice = param4;
+                    weakSelf.kinds = kinds;
+                    [weakSelf getselectDataWithName:param1 and:param2 and:param3 and:param4 and:kinds];
                 }else{
-                    weakSelf.modelName = param1;
-                    weakSelf.reservePrice = param2;
-                    [weakSelf getselectDataWithName:@"modelName" and:param1 and:param2];
+                    weakSelf.brands = param1;
+                    weakSelf.gxArr = param2;
+                    weakSelf.txArr = param3;
+                    weakSelf.reservePrice = param4;
+                    [weakSelf getselectDataWithName:param1 and:param2 and:param3 and:param4 and:kinds];
                 }
-        } andTarget:self.view andType:self.type andParam:self.selectedItemArr];
+
+            } andTarget:self.view andType:self.type andParam:self.selectedItemArr andShowTx:self.showTxArr andkind:self.kind];
             // 把视图提到前面
             [self.view bringSubviewToFront:self.ferView];
 
@@ -285,7 +318,7 @@
 -(void)getTotalData{
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [_totalArray removeAllObjects];
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"brandName":self.brandName?self.brandName:@"",@"modelName":self.modelName?self.modelName:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"brand":self.brands?self.brands:@"",@"attributes":self.atts?self.atts:nil,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *arr = dict[@"rows"];
@@ -310,7 +343,7 @@
 -(void)getPriceDataWith:(NSString *)sort{
     [_ferArray removeAllObjects];
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"sort":sort,@"brandName":self.brandName?self.brandName:@"",@"modelName":self.modelName?self.modelName:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"sort":sort,@"brand":self.brands?self.brands:@"",@"attributes":self.atts?self.atts:nil,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *arr = dict[@"rows"];
@@ -333,9 +366,50 @@
     }];
 
 }
--(void)getselectDataWithName:(NSString *)goodsName and:(NSString *)param1 and:(NSString *)param2{
-    
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,goodsName:param1?param1:[NSString stringWithFormat:@"%@",param1],@"reservePrice":param2,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+
+-(void)getselectDataWithName:(NSArray *)param1 and:(NSArray *)param2 and:(NSArray *)param3 and:(NSString *)param4 and:(NSArray *)kinds{
+    NSMutableDictionary *dics = [NSMutableDictionary dictionary];
+    [dics setObject:_classId forKey:@"classId"];
+    // 品牌的ID
+    if (param1.count > 0) {
+        
+        NSMutableString *str = [NSMutableString string];
+        for (int i=0; i<param1.count; i++) {
+            
+            [str appendString:param1[i]];
+            if (i + 1 >= param1.count) {
+                break;
+            }
+            else
+            {
+                [str appendString:@","];
+            }
+        }
+        self.brands = str;
+        [dics setObject:str forKey:@"brand"];
+
+    }
+    //商品属性数组
+    NSMutableArray *arr = [NSMutableArray array];
+    if (param2.count > 0) {
+        NSDictionary *dic1 = @{@"name":kinds[0],@"value":@{@"$in":param2}};
+        [arr addObject:dic1];
+        
+    }
+    if (param3.count > 0) {
+        NSDictionary *dic2 = @{@"name":kinds[1],@"value":@{@"$in":param3}};
+        [arr addObject:dic2];
+        
+    }
+  
+    if (arr > 0) {
+        [dics setObject:arr forKey:@"attributes"];
+        self.atts = arr;
+    }
+    if (param4) {
+        [dics setObject:param4 forKey:@"reservePrice"];
+    }
+    [KSHttpRequest post:KHomeGetProductsListPage parameters:dics success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             isCancel = NO;
             NSDictionary *dict = result[@"datas"];
@@ -345,19 +419,21 @@
                 [model setValuesForKeysWithDictionary:dicts];
                 [_carArray addObject:model];
             }
+            [self.tableView reloadData];
+
         }
-        [self.tableView reloadData];
+        
         // 筛选为空
         [self noselectViewShowAndHidden:_carArray];
 //        self.tableView.legendFooter.hidden = YES;
         self.tableView.mj_footer.hidden = YES;
+        [self.tableView reloadData];
 
+
+    } failure:^(NSError *error) {
         
-        } failure:^(NSError *error) {
-                    
     }];
 }
-
 -(void)noselectViewShowAndHidden:(NSMutableArray *)array{
     if (array.count == 0) {
         [self.noSelectView show];
@@ -396,6 +472,8 @@
 -(void)backClick
 {
     [XNRHomeSelectBrandView cancelSelectedBrandView];
+    [[XNRSelectItemArrModel defaultModel] cancel];
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 #pragma mark -- UITableView代理
