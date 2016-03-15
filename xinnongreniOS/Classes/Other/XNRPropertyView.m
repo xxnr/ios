@@ -69,6 +69,8 @@
 
 @property (nonatomic ,copy) NSString *marketPrice;
 
+@property (nonatomic, weak) UILabel *marketPriceLabel;
+
 @end
 
 @implementation XNRPropertyView
@@ -138,10 +140,12 @@
             }
             self.nameLabel.text = [NSString stringWithFormat:@"%@",dic[@"name"]];
             
+            // 市场价
 //            if ([dic[@"SKUMarketPrice"][@"min"] floatValue] == [dic[@"SKUMarketPrice"][@"max"] floatValue]) {
-//                _marketPrice = [NSString stringWithFormat:@"¥ %.2f",[dic[@"SKUMarketPrice"][@"min"] floatValue]];
-//                if ([_marketPrice rangeOfString:@".00"].length == 3) {
-//                    _marketPrice = [self.priceLabel.text substringToIndex:_marketPrice.length-3];
+//                self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价：¥ %.2f",[dic[@"SKUMarketPrice"][@"min"] floatValue]];
+//                if ([self.marketPriceLabel.text rangeOfString:@".00"].length == 3) {
+//                    
+//                    self.marketPriceLabel.text = [self.marketPriceLabel.text substringToIndex:self.marketPriceLabel.text.length-3];
 //                }
 //                
 //            }else{
@@ -153,12 +157,16 @@
 //                if ([maxPrice rangeOfString:@".00"].length == 3) {
 //                    maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
 //                }
-//                _marketPrice = [NSString stringWithFormat:@"¥ %@ - %@",minPrice,maxPrice];
+//                self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价：¥ %@ - %@",minPrice,maxPrice];
 //                
 //            }
+//            CGSize marketPriceSize = [self.marketPriceLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16]}];
+//            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.imageView.frame)+PX_TO_PT(20), CGRectGetMaxY(self.priceLabel.frame)+marketPriceSize.height*0.5, marketPriceSize.width, PX_TO_PT(2))];
+//            lineView.backgroundColor = [UIColor redColor];
+//            [self.attributesView addSubview:lineView];
 
             
-            
+            // 价格
             if ([dic[@"SKUPrice"][@"min"] floatValue] == [dic[@"SKUPrice"][@"max"] floatValue]) {
                 self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[dic[@"SKUPrice"][@"min"] floatValue]];
                 if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
@@ -177,6 +185,8 @@
                 self.priceLabel.text = [NSString stringWithFormat:@"¥ %@ - %@",minPrice,maxPrice];
 
             }
+            
+            
             if ([dic[@"presale"] integerValue] == 1) {
                 self.bgExpectView.hidden = NO;
                 self.bgView.hidden = YES;
@@ -236,6 +246,15 @@
     priceLabel.font = [UIFont systemFontOfSize:20];
     self.priceLabel = priceLabel;
     [self.attributesView addSubview:priceLabel];
+    
+    UILabel *marketPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame) + PX_TO_PT(20), CGRectGetMaxY(priceLabel.frame), ScreenWidth-CGRectGetMaxX(imageView.frame)-PX_TO_PT(20), PX_TO_PT(34))];
+    marketPriceLabel.textColor = R_G_B_16(0x909090);
+    marketPriceLabel.font = [UIFont systemFontOfSize:16];
+    self.marketPriceLabel = marketPriceLabel;
+//    [self.attributesView addSubview:marketPriceLabel];
+
+    
+    
 }
 -(void)createFirstView{
     UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(980)-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
@@ -284,6 +303,7 @@
 
 }
 -(void)createSecondView{
+    
     UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(980)-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
     bgView.backgroundColor=[UIColor whiteColor];
     self.bgView = bgView;
@@ -316,10 +336,11 @@
     }else{
         if (!IS_Login) {
             BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"您还没有登录，是否登录？" chooseBtns:@[@"取消",@"确定"]];
-//            __weak __typeof(self)weakSelf = self;
+            __weak __typeof(self)weakSelf = self;
             alertView.chooseBlock = ^void(UIButton *btn){
                 if (btn.tag == 11) {
-//                    weakSelf.loginBlock();
+                    [self cancelBtnClick];
+                    weakSelf.loginBlock();
                 }
             };
             [alertView BMAlertShow];
@@ -699,11 +720,11 @@
                 NSDictionary *datas = resultObj[@"data"];
                 NSDictionary *price = datas[@"price"];
                 NSDictionary *marketPrice = datas[@"market_price"];
-                
+                // 市场价
                 if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
-                    _marketPrice = [NSString stringWithFormat:@"¥ %.2f",[marketPrice[@"min"] floatValue]];
+                    _marketPrice = [NSString stringWithFormat:@"市场价：¥ %.2f",[marketPrice[@"min"] floatValue]];
                     if ([_marketPrice rangeOfString:@".00"].length == 3) {
-                        _marketPrice = [self.priceLabel.text substringToIndex:_marketPrice.length-3];
+                        _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
                     }
                     
                 }else{
@@ -715,7 +736,7 @@
                     if ([maxPrice rangeOfString:@".00"].length == 3) {
                         maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
                     }
-                    _marketPrice = [NSString stringWithFormat:@"¥ %@ - %@",minPrice,maxPrice];
+                    _marketPrice = [NSString stringWithFormat:@"市场价：¥ %@ - %@",minPrice,maxPrice];
                     
                 }
 
@@ -879,8 +900,6 @@
             
             return CGSizeZero;
         }
-
-    
     }
 }
 //定义每个UICollectionViewCell 的大小
@@ -890,13 +909,13 @@
         XNRSKUAttributesModel *skuModel = infoModel.SKUAttributes[indexPath.section];
         XNRSKUCellModel *model = skuModel.values[indexPath.item];
         CGSize valueSize = [model.cellValue sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
-        currentSize = CGSizeMake(valueSize.width + PX_TO_PT(20), valueSize.height+PX_TO_PT(20));
+        currentSize = CGSizeMake(valueSize.width + PX_TO_PT(10), valueSize.height+PX_TO_PT(10));
 
     }else if (infoModel.SKUAttributes.count<=indexPath.section){
         XNRAddtionsModel *addtionModel = infoModel.additions[indexPath.item];
         NSString *addtionStr = [NSString stringWithFormat:@"%@(+%@)",addtionModel.name,addtionModel.price];
         CGSize valueSize = [addtionStr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
-        currentSize = CGSizeMake(valueSize.width+ PX_TO_PT(20), valueSize.height+ PX_TO_PT(20));
+        currentSize = CGSizeMake(valueSize.width+ PX_TO_PT(10), valueSize.height+ PX_TO_PT(10));
 
     }else{
         currentSize = CGSizeMake(0, 0);
@@ -905,11 +924,11 @@
     
     return currentSize;
 }
-////定义每个Section 的 margin
+//定义每个Section 的 margin
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     return UIEdgeInsetsMake(0, 0, 0, 0);//分别为上、左、下、右
 }
-////每个section中不同的行之间的行间距
+//每个section中不同的行之间的行间距
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
     return coll_cell_margin;
 }
@@ -963,11 +982,11 @@
     
     [UIView animateWithDuration:.3 animations:^{
         self.attributesView.frame = CGRectMake(0, ScreenHeight+30, ScreenWidth, PX_TO_PT(980));
-    } completion:^(BOOL finished) {
-        [self pressAttributes];
         // 把键盘退掉
         IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
         [manager resignFirstResponder];
+    } completion:^(BOOL finished) {
+        [self pressAttributes];
         self.coverView.hidden = YES;
         
     }];

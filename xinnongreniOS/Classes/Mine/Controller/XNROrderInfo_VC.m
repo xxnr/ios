@@ -338,7 +338,7 @@
     
     // 提交订单
     UIButton *totalPriceBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(220), 0, PX_TO_PT(220), PX_TO_PT(89)) ImageName:nil Target:self Action:@selector(makeSure) Title:nil];
-    [totalPriceBtn setTitle:@"提交订单" forState:UIControlStateNormal];
+    [totalPriceBtn setTitle:[NSString stringWithFormat:@"提交订单%@",[NSString stringWithFormat:@"(%ld)",_totalSelectNum]] forState:UIControlStateNormal];
     [totalPriceBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     totalPriceBtn.titleLabel.font = [UIFont systemFontOfSize:16];
     totalPriceBtn.backgroundColor = R_G_B_16(0xfe9b00);
@@ -349,7 +349,7 @@
     totalPricelabel.font=XNRFont(14);
     totalPricelabel.textAlignment = NSTextAlignmentRight;
     totalPricelabel.textColor = R_G_B_16(0x323232);
-    totalPricelabel.text = [NSString stringWithFormat:@"总计:￥%.2f",self.totalPrice];
+    totalPricelabel.text = [NSString stringWithFormat:@"合计:￥%.2f",self.totalPrice];
     
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:totalPricelabel.text];
     NSDictionary *depositStr=@{
@@ -606,55 +606,71 @@
         [UILabel showMessage:@"请选择一个地址，没有地址我们的服务人员送不到货哦"];
         return;
     }
-
-    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"products":[self.dataArray JSONString_Ext],@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
-
-        NSLog(@"%@",result);
-        if ([result[@"code"] integerValue] == 1000) {
-            NSArray *orders = result[@"orders"];
+    
+    NSDictionary *params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"SKUs":self.dataArray,@"payType":@"1",@"user-agent":@"IOS-v2.0"};
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+    manager.requestSerializer.timeoutInterval = 10.f;
+    [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    [manager POST:KAddOrder parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"---------返回数据:---------%@",str);
+        id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        
+        NSDictionary *resultDic;
+        if ([resultObj isKindOfClass:[NSDictionary class]]) {
+            resultDic = (NSDictionary *)resultObj;
+        }
+        if ([resultObj[@"code"] integerValue] == 1000) {
+            NSArray *orders = resultObj[@"orders"];
             NSLog(@"%tu",orders.count);
             NSLog(@"%d",(int)self.numOrder);
-                if (orders.count == 1) {
-                    self.numOrder = 1;
-                    NSDictionary *subDic = orders[0];
-                    //获取预处理订单id 订单号
-                    orderDataId = subDic[@"id"];
-                    deposit = subDic[@"deposit"];
-                    NSDictionary *payment = subDic[@"payment"];
-                    // 支付id
-                    paymentId = payment[@"paymentId"];
-                    
-                    [self.tableview reloadData];
-                    
-                }
-                else if (orders.count == 2)
-                {
-                    self.numOrder = 2;
-                    //第一个订单
-                    self.addorderModel1 = [[XNRAddOrderModel alloc]init];
-                    self.addorderModel1.orderID = orders[0][@"id"];
-//                    addorderModel1.paymentId = orders[0][@"payment"][@"paymentId"];
-                    NSString *deposit1 = orders[0][@"payment"][@"price"];
-                    self.addorderModel1.money = [NSString stringWithFormat:@"%.2f",deposit1.floatValue];
-                    
-                    //第二个订单
-                    self.addorderModel2 = [[XNRAddOrderModel alloc]init];
-                    self.addorderModel2.orderID = orders[1][@"id"];
-//                    addorderModel2.paymentId = orders[1][@"payment"][@"paymentId"];
-                    NSString *deposit2 = orders[1][@"payment"][@"price"];
-                    self.addorderModel2.money = [NSString stringWithFormat:@"%.2f",deposit2.floatValue];
+            if (orders.count == 1) {
+                self.numOrder = 1;
+                NSDictionary *subDic = orders[0];
+                //获取预处理订单id 订单号
+                orderDataId = subDic[@"id"];
+                deposit = subDic[@"deposit"];
+                NSDictionary *payment = subDic[@"payment"];
+                // 支付id
+                paymentId = payment[@"paymentId"];
+                
+                [self.tableview reloadData];
+                
+            }else if (orders.count == 2){
+                self.numOrder = 2;
+                //第一个订单
+                self.addorderModel1 = [[XNRAddOrderModel alloc]init];
+                self.addorderModel1.orderID = orders[0][@"id"];
+                //                    addorderModel1.paymentId = orders[0][@"payment"][@"paymentId"];
+                NSString *deposit1 = orders[0][@"payment"][@"price"];
+                self.addorderModel1.money = [NSString stringWithFormat:@"%.2f",deposit1.floatValue];
+                
+                //第二个订单
+                self.addorderModel2 = [[XNRAddOrderModel alloc]init];
+                self.addorderModel2.orderID = orders[1][@"id"];
+                //                    addorderModel2.paymentId = orders[1][@"payment"][@"paymentId"];
+                NSString *deposit2 = orders[1][@"payment"][@"price"];
+                self.addorderModel2.money = [NSString stringWithFormat:@"%.2f",deposit2.floatValue];
+                
+                [self.tableview reloadData];
 
-                    [self.tableview reloadData];
-
-                }else{
-                    [UILabel showMessage:result[@"message"]];
-                }
-                [self selectVC];
             
+        }else{
+            
+            [UILabel showMessage:resultObj[@"message"]];
         }
-    } failure:^(NSError *error) {
-            
-        }];
+            [self selectVC];
+
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"===%@",error);
+        
+    }];
+
     [self selectVC];
 
 }
@@ -678,7 +694,6 @@
         XNRSelPayOrder_VC *selVC = [[XNRSelPayOrder_VC alloc]init];
         selVC.addOrderModel1 =self.addorderModel1;
         selVC.addOrderModel2 = self.addorderModel2;
-        
         [self.navigationController pushViewController:selVC animated:YES];
         
     }

@@ -42,4 +42,9 @@
  */
 @property (nonatomic ,copy) NSString *thumbnail;
 
+@property (nonatomic ,strong) NSMutableArray *additions;
+
+@property (nonatomic ,strong) NSMutableArray *attributes;
+
+
 @end

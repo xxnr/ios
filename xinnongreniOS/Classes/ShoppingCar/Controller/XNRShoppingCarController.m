@@ -35,6 +35,7 @@
     float totalPrice;
     BOOL sort;
     int currentPage;
+    NSInteger _totalSelectNum;
 }
 @property (nonatomic,strong) UIView *bottomView; // 底部视图
 
@@ -460,6 +461,7 @@
     vc.dataArray = arr;
     vc.totalPrice = _totalPrice;
     vc.isRoot = YES;
+    vc.totalSelectNum = _totalSelectNum;
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark - 获取数据从网络
@@ -490,7 +492,6 @@
                     NSLog(@"++_)_%@",model.attributes);
                     
                 }
-                
                 NSLog(@"%@",sectionModel.SKUList);
             }
             // 改变底部
@@ -671,6 +672,7 @@
     [self.shoppingCarTableView reloadData];
     
     [self valiteAllCarShopModelIsSelected];
+    
     [self changeBottom];
 
 
@@ -685,7 +687,9 @@
         XNRShopCarSectionModel *sectionModel = _dataArr[i];
         for (int j = 0; j<sectionModel.SKUList.count; j++) {
             XNRShoppingCartModel *model = sectionModel.SKUList[j];
-            goodsNum = goodsNum + model.num.integerValue;
+            if (model.num != nil) {
+                goodsNum = goodsNum + model.num.integerValue;
+            }
             if (model.selectState) {
                 // 合计xxxx
                 if (model.deposit && [model.deposit floatValue] > 0) {
@@ -695,12 +699,12 @@
                 }
                 NSLog(@"totalPriceg === %.2f",_totalPrice);
                 goodsNumSelected = goodsNumSelected + model.num.integerValue;
-                
+                _totalSelectNum = goodsNumSelected;
                 [self.shoppingCarTableView reloadData];
                 
             } else {
                 
-            }
+        }
             // 购物车的总数
             self.navigationItem.title = [NSString stringWithFormat:@"购物车(%ld)",(long)goodsNum];
         }

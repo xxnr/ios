@@ -24,6 +24,8 @@
 
 @property (nonatomic , strong) NSMutableArray *idArray;
 
+@property (nonatomic ,assign) NSInteger totalSelectNum;
+
 
 
 @end

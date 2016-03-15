@@ -124,4 +124,7 @@
 @property (nonatomic, copy) NSString *_id;
 @property (nonatomic, strong) NSMutableArray *additions;
 @property (nonatomic, strong) NSMutableArray *attributes;
+@property (nonatomic, copy) NSString *online;
+
+
 @end

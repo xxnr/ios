@@ -15,4 +15,11 @@
 @property (nonatomic,copy)   void(^checkOrderBlock)(NSString*orderID);                                        //查看订单                                       //查看订单
 - (void)setCellDataWithShoppingCartModel:(XNRMyOrderModel*)info;
 
+@property (nonatomic ,strong) NSMutableArray *attributesArray;
+
+@property (nonatomic ,strong) NSMutableArray *addtionsArray;
+
+
+
+
 @end

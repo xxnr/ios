@@ -688,11 +688,14 @@
     sender.enabled = YES;
     if (sender.tag == 3 && ([s integerValue] <= [self.minPrice integerValue])) {
         sender.enabled = NO;
+        self.btn2.enabled = YES;
     }
     else if (sender.tag == 4 && ([s integerValue]+500) > [self.holdPrice integerValue])
     {
+        
         _Money = self.holdPrice;
         sender.enabled = NO;
+        self.btn1.enabled = YES;
         self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.holdPrice floatValue]];
     }
     else if ([self.holdPrice integerValue] < [self.minPrice integerValue])
