@@ -688,11 +688,7 @@
     sender.enabled = YES;
     if (sender.tag == 3 && ([s floatValue] <= [self.minPrice floatValue])) {
         sender.enabled = NO;
-<<<<<<< HEAD
-
-=======
         self.btn2.enabled = YES;
->>>>>>> xxnr-chung
     }
     else if(sender.tag == 3 && ([s floatValue] - 500) < [self.minPrice floatValue])
     {
