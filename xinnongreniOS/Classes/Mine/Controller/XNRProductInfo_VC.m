@@ -83,6 +83,15 @@
             [weakSelf.navigationController pushViewController:orderVC animated:YES];
         
         };
+        // 跳转登录界面
+        propertyView.loginBlock = ^(){
+            
+            XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
+            login.hidesBottomBarWhenPushed = YES;
+            [weakSelf.navigationController pushViewController:login animated:YES];
+
+        
+        };
         self.propertyView = propertyView;
         [self.view addSubview:propertyView];
     }
@@ -169,7 +178,6 @@
     CGPoint point = self.tableView.contentOffset;
     [UIView animateWithDuration:0.5 animations:^{
         self.tableView.contentOffset = CGPointMake(point.x, 0);
-
     }];
 }
 #pragma mark-获取网络数据
@@ -395,6 +403,7 @@
     XNRProductInfo_cell *cell = [XNRProductInfo_cell cellWithTableView:tableView];
     cell.goodsId = _model.goodsId;
     cell.shopcarModel = _model;
+    // 属性
     cell.attributes = _attributes;
     cell.additions = _additions;
     
@@ -460,6 +469,7 @@
     
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 -(void)shopcarButtonClick
 {
     XNRTabBarController *tab = (XNRTabBarController *)self.tabBarController;
@@ -497,6 +507,7 @@
     }];
 
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

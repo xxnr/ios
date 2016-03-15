@@ -33,6 +33,7 @@
 @property (nonatomic,weak) UILabel *addtionPriceLabel;
 @property (nonatomic ,weak) UIButton *leftBtn;
 @property (nonatomic ,weak) UIButton *rightBtn;
+@property (nonatomic, weak) UIButton *bigRightBtn;
 
 @property (nonatomic ,weak) UIImageView *selectedImage;
 
@@ -43,6 +44,7 @@
 
 @property (nonatomic ,weak) UILabel *subscriptionLabel;
 @property (nonatomic ,weak) UILabel *remainLabel;
+@property (nonatomic, weak) UILabel *offLineLabel;
 
 @property (nonatomic ,weak) UIToolbar *toolBar;
 
@@ -62,9 +64,30 @@
         self.contentView.userInteractionEnabled = YES;
         [self createUI];
         
+        // 注册消息通知
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
+
+        
     }
     return self;
 }
+
+-(void)textFieldChanged:(NSNotification*)noti {
+    
+    if([self.numTextField.text isEqualToString:@"0"]){
+        self.numTextField.text = @"1";
+    }else{
+        
+    }
+    if (self.numTextField.text.length>4) {
+        self.numTextField.text = [self.numTextField.text substringToIndex:4];
+    }
+    if ([self.numTextField.text isEqualToString:@"9999"]) {
+//        self.rightBtn.enabled = NO;
+//        self.bigRightBtn.enabled = NO;
+    }
+}
+
 
 #pragma mark - keyboard events
 
@@ -102,16 +125,16 @@
     [self.contentView addSubview:sectionTwoLabel];
     
     
-    UILabel *subscriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(250), PX_TO_PT(350), PX_TO_PT(250), PX_TO_PT(80))];
+    UILabel *subscriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(350), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
     subscriptionLabel.textColor = R_G_B_16(0xff4e00);
-    subscriptionLabel.font = [UIFont systemFontOfSize:18];
+    subscriptionLabel.font = [UIFont systemFontOfSize:16];
     subscriptionLabel.textAlignment = NSTextAlignmentRight;
     self.subscriptionLabel = subscriptionLabel;
     [self.contentView addSubview:subscriptionLabel];
     
-    UILabel *remainLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(250), PX_TO_PT(430), PX_TO_PT(250), PX_TO_PT(80))];
+    UILabel *remainLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth /2, PX_TO_PT(430), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
     remainLabel.textColor = R_G_B_16(0x323232);
-    remainLabel.font = [UIFont systemFontOfSize:18];
+    remainLabel.font = [UIFont systemFontOfSize:16];
     remainLabel.textAlignment = NSTextAlignmentRight;
     self.remainLabel = remainLabel;
     [self.contentView addSubview:remainLabel];
@@ -142,7 +165,6 @@
     
     UIButton *backgroundBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, PX_TO_PT(30), PX_TO_PT(100), PX_TO_PT(180))];
     [backgroundBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-
     [self.contentView addSubview:backgroundBtn];
     
     UIButton *selectedBtn = [[UIButton alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(102), PX_TO_PT(36), PX_TO_PT(36))];
@@ -152,6 +174,19 @@
     self.selectedBtn = selectedBtn;
 
     [backgroundBtn addSubview:selectedBtn];
+    
+    // 下架
+    UILabel *offLineLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(102), PX_TO_PT(42), PX_TO_PT(90))];
+    offLineLabel.backgroundColor = R_G_B_16(0xc0c0c0);
+    offLineLabel.text = @"已下架";
+    offLineLabel.textColor = [UIColor whiteColor];
+    offLineLabel.font = [UIFont systemFontOfSize:12];
+    offLineLabel.numberOfLines = 0;
+    offLineLabel.layer.cornerRadius = 5.0;
+    offLineLabel.layer.masksToBounds = YES;
+    offLineLabel.textAlignment = NSTextAlignmentCenter;
+    self.offLineLabel = offLineLabel;
+    [self.contentView addSubview:offLineLabel];
 
 }
 
@@ -182,16 +217,16 @@
     UILabel *goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.picImageView.frame) + PX_TO_PT(20), PX_TO_PT(30), ScreenWidth-CGRectGetMaxX(self.picImageView.frame) - PX_TO_PT(52), PX_TO_PT(100))];
     goodNameLabel.textColor = R_G_B_16(0x323232);
     goodNameLabel.numberOfLines = 0;
-    goodNameLabel.font = XNRFont(14);
+    goodNameLabel.font = [UIFont systemFontOfSize:16];
     self.goodNameLabel = goodNameLabel;
     [self.contentView addSubview:goodNameLabel];
     
     
-    UILabel *introduceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.picImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(self.goodNameLabel.frame)-PX_TO_PT(20), ScreenWidth-CGRectGetMaxX(self.picImageView.frame) - PX_TO_PT(52), PX_TO_PT(120))];
+    UILabel *introduceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.picImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(self.goodNameLabel.frame)-PX_TO_PT(10), ScreenWidth-CGRectGetMaxX(self.picImageView.frame) - PX_TO_PT(52), PX_TO_PT(120))];
 //    introduceLabel.backgroundColor = [UIColor redColor];
     introduceLabel.textColor = R_G_B_16(0x909090);
     introduceLabel.numberOfLines = 0;
-    introduceLabel.font = XNRFont(12);
+    introduceLabel.font = [UIFont systemFontOfSize:14];
     self.introduceLabel = introduceLabel;
     [self.contentView addSubview:introduceLabel];
     
@@ -203,28 +238,27 @@
     UILabel *presentPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth/2,CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20),ScreenWidth/2-PX_TO_PT(32),PX_TO_PT(48))];
     presentPriceLabel.textColor = R_G_B_16(0x323232);
     presentPriceLabel.textAlignment = NSTextAlignmentRight;
-    presentPriceLabel.font = XNRFont(18);
+    presentPriceLabel.font = [UIFont systemFontOfSize:16];
     self.presentPriceLabel = presentPriceLabel;
     [self.contentView addSubview:self.presentPriceLabel];
 }
 // 附加选项
 -(void)createAddtionsLabel
 {
-    UILabel *addtionsLabel = [MyControl createLabelWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), CGRectGetMaxY(self.presentPriceLabel.frame)+ PX_TO_PT(20), ScreenWidth/2, PX_TO_PT(48)) Font:14 Text:nil];
+    UILabel *addtionsLabel = [MyControl createLabelWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), CGRectGetMaxY(self.presentPriceLabel.frame), ScreenWidth-PX_TO_PT(320), PX_TO_PT(68)) Font:12 Text:nil];
     addtionsLabel.textAlignment = NSTextAlignmentLeft;
     addtionsLabel.textColor = R_G_B_16(0x323232);
+//    addtionsLabel.backgroundColor = [UIColor redColor];
+    addtionsLabel.numberOfLines = 0;
     self.addtionsLabel = addtionsLabel;
     [self.contentView addSubview:addtionsLabel];
     
-    UILabel *addtionPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth/2,CGRectGetMaxY(self.presentPriceLabel.frame) + PX_TO_PT(20),ScreenWidth/2-PX_TO_PT(32),PX_TO_PT(48))];
+    UILabel *addtionPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth/2,CGRectGetMaxY(self.presentPriceLabel.frame),ScreenWidth/2-PX_TO_PT(32),PX_TO_PT(68))];
     addtionPriceLabel.textColor = R_G_B_16(0x323232);
     addtionPriceLabel.textAlignment = NSTextAlignmentRight;
-    addtionPriceLabel.font = XNRFont(18);
+    addtionPriceLabel.font = [UIFont systemFontOfSize:16];
     self.addtionPriceLabel = addtionPriceLabel;
     [self.contentView addSubview:self.addtionPriceLabel];
-    
-
-
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -256,7 +290,7 @@
     leftBtn.tag = kRightBtn;
     [leftBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [leftBtn setImage:[UIImage imageNamed:@"icon_minus"] forState:UIControlStateNormal];
-    [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateSelected];
+    [leftBtn setImage:[UIImage imageNamed:@"discount_default1"] forState:UIControlStateHighlighted];
     [leftBtn setHighlighted:NO];
     self.leftBtn = leftBtn;
     [self.contentView addSubview:leftBtn];
@@ -283,6 +317,7 @@
     bigRightBtn.frame = CGRectMake(CGRectGetMaxX(self.numTextField.frame), CGRectGetMaxY(self.picImageView.frame), CGRectGetMaxX(self.numTextField.frame) + PX_TO_PT(48), PX_TO_PT(88));
     bigRightBtn.tag = kLeftBtn;
     [bigRightBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.bigRightBtn = bigRightBtn;
     [self.contentView addSubview:bigRightBtn];
 
     
@@ -291,7 +326,7 @@
     [rightBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
 
     [rightBtn setImage:[UIImage imageNamed:@"icon_plus"] forState:UIControlStateNormal];
-    [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateSelected];
+    [rightBtn setImage:[UIImage imageNamed:@"discount_default2"] forState:UIControlStateHighlighted];
     [rightBtn setHighlighted:NO];
     self.rightBtn = rightBtn;
     [self.contentView addSubview:rightBtn];
@@ -402,7 +437,6 @@
 - (void)setCellDataWithShoppingCartModel:(XNRShoppingCartModel *)model
 {
     _model = model;
-    [self resetSubViews];
     [self setSubViews];
     
     if (model.selectState) {
@@ -412,12 +446,6 @@
         self.selectedBtn.selected = NO;
     }
 
-}
-
-#pragma mark - 清空以前的数据
-- (void)resetSubViews
-{
-    
 }
 
 #pragma mark - 设置现在的数据
@@ -432,7 +460,7 @@
     // 属性
     NSMutableString *displayStr = [[NSMutableString alloc] initWithString:@""];
     for (NSDictionary *subDic in self.model.attributes) {
-        [displayStr appendString:[NSString stringWithFormat:@" %@:%@",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
+        [displayStr appendString:[NSString stringWithFormat:@"%@:%@;",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
     }
     self.introduceLabel.text = displayStr;
     // 附加选项
@@ -440,7 +468,7 @@
     NSString *price;
     CGFloat totalPrice = 0;
     for (NSDictionary *subDic in self.model.additions) {
-        [addtionStr appendString:[NSString stringWithFormat:@" %@",[subDic objectForKey:@"name"]]];
+        [addtionStr appendString:[NSString stringWithFormat:@"%@;",[subDic objectForKey:@"name"]]];
         price = [NSString stringWithFormat:@"%@",[subDic objectForKey:@"price"]];
         totalPrice = totalPrice + [price floatValue];
     }
@@ -491,25 +519,38 @@
     }else{
         self.numTextField.text = [NSString stringWithFormat:@"%@",self.model.num];
     }
+    // 下架
+    if ([_model.online integerValue] == 0) {
+        self.selectedBtn.hidden = YES;
+        self.offLineLabel.hidden = NO;
+        self.backgroundColor = R_G_B_16(0xf0f0f0);
+        self.goodNameLabel.textColor = R_G_B_16(0x909090);
+        self.presentPriceLabel.textColor = R_G_B_16(0x909090);
+        self.sectionOneLabel.textColor = R_G_B_16(0x909090);
+        self.sectionTwoLabel.textColor = R_G_B_16(0x909090);
+        self.subscriptionLabel.textColor = R_G_B_16(0x909090);
+        self.remainLabel.textColor = R_G_B_16(0x909090);
+
+    }else{
+        self.backgroundColor = [UIColor whiteColor];
+        self.selectedBtn.hidden = NO;
+        self.offLineLabel.hidden = YES;
+    }
     
-//    if ([self.numTextField.text isEqualToString:@"0"]) {
-//        self.numTextField.textColor = [UIColor lightGrayColor];
-//    }else{
-//        self.numTextField.textColor = [UIColor lightGrayColor];
-//    }
 }
 
 
 #pragma mark - 请求单个商品总数提交
 - (void)requestShoppingCarURL
 {
-    [KSHttpRequest post:KchangeShopCarNum parameters:@{@"goodsId":self.model.goodsId,@"quantity":self.numTextField.text,@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KchangeShopCarNum parameters:@{@"SKUId":self.model._id,@"quantity":self.numTextField.text,@"userId":[DataCenter account].userid,@"additions":_model.additions,@"update_by_add":@"ture",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         NSLog(@"=====%@",self.numTextField.text);
         NSLog(@"%@",result);
+//        [UILabel showMessage:@"购物车提交成功"];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshNum" object:self];
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
-        [UILabel showMessage:@"购物车提交失败"];
+//        [UILabel showMessage:@"购物车提交失败"];
     }];
 }
 

@@ -39,7 +39,7 @@
         self.itemTitleLabel.text = skuCellModel.cellValue;
         
     CGSize strSize = [skuCellModel.cellValue sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
-        self.itemTitleLabel.frame = CGRectMake(0, 0, strSize.width+PX_TO_PT(20), strSize.height+PX_TO_PT(20));
+        self.itemTitleLabel.frame = CGRectMake(0, 0, strSize.width+PX_TO_PT(10), strSize.height+PX_TO_PT(10));
         self.itemTitleLabel.textColor = skuCellModel.isEnable?R_G_B_16(0x323232):R_G_B_16(0xD0D0D0);
         self.itemTitleLabel.backgroundColor = skuCellModel.isSelected?R_G_B_16(0xfe9b00):R_G_B_16(0xf0f0f0);
         if (skuCellModel.isEnable) {
@@ -49,7 +49,7 @@
         XNRAddtionsModel *addModel = (XNRAddtionsModel *)cellM;
         self.itemTitleLabel.text = [NSString stringWithFormat:@"%@(+%@)",addModel.name,addModel.price];
         CGSize strSize = [self.itemTitleLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
-        self.itemTitleLabel.frame = CGRectMake(0, 0, strSize.width+ PX_TO_PT(20), strSize.height+ PX_TO_PT(20));
+        self.itemTitleLabel.frame = CGRectMake(0, 0, strSize.width+ PX_TO_PT(10), strSize.height+ PX_TO_PT(10));
         self.itemTitleLabel.backgroundColor = addModel.isSelected?R_G_B_16(0xfe9b00):R_G_B_16(0xf0f0f0);
         self.itemTitleLabel.textColor = addModel.isSelected?R_G_B_16(0xffffff):R_G_B_16(0x323232);
     }

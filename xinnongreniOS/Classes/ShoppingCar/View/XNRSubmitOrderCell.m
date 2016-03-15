@@ -70,6 +70,7 @@
 //    [self createTopView];
 //    [self createMidView];
 //    [self createBottomView];
+    [_model.additions removeAllObjects];
   
 }
 
@@ -87,13 +88,13 @@
     
     UILabel *brandNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(goodsImageView.frame) + PX_TO_PT(20), PX_TO_PT(40), ScreenWidth - CGRectGetMaxX(goodsImageView.frame) - PX_TO_PT(52), PX_TO_PT(100))];
     brandNameLabel.textColor = R_G_B_16(0x323232);
-    brandNameLabel.font = XNRFont(14);
+    brandNameLabel.font = [UIFont systemFontOfSize:14];
     brandNameLabel.numberOfLines = 0;
     self.brandNameLabel = brandNameLabel;
     [topView addSubview:brandNameLabel];
     
     UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(goodsImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(brandNameLabel.frame), ScreenWidth - CGRectGetMaxX(goodsImageView.frame) - PX_TO_PT(52), PX_TO_PT(70))];
-    detailLabel.font = XNRFont(12);
+    detailLabel.font = [UIFont systemFontOfSize:12];
     detailLabel.textColor = R_G_B_16(0x909090);
     detailLabel.numberOfLines = 0;
     self.detailLabel = detailLabel;
@@ -101,13 +102,13 @@
     
     UILabel *numLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(goodsImageView.frame) + PX_TO_PT(20), ScreenWidth, PX_TO_PT(70))];
     self.numLabel = numLabel;
-    numLabel.font = XNRFont(14);
+    numLabel.font = [UIFont systemFontOfSize:14];
     numLabel.textAlignment = NSTextAlignmentLeft;
     numLabel.textColor = R_G_B_16(0x323232);
     [topView addSubview:numLabel];
     
     UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(goodsImageView.frame) + PX_TO_PT(20), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(70))];
-    priceLabel.font = XNRFont(14);
+    priceLabel.font = [UIFont systemFontOfSize:14];
     priceLabel.textAlignment = NSTextAlignmentRight;
     priceLabel.textColor = R_G_B_16(0x323232);
     self.priceLabel = priceLabel;
@@ -130,7 +131,7 @@
         
         for (int i = 0; i<addtionsModel.additions.count; i++) {
             UILabel *addtionLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(45)*i, ScreenWidth-PX_TO_PT(64), PX_TO_PT(45))];
-            addtionLabel.backgroundColor = R_G_B_16(0xe0e0e0);
+            addtionLabel.backgroundColor = R_G_B_16(0xf0f0f0);
             addtionLabel.layer.cornerRadius = 5.0;
             addtionLabel.layer.masksToBounds = YES;
             self.addtionLabel = addtionLabel;
@@ -139,7 +140,7 @@
             NSDictionary *subDic = addtionsModel.additions[i];
             
             UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(45))];
-            nameLabel.textColor = R_G_B_16(0x323232);
+            nameLabel.textColor = R_G_B_16(0x909090);
             nameLabel.font = [UIFont systemFontOfSize:14];
             nameLabel.textAlignment = NSTextAlignmentLeft;
             nameLabel.text = [NSString stringWithFormat:@"%@",subDic[@"name"]];
@@ -149,11 +150,11 @@
             priceLabel.textColor = R_G_B_16(0x323232);
             priceLabel.font = [UIFont systemFontOfSize:14];
             priceLabel.textAlignment = NSTextAlignmentRight;
-            priceLabel.text = [NSString stringWithFormat:@"¥:%@",subDic[@"price"]];
+            priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[subDic[@"price"] floatValue ]];
             [addtionLabel addSubview:priceLabel];
             
-            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(priceLabel.frame)*i, ScreenWidth-PX_TO_PT(64), PX_TO_PT(10))];
-            lineView.backgroundColor = [UIColor redColor];
+            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(nameLabel.frame)*i, ScreenWidth-PX_TO_PT(64), PX_TO_PT(3))];
+            lineView.backgroundColor = [UIColor whiteColor];
             [addtionView addSubview:lineView];
 
         }
@@ -262,13 +263,12 @@
 
 -(void)setCellDataWithModel:(XNRShoppingCartModel *)model
 {
+    // 把重复叠加的视图都移除一下
+    [self.topView removeFromSuperview];
+    [self.midView removeFromSuperview];
+    [self.bottomView removeFromSuperview];
     
     _model = model;
-//    if (_model.additions.count == 0) {
-//        [self createTopView:nil];
-//    }else
-//    {
-//        [self createTopView:model];
     if (_model.additions.count == 0) {
         [self createTopView:nil];
     }else

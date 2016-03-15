@@ -688,7 +688,11 @@
     sender.enabled = YES;
     if (sender.tag == 3 && ([s floatValue] <= [self.minPrice floatValue])) {
         sender.enabled = NO;
+<<<<<<< HEAD
 
+=======
+        self.btn2.enabled = YES;
+>>>>>>> xxnr-chung
     }
     else if(sender.tag == 3 && ([s floatValue] - 500) < [self.minPrice floatValue])
     {
@@ -699,8 +703,10 @@
     }
     else if (sender.tag == 4 && ([s floatValue]+500) > [self.holdPrice floatValue])
     {
+        
         _Money = self.holdPrice;
         sender.enabled = NO;
+        self.btn1.enabled = YES;
         self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.holdPrice floatValue]];
     }
     else if ([self.holdPrice floatValue] < [self.minPrice floatValue])

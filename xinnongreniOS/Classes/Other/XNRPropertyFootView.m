@@ -61,6 +61,10 @@
         
         self.numTextField.text = @"1";
     }
+    if (self.com) {
+        self.com (self.numTextField.text);
+    }
+
     
 }
 

@@ -22,5 +22,13 @@
     return _products;
 }
 
+- (NSMutableArray *)skus {
+    if (!_skus) {
+        _skus = [NSMutableArray array];
+    }
+    return _skus;
+}
+
+
 
 @end

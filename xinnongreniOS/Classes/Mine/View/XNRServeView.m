@@ -164,6 +164,10 @@
                 sectionModel.value = orderStatus[@"value"];
                 
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
+                
+                sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
+                
+                
                 [_dataArr addObject:sectionModel];
             }
                
@@ -255,7 +259,7 @@
                 bottomView.backgroundColor = [UIColor whiteColor];
                 [self addSubview:bottomView];
             
-        
+                // 合计
                 UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
                 totalPriceLabel.font = [UIFont systemFontOfSize:16];
                 totalPriceLabel.textAlignment = NSTextAlignmentRight;
@@ -272,6 +276,29 @@
                 [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
                 
                 [totalPriceLabel setAttributedText:AttributedStringPrice];
+            
+            
+            // 待付金额
+            UILabel *payPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth-PX_TO_PT(192), PX_TO_PT(60))];
+            payPriceLabel.textColor = R_G_B_16(0x323232);
+            payPriceLabel.font = [UIFont systemFontOfSize:14];
+            payPriceLabel.textAlignment = NSTextAlignmentRight;
+            payPriceLabel.text = [NSString stringWithFormat:@"待付金额:￥%.2f",sectionModel.totalPrice.floatValue];
+            [bottomView addSubview:payPriceLabel];
+            
+            NSMutableAttributedString *AttributedStringpayPrice = [[NSMutableAttributedString alloc]initWithString:payPriceLabel.text];
+            NSDictionary *payPriceStr=@{
+                                     
+                                     NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
+                                     NSFontAttributeName:[UIFont systemFontOfSize:16]
+                                     };
+            
+            [AttributedStringpayPrice addAttributes:payPriceStr range:NSMakeRange(5,AttributedStringpayPrice.length-5)];
+            
+            [payPriceLabel setAttributedText:AttributedStringpayPrice];
+
+            
+            
             
             UIButton *sectionFour = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
             sectionFour.backgroundColor = R_G_B_16(0xfe9b00);
@@ -409,9 +436,9 @@
         if (sectionModel.products.count>0) {
             XNRMyOrderModel *model = sectionModel.products[indexPath.row];
             if (model.deposit && [model.deposit floatValue]>0) {
-                return PX_TO_PT(460);
+                return PX_TO_PT(510);
             }else{
-                return PX_TO_PT(300);
+                return PX_TO_PT(350);
             }
         }else{
             return 0;
@@ -449,6 +476,10 @@
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
         if (sectionModel.products.count>0) {
             XNRMyOrderModel *model = sectionModel.products[indexPath.row];
+            XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
+            cell.attributesArray = modelArray.attributes;
+            cell.addtionsArray = modelArray.additions;
+
             [cell setCellDataWithShoppingCartModel:model];
 
         }

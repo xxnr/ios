@@ -14,4 +14,9 @@
 @property (nonatomic,strong) XNRMyOrderModel*info;
 @property (nonatomic,copy)   void(^checkOrderBlock)(NSString*orderID);
 - (void)setCellDataWithShoppingCartModel:(XNRMyOrderModel*)info;
+
+@property (nonatomic ,strong) NSMutableArray *attributesArray;
+
+@property (nonatomic ,strong) NSMutableArray *addtionsArray;
+
 @end
