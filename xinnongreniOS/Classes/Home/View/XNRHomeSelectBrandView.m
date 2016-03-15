@@ -356,11 +356,8 @@
     
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
+    
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, self.bounds.size.height - PX_TO_PT(300)) collectionViewLayout:collectionViewLayout];
 
     collectionView.delegate = self;
@@ -375,10 +372,6 @@
     //TODO:加btn
     CGFloat w = (self.bounds.size.width-3*coll_cell_margin)/2;
     UIButton *resetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
     resetBtn.frame = CGRectMake(PX_TO_PT(32),PX_TO_PT(980),w,w/4);
 
     resetBtn.titleLabel.font = XNRFont(14);
@@ -397,10 +390,6 @@
     
     UIButton *admireBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     admireBtn.frame = CGRectMake(CGRectGetMaxX(self.resetBtn.frame) + coll_cell_margin, PX_TO_PT(980),w , w/4);
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
     admireBtn.titleLabel.font = XNRFont(14);
     admireBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
     admireBtn.layer.borderWidth = 1.0;
