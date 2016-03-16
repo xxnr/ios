@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "xinnongreniOS/Classes/Home/View/XNRHomeSelectBrandView.m"
-            timestampString = "479802295.895537"
+            timestampString = "479802849.142813"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "548"
-            endingLineNumber = "548"
+            startingLineNumber = "540"
+            endingLineNumber = "540"
             landmarkName = "-createView"
             landmarkType = "5">
          </BreakpointContent>

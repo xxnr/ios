@@ -138,15 +138,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // 获取网络数据
+    [self getData];
     _goodsArray  = [NSMutableArray array];
     // 导航栏
     [self setNavigationbarTitle];
     // 创建TableView
-    [self createTableView];
+//    [self createTableView:];
     // 底部视图
-    [self createBottomView];
-    // 获取网络数据
-    [self getData];
+//    [self createBottomView];
     // 注册消息通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
     
@@ -163,12 +163,17 @@
 
 }
 
--(void)createTableView{
+-(void)createTableView:(NSMutableArray *)infoModelArray{
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.pagingEnabled = YES;
-    tableView.contentSize = CGSizeMake(ScreenWidth, (ScreenWidth+PX_TO_PT(455))*2);
+    XNRProductInfo_model *infoModel = [infoModelArray lastObject];
+    if ([infoModel.Desc isEqualToString:@""]||infoModel.Desc == nil) {
+        tableView.contentSize = CGSizeMake(ScreenWidth, (ScreenWidth+PX_TO_PT(660))*2);
+    }else{
+        tableView.contentSize = CGSizeMake(ScreenWidth, (ScreenWidth+PX_TO_PT(455))*2);
+    }
     self.tableView = tableView;
     [self.view addSubview:tableView];
 }
@@ -205,6 +210,10 @@
             model.SKUAttributes =  (NSMutableArray *)[XNRSKUAttributesModel objectArrayWithKeyValuesArray:dic[@"SKUAttributes"]];
             
             [_goodsArray addObject:model];
+            [self createTableView:_goodsArray];
+            [self createBottomView];
+
+
             
             if ([dic[@"presale"] integerValue] == 1) {
                 self.addBuyCarBtn.userInteractionEnabled = NO;
@@ -396,7 +405,12 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return (ScreenWidth + PX_TO_PT(455))*2;
+    XNRProductInfo_model *infoModel = _goodsArray[indexPath.row];
+    if ([infoModel.Desc isEqualToString:@""]||infoModel.Desc == nil) {
+        return (ScreenWidth + PX_TO_PT(415))*2;
+    }else{
+        return (ScreenWidth + PX_TO_PT(455))*2;
+    }
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

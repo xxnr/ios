@@ -202,11 +202,15 @@
                                                       }
                                                   }
                                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                                                     
                                                      if (error) {
                                                          MWLog(@"SDWebImage failed to download image: %@", error);
                                                      }
+                                                     
+                                                     UIImage *pic = [UIImage imageNamed:@"icon_loading_wrong"];
                                                      _webImageOperation = nil;
-                                                     self.underlyingImage = image;
+                                                     self.underlyingImage = image?image:pic;
+                                                     
                                                      dispatch_async(dispatch_get_main_queue(), ^{
                                                          [self imageLoadingComplete];
                                                      });

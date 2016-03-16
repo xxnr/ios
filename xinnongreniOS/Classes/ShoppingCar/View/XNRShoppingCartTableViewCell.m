@@ -66,8 +66,6 @@
         
         // 注册消息通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
-
-        
     }
     return self;
 }
@@ -105,59 +103,111 @@
     // 数量
     [self createNumTextField];
     // 附加选项
-    [self createAddtionsLabel];
+//    [self createAddtionsLabel];
+    // 订金，尾款
+//    [self createDepositView:];
     
-    UILabel *sectionOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(350), ScreenWidth, PX_TO_PT(80))];
-    sectionOneLabel.text = @"阶段一: 订金";
-    sectionOneLabel.textColor = R_G_B_16(0x323232);
-    sectionOneLabel.font = [UIFont systemFontOfSize:14];
-    sectionOneLabel.textAlignment = NSTextAlignmentLeft;
-    self.sectionOneLabel = sectionOneLabel;
-    [self.contentView addSubview:sectionOneLabel];
-    
+}
 
-    UILabel *sectionTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(430), ScreenWidth, PX_TO_PT(80))];
-    sectionTwoLabel.text = @"阶段二: 尾款";
-    sectionTwoLabel.textColor = R_G_B_16(0x323232);
-    sectionTwoLabel.font = [UIFont systemFontOfSize:14];
-    sectionTwoLabel.textAlignment = NSTextAlignmentLeft;
-    self.sectionTwoLabel = sectionTwoLabel;
-    [self.contentView addSubview:sectionTwoLabel];
-    
-    
-    UILabel *subscriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(350), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
-    subscriptionLabel.textColor = R_G_B_16(0xff4e00);
-    subscriptionLabel.font = [UIFont systemFontOfSize:16];
-    subscriptionLabel.textAlignment = NSTextAlignmentRight;
-    self.subscriptionLabel = subscriptionLabel;
-    [self.contentView addSubview:subscriptionLabel];
-    
-    UILabel *remainLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth /2, PX_TO_PT(430), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
-    remainLabel.textColor = R_G_B_16(0x323232);
-    remainLabel.font = [UIFont systemFontOfSize:16];
-    remainLabel.textAlignment = NSTextAlignmentRight;
-    self.remainLabel = remainLabel;
-    [self.contentView addSubview:remainLabel];
-    
-    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(350), ScreenWidth, PX_TO_PT(1))];
-    topView.backgroundColor = R_G_B_16(0xc7c7c7);
-    [self.contentView addSubview:topView];
-    
-    UIView *middleLine = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(430), ScreenWidth-PX_TO_PT(64), PX_TO_PT(1))];
-    middleLine.backgroundColor = R_G_B_16(0xc7c7c7);
-    self.middleLine = middleLine;
-    [self.contentView addSubview:middleLine];
-    
+-(void)createDepositView:(XNRShoppingCartModel *)model{
+    if (model.additions.count == 0) {
+        UILabel *sectionOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(300), ScreenWidth, PX_TO_PT(80))];
+        sectionOneLabel.text = @"阶段一: 订金";
+        sectionOneLabel.textColor = R_G_B_16(0x323232);
+        sectionOneLabel.font = [UIFont systemFontOfSize:14];
+        sectionOneLabel.textAlignment = NSTextAlignmentLeft;
+        self.sectionOneLabel = sectionOneLabel;
+        [self.contentView addSubview:sectionOneLabel];
+        
+        
+        UILabel *sectionTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(380), ScreenWidth, PX_TO_PT(80))];
+        sectionTwoLabel.text = @"阶段二: 尾款";
+        sectionTwoLabel.textColor = R_G_B_16(0x323232);
+        sectionTwoLabel.font = [UIFont systemFontOfSize:14];
+        sectionTwoLabel.textAlignment = NSTextAlignmentLeft;
+        self.sectionTwoLabel = sectionTwoLabel;
+        [self.contentView addSubview:sectionTwoLabel];
+        
+        
+        UILabel *subscriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(300), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
+        subscriptionLabel.textColor = R_G_B_16(0xff4e00);
+        subscriptionLabel.font = [UIFont systemFontOfSize:16];
+        subscriptionLabel.textAlignment = NSTextAlignmentRight;
+        self.subscriptionLabel = subscriptionLabel;
+        [self.contentView addSubview:subscriptionLabel];
+        
+        UILabel *remainLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth /2, PX_TO_PT(380), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
+        remainLabel.textColor = R_G_B_16(0x323232);
+        remainLabel.font = [UIFont systemFontOfSize:16];
+        remainLabel.textAlignment = NSTextAlignmentRight;
+        self.remainLabel = remainLabel;
+        [self.contentView addSubview:remainLabel];
+        
+        UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(300), ScreenWidth, PX_TO_PT(1))];
+        topView.backgroundColor = R_G_B_16(0xc7c7c7);
+        [self.contentView addSubview:topView];
+        
+        UIView *middleLine = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(380), ScreenWidth-PX_TO_PT(64), PX_TO_PT(1))];
+        middleLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        self.middleLine = middleLine;
+        [self.contentView addSubview:middleLine];
+        
+        
+        UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(460), ScreenWidth, PX_TO_PT(1))];
+        bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        self.bottomLine = bottomLine;
+        [self.contentView addSubview:bottomLine];
 
-//    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(460), ScreenWidth, PX_TO_PT(1))];
-//    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-//    [self.contentView addSubview:lineView];
-    
-    
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(510), ScreenWidth, PX_TO_PT(1))];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
-    self.bottomLine = bottomLine;
-    [self.contentView addSubview:bottomLine];
+    }else{
+        UILabel *sectionOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(350), ScreenWidth, PX_TO_PT(80))];
+        sectionOneLabel.text = @"阶段一: 订金";
+        sectionOneLabel.textColor = R_G_B_16(0x323232);
+        sectionOneLabel.font = [UIFont systemFontOfSize:14];
+        sectionOneLabel.textAlignment = NSTextAlignmentLeft;
+        self.sectionOneLabel = sectionOneLabel;
+        [self.contentView addSubview:sectionOneLabel];
+        
+        
+        UILabel *sectionTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(430), ScreenWidth, PX_TO_PT(80))];
+        sectionTwoLabel.text = @"阶段二: 尾款";
+        sectionTwoLabel.textColor = R_G_B_16(0x323232);
+        sectionTwoLabel.font = [UIFont systemFontOfSize:14];
+        sectionTwoLabel.textAlignment = NSTextAlignmentLeft;
+        self.sectionTwoLabel = sectionTwoLabel;
+        [self.contentView addSubview:sectionTwoLabel];
+        
+        
+        UILabel *subscriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(350), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
+        subscriptionLabel.textColor = R_G_B_16(0xff4e00);
+        subscriptionLabel.font = [UIFont systemFontOfSize:16];
+        subscriptionLabel.textAlignment = NSTextAlignmentRight;
+        self.subscriptionLabel = subscriptionLabel;
+        [self.contentView addSubview:subscriptionLabel];
+        
+        UILabel *remainLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth /2, PX_TO_PT(430), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
+        remainLabel.textColor = R_G_B_16(0x323232);
+        remainLabel.font = [UIFont systemFontOfSize:16];
+        remainLabel.textAlignment = NSTextAlignmentRight;
+        self.remainLabel = remainLabel;
+        [self.contentView addSubview:remainLabel];
+        
+        UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(350), ScreenWidth, PX_TO_PT(1))];
+        topView.backgroundColor = R_G_B_16(0xc7c7c7);
+        [self.contentView addSubview:topView];
+        
+        UIView *middleLine = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(430), ScreenWidth-PX_TO_PT(64), PX_TO_PT(1))];
+        middleLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        self.middleLine = middleLine;
+        [self.contentView addSubview:middleLine];
+        
+        
+        UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(510), ScreenWidth, PX_TO_PT(1))];
+        bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        self.bottomLine = bottomLine;
+        [self.contentView addSubview:bottomLine];
+
+    }
+
 }
 
 #pragma mark - 选择按钮
@@ -172,7 +222,6 @@
     [selectedBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
     [selectedBtn setImage:[UIImage imageNamed:@"orange-icon"] forState:UIControlStateSelected];
     self.selectedBtn = selectedBtn;
-
     [backgroundBtn addSubview:selectedBtn];
     
     // 下架
@@ -190,7 +239,8 @@
 
 }
 
--(void)selectedBtnClick:(UIButton *)sender{
+-(void)selectedBtnClick:(UIButton *)sender {
+    
     
     self.model.selectState = !self.model.selectState;
     if (self.com) {
@@ -343,7 +393,6 @@
 -(void)XNRToolBarBtnClick
 {
     [self dealTap:nil];
-
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
@@ -436,16 +485,25 @@
 #pragma mark - 设置model数据模型的数据
 - (void)setCellDataWithShoppingCartModel:(XNRShoppingCartModel *)model
 {
+    self.addtionsLabel.hidden = YES;
+    self.addtionPriceLabel.hidden = YES;
+    
+    self.sectionOneLabel.hidden = YES;
+    self.sectionTwoLabel.hidden = YES;
+    self.subscriptionLabel.hidden = YES;
+    self.remainLabel.hidden = YES;
     _model = model;
+    if (_model.additions.count>0) {
+        [self createAddtionsLabel];
+    }
+    [self createDepositView:_model];
     [self setSubViews];
     
     if (model.selectState) {
         self.selectedBtn.selected = YES;
-        
     }else{
         self.selectedBtn.selected = NO;
     }
-
 }
 
 #pragma mark - 设置现在的数据
