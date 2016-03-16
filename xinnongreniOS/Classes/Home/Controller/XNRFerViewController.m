@@ -220,23 +220,31 @@
 
         dic = @{@"classId":_classId,@"brand":self.brands?self.brands:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"};
 
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:dic success:^(id result) {
-        if ([result[@"code"] integerValue] == 1000) {
-            NSDictionary *dict = result[@"datas"];
+    [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"---------返回数据:---------%@",str);
+        id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        
+        NSDictionary *resultDic;
+        if ([resultObj isKindOfClass:[NSDictionary class]]) {
+            resultDic = (NSDictionary *)resultObj;
+        }
+        if ([resultObj[@"code"] integerValue] == 1000) {
+            NSDictionary *dict = resultDic[@"datas"];
             NSArray *arr = dict[@"rows"];
             if (_isfirst == NO) {
-            for (NSDictionary *dicts in arr) {
-                XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
-                [model setValuesForKeysWithDictionary:dicts];
-                
+                for (NSDictionary *dicts in arr) {
+                    XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
+                    [model setValuesForKeysWithDictionary:dicts];
+                    
                     [_totalArray addObject:model];
                 }
                 _isfirst = YES;
             }
         }
         //  如果到达最后一页 就消除footer
-        NSInteger pages = [result[@"datas"][@"pages"] integerValue];
-        NSInteger page = [result[@"datas"][@"page"] integerValue];
+        NSInteger pages = [resultDic[@"datas"][@"pages"] integerValue];
+        NSInteger page = [resultDic[@"datas"][@"page"] integerValue];
         self.tableView.mj_footer.hidden = pages == page;
         
         [self.tableView reloadData];
@@ -244,12 +252,17 @@
         [self.tableView.mj_footer endRefreshing];
         
         [BMProgressView LoadViewDisappear:self.view];
-    } failure:^(NSError *error) {
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         [BMProgressView LoadViewDisappear:self.view];
+        
+        
+    }];
+    
 
-   }];
 }
 #pragma mark  - 顶部视图
 -(void)setupTopView
@@ -343,9 +356,17 @@
         dic = @{@"classId":_classId,@"brand":self.brands?self.brands:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
     }
 
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:dic success:^(id result) {
-        if ([result[@"code"] integerValue] == 1000) {
-            NSDictionary *dict = result[@"datas"];
+    [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"---------返回数据:---------%@",str);
+        id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        
+        NSDictionary *resultDic;
+        if ([resultObj isKindOfClass:[NSDictionary class]]) {
+            resultDic = (NSDictionary *)resultObj;
+        }
+        if ([resultObj[@"code"] integerValue] == 1000) {
+            NSDictionary *dict = resultDic[@"datas"];
             NSArray *arr = dict[@"rows"];
             for (NSDictionary *dicts in arr) {
                 XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
@@ -357,14 +378,15 @@
         // 筛选为空
         [self noselectViewShowAndHidden:_totalArray];
         [BMProgressView LoadViewDisappear:self.view];
-
-//        self.tableView.legendFooter.hidden = YES;
-    } failure:^(NSError *error) {
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [BMProgressView LoadViewDisappear:self.view];
-
         
     }];
+    
 }
+
 -(void)getPriceDataWith:(NSString *)sort{
     [_ferArray removeAllObjects];
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
@@ -379,16 +401,24 @@
     
     NSDictionary *dic = [NSDictionary dictionary];
     if (self.atts.count != 0) {
-        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.brands?self.brands:@"",@"attributes":self.atts?self.atts:nil,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
+        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.brands?self.brands:@"",@"attributes":self.atts,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
     }
     else
     {
         dic = @{@"classId":_classId,@"sort":sort,@"brand":self.brands?self.brands:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
     }
 
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:dic success:^(id result) {
-        if ([result[@"code"] integerValue] == 1000) {
-            NSDictionary *dict = result[@"datas"];
+    [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"---------返回数据:---------%@",str);
+        id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        
+        NSDictionary *resultDic;
+        if ([resultObj isKindOfClass:[NSDictionary class]]) {
+            resultDic = (NSDictionary *)resultObj;
+        }
+        if ([resultObj[@"code"] integerValue] == 1000) {
+            NSDictionary *dict = resultDic[@"datas"];
             NSArray *arr = dict[@"rows"];
             for (NSDictionary *dicts in arr) {
                 XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
@@ -401,9 +431,9 @@
         [self noselectViewShowAndHidden:_ferArray];
         
         [BMProgressView LoadViewDisappear:self.view];
-//        self.tableView.legendFooter.hidden = YES;
+        //        self.tableView.legendFooter.hidden = YES;
         
-    } failure:^(NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [BMProgressView LoadViewDisappear:self.view];
         
     }];
