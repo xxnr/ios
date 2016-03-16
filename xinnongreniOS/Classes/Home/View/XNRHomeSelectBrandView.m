@@ -11,15 +11,12 @@
 #import "XNBrandsModel.h"
 
 #import "XNRSelectItemArrModel.h"
-
-
-#define coll_cell_margin 20
-#define row_cell_margin 10
+#define coll_cell_margin PX_TO_PT(35)
+#define row_cell_margin PX_TO_PT(29)
 #define cellId @"selected_cell"
 #define headerViewId @"selectedHeaderView"
-
-#define initialRect CGRectMake(0,  -[UIScreen mainScreen].bounds.size.height + 44+ 64, [UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height - 64.0)
-#define displayRect CGRectMake(0, 44, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64.0-44)
+#define initialRect CGRectMake(0,  -[UIScreen mainScreen].bounds.size.height + PX_TO_PT(89) + 64, [UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height - 64.0)
+#define displayRect CGRectMake(0, PX_TO_PT(89) , [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64.0 - PX_TO_PT(89))
 
 @interface XNRHomeSelectBrandView ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 {
@@ -71,7 +68,7 @@
     XNRHomeSelectBrandView *selectedView = [[XNRHomeSelectBrandView alloc] initWithFrame:initialRect andType:type and:param and:txarr andkind:kind];
     selectedView.com = com;
     selectedView.tag = 10240;
-    
+    target.backgroundColor = [UIColor whiteColor];
     [target addSubview:selectedView];
     
     [UIView animateWithDuration:0.3 animations:^{
@@ -115,20 +112,20 @@
 }
 - (instancetype)initWithFrame:(CGRect)frame andType:(XNRType)type and:(NSArray *)param and:(NSArray *)txarr andkind:(NSString *)kind{
     if (self == [super initWithFrame:frame]) {
-        
+
         self.resArr = [NSMutableArray array];
         self.gxArr = [NSMutableArray array];
         self.txArr = [NSMutableArray array];
         [self.txArr setArray:txarr];
         self.kinds = [NSMutableArray arrayWithCapacity:2];
-//        [self.kinds setObject:kind atIndexedSubscript:1];
+        
         [self.kinds addObject:@"型号"];
         [self.kinds addObject:@"车系"];
-////        self.kinds[1] = kind;
+
         self.isSel = [NSMutableArray array];
         self.getSel = [NSArray array];
         self.getSel = param;
-            //        [self.isSel setArray:self.getSel];
+
         self.currentTx = [NSMutableDictionary dictionary];
         
         self.backgroundColor = R_G_B_16(0xf0f0f0);
@@ -142,6 +139,18 @@
     }
     return self;
 }
+//-(void)topView
+//{
+//    UIButton *but = [[UIButton alloc]initWithFrame:CGRectMake(0, 64, ScreenWidth, 44)];
+//    [but addTarget:self action:@selector(topClicked:) forControlEvents:UIControlEventTouchDown];
+//    [self addSubview:but];
+//}
+//-(void)topClicked:(UIButton *)sender
+//{
+//    if (self.com) {
+//        self.com()
+//    }
+//}
 -(void)getCategorys
 {
     [KSHttpRequest get:KHomeCategories parameters:nil success:^(id result) {
@@ -158,10 +167,12 @@
                 
                 _currentTx = [NSMutableDictionary dictionaryWithDictionary:[XNRSelectItemArrModel defaultModel].XNRSelectItemDict];
                 
-                _resArr = [mutArr objectAtIndex:0];
-                _gxArr = [mutArr objectAtIndex:1];
-                _txArr = [mutArr objectAtIndex:2];
-                
+//                _resArr = [mutArr objectAtIndex:0];
+//                _gxArr = [mutArr objectAtIndex:1];
+//                _txArr = [mutArr objectAtIndex:2];
+                _resArr = [NSMutableArray arrayWithArray:[mutArr objectAtIndex:0]];
+                _gxArr = [NSMutableArray arrayWithArray:[mutArr objectAtIndex:1]];
+                _txArr = [NSMutableArray arrayWithArray:[mutArr objectAtIndex:2]];
 //                [self.collectionView reloadData];
             }
 
@@ -496,7 +507,9 @@
     
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, self.bounds.size.height - PX_TO_PT(300)) collectionViewLayout:collectionViewLayout];
+    
+
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, PX_TO_PT(1002)) collectionViewLayout:collectionViewLayout];
 
     collectionView.delegate = self;
     collectionView.dataSource = self;
@@ -505,12 +518,19 @@
     collectionView.backgroundColor = [UIColor clearColor];
     self.collectionView = collectionView;
     self.collectionView.collectionViewLayout = collectionViewLayout;
+
     [self addSubview:self.collectionView];
     
     //TODO:加btn
-    CGFloat w = (self.bounds.size.width-3*coll_cell_margin)/2;
+//    CGFloat w = (self.bounds.size.width-3*coll_cell_margin)/2;
+    
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.collectionView.frame), ScreenWidth, PX_TO_PT(120))];
+    view.backgroundColor = [UIColor whiteColor];
+    [self addSubview:view];
+    
     UIButton *resetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    resetBtn.frame = CGRectMake(PX_TO_PT(32),PX_TO_PT(980),w,w/4);
+
+    resetBtn.frame = CGRectMake(PX_TO_PT(29),PX_TO_PT(29),PX_TO_PT(269),PX_TO_PT(61));
 
     resetBtn.titleLabel.font = XNRFont(14);
     resetBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
@@ -519,28 +539,32 @@
     resetBtn.layer.masksToBounds = YES;
     [resetBtn setTitle:@"重置" forState:UIControlStateNormal];
     [resetBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
-    [resetBtn setTitleColor:R_G_B_16(0xfbffff) forState:UIControlStateHighlighted];
-    [resetBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#ffffff"]] forState:UIControlStateNormal];
-    [resetBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateHighlighted];
+    [resetBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+//    [resetBtn setTitleColor:R_G_B_16(0xfbffff) forState:UIControlStateHighlighted];
+    [resetBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#FFFFFF"]] forState:UIControlStateNormal];
+    [resetBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
     [resetBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.resetBtn = resetBtn;
-    [self addSubview:resetBtn];
-    
+//    [self addSubview:resetBtn];
+    [view addSubview:resetBtn];
     UIButton *admireBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    admireBtn.frame = CGRectMake(CGRectGetMaxX(self.resetBtn.frame) + coll_cell_margin, PX_TO_PT(980),w , w/4);
+    admireBtn.frame = CGRectMake(CGRectGetMaxX(self.resetBtn.frame) + PX_TO_PT(39), PX_TO_PT(29),PX_TO_PT(383) , PX_TO_PT(61));
     admireBtn.titleLabel.font = XNRFont(14);
     admireBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
     admireBtn.layer.borderWidth = 1.0;
     admireBtn.layer.cornerRadius = 5.0;
     admireBtn.layer.masksToBounds = YES;
     [admireBtn setTitle:@"确定" forState:UIControlStateNormal];
-    [admireBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
-    [admireBtn setTitleColor:R_G_B_16(0xfbffff) forState:UIControlStateHighlighted];
-    [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#ffffff"]] forState:UIControlStateNormal];
-    [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateHighlighted];
+//    admireBtn.backgroundColor = R_G_B_16(0x00B38A);
+    [admireBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+//    [admireBtn setTitleColor:R_G_B_16(0xfbffff) forState:UIControlStateHighlighted];
+    [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00B38A"]] forState:UIControlStateNormal];
+    [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
     [admireBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.admireBtn = admireBtn;
-    [self addSubview:admireBtn];
+//    [self addSubview:admireBtn];
+    [view addSubview:admireBtn];
 }
 
 -(void)btnClick:(UIButton *)button
@@ -560,7 +584,7 @@
         }
         }
         
-        [[XNRSelectItemArrModel defaultModel] cancel];
+//        [[XNRSelectItemArrModel defaultModel] cancel];
         
         [self.collectionView reloadData];
         
@@ -712,6 +736,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat cellW = (self.bounds.size.width-4*coll_cell_margin)/3;
     currentSize = CGSizeMake(cellW,cellW / 3);
+//    currentSize = CGSizeMake(PX_TO_PT(207), PX_TO_PT(61));
     return currentSize;
 }
 //定义每个Section 的 margin
@@ -765,7 +790,7 @@
     if (section == 2 && arr.count == 0) {
         return CGSizeMake(ScreenWidth, 0);
     }
-    return CGSizeMake(self.bounds.size.width, 44.0);
+    return CGSizeMake(self.bounds.size.width, PX_TO_PT(115));
 }
 
 
