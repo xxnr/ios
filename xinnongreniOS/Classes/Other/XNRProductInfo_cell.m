@@ -58,6 +58,11 @@
 
 @property (nonatomic, weak) UIView *originLineView;
 
+@property (nonatomic, weak) UIView *bgTopView;
+
+@property (nonatomic, weak) UIView *bgView;
+
+
 
 @end
 
@@ -154,8 +159,8 @@
 -(void)createUI
 {
     [self createHeadView];
-    [self createMidView];
-    [self createBottomView];
+//    [self createMidView];
+//    [self createBottomView];
     
 }
 
@@ -232,7 +237,7 @@
 
 }
 
--(void)createMidView
+-(void)createMidView:(XNRProductInfo_model *)model;
 {
     UIView *headLineView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenWidth, ScreenWidth, PX_TO_PT(1))];
     headLineView.backgroundColor  = R_G_B_16(0xc7c7c7);
@@ -240,6 +245,7 @@
     
     UIView *bgTopView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenWidth, ScreenWidth, PX_TO_PT(145))];
     bgTopView.backgroundColor = R_G_B_16(0xfafafa);
+    self.bgTopView = bgTopView;
     [self.contentView addSubview:bgTopView];
 
     UILabel *goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), ScreenWidth, ScreenWidth-PX_TO_PT(64), PX_TO_PT(70))];
@@ -261,24 +267,17 @@
     self.presaleLabel = presaleLabel;
     [self addSubview:presaleLabel];
 
-    
     UILabel *depositLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(self.goodNameLabel.frame)-PX_TO_PT(10), ScreenWidth*0.5, PX_TO_PT(50))];
     depositLabel.textColor = R_G_B_16(0x323232);
     priceLabel.font = [UIFont systemFontOfSize:16];
     self.depositLabel = depositLabel;
     [self addSubview:depositLabel];
     
-    
     UILabel *marketPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(priceLabel.frame)+PX_TO_PT(10), ScreenWidth, PX_TO_PT(32))];
     marketPriceLabel.font = [UIFont systemFontOfSize:14];
     marketPriceLabel.textColor = R_G_B_16(0x909090);
     self.marketPriceLabel = marketPriceLabel;
     [self addSubview:marketPriceLabel];
-    
-    
-//    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenWidth + PX_TO_PT(100), ScreenWidth, PX_TO_PT(1))];
-//    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-//    [self addSubview:lineView];
     
     UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(bgTopView.frame), ScreenWidth, PX_TO_PT(80))];
     descriptionLabel.backgroundColor = R_G_B_16(0xf2f2f2);
@@ -288,16 +287,24 @@
     self.descriptionLabel = descriptionLabel;
     [self addSubview:descriptionLabel];
     
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.descriptionLabel.frame), ScreenWidth, PX_TO_PT(110))];
-    bgView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:bgView];
     
-    
+    UIView *bgView;
+    if ([_model.Desc isEqualToString:@""]||_model.Desc == nil) {
+        bgView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.bgTopView.frame), ScreenWidth, PX_TO_PT(110))];
+        bgView.backgroundColor = [UIColor whiteColor];
+        self.bgView = bgView;
+        [self addSubview:bgView];
+    }else{
+        bgView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.descriptionLabel.frame), ScreenWidth, PX_TO_PT(110))];
+        bgView.backgroundColor = [UIColor whiteColor];
+        self.bgView = bgView;
+        [self addSubview:bgView];
+    }
+
     UIButton *propertyBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(90))];
     propertyBtn.backgroundColor = R_G_B_16(0xf2f2f2);
     [propertyBtn addTarget: self action:@selector(propertyBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [bgView addSubview:propertyBtn];
-    
+    [self.bgView addSubview:propertyBtn];
     
     
     UILabel *propertyLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth-PX_TO_PT(56)-PX_TO_PT(32), PX_TO_PT(90))];
@@ -324,7 +331,7 @@
     
 //
     
-    UILabel *scrollLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(bgView.frame), ScreenWidth, PX_TO_PT(120))];
+    UILabel *scrollLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.bgView.frame), ScreenWidth, PX_TO_PT(120))];
     scrollLabel.textColor = R_G_B_16(0x323232);
     scrollLabel.font = [UIFont systemFontOfSize:14];
     scrollLabel.text = @"继续拖动，查看商品详情";
@@ -462,6 +469,8 @@
 -(void)upDataWithModel:(XNRProductInfo_model *)model
 {
     _model = model;
+    [self createMidView:_model];
+    [self createBottomView];
         // 添加图片
         CGFloat imageW = self.scrollView.width;
         CGFloat imageH = self.scrollView.height;
@@ -493,6 +502,7 @@
     self.goodNameLabel.text = [NSString stringWithFormat:@"%@",model.name];
     // 商品描述
     self.descriptionLabel.text = [NSString stringWithFormat:@"%@",model.Desc];
+    
     
     if ([model.min floatValue]== [model.max floatValue]) {
         self.priceLabel.text = [NSString stringWithFormat:@"￥%@",model.min];

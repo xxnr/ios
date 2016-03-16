@@ -496,10 +496,6 @@
     
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-<<<<<<< HEAD
-    
-=======
->>>>>>> master
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, self.bounds.size.height - PX_TO_PT(300)) collectionViewLayout:collectionViewLayout];
 
     collectionView.delegate = self;

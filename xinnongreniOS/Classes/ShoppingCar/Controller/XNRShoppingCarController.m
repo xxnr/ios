@@ -24,6 +24,7 @@
 
 @interface XNRShoppingCarController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,XNRShopcarViewBtnDelegate,XNRShoppingCartTableViewCellDelegate,UITextFieldDelegate>
 {
+    NSMutableArray *_MapOfAllStateArr;
     NSMutableArray *_dataArr;    //购物车数据
     NSMutableArray *_brandNameArr;
     UIButton *_settlementBtn;   //去结算
@@ -118,6 +119,8 @@
     _dataArr = [[NSMutableArray alloc]init];
     _brandNameArr = [[NSMutableArray alloc] init];
     _modifyDataArr = [[NSMutableArray alloc] init];
+    _MapOfAllStateArr = [NSMutableArray array];
+    
     
     //创建订单
     [self createShoppingCarTableView];
@@ -466,15 +469,12 @@
 }
 #pragma mark - 获取数据从网络
 - (void)getDataFromNetwork {
-    //网络请求成功先删除数据
     [_dataArr removeAllObjects];
     //改变底部
     [self changeBottom];
     [self.shoppingCarTableView reloadData];
     [KSHttpRequest get:KGetShopCartList parameters:@{@"userId":[DataCenter account].userid,@"token":[DataCenter account].token,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
-            //网络请求成功先删除数据
-            [_dataArr removeAllObjects];
             
             NSDictionary *datasDic = result[@"datas"];
             _shoppingCarID = datasDic[@"shopCartId"];
@@ -494,9 +494,10 @@
                 }
                 NSLog(@"%@",sectionModel.SKUList);
             }
+            
+            [self getInitialAllNewData];
             // 改变底部
             [self changeBottom];
-            
             [self.shoppingCarTableView reloadData];
         }else{
             
@@ -674,8 +675,8 @@
     [self valiteAllCarShopModelIsSelected];
     
     [self changeBottom];
-
-
+    [self recordSelectedShopGoods];
+    
 }
 #pragma mark - 计算价格
 -(void)changeBottom {
@@ -784,9 +785,18 @@
         XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
         
         if ([model.deposit floatValue] == 0.00) {
-            return PX_TO_PT(350);
+            if (model.additions.count == 0) {
+                return PX_TO_PT(300);
+            }else{
+                return PX_TO_PT(350);
+            }
+//            return PX_TO_PT(350);
         }else{
-            return PX_TO_PT(510);
+            if (model.additions.count == 0) {
+                return PX_TO_PT(460);
+            }else{
+                return PX_TO_PT(510);
+            }
         }
     }else{
         return 0;
@@ -836,6 +846,7 @@
             [self changeBottom];
             
             [self valiteAllCarShopModelIsSelected];
+            [self recordSelectedShopGoods];
         }];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.delegate = self;
@@ -866,6 +877,56 @@
     
     self.selectedBottomBtn.selected = isAllAll;
 }
+
+#pragma mark - 记录选中的商品的唯一标示 取消选中的就删除 -
+- (void)recordSelectedShopGoods {
+
+    for (XNRShopCarSectionModel *sectionModel in _dataArr) {
+        for (XNRShoppingCartModel *carModel in sectionModel.SKUList) {
+            
+            if ([_MapOfAllStateArr containsObject:carModel._id]&&!carModel.selectState) {
+                [_MapOfAllStateArr removeObject:carModel._id];
+            }
+            
+            if (carModel.selectState) {
+                [_MapOfAllStateArr addObject:carModel._id];
+            }
+        }
+    }
+}
+//得到经过记录选中选项数据_map 初始化的所有刷新后的数据
+- (void)getInitialAllNewData {
+    
+    for (XNRShopCarSectionModel *sectionModel in _dataArr) {
+        for (XNRShoppingCartModel *carModel in sectionModel.SKUList) {
+            for (NSString *dataId in _MapOfAllStateArr) {
+                carModel.selectState = [dataId isEqualToString:carModel._id];
+            }
+        }
+    }
+    
+    for (XNRShopCarSectionModel *sectionModel in _dataArr) {
+        BOOL isAll = YES;
+        for (XNRShoppingCartModel *cellModel in sectionModel.SKUList) {
+            
+            isAll = isAll && cellModel.selectState;
+            if (isAll) {
+                sectionModel.isSelected = cellModel.selectState;
+            } else {
+                sectionModel.isSelected = NO;
+                self.selectedBottomBtn.selected = NO;
+            }
+            
+            [self.shoppingCarTableView reloadData];
+            [self changeBottom];
+            
+            [self valiteAllCarShopModelIsSelected];
+        }
+    }
+
+}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
