@@ -507,13 +507,9 @@
     
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-<<<<<<< HEAD
     
 
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, PX_TO_PT(1002)) collectionViewLayout:collectionViewLayout];
-=======
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, self.bounds.size.height - PX_TO_PT(300)) collectionViewLayout:collectionViewLayout];
->>>>>>> origin/master
 
     collectionView.delegate = self;
     collectionView.dataSource = self;
@@ -533,12 +529,8 @@
     [self addSubview:view];
     
     UIButton *resetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-<<<<<<< HEAD
 
     resetBtn.frame = CGRectMake(PX_TO_PT(29),PX_TO_PT(29),PX_TO_PT(269),PX_TO_PT(61));
-=======
-    resetBtn.frame = CGRectMake(PX_TO_PT(32),PX_TO_PT(980),w,w/4);
->>>>>>> origin/master
 
     resetBtn.titleLabel.font = XNRFont(14);
     resetBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
