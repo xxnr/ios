@@ -26,10 +26,10 @@
     
     UILabel *itemTitleLabel = [[UILabel alloc] init];
     itemTitleLabel.frame = self.bounds;
-    itemTitleLabel.layer.cornerRadius = 5.0;
+    itemTitleLabel.layer.cornerRadius = PX_TO_PT(10);
     itemTitleLabel.layer.masksToBounds = YES;
     itemTitleLabel.textColor = R_G_B_16(0x646464);
-    itemTitleLabel.font = [UIFont systemFontOfSize:12.0];
+    itemTitleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     itemTitleLabel.textAlignment = NSTextAlignmentCenter;
     itemTitleLabel.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     itemTitleLabel.layer.borderWidth = .5;
@@ -208,15 +208,15 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self == [super initWithFrame:frame]) {
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
-        titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        titleLabel.font = [UIFont boldSystemFontOfSize:PX_TO_PT(26)];
         titleLabel.textColor = R_G_B_16(0x646464);
         titleLabel.backgroundColor = [UIColor clearColor];
         self.selectTitleLabel = titleLabel;
         [self addSubview:self.selectTitleLabel];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(titleLabel.frame)-PX_TO_PT(20), ScreenWidth, PX_TO_PT(2))];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-        [self addSubview:lineView];
+//        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(titleLabel.frame)-PX_TO_PT(20), ScreenWidth, PX_TO_PT(2))];
+//        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+//        [self addSubview:lineView];
     }
     return self;
 }
