@@ -104,7 +104,7 @@
 ////        NSMutableArray *goodsArray = [[NSMutableArray alloc] init];
 ////        NSDictionary *goodsId = @{@"productId":self.model.goodsId,@"count":@"1"};
 ////        [goodsArray addObject:goodsId];
-////        [KSHttpRequest post:KGetShoppingCartOffline parameters:@{@"products":[goodsArray JSONString_Ext]} success:^(id result) {
+//        [KSHttpRequest post:KGetShoppingCartOffline parameters:@{@"products":[goodsArray JSONString_Ext]} success:^(id result) {
 ////            if ([result[@"code"] integerValue] == 1000) {
 ////            [SVProgressHUD  showSuccessWithStatus:@"加入购物车成功"];
 ////
