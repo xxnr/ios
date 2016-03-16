@@ -54,7 +54,6 @@
 		1FE1D65D1B12EE3D00F0D158 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FE1D65B1B12EE3D00F0D158 /* SVProgressHUD.m */; };
 		1FE1D6611B12EE4300F0D158 /* MyControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FE1D6601B12EE4300F0D158 /* MyControl.m */; };
 		1FE1D6691B12F1DE00F0D158 /* XNRShoppingCarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FE1D6671B12F1DE00F0D158 /* XNRShoppingCarController.m */; };
-		1FE1D66A1B12F1DE00F0D158 /* XNRShoppingCarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1FE1D6681B12F1DE00F0D158 /* XNRShoppingCarController.xib */; };
 		1FE1D8EF1B131AC200F0D158 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FE1D8ED1B131A9100F0D158 /* MobileCoreServices.framework */; };
 		1FE1D8F01B131AC400F0D158 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FE1D8EB1B131A8900F0D158 /* CFNetwork.framework */; };
 		1FE1D8F91B131AFB00F0D158 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FE1D8F71B131AF200F0D158 /* MapKit.framework */; };
@@ -525,7 +524,6 @@
 		1FE1D6601B12EE4300F0D158 /* MyControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyControl.m; sourceTree = "<group>"; };
 		1FE1D6661B12F1DE00F0D158 /* XNRShoppingCarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRShoppingCarController.h; sourceTree = "<group>"; };
 		1FE1D6671B12F1DE00F0D158 /* XNRShoppingCarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRShoppingCarController.m; sourceTree = "<group>"; };
-		1FE1D6681B12F1DE00F0D158 /* XNRShoppingCarController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XNRShoppingCarController.xib; sourceTree = "<group>"; };
 		1FE1D8EB1B131A8900F0D158 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		1FE1D8ED1B131A9100F0D158 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		1FE1D8F71B131AF200F0D158 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -1888,7 +1886,6 @@
 			children = (
 				1FE1D6661B12F1DE00F0D158 /* XNRShoppingCarController.h */,
 				1FE1D6671B12F1DE00F0D158 /* XNRShoppingCarController.m */,
-				1FE1D6681B12F1DE00F0D158 /* XNRShoppingCarController.xib */,
 				84AAA5881B4391ED005AA154 /* XNROrderInfo_VC.h */,
 				84AAA5891B4391ED005AA154 /* XNROrderInfo_VC.m */,
 				49EF87EF1C4B89D0008C62AE /* XNROrderDetail_VC.h */,
@@ -3025,7 +3022,6 @@
 				844AFE921B147ECF00EE29C8 /* b27_icon_star_gray@2x.png in Resources */,
 				844AFE4A1B14438700EE29C8 /* FZZHJW.TTF in Resources */,
 				491610DC1C8C422200F1E243 /* PlayButtonOverlayLarge@3x.png in Resources */,
-				1FE1D66A1B12F1DE00F0D158 /* XNRShoppingCarController.xib in Resources */,
 				49F7A5B51C5906C200A1FA45 /* 加载8.png in Resources */,
 				491610E91C8C422200F1E243 /* VideoOverlay.png in Resources */,
 				491610E61C8C422200F1E243 /* UIBarButtonItemGrid.png in Resources */,
