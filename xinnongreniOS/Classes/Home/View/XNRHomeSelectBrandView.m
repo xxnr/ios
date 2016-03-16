@@ -714,9 +714,19 @@
     else if (indexPath.section == 0 && selectedItem.isSelected == NO)
     {
         NSArray *arr = [self.currentTx valueForKey:selectedItem.titleParam];
-        for (int i=0; i<arr.count; i++) {
-            [self.txArr removeObject:arr[i]];
+//        for (int i=0; i<arr.count; i++) {
+//            [self.txArr removeObject:arr[i]];
+//        }
+        NSMutableArray *removeArr = [[NSMutableArray alloc]init];
+        for (XNRHomeSelectedBrandItem *txItem in self.txArr) {
+            for (XNRHomeSelectedBrandItem *item in arr) {
+                if ([txItem.titleStr isEqualToString:item.titleStr]) {
+                    [removeArr addObject:txItem];
+                }
+            }
         }
+        [self.txArr removeObjectsInArray:removeArr];
+        
         [self.selecteItemArr setObject:self.txArr atIndexedSubscript:2];
         [self.collectionView reloadData];
 

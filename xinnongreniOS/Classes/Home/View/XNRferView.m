@@ -71,7 +71,7 @@
     selectedBtn.frame = CGRectMake(CGRectGetMaxX(self.priceBtn.frame),0, ScreenWidth/3, PX_TO_PT(89));
     [selectedBtn setTitle:@"筛选" forState:UIControlStateNormal];
     [selectedBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
-    [selectedBtn setTitleColor:R_G_B_16(0xff4e00) forState:UIControlStateSelected];
+//    [selectedBtn setTitleColor:R_G_B_16(0xff4e00) forState:UIControlStateSelected];
 
     [selectedBtn setImage:[UIImage imageNamed:@"icon_select_gray"] forState:UIControlStateNormal];
     selectedBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -90);
@@ -103,13 +103,13 @@
         XNRferViewDoType type;
         if (button == self.totalBtn) {
             self.priceBtn.selected = NO;
-            self.selectedBtn.selected = NO;
+//            self.selectedBtn.selected = NO;
             [self.imageView1 removeFromSuperview];
             [self.imageView2 removeFromSuperview];
             type = XNRferView_DoTotalType;
         } else if (button == self.priceBtn) {
             self.totalBtn.selected = NO;
-            self.selectedBtn.selected = NO;
+//            self.selectedBtn.selected = NO;
             type = XNRferView_DoPriceType;
             isDerictor = !isDerictor;
             if (isDerictor == YES) {
@@ -126,10 +126,10 @@
                 [self addSubview:imageView2];
             }
         } else {
-            self.priceBtn.selected = NO;
-            self.totalBtn.selected = NO;
-            [self.imageView1 removeFromSuperview];
-            [self.imageView2 removeFromSuperview];
+////            self.priceBtn.selected = NO;
+////            self.totalBtn.selected = NO;
+//            [self.imageView1 removeFromSuperview];
+//            [self.imageView2 removeFromSuperview];
 
             type = XNRferView_DoSelectType;
             NSLog(@"++++++++++++=========");
