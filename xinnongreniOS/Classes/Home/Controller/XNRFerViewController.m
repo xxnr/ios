@@ -58,6 +58,7 @@
 @property (nonatomic,strong)NSArray *atts;
 @property (nonatomic,strong)NSArray *showTxArr;
 @property (nonatomic,strong)NSString *kind;
+@property (nonatomic,assign)BOOL isfirst;
 
 @end
 
@@ -168,9 +169,8 @@
 }
 -(void)headRefresh{
     currentPage = 1;
-    [_totalArray removeAllObjects];
+//    [_totalArray removeAllObjects];
     [self getData];
-    
 
 }
 -(void)footRefresh{
@@ -207,14 +207,31 @@
 -(void)getData
 {
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"brandName":self.brandName?self.brandName:@"",@"modelName":self.modelName?self.modelName:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+    manager.requestSerializer.timeoutInterval = 10.f;
+    [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    
+    NSDictionary *dic = [NSDictionary dictionary];
+
+        dic = @{@"classId":_classId,@"brand":self.brands?self.brands:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"};
+
+    [KSHttpRequest get:KHomeGetProductsListPage parameters:dic success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *arr = dict[@"rows"];
+            if (_isfirst == NO) {
             for (NSDictionary *dicts in arr) {
                 XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
                 [model setValuesForKeysWithDictionary:dicts];
-                [_totalArray addObject:model];
+                
+                    [_totalArray addObject:model];
+                }
+                _isfirst = YES;
             }
         }
         //  如果到达最后一页 就消除footer
@@ -308,7 +325,25 @@
 -(void)getTotalData{
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [_totalArray removeAllObjects];
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"brand":self.brands?self.brands:@"",@"attributes":self.atts?self.atts:nil,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+    manager.requestSerializer.timeoutInterval = 10.f;
+    [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    
+    NSDictionary *dic = [NSDictionary dictionary];
+    if (self.atts.count != 0) {
+        dic = @{@"classId":_classId,@"brand":self.brands?self.brands:@"",@"attributes":self.atts?self.atts:nil,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
+    }
+    else
+    {
+        dic = @{@"classId":_classId,@"brand":self.brands?self.brands:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
+    }
+
+    [KSHttpRequest get:KHomeGetProductsListPage parameters:dic success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *arr = dict[@"rows"];
@@ -333,7 +368,25 @@
 -(void)getPriceDataWith:(NSString *)sort{
     [_ferArray removeAllObjects];
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
-    [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":_classId,@"sort":sort,@"brand":self.brands?self.brands:@"",@"attributes":self.atts?self.atts:nil,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+    manager.requestSerializer.timeoutInterval = 10.f;
+    [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    
+    NSDictionary *dic = [NSDictionary dictionary];
+    if (self.atts.count != 0) {
+        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.brands?self.brands:@"",@"attributes":self.atts?self.atts:nil,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
+    }
+    else
+    {
+        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.brands?self.brands:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
+    }
+
+    [KSHttpRequest get:KHomeGetProductsListPage parameters:dic success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"datas"];
             NSArray *arr = dict[@"rows"];
