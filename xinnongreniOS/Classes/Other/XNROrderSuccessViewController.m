@@ -23,6 +23,7 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = R_G_B_16(0xFAFAFA);
+//    [self getData];
     
     [self setNav];
 
@@ -30,6 +31,26 @@
     [self createBtn];
 }
 
+//-(void)getData
+//{
+//    [KSHttpRequest get:KAlipaySuccess parameters:nil success:^(id result) {
+//        
+//        NSLog(@"%@",result);
+//    } failure:^(NSError *error) {
+//        
+//    }];
+//}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic setValue:self.orderID forKey:@"orderId"];
+    
+//    NSNotification *notification = [NSNotification notificationWithName:@"deleteModel" object:nil userInfo:dic];
+//    [[NSNotificationCenter defaultCenter]postNotification:notification];
+   
+}
 -(void)createCenter
 {
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(123), PX_TO_PT(170), PX_TO_PT(140), PX_TO_PT(140))];
@@ -113,6 +134,9 @@
 - (void)backClick:(UIButton *)btn
 {
 //    [self.navigationController popViewControllerAnimated:YES];
+ 
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadOrderList" object:nil];
+
     for (UIViewController *vc in self.navigationController.viewControllers) {
         if ([vc isKindOfClass:[XNRMyOrder_VC class]]) {
             [self.navigationController popToViewController:vc animated:YES];
@@ -120,6 +144,8 @@
         }
     }
     [self.navigationController popToRootViewControllerAnimated:YES];
+    
+//    NSNotification *notification = [[NSNotification alloc]initWithName:@"reloadOrderList" object:nil userInfo:nil];
 
 }
 

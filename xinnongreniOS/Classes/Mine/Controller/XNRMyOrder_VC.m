@@ -17,6 +17,7 @@
 #import "XNRTabBarController.h"
 #import "XNRMineController.h"
 #import "XNRTabBarController.h"
+#import "XNRFerViewController.h"
 
 #define KbtnTag          1000
 #define kLabelTag        2000
@@ -31,6 +32,7 @@
 @property (nonatomic,retain) XNRServeView   *ServeView;// 0
 @property (nonatomic,retain) XNRPayView     *PayView; // 1
 @property(nonatomic,retain)UIScrollView*mainScrollView;
+@property (nonatomic,copy)NSString *orderId;
 @end
 
 
@@ -41,6 +43,9 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = R_G_B_16(0xf4f4f4);
     
+
+    
+
     [self setNavigationbarTitle];
     [self createTopView];
     self.mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100),ScreenWidth+10*SCALE,ScreenHeight-64)];
@@ -55,8 +60,32 @@
     self.mainScrollView.bounces = NO;
     [self.view addSubview:self.mainScrollView];
     [self createMidView];
-
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushFerVC) name:@"pushFerVC" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushCarVC) name:@"pushCarVC" object:nil];
+}
+
+-(void)pushFerVC
+{
+    XNRFerViewController *ferView = [[XNRFerViewController alloc] init];
+    ferView.type = eXNRFerType;
+    ferView.tempTitle = @"化肥";
+    ferView.classId = @"531680A5";
+    ferView.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:ferView animated:YES];
+}
+
+-(void)pushCarVC
+{
+    
+    XNRFerViewController *carView = [[XNRFerViewController alloc] init];
+    carView.type = eXNRCarType;
+    carView.classId = @"6C7D8F66";
+    carView.tempTitle = @"汽车";
+    carView.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:carView animated:YES];
+
 }
 
 #pragma mark--创建中部视图
@@ -64,6 +93,9 @@
     
     if(nil==self.ServeView){ // 全部
         self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
+        
+//        self.ServeView.deleteId = self.orderId;
+        
         [self.mainScrollView addSubview:self.ServeView];
         __weak __typeof(&*self)weakSelf=self;
         
@@ -72,6 +104,7 @@
             vc.hidesBottomBarWhenPushed = YES;
             vc.orderID = orderID;
             vc.payMoney = money;
+
             [weakSelf.navigationController pushViewController:vc animated:YES];
         }];
         // 查看订单
@@ -253,7 +286,7 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-        [self.SendView showEmptyView];
+//        [self.SendView showEmptyView];
     }
     
     if(button.tag==KbtnTag+3){
@@ -261,7 +294,7 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-        [self.ReciveView showEmptyView];
+//        [self.ReciveView showEmptyView];
     }
     
     if(button.tag==KbtnTag+4){
@@ -269,7 +302,7 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-        [self.CommentView showEmptyView];
+//        [self.CommentView showEmptyView];
     }
 }
 
@@ -330,7 +363,7 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-        [self.ReciveView showEmptyView];
+//        [self.ReciveView showEmptyView];
 
     }else{
         tag=4;
@@ -343,7 +376,7 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-        [self.CommentView showEmptyView];
+//        [self.CommentView showEmptyView];
     }
     
     
@@ -391,12 +424,15 @@
     [self.navigationController popToRootViewControllerAnimated:NO];
 
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
 /*
 #pragma mark - Navigation
 
