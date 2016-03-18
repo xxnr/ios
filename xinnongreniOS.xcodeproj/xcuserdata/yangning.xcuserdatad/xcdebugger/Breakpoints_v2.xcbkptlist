@@ -73,30 +73,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "xinnongreniOS/Classes/Mine/View/XNROrderEmptyView.m"
-            timestampString = "479982243.30217"
+            filePath = "xinnongreniOS/Classes/Mine/View/XNRSendView.m"
+            timestampString = "479985956.995754"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
-            landmarkName = "-createView"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
+            landmarkName = "-getData"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "xinnongreniOS/Classes/Mine/View/XNROrderEmptyView.m"
-            timestampString = "479982847.936874"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "-createView"
-            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[XNRSendView getData]"
+                  moduleName = "xinnongreniOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yangning/Documents/ios%20git/ios/xinnongreniOS/Classes/Mine/View/XNRSendView.m"
+                  timestampString = "479986013.258857"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "198"
+                  endingLineNumber = "198"
+                  offsetFromSymbolStart = "71">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__22-[XNRSendView getData]_block_invoke"
+                  moduleName = "xinnongreniOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yangning/Documents/ios%20git/ios/xinnongreniOS/Classes/Mine/View/XNRSendView.m"
+                  timestampString = "479986013.259223"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "198"
+                  endingLineNumber = "198"
+                  offsetFromSymbolStart = "72">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
