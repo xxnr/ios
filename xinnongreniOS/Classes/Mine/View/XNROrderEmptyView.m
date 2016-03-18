@@ -22,6 +22,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
         self.userInteractionEnabled = YES;
         [self createView];
     }
@@ -71,7 +72,8 @@
     [buyCarBtn addTarget:self action:@selector(buyClick:) forControlEvents:UIControlEventTouchDown];
     self.buyCarBtn = buyCarBtn;
     [self addSubview:buyCarBtn];
-//    
+//
+    
 //    UIButton *b = [[UIButton alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];
 //    b.backgroundColor = [UIColor redColor];
 //    [b addTarget:self action:@selector(buyClick:) forControlEvents:UIControlEventTouchDown];
