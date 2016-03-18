@@ -453,7 +453,7 @@
     for (int i = 0; i<_dataArr.count; i++) {
         XNRShopCarSectionModel *sectionModel = _dataArr[i];
         for (XNRShoppingCartModel *cellModel in sectionModel.SKUList) {
-            if (cellModel.selectState) {
+            if (cellModel.selectState && [cellModel.online integerValue] == 1) {
                 
                 NSDictionary *params = @{@"_id":cellModel._id,@"count":cellModel.num,@"additions":cellModel.additions};
                 [arr addObject:params];
@@ -473,7 +473,7 @@
     //改变底部
     [self changeBottom];
     [self.shoppingCarTableView reloadData];
-    [KSHttpRequest get:KGetShopCartList parameters:@{@"userId":[DataCenter account].userid,@"token":[DataCenter account].token,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest get:KGetShopCartList parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             
             NSDictionary *datasDic = result[@"datas"];
@@ -488,7 +488,6 @@
                 for (int i = 0; i<sectionModel.SKUList.count; i++) {
                     XNRShoppingCartModel *model = sectionModel.SKUList[i];
                     model.num = model.count;
-                    
                     NSLog(@"++_)_%@",model.attributes);
                     
                 }
@@ -501,7 +500,7 @@
             [self.shoppingCarTableView reloadData];
         }else{
             
-            [UILabel showMessage:result[@"message"]];
+//            [UILabel showMessage:result[@"message"]];
             
         }
         
@@ -632,7 +631,17 @@
         selectedHeadBtn.selected = sectionModel.isSelected;
         self.selectedHeadBtn = selectedHeadBtn;
         [headView addSubview:selectedHeadBtn];
-        
+        // 已下架的商品selectedHeadBtn隐藏
+        for (int i = 0; i<sectionModel.SKUList.count; i++) {
+            XNRShoppingCartModel *model = sectionModel.SKUList[i];
+            if (sectionModel.SKUList.count == 1 && [model.online integerValue] == 0) {
+                selectedHeadBtn.hidden = YES;
+            }else{
+                selectedHeadBtn.hidden = NO;
+            }
+            
+        }
+       
         UIImageView *shopcarImage = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(selectedHeadBtn.frame) + PX_TO_PT(20), PX_TO_PT(26), PX_TO_PT(36), PX_TO_PT(36))];
         [shopcarImage setImage:[UIImage imageNamed:@"shopcar_icon"]];
         [headView addSubview:shopcarImage];
@@ -671,7 +680,7 @@
     }
     
     [self.shoppingCarTableView reloadData];
-    
+    // section商品全部选中
     [self valiteAllCarShopModelIsSelected];
     
     [self changeBottom];
@@ -691,7 +700,7 @@
             if (model.num != nil) {
                 goodsNum = goodsNum + model.num.integerValue;
             }
-            if (model.selectState) {
+            if (model.selectState&&[model.online integerValue]==1) {
                 // 合计xxxx
                 if (model.deposit && [model.deposit floatValue] > 0) {
                     _totalPrice = _totalPrice + model.num.intValue*[[NSString stringWithFormat:@"%@",model.deposit] floatValue];
@@ -872,27 +881,38 @@
 - (void)valiteAllCarShopModelIsSelected {
     BOOL isAllAll = YES;
     for (XNRShopCarSectionModel *sectionModel in _dataArr) {
-        isAllAll = isAllAll && sectionModel.isSelected;
+        for (XNRShoppingCartModel *model in sectionModel.SKUList) {
+            isAllAll = isAllAll && sectionModel.isSelected && ([model.online integerValue]==1);
+        }
+        
     }
-    
     self.selectedBottomBtn.selected = isAllAll;
 }
 
 #pragma mark - 记录选中的商品的唯一标示 取消选中的就删除 -
 - (void)recordSelectedShopGoods {
-
     for (XNRShopCarSectionModel *sectionModel in _dataArr) {
         for (XNRShoppingCartModel *carModel in sectionModel.SKUList) {
             
-            if ([_MapOfAllStateArr containsObject:carModel._id]&&!carModel.selectState) {
+            if (carModel.selectState&&![_MapOfAllStateArr containsObject:carModel._id]) {
+                NSLog(@"++++++选中:%@",carModel._id);
+                [_MapOfAllStateArr addObject:carModel._id];
+            } else if(!carModel.selectState) {
+                NSLog(@"------取消选中:%@",carModel._id);
                 [_MapOfAllStateArr removeObject:carModel._id];
             }
             
-            if (carModel.selectState) {
-                [_MapOfAllStateArr addObject:carModel._id];
-            }
+//            if ([_MapOfAllStateArr containsObject:carModel._id]&&!carModel.selectState) {
+//                [_MapOfAllStateArr removeObject:carModel._id];
+//            }
+//            
+//            if (carModel.selectState) {
+//                [_MapOfAllStateArr addObject:carModel._id];
+//            }
         }
     }
+    
+
 }
 //得到经过记录选中选项数据_map 初始化的所有刷新后的数据
 - (void)getInitialAllNewData {
@@ -900,7 +920,9 @@
     for (XNRShopCarSectionModel *sectionModel in _dataArr) {
         for (XNRShoppingCartModel *carModel in sectionModel.SKUList) {
             for (NSString *dataId in _MapOfAllStateArr) {
-                carModel.selectState = [dataId isEqualToString:carModel._id];
+                if ([dataId isEqualToString:carModel._id]) {
+                    carModel.selectState = YES;
+                }
             }
         }
     }
