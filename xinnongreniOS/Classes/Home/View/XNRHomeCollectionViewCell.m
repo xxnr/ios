@@ -10,6 +10,7 @@
 #import "UIImageView+WebCache.h"
 #import "ZSCLabel.h"
 #import "UIFont+BSExt.h"
+#import "UILabel+ZSC.h"
 @interface XNRHomeCollectionViewCell ()
 {
     NSString *prasale;
@@ -45,13 +46,8 @@
      UIImageView *picImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, PX_TO_PT(330), PX_TO_PT(330))];
     picImageView.contentMode = UIViewContentModeScaleAspectFit;
     picImageView.layer.masksToBounds=YES;
-//    picImageView.layer.cornerRadius=10.0;
     picImageView.layer.borderWidth=PX_TO_PT(2);
     picImageView.layer.borderColor=R_G_B_16(0xc7c7c7).CGColor;
-//    picImageView.layer.shadowColor=[UIColor blackColor].CGColor;
-//    picImageView.layer.shadowOpacity=.5;//透明度
-//    picImageView.layer.shadowOffset=CGSizeMake(10, 10);//偏移量
-
     self.picImageView = picImageView;
     [self.contentView addSubview:self.picImageView];
 }
@@ -60,13 +56,11 @@
 - (void)createGoodNameLabel
 {
     UILabel *goodNameLabel = [[UILabel alloc]init];
+    goodNameLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame)+PX_TO_PT(10), PX_TO_PT(330), PX_TO_PT(70));
 //    goodNameLabel.backgroundColor = [UIColor redColor];
-    goodNameLabel.textColor = R_G_B_16(0x32323);
-    goodNameLabel.font = XNRFont(12);
+    goodNameLabel.textColor = R_G_B_16(0x323232);
+    goodNameLabel.font = [UIFont systemFontOfSize:14];
     goodNameLabel.numberOfLines = 0;
-//    goodNameLabel.adjustsFontSizeToFitWidth = YES;
-//    [goodNameLabel fitTextHeight_Ext];
-    
     self.goodNameLabel = goodNameLabel;
     [self.contentView addSubview:self.goodNameLabel];
 }
@@ -75,9 +69,8 @@
 - (void)createPresentPriceLabel
 {
     UILabel *presentPriceLabel = [[UILabel alloc]init];
-//    presentPriceLabel.backgroundColor = [UIColor yellowColor];
     presentPriceLabel.textColor = R_G_B_16(0xff4e00);
-    presentPriceLabel.font = XNRFont(18);
+    presentPriceLabel.font = [UIFont  systemFontOfSize:18];
     presentPriceLabel.textAlignment = NSTextAlignmentLeft;
     self.presentPriceLabel = presentPriceLabel;
     [self.contentView addSubview:self.presentPriceLabel];
@@ -105,9 +98,10 @@
     [self.picImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
     
     //商品名
-    CGSize maxSize = CGSizeMake(PX_TO_PT(330), MAXFLOAT);
-    CGSize nameSize = [self.model.goodsName sizeWithFont_BSExt:self.goodNameLabel.font maxSize:maxSize];
-    self.goodNameLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20),nameSize.width, nameSize.height);
+//    CGSize maxSize = CGSizeMake(PX_TO_PT(330), MAXFLOAT);
+//    CGSize nameSize = [self.model.goodsName sizeWithFont_BSExt:self.goodNameLabel.font maxSize:maxSize];
+//    self.goodNameLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20),nameSize.width, nameSize.height);
+    
     self.goodNameLabel.text = self.model.goodsName;
     
     

@@ -35,6 +35,7 @@
     NSString * _min;
     NSString * _max;
     CGFloat _totalPrice;
+    NSString *_deposit;
 }
 
 @property (nonatomic ,weak) UIView *coverView;
@@ -65,19 +66,50 @@
 
 @property (nonatomic , weak) UIView *bgView;
 
+@property (nonatomic , weak) UIView *bgViewF;
+
+
 @property (nonatomic ,assign) XNRPropertyViewType type;
 
 @property (nonatomic ,copy) NSString *marketPrice;
 
-@property (nonatomic, weak) UILabel *marketPriceLabel;
+@property (nonatomic ,strong) NSMutableArray *addtionsArray;
+
 
 @end
 
 @implementation XNRPropertyView
+// 单例
++(id)sharedInstanceWithModel:(XNRShoppingCartModel *)shopcarModel {
+    //此种单例创建优点
+    //1. 线程安全。
+    //2. 满足静态分析器的要求。
+    //3. 兼容了ARC
+    static XNRPropertyView *dm = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dm = [[self alloc]initWithFrame:CGRectMake(0, 0, 0, 0) model:shopcarModel];
+    });
+    return dm;
+}
+//static XNRPropertyView *dm = nil;
+//+(XNRPropertyView *)sharedInstanceWithModel:(XNRShoppingCartModel *)shopcarModel {
+//    if (!dm) {
+//        dm = [[self alloc]initWithFrame:CGRectMake(0, 0, 0, 0) model:shopcarModel];
+//    }
+//    return dm;
+//}
+
+// 懒加载（立即购买的时候，把所有的附加选项_id添加到数组里面）
+-(NSMutableArray *)addtionsArray {
+    if (!_addtionsArray) {
+        _addtionsArray = [NSMutableArray array];
+    }
+    return _addtionsArray;
+}
 
 
--(instancetype)initWithFrame:(CGRect)frame model:(XNRShoppingCartModel *)shopcarModel andType:(XNRPropertyViewType)type
-{
+-(instancetype)initWithFrame:(CGRect)frame model:(XNRShoppingCartModel *)shopcarModel {
     self = [super initWithFrame:frame];
     if (self) {
         
@@ -105,13 +137,7 @@
         [window addSubview:attributesView];
         
         [self createTopView];
-        
-        if (type == XNRFirstType) {
-            [self createFirstView];
 
-        }else if (type == XNRSecondType){
-            [self createSecondView];
-        }
     }
     return self;
 
@@ -127,6 +153,8 @@
             [model setValuesForKeysWithDictionary:dic];
             
             _id = dic[@"_id"];
+            _deposit = dic[@"deposit"];
+            
             
             model.pictures = (NSMutableArray *)[XNRProductPhotoModel objectArrayWithKeyValuesArray:dic[@"pictures"]];
             model.SKUAttributes = (NSMutableArray *)[XNRSKUAttributesModel objectArrayWithKeyValuesArray:dic[@"SKUAttributes"]];
@@ -190,10 +218,12 @@
             if ([dic[@"presale"] integerValue] == 1) {
                 self.bgExpectView.hidden = NO;
                 self.bgView.hidden = YES;
+                self.bgViewF.hidden = YES;
                 
             }else{
                 self.bgExpectView.hidden = YES;
                 self.bgView.hidden = NO;
+                self.bgViewF.hidden = NO;
             }
 
             NSString *imageUrl=[HOST stringByAppendingString:dic[@"thumbnail"]];
@@ -246,84 +276,78 @@
     priceLabel.font = [UIFont systemFontOfSize:20];
     self.priceLabel = priceLabel;
     [self.attributesView addSubview:priceLabel];
-    
-    UILabel *marketPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame) + PX_TO_PT(20), CGRectGetMaxY(priceLabel.frame), ScreenWidth-CGRectGetMaxX(imageView.frame)-PX_TO_PT(20), PX_TO_PT(34))];
-    marketPriceLabel.textColor = R_G_B_16(0x909090);
-    marketPriceLabel.font = [UIFont systemFontOfSize:16];
-    self.marketPriceLabel = marketPriceLabel;
-//    [self.attributesView addSubview:marketPriceLabel];
-
-    
-    
 }
+
 -(void)createFirstView{
-    UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(980)-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
-    bgView.backgroundColor=[UIColor whiteColor];
-    self.bgView = bgView;
-    [self.attributesView addSubview:bgView];
-    
-    // 立即购买
-    UIButton *buyBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(buyBtnClick) Title:@"立即购买"];
-    buyBtn.backgroundColor = [UIColor whiteColor];
-    [buyBtn setTitleColor:R_G_B_16(0xfe9b00) forState:UIControlStateNormal];
-    buyBtn.titleLabel.font = XNRFont(16);
-    buyBtn.tag = buyBtnTag;
-    self.buyBtn = buyBtn;
-    [bgView addSubview:buyBtn];
-    
-    //加入购物车
-    UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(2), ScreenWidth/2, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
-    addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
-    [addBuyCarBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    addBuyCarBtn.titleLabel.font=XNRFont(16);
-    self.addBuyCarBtn = addBuyCarBtn;
-    [bgView addSubview:addBuyCarBtn];
-    
-    //分割线
-    UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,PX_TO_PT(1) )];
-    line.backgroundColor=R_G_B_16(0xc7c7c7);
-    [bgView addSubview:line];
-    
-    UIView *bgExpectView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(980)-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
-    bgExpectView.backgroundColor = R_G_B_16(0xe2e2e2);
-    self.bgExpectView = bgExpectView;
-    [self.attributesView addSubview:bgExpectView];
-    
-    UILabel *expectLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80))];
-    expectLabel.text = @"敬请期待";
-    expectLabel.textAlignment = NSTextAlignmentCenter;
-    expectLabel.textColor = R_G_B_16(0x909090);
-    expectLabel.font = [UIFont systemFontOfSize:18];
-    [bgExpectView addSubview:expectLabel];
-    
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-    [bgExpectView addSubview:lineView];
+    if (!_bgViewF) {
+        UIView *bgViewF=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(980)-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
+        bgViewF.backgroundColor=[UIColor whiteColor];
+        self.bgViewF = bgViewF;
+        [self.attributesView addSubview:bgViewF];
+        
+        // 立即购买
+        UIButton *buyBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(buyBtnClick) Title:@"立即购买"];
+        buyBtn.backgroundColor = [UIColor whiteColor];
+        [buyBtn setTitleColor:R_G_B_16(0xfe9b00) forState:UIControlStateNormal];
+        buyBtn.titleLabel.font = XNRFont(16);
+        buyBtn.tag = buyBtnTag;
+        self.buyBtn = buyBtn;
+        [bgViewF addSubview:buyBtn];
+        
+        //加入购物车
+        UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(2), ScreenWidth/2, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
+        addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
+        [addBuyCarBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        addBuyCarBtn.titleLabel.font=XNRFont(16);
+        self.addBuyCarBtn = addBuyCarBtn;
+        [bgViewF addSubview:addBuyCarBtn];
+
+        //分割线
+        UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,PX_TO_PT(1) )];
+        line.backgroundColor=R_G_B_16(0xc7c7c7);
+        [bgViewF addSubview:line];
+        
+        UIView *bgExpectView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(980)-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
+        bgExpectView.backgroundColor = R_G_B_16(0xe2e2e2);
+        self.bgExpectView = bgExpectView;
+        [self.attributesView addSubview:bgExpectView];
+        
+        UILabel *expectLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80))];
+        expectLabel.text = @"敬请期待";
+        expectLabel.textAlignment = NSTextAlignmentCenter;
+        expectLabel.textColor = R_G_B_16(0x909090);
+        expectLabel.font = [UIFont systemFontOfSize:18];
+        [bgExpectView addSubview:expectLabel];
+        
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        [bgExpectView addSubview:lineView];
+    }
 
 
 }
 -(void)createSecondView{
-    
-    UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(980)-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
-    bgView.backgroundColor=[UIColor whiteColor];
-    self.bgView = bgView;
-    [self.attributesView addSubview:bgView];
-
-    // 确定
-    UIButton *admireBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(admireBtnClick) Title:@"确定"];
-    admireBtn.backgroundColor = R_G_B_16(0xfe9b00);
-    [admireBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    admireBtn.titleLabel.font=XNRFont(16);
-    [bgView addSubview:admireBtn];
-    
+    if (!_bgView) {
+        UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(980)-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
+        bgView.backgroundColor=[UIColor whiteColor];
+        self.bgView = bgView;
+        [self.attributesView addSubview:bgView];
+        
+        // 确定
+        UIButton *admireBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(admireBtnClick) Title:@"确定"];
+        admireBtn.backgroundColor = R_G_B_16(0xfe9b00);
+        [admireBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        admireBtn.titleLabel.font=XNRFont(16);
+        [bgView addSubview:admireBtn];
+    }
 }
 #pragma mark - 确定
 -(void)admireBtnClick
 {
-    if (_type == XNRFirstType) {
+    if (_type == XNRFirstType) {// 立即购买
         [self buyBtnClick];
         
-    }else if (_type == XNRSecondType){
+    }else if (_type == XNRSecondType){// 加入购物车
         [self addBuyCar];
     
     }
@@ -393,7 +417,8 @@
                     }
                     // 订单页的跳转
                     [self cancelBtnClick];
-                    self.com(SKUs,_totalPrice);
+                    self.com(SKUs,_totalPrice*([_numText floatValue]?[_numText floatValue]:[@"1" intValue]),_numText?_numText:@"1");
+                    
                 }else{
                     
                     [UILabel showMessage:resultObj[@"message"]];
@@ -435,9 +460,10 @@
                 }
                 //数据库有该商品(更新)
                 else{
-                    self.shopcarModel.num = [NSString stringWithFormat:@"%d",self.shopcarModel.num.intValue+_numText.intValue];
+                    self.shopcarModel.num = [NSString stringWithFormat:@"%d",self.shopcarModel.num.intValue+([_numText intValue]?[_numText intValue]:[@"1" intValue])];
                     self.shopcarModel.timeStamp = [CommonTool timeSp];  //时间戳
                     self.shopcarModel.shoppingCarCount = [manager shoppingCarCount];
+                    
                     b = [manager updateShoppingCarWithModel:self.shopcarModel];
                 }
                 if (b) {
@@ -468,7 +494,7 @@
             NSLog(@"0-=9=90%@",addtionArray);
         }
     }
-    NSDictionary *params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"userId":[DataCenter account].userid,@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
+    NSDictionary *params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"userId":[DataCenter account].userid,@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"token":[DataCenter account].token,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
     NSLog(@"())__)%@",params);
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -520,7 +546,7 @@
             NSLog(@"0-=9=90%@",addtionArray);
         }
     }
-    NSDictionary *params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"userId":[DataCenter account].userid,@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
+    NSDictionary *params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"userId":[DataCenter account].userid,@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"token":[DataCenter account ].token,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
     
     NSLog(@"())__)%@",params);
     
@@ -648,13 +674,21 @@
     if (infoModel.SKUAttributes.count>indexPath.section) {
         
         XNRPropertyCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
+        
         XNRSKUAttributesModel *skuModel = infoModel.SKUAttributes[indexPath.section];
+//        XNRSKUCellModel *cellModel = skuModel.values[indexPath.item];
+//        if (skuModel.values.count == 1) {
+//            cellModel.isSelected = YES;
+//        }
         [cell updateCellWithCellModel:skuModel.values[indexPath.item]];
-        return cell;
+                return cell;
     } else if (infoModel.SKUAttributes.count<=indexPath.section) {
         
         XNRPropertyCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"addtionCell" forIndexPath:indexPath];
         XNRAddtionsModel *addtionCellModel = infoModel.additions[indexPath.item];
+//        if (infoModel.additions.count == 1) {
+//            addtionCellModel.isSelected = YES;
+//        }
         [cell updateCellWithCellModel:addtionCellModel];
         return cell;
     } else {
@@ -679,6 +713,7 @@
         }
         // 1.然后确定当前要[选中]的是[section] 中的[哪个cell] 并且 如果[点击]了已经选中的 要[取消]选中
         for (int i = 0; i < selectedSectionModel.values.count; i++) {
+            
             XNRSKUCellModel *cellModel = selectedSectionModel.values[i];
             if (cellModel.isSelected&&indexPath.item == i) {
                 cellModel.isSelected = NO;
@@ -686,6 +721,7 @@
                 cellModel.isSelected = indexPath.item == i;
             }
         }
+        
         // 2.遍历所有的section 所有的cell 如果有被选中的cell 需要添加到请求参数数组里面 以备网络请求使用
         NSMutableArray *attributesArray = [[NSMutableArray alloc] init];
         for (XNRSKUAttributesModel *sectionModel in infoModel.SKUAttributes) {
@@ -722,7 +758,7 @@
                 NSDictionary *marketPrice = datas[@"market_price"];
                 // 市场价
                 if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
-                    _marketPrice = [NSString stringWithFormat:@"市场价：¥ %.2f",[marketPrice[@"min"] floatValue]];
+                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",[marketPrice[@"min"] floatValue]];
                     if ([_marketPrice rangeOfString:@".00"].length == 3) {
                         _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
                     }
@@ -736,7 +772,7 @@
                     if ([maxPrice rangeOfString:@".00"].length == 3) {
                         maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
                     }
-                    _marketPrice = [NSString stringWithFormat:@"市场价：¥ %@ - %@",minPrice,maxPrice];
+                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %@ - %@",minPrice,maxPrice];
                     
                 }
 
@@ -745,6 +781,13 @@
                     self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[price[@"min"] floatValue]];
                     if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
                         self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
+                        if (_deposit != nil) {
+                            _totalPrice = [_deposit floatValue];
+                        }else{
+                            _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
+                        }
+                        
+
                     }
 
                 } else {
@@ -757,7 +800,15 @@
                         maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
                     }
                     self.priceLabel.text = [NSString stringWithFormat:@"¥ %@ - %@",minPrice,maxPrice];
+                    
+                    if (_deposit != nil) {
+                        _totalPrice = [_deposit floatValue];
+                    }else{
+                        _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
+                    }
+
                 }
+                
                 NSArray *attributes = datas[@"attributes"];
                 NSDictionary *skuDict = datas[@"SKU"];
                 NSArray *addtions = skuDict[@"additions"];
@@ -831,8 +882,11 @@
             
         }];
     } else { // 选择了 addtion section（附加选项） 分区
-        NSMutableArray *addtionArray = [NSMutableArray array];
+//        NSMutableArray *addtionArray = [NSMutableArray array];
+        
         CGFloat currentPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
+        CGFloat currentMarketPrice = [[[_marketPrice componentsSeparatedByString:@" "] lastObject] floatValue];
+        
         for (XNRAddtionsModel *addtionCellModel in infoModel.additions) {
             
             if (addtionCellModel.isSelected&&indexPath.item == [infoModel.additions indexOfObject:addtionCellModel]) {
@@ -842,31 +896,51 @@
                     addtionCellModel.isSelected = indexPath.item == [infoModel.additions indexOfObject:addtionCellModel];
                 }
             }
-            
-            //计算总价
+            //计算价格和市场价的总价
             if (indexPath.item == [infoModel.additions indexOfObject:addtionCellModel]) {
                 CGFloat addPrice = [addtionCellModel.price floatValue];
-                _totalPrice = currentPrice+addPrice;
+                if (_deposit != nil) {
+                    _totalPrice = [_deposit floatValue];
+                }else{
+                    _totalPrice = (currentPrice + addPrice);
+
+                }
+                
                 if (addtionCellModel.isSelected) {
+                    // 价格
                     self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",currentPrice+addPrice];
                     if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
                         self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
                     }
+                    // 市场价
+                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",currentMarketPrice+addPrice];
+                    if ([_marketPrice rangeOfString:@".00"].length == 3) {
+                        _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
+                    }
 
-                    [addtionArray addObject:[addtionCellModel keyValues]];
+                    [self.addtionsArray addObject:[addtionCellModel keyValues]];
+                    
+                    NSLog(@"9090eod%@激动",self.addtionsArray);
+                    
                 } else if (!addtionCellModel.isSelected) {
                     self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",currentPrice-addPrice];
                     if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
                         self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
                     }
+                    
+                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",currentMarketPrice-addPrice];
+                    if ([_marketPrice rangeOfString:@".00"].length == 3) {
+                        _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
+                    }
 
-                    [addtionArray removeObject:[addtionCellModel keyValues]];
+
+                    [self.addtionsArray removeObject:[addtionCellModel keyValues]];
                     
                 }
             }
         }
-        self.shopcarModel.additions = [NSMutableArray arrayWithArray:addtionArray];
-        NSLog(@"1024%tu",addtionArray.count);
+        self.shopcarModel.additions = [NSMutableArray arrayWithArray:self.addtionsArray];
+        NSLog(@"1024%tu",self.addtionsArray.count);
         [self.collectionView reloadData];
     }
 }
@@ -992,12 +1066,24 @@
     }];
 }
 
--(void)show:(XNRPropertyViewType)buyType{
+-(void)show:(XNRPropertyViewType)buyType isRoot:(BOOL)isRoot{
     _type = buyType;
     self.coverView.hidden = NO;
     [UIView animateWithDuration:.3 animations:^{
         self.attributesView.frame= CGRectMake(0, ScreenHeight-PX_TO_PT(980), ScreenWidth, PX_TO_PT(980));
+        
+                if (buyType == XNRFirstType ) {// 立即购买
+            if (isRoot == YES) {
+                [self createSecondView];
+            }else{
+                [self createFirstView]; 
+            }
+
+        }else if (buyType == XNRSecondType){// 加入购物车
+            [self createSecondView];
+        }
     }];
 }
+
 
 @end

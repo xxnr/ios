@@ -84,18 +84,17 @@
 
 -(XNRPropertyView *)propertyView{
     if (!_propertyView) {
-        XNRPropertyView *propertyView = [[XNRPropertyView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) model:self.shopcarModel andType:XNRFirstType];
+        XNRPropertyView *propertyView = [XNRPropertyView sharedInstanceWithModel:_shopcarModel];
         __weak __typeof(self)weakSelf = self;
         // 传回来的属性
         propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice){
-            NSString *  attributeStr = [attributes lastObject];
-            NSString *addtionStr = [addtions lastObject];
+           
             self.priceLabel.text = [NSString stringWithFormat:@"%@",price];
             self.marketPriceLabel.text = [NSString stringWithFormat:@"%@",marketPrice];
             CGSize marketPriceSize = [self.marketPriceLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
             self.originLineView.hidden = YES;
             // 划掉的线
-            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(130), PX_TO_PT(16), marketPriceSize.width-PX_TO_PT(100), PX_TO_PT(2))];
+            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(100), PX_TO_PT(16), marketPriceSize.width-PX_TO_PT(100), PX_TO_PT(2))];
             lineView.backgroundColor = R_G_B_16(0xc7c7c7);
             [self.marketPriceLabel addSubview:lineView];
             
@@ -108,6 +107,9 @@
             [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(0,AttributedStringPrice.length)];
             
             [self.priceLabel setAttributedText:AttributedStringPrice];
+            
+            NSString *  attributeStr = [attributes lastObject];
+            NSString *addtionStr = [addtions lastObject];
 
             if ([attributeStr isEqualToString:@""] && [addtionStr isEqualToString:@""]) {
                 weakSelf.propertyLabel.text = @"请选择商品属性";
@@ -119,8 +121,8 @@
             }
         };
         // 立即购买的跳转，包括传值
-        propertyView.com = ^(NSMutableArray *dataArray,CGFloat totalPrice){
-            weakSelf.con(dataArray,totalPrice);
+        propertyView.com = ^(NSMutableArray *dataArray,CGFloat totalPrice,NSString *totalNum){
+            weakSelf.con(dataArray,totalPrice,totalNum);
         };
         // 登录页面的跳转
         propertyView.loginBlock = ^(){
@@ -137,9 +139,10 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
-        self.backgroundColor = R_G_B_16(0xfafafa);
+        self.backgroundColor = [UIColor whiteColor];
+//        self.backgroundColor = R_G_B_16(0xfafafa);
         self.userInteractionEnabled = YES;
+        
         [self createUI];
     }
     return self;
@@ -248,33 +251,33 @@
     self.bgTopView = bgTopView;
     [self.contentView addSubview:bgTopView];
 
-    UILabel *goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), ScreenWidth, ScreenWidth-PX_TO_PT(64), PX_TO_PT(70))];
+    UILabel *goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), ScreenWidth, ScreenWidth-PX_TO_PT(64), PX_TO_PT(80))];
     goodNameLabel.textColor = R_G_B_16(0x323232);
-    goodNameLabel.font = [UIFont systemFontOfSize:16];
+    goodNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     goodNameLabel.numberOfLines = 0;
     self.goodNameLabel = goodNameLabel;
     [self addSubview:goodNameLabel];
     
     UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(goodNameLabel.frame), ScreenWidth, PX_TO_PT(30))];
-    priceLabel.font = [UIFont systemFontOfSize:14];
+    priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     priceLabel.textColor = R_G_B_16(0x646464);
     self.priceLabel = priceLabel;
     [self addSubview:priceLabel];
     
     UILabel *presaleLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(goodNameLabel.frame), ScreenWidth, PX_TO_PT(30))];
     presaleLabel.textColor = R_G_B_16(0x989898);
-    presaleLabel.font = [UIFont systemFontOfSize:16];
+    presaleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.presaleLabel = presaleLabel;
     [self addSubview:presaleLabel];
 
     UILabel *depositLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(self.goodNameLabel.frame)-PX_TO_PT(10), ScreenWidth*0.5, PX_TO_PT(50))];
     depositLabel.textColor = R_G_B_16(0x323232);
-    priceLabel.font = [UIFont systemFontOfSize:16];
+    priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.depositLabel = depositLabel;
     [self addSubview:depositLabel];
     
     UILabel *marketPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(priceLabel.frame)+PX_TO_PT(10), ScreenWidth, PX_TO_PT(32))];
-    marketPriceLabel.font = [UIFont systemFontOfSize:14];
+    marketPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     marketPriceLabel.textColor = R_G_B_16(0x909090);
     self.marketPriceLabel = marketPriceLabel;
     [self addSubview:marketPriceLabel];
@@ -282,7 +285,7 @@
     UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(bgTopView.frame), ScreenWidth, PX_TO_PT(80))];
     descriptionLabel.backgroundColor = R_G_B_16(0xf2f2f2);
     descriptionLabel.textColor = R_G_B_16(0x00b38a);
-    descriptionLabel.font = [UIFont systemFontOfSize:14];
+    descriptionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     descriptionLabel.textAlignment = NSTextAlignmentCenter;
     self.descriptionLabel = descriptionLabel;
     [self addSubview:descriptionLabel];
@@ -308,7 +311,20 @@
     
     
     UILabel *propertyLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth-PX_TO_PT(56)-PX_TO_PT(32), PX_TO_PT(90))];
-    propertyLabel.text = @"请选择商品属性";
+//    propertyLabel.text = @"请选择商品属性";
+    NSString *  attributeStr = [_attributes lastObject];
+    NSString *addtionStr = [_additions lastObject];
+    
+    if (attributeStr == nil) {
+        propertyLabel.text = @"请选择商品属性";
+    }
+    if (addtionStr == nil&&attributeStr != nil) {
+        propertyLabel.text = [NSString stringWithFormat:@"%@",attributeStr];
+    }
+    if (addtionStr!=nil&&attributeStr!=nil) {
+        propertyLabel.text = [NSString stringWithFormat:@"%@ %@",attributeStr,addtionStr];
+
+    }
     propertyLabel.textAlignment = NSTextAlignmentLeft;
     propertyLabel.numberOfLines = 0;
     propertyLabel.textColor = R_G_B_16(0x323232);
@@ -356,7 +372,7 @@
 #pragma mark - 商品属性按钮点击
 -(void)propertyBtnClick
 {
-    [self.propertyView show:0];
+    [self.propertyView show:0 isRoot:NO];
 }
 
 -(void)createBottomView
@@ -498,6 +514,8 @@
         self.scrollView.showsHorizontalScrollIndicator = NO;
         self.scrollView.bounces = NO;
         [self setupPageController];
+    
+    
 
     self.goodNameLabel.text = [NSString stringWithFormat:@"%@",model.name];
     // 商品描述
@@ -531,7 +549,8 @@
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.depositLabel.text];
     NSDictionary *depositStr=@{
                                
-                               NSForegroundColorAttributeName:R_G_B_16(0xff4e00)
+                               NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
+                               NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(38)]
                                
                                };
     
@@ -544,17 +563,17 @@
         if ([model.marketMin floatValue] == 0.00 && [model.marketMax floatValue] == 0.00) {
             self.marketPriceLabel.hidden = YES;
         }else{
-            self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价：￥%@",model.marketMin];
+            self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价￥%@",model.marketMin];
         }
         marketPriceSize = [self.marketPriceLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
         
     }else{
-        self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价：￥%@ - %@",model.marketMin,model.marketMax];
+        self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价￥%@ - %@",model.marketMin,model.marketMax];
          marketPriceSize = [self.marketPriceLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
     }
     
     // 划掉的线
-    UIView *originLineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(130), PX_TO_PT(16), marketPriceSize.width-PX_TO_PT(100), PX_TO_PT(2))];
+    UIView *originLineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(100), PX_TO_PT(16), marketPriceSize.width-PX_TO_PT(100), PX_TO_PT(2))];
     originLineView.backgroundColor = R_G_B_16(0xc7c7c7);
     self.originLineView = originLineView;
     [self.marketPriceLabel addSubview:originLineView];

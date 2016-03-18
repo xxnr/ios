@@ -66,23 +66,28 @@
 
 -(XNRPropertyView *)propertyView{
     if (!_propertyView) {
-      XNRPropertyView *propertyView = [[XNRPropertyView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) model:self.model andType:XNRSecondType];
+        [self.tableView reloadData];
+      XNRPropertyView *propertyView = [XNRPropertyView sharedInstanceWithModel:self.model];
+        
+        NSLog(@"self.model%@",self.model);
         __weak __typeof(self)weakSelf = self;
         // 传回来的属性
         propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice){
             _attributes = attributes;
             _additions = addtions;
-            
+            [self.tableView reloadData];
+//            [_goodsArray removeAllObjects];
     };
-        // 跳转
-        propertyView.com = ^(NSMutableArray *dataArray,CGFloat totalPrice){
+        // 提交订单页面的跳转
+        propertyView.com = ^(NSMutableArray *dataArray,CGFloat totalPrice,NSString *totalNum){
             XNROrderInfo_VC *orderVC = [[XNROrderInfo_VC alloc] init];
             orderVC.dataArray = dataArray;
             orderVC.totalPrice = totalPrice;
+            orderVC.totalSelectNum = totalNum.intValue;
             orderVC.isRoot = YES;
             [weakSelf.navigationController pushViewController:orderVC animated:YES];
         
-        };
+    };
         // 跳转登录界面
         propertyView.loginBlock = ^(){
             
@@ -91,7 +96,7 @@
             [weakSelf.navigationController pushViewController:login animated:YES];
 
         
-        };
+    };
         self.propertyView = propertyView;
         [self.view addSubview:propertyView];
     }
@@ -138,6 +143,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     // 获取网络数据
     [self getData];
     _goodsArray  = [NSMutableArray array];
@@ -362,13 +368,13 @@
 #pragma mark - 立即购买
 -(void)buyBtnClick
 {
-    [self.propertyView show:XNRFirstType];
+    [self.propertyView show:XNRFirstType isRoot:YES];
     
 }
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
-    [self.propertyView show:XNRSecondType];
+    [self.propertyView show:XNRSecondType isRoot:YES];
     NSLog(@"加入购物车");
 }
 #pragma 加减数量
@@ -426,11 +432,12 @@
     // 提交订单页面的跳转
     __weak __typeof(self)weakSelf = self;
 
-    cell.con = ^(NSMutableArray *_dataArray,CGFloat totalPrice){
+    cell.con = ^(NSMutableArray *_dataArray,CGFloat totalPrice,NSString *totalNumber){
         
     XNROrderInfo_VC *infoVC  = [[XNROrderInfo_VC alloc] init];
     infoVC.dataArray = _dataArray;
     infoVC.totalPrice = totalPrice;
+    infoVC.totalSelectNum = totalNumber.intValue;
     infoVC.isRoot = YES;
     [weakSelf.navigationController pushViewController:infoVC animated:YES];
     };
@@ -442,6 +449,12 @@
     };
     cell.delegate = self;
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+
 }
 
 -(CGFloat)heightWithString:(NSString *)string
@@ -482,6 +495,9 @@
 -(void)backClick{
     
     [self.navigationController popViewControllerAnimated:YES];
+//    [self.propertyView removeFromSuperview];
+//    self.propertyView = nil;
+    
 }
 
 -(void)shopcarButtonClick
