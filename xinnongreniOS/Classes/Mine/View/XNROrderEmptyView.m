@@ -7,6 +7,7 @@
 //
 
 #import "XNROrderEmptyView.h"
+#import "XNRFerViewController.h"
 @interface XNROrderEmptyView()
 
 @property (nonatomic ,weak) UIButton *buyFerBtn;
@@ -54,8 +55,8 @@
     buyFerBtn.layer.masksToBounds = YES;
     [buyFerBtn setTitle:@"去买化肥" forState:UIControlStateNormal];
     buyFerBtn.titleLabel.font = [UIFont systemFontOfSize:16];
-    [buyFerBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];;
-    [buyFerBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [buyFerBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
+    [buyFerBtn addTarget:self action:@selector(buyClick:) forControlEvents:UIControlEventTouchUpInside];
     self.buyFerBtn = buyFerBtn;
     [self addSubview:buyFerBtn];
     
@@ -66,20 +67,45 @@
     buyCarBtn.layer.masksToBounds = YES;
     [buyCarBtn setTitle:@"去买汽车" forState:UIControlStateNormal];
     buyCarBtn.titleLabel.font = [UIFont systemFontOfSize:16];
-    [buyCarBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];;
-    [buyCarBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [buyCarBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
+    [buyCarBtn addTarget:self action:@selector(buyClick:) forControlEvents:UIControlEventTouchDown];
     self.buyCarBtn = buyCarBtn;
     [self addSubview:buyCarBtn];
+//    
+//    UIButton *b = [[UIButton alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];
+//    b.backgroundColor = [UIColor redColor];
+//    [b addTarget:self action:@selector(buyClick:) forControlEvents:UIControlEventTouchDown];
+//    [self addSubview:b];
+    
 }
 
--(void)btnClick:(UIButton *)button
+-(void)buyClick:(UIButton *)button
 {
     if ([self.delegate performSelector:@selector(XNROrderEmptyView:)]) {
         XNROrderEmptyViewbuySort type;
         if (button == self.buyFerBtn) {
             type = XNROrderEmptyView_buyFer;
+//            XNRFerViewController *ferView = [[XNRFerViewController alloc] init];
+//            ferView.type = eXNRFerType;
+//            ferView.tempTitle = @"化肥";
+//            ferView.classId = @"531680A5";
+//            ferView.hidesBottomBarWhenPushed = YES;
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"pushFerVC" object:self];
+                    //        [self.navigationController pushViewController:ferView animated:YES];
+
+   
         }else{
             type = XNROrderEmptyView_buyCar;
+//            XNRFerViewController *carView = [[XNRFerViewController alloc] init];
+//            carView.type = eXNRCarType;
+//            carView.classId = @"6C7D8F66";
+//            carView.tempTitle = @"汽车";
+//            carView.hidesBottomBarWhenPushed = YES;
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"pushCarVC" object:self];
+            //        [self.navigationController pushViewController:carView animated:YES];
+            
+            
+
         }
         [self.delegate XNROrderEmptyView:type];
     }

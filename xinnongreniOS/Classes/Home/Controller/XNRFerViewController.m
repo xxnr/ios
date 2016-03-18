@@ -484,6 +484,7 @@
 //        [dics setObject:param4 forKey:@"reservePrice"];
     }
 
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -500,6 +501,8 @@
     {
         dic =@{@"brand":str?str:@"",@"classId":_classId?_classId:@"",@"reservePrice":param4?param4:@"",@"user-agent":@"IOS-v2.0"};
     }
+    
+    
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSLog(@"---------返回数据:---------%@",str);

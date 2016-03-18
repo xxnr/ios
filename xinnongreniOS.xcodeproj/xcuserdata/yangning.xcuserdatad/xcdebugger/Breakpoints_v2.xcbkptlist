@@ -15,6 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "93"
             endingLineNumber = "93"
+<<<<<<< HEAD
             landmarkName = "@implementation XNROrderEmptyView"
             landmarkType = "3">
          </BreakpointContent>
@@ -78,6 +79,78 @@
             startingLineNumber = "59"
             endingLineNumber = "59"
             landmarkName = "-createView"
+=======
+            landmarkName = "-buyClick:"
+>>>>>>> master
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "xinnongreniOS/Classes/Mine/View/XNROrderEmptyView.m"
+<<<<<<< HEAD
+            timestampString = "479982847.936874"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+=======
+            timestampString = "479983422.655545"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "-buyClick:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "xinnongreniOS/Classes/Mine/View/XNROrderEmptyView.m"
+            timestampString = "479983422.655545"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "-buyClick:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "xinnongreniOS/Classes/Mine/View/XNROrderEmptyView.m"
+            timestampString = "479983422.655545"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "-buyClick:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "xinnongreniOS/Classes/Mine/View/XNROrderEmptyView.m"
+            timestampString = "479982243.30217"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "-createView"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -91,6 +164,7 @@
             timestampString = "479982847.936874"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
+>>>>>>> master
             startingLineNumber = "71"
             endingLineNumber = "71"
             landmarkName = "-createView"

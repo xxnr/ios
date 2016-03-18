@@ -28,7 +28,9 @@
 @property (nonatomic, strong) NSMutableArray *skus;
 
 
-@property (nonatomic ,copy) NSString *type;
+//@property (nonatomic ,copy) NSString *type;
+
+@property (nonatomic,assign) NSInteger type;
 
 @property (nonatomic ,copy) NSString *value;
 

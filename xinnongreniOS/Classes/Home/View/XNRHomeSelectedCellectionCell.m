@@ -207,7 +207,8 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self == [super initWithFrame:frame]) {
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
+//        UILabel *titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
+        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(35), 0, ScreenWidth - PX_TO_PT(35), self.bounds.size.height)];
         titleLabel.font = [UIFont boldSystemFontOfSize:PX_TO_PT(26)];
         titleLabel.textColor = R_G_B_16(0x646464);
         titleLabel.backgroundColor = [UIColor clearColor];
