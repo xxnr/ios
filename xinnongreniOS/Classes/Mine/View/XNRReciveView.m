@@ -228,8 +228,12 @@
             }
         }
         
-        [self showEmptyView];
-
+//        [self showEmptyView];
+        
+        if (_dataArr.count == 0) {
+            [self orderEmptyView];
+            
+        }
 
         //刷新列表
         [self.tableView reloadData];
