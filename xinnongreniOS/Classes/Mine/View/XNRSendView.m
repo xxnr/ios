@@ -47,15 +47,6 @@
     return self;
 }
 
-- (void)showEmptyView {
-    
-    if (_dataArr.count == 0) {
-        [self.orderEmptyView show];
-    }else{
-        [self.orderEmptyView removeFromSuperview];
-    }
-}
-
 
 #pragma mark - 滑动到顶部按钮
 
@@ -222,7 +213,11 @@
 //            [self.orderEmptyView removeFromSuperview];
 //        }
 
-        [self showEmptyView];
+        
+        if (_dataArr.count == 0) {
+            [self orderEmptyView];
+            
+        }
 
         //刷新列表
         [self.tableView reloadData];
