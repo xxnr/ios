@@ -11,7 +11,8 @@
 #import "XNRMyOrderModel.h"
 #import "XNRMyOrderSectionModel.h"
 #import "XNROrderEmptyView.h"
-@interface XNRSendView()
+
+@interface XNRSendView()<XNROrderEmptyViewBtnDelegate>
 @property (nonatomic ,weak)XNROrderEmptyView *orderEmptyView;
 @property (nonatomic, weak) UIButton *backtoTopBtn;
 @end
@@ -20,6 +21,7 @@
 {
     if (!_orderEmptyView) {
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
+        orderEmptyView.delegate = self;
         [self addSubview:orderEmptyView];
     }
     return _orderEmptyView;
@@ -156,7 +158,16 @@
     // 设置尾部
     
     self.tableView.mj_footer = footer;
+    
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"reloadOrderList" object:nil];
+    
+}
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"reloadOrderList" object:nil];
+    
 }
 
 -(void)headRefresh{
@@ -198,7 +209,7 @@
                 sectionModel.deposit = orders[@"deposit"];
                 sectionModel.totalPrice = orders[@"totalPrice"];
                 NSDictionary *orderStatus = orders[@"orderStatus"];
-                sectionModel.type = orderStatus[@"type"];
+                sectionModel.type = [orderStatus[@"type"] integerValue];
                 sectionModel.value = orderStatus[@"value"];
                 
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
@@ -211,8 +222,13 @@
 //            [self.orderEmptyView removeFromSuperview];
 //        }
 
+        [self showEmptyView];
+
         //刷新列表
         [self.tableView reloadData];
+        
+            
+
         
         //  如果到达最后一页 就消除footer
         

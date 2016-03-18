@@ -853,20 +853,6 @@
 //
 //    NSLog(@"%ld",[_Money integerValue]);
     
-//    if (_payType == 1) { // 支付宝支付
-//        [GBAlipayManager alipayWithPartner:PartnerID
-//                                    seller:SellerID
-//                                   tradeNO:_PaymentId
-//                               productName:@"新新农人产品"
-//                        productDescription:nil
-//                                    amount:_Money
-//                                 notifyURL:KDynamic
-//                                    itBPay:@"30m"];
-//        
-//    }else if (_payType == 2){ // 银联支付
-//        [UPPayPlugin startPay:_Tn mode:kMode_Development viewController:self delegate:self];
-//        
-//    }
     
 //    XNROrderSuccessViewController*vc=[[XNROrderSuccessViewController alloc]init];
 //    vc.money = _Money;
