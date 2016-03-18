@@ -507,15 +507,17 @@
     
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+
+//    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, PX_TO_PT(1002)) collectionViewLayout:collectionViewLayout];
+
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, PX_TO_PT(1002)) collectionViewLayout:collectionViewLayout];
     
-
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, PX_TO_PT(1002)) collectionViewLayout:collectionViewLayout];
-
     collectionView.delegate = self;
     collectionView.dataSource = self;
     [collectionView registerClass:[XNRHomeSelectedBrandHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewId];
     [collectionView registerClass:[XNRHomeSelectedCellectionCell class] forCellWithReuseIdentifier:cellId];
     collectionView.backgroundColor = [UIColor clearColor];
+
     self.collectionView = collectionView;
     self.collectionView.collectionViewLayout = collectionViewLayout;
 
@@ -533,32 +535,30 @@
     resetBtn.frame = CGRectMake(PX_TO_PT(29),PX_TO_PT(29),PX_TO_PT(269),PX_TO_PT(61));
 
     resetBtn.titleLabel.font = XNRFont(14);
-    resetBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
+    resetBtn.layer.borderColor = R_G_B_16(0x66d1b9).CGColor;
+
     resetBtn.layer.borderWidth = 1.0;
     resetBtn.layer.cornerRadius = 5.0;
     resetBtn.layer.masksToBounds = YES;
     [resetBtn setTitle:@"重置" forState:UIControlStateNormal];
     [resetBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
     [resetBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-//    [resetBtn setTitleColor:R_G_B_16(0xfbffff) forState:UIControlStateHighlighted];
     [resetBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#FFFFFF"]] forState:UIControlStateNormal];
     [resetBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
     [resetBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.resetBtn = resetBtn;
-//    [self addSubview:resetBtn];
     [view addSubview:resetBtn];
+    
     UIButton *admireBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     admireBtn.frame = CGRectMake(CGRectGetMaxX(self.resetBtn.frame) + PX_TO_PT(39), PX_TO_PT(29),PX_TO_PT(383) , PX_TO_PT(61));
     admireBtn.titleLabel.font = XNRFont(14);
-    admireBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
-    admireBtn.layer.borderWidth = 1.0;
+//    admireBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
+//    admireBtn.layer.borderWidth = 1.0;
     admireBtn.layer.cornerRadius = 5.0;
     admireBtn.layer.masksToBounds = YES;
     [admireBtn setTitle:@"确定" forState:UIControlStateNormal];
-//    admireBtn.backgroundColor = R_G_B_16(0x00B38A);
     [admireBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 
-//    [admireBtn setTitleColor:R_G_B_16(0xfbffff) forState:UIControlStateHighlighted];
     [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00B38A"]] forState:UIControlStateNormal];
     [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
     [admireBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -572,7 +572,7 @@
     if (button == self.resetBtn) {
         
         [self.selecteItemArr[2] removeAllObjects];
-        
+
         [self.txArr removeAllObjects];
         [self.resArr removeAllObjects];
         [self.gxArr removeAllObjects];
@@ -595,11 +595,13 @@
         [self cancel];
         
         if (_selecteItemArr) {
+            
+            
             [XNRSelectItemArrModel defaultModel].XNRSelectItemArr = [[NSMutableArray alloc]initWithArray:_selecteItemArr];
             
             [XNRSelectItemArrModel defaultModel].XNRSelectItemDict = [[NSMutableDictionary alloc] initWithDictionary:self.currentTx];
+
         }
-        
     }
     
     
@@ -714,9 +716,19 @@
     else if (indexPath.section == 0 && selectedItem.isSelected == NO)
     {
         NSArray *arr = [self.currentTx valueForKey:selectedItem.titleParam];
-        for (int i=0; i<arr.count; i++) {
-            [self.txArr removeObject:arr[i]];
+//        for (int i=0; i<arr.count; i++) {
+//            [self.txArr removeObject:arr[i]];
+//        }
+        NSMutableArray *removeArr = [[NSMutableArray alloc]init];
+        for (XNRHomeSelectedBrandItem *txItem in self.txArr) {
+            for (XNRHomeSelectedBrandItem *item in arr) {
+                if ([txItem.titleStr isEqualToString:item.titleStr]) {
+                    [removeArr addObject:txItem];
+                }
+            }
         }
+        [self.txArr removeObjectsInArray:removeArr];
+        
         [self.selecteItemArr setObject:self.txArr atIndexedSubscript:2];
         [self.collectionView reloadData];
 
@@ -741,7 +753,7 @@
 }
 //定义每个Section 的 margin
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(0, 0, 0, 0);//分别为上、左、下、右
+    return UIEdgeInsetsMake(0, coll_cell_margin, 0, coll_cell_margin);//分别为上、左、下、右
 }
 //每个section中不同的行之间的行间距
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
@@ -827,9 +839,11 @@
     NSMutableArray *indexPath2Arr = [NSMutableArray array];
     NSMutableArray *indexPath3Arr = [NSMutableArray array];
     NSIndexPath *indexPath4;
+    BOOL isYes = NO;
     //0.品牌
     for (XNRHomeSelectedBrandItem *item in arr0) {
         if (item.isSelected) {
+            isYes = YES;
             [brandsArr addObject:item.brandsId];
             [indexPath1Arr addObject:item.indexPath];
         }
@@ -837,6 +851,7 @@
     //1.
     for (XNRHomeSelectedBrandItem *item in arr1) {
         if (item.isSelected) {
+            isYes = YES;
             [gxArr addObject:item.titleParam];
             [indexPath2Arr addObject:item.indexPath];
         }
@@ -844,12 +859,14 @@
     
     for (XNRHomeSelectedBrandItem *item in arr2) {
         if (item.isSelected) {
+            isYes = YES;
             [txArr addObject: item.titleParam];
             [indexPath3Arr addObject:item.indexPath];
         }
     }
     for (XNRHomeSelectedBrandItem *item in arr3) {
         if (item.isSelected) {
+            isYes = YES;
             priceReq = item.titleParam;
             indexPath4 = item.indexPath;
         }
@@ -864,7 +881,15 @@
         }
     }
 
-//
+  
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"selectBtnChange" object:nil];
+    
+    if (isYes == NO)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"selectBtnChangeblack" object:nil];
+    }
+
+  
     if (self.com) {
         self.com(brandsArr,gxArr,txArr,priceReq,self.kinds,self.isSel,arr2);
     };

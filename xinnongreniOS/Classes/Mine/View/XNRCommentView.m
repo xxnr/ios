@@ -40,26 +40,26 @@
 }
 
 #pragma mark - 图片为空的代理方法
--(void)XNROrderEmptyView:(XNROrderEmptyViewbuySort)type
-{
-    if (type == XNROrderEmptyView_buyFer) {
-        XNRFerViewController *ferView = [[XNRFerViewController alloc] init];
-        ferView.type = eXNRFerType;
-        ferView.tempTitle = @"化肥";
-        ferView.classId = @"531680A5";
-        ferView.hidesBottomBarWhenPushed = YES;
-//        [self.navigationController pushViewController:ferView animated:YES];
-    }else if(type == XNROrderEmptyView_buyCar){
-        XNRFerViewController *carView = [[XNRFerViewController alloc] init];
-        carView.type = eXNRCarType;
-        carView.classId = @"6C7D8F66";
-        carView.tempTitle = @"汽车";
-        carView.hidesBottomBarWhenPushed = YES;
-//        [self.navigationController pushViewController:carView animated:YES];
-    }
-
-    
-}
+//-(void)XNROrderEmptyView:(XNROrderEmptyViewbuySort)type
+//{
+//    if (type == XNROrderEmptyView_buyFer) {
+//        XNRFerViewController *ferView = [[XNRFerViewController alloc] init];
+//        ferView.type = eXNRFerType;
+//        ferView.tempTitle = @"化肥";
+//        ferView.classId = @"531680A5";
+//        ferView.hidesBottomBarWhenPushed = YES;
+////        [self.navigationController pushViewController:ferView animated:YES];
+//    }else if(type == XNROrderEmptyView_buyCar){
+//        XNRFerViewController *carView = [[XNRFerViewController alloc] init];
+//        carView.type = eXNRCarType;
+//        carView.classId = @"6C7D8F66";
+//        carView.tempTitle = @"汽车";
+//        carView.hidesBottomBarWhenPushed = YES;
+////        [self.navigationController pushViewController:carView animated:YES];
+//    }
+//
+//    
+//}
 
 -(id)initWithFrame:(CGRect)frame UrlString:(NSString *)urlString
 {
@@ -236,7 +236,7 @@
                 sectionModel.deposit = orders[@"deposit"];
                 sectionModel.totalPrice = orders[@"totalPrice"];
                 NSDictionary *orderStatus = orders[@"orderStatus"];
-                sectionModel.type = orderStatus[@"type"];
+                sectionModel.type = [orderStatus[@"type"] integerValue];
                 sectionModel.value = orderStatus[@"value"];
                 
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
@@ -251,7 +251,15 @@
 //            self.orderEmptyView.hidden = YES;
 //        }
         
-
+//        [self showEmptyView];
+        
+        if (_dataArr.count == 0) {
+            [self orderEmptyView];
+            
+        }
+        else{
+            [self.orderEmptyView removeFromSuperview];
+        }
         //刷新列表
         [self.tableView reloadData];
         
@@ -269,6 +277,7 @@
         
         [self.tableView.mj_footer endRefreshing];
         
+    
 
 
         

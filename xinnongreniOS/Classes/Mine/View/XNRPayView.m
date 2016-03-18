@@ -125,7 +125,9 @@
     self.tableView.mj_footer = footer;
     
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"reloadOrderList" object:nil];
     
+
 }
 -(void)headRefresh{
     _currentPage = 1;
@@ -161,7 +163,7 @@
                 sectionModel.deposit = orders[@"deposit"];
                 sectionModel.totalPrice = orders[@"totalPrice"];
                 NSDictionary *orderStatus = orders[@"orderStatus"];
-                sectionModel.type = orderStatus[@"type"];
+                sectionModel.type = [orderStatus[@"type"] integerValue];
                 sectionModel.value = orderStatus[@"value"];
                 
                 
@@ -178,6 +180,13 @@
         //            [self.orderEmptyView removeFromSuperview];
         //        }
         //刷新列表
+        
+        [self.tableView reloadData];
+        
+        if (_dataArr.count == 0) {
+            [self orderEmptyView];
+
+        }
         //  如果到达最后一页 就消除footer
         
         NSInteger pages = [result[@"datas"][@"pages"] integerValue];
@@ -263,7 +272,7 @@
     if (_dataArr.count>0) {
         UIView *bottomView = [[UIView alloc] init];
         XNRMyOrderSectionModel *sectionModel = _dataArr[section];
-        if ([sectionModel.type integerValue] ==  1 || [sectionModel.type integerValue] == 2) {
+        if (sectionModel.type ==  1 || sectionModel.type == 2) {
             
             bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
             bottomView.backgroundColor = [UIColor whiteColor];

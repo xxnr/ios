@@ -12,7 +12,7 @@
 #import "XNRMyOrderPayCell.h"
 #import "XNRMyOrderSectionModel.h"
 #import "XNROrderEmptyView.h"
-@interface XNRReciveView()
+@interface XNRReciveView()<XNROrderEmptyViewBtnDelegate>
 
 @property (nonatomic, weak)XNROrderEmptyView *orderEmptyView;
 @property (nonatomic, weak) UIButton *backtoTopBtn;
@@ -23,6 +23,7 @@
 {
     if (!_orderEmptyView) {
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
+        orderEmptyView.delegate = self;
         [self addSubview:orderEmptyView];
     }
     return _orderEmptyView;
@@ -174,7 +175,16 @@
     
     self.tableView.mj_footer = footer;
 
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"reloadOrderList" object:nil];
+    
 }
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"reloadOrderList" object:nil];
+    
+}
+
 
 -(void)headRefresh{
     
@@ -195,7 +205,7 @@
 #pragma mark - 获取数据
 - (void)getData
 {
-    //typeValue说明：1为待支付（代付款）：3为商品准备中（待发货），4已发货（待收货），6已收货（待评价
+    //typeValue说明：1为待支付（代付款）：2为商品准备中（待发货），3已发货（待收货），4已收货（待评价
     [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"typeValue":@"3",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
@@ -210,16 +220,25 @@
                 sectionModel.deposit = orders[@"deposit"];
                 sectionModel.totalPrice = orders[@"totalPrice"];
                 NSDictionary *orderStatus = orders[@"orderStatus"];
-                sectionModel.type = orderStatus[@"type"];
+                sectionModel.type = [orderStatus[@"type"] integerValue];
                 sectionModel.value = orderStatus[@"value"];
                 
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
                 [_dataArr addObject:sectionModel];
             }
         }
+        
+//        [self showEmptyView];
+        
+        if (_dataArr.count == 0) {
+            [self orderEmptyView];
+            
+        }
 
         //刷新列表
         [self.tableView reloadData];
+        
+
         
         //  如果到达最后一页 就消除footer
         
