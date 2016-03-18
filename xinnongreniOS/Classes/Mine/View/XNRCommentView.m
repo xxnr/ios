@@ -251,8 +251,15 @@
 //            self.orderEmptyView.hidden = YES;
 //        }
         
-        [self showEmptyView];
-
+//        [self showEmptyView];
+        
+        if (_dataArr.count == 0) {
+            [self orderEmptyView];
+            
+        }
+        else{
+            [self.orderEmptyView removeFromSuperview];
+        }
         //刷新列表
         [self.tableView reloadData];
         
