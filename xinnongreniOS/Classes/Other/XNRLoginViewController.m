@@ -404,14 +404,11 @@
 #pragma mark - 上传购物车数据
 - (void)synchShoppingCarDataWith:(XNRShoppingCartModel *)model
 {
+    NSLog(@"ufiodsfoie%@",model.additions);
     NSMutableArray *addtionsArray = [NSMutableArray array];
-//    for (XNRAddtionsModel *addtionModel in model.additions) {
-//            [addtionsArray addObject:addtionModel._id];
-//            NSLog(@"=+++__+_++ERTYU%@",model.additions);
-//
-//    }
-//    XNRAddtionsModel *addtionModel = [model.additions lastObject];
-//    [addtionsArray addObject:addtionModel._id];
+    for (NSDictionary *dict in model.additions) {
+        [addtionsArray addObject:dict[@"ref"]];
+    }
     NSDictionary *params = @{@"SKUId":model._id?model._id:@"",@"userId":[DataCenter account].userid,@"quantity":model.num,@"additions":addtionsArray,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
     NSLog(@"--=0=9%@",params);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

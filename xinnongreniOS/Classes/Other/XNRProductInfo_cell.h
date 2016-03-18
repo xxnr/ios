@@ -10,7 +10,7 @@
 #import "XNRProductInfo_model.h"
 #import "XNRShoppingCartModel.h"
 
-typedef void(^XNRProductInfo_cellBlock)(NSMutableArray *_dataArray,CGFloat totalPrice);
+typedef void(^XNRProductInfo_cellBlock)(NSMutableArray *_dataArray,CGFloat totalPrice,NSString *totalNumber);
 typedef void(^XNRProductInfo_cellLoginBlock)();
 
 

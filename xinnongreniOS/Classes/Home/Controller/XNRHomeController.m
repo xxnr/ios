@@ -177,7 +177,7 @@
 }
 
 
-#pragma mark-获取轮播数据
+#pragma mark - 获取轮播数据
 -(void)getCircleData{
     [KSHttpRequest post:KHomeGetAdList parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
        
