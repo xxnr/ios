@@ -22,6 +22,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
         self.userInteractionEnabled = YES;
         [self createView];
     }
@@ -71,49 +72,25 @@
     [buyCarBtn addTarget:self action:@selector(buyClick:) forControlEvents:UIControlEventTouchDown];
     self.buyCarBtn = buyCarBtn;
     [self addSubview:buyCarBtn];
-//    
-//    UIButton *b = [[UIButton alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];
-//    b.backgroundColor = [UIColor redColor];
-//    [b addTarget:self action:@selector(buyClick:) forControlEvents:UIControlEventTouchDown];
-//    [self addSubview:b];
     
 }
 
 -(void)buyClick:(UIButton *)button
 {
+    
     if ([self.delegate performSelector:@selector(XNROrderEmptyView:)]) {
         XNROrderEmptyViewbuySort type;
         if (button == self.buyFerBtn) {
             type = XNROrderEmptyView_buyFer;
-//            XNRFerViewController *ferView = [[XNRFerViewController alloc] init];
-//            ferView.type = eXNRFerType;
-//            ferView.tempTitle = @"化肥";
-//            ferView.classId = @"531680A5";
-//            ferView.hidesBottomBarWhenPushed = YES;
             [[NSNotificationCenter defaultCenter]postNotificationName:@"pushFerVC" object:self];
-                    //        [self.navigationController pushViewController:ferView animated:YES];
 
-   
         }else{
             type = XNROrderEmptyView_buyCar;
-//            XNRFerViewController *carView = [[XNRFerViewController alloc] init];
-//            carView.type = eXNRCarType;
-//            carView.classId = @"6C7D8F66";
-//            carView.tempTitle = @"汽车";
-//            carView.hidesBottomBarWhenPushed = YES;
             [[NSNotificationCenter defaultCenter]postNotificationName:@"pushCarVC" object:self];
-            //        [self.navigationController pushViewController:carView animated:YES];
-            
-            
-
         }
         [self.delegate XNROrderEmptyView:type];
     }
 }
 
-//-(void)show
-//{
-//    self.frame = CGRectMake(0, 64+PX_TO_PT(100), ScreenWidth, ScreenHeight - 64 - PX_TO_PT(100));
-//}
 
 @end

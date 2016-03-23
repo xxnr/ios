@@ -29,11 +29,21 @@
     return _orderEmptyView;
 }
 
+-(void)XNROrderEmptyView:(XNROrderEmptyViewbuySort)type
+{
+    if (type == XNROrderEmptyView_buyFer) {
+        
+    }else if(type == XNROrderEmptyView_buyCar){
+    
+    }
+}
+
 
 -(id)initWithFrame:(CGRect)frame UrlString:(NSString *)urlString
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.userInteractionEnabled = YES;
         _dataArr = [[NSMutableArray alloc]init];
         _currentPage = 1;
         //创建订单
@@ -46,13 +56,6 @@
     return self;
 }
 
-- (void)showEmptyView {
-    if (_dataArr.count == 0) {
-        [self.orderEmptyView show];
-    }else{
-        [self.orderEmptyView removeFromSuperview];
-    }
-}
 
 #pragma mark - 滑动到顶部按钮
 
@@ -103,6 +106,7 @@
 
 -(void)setupAlreadySendViewRefresh
 {
+    
     MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
     
     NSMutableArray *idleImage = [NSMutableArray array];
@@ -189,9 +193,7 @@
 -(void)headRefresh{
     
     _currentPage = 1;
-    
     [_dataArr removeAllObjects];
-    
     [self getData];
 }
 
@@ -228,8 +230,12 @@
             }
         }
         
-        [self showEmptyView];
-
+//        [self showEmptyView];
+        [_orderEmptyView removeFromSuperview];
+        if (_dataArr.count == 0) {
+            [self orderEmptyView];
+            
+        }
 
         //刷新列表
         [self.tableView reloadData];

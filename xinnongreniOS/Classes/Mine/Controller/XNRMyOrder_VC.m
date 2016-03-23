@@ -42,10 +42,8 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = R_G_B_16(0xf4f4f4);
+    self.view.userInteractionEnabled = YES;
     
-
-    
-
     [self setNavigationbarTitle];
     [self createTopView];
     self.mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100),ScreenWidth+10*SCALE,ScreenHeight-64)];
@@ -93,9 +91,7 @@
     
     if(nil==self.ServeView){ // 全部
         self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
-        
-//        self.ServeView.deleteId = self.orderId;
-        
+    
         [self.mainScrollView addSubview:self.ServeView];
         __weak __typeof(&*self)weakSelf=self;
         
@@ -141,7 +137,6 @@
                     vc.orderID=orderID;
                     vc.myOrderType = @"待付款";
                     vc.isRoot = YES ;
-                    
                     [weakSelf.navigationController pushViewController:vc animated:YES];
                     
                 }];
@@ -232,10 +227,6 @@
         [midBg addSubview:tempTitleLabel];
         
         if (i==0) {
-//            button.selected = YES;
-//            _tempBtn = button;
-//            tempTitleLabel.textColor = R_G_B_16(0x00b38a);
-//            _tempLabel = tempTitleLabel;
             [self buttonClick:button];
         }
     }
@@ -286,7 +277,6 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-//        [self.SendView showEmptyView];
     }
     
     if(button.tag==KbtnTag+3){
@@ -294,7 +284,6 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-//        [self.ReciveView showEmptyView];
     }
     
     if(button.tag==KbtnTag+4){
@@ -302,7 +291,6 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-//        [self.CommentView showEmptyView];
     }
 }
 
@@ -325,7 +313,6 @@
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
         
-//        [self.ReciveView showEmptyView];
     }else if (0.5<=offset&&offset<1.5){
         tag=1;
         UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
@@ -338,7 +325,6 @@
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
         
-//        [self.PayView showEmptyView];
     }else if (1.5<=offset&&offset<2.5){
         tag=2;
         UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
@@ -350,7 +336,6 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-//        [self.SendView showEmptyView];
 
     }else if (2.5<=offset&&offset<3.5){
         tag=3;
@@ -363,7 +348,6 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-//        [self.ReciveView showEmptyView];
 
     }else{
         tag=4;
@@ -376,7 +360,6 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-//        [self.CommentView showEmptyView];
     }
     
     

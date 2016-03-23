@@ -28,4 +28,6 @@
 @property (nonatomic,copy) NSString *deposit;
 
 @property (nonatomic ,strong) NSMutableArray *SKUList;
+
+@property (nonatomic ,strong) NSMutableArray *SKUFrameList;
 @end

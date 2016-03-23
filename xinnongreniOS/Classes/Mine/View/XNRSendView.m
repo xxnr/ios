@@ -47,7 +47,6 @@
     return self;
 }
 
-
 #pragma mark - 滑动到顶部按钮
 
 -(void)createbackBtn
@@ -207,16 +206,9 @@
                 [_dataArr addObject:sectionModel];
             }
         }
-//        if (_dataArr.count == 0) {
-//            [self.orderEmptyView show];
-//        }else{
-//            [self.orderEmptyView removeFromSuperview];
-//        }
-
         
         if (_dataArr.count == 0) {
             [self orderEmptyView];
-            
         }
 
         //刷新列表
