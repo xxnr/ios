@@ -29,4 +29,11 @@
     return _SKUList;
 }
 
+-(NSMutableArray *)SKUFrameList{
+    if (!_SKUFrameList) {
+        _SKUFrameList = [NSMutableArray array];
+    }
+    return _SKUFrameList;
+}
+
 @end

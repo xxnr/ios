@@ -19,6 +19,7 @@
 #import "MJExtension.h"
 #import "XNRToolBar.h"
 #import "XNRPropertyView.h"
+#import "XNRProductInfo_frame.h"
 #define kLeftBtn  3000
 #define kRightBtn 4000
 #define HEIGHT 100
@@ -64,11 +65,12 @@
     return _progressView;
 }
 
+
 -(XNRPropertyView *)propertyView{
+    
+    [self.tableView reloadData];
+    XNRPropertyView *propertyView = [XNRPropertyView sharedInstanceWithModel:self.model];
     if (!_propertyView) {
-        [self.tableView reloadData];
-      XNRPropertyView *propertyView = [XNRPropertyView sharedInstanceWithModel:self.model];
-        
         NSLog(@"self.model%@",self.model);
         __weak __typeof(self)weakSelf = self;
         // 传回来的属性
@@ -76,8 +78,8 @@
             _attributes = attributes;
             _additions = addtions;
             [self.tableView reloadData];
-//            [_goodsArray removeAllObjects];
-    };
+            
+        };
         // 提交订单页面的跳转
         propertyView.com = ^(NSMutableArray *dataArray,CGFloat totalPrice,NSString *totalNum){
             XNROrderInfo_VC *orderVC = [[XNROrderInfo_VC alloc] init];
@@ -86,20 +88,21 @@
             orderVC.totalSelectNum = totalNum.intValue;
             orderVC.isRoot = YES;
             [weakSelf.navigationController pushViewController:orderVC animated:YES];
-        
-    };
+            
+        };
         // 跳转登录界面
         propertyView.loginBlock = ^(){
             
             XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
             login.hidesBottomBarWhenPushed = YES;
             [weakSelf.navigationController pushViewController:login animated:YES];
-
-        
-    };
-        self.propertyView = propertyView;
+            
+            
+        };
         [self.view addSubview:propertyView];
+        self.propertyView = propertyView;
     }
+    
     return _propertyView;
 }
 
@@ -107,7 +110,6 @@
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    
     [textField resignFirstResponder];
     if ([self.numTextField.text isEqualToString:@"0"] || [self.numTextField.text isEqualToString:@""]) {
         self.numTextField.text = @"1";
@@ -119,7 +121,7 @@
 -(void)viewWillDisappear:(BOOL)animated{
     
     [_numTextField resignFirstResponder];
-    
+    [[XNRPropertyView sharedInstanceWithModel:self.model] changeSelfToIdentify];
 }
 -(void)viewDidAppear:(BOOL)animated{
     
@@ -149,10 +151,6 @@
     _goodsArray  = [NSMutableArray array];
     // 导航栏
     [self setNavigationbarTitle];
-    // 创建TableView
-//    [self createTableView:];
-    // 底部视图
-//    [self createBottomView];
     // 注册消息通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
     
@@ -174,12 +172,9 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.pagingEnabled = YES;
-    XNRProductInfo_model *infoModel = [infoModelArray lastObject];
-    if ([infoModel.Desc isEqualToString:@""]||infoModel.Desc == nil) {
-        tableView.contentSize = CGSizeMake(ScreenWidth, (ScreenWidth+PX_TO_PT(660))*2);
-    }else{
-        tableView.contentSize = CGSizeMake(ScreenWidth, (ScreenWidth+PX_TO_PT(455))*2);
-    }
+    XNRProductInfo_frame *frame = [infoModelArray lastObject];
+    tableView.contentSize = CGSizeMake(ScreenWidth, (frame.viewHeight)*2);
+    
     self.tableView = tableView;
     [self.view addSubview:tableView];
 }
@@ -200,8 +195,8 @@
         [BMProgressView LoadViewDisappear:self.view];
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dic =result[@"datas"];
-//            self.model.deposit = dic[@"deposit"];
             XNRProductInfo_model *model = [[XNRProductInfo_model alloc] init];
+            
             model.min = dic[@"SKUPrice"][@"min"];
             model.max = dic[@"SKUPrice"][@"max"];
             
@@ -214,28 +209,15 @@
             
             model.pictures = (NSMutableArray *)[XNRProductPhotoModel objectArrayWithKeyValuesArray:dic[@"pictures"]];
             model.SKUAttributes =  (NSMutableArray *)[XNRSKUAttributesModel objectArrayWithKeyValuesArray:dic[@"SKUAttributes"]];
+            XNRProductInfo_frame *frame = [[XNRProductInfo_frame alloc] init];
+            // 把商品详情的model传给frame
+            frame.infoModel = model;
             
-            [_goodsArray addObject:model];
+            [_goodsArray addObject:frame];
             [self createTableView:_goodsArray];
             [self createBottomView];
 
-
-            
             if ([dic[@"presale"] integerValue] == 1) {
-                self.addBuyCarBtn.userInteractionEnabled = NO;
-                self.addBuyCarBtn.alpha = 0.4;
-                
-                self.buyBtn.userInteractionEnabled = NO;
-                self.buyBtn.alpha = 0.4;
-                
-                self.rightBtn.userInteractionEnabled = NO;
-                self.rightBtn.alpha = 0.4;
-                
-                self.leftBtn.userInteractionEnabled = NO;
-                self.leftBtn.alpha = 0.4;
-                
-                self.numTextField.text = @"0";
-                self.numTextField.userInteractionEnabled = NO;
                 
                 self.bgView.hidden = YES;
                 self.bgExpectView.hidden = NO;
@@ -251,7 +233,6 @@
         
     }];
 }
-
 
 -(void)textFieldChanged:(NSNotification*)noti {
     
@@ -299,45 +280,6 @@
     self.bgView = bgView;
     [self.view addSubview:bgView];
 
-    UIButton *leftBtn = [MyControl createButtonWithFrame:CGRectMake(PX_TO_PT(38), PX_TO_PT(16), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
-    
-    leftBtn.tag = kLeftBtn;
-    [leftBtn setImage:[UIImage imageNamed:@"icon_minus"] forState:UIControlStateNormal];
-    [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateSelected];
-    [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateHighlighted];
-    [leftBtn setHighlighted:NO];
-    self.leftBtn = leftBtn;
-    [bgView addSubview:leftBtn];
-   
-    UITextField *numTextField = [[UITextField alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame),PX_TO_PT(16),PX_TO_PT(78),PX_TO_PT(48))];
-    numTextField.textAlignment = NSTextAlignmentCenter;
-    numTextField.borderStyle = UITextBorderStyleNone;
-    numTextField.textColor = R_G_B_16(0x323232);
-    numTextField.text = @"1";
-    numTextField.font = XNRFont(14);
-    numTextField.delegate = self;
-    numTextField.returnKeyType = UIReturnKeyDone;
-    //设置键盘类型
-    numTextField.keyboardType=UIKeyboardTypeNumberPad;
-    numTextField.backgroundColor = [UIColor whiteColor];
-    self.numTextField = numTextField;
-    [bgView addSubview:numTextField];
-    
-    XNRToolBar *toolBar = [[XNRToolBar alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(88))];
-    toolBar.delegate = self;
-    numTextField.inputAccessoryView = toolBar;
-    
-    UIButton *rightBtn = [MyControl createButtonWithFrame:CGRectMake(CGRectGetMaxX(self.numTextField.frame), PX_TO_PT(16), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
-    
-    rightBtn.tag = kRightBtn;
-    
-    [rightBtn setImage:[UIImage imageNamed:@"icon_plus"] forState:UIControlStateNormal];
-    [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateSelected];
-    [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateHighlighted];
-    [rightBtn setHighlighted:NO];
-    self.rightBtn = rightBtn;
-    [bgView addSubview:rightBtn];
-    
     // 立即购买
     UIButton *buyBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(buyBtnClick) Title:@"立即购买"];
     buyBtn.backgroundColor = [UIColor whiteColor];
@@ -360,22 +302,20 @@
     [bgView addSubview:line];
     
 }
--(void)XNRToolBarBtnClick
-{
-
-}
-
 #pragma mark - 立即购买
 -(void)buyBtnClick
 {
+    NSLog(@"-==++++++===%@",self.propertyView);
+
     [self.propertyView show:XNRFirstType isRoot:YES];
     
 }
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
+    NSLog(@"-==------===%@",self.propertyView);
+
     [self.propertyView show:XNRSecondType isRoot:YES];
-    NSLog(@"加入购物车");
 }
 #pragma 加减数量
 -(void)btnClick:(UIButton*)button{
@@ -411,13 +351,10 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRProductInfo_model *infoModel = _goodsArray[indexPath.row];
-    if ([infoModel.Desc isEqualToString:@""]||infoModel.Desc == nil) {
-        return (ScreenWidth + PX_TO_PT(415))*2;
-    }else{
-        return (ScreenWidth + PX_TO_PT(455))*2;
-    }
-}
+    XNRProductInfo_frame *frame = _goodsArray[indexPath.row];
+    return (frame.viewHeight) * 2;
+    
+ }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XNRProductInfo_cell *cell = [XNRProductInfo_cell cellWithTableView:tableView];
@@ -428,7 +365,9 @@
     cell.additions = _additions;
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [cell upDataWithModel:_goodsArray[indexPath.row]];
+    XNRProductInfo_frame *frame = _goodsArray[indexPath.row];
+    cell.infoFrame = frame;
+//    [cell upDataWithModel:_goodsArray[indexPath.row]];
     // 提交订单页面的跳转
     __weak __typeof(self)weakSelf = self;
 
@@ -449,21 +388,6 @@
     };
     cell.delegate = self;
     return cell;
-}
-
--(void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-
-}
-
--(CGFloat)heightWithString:(NSString *)string
-                     width:(CGFloat)width
-                  fontSize:(CGFloat)fontSize
-{
-    CGRect rect = [string boundingRectWithSize:CGSizeMake(width, 0) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil];
-    
-    return rect.size.height;
 }
 
 - (void)setNavigationbarTitle{
@@ -495,9 +419,6 @@
 -(void)backClick{
     
     [self.navigationController popViewControllerAnimated:YES];
-//    [self.propertyView removeFromSuperview];
-//    self.propertyView = nil;
-    
 }
 
 -(void)shopcarButtonClick

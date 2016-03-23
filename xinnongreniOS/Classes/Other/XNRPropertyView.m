@@ -68,7 +68,6 @@
 
 @property (nonatomic , weak) UIView *bgViewF;
 
-
 @property (nonatomic ,assign) XNRPropertyViewType type;
 
 @property (nonatomic ,copy) NSString *marketPrice;
@@ -88,17 +87,13 @@
     static XNRPropertyView *dm = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        dm = [[self alloc]initWithFrame:CGRectMake(0, 0, 0, 0) model:shopcarModel];
+        dm = [[self alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
     });
+    dm.shopcarModel = shopcarModel;
+    dm.shopcarModel._id = @"";
+    [dm initBaseViewAndData];
     return dm;
 }
-//static XNRPropertyView *dm = nil;
-//+(XNRPropertyView *)sharedInstanceWithModel:(XNRShoppingCartModel *)shopcarModel {
-//    if (!dm) {
-//        dm = [[self alloc]initWithFrame:CGRectMake(0, 0, 0, 0) model:shopcarModel];
-//    }
-//    return dm;
-//}
 
 // 懒加载（立即购买的时候，把所有的附加选项_id添加到数组里面）
 -(NSMutableArray *)addtionsArray {
@@ -108,18 +103,18 @@
     return _addtionsArray;
 }
 
+- (void)changeSelfToIdentify {
+    [self.coverView removeFromSuperview];
+    [self.attributesView removeFromSuperview];
+    self.coverView = nil;
+    self.attributesView = nil;
+}
 
--(instancetype)initWithFrame:(CGRect)frame model:(XNRShoppingCartModel *)shopcarModel {
-    self = [super initWithFrame:frame];
-    if (self) {
-        
-        self.shopcarModel = shopcarModel;
-        self.shopcarModel._id = @"";
-        // 获得商品属性数据
-        [self getData];
+- (void)initBaseViewAndData {
+    
+    if (!self.coverView && !self.attributesView) {
         
         _goodsArray = [NSMutableArray array];
-        
         _dataArr = [NSMutableArray array];
         
         UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
@@ -137,10 +132,11 @@
         [window addSubview:attributesView];
         
         [self createTopView];
-
+        
+        // 获得商品属性数据
+        [self getData];
     }
-    return self;
-
+    
 }
 #pragma mark - 数据请求
 -(void)getData
@@ -155,7 +151,6 @@
             _id = dic[@"_id"];
             _deposit = dic[@"deposit"];
             
-            
             model.pictures = (NSMutableArray *)[XNRProductPhotoModel objectArrayWithKeyValuesArray:dic[@"pictures"]];
             model.SKUAttributes = (NSMutableArray *)[XNRSKUAttributesModel objectArrayWithKeyValuesArray:dic[@"SKUAttributes"]];
             for (XNRSKUAttributesModel *skuModel in model.SKUAttributes) {
@@ -164,35 +159,13 @@
                     cellModel.cellValue = [skuModel.values[i] copy];
                     cellModel.isEnable = YES;
                     [skuModel.values replaceObjectAtIndex:i withObject:cellModel];
+                    
+                    if (skuModel.values.count == 1) {
+                        cellModel.isSelected = YES;
+                    }
                  }
             }
             self.nameLabel.text = [NSString stringWithFormat:@"%@",dic[@"name"]];
-            
-            // 市场价
-//            if ([dic[@"SKUMarketPrice"][@"min"] floatValue] == [dic[@"SKUMarketPrice"][@"max"] floatValue]) {
-//                self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价：¥ %.2f",[dic[@"SKUMarketPrice"][@"min"] floatValue]];
-//                if ([self.marketPriceLabel.text rangeOfString:@".00"].length == 3) {
-//                    
-//                    self.marketPriceLabel.text = [self.marketPriceLabel.text substringToIndex:self.marketPriceLabel.text.length-3];
-//                }
-//                
-//            }else{
-//                NSString *minPrice = [NSString stringWithFormat:@"%.2f",[dic[@"SKUMarketPrice"][@"min"] floatValue]];
-//                NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[dic[@"SKUMarketPrice"][@"max"] floatValue]];
-//                if ([minPrice rangeOfString:@".00"].length == 3) {
-//                    minPrice = [minPrice substringToIndex:minPrice.length-3];
-//                }
-//                if ([maxPrice rangeOfString:@".00"].length == 3) {
-//                    maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
-//                }
-//                self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价：¥ %@ - %@",minPrice,maxPrice];
-//                
-//            }
-//            CGSize marketPriceSize = [self.marketPriceLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16]}];
-//            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.imageView.frame)+PX_TO_PT(20), CGRectGetMaxY(self.priceLabel.frame)+marketPriceSize.height*0.5, marketPriceSize.width, PX_TO_PT(2))];
-//            lineView.backgroundColor = [UIColor redColor];
-//            [self.attributesView addSubview:lineView];
-
             
             // 价格
             if ([dic[@"SKUPrice"][@"min"] floatValue] == [dic[@"SKUPrice"][@"max"] floatValue]) {
@@ -240,6 +213,7 @@
         
     }];
 }
+
 -(void)createTopView{
     
     UIView *bgTopView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(220))];
@@ -349,7 +323,6 @@
         
     }else if (_type == XNRSecondType){// 加入购物车
         [self addBuyCar];
-    
     }
 }
 #pragma mark - 立即购买
@@ -520,7 +493,6 @@
             [self cancelBtnClick];
             [BMProgressView LoadViewDisappear:self];
             
-            
         }else{
             [UILabel showMessage:resultObj[@"message"]];
             [self cancelBtnClick];
@@ -530,7 +502,6 @@
         NSLog(@"===%@",error);
         
     }];
-
 
 }
 
@@ -619,20 +590,22 @@
 #pragma mark - createCollectionView
 -(void)createCollectionView
 {
-    UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
-    collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(220), ScreenWidth-2*PX_TO_PT(30), PX_TO_PT(680)) collectionViewLayout:collectionViewLayout];
-    collectionView.showsVerticalScrollIndicator = NO;
-    collectionView.delegate = self;
-    collectionView.dataSource = self;
-    [collectionView registerClass:[XNRPropertyBrandView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewId];
-    [collectionView registerClass:[XNRPropertyFootView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:footViewId];
-    [collectionView registerClass:[XNRPropertyCollectionViewCell class] forCellWithReuseIdentifier:cellId];
-    [collectionView registerClass:[XNRPropertyCollectionViewCell class] forCellWithReuseIdentifier:@"addtionCell"];
-    collectionView.backgroundColor = [UIColor clearColor];
-    self.collectionView = collectionView;
-    self.collectionView.collectionViewLayout = collectionViewLayout;
-    [self.attributesView addSubview:collectionView];
+    if (!_collectionView) {
+        UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
+        collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(220), ScreenWidth-2*PX_TO_PT(30), PX_TO_PT(680)) collectionViewLayout:collectionViewLayout];
+        collectionView.showsVerticalScrollIndicator = NO;
+        collectionView.delegate = self;
+        collectionView.dataSource = self;
+        [collectionView registerClass:[XNRPropertyBrandView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewId];
+        [collectionView registerClass:[XNRPropertyFootView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:footViewId];
+        [collectionView registerClass:[XNRPropertyCollectionViewCell class] forCellWithReuseIdentifier:cellId];
+        [collectionView registerClass:[XNRPropertyCollectionViewCell class] forCellWithReuseIdentifier:@"addtionCell"];
+        collectionView.backgroundColor = [UIColor clearColor];
+        self.collectionView = collectionView;
+        self.collectionView.collectionViewLayout = collectionViewLayout;
+        [self.attributesView addSubview:collectionView];
+    }
 }
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -1069,16 +1042,16 @@
 -(void)show:(XNRPropertyViewType)buyType isRoot:(BOOL)isRoot{
     _type = buyType;
     self.coverView.hidden = NO;
+    [self.bgView removeFromSuperview];
+    self.bgView = nil;
     [UIView animateWithDuration:.3 animations:^{
         self.attributesView.frame= CGRectMake(0, ScreenHeight-PX_TO_PT(980), ScreenWidth, PX_TO_PT(980));
-        
-                if (buyType == XNRFirstType ) {// 立即购买
+        if (buyType == XNRFirstType ) {// 立即购买
             if (isRoot == YES) {
                 [self createSecondView];
             }else{
                 [self createFirstView]; 
             }
-
         }else if (buyType == XNRSecondType){// 加入购物车
             [self createSecondView];
         }
