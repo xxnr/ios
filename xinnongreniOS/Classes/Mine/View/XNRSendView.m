@@ -206,16 +206,9 @@
                 [_dataArr addObject:sectionModel];
             }
         }
-//        if (_dataArr.count == 0) {
-//            [self.orderEmptyView show];
-//        }else{
-//            [self.orderEmptyView removeFromSuperview];
-//        }
-
         
         if (_dataArr.count == 0) {
             [self orderEmptyView];
-            
         }
 
         //刷新列表

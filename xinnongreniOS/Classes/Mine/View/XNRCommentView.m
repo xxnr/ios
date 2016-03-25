@@ -29,15 +29,6 @@
     }
     return _orderEmptyView;
 }
-#pragma mark - 出现空的视图
-- (void)showEmptyView {
-    
-    if (_dataArr.count == 0) {
-        [self.orderEmptyView show];
-    }else{
-        [self.orderEmptyView removeFromSuperview];
-    }
-}
 
 #pragma mark - 图片为空的代理方法
 //-(void)XNROrderEmptyView:(XNROrderEmptyViewbuySort)type
@@ -204,7 +195,7 @@
 -(void)headRefresh{
     
     _currentPage = 1;
-    
+    [self.orderEmptyView removeFromSuperview];
     [_dataArr removeAllObjects];
     
     [self getData];

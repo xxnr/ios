@@ -24,6 +24,5 @@ typedef enum : NSUInteger {
 
 @property (nonatomic ,assign) id<XNROrderEmptyViewBtnDelegate>delegate;
 
--(void)show;
 
 @end

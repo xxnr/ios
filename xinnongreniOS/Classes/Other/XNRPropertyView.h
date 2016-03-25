@@ -23,10 +23,9 @@ typedef void(^XNRPropertyViewLoginBlock)();
 @interface XNRPropertyView : UIView
 //单例
 +(id)sharedInstanceWithModel:(XNRShoppingCartModel *)shopcarModel;
+- (void)changeSelfToIdentify;
 
 -(void)show:(XNRPropertyViewType)buyType isRoot:(BOOL)isRoot;
-
--(instancetype)initWithFrame:(CGRect)frame model:(XNRShoppingCartModel *)shopcarModel;
 
 @property (nonatomic, copy) XNRPropertyViewBlock com;
 

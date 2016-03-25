@@ -8,6 +8,8 @@
 
 #import "XNRMyOrderServe_Cell.h"
 #import "UIImageView+WebCache.h"
+#import "XNRMyAllOrderFrame.h"
+
 
 @interface XNRMyOrderServe_Cell ()
 
@@ -155,6 +157,12 @@
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [bgView addSubview:lineView];
     }
+
+}
+
+-(void)setOrderFrame:(XNRMyAllOrderFrame *)orderFrame
+{
+    
 
 }
 
