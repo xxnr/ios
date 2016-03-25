@@ -12,6 +12,7 @@
 #import "XNRChatController.h"
 #import "XNRShoppingCarController.h"
 #import "XNRMineController.h"
+
 @interface XNRTabBarController ()
 
 @end

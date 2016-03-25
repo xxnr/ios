@@ -132,21 +132,23 @@
         for (int i = 0; i<addtionsModel.additions.count; i++) {
             UILabel *addtionLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(45)*i, ScreenWidth-PX_TO_PT(64), PX_TO_PT(45))];
             addtionLabel.backgroundColor = R_G_B_16(0xf0f0f0);
-            addtionLabel.layer.cornerRadius = 5.0;
-            addtionLabel.layer.masksToBounds = YES;
+            [addtionLabel.layer setMasksToBounds:YES];
+            [addtionLabel.layer setCornerRadius:10.0];
+//            addtionLabel.layer.cornerRadius = 7.0;
+//            addtionLabel.layer.masksToBounds = YES;
             self.addtionLabel = addtionLabel;
             [addtionView addSubview:addtionLabel];
         
             NSDictionary *subDic = addtionsModel.additions[i];
             
-            UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(45))];
+            UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(8), 0, ScreenWidth/2, PX_TO_PT(45))];
             nameLabel.textColor = R_G_B_16(0x909090);
             nameLabel.font = [UIFont systemFontOfSize:14];
             nameLabel.textAlignment = NSTextAlignmentLeft;
             nameLabel.text = [NSString stringWithFormat:@"%@",subDic[@"name"]];
             [addtionLabel addSubview:nameLabel];
             
-            UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(64), PX_TO_PT(45))];
+            UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(70), PX_TO_PT(45))];
             priceLabel.textColor = R_G_B_16(0x323232);
             priceLabel.font = [UIFont systemFontOfSize:14];
             priceLabel.textAlignment = NSTextAlignmentRight;
@@ -304,7 +306,12 @@
 
     NSMutableString *displayStr = [[NSMutableString alloc] initWithString:@""];
     for (NSDictionary *subDic in self.model.attributes) {
+<<<<<<< HEAD
         [displayStr appendString:[NSString stringWithFormat:@"%@:%@; ",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
+=======
+        [displayStr appendString:[NSString stringWithFormat:@"%@:%@",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
+        [displayStr appendString:@";"];
+>>>>>>> master
     }
     self.detailLabel.text = displayStr;
     

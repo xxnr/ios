@@ -16,7 +16,11 @@
 #import "UIImageView+WebCache.h"
 #import "XNRShopCarSectionModel.h"
 #import "IQKeyboardManager.h"
+<<<<<<< HEAD
 #import "AppDelegate.h"
+=======
+#import "XNRCollectionViewFlowLayout.h"
+>>>>>>> master
 
 #define coll_cell_margin  PX_TO_PT(20)
 #define coll_section_margin PX_TO_PT(40)
@@ -488,7 +492,7 @@
             [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
             [manager POST:KGetShoppingCartOffline parameters:@{@"SKUs":SKUs,@"user-agent":@"IOS-v2.0"} success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-                NSLog(@"---------返回数据:---------%@",str);
+//                NSLog(@"---------返回数据:---------%@",str);
                 id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
                 
                 NSDictionary *resultDic;
@@ -623,7 +627,7 @@
     
     [manager POST:KAddToCart parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"---------返回数据:---------%@",str);
+//        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -687,7 +691,7 @@
     
     [manager POST:KAddToCart parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"---------返回数据:---------%@",str);
+//        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -748,7 +752,9 @@
 -(void)createCollectionView
 {
     if (!_collectionView) {
-        UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
+//        UICollectionViewLayout *collectionViewLayout = [[UICollectionViewLayout alloc] init];
+
+        XNRCollectionViewFlowLayout *collectionViewLayout = [[XNRCollectionViewFlowLayout alloc] init];
         collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
         UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(220), ScreenWidth-2*PX_TO_PT(30), PX_TO_PT(680)) collectionViewLayout:collectionViewLayout];
         collectionView.showsVerticalScrollIndicator = NO;
@@ -872,7 +878,7 @@
         
         [manager POST:KSkuquery parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-            NSLog(@"---------返回数据:---------%@",str);
+//            NSLog(@"---------返回数据:---------%@",str);
             id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
             
             NSDictionary *resultDic;
@@ -1207,6 +1213,5 @@
         }
     }];
 }
-
 
 @end

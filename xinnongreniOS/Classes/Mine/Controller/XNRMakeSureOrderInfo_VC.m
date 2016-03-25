@@ -8,9 +8,10 @@
 
 #import "XNRMakeSureOrderInfo_VC.h"
 #import "XNRAddressManageViewController.h"
-#import "XNROderInfo_Cell.h"
+#import "XNROrderInfoCell.h"
 #import "XNRPayType_VC.h"
 #import "XNRTabBarController.h"
+#import "XNROrderInfoCell.h"
 @interface XNRMakeSureOrderInfo_VC ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>{
 }
     
@@ -271,10 +272,10 @@
 }
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString*cellID=@"XNROderInfo";
-    XNROderInfo_Cell*cell=[tableView dequeueReusableCellWithIdentifier:cellID];
+    XNROrderInfoCell*cell=[tableView dequeueReusableCellWithIdentifier:cellID];
     if(!cell){
         
-        cell=[[XNROderInfo_Cell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        cell=[[XNROrderInfoCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         
     }
     [cell setCellDataWithModel:_dataArray[indexPath.row]];

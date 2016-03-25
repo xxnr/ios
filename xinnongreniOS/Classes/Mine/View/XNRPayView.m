@@ -10,7 +10,7 @@
 #import "XNRMyOrderModel.h"
 #import "XNRMyOrderPayCell.h"
 #import "UIImageView+WebCache.h"
-#import "XNRCheckOrder_VC.h"
+#import "XNRCheckOrderVC.h"
 #import "XNRMyOrderSectionModel.h"
 #import "XNROrderEmptyView.h"
 #import "XNRMyAllOrderFrame.h"
@@ -299,8 +299,32 @@
             [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
             
             [totalPriceLabel setAttributedText:AttributedStringPrice];
+<<<<<<< HEAD
             
             
+=======
+//            
+//            // 待付金额
+//            UILabel *payPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth-PX_TO_PT(192), PX_TO_PT(60))];
+//            payPriceLabel.textColor = R_G_B_16(0x323232);
+//            payPriceLabel.font = [UIFont systemFontOfSize:14];
+//            payPriceLabel.textAlignment = NSTextAlignmentRight;
+//            payPriceLabel.text = [NSString stringWithFormat:@"待付金额:￥%.2f",sectionModel.totalPrice.floatValue];
+//            [bottomView addSubview:payPriceLabel];
+//            
+//            NSMutableAttributedString *AttributedStringpayPrice = [[NSMutableAttributedString alloc]initWithString:payPriceLabel.text];
+//            NSDictionary *payPriceStr=@{
+//                                        
+//                                        NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
+//                                        NSFontAttributeName:[UIFont systemFontOfSize:16]
+//                                        };
+//            
+//            [AttributedStringpayPrice addAttributes:payPriceStr range:NSMakeRange(5,AttributedStringpayPrice.length-5)];
+//            
+//            [payPriceLabel setAttributedText:AttributedStringpayPrice];
+//
+//            
+>>>>>>> master
             UIButton *sectionFour = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(92), PX_TO_PT(140), PX_TO_PT(60))];
             sectionFour.backgroundColor = R_G_B_16(0xfe9b00);
             [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
@@ -418,12 +442,23 @@
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
+<<<<<<< HEAD
         if (sectionModel.orderFrameArray.count>0) {
             XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
             cell.attributesArray = modelArray.attributes;
             cell.addtionsArray = modelArray.additions;
             XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
            cell.orderFrame = frameModel;
+=======
+        if (sectionModel.products.count>0) {
+            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
+            if (sectionModel.skus.count > 0) {
+                XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
+                cell.attributesArray = modelArray.attributes;
+                cell.addtionsArray = modelArray.additions;
+            }
+            [cell setCellDataWithShoppingCartModel:model];
+>>>>>>> master
             
         }
     }

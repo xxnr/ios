@@ -13,7 +13,7 @@
 #import "XNRSendView.h"          //待发货
 #import "XNRReciveView.h"        //已发货
 #import "XNRCommentView.h"       //已完成
-#import "XNRCheckOrder_VC.h"     //查看订单
+#import "XNRCheckOrderVC.h"     //查看订单
 #import "XNRTabBarController.h"
 #import "XNRMineController.h"
 #import "XNRTabBarController.h"
@@ -105,7 +105,7 @@
         }];
         // 查看订单
         [self.ServeView setCheckOrderBlock:^(NSString *orderID,NSString *type) {
-            XNRCheckOrder_VC *vc=[[XNRCheckOrder_VC alloc]init];
+            XNRCheckOrderVC *vc=[[XNRCheckOrderVC alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
             vc.orderID = orderID;
             vc.myOrderType = type;
@@ -132,7 +132,7 @@
                 
                 // 查看订单
                 [self.PayView setCheckOrderBlock:^(NSString *orderID) {
-                    XNRCheckOrder_VC*vc=[[XNRCheckOrder_VC alloc] init];
+                    XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc] init];
                     vc.hidesBottomBarWhenPushed = YES;
                     vc.orderID=orderID;
                     vc.myOrderType = @"待付款";
@@ -147,7 +147,7 @@
                 self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
                 __weak __typeof(&*self)weakSelf=self;
                 [self.SendView setCheckOrderBlock:^(NSString *orderID) {
-                    XNRCheckOrder_VC*vc=[[XNRCheckOrder_VC alloc]init];
+                    XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
                     vc.hidesBottomBarWhenPushed=YES;
                     vc.orderID= orderID;
                     vc.isRoot = YES ;
@@ -162,7 +162,7 @@
                 __weak __typeof(&*self)weakSelf=self;
                 //查看订单
                 [self.ReciveView setCheckOrderBlock:^(NSString *orderID) {
-                    XNRCheckOrder_VC *vc=[[XNRCheckOrder_VC alloc]init];
+                    XNRCheckOrderVC *vc=[[XNRCheckOrderVC alloc]init];
                     vc.hidesBottomBarWhenPushed=YES;
                     vc.isRoot = YES ;
                     vc.orderID=orderID;
@@ -178,7 +178,7 @@
                 __weak __typeof(&*self)weakSelf=self;
                 // 查看订单
                 [self.CommentView setCheckOrderBlock:^(NSString *orderID) {
-                    XNRCheckOrder_VC *vc=[[XNRCheckOrder_VC alloc]init];
+                    XNRCheckOrderVC *vc=[[XNRCheckOrderVC alloc]init];
                     vc.hidesBottomBarWhenPushed=YES;
                     vc.isRoot = YES ;
                     vc.orderID=orderID;

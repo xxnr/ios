@@ -7,7 +7,7 @@
 //
 
 #import "XNROrderSuccessViewController.h"
-#import "XNRCheckOrder_VC.h"
+#import "XNRCheckOrderVC.h"
 #import "XNRMyOrder_VC.h"
 @interface XNROrderSuccessViewController ()
 
@@ -104,7 +104,7 @@
 {
     NSLog(@"查看订单");
     
-    XNRCheckOrder_VC*vc=[[XNRCheckOrder_VC alloc]init];
+    XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
     vc.orderID = self.orderID;
     vc.orderNO = self.paymentId;

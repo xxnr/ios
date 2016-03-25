@@ -108,12 +108,12 @@
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     NSDictionary *params = @{@"SKUs":self.dataArray,@"user-agent":@"IOS-v2.0"};
-    NSLog(@"---------返回数据:+_-------%@",params);
+//    NSLog(@"---------返回数据:+_-------%@",params);
 
     [manager POST:KGetShoppingCartOffline parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"---------params:+_-------%@",params);
-        NSLog(@"---------返回数据:+_-------%@",str);
+//        NSLog(@"---------params:+_-------%@",params);
+//        NSLog(@"---------返回数据:+_-------%@",str);
 
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
@@ -238,7 +238,7 @@
     model.selected = YES;
     self.nextAddresModel = model;
     // headViewSpecial
-    UIView *headViewSpecial = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(260))];
+    UIView *headViewSpecial = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(280))];
     headViewSpecial.backgroundColor = [UIColor whiteColor];
     self.headViewSpecial = headViewSpecial;
     [self.view addSubview:headViewSpecial];
@@ -263,6 +263,9 @@
     [downImageViewSpecial setImage:[UIImage imageNamed:@"orderInfo_down"]];
     [headViewSpecial addSubview:downImageViewSpecial];
     
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(downImageViewSpecial.frame), ScreenWidth, PX_TO_PT(20))];
+    view.backgroundColor = R_G_B_16(0xf7f7f7);
+    [headViewSpecial addSubview:view];
     
     _recipientNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), PX_TO_PT(112), PX_TO_PT(200), PX_TO_PT(36))];
     _recipientNameLabel.textColor = R_G_B_16(0x323232);
@@ -411,69 +414,19 @@
 {
     
     UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(20))];
+    footView.backgroundColor = [UIColor blackColor];
     footView.backgroundColor =  R_G_B_16(0xf4f4f4);
     [self.view addSubview:footView];
     
     return  footView;
-
-//    if (_dataArr.count>0) {
-//        XNRShopCarSectionModel *sectionModel = _dataArr[section];
-//        UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(100))];
-//        footView.backgroundColor = [UIColor whiteColor];
-//        [self.view addSubview:footView];
-//        
-//        UIView *divideView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(20))];
-//        divideView.backgroundColor = R_G_B_16(0xf4f4f4);
-//        [footView addSubview:divideView];
-//        
-//        UILabel *goodsTotalLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
-//        goodsTotalLabel.textColor = R_G_B_16(0x323232);
-//        goodsTotalLabel.font = [UIFont systemFontOfSize:14];
-//        goodsTotalLabel.text = [NSString stringWithFormat:@"共%@件商品",sectionModel.goodsCount];
-//        self.goodsTotalLabel = goodsTotalLabel;
-//        [footView addSubview:goodsTotalLabel];
-//        
-//        
-//        UILabel *totoalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2 - PX_TO_PT(32), PX_TO_PT(80))];
-//        totoalPriceLabel.textAlignment = NSTextAlignmentRight;
-//        totoalPriceLabel.font = [UIFont systemFontOfSize:14];
-//        if (sectionModel.deposit && [sectionModel.deposit floatValue]>0) {
-//            totoalPriceLabel.text = [NSString stringWithFormat:@"合计：%.2f",sectionModel.deposit.floatValue * sectionModel.goodsCount.integerValue];
-//        }else{
-//            totoalPriceLabel.text = [NSString stringWithFormat:@"合计：%.2f",sectionModel.unitPrice.floatValue * sectionModel.goodsCount.integerValue];
-//        }
-//                        NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:totoalPriceLabel.text];
-//                        NSDictionary *depositStr=@{
-//        
-//                                                   NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-//                                                   // NSFontAttributeName:[UIFont systemFontOfSize:18]
-//        
-//                                                   };
-//        
-//                        [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(3,AttributedStringDeposit.length-3)];
-//        
-//                        [totoalPriceLabel setAttributedText:AttributedStringDeposit];
-//        
-//        self.totoalPriceLabel = totoalPriceLabel;
-//        [footView addSubview:totoalPriceLabel];
-//        
-//        for (int i = 0; i<2; i++) {
-//            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-//            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-//            [footView addSubview:lineView];
-//        }
-//        return footView;
-//
-//    }else{
-//        return nil;
-//    }
-    
 
 }
 //段头高度
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return PX_TO_PT(88);
+//    return 0;
+
 }
 
 //段尾高度
@@ -505,6 +458,7 @@
     if (_dataArr.count > 0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[section];
         return sectionModel.SKUList.count;
+        return 1;
     } else {
         return 0;
     }
@@ -617,7 +571,7 @@
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     [manager POST:KAddOrder parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"---------返回数据:---------%@",str);
+//        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;

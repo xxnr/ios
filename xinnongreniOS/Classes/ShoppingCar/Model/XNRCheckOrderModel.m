@@ -16,4 +16,13 @@
     
 }
 
+-(NSMutableArray *)additions
+{
+    if (!_additions) {
+        _additions = [NSMutableArray array];
+    }
+    return _additions;
+}
+
+
 @end

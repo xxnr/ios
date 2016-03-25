@@ -254,6 +254,7 @@
 #define KDynamic [NSString stringWithFormat:@"%@/%@",HOST,@"dynamic/alipay/nofity.asp"]
 
 
+
 /**
  *  获取支付的最小额度
  */
