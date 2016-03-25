@@ -60,27 +60,37 @@
     _pushBtnF = CGRectMake(pushBntX, pushBntY, pushBntW, pushBntH);
 
     
+    if ([self.shoppingCarModel.online integerValue] == 0) {// 下架
+        CGFloat onlineLabelX = PX_TO_PT(86)+PX_TO_PT(90);
+        CGFloat onlineLabelY = CGRectGetMaxY(_picImageViewF)+margin;
+        CGFloat onlineLabelW = PX_TO_PT(48);
+        CGFloat onlineLabelH = PX_TO_PT(48);
+        _onlineLabelF = CGRectMake(onlineLabelX, onlineLabelY, onlineLabelW, onlineLabelH);
+
+    }else{
+        // 左边按钮
+        CGFloat leftBtnX = PX_TO_PT(86);
+        CGFloat leftBtnY = CGRectGetMaxY(_picImageViewF)+margin;
+        CGFloat leftBtnW = PX_TO_PT(48);
+        CGFloat leftBtnH = PX_TO_PT(48);
+        _leftBtnF = CGRectMake(leftBtnX, leftBtnY, leftBtnW, leftBtnH);
+        
+        // text
+        CGFloat numTextFieldX = CGRectGetMaxX(_leftBtnF);
+        CGFloat numTextFieldY = CGRectGetMaxY(_picImageViewF)+margin;
+        CGFloat numTextFieldW = PX_TO_PT(84);
+        CGFloat numTextFieldH = PX_TO_PT(48);
+        _numTextFieldF = CGRectMake(numTextFieldX, numTextFieldY, numTextFieldW, numTextFieldH);
+        
+        //右边按钮
+        CGFloat rightBtnX = CGRectGetMaxX(_numTextFieldF);
+        CGFloat rightBtnY = CGRectGetMaxY(_picImageViewF)+margin;
+        CGFloat rightBtnW = PX_TO_PT(48);
+        CGFloat rightBtnH = PX_TO_PT(48);
+        _rightBtnF = CGRectMake(rightBtnX, rightBtnY, rightBtnW, rightBtnH);
+
     
-    // 左边按钮
-    CGFloat leftBtnX = PX_TO_PT(86);
-    CGFloat leftBtnY = CGRectGetMaxY(_picImageViewF)+margin;
-    CGFloat leftBtnW = PX_TO_PT(48);
-    CGFloat leftBtnH = PX_TO_PT(48);
-    _leftBtnF = CGRectMake(leftBtnX, leftBtnY, leftBtnW, leftBtnH);
-    
-    // text
-    CGFloat numTextFieldX = CGRectGetMaxX(_leftBtnF);
-    CGFloat numTextFieldY = CGRectGetMaxY(_picImageViewF)+margin;
-    CGFloat numTextFieldW = PX_TO_PT(84);
-    CGFloat numTextFieldH = PX_TO_PT(48);
-    _numTextFieldF = CGRectMake(numTextFieldX, numTextFieldY, numTextFieldW, numTextFieldH);
-    
-    //右边按钮
-    CGFloat rightBtnX = CGRectGetMaxX(_numTextFieldF);
-    CGFloat rightBtnY = CGRectGetMaxY(_picImageViewF)+margin;
-    CGFloat rightBtnW = PX_TO_PT(48);
-    CGFloat rightBtnH = PX_TO_PT(48);
-    _rightBtnF = CGRectMake(rightBtnX, rightBtnY, rightBtnW, rightBtnH);
+    }
     
     // 价格
     CGFloat PriceLabelX = ScreenWidth/2;
@@ -103,7 +113,7 @@
             totalPrice = totalPrice + [price floatValue];
         }
         CGFloat addtionsLabelX = PX_TO_PT(86);
-        CGFloat addtionsLabelY = CGRectGetMaxY(_leftBtnF)+PX_TO_PT(36);
+        CGFloat addtionsLabelY = CGRectGetMaxY(_PriceLabelF)+PX_TO_PT(36);
         CGFloat addtionsLabelW = PX_TO_PT(424);
         CGSize  addtionsLabelMaxSize = CGSizeMake(addtionsLabelW, MAXFLOAT);
         CGSize  addtionsLabelSize = [addtionsStr sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(24)] maxSize:addtionsLabelMaxSize];
@@ -111,7 +121,7 @@
         
         // 附加选项价格
         CGFloat addtionPriceLabelX = ScreenWidth/2;
-        CGFloat addtionPriceLabelY = CGRectGetMaxY(_leftBtnF)+PX_TO_PT(36);
+        CGFloat addtionPriceLabelY = CGRectGetMaxY(_PriceLabelF)+PX_TO_PT(36);
         CGFloat addtionPriceLabelW = ScreenWidth/2-PX_TO_PT(30);
         CGFloat addtionPriceLabelH = addtionsLabelSize.height;
         _addtionPriceLabelF = CGRectMake(addtionPriceLabelX, addtionPriceLabelY, addtionPriceLabelW, addtionPriceLabelH);
@@ -124,7 +134,7 @@
     if (self.shoppingCarModel.additions.count>0) {
         topLineY = CGRectGetMaxY(_addtionsLabelF)+PX_TO_PT(36);
     }else{
-        topLineY =  CGRectGetMaxY(_leftBtnF)+PX_TO_PT(36);;
+        topLineY =  CGRectGetMaxY(_PriceLabelF)+PX_TO_PT(36);;
 
     }
     _topLineF = CGRectMake(topLineX, topLineY, topLineW, topLineH);

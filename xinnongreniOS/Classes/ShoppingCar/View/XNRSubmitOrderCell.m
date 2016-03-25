@@ -93,7 +93,7 @@
     self.brandNameLabel = brandNameLabel;
     [topView addSubview:brandNameLabel];
     
-    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(goodsImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(brandNameLabel.frame), ScreenWidth - CGRectGetMaxX(goodsImageView.frame) - PX_TO_PT(52), PX_TO_PT(70))];
+    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(goodsImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(brandNameLabel.frame), ScreenWidth - CGRectGetMaxX(goodsImageView.frame) - PX_TO_PT(52), PX_TO_PT(140))];
     detailLabel.font = [UIFont systemFontOfSize:12];
     detailLabel.textColor = R_G_B_16(0x909090);
     detailLabel.numberOfLines = 0;
@@ -304,7 +304,7 @@
 
     NSMutableString *displayStr = [[NSMutableString alloc] initWithString:@""];
     for (NSDictionary *subDic in self.model.attributes) {
-        [displayStr appendString:[NSString stringWithFormat:@"%@:%@ ",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
+        [displayStr appendString:[NSString stringWithFormat:@"%@:%@; ",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
     }
     self.detailLabel.text = displayStr;
     

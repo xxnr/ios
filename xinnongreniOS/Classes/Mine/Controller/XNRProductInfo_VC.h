@@ -11,6 +11,8 @@
 
 @property(nonatomic,strong)XNRShoppingCartModel*model;
 
+@property (nonatomic, assign) BOOL isFrom;
+
 -(void)synchShoppingCarDataWith:(XNRShoppingCartModel *)model;
 
 @end

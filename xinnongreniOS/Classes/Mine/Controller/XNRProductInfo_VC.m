@@ -27,6 +27,8 @@
     CGRect oldTableRect;
     CGFloat preY;
     NSMutableArray *_goodsArray;
+    NSString *_Price;
+    NSString *_marketPrice;
 }
 @property(nonatomic,weak) UITableView *tableView;
 @property(nonatomic,weak) UIImageView *headView;
@@ -77,6 +79,8 @@
         propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice){
             _attributes = attributes;
             _additions = addtions;
+            _Price = price;
+            _marketPrice = marketPrice;
             [self.tableView reloadData];
             
         };
@@ -215,7 +219,17 @@
             
             [_goodsArray addObject:frame];
             [self createTableView:_goodsArray];
-            [self createBottomView];
+            // 判断一下从主页还是从购物车进入的详情页（加载不同的视图）
+            if (_isFrom) {
+                if ([_model.online integerValue] == 0) {
+                    [self createonlineView];
+                }else{
+                    [self createBottomView];
+
+                }
+            }else{
+                [self createBottomView];
+            }
 
             if ([dic[@"presale"] integerValue] == 1) {
                 
@@ -253,6 +267,25 @@
         
         self.numTextField.text = @"1";
     }
+}
+
+-(void)createonlineView
+{
+    UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight-64-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
+    bgView.backgroundColor=R_G_B_16(0xE2E2E2);
+    self.bgView = bgView;
+    [self.view addSubview:bgView];
+    
+    
+    UILabel *expectLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80))];
+    expectLabel.text = @"商品已下架";
+    expectLabel.textAlignment = NSTextAlignmentCenter;
+    expectLabel.textColor = R_G_B_16(0x909090);
+    expectLabel.font = [UIFont systemFontOfSize:18];
+    [bgView addSubview:expectLabel];
+
+    
+
 }
 
 #pragma mark-底部视图
@@ -307,7 +340,7 @@
 {
     NSLog(@"-==++++++===%@",self.propertyView);
 
-    [self.propertyView show:XNRFirstType isRoot:YES];
+    [self.propertyView show:XNRFirstType];
     
 }
 #pragma mark-加入购物车
@@ -315,7 +348,7 @@
 {
     NSLog(@"-==------===%@",self.propertyView);
 
-    [self.propertyView show:XNRSecondType isRoot:YES];
+    [self.propertyView show:XNRSecondType];
 }
 #pragma 加减数量
 -(void)btnClick:(UIButton*)button{
@@ -352,7 +385,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XNRProductInfo_frame *frame = _goodsArray[indexPath.row];
-    return (frame.viewHeight) * 2;
+    return frame.viewHeight*2;
     
  }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -363,6 +396,8 @@
     // 属性
     cell.attributes = _attributes;
     cell.additions = _additions;
+    cell.Price = _Price;
+    cell.marketPrice = _marketPrice;
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     XNRProductInfo_frame *frame = _goodsArray[indexPath.row];

@@ -55,7 +55,6 @@
 {
     NSLog(@"%f",scrollView.contentOffset.y);
     if (scrollView.contentOffset.y == 0) {
-//        self.backtoTopBtn.hidden = YES;
         [self.backtoTopBtn removeFromSuperview];
     }else{
         self.backtoTopBtn.hidden = NO;
@@ -126,10 +125,6 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"reloadOrderList" object:nil];
     
 }
-//-(void)reloadOrderList
-//{
-//    [self.tableView reloadData];
-//}
 -(void)headRefresh{
     _currentPage = 1;
     [_dataArr removeAllObjects];
@@ -172,11 +167,12 @@
                 sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
                 for (XNRMyOrderModel *model in sectionModel.skus) {
                     XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
+                    // 把订单模型传递给frame模型
                     orderFrame.orderModel = model;
+                    
                     [sectionModel.orderFrameArray addObject:orderFrame];
+                    NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
                 }
-                
-                
                 [_dataArr addObject:sectionModel];
             }
                
@@ -416,7 +412,7 @@
 {
     if (_dataArr.count > 0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[section];
-        return sectionModel.products.count;
+        return sectionModel.orderFrameArray.count;
     } else {
         return 0;
     }
@@ -427,21 +423,17 @@
 {
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-        if (sectionModel.products.count>0) {
-            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
-            if (model.deposit && [model.deposit floatValue]>0) {
-                return PX_TO_PT(510);
-            }else{
-                return PX_TO_PT(350);
-            }
+        if (sectionModel.orderFrameArray.count>0) {
+            XNRMyAllOrderFrame *frame = sectionModel.orderFrameArray[indexPath.row];
+            return frame.cellHeight;
+            
         }else{
             return 0;
         }
+        
     }else{
         return 0;
     }
-    
-    
 }
 
 //cell点击方法
@@ -468,13 +460,14 @@
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-        if (sectionModel.products.count>0) {
-            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
+        if (sectionModel.orderFrameArray.count>0) {
+//            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
             XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
             cell.attributesArray = modelArray.attributes;
             cell.addtionsArray = modelArray.additions;
-
-            [cell setCellDataWithShoppingCartModel:model];
+            XNRMyAllOrderFrame *orderFrame = sectionModel.orderFrameArray[indexPath.row];
+            cell.orderFrame = orderFrame;
+//            [cell setCellDataWithShoppingCartModel:model];
 
         }
     }

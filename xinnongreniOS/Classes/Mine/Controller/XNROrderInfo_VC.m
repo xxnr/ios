@@ -379,7 +379,7 @@
     if (_dataArr.count > 0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[section];
         
-        UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(88))];
+        UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(88))];
         headView.backgroundColor = [UIColor whiteColor];
         [self.view addSubview:headView];
         

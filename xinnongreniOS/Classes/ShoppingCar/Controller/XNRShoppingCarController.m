@@ -98,6 +98,8 @@
     _deleteBtn.hidden = YES;
     _settlementBtn.hidden = NO;
     _totalPriceLabel.hidden = NO;
+    // 把选中的商品状态清空
+    [_MapOfAllStateArr removeAllObjects];
     
     if (IS_Login) {// 已登录
         // 获取数据从网络
@@ -256,6 +258,7 @@
     _bottomView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
     [self.view addSubview:_bottomView];
     
+    
     UIButton *selectedBottomBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     selectedBottomBtn.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(26), PX_TO_PT(36), PX_TO_PT(36));
     [selectedBottomBtn setImage:[UIImage imageNamed:@"shopCar_circle"] forState:UIControlStateNormal];
@@ -309,8 +312,8 @@
     
     for (XNRShopCarSectionModel *sectionModel in _dataArr) {
         sectionModel.isSelected = sender.selected;
-        for (XNRShoppingCartModel *shopCar in sectionModel.SKUList) {
-            shopCar.selectState = sender.selected;
+        for (XNRShoppingCarFrame *shopCar in sectionModel.SKUFrameList) {
+            shopCar.shoppingCarModel.selectState = sender.selected;
         }
     }
     
@@ -370,13 +373,13 @@
                 
                 if (sectionModel.isSelected) {
                     if (!IS_Login) { //未登录时 把数据库这条数据删除
-                        for (XNRShoppingCartModel *carModel in sectionModel.SKUList) {
+                        for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
                             DatabaseManager *manager = [DatabaseManager sharedInstance];
-                            [manager deleteShoppingCarWithModel:carModel];
+                            [manager deleteShoppingCarWithModel:carModel.shoppingCarModel];
                         }
                     } else { //TODO:服务器调用接口 让服务器把这条数据删除
-                        for (XNRShoppingCartModel *carModel in sectionModel.SKUList) {
-                    NSDictionary *params1 = @{@"userId":[DataCenter account].userid,@"SKUId":carModel._id,@"quantity":@"0",@"additions":carModel.additions,@"user-agent":@"IOS-v2.0"};
+                        for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
+                    NSDictionary *params1 = @{@"userId":[DataCenter account].userid,@"SKUId":carModel.shoppingCarModel._id,@"quantity":@"0",@"additions":carModel.shoppingCarModel.additions,@"user-agent":@"IOS-v2.0"};
                             [KSHttpRequest post:KchangeShopCarNum parameters:params1 success:^(id result) {
                                 if ([result[@"code"] integerValue] == 1000) {
                                     [UILabel showMessage:@"删除成功"];
@@ -390,19 +393,18 @@
                     [arr1 addObject:sectionModel];
                     
                 } else {
-                    for (XNRShoppingCartModel *model in sectionModel.SKUList) {
-                        if (model.selectState) {
+                    for (XNRShoppingCarFrame *model in sectionModel.SKUFrameList) {
+                        if (model.shoppingCarModel.selectState) {
                             if (!IS_Login) {//未登录时 把数据库这条数据删除
                                 DatabaseManager *manager = [DatabaseManager sharedInstance];
-                                [manager deleteShoppingCarWithModel:model];
+                                [manager deleteShoppingCarWithModel:model.shoppingCarModel];
                             } else {
                                 //TODO:服务器调用接口 让服务器把这条数据删除
-                                NSDictionary *params2 = @{@"userId":[DataCenter account].userid,@"SKUId":model._id,@"quantity":@"0",@"additions":model.additions,@"user-agent":@"IOS-v2.0"};
+                                NSDictionary *params2 = @{@"userId":[DataCenter account].userid,@"SKUId":model.shoppingCarModel._id,@"quantity":@"0",@"additions":model.shoppingCarModel.additions,@"user-agent":@"IOS-v2.0"};
                                 [KSHttpRequest post:KchangeShopCarNum parameters:params2 success:^(id result) {
                                     if ([result[@"code"] integerValue] == 1000) {
                                         [UILabel showMessage:@"删除成功"];
                                     }
-                                    
                                 } failure:^(NSError *error) {
                                     
                                 }];
@@ -419,11 +421,12 @@
                 [_dataArr removeObject:sectionModel];
             }
             for (XNRShopCarSectionModel *sectionModel in _dataArr) {
-                for (XNRShoppingCartModel *cellModel in arr2) {
-                    [sectionModel.SKUList removeObject:cellModel];
+                for (XNRShoppingCarFrame *cellModel in arr2) {
+                    [sectionModel.SKUFrameList removeObject:cellModel];
+
                 }
+                NSLog(@"sectionModel.SKUFrameList%tu",sectionModel.SKUFrameList.count);
             }
-            
             [self.shoppingCarTableView reloadData];
             
             if (_dataArr.count == 0) {
@@ -454,10 +457,10 @@
     // 提交订单
     for (int i = 0; i<_dataArr.count; i++) {
         XNRShopCarSectionModel *sectionModel = _dataArr[i];
-        for (XNRShoppingCartModel *cellModel in sectionModel.SKUList) {
-            if (cellModel.selectState && [cellModel.online integerValue] == 1) {
+        for (XNRShoppingCarFrame *cellModel in sectionModel.SKUFrameList) {
+            if (cellModel.shoppingCarModel.selectState && [cellModel.shoppingCarModel.online integerValue] == 1) {
                 
-                NSDictionary *params = @{@"_id":cellModel._id,@"count":cellModel.num,@"additions":cellModel.additions};
+                NSDictionary *params = @{@"_id":cellModel.shoppingCarModel._id,@"count":cellModel.shoppingCarModel.num,@"additions":cellModel.shoppingCarModel.additions};
                 [arr addObject:params];
 
             }
@@ -490,12 +493,12 @@
                 
                 for (int i = 0; i<sectionModel.SKUList.count; i++) {
                     XNRShoppingCartModel *model = sectionModel.SKUList[i];
-                    XNRShoppingCarFrame *frame = [[XNRShoppingCarFrame alloc] init];
+                    XNRShoppingCarFrame *frameModel = [[XNRShoppingCarFrame alloc] init];
                     // 传递购物车模型数据
-                    frame.shoppingCarModel = model;
+                    frameModel.shoppingCarModel = model;
                     
-                    model.num = model.count;
-                    [sectionModel.SKUFrameList addObject:frame];
+                    frameModel.shoppingCarModel.num = frameModel.shoppingCarModel.count;
+                    [sectionModel.SKUFrameList addObject:frameModel];
                     
                     NSLog(@"++_)_%@",sectionModel.SKUFrameList);
 
@@ -545,8 +548,8 @@
     // 取出商品的skuid和数量
     NSMutableArray *tempMarr = [[NSMutableArray alloc]init];
     for (int i=0; i<allGoodArr.count; i++) {
-        XNRShoppingCartModel *model = allGoodArr[i];
-        NSDictionary *params = @{@"_id":model._id,@"count":model.num?model.num:@"1",@"additions":model.additions};
+        XNRShoppingCarFrame *model = allGoodArr[i];
+        NSDictionary *params = @{@"_id":model.shoppingCarModel._id,@"count":model.shoppingCarModel.num?model.shoppingCarModel.num:@"1",@"additions":model.shoppingCarModel.additions};
         NSLog(@"898990======%@",params);
         [tempMarr addObject:params];
     }
@@ -583,7 +586,10 @@
 
                 for (int i = 0; i<sectionModel.SKUList.count; i++) {
                     XNRShoppingCartModel *model = sectionModel.SKUList[i];
-                    model.num = model.count;
+                    XNRShoppingCarFrame *frameModel = [[XNRShoppingCarFrame alloc] init];
+                    frameModel.shoppingCarModel = model;
+                    frameModel.shoppingCarModel.num = frameModel.shoppingCarModel.count;
+                    [sectionModel.SKUFrameList addObject:frameModel];
                 }
                 if (_dataArr.count == 0) {
                     [self.shopCarView show];
@@ -606,15 +612,6 @@
     }];
 }
 
--(NSArray *)shoppingCarFrameWithShoppingCarModel:(NSArray *)shoppingCars{
-    NSMutableArray *frames = [NSMutableArray array];
-    for (XNRShoppingCartModel *model in shoppingCars) {
-        XNRShoppingCarFrame *frame = [[XNRShoppingCarFrame alloc] init];
-        frame.shoppingCarModel = model;
-        [frames addObject:frame];
-    }
-    return frames;
-}
 
 #pragma mark - 创建购物车
 - (void)createShoppingCarTableView
@@ -652,9 +649,9 @@
         self.selectedHeadBtn = selectedHeadBtn;
         [headView addSubview:selectedHeadBtn];
         // 已下架的商品selectedHeadBtn隐藏
-        for (int i = 0; i<sectionModel.SKUList.count; i++) {
-            XNRShoppingCartModel *model = sectionModel.SKUList[i];
-            if (sectionModel.SKUList.count == 1 && [model.online integerValue] == 0) {
+        for (int i = 0; i<sectionModel.SKUFrameList.count; i++) {
+            XNRShoppingCarFrame *model = sectionModel.SKUFrameList[i];
+            if (sectionModel.SKUFrameList.count == 1 && [model.shoppingCarModel.online integerValue] == 0) {
                 selectedHeadBtn.hidden = YES;
             }else{
                 selectedHeadBtn.hidden = NO;
@@ -695,8 +692,8 @@
     
     sectionModel.isSelected = !sectionModel.isSelected;
     
-    for (XNRShoppingCartModel *shopCarModel in sectionModel.SKUList) {
-        shopCarModel.selectState = sectionModel.isSelected;
+    for (XNRShoppingCarFrame *shopCarModel in sectionModel.SKUFrameList) {
+        shopCarModel.shoppingCarModel.selectState = sectionModel.isSelected;
     }
     
     [self.shoppingCarTableView reloadData];
@@ -715,20 +712,20 @@
     // 遍历整个数据源，然后判断如果是选中的商品，就计算价格
     for (int i = 0; i<_dataArr.count; i++) {
         XNRShopCarSectionModel *sectionModel = _dataArr[i];
-        for (int j = 0; j<sectionModel.SKUList.count; j++) {
-            XNRShoppingCartModel *model = sectionModel.SKUList[j];
-            if (model.num != nil) {
-                goodsNum = goodsNum + model.num.integerValue;
+        for (int j = 0; j<sectionModel.SKUFrameList.count; j++) {
+            XNRShoppingCarFrame *model = sectionModel.SKUFrameList[j];
+            if (model.shoppingCarModel.num != nil) {
+                goodsNum = goodsNum + model.shoppingCarModel.num.integerValue;
             }
-            if (model.selectState&&[model.online integerValue]==1) {
+            if (model.shoppingCarModel.selectState&&[model.shoppingCarModel.online integerValue]==1) {
                 // 合计xxxx
-                if (model.deposit && [model.deposit floatValue] > 0) {
-                    _totalPrice = _totalPrice + model.num.intValue*[[NSString stringWithFormat:@"%@",model.deposit] floatValue];
+                if (model.shoppingCarModel.deposit && [model.shoppingCarModel.deposit floatValue] > 0) {
+                    _totalPrice = _totalPrice + model.shoppingCarModel.num.intValue*[[NSString stringWithFormat:@"%@",model.shoppingCarModel.deposit] floatValue];
                 }else{
-                    _totalPrice = _totalPrice + model.num.intValue*[[NSString stringWithFormat:@"%@",model.price] floatValue];
+                    _totalPrice = _totalPrice + model.shoppingCarModel.num.intValue*[[NSString stringWithFormat:@"%@",model.shoppingCarModel.price] floatValue];
                 }
                 NSLog(@"totalPriceg === %.2f",_totalPrice);
-                goodsNumSelected = goodsNumSelected + model.num.integerValue;
+                goodsNumSelected = goodsNumSelected + model.shoppingCarModel.num.integerValue;
                 _totalSelectNum = goodsNumSelected;
                 [self.shoppingCarTableView reloadData];
                 
@@ -812,9 +809,9 @@
 {
     if (_dataArr.count>0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
-        XNRShoppingCarFrame *frame = sectionModel.SKUFrameList[indexPath.row];
-        NSLog(@"frame.cellHeight==%.2f",frame.cellHeight);
-        return frame.cellHeight;
+        XNRShoppingCarFrame *frameModel = sectionModel.SKUFrameList[indexPath.row];
+        NSLog(@"frame.cellHeight==%.2f",frameModel.cellHeight);
+        return frameModel.cellHeight;
         
     }else{
         return 0;
@@ -867,25 +864,25 @@
             [self valiteAllCarShopModelIsSelected];
             [self recordSelectedShopGoods];
         }];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.delegate = self;
-        cell.backgroundColor = [UIColor whiteColor];
-        cell.changeBottomBlock = ^{
-            [self changeBottom];
-        };
         cell.pushBlock = ^(){
             if (_dataArr.count > 0) {
                 
                 XNRProductInfo_VC *info_VC = [[XNRProductInfo_VC alloc] init];
                 info_VC.hidesBottomBarWhenPushed = YES;
                 XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
-                XNRShoppingCarFrame *model = sectionModel.SKUFrameList[indexPath.row];
-                info_VC.model = model.shoppingCarModel;
+                XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
+                info_VC.model = model;
+                
+                info_VC.isFrom = YES;
                 [self.navigationController pushViewController:info_VC animated:YES];
                 
             }
-
-        
+        };
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.delegate = self;
+        cell.backgroundColor = [UIColor whiteColor];
+        cell.changeBottomBlock = ^{
+            [self changeBottom];
         };
     }
     

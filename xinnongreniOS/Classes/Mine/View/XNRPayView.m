@@ -13,6 +13,7 @@
 #import "XNRCheckOrder_VC.h"
 #import "XNRMyOrderSectionModel.h"
 #import "XNROrderEmptyView.h"
+#import "XNRMyAllOrderFrame.h"
 
 @interface XNRPayView ()
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
@@ -171,15 +172,17 @@
                 
                 sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
                 
+                for (XNRMyOrderModel *model in sectionModel.skus) {
+                    XNRMyAllOrderFrame *frameOrder = [[XNRMyAllOrderFrame alloc] init];
+                    frameOrder.orderModel = model;
+                    
+                    [sectionModel.orderFrameArray addObject:frameOrder];
+                }
+                
                 [_dataArr addObject:sectionModel];
             }
         }
-        //        if (_dataArr.count == 0) {
-        //            [self.orderEmptyView show];
-        //        }else{
-        //            [self.orderEmptyView removeFromSuperview];
-        //        }
-        //刷新列表
+            //刷新列表
         
         [self.tableView reloadData];
         
@@ -297,25 +300,6 @@
             
             [totalPriceLabel setAttributedText:AttributedStringPrice];
             
-            // 待付金额
-            UILabel *payPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth-PX_TO_PT(192), PX_TO_PT(60))];
-            payPriceLabel.textColor = R_G_B_16(0x323232);
-            payPriceLabel.font = [UIFont systemFontOfSize:14];
-            payPriceLabel.textAlignment = NSTextAlignmentRight;
-            payPriceLabel.text = [NSString stringWithFormat:@"待付金额:￥%.2f",sectionModel.totalPrice.floatValue];
-            [bottomView addSubview:payPriceLabel];
-            
-            NSMutableAttributedString *AttributedStringpayPrice = [[NSMutableAttributedString alloc]initWithString:payPriceLabel.text];
-            NSDictionary *payPriceStr=@{
-                                        
-                                        NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-                                        NSFontAttributeName:[UIFont systemFontOfSize:16]
-                                        };
-            
-            [AttributedStringpayPrice addAttributes:payPriceStr range:NSMakeRange(5,AttributedStringpayPrice.length-5)];
-            
-            [payPriceLabel setAttributedText:AttributedStringpayPrice];
-
             
             UIButton *sectionFour = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(92), PX_TO_PT(140), PX_TO_PT(60))];
             sectionFour.backgroundColor = R_G_B_16(0xfe9b00);
@@ -387,7 +371,7 @@
 {
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[section];
-        return sectionModel.products.count;
+        return sectionModel.orderFrameArray.count;
     }else{
         return 0;
     }
@@ -399,13 +383,8 @@
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
         if (sectionModel.products.count>0) {
-            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
-            if (model.deposit && [model.deposit floatValue]>0) {
-                return PX_TO_PT(510);
-            }else{
-                return PX_TO_PT(350);
-            }
-            
+            XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
+            return frameModel.cellHeight;
         }else{
             return 0;
         }
@@ -436,16 +415,15 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.backgroundColor=R_G_B_16(0xf4f4f4);
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-        if (sectionModel.products.count>0) {
-            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
+        if (sectionModel.orderFrameArray.count>0) {
             XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
             cell.attributesArray = modelArray.attributes;
             cell.addtionsArray = modelArray.additions;
-            [cell setCellDataWithShoppingCartModel:model];
+            XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
+           cell.orderFrame = frameModel;
             
         }
     }
