@@ -170,6 +170,9 @@
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
                 
                 sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
+                if ([sectionModel.orderId isEqualToString:@"8d0bdc4190"]) {
+                    NSLog(@"%@",sectionModel.skus);
+                }
                 for (XNRMyOrderModel *model in sectionModel.skus) {
                     XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
                     orderFrame.orderModel = model;
@@ -473,6 +476,8 @@
             XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
             cell.attributesArray = modelArray.attributes;
             cell.addtionsArray = modelArray.additions;
+            [cell setCellDataWithShoppingCartModel:modelArray];
+            return cell;
         }
         [cell setCellDataWithShoppingCartModel:model];
     }
