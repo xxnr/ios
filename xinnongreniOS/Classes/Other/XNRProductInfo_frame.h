@@ -25,6 +25,9 @@
 
 /** 市场价 */
 @property (nonatomic, assign, readonly) CGRect marketPriceLabelF;
+/** 市场价的划线 */
+@property (nonatomic, assign, readonly) CGRect marketPriceLineF;
+
 
 /** 商品描述 */
 @property (nonatomic, assign, readonly) CGRect introduceLabelF;

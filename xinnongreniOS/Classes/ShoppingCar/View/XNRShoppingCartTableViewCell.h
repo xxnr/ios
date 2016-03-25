@@ -30,8 +30,6 @@ typedef void(^XNRShoppingCartTableViewCellBlock)();
 @property(assign,nonatomic) BOOL selectState;//选中状态
 @property (nonatomic, strong) NSIndexPath *indexPath;
 
-- (void)setCellDataWithShoppingCartModel:(XNRShoppingCartModel *)model;
-
 @property (nonatomic, strong) XNRShoppingCarFrame *shoppingCarFrame;
 
 @property (nonatomic, copy) XNRShoppingCartTableViewCellBlock pushBlock;

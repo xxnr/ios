@@ -49,6 +49,13 @@
     if (self.numTextField.text.length>4) {
         self.numTextField.text = [self.numTextField.text substringToIndex:4];
     }
+    if ([self.numTextField.text isEqualToString:@"9999"]) {
+        self.rightBtn.enabled = NO;
+    }else{
+        self.rightBtn.enabled = YES;
+    }
+    
+
     if (self.com) {
         self.com (self.numTextField.text);
     }
@@ -163,6 +170,13 @@
     self.com (self.numTextField.text);
 
     }
+    
+    if ([self.numTextField.text isEqualToString:@"9999"]) {
+        self.rightBtn.enabled = NO;
+    }else{
+        self.rightBtn.enabled = YES;
+    }
+
 
 }
 

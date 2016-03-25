@@ -27,11 +27,11 @@
     CGFloat goodNameLabelY = PX_TO_PT(42);
     CGFloat goodNameLabelW = ScreenWidth - goodNameLabelX-PX_TO_PT(30);
     CGFloat goodNameLabelH = PX_TO_PT(80);
-    _productNumLabelF = CGRectMake(goodNameLabelX, goodNameLabelY, goodNameLabelW, goodNameLabelH);
+    _productNameLabelF = CGRectMake(goodNameLabelX, goodNameLabelY, goodNameLabelW, goodNameLabelH);
     
     // 商品属性
     CGFloat attributesLabelX = CGRectGetMaxX(_picImageViewF)+PX_TO_PT(24);
-    CGFloat attributesLabelY = CGRectGetMaxY(_productNumLabelF)+PX_TO_PT(20);
+    CGFloat attributesLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(20);
     CGFloat attributesLabelW = ScreenWidth - attributesLabelX - PX_TO_PT(30);
     CGSize  attributesLabelMaxSize = CGSizeMake(attributesLabelW, MAXFLOAT);
     NSMutableString *attributesStr = [[NSMutableString alloc] initWithString:@""];
@@ -53,7 +53,7 @@
     CGFloat priceLabelY =  CGRectGetMaxY(_picImageViewF) + PX_TO_PT(30);
     CGFloat priceLabelW = ScreenWidth/2-PX_TO_PT(30);
     CGFloat priceLabelH = PX_TO_PT(32);
-    _productNumLabelF = CGRectMake(priceLabelX, priceLabelY, priceLabelW, priceLabelH);
+    _priceLabelF = CGRectMake(priceLabelX, priceLabelY, priceLabelW, priceLabelH);
     
     // 附加选项
     if (self.orderModel.additions.count == 0){
@@ -68,7 +68,7 @@
             price = [NSString stringWithFormat:@"%@",[subDic objectForKey:@"price"]];
             totalPrice = totalPrice + [price floatValue];
         }
-        CGFloat addtionsLabelX = PX_TO_PT(86);
+        CGFloat addtionsLabelX = PX_TO_PT(30);
         CGFloat addtionsLabelY = CGRectGetMaxY(_productNumLabelF)+PX_TO_PT(32);
         CGFloat addtionsLabelW = PX_TO_PT(424);
         CGSize  addtionsLabelMaxSize = CGSizeMake(addtionsLabelW, MAXFLOAT);
@@ -85,7 +85,21 @@
 
     }
     
-    if (self.orderModel.deposit && [self.orderModel.deposit floatValue]>0) {
+    // 下划线
+    CGFloat topLineX = 0;
+    CGFloat topLineH = PX_TO_PT(1);
+    CGFloat topLineW = ScreenWidth;
+    CGFloat topLineY;
+    if (self.orderModel.additions.count>0) {
+        topLineY = CGRectGetMaxY(_addtionLabelF)+PX_TO_PT(36);
+    }else{
+        topLineY =  CGRectGetMaxY(_productNumLabelF)+PX_TO_PT(36);;
+        
+    }
+    _topLineF = CGRectMake(topLineX, topLineY, topLineW, topLineH);
+
+    
+    if (self.orderModel.deposit && [self.orderModel.deposit floatValue]>0.00) {
         // 订金
         CGFloat sectionOneLabelX = PX_TO_PT(30);
         CGFloat sectionOneLabelY = CGRectGetMaxY(_topLineF);
@@ -128,36 +142,44 @@
         CGFloat bottomLineH = PX_TO_PT(1);
         _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         
-        // 合计
-        CGFloat totalPriceLabelX = ScreenWidth/2;
-        CGFloat totalPriceLabelY = CGRectGetMaxY(_bottomLineF);
-        CGFloat totalPriceLabelW = ScreenWidth/2-PX_TO_PT(30);
-        CGFloat totalPriceLabelH = PX_TO_PT(80);
-        _remainPriceLabelF = CGRectMake(totalPriceLabelX, totalPriceLabelY, totalPriceLabelW, totalPriceLabelH);
+//        // 合计
+//        CGFloat totalPriceLabelX = ScreenWidth/2;
+//        CGFloat totalPriceLabelY = CGRectGetMaxY(_bottomLineF);
+//        CGFloat totalPriceLabelW = ScreenWidth/2-PX_TO_PT(30);
+//        CGFloat totalPriceLabelH = PX_TO_PT(80);
+//        _remainPriceLabelF = CGRectMake(totalPriceLabelX, totalPriceLabelY, totalPriceLabelW, totalPriceLabelH);
 
         
         
-    }else{
-        // 合计
-        CGFloat totalPriceLabelX = ScreenWidth/2;
-        CGFloat totalPriceLabelY = CGRectGetMaxY(_topLineF);
-        CGFloat totalPriceLabelW = ScreenWidth/2-PX_TO_PT(30);
-        CGFloat totalPriceLabelH = PX_TO_PT(80);
-        _remainPriceLabelF = CGRectMake(totalPriceLabelX, totalPriceLabelY, totalPriceLabelW, totalPriceLabelH);
+    }
+    
+    else{
+//        // 合计
+//        CGFloat totalPriceLabelX = ScreenWidth/2;
+//        CGFloat totalPriceLabelY = CGRectGetMaxY(_topLineF);
+//        CGFloat totalPriceLabelW = ScreenWidth/2-PX_TO_PT(30);
+//        CGFloat totalPriceLabelH = PX_TO_PT(80);
+//        _remainPriceLabelF = CGRectMake(totalPriceLabelX, totalPriceLabelY, totalPriceLabelW, totalPriceLabelH);
 
     }
     
-    // 支付按钮
-    CGFloat goPayButtonX = ScreenWidth-PX_TO_PT(170);
-    CGFloat goPayButtonY = CGRectGetMaxY(_remainPriceLabelF)+PX_TO_PT(10);
-    CGFloat goPayButtonW = ScreenWidth/2-PX_TO_PT(30);
-    CGFloat goPayButtonH = PX_TO_PT(60);
-    _goPayButtonF = CGRectMake(goPayButtonX, goPayButtonY, goPayButtonW, goPayButtonH);
+//    // 支付按钮
+//    CGFloat goPayButtonX = ScreenWidth-PX_TO_PT(170);
+//    CGFloat goPayButtonY = CGRectGetMaxY(_remainPriceLabelF)+PX_TO_PT(10);
+//    CGFloat goPayButtonW = ScreenWidth/2-PX_TO_PT(30);
+//    CGFloat goPayButtonH = PX_TO_PT(60);
+//    _goPayButtonF = CGRectMake(goPayButtonX, goPayButtonY, goPayButtonW, goPayButtonH);
 
     
     // cell的高度
-    _cellHeight = CGRectGetMaxY(_goPayButtonF);
-        
+    if (self.orderModel.deposit && [self.orderModel.deposit floatValue]>0) {
+        _cellHeight = CGRectGetMaxY(_sectionTwoLabelF);
+
+    }else{
+        _cellHeight = CGRectGetMaxY(_topLineF);
+    }
+
+    
     
 }
 
