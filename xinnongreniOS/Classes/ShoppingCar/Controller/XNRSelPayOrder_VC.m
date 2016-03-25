@@ -209,7 +209,7 @@
     self.totalMoneyLabel1.text = [NSString stringWithFormat:@"%.2f元",totalMoney.floatValue];
     for ( int i = 0; i < orderGoodList.count; i++) {
         XNRCheckOrderModel *orderModer = orderGoodList[i];
-        [self.str1 appendString:[NSString stringWithFormat:@"%@－%@件",orderModer.goodsName,orderModer.goodsCount]];
+        [self.str1 appendString:[NSString stringWithFormat:@"%@－%@件",orderModer.productName,orderModer.count]];
         if ((i+1) < orderGoodList.count) {
             [self.str1 appendString:@","];
         }
@@ -275,7 +275,7 @@
     self.totalMoneyLabel2.text = [NSString stringWithFormat:@"%.2f元",totalMoney.floatValue];
     for ( int i = 0; i < orderGoodList.count; i++) {
         XNRCheckOrderModel *orderModer = orderGoodList[i];
-        [self.str2 appendString:[NSString stringWithFormat:@"%@－%@件",orderModer.goodsName,orderModer.goodsCount]];
+        [self.str2 appendString:[NSString stringWithFormat:@"%@－%@件",orderModer.productName,orderModer.count]];
         if ((i+1) < orderGoodList.count) {
             [self.str2 appendString:@","];
         }

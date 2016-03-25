@@ -13,7 +13,7 @@
 #import "XNRMyaccount_VC.h"        //我的账户
 #import "XNROrderInfo_VC.h"        //订单信息
 #import "XNRProductInfo_VC.h"      //商品信息
-#import "XNRCheckOrder_VC.h"       //查看订单
+#import "XNRCheckOrderVC.h"       //查看订单
 #import "XNRMyOrder_VC.h"          //我的订单
 #import "XNRSystemFunctionViewController.h"
 #import "SJAvatarBrowser.h"

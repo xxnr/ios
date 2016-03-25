@@ -16,4 +16,26 @@
 {
 }
 
+- (NSMutableArray *)goodsList {
+    if (!_goodsList) {
+        _goodsList = [NSMutableArray array];
+    }
+    return _goodsList;
+}
+
+-(NSMutableArray *)SKUList{
+    if (!_SKUList) {
+        _SKUList = [NSMutableArray array];
+    }
+    return _SKUList;
+}
+
+-(NSMutableArray *)subOrders
+{
+    if (!_subOrders) {
+        _subOrders = [NSMutableArray array];
+    }
+    return _subOrders;
+}
+
 @end
