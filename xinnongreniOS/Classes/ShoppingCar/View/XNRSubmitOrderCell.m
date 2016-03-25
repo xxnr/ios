@@ -306,12 +306,9 @@
 
     NSMutableString *displayStr = [[NSMutableString alloc] initWithString:@""];
     for (NSDictionary *subDic in self.model.attributes) {
-<<<<<<< HEAD
-        [displayStr appendString:[NSString stringWithFormat:@"%@:%@; ",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
-=======
         [displayStr appendString:[NSString stringWithFormat:@"%@:%@",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
         [displayStr appendString:@";"];
->>>>>>> master
+
     }
     self.detailLabel.text = displayStr;
     

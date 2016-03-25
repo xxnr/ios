@@ -16,11 +16,8 @@
 #import "UIImageView+WebCache.h"
 #import "XNRShopCarSectionModel.h"
 #import "IQKeyboardManager.h"
-<<<<<<< HEAD
 #import "AppDelegate.h"
-=======
 #import "XNRCollectionViewFlowLayout.h"
->>>>>>> master
 
 #define coll_cell_margin  PX_TO_PT(20)
 #define coll_section_margin PX_TO_PT(40)

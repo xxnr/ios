@@ -463,7 +463,6 @@
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-<<<<<<< HEAD
         if (sectionModel.orderFrameArray.count>0) {
 //            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
             XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
@@ -473,17 +472,7 @@
             cell.orderFrame = orderFrame;
 //            [cell setCellDataWithShoppingCartModel:model];
 
-=======
-        XNRMyOrderModel *model = sectionModel.products[indexPath.row];
-        if (sectionModel.skus.count>0) {
-            XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
-            cell.attributesArray = modelArray.attributes;
-            cell.addtionsArray = modelArray.additions;
-            [cell setCellDataWithShoppingCartModel:modelArray];
-            return cell;
->>>>>>> master
         }
-        [cell setCellDataWithShoppingCartModel:model];
     }
     
     return cell;

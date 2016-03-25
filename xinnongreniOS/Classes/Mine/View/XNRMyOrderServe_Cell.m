@@ -188,10 +188,9 @@
 #pragma mark - 设置现在的数据
 - (void)setupData
 {
-<<<<<<< HEAD
     XNRMyOrderModel *model = self.orderFrame.orderModel;
     _info = model;
-=======
+    
     self.addtionsLabel.hidden = NO;
     self.addtionPriceLabel.hidden = NO;
 
@@ -202,7 +201,6 @@
     }
     
     NSLog(@"attributesArray%@",_attributesArray);
->>>>>>> master
     
     // 图片
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,_info.thumbnail];
