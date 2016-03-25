@@ -11,6 +11,8 @@
 #import "XNRMyOrderModel.h"
 #import "XNRMyOrderSectionModel.h"
 #import "XNROrderEmptyView.h"
+#import "XNRMyAllOrderFrame.h"
+#import "XNRMyOrderServe_Cell.h"
 
 @interface XNRSendView()<XNROrderEmptyViewBtnDelegate>
 @property (nonatomic ,weak)XNROrderEmptyView *orderEmptyView;
@@ -203,6 +205,17 @@
                 sectionModel.value = orderStatus[@"value"];
                 
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
+                
+                sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
+                
+                for (XNRMyOrderModel *model in sectionModel.skus) {
+                    XNRMyAllOrderFrame *frameModel = [[XNRMyAllOrderFrame alloc] init];
+                    frameModel.orderModel = model;
+                    
+                    [sectionModel.orderFrameArray addObject:frameModel];
+                }
+                
+                
                 [_dataArr addObject:sectionModel];
             }
         }
@@ -264,7 +277,6 @@
         
         UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(89))];
         headView.backgroundColor = [UIColor whiteColor];
-        //        self.headView = headView;
         [self addSubview:headView];
         
         
@@ -339,8 +351,7 @@
                     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
                     [bottomView addSubview:lineView];
                 }
-                
-        //        bottomView.backgroundColor = [UIColor redColor];
+        
         return bottomView;
     }else{
         return nil;
@@ -382,7 +393,7 @@
 {
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[section];
-        return sectionModel.products.count;
+        return sectionModel.orderFrameArray.count;
     }else{
         return 0;
     }
@@ -393,15 +404,9 @@
 {
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-        if (sectionModel.products.count>0) {
-            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
-            if (model.deposit && [model.deposit floatValue]>0) {
-                return PX_TO_PT(460);
-            }else{
-                return PX_TO_PT(300);
-                
-            }
-
+        if (sectionModel.orderFrameArray.count>0) {
+            XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
+            return  frameModel.cellHeight;
         }else{
             return 0;
         }
@@ -432,13 +437,15 @@
     }
         
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.backgroundColor=R_G_B_16(0xf4f4f4);
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-        if (sectionModel.products.count) {
-            XNRMyOrderModel *model = sectionModel.products [indexPath.row];
-            [cell setCellDataWithShoppingCartModel:model];
+        if (sectionModel.products.count>0) {
+            XNRMyOrderModel *model = sectionModel.skus[indexPath.row];
+            cell.attributesArray = model.attributes;
+            cell.addtionsArray = model.additions;
+            XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray [indexPath.row];
+            cell.orderFrame = frameModel;
 
         }
     }

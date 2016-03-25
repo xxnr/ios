@@ -37,12 +37,12 @@ typedef void(^XNRProductInfo_cellLoginBlock)();
 
 @property (nonatomic, strong) XNRProductInfo_frame *infoFrame;
 
--(void)upDataWithModel:(XNRProductInfo_model *)model;
-
 @property (nonatomic ,assign) id<XNRProductInfo_cellDelegate>delegate;
 
 @property (nonatomic ,strong) NSMutableArray *attributes;
 @property (nonatomic ,strong) NSMutableArray *additions;
+@property (nonatomic ,copy) NSString *marketPrice;
+@property (nonatomic ,copy) NSString *Price;
 
 
 @end

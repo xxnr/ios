@@ -28,7 +28,7 @@
     CGFloat productNameLabelY = CGRectGetMaxY(_imageViewF)+PX_TO_PT(20);
     CGFloat productNameLabelW = ScreenWidth-PX_TO_PT(60);
     CGSize productNameLabelMaxSize = CGSizeMake(productNameLabelW, MAXFLOAT);
-    CGSize productNameLabelSize = [self.infoModel.name sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(36)] maxSize:productNameLabelMaxSize];
+    CGSize productNameLabelSize = [self.infoModel.name sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:productNameLabelMaxSize];
     _productNameLabelF = (CGRect){{productNameLabelX, productNameLabelY}, productNameLabelSize};
     
     
@@ -40,7 +40,7 @@
     _priceLabelF = CGRectMake(priceLabelX, priceLabelY, priceLabelW, priceLabelH);
     
     // 订金
-    CGFloat depositLabelX = ScreenWidth/2;
+    CGFloat depositLabelX = CGRectGetMaxX(_priceLabelF)+PX_TO_PT(20);
     CGFloat depositLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
     CGFloat depositLabelW = ScreenWidth/2;
     CGFloat depositLabelH = PX_TO_PT(38);
@@ -59,9 +59,15 @@
     }else{
         CGFloat marketPriceLabelX = PX_TO_PT(30);
         CGFloat marketPriceLabelY = CGRectGetMaxY(_depositLabelF)+PX_TO_PT(14);
-        CGFloat marketPriceLabelW = ScreenWidth/2;
+        CGFloat marketPriceLabelW = ScreenWidth;
         CGFloat marketPriceLabelH = PX_TO_PT(38);
         _marketPriceLabelF = CGRectMake(marketPriceLabelX, marketPriceLabelY, marketPriceLabelW, marketPriceLabelH);
+        
+//        CGFloat marketPriceLineX = PX_TO_PT(30);
+//        CGFloat marketPriceLineY = CGRectGetMaxY(_depositLabelF)+PX_TO_PT(14);
+//        CGFloat marketPriceLineW = ScreenWidth/2;
+//        CGFloat marketPriceLineH = PX_TO_PT(38);
+//        _marketPriceLabelF = CGRectMake(marketPriceLineX, marketPriceLineY, marketPriceLineW, marketPriceLineH);
         
         CGFloat introduceLabelX = 0;
         CGFloat introduceLabelY = CGRectGetMaxY(_marketPriceLabelF)+PX_TO_PT(24);
