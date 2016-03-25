@@ -14,16 +14,23 @@
 #import "XNRPropertyView.h"
 #import "MWPhotoBrowser.h"
 #import "AppDelegate.h"
+#import "XNRProductInfo_frame.h"
 
 #define KbtnTag 1000
 #define KlabelTag 2000
 @interface XNRProductInfo_cell()<UIScrollViewDelegate,MWPhotoBrowserDelegate>
 @property (nonatomic, strong) NSMutableArray *picBrowserList;
+
 @property (nonatomic, weak) UIImageView *headView;
+
 @property (nonatomic, weak) UIView *midView;
+
 @property (nonatomic, weak) UIButton *button;
+
 @property (nonatomic, weak) UIButton *tempBtn;
+
 @property (nonatomic, weak) UILabel *tempLabel;
+
 @property (nonatomic, weak) UIView *selectLine;
 
 @property (nonatomic, weak) UILabel *goodNameLabel;
@@ -62,8 +69,6 @@
 
 @property (nonatomic, weak) UIView *bgView;
 
-
-
 @end
 
 @implementation XNRProductInfo_cell
@@ -83,8 +88,8 @@
 }
 
 -(XNRPropertyView *)propertyView{
+    XNRPropertyView *propertyView = [XNRPropertyView sharedInstanceWithModel:_shopcarModel];
     if (!_propertyView) {
-        XNRPropertyView *propertyView = [XNRPropertyView sharedInstanceWithModel:_shopcarModel];
         __weak __typeof(self)weakSelf = self;
         // 传回来的属性
         propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice){
@@ -140,7 +145,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
-//        self.backgroundColor = R_G_B_16(0xfafafa);
         self.userInteractionEnabled = YES;
         
         [self createUI];
@@ -157,19 +161,10 @@
     }
     return cell;
 }
-
-
--(void)createUI
-{
-    [self createHeadView];
-//    [self createMidView];
-//    [self createBottomView];
-    
-}
-
+#pragma mark - 大图的点击
 -(void)photoTap:(UITapGestureRecognizer *)tap{
     
-     // 创建浏览器对象
+    // 创建浏览器对象
     [self.picBrowserList removeAllObjects];
     NSInteger count = _model.pictures.count;
     for (int i = 0; i<count; i++) {
@@ -196,21 +191,27 @@
 }
 
 
+
+-(void)createUI
+{
+    [self createHeadView];
+    [self createMidView];
+    [self createBottomView];
+    
+}
+
 -(void)createHeadView
 {
-    
     UIScrollView *scrollView = [[UIScrollView alloc] init];
-    scrollView.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth);
     scrollView.tag = 1000;
     scrollView.delegate = self;
     self.scrollView = scrollView;
     [self addSubview:scrollView];
-    
 }
 -(void)setupPageController
 {
     if (_model.pictures.count>1) {
-        UILabel *noLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(112), ScreenWidth-80, PX_TO_PT(80), PX_TO_PT(80))];
+        UILabel *noLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(112), PX_TO_PT(700)-80, PX_TO_PT(80), PX_TO_PT(80))];
         noLabel.text = [NSString stringWithFormat:@"1/%tu",_model.pictures.count];
         noLabel.textAlignment = NSTextAlignmentCenter;
         noLabel.layer.cornerRadius = PX_TO_PT(40);
@@ -221,15 +222,15 @@
         [self addSubview:noLabel];
     }
     // 1.添加
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenWidth-30, ScreenWidth, 30)];
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(700)-PX_TO_PT(60), ScreenWidth, PX_TO_PT(60))];
     bgView.backgroundColor = [UIColor lightGrayColor];
     [self addSubview:bgView];
     
         UIPageControl *pageControl = [[UIPageControl alloc] init];
         pageControl.numberOfPages = _model.pictures.count;
         pageControl.centerX = self.width/2;
-        pageControl.centerY = ScreenWidth - 15;
-        [self addSubview:pageControl];
+        pageControl.centerY = PX_TO_PT(30);
+        [bgView addSubview:pageControl];
     
         // 2.设置圆点的颜色
         pageControl.currentPageIndicatorTintColor = R_G_B_16(0x3dd5b2); // 当前页的小圆点颜色
@@ -240,78 +241,59 @@
 
 }
 
--(void)createMidView:(XNRProductInfo_model *)model;
+-(void)createMidView
 {
-    UIView *headLineView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenWidth, ScreenWidth, PX_TO_PT(1))];
-    headLineView.backgroundColor  = R_G_B_16(0xc7c7c7);
-    [self addSubview:headLineView];
-    
-    UIView *bgTopView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenWidth, ScreenWidth, PX_TO_PT(145))];
-    bgTopView.backgroundColor = R_G_B_16(0xfafafa);
-    self.bgTopView = bgTopView;
-    [self.contentView addSubview:bgTopView];
-
-    UILabel *goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), ScreenWidth, ScreenWidth-PX_TO_PT(64), PX_TO_PT(80))];
+    UILabel *goodNameLabel = [[UILabel alloc] init];
     goodNameLabel.textColor = R_G_B_16(0x323232);
     goodNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     goodNameLabel.numberOfLines = 0;
     self.goodNameLabel = goodNameLabel;
-    [self addSubview:goodNameLabel];
+    [self.contentView addSubview:goodNameLabel];
     
-    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(goodNameLabel.frame), ScreenWidth, PX_TO_PT(30))];
+    UILabel *priceLabel = [[UILabel alloc] init];
     priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     priceLabel.textColor = R_G_B_16(0x646464);
     self.priceLabel = priceLabel;
-    [self addSubview:priceLabel];
+    [self.contentView addSubview:priceLabel];
     
-    UILabel *presaleLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(goodNameLabel.frame), ScreenWidth, PX_TO_PT(30))];
+    UILabel *presaleLabel = [[UILabel alloc] init];
     presaleLabel.textColor = R_G_B_16(0x989898);
     presaleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.presaleLabel = presaleLabel;
-    [self addSubview:presaleLabel];
+    [self.contentView addSubview:presaleLabel];
 
-    UILabel *depositLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(self.goodNameLabel.frame)-PX_TO_PT(10), ScreenWidth*0.5, PX_TO_PT(50))];
+    UILabel *depositLabel = [[UILabel alloc] init];
     depositLabel.textColor = R_G_B_16(0x323232);
     priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.depositLabel = depositLabel;
-    [self addSubview:depositLabel];
+    [self.contentView addSubview:depositLabel];
     
-    UILabel *marketPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(priceLabel.frame)+PX_TO_PT(10), ScreenWidth, PX_TO_PT(32))];
+    UILabel *marketPriceLabel = [[UILabel alloc] init];
     marketPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     marketPriceLabel.textColor = R_G_B_16(0x909090);
     self.marketPriceLabel = marketPriceLabel;
-    [self addSubview:marketPriceLabel];
+    [self.contentView addSubview:marketPriceLabel];
     
-    UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(bgTopView.frame), ScreenWidth, PX_TO_PT(80))];
+    UILabel *descriptionLabel = [[UILabel alloc] init];
     descriptionLabel.backgroundColor = R_G_B_16(0xf2f2f2);
     descriptionLabel.textColor = R_G_B_16(0x00b38a);
     descriptionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     descriptionLabel.textAlignment = NSTextAlignmentCenter;
     self.descriptionLabel = descriptionLabel;
-    [self addSubview:descriptionLabel];
-    
-    
-    UIView *bgView;
-    if ([_model.Desc isEqualToString:@""]||_model.Desc == nil) {
-        bgView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.bgTopView.frame), ScreenWidth, PX_TO_PT(110))];
-        bgView.backgroundColor = [UIColor whiteColor];
-        self.bgView = bgView;
-        [self addSubview:bgView];
-    }else{
-        bgView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.descriptionLabel.frame), ScreenWidth, PX_TO_PT(110))];
-        bgView.backgroundColor = [UIColor whiteColor];
-        self.bgView = bgView;
-        [self addSubview:bgView];
-    }
+    [self.contentView addSubview:descriptionLabel];
 
-    UIButton *propertyBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(90))];
+    UIView *bgView = [[UIView alloc] init];
+    bgView.backgroundColor = [UIColor whiteColor];
+    self.bgView = bgView;
+    [self.contentView addSubview:bgView];
+
+    UIButton *propertyBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80))];
     propertyBtn.backgroundColor = R_G_B_16(0xf2f2f2);
     [propertyBtn addTarget: self action:@selector(propertyBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.bgView addSubview:propertyBtn];
+    [bgView addSubview:propertyBtn];
     
     
-    UILabel *propertyLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth-PX_TO_PT(56)-PX_TO_PT(32), PX_TO_PT(90))];
-//    propertyLabel.text = @"请选择商品属性";
+    UILabel *propertyLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), 0, ScreenWidth-PX_TO_PT(56)-PX_TO_PT(32), PX_TO_PT(80))];
     NSString *  attributeStr = [_attributes lastObject];
     NSString *addtionStr = [_additions lastObject];
     
@@ -329,7 +311,6 @@
     propertyLabel.numberOfLines = 0;
     propertyLabel.textColor = R_G_B_16(0x323232);
     propertyLabel.font = [UIFont systemFontOfSize:14];
-//    propertyLabel.backgroundColor = [UIColor redColor];
     self.propertyLabel = propertyLabel;
     [propertyBtn addSubview:propertyLabel];
     
@@ -338,22 +319,14 @@
     [iconImageView setImage:[UIImage imageNamed:@"icon_arrow"]];
     [propertyBtn addSubview:iconImageView];
     
-    
-//    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.descriptionLabel.frame) +PX_TO_PT(20), ScreenWidth, PX_TO_PT(110))];
-//    priceLabel.textColor = R_G_B_16(0x646464);
-//    priceLabel.font = XNRFont(16);
-//    self.priceLabel = priceLabel;
-//    [self addSubview:priceLabel];
-    
-//
-    
-    UILabel *scrollLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.bgView.frame), ScreenWidth, PX_TO_PT(120))];
+
+    UILabel *scrollLabel = [[UILabel alloc] init];
     scrollLabel.textColor = R_G_B_16(0x323232);
     scrollLabel.font = [UIFont systemFontOfSize:14];
     scrollLabel.text = @"继续拖动，查看商品详情";
     scrollLabel.textAlignment = NSTextAlignmentCenter;
     self.scrollLabel = scrollLabel;
-    [self addSubview:scrollLabel];
+    [self.contentView addSubview:scrollLabel];
     
     UIView *leftLine = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(60), PX_TO_PT(160), PX_TO_PT(2))];
     leftLine.backgroundColor = R_G_B_16(0xc7c7c7);
@@ -363,24 +336,24 @@
     rightLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [scrollLabel addSubview:rightLine];
     
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.scrollLabel.frame) + PX_TO_PT(80), ScreenWidth, ScreenHeight-64-PX_TO_PT(160))];
+    UIWebView *webView = [[UIWebView alloc] init];
     self.webView = webView;
     webView.scrollView.delegate = self;
-    [self addSubview:webView];
+    [self.contentView addSubview:webView];
     
 }
 #pragma mark - 商品属性按钮点击
 -(void)propertyBtnClick
 {
-    [self.propertyView show:0 isRoot:NO];
+    [self.propertyView show:XNRFirstType isRoot:NO];
 }
 
 -(void)createBottomView
 {
-    UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.scrollLabel.frame), ScreenWidth, PX_TO_PT(80))];
+    UIView *midView = [[UIView alloc] init];
     midView.backgroundColor = R_G_B_16(0xf2f2f2);
     self.midView = midView;
-    [self addSubview:midView];
+    [self.contentView addSubview:midView];
     
     
     NSArray *array = @[@"商品描述",@"详细参数",@"服务说明"];
@@ -481,27 +454,87 @@
 
     }
 }
-
--(void)upDataWithModel:(XNRProductInfo_model *)model
+// 设置frame和数据
+-(void)setInfoFrame:(XNRProductInfo_frame *)infoFrame
 {
+    _infoFrame = infoFrame;
+    
+    XNRProductInfo_model *model = infoFrame.infoModel;
     _model = model;
-    [self createMidView:_model];
-    [self createBottomView];
+   
+    
+   // 设置frame
+    [self setupFrame];
+    // 设置数据
+    [self upDataWithModel];
+
+}
+
+-(void)setupFrame
+{
+    self.scrollView.frame = self.infoFrame.imageViewF;
+    self.goodNameLabel.frame = self.infoFrame.productNameLabelF;
+    self.priceLabel.frame = self.infoFrame.priceLabelF;
+    self.marketPriceLabel.frame = self.infoFrame.marketPriceLabelF;
+    self.depositLabel.frame = self.infoFrame.depositLabelF;
+    self.descriptionLabel.frame = self.infoFrame.introduceLabelF;
+    self.bgView.frame = self.infoFrame.attributeLabelF;
+    self.scrollLabel.frame = self.infoFrame.drawViewF;
+    self.midView.frame = self.infoFrame.describtionViewF;
+    self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.midView.frame), ScreenWidth, ScreenHeight-64-PX_TO_PT(160));
+    
+    UIButton *propertyBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80))];
+    propertyBtn.backgroundColor = R_G_B_16(0xf2f2f2);
+    [propertyBtn addTarget: self action:@selector(propertyBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.bgView addSubview:propertyBtn];
+    
+    
+    UILabel *propertyLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), 0, ScreenWidth-PX_TO_PT(56)-PX_TO_PT(32), PX_TO_PT(80))];
+    NSString *  attributeStr = [_attributes lastObject];
+    NSString *addtionStr = [_additions lastObject];
+    
+    if (attributeStr == nil) {
+        propertyLabel.text = @"请选择商品属性";
+    }
+    if (addtionStr == nil&&attributeStr != nil) {
+        propertyLabel.text = [NSString stringWithFormat:@"%@",attributeStr];
+    }
+    if (addtionStr!=nil&&attributeStr!=nil) {
+        propertyLabel.text = [NSString stringWithFormat:@"%@ %@",attributeStr,addtionStr];
+        
+    }
+    propertyLabel.textAlignment = NSTextAlignmentLeft;
+    propertyLabel.numberOfLines = 0;
+    propertyLabel.textColor = R_G_B_16(0x323232);
+    propertyLabel.font = [UIFont systemFontOfSize:14];
+    self.propertyLabel = propertyLabel;
+    [propertyBtn addSubview:propertyLabel];
+    
+    
+    UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(56), PX_TO_PT(24), PX_TO_PT(24), PX_TO_PT(42))];
+    [iconImageView setImage:[UIImage imageNamed:@"icon_arrow"]];
+    [propertyBtn addSubview:iconImageView];
+
+
+
+}
+
+-(void)upDataWithModel
+{
         // 添加图片
         CGFloat imageW = self.scrollView.width;
         CGFloat imageH = self.scrollView.height;
-        for (int i = 0; i<model.pictures.count; i++) {
+        for (int i = 0; i<self.model.pictures.count; i++) {
             UIImageView *headView = [[UIImageView alloc] init];
-            // 设置frame
-//            headView.y = 0;
-//            headView.width = imageW;
-//            headView.height = imageH;
-//            headView.x =i * imageW;
-            headView.frame = CGRectMake(i*imageW, 0, imageW, imageH);
+             // 设置frame
+            headView.y = 0;
+            headView.width = imageW;
+            headView.height = imageH;
+            headView.x =i * imageW;
             headView.userInteractionEnabled = YES;
             UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoTap:)];
             [headView addGestureRecognizer:gestureRecognizer];    //商品图片
-            XNRProductPhotoModel *photoModel = model.pictures[i];
+            XNRProductPhotoModel *photoModel = self.model.pictures[i];
             
             NSString *imageUrl=[HOST stringByAppendingString:photoModel.imgUrl];
             [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
@@ -509,24 +542,22 @@
             [self.scrollView addSubview:headView];
         }
         // 3.设置其他属性
-        self.scrollView.contentSize = CGSizeMake(model.pictures.count * imageW, 0);
+        self.scrollView.contentSize = CGSizeMake(self.model.pictures.count * imageW, 0);
         self.scrollView.pagingEnabled = YES;
         self.scrollView.showsHorizontalScrollIndicator = NO;
         self.scrollView.bounces = NO;
         [self setupPageController];
     
-    
-
-    self.goodNameLabel.text = [NSString stringWithFormat:@"%@",model.name];
+    self.goodNameLabel.text = [NSString stringWithFormat:@"%@",self.model.name];
     // 商品描述
-    self.descriptionLabel.text = [NSString stringWithFormat:@"%@",model.Desc];
+    self.descriptionLabel.text = [NSString stringWithFormat:@"%@",self.model.Desc];
     
     
-    if ([model.min floatValue]== [model.max floatValue]) {
-        self.priceLabel.text = [NSString stringWithFormat:@"￥%@",model.min];
+    if ([self.model.min floatValue]== [self.model.max floatValue]) {
+        self.priceLabel.text = [NSString stringWithFormat:@"￥%@",self.model.min];
 
     }else{
-        self.priceLabel.text = [NSString stringWithFormat:@"￥%@ - %@",model.min,model.max];
+        self.priceLabel.text = [NSString stringWithFormat:@"￥%@ - %@",self.model.min,self.model.max];
     }
     
     
@@ -541,7 +572,7 @@
     [_priceLabel setAttributedText:AttributedStringPrice];
     
     
-    self.depositLabel.text = [NSString stringWithFormat:@"订金:￥%.2f",model.deposit];
+    self.depositLabel.text = [NSString stringWithFormat:@"订金:￥%.2f",self.model.deposit];
     
     if ([self.depositLabel.text rangeOfString:@".00"].length == 3) {
         self.depositLabel.text = [self.depositLabel.text substringToIndex:self.depositLabel.text.length-3];
@@ -559,16 +590,16 @@
     [_depositLabel setAttributedText:AttributedStringDeposit];
     
     CGSize marketPriceSize;
-    if ([model.marketMin floatValue]==[model.marketMax floatValue]) {
-        if ([model.marketMin floatValue] == 0.00 && [model.marketMax floatValue] == 0.00) {
+    if ([self.model.marketMin floatValue]==[self.model.marketMax floatValue]) {
+        if ([self.model.marketMin floatValue] == 0.00 && [self.model.marketMax floatValue] == 0.00) {
             self.marketPriceLabel.hidden = YES;
         }else{
-            self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价￥%@",model.marketMin];
+            self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价￥%@",self.model.marketMin];
         }
         marketPriceSize = [self.marketPriceLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
         
     }else{
-        self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价￥%@ - %@",model.marketMin,model.marketMax];
+        self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价￥%@ - %@",self.model.marketMin,self.model.marketMax];
          marketPriceSize = [self.marketPriceLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
     }
     
@@ -580,13 +611,13 @@
 
     
     
-    if (model.deposit == 0.00) {
+    if (self.model.deposit == 0.00) {
         self.depositLabel.hidden = YES;
     }else{
         self.depositLabel.hidden  = NO;
     }
     
-    if ([model.presale integerValue] == 1) {
+    if ([self.model.presale integerValue] == 1) {
         self.priceLabel.hidden = YES;
         self.depositLabel.hidden = YES;
         self.marketPriceLabel.hidden = YES;

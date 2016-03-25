@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "XNRProductInfo_model.h"
 #import "XNRShoppingCartModel.h"
-
+@class XNRProductInfo_frame;
 typedef void(^XNRProductInfo_cellBlock)(NSMutableArray *_dataArray,CGFloat totalPrice,NSString *totalNumber);
 typedef void(^XNRProductInfo_cellLoginBlock)();
 
@@ -34,6 +34,8 @@ typedef void(^XNRProductInfo_cellLoginBlock)();
 @property (nonatomic ,strong) XNRShoppingCartModel *shopcarModel;
 
 + (instancetype)cellWithTableView:(UITableView *)tableView;
+
+@property (nonatomic, strong) XNRProductInfo_frame *infoFrame;
 
 -(void)upDataWithModel:(XNRProductInfo_model *)model;
 

@@ -29,6 +29,14 @@
     return _skus;
 }
 
+- (NSMutableArray *)orderFrameArray {
+    if (!_orderFrameArray) {
+        _orderFrameArray = [NSMutableArray array];
+    }
+    return _orderFrameArray;
+}
+
+
 
 
 @end

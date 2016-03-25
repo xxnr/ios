@@ -19,6 +19,7 @@
 #import "XNRFerViewController.h"
 #import "XNRProductInfo_VC.h"
 #import "MJExtension.h"
+#import "XNRShoppingCarFrame.h"
 
 #import "XNRSKUAttributesModel.h"
 
@@ -57,6 +58,7 @@
 @end
 
 @implementation XNRShoppingCarController
+
 
 #pragma mark - 购物车为空
 - (XNRShopcarView *)shopCarView {
@@ -480,6 +482,7 @@
             _shoppingCarID = datasDic[@"shopCartId"];
             NSArray *rowsArr = datasDic[@"rows"];
             for (NSDictionary *subDic in rowsArr) {
+                
                 XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
                 sectionModel.brandName = subDic[@"brandName"];
                 sectionModel.SKUList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"SKUList"]];
@@ -487,10 +490,18 @@
                 
                 for (int i = 0; i<sectionModel.SKUList.count; i++) {
                     XNRShoppingCartModel *model = sectionModel.SKUList[i];
+                    XNRShoppingCarFrame *frame = [[XNRShoppingCarFrame alloc] init];
+                    // 传递购物车模型数据
+                    frame.shoppingCarModel = model;
+                    
                     model.num = model.count;
-                    NSLog(@"++_)_%@",model.attributes);
+                    [sectionModel.SKUFrameList addObject:frame];
+                    
+                    NSLog(@"++_)_%@",sectionModel.SKUFrameList);
+
                     
                 }
+                
                 NSLog(@"%@",sectionModel.SKUList);
             }
             
@@ -573,9 +584,7 @@
                 for (int i = 0; i<sectionModel.SKUList.count; i++) {
                     XNRShoppingCartModel *model = sectionModel.SKUList[i];
                     model.num = model.count;
-
                 }
-                
                 if (_dataArr.count == 0) {
                     [self.shopCarView show];
                     self.editeBtn.hidden = YES;
@@ -596,6 +605,17 @@
         
     }];
 }
+
+-(NSArray *)shoppingCarFrameWithShoppingCarModel:(NSArray *)shoppingCars{
+    NSMutableArray *frames = [NSMutableArray array];
+    for (XNRShoppingCartModel *model in shoppingCars) {
+        XNRShoppingCarFrame *frame = [[XNRShoppingCarFrame alloc] init];
+        frame.shoppingCarModel = model;
+        [frames addObject:frame];
+    }
+    return frames;
+}
+
 #pragma mark - 创建购物车
 - (void)createShoppingCarTableView
 {
@@ -752,6 +772,7 @@
 
 }
 
+
 #pragma mark  - TableViewDelegate
 
 //段头高度
@@ -780,7 +801,7 @@
 {
     if (_dataArr.count > 0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[section];
-        return sectionModel.SKUList.count;
+        return sectionModel.SKUFrameList.count;
     } else {
         return 0;
   }
@@ -791,41 +812,29 @@
 {
     if (_dataArr.count>0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
-        XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
+        XNRShoppingCarFrame *frame = sectionModel.SKUFrameList[indexPath.row];
+        NSLog(@"frame.cellHeight==%.2f",frame.cellHeight);
+        return frame.cellHeight;
         
-        if ([model.deposit floatValue] == 0.00) {
-            if (model.additions.count == 0) {
-                return PX_TO_PT(300);
-            }else{
-                return PX_TO_PT(350);
-            }
-//            return PX_TO_PT(350);
-        }else{
-            if (model.additions.count == 0) {
-                return PX_TO_PT(460);
-            }else{
-                return PX_TO_PT(510);
-            }
-        }
     }else{
         return 0;
     }
 }
 
 //cell点击方法
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (_dataArr.count > 0) {
-        
-        XNRProductInfo_VC *info_VC = [[XNRProductInfo_VC alloc] init];
-        info_VC.hidesBottomBarWhenPushed = YES;
-        XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
-        XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
-        info_VC.model = model;
-        [self.navigationController pushViewController:info_VC animated:YES];
-
-    }
-}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if (_dataArr.count > 0) {
+//        
+//        XNRProductInfo_VC *info_VC = [[XNRProductInfo_VC alloc] init];
+//        info_VC.hidesBottomBarWhenPushed = YES;
+//        XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
+//        XNRShoppingCarFrame *model = sectionModel.SKUFrameList[indexPath.row];
+//        info_VC.model = model.shoppingCarModel;
+//        [self.navigationController pushViewController:info_VC animated:YES];
+//
+//    }
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -838,14 +847,15 @@
         cell = [[XNRShoppingCartTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID andCom:^(NSIndexPath *indexPath) {
             
             XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
-            XNRShoppingCartModel *cellModel = sectionModel.SKUList[indexPath.row];
+            XNRShoppingCarFrame *cellModel = sectionModel.SKUFrameList[indexPath.row];
+            
             BOOL isAll = YES;
-            for (XNRShoppingCartModel *carModel in sectionModel.SKUList) {
-                isAll = isAll && carModel.selectState;
+            for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
+                isAll = isAll && carModel.shoppingCarModel.selectState;
             }
             
             if (isAll) {
-                sectionModel.isSelected = cellModel.selectState;
+                sectionModel.isSelected = cellModel.shoppingCarModel.selectState;
             } else {
                 sectionModel.isSelected = NO;
                 self.selectedBottomBtn.selected = NO;
@@ -863,16 +873,31 @@
         cell.changeBottomBlock = ^{
             [self changeBottom];
         };
+        cell.pushBlock = ^(){
+            if (_dataArr.count > 0) {
+                
+                XNRProductInfo_VC *info_VC = [[XNRProductInfo_VC alloc] init];
+                info_VC.hidesBottomBarWhenPushed = YES;
+                XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
+                XNRShoppingCarFrame *model = sectionModel.SKUFrameList[indexPath.row];
+                info_VC.model = model.shoppingCarModel;
+                [self.navigationController pushViewController:info_VC animated:YES];
+                
+            }
+
+        
+        };
     }
     
     
     if (_dataArr.count > 0) {
         cell.indexPath = indexPath;
         XNRShopCarSectionModel *sectionModle = _dataArr[indexPath.section];
-        if (sectionModle.SKUList.count > 0) {
-            XNRShoppingCartModel *model = sectionModle.SKUList[indexPath.row];
+        if (sectionModle.SKUFrameList.count > 0) {
+            XNRShoppingCarFrame *frame = sectionModle.SKUFrameList[indexPath.row];
             //传递数据模型model
-            [cell setCellDataWithShoppingCartModel:model];
+            cell.shoppingCarFrame = frame;
+//            [cell setCellDataWithShoppingCartModel:model];
         }
     }
     return cell;
@@ -881,8 +906,8 @@
 - (void)valiteAllCarShopModelIsSelected {
     BOOL isAllAll = YES;
     for (XNRShopCarSectionModel *sectionModel in _dataArr) {
-        for (XNRShoppingCartModel *model in sectionModel.SKUList) {
-            isAllAll = isAllAll && sectionModel.isSelected && ([model.online integerValue]==1);
+        for (XNRShoppingCarFrame *model in sectionModel.SKUFrameList) {
+            isAllAll = isAllAll && sectionModel.isSelected && ([model.shoppingCarModel.online integerValue]==1);
         }
         
     }
@@ -892,14 +917,14 @@
 #pragma mark - 记录选中的商品的唯一标示 取消选中的就删除 -
 - (void)recordSelectedShopGoods {
     for (XNRShopCarSectionModel *sectionModel in _dataArr) {
-        for (XNRShoppingCartModel *carModel in sectionModel.SKUList) {
+        for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
             
-            if (carModel.selectState&&![_MapOfAllStateArr containsObject:carModel._id]) {
-                NSLog(@"++++++选中:%@",carModel._id);
-                [_MapOfAllStateArr addObject:carModel._id];
-            } else if(!carModel.selectState) {
-                NSLog(@"------取消选中:%@",carModel._id);
-                [_MapOfAllStateArr removeObject:carModel._id];
+            if (carModel.shoppingCarModel.selectState&&![_MapOfAllStateArr containsObject:carModel.shoppingCarModel._id]) {
+                NSLog(@"++++++选中:%@",carModel.shoppingCarModel._id);
+                [_MapOfAllStateArr addObject:carModel.shoppingCarModel._id];
+            } else if(!carModel.shoppingCarModel.selectState) {
+                NSLog(@"------取消选中:%@",carModel.shoppingCarModel._id);
+                [_MapOfAllStateArr removeObject:carModel.shoppingCarModel._id];
             }
             
 //            if ([_MapOfAllStateArr containsObject:carModel._id]&&!carModel.selectState) {
@@ -918,10 +943,10 @@
 - (void)getInitialAllNewData {
     
     for (XNRShopCarSectionModel *sectionModel in _dataArr) {
-        for (XNRShoppingCartModel *carModel in sectionModel.SKUList) {
+        for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
             for (NSString *dataId in _MapOfAllStateArr) {
-                if ([dataId isEqualToString:carModel._id]) {
-                    carModel.selectState = YES;
+                if ([dataId isEqualToString:carModel.shoppingCarModel._id]) {
+                    carModel.shoppingCarModel.selectState = YES;
                 }
             }
         }
@@ -929,11 +954,11 @@
     
     for (XNRShopCarSectionModel *sectionModel in _dataArr) {
         BOOL isAll = YES;
-        for (XNRShoppingCartModel *cellModel in sectionModel.SKUList) {
+        for (XNRShoppingCarFrame *cellModel in sectionModel.SKUFrameList) {
             
-            isAll = isAll && cellModel.selectState;
+            isAll = isAll && cellModel.shoppingCarModel.selectState;
             if (isAll) {
-                sectionModel.isSelected = cellModel.selectState;
+                sectionModel.isSelected = cellModel.shoppingCarModel.selectState;
             } else {
                 sectionModel.isSelected = NO;
                 self.selectedBottomBtn.selected = NO;

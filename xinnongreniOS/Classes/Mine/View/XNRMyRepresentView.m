@@ -84,6 +84,7 @@
 }
 
 - (void)setViewF:(XNRMyRepresentViewFrame *)viewF {
+    
     _viewF = viewF;
     self.iconImageView.frame = viewF.iconImageViewF;
     self.noRepresentLabel.frame = viewF.noRepresentLabelF;
@@ -105,12 +106,10 @@
     }
 }
 
-
 @end
 
 @implementation XNRMyRepresentViewFrame
 - (void)setModel:(XNRMyRepresentViewDataModel *)model {
-    
     
     CGFloat labelW = ScreenWidth;
     

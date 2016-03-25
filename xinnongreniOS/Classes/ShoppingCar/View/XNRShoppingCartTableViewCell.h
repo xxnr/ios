@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "XNRShoppingCartModel.h"
+@class XNRShoppingCarFrame;
+
+typedef void(^XNRShoppingCartTableViewCellBlock)();
+
 
 @protocol XNRShoppingCartTableViewCellDelegate <NSObject>
 @optional;
@@ -27,6 +31,11 @@
 @property (nonatomic, strong) NSIndexPath *indexPath;
 
 - (void)setCellDataWithShoppingCartModel:(XNRShoppingCartModel *)model;
+
+@property (nonatomic, strong) XNRShoppingCarFrame *shoppingCarFrame;
+
+@property (nonatomic, copy) XNRShoppingCartTableViewCellBlock pushBlock;
+
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier andCom:(void(^)(NSIndexPath *indexPath))com;
 @end

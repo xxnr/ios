@@ -40,6 +40,8 @@
 
 @property (nonatomic ,copy) NSString *duePrice;
 
+@property (nonatomic, strong) NSMutableArray *orderFrameArray;
+
 
 
 @end

@@ -22,5 +22,4 @@
  *
  */
 -(id)initWithFrame:(CGRect)frame UrlString:(NSString *)urlString;
--(void)showEmptyView;
 @end
