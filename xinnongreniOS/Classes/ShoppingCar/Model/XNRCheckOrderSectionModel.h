@@ -37,4 +37,17 @@
 @property (nonatomic ,copy) NSString *payType;//支付类型
 
 @property (nonatomic ,copy) NSString *paySubOrderType;//本次付款的子订单类型
+
+@property (nonatomic, strong) NSMutableArray *goodsList;
+
+@property (nonatomic ,assign) BOOL isSelected;
+
+@property (nonatomic ,copy) NSString *goodsCount;
+
+@property (nonatomic, copy) NSString *unitPrice;
+
+@property (nonatomic ,strong) NSMutableArray *SKUList;
+
+@property (nonatomic, strong)NSMutableArray *subOrders;
+
 @end

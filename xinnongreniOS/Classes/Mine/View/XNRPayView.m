@@ -10,7 +10,7 @@
 #import "XNRMyOrderModel.h"
 #import "XNRMyOrderPayCell.h"
 #import "UIImageView+WebCache.h"
-#import "XNRCheckOrder_VC.h"
+#import "XNRCheckOrderVC.h"
 #import "XNRMyOrderSectionModel.h"
 #import "XNROrderEmptyView.h"
 
@@ -442,9 +442,11 @@
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
         if (sectionModel.products.count>0) {
             XNRMyOrderModel *model = sectionModel.products[indexPath.row];
-            XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
-            cell.attributesArray = modelArray.attributes;
-            cell.addtionsArray = modelArray.additions;
+            if (sectionModel.skus.count > 0) {
+                XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
+                cell.attributesArray = modelArray.attributes;
+                cell.addtionsArray = modelArray.additions;
+            }
             [cell setCellDataWithShoppingCartModel:model];
             
         }

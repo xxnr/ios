@@ -330,6 +330,7 @@
 		53EE21091B538EC400BD765E /* 001@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 53EE21071B538EC400BD765E /* 001@3x.png */; };
 		53EE210A1B538EC400BD765E /* 001@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 53EE21081B538EC400BD765E /* 001@2x.png */; };
 		53FE38B01B188F2A00AEDC66 /* ZSCLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53FE38AF1B188F2A00AEDC66 /* ZSCLabel.m */; };
+		807EE32226ABF2009047CBBD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0872D2B782C41403EC118071 /* libPods.a */; };
 		842550231B206D8C00314ADF /* CircleLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 842550221B206D8C00314ADF /* CircleLayout.m */; };
 		8446C2961B1D6D19005CA932 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8446C25E1B1D6D19005CA932 /* InfoPlist.strings */; };
 		8446C2971B1D6D19005CA932 /* pop-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8446C2601B1D6D19005CA932 /* pop-Info.plist */; };
@@ -404,7 +405,19 @@
 		84FE64491B183D8000F0C67C /* XNRMyOrderRecive_Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FE64481B183D8000F0C67C /* XNRMyOrderRecive_Cell.m */; };
 		84FE644C1B183DB300F0C67C /* XNRMYOrderComment_Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FE644B1B183DB300F0C67C /* XNRMYOrderComment_Cell.m */; };
 		84FE644F1B183DD300F0C67C /* XNRMyOrderServe_Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FE644E1B183DD300F0C67C /* XNRMyOrderServe_Cell.m */; };
+		9C06A4291CA145CE00B0DED9 /* XNRPayInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C06A4281CA145CE00B0DED9 /* XNRPayInfoTableViewCell.m */; };
+		9C06A42C1CA155D600B0DED9 /* XNRPayInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C06A42B1CA155D600B0DED9 /* XNRPayInfoModel.m */; };
+		9C06A42F1CA22BC000B0DED9 /* XNRSeePayInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C06A42E1CA22BC000B0DED9 /* XNRSeePayInfoVC.m */; };
+		9C06A4321CA2A21000B0DED9 /* Bugtags.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C06A4301CA2A21000B0DED9 /* Bugtags.bundle */; };
+		9C06A4331CA2A21000B0DED9 /* Bugtags.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C06A4311CA2A21000B0DED9 /* Bugtags.framework */; };
+		9C06A43B1CA2A82000B0DED9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C06A43A1CA2A82000B0DED9 /* AVFoundation.framework */; };
+		9C06A43D1CA2A87300B0DED9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C06A43C1CA2A87300B0DED9 /* CoreLocation.framework */; };
+		9C06A43F1CA2A87A00B0DED9 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C06A43E1CA2A87A00B0DED9 /* ImageIO.framework */; };
+		9C293EB61CA128FD00D9C7F6 /* XRNSubOrdersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C293EB51CA128FD00D9C7F6 /* XRNSubOrdersModel.m */; };
+		9C293EB91CA1292F00D9C7F6 /* XNRSubOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C293EB81CA1292F00D9C7F6 /* XNRSubOrderCell.m */; };
 		9C4FCB451C8FFDFD00C5B427 /* XNBrandsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */; };
+		9C63D88C1C9FD9AA004AFE0F /* XNRCheckOrderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C63D88B1C9FD9AA004AFE0F /* XNRCheckOrderVC.m */; };
+		9C63D88F1C9FDE12004AFE0F /* XNROrderInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C63D88E1C9FDE12004AFE0F /* XNROrderInfoCell.m */; };
 		9CC0CE5E1C855A5C008D5228 /* XNRPayType_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE5D1C855A5C008D5228 /* XNRPayType_VC.m */; };
 		9CC0CE651C87F49C008D5228 /* XNRPayOrder_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE631C87F49C008D5228 /* XNRPayOrder_VC.m */; };
 		9CC0CE6A1C87FF3C008D5228 /* XNRSelPayOrder_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE681C87FF3C008D5228 /* XNRSelPayOrder_VC.m */; };
@@ -431,6 +444,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0872D2B782C41403EC118071 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F1532CF1B09C58800CA374B /* xinnongreniOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = xinnongreniOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F1532D31B09C58800CA374B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F1532D41B09C58800CA374B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1081,6 +1095,7 @@
 		53EE21081B538EC400BD765E /* 001@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "001@2x.png"; sourceTree = "<group>"; };
 		53FE38AE1B188F2A00AEDC66 /* ZSCLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZSCLabel.h; sourceTree = "<group>"; };
 		53FE38AF1B188F2A00AEDC66 /* ZSCLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZSCLabel.m; sourceTree = "<group>"; };
+		7B2479FA058299E123ACB4D2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		842550211B206D8C00314ADF /* CircleLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleLayout.h; sourceTree = "<group>"; };
 		842550221B206D8C00314ADF /* CircleLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleLayout.m; sourceTree = "<group>"; };
 		8446C25F1B1D6D19005CA932 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1236,8 +1251,27 @@
 		84FE644B1B183DB300F0C67C /* XNRMYOrderComment_Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMYOrderComment_Cell.m; sourceTree = "<group>"; };
 		84FE644D1B183DD300F0C67C /* XNRMyOrderServe_Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMyOrderServe_Cell.h; sourceTree = "<group>"; };
 		84FE644E1B183DD300F0C67C /* XNRMyOrderServe_Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMyOrderServe_Cell.m; sourceTree = "<group>"; };
+		9C06A4271CA145CE00B0DED9 /* XNRPayInfoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPayInfoTableViewCell.h; sourceTree = "<group>"; };
+		9C06A4281CA145CE00B0DED9 /* XNRPayInfoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPayInfoTableViewCell.m; sourceTree = "<group>"; };
+		9C06A42A1CA155D600B0DED9 /* XNRPayInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPayInfoModel.h; sourceTree = "<group>"; };
+		9C06A42B1CA155D600B0DED9 /* XNRPayInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPayInfoModel.m; sourceTree = "<group>"; };
+		9C06A42D1CA22BC000B0DED9 /* XNRSeePayInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSeePayInfoVC.h; sourceTree = "<group>"; };
+		9C06A42E1CA22BC000B0DED9 /* XNRSeePayInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSeePayInfoVC.m; sourceTree = "<group>"; };
+		9C06A4301CA2A21000B0DED9 /* Bugtags.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Bugtags.bundle; sourceTree = "<group>"; };
+		9C06A4311CA2A21000B0DED9 /* Bugtags.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bugtags.framework; sourceTree = "<group>"; };
+		9C06A43A1CA2A82000B0DED9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		9C06A43C1CA2A87300B0DED9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		9C06A43E1CA2A87A00B0DED9 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		9C293EB41CA128FD00D9C7F6 /* XRNSubOrdersModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XRNSubOrdersModel.h; sourceTree = "<group>"; };
+		9C293EB51CA128FD00D9C7F6 /* XRNSubOrdersModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XRNSubOrdersModel.m; sourceTree = "<group>"; };
+		9C293EB71CA1292F00D9C7F6 /* XNRSubOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSubOrderCell.h; sourceTree = "<group>"; };
+		9C293EB81CA1292F00D9C7F6 /* XNRSubOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSubOrderCell.m; sourceTree = "<group>"; };
 		9C4FCB431C8FFDFD00C5B427 /* XNBrandsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNBrandsModel.h; sourceTree = "<group>"; };
 		9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNBrandsModel.m; sourceTree = "<group>"; };
+		9C63D88A1C9FD9AA004AFE0F /* XNRCheckOrderVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCheckOrderVC.h; sourceTree = "<group>"; };
+		9C63D88B1C9FD9AA004AFE0F /* XNRCheckOrderVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCheckOrderVC.m; sourceTree = "<group>"; };
+		9C63D88D1C9FDE12004AFE0F /* XNROrderInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNROrderInfoCell.h; sourceTree = "<group>"; };
+		9C63D88E1C9FDE12004AFE0F /* XNROrderInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNROrderInfoCell.m; sourceTree = "<group>"; };
 		9CC0CE5C1C855A5C008D5228 /* XNRPayType_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPayType_VC.h; sourceTree = "<group>"; };
 		9CC0CE5D1C855A5C008D5228 /* XNRPayType_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPayType_VC.m; sourceTree = "<group>"; };
 		9CC0CE621C87F49C008D5228 /* XNRPayOrder_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPayOrder_VC.h; sourceTree = "<group>"; };
@@ -1253,6 +1287,7 @@
 		9CF8AC091C981DB200F27563 /* XNRHomeSelectBrandView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRHomeSelectBrandView.m; sourceTree = "<group>"; };
 		9CF8AC0A1C981DB200F27563 /* XNRHomeSelectedCellectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRHomeSelectedCellectionCell.h; sourceTree = "<group>"; };
 		9CF8AC0B1C981DB300F27563 /* XNRHomeSelectedCellectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRHomeSelectedCellectionCell.m; sourceTree = "<group>"; };
+		A8FD127E739A7D58D54B536C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		C54CFAF41B2AC30C004D5C54 /* checkbox1_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox1_checked.png; sourceTree = "<group>"; };
 		C54CFAF51B2AC30C004D5C54 /* checkbox1_checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox1_checked@2x.png"; sourceTree = "<group>"; };
 		C54CFAF61B2AC30C004D5C54 /* checkbox1_unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox1_unchecked.png; sourceTree = "<group>"; };
@@ -1266,6 +1301,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FE1D8F01B131AC400F0D158 /* CFNetwork.framework in Frameworks */,
+				1F15340F1B09D88C00CA374B /* Security.framework in Frameworks */,
+				9C06A43F1CA2A87A00B0DED9 /* ImageIO.framework in Frameworks */,
+				9C06A43D1CA2A87300B0DED9 /* CoreLocation.framework in Frameworks */,
+				4976FC2D1BE9CD0C0002E8F8 /* QuartzCore.framework in Frameworks */,
+				1F1534111B09D89B00CA374B /* SystemConfiguration.framework in Frameworks */,
+				8446C2AB1B1D6DA5005CA932 /* Foundation.framework in Frameworks */,
+				9C06A43B1CA2A82000B0DED9 /* AVFoundation.framework in Frameworks */,
+				4976FC331BE9CD510002E8F8 /* UIKit.framework in Frameworks */,
 				49EC527B1BEBD11E00AA8898 /* libstdc++.6.tbd in Frameworks */,
 				49EC52791BEBD11500AA8898 /* libstdc++.tbd in Frameworks */,
 				49EC52771BEBD10B00AA8898 /* libxml2.tbd in Frameworks */,
@@ -1275,24 +1319,20 @@
 				49EC526F1BEBCDDB00AA8898 /* libz.tbd in Frameworks */,
 				49EC526D1BEBCDD100AA8898 /* libc++.tbd in Frameworks */,
 				4976FC351BE9CD690002E8F8 /* CoreMotion.framework in Frameworks */,
-				4976FC331BE9CD510002E8F8 /* UIKit.framework in Frameworks */,
 				49E8960B1BEF4ADB00B3671E /* libUPPayPlugin.a in Frameworks */,
 				4976FC311BE9CD3B0002E8F8 /* CoreGraphics.framework in Frameworks */,
 				4976FC2F1BE9CD290002E8F8 /* CoreText.framework in Frameworks */,
-				4976FC2D1BE9CD0C0002E8F8 /* QuartzCore.framework in Frameworks */,
 				4976FC2B1BE9CCD90002E8F8 /* CoreTelephony.framework in Frameworks */,
 				49EDEA071C180C6600310366 /* libMobClickLibrary.a in Frameworks */,
-				8446C2AB1B1D6DA5005CA932 /* Foundation.framework in Frameworks */,
 				1FE1D8FC1B131B8D00F0D158 /* CoreData.framework in Frameworks */,
 				4976FC1F1BE9A2AA0002E8F8 /* libcrypto.a in Frameworks */,
 				1FE1D8F91B131AFB00F0D158 /* MapKit.framework in Frameworks */,
-				1FE1D8F01B131AC400F0D158 /* CFNetwork.framework in Frameworks */,
 				49F7A5471C58466700A1FA45 /* libUMessage_Sdk_1.2.6.a in Frameworks */,
+				9C06A4331CA2A21000B0DED9 /* Bugtags.framework in Frameworks */,
 				4976FC201BE9A2AA0002E8F8 /* libssl.a in Frameworks */,
 				1FE1D8EF1B131AC200F0D158 /* MobileCoreServices.framework in Frameworks */,
 				4976FC1E1BE9A2AA0002E8F8 /* AlipaySDK.framework in Frameworks */,
-				1F1534111B09D89B00CA374B /* SystemConfiguration.framework in Frameworks */,
-				1F15340F1B09D88C00CA374B /* Security.framework in Frameworks */,
+				807EE32226ABF2009047CBBD /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1380,6 +1420,8 @@
 				1F1532D11B09C58800CA374B /* xinnongreniOS */,
 				1F1532EB1B09C58800CA374B /* xinnongreniOSTests */,
 				1F1532D01B09C58800CA374B /* Products */,
+				5A9F6AE0F8A02BF6B7649EED /* Pods */,
+				34BE09A7682540D1BF98EAF1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1583,7 +1625,11 @@
 				8464E4411B16D582008FD57B /* XNRMyOrder_VC.h */,
 				8464E4421B16D582008FD57B /* XNRMyOrder_VC.m */,
 				8464E43E1B16B3CC008FD57B /* XNRCheckOrder_VC.h */,
+				9C06A42D1CA22BC000B0DED9 /* XNRSeePayInfoVC.h */,
 				8464E43F1B16B3CC008FD57B /* XNRCheckOrder_VC.m */,
+				9C63D88A1C9FD9AA004AFE0F /* XNRCheckOrderVC.h */,
+				9C63D88B1C9FD9AA004AFE0F /* XNRCheckOrderVC.m */,
+				9C06A42E1CA22BC000B0DED9 /* XNRSeePayInfoVC.m */,
 				844AFE3B1B141C7A00EE29C8 /* XNRMyscore_VC.h */,
 				844AFE3C1B141C7A00EE29C8 /* XNRMyscore_VC.m */,
 				844AFE8A1B14771D00EE29C8 /* XNRProductInfo_VC.h */,
@@ -1605,6 +1651,8 @@
 		1F1533041B09D1E200CA374B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9C293EB41CA128FD00D9C7F6 /* XRNSubOrdersModel.h */,
+				9C293EB51CA128FD00D9C7F6 /* XRNSubOrdersModel.m */,
 				49EF87E91C48AC9E008C62AE /* XNRMyOrderSectionModel.h */,
 				49EF87EA1C48AC9E008C62AE /* XNRMyOrderSectionModel.m */,
 				539CDB951B438B9800AB9B65 /* XNRMyOrderModel.h */,
@@ -1613,6 +1661,8 @@
 				539CDB9C1B43F37900AB9B65 /* XNRMyScoreModel.m */,
 				5383E1831B4E080B0058FE3F /* XNROrderInfoModel.h */,
 				5383E1841B4E080B0058FE3F /* XNROrderInfoModel.m */,
+				9C06A42A1CA155D600B0DED9 /* XNRPayInfoModel.h */,
+				9C06A42B1CA155D600B0DED9 /* XNRPayInfoModel.m */,
 				498AB01D1BF8DACA003827E3 /* XNRMyRepresentModel.h */,
 				498AB01E1BF8DACA003827E3 /* XNRMyRepresentModel.m */,
 				49EE99671C479FBE0064692B /* XNRCustomerOrderSectionModel.h */,
@@ -1648,6 +1698,12 @@
 			children = (
 				84AAA58B1B439335005AA154 /* XNROderInfo_Cell.h */,
 				84AAA58C1B439335005AA154 /* XNROderInfo_Cell.m */,
+				9C63D88D1C9FDE12004AFE0F /* XNROrderInfoCell.h */,
+				9C63D88E1C9FDE12004AFE0F /* XNROrderInfoCell.m */,
+				9C293EB71CA1292F00D9C7F6 /* XNRSubOrderCell.h */,
+				9C293EB81CA1292F00D9C7F6 /* XNRSubOrderCell.m */,
+				9C06A4271CA145CE00B0DED9 /* XNRPayInfoTableViewCell.h */,
+				9C06A4281CA145CE00B0DED9 /* XNRPayInfoTableViewCell.m */,
 				844AFE441B143D0E00EE29C8 /* XNRMyscore_Cell.h */,
 				844AFE451B143D0E00EE29C8 /* XNRMyscore_Cell.m */,
 				84FE642C1B18054B00F0C67C /* XNRPayView.h */,
@@ -1691,6 +1747,8 @@
 		1F15330C1B09D2CE00CA374B /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				9C06A4301CA2A21000B0DED9 /* Bugtags.bundle */,
+				9C06A4311CA2A21000B0DED9 /* Bugtags.framework */,
 				4916108A1C8C422200F1E243 /* MWPhotoBrowser */,
 				49F7A5481C58469400A1FA45 /* MJRefresh_new */,
 				49F7A5441C58466700A1FA45 /* UMessage_Sdk_1.2.6 */,
@@ -1931,6 +1989,17 @@
 				497662621C5AE32300FB041D /* XNRToolBar.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		34BE09A7682540D1BF98EAF1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9C06A43E1CA2A87A00B0DED9 /* ImageIO.framework */,
+				9C06A43C1CA2A87300B0DED9 /* CoreLocation.framework */,
+				9C06A43A1CA2A82000B0DED9 /* AVFoundation.framework */,
+				0872D2B782C41403EC118071 /* libPods.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		4916108A1C8C422200F1E243 /* MWPhotoBrowser */ = {
@@ -2670,6 +2739,15 @@
 			path = ZSCLabel;
 			sourceTree = "<group>";
 		};
+		5A9F6AE0F8A02BF6B7649EED /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A8FD127E739A7D58D54B536C /* Pods.debug.xcconfig */,
+				7B2479FA058299E123ACB4D2 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		8446C25D1B1D6D19005CA932 /* pop */ = {
 			isa = PBXGroup;
 			children = (
@@ -2875,9 +2953,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1F1532F21B09C58800CA374B /* Build configuration list for PBXNativeTarget "xinnongreniOS" */;
 			buildPhases = (
+				C3D538FD6DAEC51CADF6133E /* Check Pods Manifest.lock */,
 				1F1532CB1B09C58700CA374B /* Sources */,
 				1F1532CC1B09C58700CA374B /* Frameworks */,
 				1F1532CD1B09C58700CA374B /* Resources */,
+				9BF010A0B1B05418A31514E4 /* Embed Pods Frameworks */,
+				C7484C73545E32255297FD0D /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3037,6 +3118,7 @@
 				49F7A5A91C5906C200A1FA45 /* 加载15.png in Resources */,
 				1F1533171B09D49300CA374B /* XNRHomeController.xib in Resources */,
 				491610CB1C8C422200F1E243 /* ImageError.png in Resources */,
+				9C06A4321CA2A21000B0DED9 /* Bugtags.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3049,6 +3131,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9BF010A0B1B05418A31514E4 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C3D538FD6DAEC51CADF6133E /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		C7484C73545E32255297FD0D /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1F1532CB1B09C58700CA374B /* Sources */ = {
@@ -3065,6 +3195,7 @@
 				4976FC231BE9A2AA0002E8F8 /* DataSigner.m in Sources */,
 				849B6E4D1B56650C001C5BF8 /* TAAbstractDotView.m in Sources */,
 				49F7A5751C58469400A1FA45 /* MJRefreshAutoFooter.m in Sources */,
+				9C293EB91CA1292F00D9C7F6 /* XNRSubOrderCell.m in Sources */,
 				49E896001BEDC2BB00B3671E /* UIImage+MultiFormat.m in Sources */,
 				849B6E4E1B56650C001C5BF8 /* TAAnimatedDotView.m in Sources */,
 				9CC0CE6E1C8811EE008D5228 /* XNRAddOrderModel.m in Sources */,
@@ -3122,6 +3253,7 @@
 				1FE1D6691B12F1DE00F0D158 /* XNRShoppingCarController.m in Sources */,
 				1FE1D60D1B12EE2600F0D158 /* MJMember.m in Sources */,
 				844AFE8C1B14771D00EE29C8 /* XNRProductInfo_VC.m in Sources */,
+				9C63D88C1C9FD9AA004AFE0F /* XNRCheckOrderVC.m in Sources */,
 				49F6B19C1C2A6EE100DCF8CF /* MJPhotoProgressView.m in Sources */,
 				84FE64371B18059F00F0C67C /* XNRCommentView.m in Sources */,
 				49E896041BEDC2BB00B3671E /* UIView+WebCacheOperation.m in Sources */,
@@ -3131,6 +3263,7 @@
 				49EC52651BEBBA5E00AA8898 /* UIFont+BSExt.m in Sources */,
 				49CD5E351C0814EC004235C4 /* XNRSpecialCell.m in Sources */,
 				491610EF1C8C422200F1E243 /* MWPhoto.m in Sources */,
+				9C06A4291CA145CE00B0DED9 /* XNRPayInfoTableViewCell.m in Sources */,
 				49F0714B1C547EBC006187B2 /* BMProgressView.m in Sources */,
 				5383E1BA1B4EA6760058FE3F /* XNRPayTypeAlertView.m in Sources */,
 				844AFE461B143D0E00EE29C8 /* XNRMyscore_Cell.m in Sources */,
@@ -3155,6 +3288,7 @@
 				49EF87F11C4B89D0008C62AE /* XNROrderDetail_VC.m in Sources */,
 				53C7C46E1B16E6D100E441BC /* XNRRealNameViewController.m in Sources */,
 				49EC52681BEBBA5E00AA8898 /* UIView+BSExt.m in Sources */,
+				9C06A42C1CA155D600B0DED9 /* XNRPayInfoModel.m in Sources */,
 				49F6B1981C2A6EE100DCF8CF /* MJPhoto.m in Sources */,
 				4976FC211BE9A2AA0002E8F8 /* Order.m in Sources */,
 				849B6E4F1B56650C001C5BF8 /* TADotView.m in Sources */,
@@ -3164,6 +3298,7 @@
 				8446C2A41B1D6D19005CA932 /* POPLayerExtras.mm in Sources */,
 				84CDC9A81B3E9F4400F59064 /* KSHttpRequest.m in Sources */,
 				49EFE00C1C4CF1E800218C43 /* UILabel+create.m in Sources */,
+				9C293EB61CA128FD00D9C7F6 /* XRNSubOrdersModel.m in Sources */,
 				4976FC221BE9A2AA0002E8F8 /* base64.m in Sources */,
 				491610F41C8C422200F1E243 /* UIImage+MWPhotoBrowser.m in Sources */,
 				53445E911B141354009F79E5 /* XNRLoginViewController.m in Sources */,
@@ -3228,6 +3363,7 @@
 				49EFE0091C4CF1E800218C43 /* BMAlertView.m in Sources */,
 				49E895F51BEDC2BB00B3671E /* MKAnnotationView+WebCache.m in Sources */,
 				8446C2991B1D6D19005CA932 /* POPAnimation.mm in Sources */,
+				9C06A42F1CA22BC000B0DED9 /* XNRSeePayInfoVC.m in Sources */,
 				84B77D081B26C0B1001923E4 /* ZSCPicShowView.m in Sources */,
 				53010F961B1DAD3E00017740 /* TFModel.m in Sources */,
 				493AEF2C1C2138290088003A /* XNRTownPickerView.m in Sources */,
@@ -3248,6 +3384,7 @@
 				491611231C8D189400F1E243 /* IQNSArray+Sort.m in Sources */,
 				49E895FB1BEDC2BB00B3671E /* SDWebImageDownloaderOperation.m in Sources */,
 				4937712B1C1A1A50008F27F8 /* XNRMobuserName.m in Sources */,
+				9C63D88F1C9FDE12004AFE0F /* XNROrderInfoCell.m in Sources */,
 				49F7A5791C58469400A1FA45 /* MJRefreshHeader.m in Sources */,
 				84B77CFD1B26BDE6001923E4 /* PECropRectView.m in Sources */,
 				84FE644C1B183DB300F0C67C /* XNRMYOrderComment_Cell.m in Sources */,
@@ -3471,6 +3608,7 @@
 		};
 		1F1532F31B09C58800CA374B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A8FD127E739A7D58D54B536C /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -3480,6 +3618,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/Alipay",
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/GBAlipay/Alipay",
+					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/xinnongreniOS/Classes/appMain/xinlongreniOS-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -3487,9 +3626,10 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/xinnongreniOS/Classes/Lib/GBAlipay/Alipay",
 					"\"$(SRCROOT)/xinnongreniOS/Classes/Lib/RSA/Libraries/openssl/include\"",
+					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3504,15 +3644,20 @@
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_1.2.6",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-all_load";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ksfc.xxnr;
 				PRODUCT_NAME = xinnongreniOS;
 				PROVISIONING_PROFILE = "";
+				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT}/**";
 			};
 			name = Debug;
 		};
 		1F1532F41B09C58800CA374B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7B2479FA058299E123ACB4D2 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -3522,6 +3667,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/Alipay",
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/GBAlipay/Alipay",
+					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/xinnongreniOS/Classes/appMain/xinlongreniOS-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -3529,9 +3675,10 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/xinnongreniOS/Classes/Lib/GBAlipay/Alipay",
 					"\"$(SRCROOT)/xinnongreniOS/Classes/Lib/RSA/Libraries/openssl/include\"",
+					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3546,10 +3693,14 @@
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_1.2.6",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-all_load";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ksfc.xxnr;
 				PRODUCT_NAME = xinnongreniOS;
 				PROVISIONING_PROFILE = "";
+				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT}/**";
 			};
 			name = Release;
 		};
