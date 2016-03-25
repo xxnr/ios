@@ -176,6 +176,9 @@
 #pragma mark - 设置现在的数据
 - (void)setSubViews
 {
+    self.addtionsLabel.hidden = NO;
+    self.addtionPriceLabel.hidden = NO;
+
 //    [self createTopView:_addtionsArray];
     if (_addtionsArray.count == 0) {
         self.addtionsLabel.hidden = YES;
@@ -212,7 +215,11 @@
     // 附加选项价格
     self.addtionPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",totalPrice];
 
-    
+//    if ([self.addtionsLabel.text isEqualToString:@"附加项目:"]) {
+//        self.addtionsLabel.hidden = YES;
+//        self.addtionPriceLabel.hidden = YES;
+//
+//    }
     // 价格
     self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",_info.price.floatValue];
     

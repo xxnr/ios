@@ -108,12 +108,12 @@
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     NSDictionary *params = @{@"SKUs":self.dataArray,@"user-agent":@"IOS-v2.0"};
-    NSLog(@"---------返回数据:+_-------%@",params);
+//    NSLog(@"---------返回数据:+_-------%@",params);
 
     [manager POST:KGetShoppingCartOffline parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"---------params:+_-------%@",params);
-        NSLog(@"---------返回数据:+_-------%@",str);
+//        NSLog(@"---------params:+_-------%@",params);
+//        NSLog(@"---------返回数据:+_-------%@",str);
 
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
@@ -238,7 +238,7 @@
     model.selected = YES;
     self.nextAddresModel = model;
     // headViewSpecial
-    UIView *headViewSpecial = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(260))];
+    UIView *headViewSpecial = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(280))];
     headViewSpecial.backgroundColor = [UIColor whiteColor];
     self.headViewSpecial = headViewSpecial;
     [self.view addSubview:headViewSpecial];
@@ -263,6 +263,9 @@
     [downImageViewSpecial setImage:[UIImage imageNamed:@"orderInfo_down"]];
     [headViewSpecial addSubview:downImageViewSpecial];
     
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(downImageViewSpecial.frame), ScreenWidth, PX_TO_PT(20))];
+    view.backgroundColor = R_G_B_16(0xf7f7f7);
+    [headViewSpecial addSubview:view];
     
     _recipientNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), PX_TO_PT(112), PX_TO_PT(200), PX_TO_PT(36))];
     _recipientNameLabel.textColor = R_G_B_16(0x323232);
@@ -568,7 +571,7 @@
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     [manager POST:KAddOrder parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"---------返回数据:---------%@",str);
+//        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;

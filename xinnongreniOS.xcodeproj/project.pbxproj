@@ -418,6 +418,7 @@
 		9C06A43F1CA2A87A00B0DED9 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C06A43E1CA2A87A00B0DED9 /* ImageIO.framework */; };
 		9C293EB61CA128FD00D9C7F6 /* XRNSubOrdersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C293EB51CA128FD00D9C7F6 /* XRNSubOrdersModel.m */; };
 		9C293EB91CA1292F00D9C7F6 /* XNRSubOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C293EB81CA1292F00D9C7F6 /* XNRSubOrderCell.m */; };
+		9C392DE71CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C392DE61CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m */; };
 		9C4FCB451C8FFDFD00C5B427 /* XNBrandsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */; };
 		9C63D88C1C9FD9AA004AFE0F /* XNRCheckOrderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C63D88B1C9FD9AA004AFE0F /* XNRCheckOrderVC.m */; };
 		9C63D88F1C9FDE12004AFE0F /* XNROrderInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C63D88E1C9FDE12004AFE0F /* XNROrderInfoCell.m */; };
@@ -1275,6 +1276,8 @@
 		9C293EB51CA128FD00D9C7F6 /* XRNSubOrdersModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XRNSubOrdersModel.m; sourceTree = "<group>"; };
 		9C293EB71CA1292F00D9C7F6 /* XNRSubOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSubOrderCell.h; sourceTree = "<group>"; };
 		9C293EB81CA1292F00D9C7F6 /* XNRSubOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSubOrderCell.m; sourceTree = "<group>"; };
+		9C392DE51CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		9C392DE61CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		9C4FCB431C8FFDFD00C5B427 /* XNBrandsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNBrandsModel.h; sourceTree = "<group>"; };
 		9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNBrandsModel.m; sourceTree = "<group>"; };
 		9C63D88A1C9FD9AA004AFE0F /* XNRCheckOrderVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCheckOrderVC.h; sourceTree = "<group>"; };
@@ -2662,6 +2665,8 @@
 				491610FE1C8D189400F1E243 /* IQKeyBoardManager */,
 				1F16AF501B259F67002C1E73 /* YMHProtoclViewController.h */,
 				1F16AF511B259F67002C1E73 /* YMHProtoclViewController.m */,
+				9C392DE51CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.h */,
+				9C392DE61CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m */,
 				49F99EE91C155D130000556A /* XNRProductInfo_cell.h */,
 				49F99EEA1C155D130000556A /* XNRProductInfo_cell.m */,
 				49F99EEC1C1569BF0000556A /* XNRProductInfo_model.h */,
@@ -3417,6 +3422,7 @@
 				8446C29F1B1D6D19005CA932 /* POPBasicAnimation.mm in Sources */,
 				84CDC9AB1B3EA94900F59064 /* DataCenter.m in Sources */,
 				844AFE431B141CAF00EE29C8 /* XNRMyaccount_VC.m in Sources */,
+				9C392DE71CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m in Sources */,
 				491610F01C8C422200F1E243 /* MWPhotoBrowser.m in Sources */,
 				1FE1D6121B12EE2600F0D158 /* NSObject+MJKeyValue.m in Sources */,
 				53031B891B299736004B4B07 /* CommonTool.m in Sources */,
