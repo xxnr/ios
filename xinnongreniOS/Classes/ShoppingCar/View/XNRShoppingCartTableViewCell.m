@@ -65,6 +65,9 @@
 @property (nonatomic ,weak) UIView *textbottomLine;
 
 @property (nonatomic, weak) UIButton *pushBtn;
+@property (nonatomic, weak) UIButton *cancelBtn;
+
+
 
 
 @property (nonatomic, copy) void(^com)(NSIndexPath *indexPath);
@@ -81,8 +84,69 @@
         
         // 注册消息通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
+        // 接受编辑，删除按钮的通知
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(normalBtnPresent) name:@"normalBtnPresent" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelBtnPresent) name:@"cancelBtnPresent" object:nil];
     }
     return self;
+}
+-(void)cancelBtnPresent{
+    if ([self.model.online integerValue] == 0) {// 下架
+        self.goodNameLabel.frame = CGRectMake(CGRectGetMaxX(self.picImageView.frame)+PX_TO_PT(20), PX_TO_PT(40), ScreenWidth-CGRectGetMaxX(self.picImageView.frame)-PX_TO_PT(20)-PX_TO_PT(150), PX_TO_PT(80));
+        self.goodNameLabel.backgroundColor = [UIColor redColor];
+        UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        cancelBtn.frame = CGRectMake(CGRectGetMaxX(self.goodNameLabel.frame)+PX_TO_PT(80), PX_TO_PT(40), PX_TO_PT(40), PX_TO_PT(40));
+        [cancelBtn setImage:[UIImage imageNamed:@"address_delete"] forState:UIControlStateNormal];
+        [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        self.cancelBtn = cancelBtn;
+        [self.contentView addSubview:cancelBtn];
+    }
+
+
+}
+-(void)normalBtnPresent{
+    if ([self.model.online integerValue] == 0) {
+        self.goodNameLabel.frame = self.shoppingCarFrame.goodNameLabelF;
+        self.cancelBtn.hidden = YES;
+    }
+    
+    
+}
+
+-(void)cancelBtnClick{
+//    NSMutableArray *cancelArray = [NSMutableArray array];
+    BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确认要删除该商品吗?" chooseBtns:@[@"取消",@"确定"]];
+    
+    alertView.chooseBlock = ^void(UIButton *btn){
+        
+        if (btn.tag == 11) {
+            if ([self.model.online integerValue] == 0) {
+                if (!IS_Login) {
+                    DatabaseManager *manager = [DatabaseManager sharedInstance];
+                    [manager deleteShoppingCarWithModel:_model];
+                    
+                }else{
+                    NSDictionary *params1 = @{@"userId":[DataCenter account].userid,@"SKUId":_model._id,@"quantity":@"0",@"additions":_model.additions,@"user-agent":@"IOS-v2.0"};
+                    [KSHttpRequest post:KchangeShopCarNum parameters:params1 success:^(id result) {
+                        if ([result[@"code"] integerValue] == 1000) {
+                            [UILabel showMessage:@"删除成功"];
+                        }
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                    
+                    
+                }
+                
+            }
+
+            
+        
+        }
+    
+    
+
+    };
 }
 
 -(void)textFieldChanged:(NSNotification*)noti {

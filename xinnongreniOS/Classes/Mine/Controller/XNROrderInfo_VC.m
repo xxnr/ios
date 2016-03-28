@@ -19,6 +19,7 @@
 #import "XNRPayType_VC.h"
 #import "XNRSelPayOrder_VC.h"
 #import "XNRAddOrderModel.h"
+#import "XNRMyAllOrderFrame.h"
 @interface XNROrderInfo_VC ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>{
     
     NSString *orderDataId;    //订单id

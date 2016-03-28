@@ -14,7 +14,7 @@
 @property (nonatomic,strong) UILabel *orderNum;       //订单号
 @property (nonatomic,strong) UILabel *allPrice;
 @property (nonatomic,copy)   void(^checkOrderBlock)(NSString*orderID);                                        //查看订单                                       //查看订单
-- (void)setCellDataWithShoppingCartModel:(XNRMyOrderModel*)info;
+//- (void)setCellDataWithShoppingCartModel:(XNRMyOrderModel*)info;
 
 @property (nonatomic, strong) XNRMyAllOrderFrame *orderFrame;
 
