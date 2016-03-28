@@ -192,9 +192,9 @@
 }
 #pragma mark-获取网络数据
 -(void)getData {
-    
+    NSLog(@"_model.goodsId===%@",_model.goodsId);
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
-    [KSHttpRequest post:KHomeGetAppProductDetails parameters:@{@"productId":self.model.goodsId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KHomeGetAppProductDetails parameters:@{@"productId":_model.goodsId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         [BMProgressView LoadViewDisappear:self.view];
         if ([result[@"code"] integerValue] == 1000) {
@@ -400,6 +400,7 @@
     cell.marketPrice = _marketPrice;
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    // 传值
     XNRProductInfo_frame *frame = _goodsArray[indexPath.row];
     cell.infoFrame = frame;
 //    [cell upDataWithModel:_goodsArray[indexPath.row]];
