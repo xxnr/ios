@@ -168,12 +168,10 @@
     if (addtionsArray.additions.count == 0) {
         UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.topView.frame), ScreenWidth, PX_TO_PT(160))];
         self.midView = midView;
-//        midView.backgroundColor = [UIColor redColor];
         [self.contentView addSubview:midView];
 
     }else{
         UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.addtionView.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(160))];
-//        midView.backgroundColor = [UIColor redColor];
         self.midView = midView;
         [self.contentView addSubview:midView];
         
@@ -293,7 +291,6 @@
         
     }
 
-//    }
     
     
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl];
@@ -326,57 +323,6 @@
     
     // 尾款
     self.remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",(self.model.price.floatValue+totalPrice - self.model.deposit.floatValue) * [_model.count floatValue]];
-//    // 商品件数
-//    self.goodsTotalLabel.text = [NSString stringWithFormat:@"共%@件商品",self.model.goodsCount];
-//    self.goodsTotalLabelMid.text = [NSString stringWithFormat:@"共%@件商品",self.model.goodsCount];
-//    _totalPrice = 0;
-//        // 合计
-//        if (self.model.deposit &&[self.model.deposit floatValue] > 0) {
-//            
-//            _totalPrice = _totalPrice + model.goodsCount.intValue *[[NSString stringWithFormat:@"%@",model.deposit] floatValue];
-//
-//        }else{
-//            _totalPrice = _totalPrice + model.goodsCount.intValue*[[NSString stringWithFormat:@"%@",self.model.unitPrice] floatValue];
-//        }
-//        NSLog(@"totalPrice === %.2f",_totalPrice);
-//
-//     // 价格合计
-//    self.totoalPriceLabel.text = [NSString stringWithFormat:@"价格合计: ￥%.2f",_totalPrice];
-//    self.totoalPriceLabelMid.text = [NSString stringWithFormat:@"价格合计: ￥%.2f",_totalPrice];
-
-//    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.totoalPriceLabel.text];
-//    NSDictionary *depositStr=@{
-//                               
-//                               NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-////                               NSFontAttributeName:[UIFont systemFontOfSize:18]
-//                               
-//                               };
-//    
-//    [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(5,AttributedStringDeposit.length-5)];
-//    
-//    [self.totoalPriceLabel setAttributedText:AttributedStringDeposit];
-//    
-//    NSMutableAttributedString *AttributedStringDepositMid = [[NSMutableAttributedString alloc]initWithString:self.totoalPriceLabelMid.text];
-//    NSDictionary *depositStrMid=@{
-//                               
-//                               NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-////                               NSFontAttributeName:[UIFont systemFontOfSize:18]
-//                               
-//                               };
-//    
-//    [AttributedStringDepositMid addAttributes:depositStrMid range:NSMakeRange(5,AttributedStringDepositMid.length-5)];
-//    
-//    [self.totoalPriceLabelMid setAttributedText:AttributedStringDepositMid];
-
-
-    
-    
-
-    
-    
-
-
-
 
 }
 

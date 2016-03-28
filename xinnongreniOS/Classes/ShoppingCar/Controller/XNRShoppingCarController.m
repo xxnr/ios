@@ -236,16 +236,22 @@
 }
 -(void)editeBtnClick{
     sort = !sort;
-    if (sort) {
+    if (sort) {// 完成
         [self.editeBtn setTitle:@"完成" forState:UIControlStateNormal];
         _totalPriceLabel.hidden  = YES;
         _settlementBtn.hidden = YES;
         _deleteBtn.hidden = NO;
-    }else{
+        // 回到正常状态
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"cancelBtnPresent" object:nil];
+
+    }else{// 编辑
         [self.editeBtn setTitle:@"编辑" forState:UIControlStateNormal];
         _totalPriceLabel.hidden  = NO;
         _settlementBtn.hidden = NO;
         _deleteBtn.hidden = YES;
+        // 下架商品变成可删除的状态
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"normalBtnPresent" object:nil];
+
 
     }
 }
@@ -864,6 +870,7 @@
             [self valiteAllCarShopModelIsSelected];
             [self recordSelectedShopGoods];
         }];
+        // 自定义跳转
         cell.pushBlock = ^(){
             if (_dataArr.count > 0) {
                 
@@ -872,6 +879,7 @@
                 XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
                 XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
                 info_VC.model = model;
+                NSLog(@"model.goodId===%@",model.goodsId);
                 
                 info_VC.isFrom = YES;
                 [self.navigationController pushViewController:info_VC animated:YES];
