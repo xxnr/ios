@@ -11,9 +11,10 @@
 #import "XNRMyRepresentModel.h"
 #import "XNRMyRepresent_cell.h"
 #import "XNRCustomerOrderController.h"
+#import "myAlertView.h"
 #define btnTag 1000
 
-@interface XNRMyRepresentViewController ()<UITableViewDelegate,UITableViewDataSource,XNRMyRepresentViewAddBtnDelegate>
+@interface XNRMyRepresentViewController ()<UITableViewDelegate,UITableViewDataSource,XNRMyRepresentViewAddBtnDelegate,LumAlertViewDelegate>
 {
     NSMutableArray *_dataArr;
     int currentPage;
@@ -45,6 +46,11 @@
 @property (nonatomic ,weak) UILabel *phoneNumLabel;
 
 @property (nonatomic ,weak) UILabel *headLabel;
+
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic,copy) NSString *phone;
+@property (nonatomic,strong)myAlertView *myAlert;
+@property (nonatomic,assign)BOOL isfirst;
 @end
 
 @implementation XNRMyRepresentViewController
@@ -58,6 +64,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    [self getCustomerData];
+    self.isfirst = YES;
     _dataArr = [[NSMutableArray alloc] init];
     self.view.backgroundColor = R_G_B_16(0xfafafa);
     [self setNavigationbarTitle];
@@ -219,6 +226,7 @@
     self.selectedBtn = sender;
 
     if (sender.tag == btnTag) {
+        
         [self.topView removeFromSuperview];
         _tableView.hidden = NO;
         [self getCustomerData];
@@ -245,6 +253,12 @@
                     }
                 } else {
                     [self.mrv removeFromSuperview];
+
+                    if (self.isfirst) {
+                        [self getNominatedInviter];
+                    }
+                    self.isfirst = NO;
+            
                     XNRMyRepresentView *mrv = [[XNRMyRepresentView alloc] init];
                     mrv.delegate = self;
                     self.mrv = mrv;
@@ -267,6 +281,60 @@
     }
 }
 
+-(void)getNominatedInviter
+{
+    [KSHttpRequest get:KGetNominatedInviter parameters:nil success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            self.name = result[@"nominated_inviter"][@"name"];
+            self.phone = result[@"nominated_inviter"][@"phone"];
+            
+            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:self.name,@"name",self.phone,@"phone", nil];
+            myAlertView *alert = [[myAlertView alloc]initWithHeadTitle:@"是否要添加该用户为您的代表？" LeftButton:@"不是" RightButton:@"是的" andDic:dic];
+            alert.delegate = self;
+            self.myAlert = alert;
+            [alert show];
+            
+        }
+        else if ([result[@"code"]integerValue] == 1404)
+        {
+            self.name = @"";
+            self.phone = @"";
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+#
+-(void)alertView:(myAlertView *)lumAlertView Action:(NSInteger)index Dic:(NSDictionary *)dic
+{
+    if (index == 1) {
+        [KSHttpRequest post:KUserBindInviter parameters:@{@"userId":[DataCenter account].userid,@"inviter":self.phone,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+            if ([result[@"code"] integerValue]==1000) {
+
+                [self.mrv removeFromSuperview];
+//                [self createMyRepresentUI];
+                [self bottomBtnClicked:self.rightBtn];
+                [UILabel showMessage:@"设置代表成功"];
+                [self.myAlert dismissLumAleatView];
+                
+
+            } else {
+
+                [UILabel showMessage:result[@"message"]];
+                [self.myAlert dismissLumAleatView];
+
+            }
+        } failure:^(NSError *error) {
+            
+        }];
+    }
+    else
+    {
+        [self.myAlert dismissLumAleatView];
+ 
+    }
+    
+}
 -(void)getCustomerData
 {
     [_dataArr removeAllObjects];
@@ -406,7 +474,8 @@
                     [KSHttpRequest post:KUserBindInviter parameters:@{@"userId":[DataCenter account].userid,@"inviter":phoneNum,@"user-agent":@"IOS-v2.0"} success:^(id result) {
                         if ([result[@"code"] integerValue]==1000) {
                             [self.mrv removeFromSuperview];
-                            [self createMyRepresentUI];
+//                            [self createMyRepresentUI];
+                            [self bottomBtnClicked:self.rightBtn];
                             [UILabel showMessage:@"设置代表成功"];
                         } else {
                            

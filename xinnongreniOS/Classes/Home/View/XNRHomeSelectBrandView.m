@@ -510,7 +510,7 @@
 
 //    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, PX_TO_PT(1002)) collectionViewLayout:collectionViewLayout];
 
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, PX_TO_PT(1002)) collectionViewLayout:collectionViewLayout];
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height - PX_TO_PT(120)-PX_TO_PT(89)) collectionViewLayout:collectionViewLayout];
     
     collectionView.delegate = self;
     collectionView.dataSource = self;

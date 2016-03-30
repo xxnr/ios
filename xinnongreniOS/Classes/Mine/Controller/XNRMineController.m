@@ -36,6 +36,9 @@
 @property (nonatomic, weak) UIButton *orderBtn;
 @property (nonatomic, weak) UIImageView *arrowImg;
 @property (nonatomic ,weak) UIButton *button;
+@property (nonatomic,weak) UIImageView *badgeImage;
+@property (nonatomic, strong) NSMutableArray *verifiedTypes;
+
 
 @property (nonatomic, strong) NSMutableArray *userArray;
 @end
@@ -66,6 +69,12 @@
                 info.type = dict[@"userType"];
                 info.typeName = dict[@"userTypeInName"];
                 info.sex = dict[@"sex"];
+                NSArray *Arr = dict[@"verifiedTypesInJson"];
+                
+                for (int i=0 ; i<Arr.count; i++) {
+                    NSString *name =dict[@"verifiedTypesInJson"][i][@"typeName"];
+                    [self.verifiedTypes addObject:name];
+                }
                 
                 info.provinceID = province[@"id"];
                 info.cityID = city[@"id"];
@@ -81,6 +90,7 @@
                 
                 [model setValuesForKeysWithDictionary:dict];
                 [_userArray addObject:model];
+                
                 // 头像
                 if ([KSHttpRequest isBlankString:dict[@"photo"]]) {
                     self.icon.image=[UIImage imageNamed:@"icon_head"];
@@ -110,6 +120,23 @@
                 }
                 // 类型
                 self.typeLabel.text = [DataCenter account].typeName?[NSString stringWithFormat:@"类型:%@",[DataCenter account].typeName]:@"类型:还没有填写哦~";
+                CGSize size = [self.typeLabel.text sizeWithAttributes:@{NSFontAttributeName:XNRFont(12)}];
+                
+                self.typeLabel.frame = CGRectMake(PX_TO_PT(200), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), size.width, PX_TO_PT(20));
+                
+                //徽章
+                if ([DataCenter account].typeName) {
+                    for (int i=0; i<self.verifiedTypes.count; i++) {
+                        if ([self.verifiedTypes[i] isEqualToString:[DataCenter account].typeName]) {
+                            self.badgeImage.frame = CGRectMake(CGRectGetMaxX(self.typeLabel.frame) + PX_TO_PT(14), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), PX_TO_PT(28), PX_TO_PT(36));
+                            self.badgeImage.hidden = NO;
+                            
+                            break;
+                        }
+                    }
+ 
+                }
+                
             }else{
                 
 //            [UILabel showMessage:result[@"message"]];
@@ -150,6 +177,10 @@
     }
 
 }
+-(void)viewWillDisappear:(BOOL)animated
+{
+    self.badgeImage.hidden = YES;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = R_G_B_16(0xf4f4f4);
@@ -168,35 +199,45 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     
+    self.verifiedTypes = [NSMutableArray array];
 
 }
 
 -(void)createLoginTop
 {
-        UILabel *introduceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200), PX_TO_PT(150), ScreenWidth, PX_TO_PT(30))];
-        introduceLabel.textColor = R_G_B_16(0xffffff);
-        introduceLabel.font = XNRFont(14);
-        self.introduceLabel = introduceLabel;
-        [self.bgView addSubview:introduceLabel];
-        
-        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200),(CGRectGetMaxY(self.introduceLabel.frame) + PX_TO_PT(16)), ScreenWidth - PX_TO_PT(200), PX_TO_PT(40))];
-        addressLabel.textColor = R_G_B_16(0xffffff);
-        addressLabel.font = XNRFont(12);
-        addressLabel.numberOfLines = 0;
-        self.addressLabel = addressLabel;
-        [self.bgView addSubview:addressLabel];
-        
-        UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), ScreenWidth, PX_TO_PT(20))];
-        typeLabel.textColor = R_G_B_16(0xffffff);
-        typeLabel.font = XNRFont(12);
-        typeLabel.numberOfLines = 0;
-        self.typeLabel = typeLabel;
-        [self.bgView addSubview:typeLabel];
-        
-        UIImageView *arrowImg = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(50), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(10), PX_TO_PT(18), PX_TO_PT(32))];
-        [arrowImg setImage:[UIImage imageNamed:@"icon_arrow_back"]];
-        self.arrowImg = arrowImg;
-        [self.bgView addSubview:arrowImg];
+    UILabel *introduceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200), PX_TO_PT(150), ScreenWidth, PX_TO_PT(30))];
+    introduceLabel.textColor = R_G_B_16(0xffffff);
+    introduceLabel.font = XNRFont(14);
+    self.introduceLabel = introduceLabel;
+    [self.bgView addSubview:introduceLabel];
+    
+    UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200),(CGRectGetMaxY(self.introduceLabel.frame) + PX_TO_PT(16)), ScreenWidth - PX_TO_PT(200), PX_TO_PT(40))];
+    addressLabel.textColor = R_G_B_16(0xffffff);
+    addressLabel.font = XNRFont(12);
+    addressLabel.numberOfLines = 0;
+    self.addressLabel = addressLabel;
+    [self.bgView addSubview:addressLabel];
+    
+    UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), ScreenWidth/3, PX_TO_PT(20))];
+    
+    typeLabel.textColor = R_G_B_16(0xffffff);
+    typeLabel.font = XNRFont(12);
+
+    typeLabel.numberOfLines = 0;
+    self.typeLabel = typeLabel;
+    [self.bgView addSubview:typeLabel];
+
+    UIImageView *BadgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(typeLabel.frame) + PX_TO_PT(14), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), PX_TO_PT(28), PX_TO_PT(37))];
+    BadgeImage.contentMode = UIViewContentModeScaleAspectFit;
+    BadgeImage.image = [UIImage imageNamed:@"badge"];
+    BadgeImage.hidden = YES;
+    self.badgeImage = BadgeImage;
+    [self.bgView addSubview:BadgeImage];
+
+    UIImageView *arrowImg = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(50), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(10), PX_TO_PT(18), PX_TO_PT(32))];
+    [arrowImg setImage:[UIImage imageNamed:@"icon_arrow_back"]];
+    self.arrowImg = arrowImg;
+    [self.bgView addSubview:arrowImg];
 }
 #pragma mark--创建顶部视图
 -(void)createTop{

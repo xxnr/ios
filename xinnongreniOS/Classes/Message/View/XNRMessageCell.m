@@ -59,7 +59,7 @@
     CGFloat titleLabelH = PX_TO_PT(80);
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleLabelX,titleLabelY,titleLabelW,titleLabelH)];
-    titleLabel.font = [UIFont systemFontOfSize:14];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     titleLabel.tintColor = R_G_B_16(0xc5c5c5);
     titleLabel.numberOfLines = 0;
     self.titleLabel = titleLabel;

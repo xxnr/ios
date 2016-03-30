@@ -52,6 +52,10 @@
  *  获取下线列表
  */
 #define KUserGetInvitee [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/user/getInvitee"]
+
+//获取新农代表
+#define KGetNominatedInviter [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/user/getNominatedInviter"]
+
 /**
  *  用户绑定邀请人
  */

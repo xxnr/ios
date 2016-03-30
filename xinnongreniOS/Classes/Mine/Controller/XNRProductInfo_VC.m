@@ -172,10 +172,11 @@
 }
 
 -(void)createTableView:(NSMutableArray *)infoModelArray{
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
+    XNRProductInfo_frame *frameModel = [infoModelArray lastObject];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, frameModel.viewHeight)];
     tableView.delegate = self;
     tableView.dataSource = self;
-    tableView.pagingEnabled = YES;
+//    tableView.pagingEnabled = YES;
     XNRProductInfo_frame *frame = [infoModelArray lastObject];
     tableView.contentSize = CGSizeMake(ScreenWidth, (frame.viewHeight)*2);
     

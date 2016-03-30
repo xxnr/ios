@@ -37,9 +37,9 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        [self createUI];
         self.backgroundColor = [UIColor clearColor];
         self.userInteractionEnabled = YES;
-    [self createUI];
     }
     return self;
 }
@@ -52,6 +52,13 @@
     image.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     self.image = image;
     [self addSubview:image];
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.image.frame) + PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
+    
+    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [self.contentView addSubview:lineView];
+    
+
     
     UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.image.frame) + margin, PX_TO_PT(20), ScreenWidth - CGRectGetMaxX(self.image.frame)-PX_TO_PT(32), PX_TO_PT(100))];
     detailLabel.font = [UIFont systemFontOfSize:16];
@@ -72,10 +79,6 @@
 //    [shopcarBtn addTarget:self action:@selector(shopcarBtnClick) forControlEvents:UIControlEventTouchUpInside];
 //    self.shopcarBtn = shopcarBtn;
 //    [self addSubview:shopcarBtn];
-    
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.image.frame) + PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-    [self addSubview:lineView];
     
 }
 

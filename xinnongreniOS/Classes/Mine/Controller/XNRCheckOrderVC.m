@@ -127,7 +127,6 @@
             
             if ([self.value isEqualToString: @"待付款"] || [self.value isEqualToString:@"部分付款"]) {
                 self.tableview.frame =CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth,ScreenHeight- CGRectGetMaxY(self.headView.frame) -PX_TO_PT(88) - 64);
-
                 // 底部视图
                 [self creatBottom];
                 
@@ -571,6 +570,8 @@
         if (_dataArray.count>0) {
             XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
             XRNSubOrdersModel *model = sectionModel.subOrders[indexPath.row];
+            model.orderId = sectionModel.id;
+            
             cell1.value = self.value;
             [cell1 setCellDataWithModel:model];
             

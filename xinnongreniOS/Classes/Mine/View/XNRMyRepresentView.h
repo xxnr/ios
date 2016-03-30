@@ -21,6 +21,8 @@
 
 @property (nonatomic, assign) id<XNRMyRepresentViewAddBtnDelegate> delegate;
 
++(void)Represent;
+
 @end
 
 @class XNRMyRepresentViewDataModel;
@@ -41,6 +43,7 @@
 @property (nonatomic, assign, readonly) CGRect addRepresentBtnF;
 
 @property (nonatomic, assign) CGFloat viewH;
+
 
 @end
 
