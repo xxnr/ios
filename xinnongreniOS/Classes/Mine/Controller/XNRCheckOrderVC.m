@@ -510,7 +510,7 @@
         else if (indexPath.section == 0)
         {
             XRNSubOrdersModel *subOrderModel = sectionModel.subOrders[indexPath.row];
-            if (subOrderModel.payType) {
+            if (subOrderModel.payType == 1 || subOrderModel.payType == 2) {
                 return PX_TO_PT(240);
             }
             else

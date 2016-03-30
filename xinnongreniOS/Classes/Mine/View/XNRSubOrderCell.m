@@ -175,6 +175,9 @@ static BOOL isPay = NO;
     [_alreadyPayMoneyLabel setAttributedText:AttributedStringDeposit1];
 
     //付款方式
+    if ([model.id isEqualToString:@"f5aa22bb51"]) {
+        NSLog(@"%d",model.payType);
+    }
     if (model.payType) {
         if (model.payType == 1)
         {
