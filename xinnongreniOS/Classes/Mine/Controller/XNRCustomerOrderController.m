@@ -198,7 +198,7 @@
         
         UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(30), ScreenWidth, PX_TO_PT(28))];
         timeLabel.textColor = R_G_B_16(0x323232);
-        timeLabel.font = [UIFont systemFontOfSize:14];
+        timeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         NSString *netDateString = [NSString stringWithFormat:@"%@",sectionModel.dateCreated];
         NSArray *dateArr = [netDateString componentsSeparatedByString:@"T"];
         NSDateFormatter *dataFormatter = [[NSDateFormatter alloc] init];
@@ -273,7 +273,7 @@
             
     UILabel *orderNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(56), ScreenWidth/2-PX_TO_PT(130), PX_TO_PT(28))];
     orderNumLabel.textColor = R_G_B_16(0x323232);
-    orderNumLabel.font = [UIFont systemFontOfSize:14];
+    orderNumLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     orderNumLabel.textAlignment = NSTextAlignmentRight;
     orderNumLabel.text = @"订单数：";
     [headView addSubview:orderNumLabel];

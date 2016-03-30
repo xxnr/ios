@@ -316,7 +316,7 @@
         
         UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0,ScreenWidth/2-PX_TO_PT(32) , PX_TO_PT(89))];
         payTypeLabel.textColor = R_G_B_16(0xfe9b00);
-        payTypeLabel.font = [UIFont systemFontOfSize:14];
+        payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         payTypeLabel.textAlignment = NSTextAlignmentRight;
         payTypeLabel.text = sectionModel.value;
         [headView addSubview:payTypeLabel];
@@ -349,7 +349,7 @@
         
                 
         UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
-        totalPriceLabel.font = [UIFont systemFontOfSize:16];
+        totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         totalPriceLabel.textAlignment = NSTextAlignmentRight;
         totalPriceLabel.text = [NSString stringWithFormat:@"总计：￥%.2f",sectionModel.totalPrice.floatValue];
         [bottomView addSubview:totalPriceLabel];

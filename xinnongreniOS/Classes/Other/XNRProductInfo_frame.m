@@ -115,15 +115,6 @@
     
     // view的高度
     _viewHeight = CGRectGetMaxY(_drawViewF);
-    
-    
-
-    
-
-    
-
-
-    
 
 
 }

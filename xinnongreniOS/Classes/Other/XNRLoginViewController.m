@@ -132,6 +132,9 @@
     usernameTextField.borderStyle = UITextBorderStyleNone;
     usernameTextField.alpha = 1;
     usernameTextField.placeholder = @"请输入您的手机号";
+    if (self.loginName.length > 0) {
+        usernameTextField.text = self.loginName;
+    }
     usernameTextField.font = XNRFont(14);
     usernameTextField.delegate = self;
     usernameTextField.returnKeyType = UIReturnKeyDone;

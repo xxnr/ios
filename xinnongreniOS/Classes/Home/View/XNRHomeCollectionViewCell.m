@@ -59,7 +59,7 @@
     goodNameLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame)+PX_TO_PT(10), PX_TO_PT(330), PX_TO_PT(70));
 //    goodNameLabel.backgroundColor = [UIColor redColor];
     goodNameLabel.textColor = R_G_B_16(0x323232);
-    goodNameLabel.font = [UIFont systemFontOfSize:14];
+    goodNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     goodNameLabel.numberOfLines = 0;
     self.goodNameLabel = goodNameLabel;
     [self.contentView addSubview:self.goodNameLabel];

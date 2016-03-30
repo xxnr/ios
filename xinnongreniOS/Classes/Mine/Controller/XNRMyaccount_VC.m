@@ -249,7 +249,7 @@
 
     // 显示所在地区
     UILabel *areaLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2+PX_TO_PT(30), PX_TO_PT(88)*2, ScreenWidth/2-PX_TO_PT(100), PX_TO_PT(88))];
-    areaLabel.font = [UIFont systemFontOfSize:14];
+    areaLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
 //    areaLabel.backgroundColor = [UIColor redColor];
     areaLabel.numberOfLines = 0;
 //    areaLabel.textAlignment = NSTextAlignmentRight;

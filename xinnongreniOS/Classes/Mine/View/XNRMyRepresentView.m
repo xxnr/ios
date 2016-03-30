@@ -40,17 +40,18 @@
     [iconImageView setImage:[UIImage imageNamed:@"mine_represent"]];
     self.iconImageView = iconImageView;
     [self addSubview:iconImageView];
-    
-    UILabel  *noRepresentLabel = [[UILabel alloc] init];
-    noRepresentLabel.font = [UIFont systemFontOfSize:16];
-    noRepresentLabel.text = @"您还没有设置新农代表";
-    noRepresentLabel.textAlignment = NSTextAlignmentCenter;
-    noRepresentLabel.textColor = R_G_B_16(0x646464);
-    self.noRepresentLabel = noRepresentLabel;
-    [self addSubview:noRepresentLabel];
+//    
+//    UILabel  *noRepresentLabel = [[UILabel alloc] init];
+//    noRepresentLabel.font = [UIFont systemFontOfSize:16];
+//    noRepresentLabel.text = @"您还没有设置新农代表";
+//    noRepresentLabel.textAlignment = NSTextAlignmentCenter;
+//    noRepresentLabel.textColor = R_G_B_16(0x646464);
+//    self.noRepresentLabel = noRepresentLabel;
+//    [self addSubview:noRepresentLabel];
     
     UITextField *phoneText = [[UITextField alloc] init];
-    phoneText.placeholder = @"请输入对方手机号添加";
+    phoneText.frame = CGRectMake(PX_TO_PT(31), PX_TO_PT(440), PX_TO_PT(469), PX_TO_PT(69));
+    phoneText.placeholder = @"请输入代表人手机号添加";
     phoneText.layer.borderWidth = 1.0;
     phoneText.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     phoneText.layer.cornerRadius = 5.0;
@@ -63,18 +64,31 @@
     [self addSubview:phoneText];
     
     UILabel *addRepresentLabel = [[UILabel alloc] init];
-    addRepresentLabel.text = @"邀请人添加后不可修改";
-    addRepresentLabel.textColor = R_G_B_16(0xc7c7c7);
-    addRepresentLabel.font = [UIFont systemFontOfSize:14];
-    addRepresentLabel.textAlignment = NSTextAlignmentCenter;
+    addRepresentLabel.frame = CGRectMake(PX_TO_PT(31), CGRectGetMaxY(phoneText.frame) + PX_TO_PT(23), ScreenWidth, PX_TO_PT(26));
+    addRepresentLabel.text = @"*代表人添加后不可修改，请仔细核对";
+    addRepresentLabel.textColor = R_G_B_16(0x646464);
+    addRepresentLabel.font = [UIFont systemFontOfSize:12];
+    
+    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:addRepresentLabel.text];
+    NSDictionary *depositStr=@{
+                               
+                               NSForegroundColorAttributeName:R_G_B_16(0xFF9000),
+                               
+                               };
+    
+    [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(0,1)];
+    
+    [addRepresentLabel setAttributedText:AttributedStringDeposit];
+    
+    
     self.addRepresentLabel = addRepresentLabel;
     [self addSubview:addRepresentLabel];
     
     UIButton *addRepresentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    addRepresentBtn.frame = CGRectMake((ScreenWidth - 100)/2, CGRectGetMaxY(self.addRepresentLabel.frame), 100, 32);
-    [addRepresentBtn setTitle:@"添加代表人"forState:UIControlStateNormal];
+    addRepresentBtn.frame = CGRectMake(PX_TO_PT(527),PX_TO_PT(440),PX_TO_PT(161),PX_TO_PT(61));
+    [addRepresentBtn setTitle:@"添加"forState:UIControlStateNormal];
     [addRepresentBtn setTintColor:R_G_B_16(0xffffff)];
-    addRepresentBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    addRepresentBtn.titleLabel.font = [UIFont systemFontOfSize:16];
     [addRepresentBtn setBackgroundColor:R_G_B_16(0x00b38a)];
     [addRepresentBtn addTarget:self action:@selector(addRepresent:) forControlEvents:UIControlEventTouchUpInside];
     addRepresentBtn.layer.cornerRadius = 5.0;
@@ -98,13 +112,14 @@
 }
 
 
-
 -(void)addRepresent:(UIButton *)sender {
     
     if ([self.delegate respondsToSelector:@selector(myRepresentViewWith:and:)]) {
         [self.delegate myRepresentViewWith:self and:self.phoneText.text];
     }
 }
+
+
 
 @end
 
@@ -124,24 +139,27 @@
     CGFloat noH = 20.0;
     _noRepresentLabelF = CGRectMake(noX, noY, labelW, noH);
     
-    CGFloat pW = labelW * 0.618;
-    CGFloat pX = (labelW - pW)*0.5;
-    CGFloat pY = CGRectGetMaxY(_noRepresentLabelF) + PX_TO_PT(90);
-    CGFloat pH = PX_TO_PT(80);
-    _phoneTextF = CGRectMake(pX, pY, pW, pH);
+//    CGFloat pW = labelW * 0.618;
+//    CGFloat pX = (labelW - pW)*0.5;
+//    CGFloat pY = CGRectGetMaxY(_noRepresentLabelF) + PX_TO_PT(90);
+//    CGFloat pH = PX_TO_PT(80);
+//    _phoneTextF = CGRectMake(pX, pY, pW, pH);
+    _phoneTextF = CGRectMake(PX_TO_PT(31), PX_TO_PT(225), PX_TO_PT(469), PX_TO_PT(69));
     
-    CGFloat addLX = 0;
-    CGFloat addLY = CGRectGetMaxY(_phoneTextF)+PX_TO_PT(24);
-    CGFloat addLW = labelW;
-    CGFloat addLH = 20.0;
-    _addRepresentLabelF = CGRectMake(addLX, addLY, addLW, addLH);
+//    CGFloat addLX = 0;
+//    CGFloat addLY = CGRectGetMaxY(_phoneTextF)+PX_TO_PT(24);
+//    CGFloat addLW = labelW;
+//    CGFloat addLH = 20.0;
+//    _addRepresentLabelF = CGRectMake(addLX, addLY, addLW, addLH);
+    _addRepresentLabelF = CGRectMake(PX_TO_PT(33), CGRectGetMaxY(_phoneTextF) + PX_TO_PT(23), ScreenWidth, PX_TO_PT(26));
     
-    CGFloat addBtnW = PX_TO_PT(180);
-    CGFloat addBtnY = CGRectGetMaxY(_addRepresentLabelF)+PX_TO_PT(38);
-    CGFloat addBtnX = (labelW - addBtnW)*0.5;
-    CGFloat addBtnH = PX_TO_PT(60);
-    _addRepresentBtnF = CGRectMake(addBtnX, addBtnY, addBtnW, addBtnH);
-    
+//    CGFloat addBtnW = PX_TO_PT(180);
+//    CGFloat addBtnY = CGRectGetMaxY(_addRepresentLabelF)+PX_TO_PT(38);
+//    CGFloat addBtnX = (labelW - addBtnW)*0.5;
+//    CGFloat addBtnH = PX_TO_PT(60);
+//    _addRepresentBtnF = CGRectMake(addBtnX, addBtnY, addBtnW, addBtnH);
+    _addRepresentBtnF = CGRectMake(PX_TO_PT(527),PX_TO_PT(225),PX_TO_PT(161),PX_TO_PT(61));
+
     _viewH = CGRectGetMaxY(_addRepresentBtnF);
 }
 

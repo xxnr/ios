@@ -74,8 +74,8 @@ static BOOL isPay = NO;
     [self.contentView addSubview:_alreadyPayMoneyLabel];
     
     //查看详情
-    UIButton *infoButton = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(0), PX_TO_PT(141), ScreenWidth - PX_TO_PT(30), PX_TO_PT(27))];
-    infoButton.titleLabel.textAlignment = UITextAlignmentRight;
+    UIButton *infoButton = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(590), PX_TO_PT(141), ScreenWidth - PX_TO_PT(613), PX_TO_PT(27))];
+
     [infoButton setTitle:@"查看详情" forState:UIControlStateNormal];
     [infoButton setTitleColor:R_G_B_16(0x909090) forState:UIControlStateNormal];
 

@@ -368,7 +368,6 @@
 #pragma mark - 按钮响应事件
 - (void)btnClick:(UIButton *)button
 {
-    
     [[NSUserDefaults standardUserDefaults]setValue:self.newpasswordTextField.text forKey:@"password"];
         NSLog(@"注册");
         if(self.phoneNumTextField.text.length==0||self.verifyNumTextField.text.length==0||self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0){
@@ -422,24 +421,32 @@
         [BMProgressView LoadViewDisappear:self.view];
         NSDictionary *datasDic = result[@"datas"];
         if([result[@"code"] isEqualToString:@"1000"]){
-            UserInfo *info = [DataCenter account];
-            info.loginName = datasDic[@"loginName"];
-            info.nickname=datasDic[@"nickname"];
-            info.no=datasDic[@"no"];
-            info.phone=datasDic[@"phone"];
-            info.userType=datasDic[@"userType"];
-            info.userid=datasDic[@"userid"];
-            info.token = result[@"token"];
-            info.loginState = YES;
-            info.password = _newpasswordTextField.text;
-            [DataCenter saveAccount:info];
-            // 直接跳转完善资料页面
-            XNRFinishMineDataController *fmdc = [[XNRFinishMineDataController alloc] init];
-            fmdc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:fmdc animated:YES];
+            
+//            [[NSUserDefaults standardUserDefaults]setValue:self.phoneNumTextField.text forKey:@"userPhone"];
+            //                    NSString *str = [[NSUserDefaults standardUserDefaults]valueForKey:@"userPhone"];
+
+            
+//            UserInfo *info = [DataCenter account];
+//            info.loginName = datasDic[@"loginName"];
+//            info.nickname=datasDic[@"nickname"];
+//            info.no=datasDic[@"no"];
+//            info.phone=datasDic[@"phone"];
+//            info.userType=datasDic[@"userType"];
+//            info.userid=datasDic[@"userid"];
+//            info.token = result[@"token"];
+//            info.loginState = YES;
+//            info.password = _newpasswordTextField.text;
+//            [DataCenter saveAccount:info];
+//            // 直接跳转完善资料页面
+//            XNRFinishMineDataController *fmdc = [[XNRFinishMineDataController alloc] init];
+//            fmdc.hidesBottomBarWhenPushed = YES;
+//            [self.navigationController pushViewController:fmdc animated:YES];
 
 //            [self.navigationController popViewControllerAnimated:YES];
             
+            XNRLoginViewController *loginVC = [[XNRLoginViewController alloc]init];
+            loginVC.loginName = datasDic[@"loginName"];
+            [self.navigationController pushViewController:loginVC animated:YES];
             
         }else{
             
