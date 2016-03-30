@@ -66,7 +66,7 @@
     [self addSubview:titleLabel];
     
     UILabel *datecreatedLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleLabelX,CGRectGetMaxY(self.titleLabel.frame) + marginLabel,titleLabelW,PX_TO_PT(20))];
-    datecreatedLabel.font = [UIFont systemFontOfSize:12];
+    datecreatedLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     datecreatedLabel.tintColor = R_G_B_16(0x646464);
     self.datecreatedLabel = datecreatedLabel;
     [self addSubview:datecreatedLabel];

@@ -85,7 +85,7 @@
     phoneNumTextField.borderStyle = UITextBorderStyleNone;
     phoneNumTextField.placeholder = @"请输入您的手机号";
     phoneNumTextField.alpha = 1;
-    phoneNumTextField.font = XNRFont(14);
+    phoneNumTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     phoneNumTextField.delegate = self;
     //设置键盘类型
     phoneNumTextField.returnKeyType = UIReturnKeyDone;
@@ -107,7 +107,7 @@
     UITextField *verifyNumTextField = [[UITextField alloc]initWithFrame:CGRectMake(PX_TO_PT(96), PX_TO_PT(154), ScreenWidth-PX_TO_PT(160), PX_TO_PT(52))];
     verifyNumTextField.borderStyle = UITextBorderStyleNone;
     verifyNumTextField.placeholder = @"请输入短信验证码";
-    verifyNumTextField.font = XNRFont(14);
+    verifyNumTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     verifyNumTextField.delegate = self;
     //设置键盘类型
     verifyNumTextField.returnKeyType = UIReturnKeyDone;
@@ -264,7 +264,7 @@
     newpasswordTextField.borderStyle = UITextBorderStyleNone;
     newpasswordTextField.secureTextEntry=YES;
     newpasswordTextField.placeholder = @"请设置您的密码";
-    newpasswordTextField.font = XNRFont(14);
+    newpasswordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     newpasswordTextField.delegate = self;
     //设置键盘类型
     newpasswordTextField.keyboardType=UIKeyboardTypeDefault;
@@ -289,7 +289,7 @@
     againPasswordTextField.borderStyle = UITextBorderStyleNone;
     againPasswordTextField.secureTextEntry=YES;
     againPasswordTextField.placeholder = @"请输入您的确认密码";
-    againPasswordTextField.font = XNRFont(14);
+    againPasswordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     againPasswordTextField.delegate = self;
     //设置键盘类型
     againPasswordTextField.keyboardType=UIKeyboardTypeDefault;
@@ -318,7 +318,7 @@
     [finishButton setTitleColor:R_G_B_16(0xfbfffe) forState:UIControlStateNormal];
     finishButton.layer.masksToBounds = YES;
     finishButton.layer.cornerRadius = 5;
-    finishButton.titleLabel.font = XNRFont(18);
+    finishButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.finishButton = finishButton;
     [self.mainView addSubview:finishButton];
 }

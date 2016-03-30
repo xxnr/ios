@@ -23,7 +23,7 @@
 #define KbtnTag          100
 #define KAllOrderTag     1000      //全部订单
 #define KHelpTag         2000      //帮助与反馈
-@interface XNRMineController ()<UIActionSheetDelegate>
+@interface XNRMineController ()<UIActionSheetDelegate,UIScrollViewDelegate>
 @property (nonatomic, weak) UIImageView *bgView;
 @property (nonatomic, weak) UIImageView *icon;
 @property (nonatomic, weak) UIButton *loginBtn;
@@ -205,39 +205,30 @@
 
 -(void)createLoginTop
 {
-    UILabel *introduceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200), PX_TO_PT(150), ScreenWidth, PX_TO_PT(30))];
-    introduceLabel.textColor = R_G_B_16(0xffffff);
-    introduceLabel.font = XNRFont(14);
-    self.introduceLabel = introduceLabel;
-    [self.bgView addSubview:introduceLabel];
-    
-    UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200),(CGRectGetMaxY(self.introduceLabel.frame) + PX_TO_PT(16)), ScreenWidth - PX_TO_PT(200), PX_TO_PT(40))];
-    addressLabel.textColor = R_G_B_16(0xffffff);
-    addressLabel.font = XNRFont(12);
-    addressLabel.numberOfLines = 0;
-    self.addressLabel = addressLabel;
-    [self.bgView addSubview:addressLabel];
-    
-    UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), ScreenWidth/3, PX_TO_PT(20))];
-    
-    typeLabel.textColor = R_G_B_16(0xffffff);
-    typeLabel.font = XNRFont(12);
-
-    typeLabel.numberOfLines = 0;
-    self.typeLabel = typeLabel;
-    [self.bgView addSubview:typeLabel];
-
-    UIImageView *BadgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(typeLabel.frame) + PX_TO_PT(14), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), PX_TO_PT(28), PX_TO_PT(37))];
-    BadgeImage.contentMode = UIViewContentModeScaleAspectFit;
-    BadgeImage.image = [UIImage imageNamed:@"badge"];
-    BadgeImage.hidden = YES;
-    self.badgeImage = BadgeImage;
-    [self.bgView addSubview:BadgeImage];
-
-    UIImageView *arrowImg = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(50), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(10), PX_TO_PT(18), PX_TO_PT(32))];
-    [arrowImg setImage:[UIImage imageNamed:@"icon_arrow_back"]];
-    self.arrowImg = arrowImg;
-    [self.bgView addSubview:arrowImg];
+        UILabel *introduceLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200), PX_TO_PT(150), ScreenWidth, PX_TO_PT(30))];
+        introduceLabel.textColor = R_G_B_16(0xffffff);
+        introduceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
+        self.introduceLabel = introduceLabel;
+        [self.bgView addSubview:introduceLabel];
+        
+        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200),(CGRectGetMaxY(self.introduceLabel.frame) + PX_TO_PT(16)), ScreenWidth - PX_TO_PT(200), PX_TO_PT(40))];
+        addressLabel.textColor = R_G_B_16(0xffffff);
+        addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(26)];
+        addressLabel.numberOfLines = 0;
+        self.addressLabel = addressLabel;
+        [self.bgView addSubview:addressLabel];
+        
+        UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), ScreenWidth, PX_TO_PT(20))];
+        typeLabel.textColor = R_G_B_16(0xffffff);
+        typeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(26)];
+        typeLabel.numberOfLines = 0;
+        self.typeLabel = typeLabel;
+        [self.bgView addSubview:typeLabel];
+        
+        UIImageView *arrowImg = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(50), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(10), PX_TO_PT(18), PX_TO_PT(32))];
+        [arrowImg setImage:[UIImage imageNamed:@"icon_arrow_back"]];
+        self.arrowImg = arrowImg;
+        [self.bgView addSubview:arrowImg];
 }
 #pragma mark--创建顶部视图
 -(void)createTop{
@@ -251,22 +242,6 @@
     
     //头像
     UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(150), PX_TO_PT(150))];
-    if (IS_Login == YES) {
-        if ([KSHttpRequest isBlankString:[DataCenter account].photo]) {
-            self.icon.image=[UIImage imageNamed:@"icon_head"];
-        }else{
-            NSString *imageUrl = [NSString stringWithFormat:@"%@%@",HOST,[DataCenter account].photo];
-            [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-            } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-                self.icon.image = image;
-            }];
-        }
-    }else{
-            [icon setImage:[UIImage imageNamed:@"icon_head"]];
-
-    }
-    
-
     icon.clipsToBounds=YES;
     icon.center = CGPointMake(ScreenWidth/2, PX_TO_PT(125));
     icon.layer.cornerRadius=PX_TO_PT(75);
@@ -282,7 +257,7 @@
     UIButton *loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     loginBtn.frame = CGRectMake((ScreenWidth-PX_TO_PT(332))*0.5, CGRectGetMaxY(self.icon.frame) + margin, PX_TO_PT(136), PX_TO_PT(48));
     [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
-    loginBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    loginBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
     loginBtn.tintColor = [UIColor whiteColor];
     loginBtn.backgroundColor = [UIColor clearColor];
     loginBtn.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -296,7 +271,7 @@
     UIButton *registBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     registBtn.frame = CGRectMake((ScreenWidth-PX_TO_PT(332))*0.5 + PX_TO_PT(196), CGRectGetMaxY(self.icon.frame) + margin, PX_TO_PT(136), PX_TO_PT(48));
     [registBtn setTitle:@"注册" forState:UIControlStateNormal];
-    registBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    registBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
     registBtn.tintColor = [UIColor whiteColor];
     registBtn.backgroundColor = [UIColor clearColor];
     registBtn.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -324,13 +299,13 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(112), PX_TO_PT(18), ScreenWidth-PX_TO_PT(112), PX_TO_PT(60))];
     titleLabel.text = @"我的订单";
     titleLabel.textColor = R_G_B_16(0x323232);
-    titleLabel.font = [UIFont systemFontOfSize:15];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
     [orderBtn addSubview:titleLabel];
     
     UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2 + PX_TO_PT(120), PX_TO_PT(18), ScreenWidth/2, PX_TO_PT(60))];
     detailLabel.text = @"查看全部订单";
     detailLabel.textColor = R_G_B_16(0x909090);
-    detailLabel.font = [UIFont systemFontOfSize:13];
+    detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(26)];
     [orderBtn addSubview:detailLabel];
     
     // 箭头
@@ -386,7 +361,7 @@
         //主题
         UILabel*titleLabel=[MyControl createLabelWithFrame:CGRectMake(PX_TO_PT(112), PX_TO_PT(11),ScreenWidth - PX_TO_PT(112), PX_TO_PT(60)) Font:16 Text:arr1[i]];
         titleLabel.textColor=R_G_B_16(0x323232);
-        titleLabel.font = [UIFont systemFontOfSize:15];
+        titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
         [button addSubview:titleLabel];
         
         // 分割线
@@ -507,13 +482,14 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:24];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"我的新农人";
     self.navigationItem.titleView = titleLabel;
     
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

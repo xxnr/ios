@@ -87,7 +87,14 @@
     
     // 下划线
     CGFloat topLineX = 0;
-    CGFloat topLineH = PX_TO_PT(1);
+    CGFloat topLineH;
+    if (IS_FourInch) {
+        topLineH = PX_TO_PT(1.5);
+        
+    }else{
+        topLineH = PX_TO_PT(1);
+    }
+
     CGFloat topLineW = ScreenWidth;
     CGFloat topLineY;
     if (self.orderModel.additions.count>0) {
@@ -118,7 +125,13 @@
         CGFloat middleLineX = PX_TO_PT(30);
         CGFloat middleLineY = CGRectGetMaxY(_depositLabelF);
         CGFloat middleLineW = ScreenWidth-PX_TO_PT(60);
-        CGFloat middleLineH = PX_TO_PT(1);
+        CGFloat middleLineH;
+        if (IS_FourInch) {
+            middleLineH = PX_TO_PT(1.5);
+            
+        }else{
+            middleLineH = PX_TO_PT(1);
+        }
         _middleLineF = CGRectMake(middleLineX, middleLineY, middleLineW, middleLineH);
         
         // 尾款
@@ -139,7 +152,14 @@
         CGFloat bottomLineX = 0;
         CGFloat bottomLineY = CGRectGetMaxY(_remainPriceLabelF);
         CGFloat bottomLineW = ScreenWidth;
-        CGFloat bottomLineH = PX_TO_PT(1);
+        CGFloat bottomLineH;
+        if (IS_FourInch) {
+            bottomLineH = PX_TO_PT(1.5);
+            
+        }else{
+            bottomLineH = PX_TO_PT(1);
+        }
+
         _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         
 //        // 合计

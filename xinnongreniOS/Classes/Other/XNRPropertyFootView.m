@@ -105,7 +105,7 @@
         
     }
 
-    numTextField.font = XNRFont(14);
+    numTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     numTextField.delegate = self;
     numTextField.returnKeyType = UIReturnKeyDone;
         //设置键盘类型

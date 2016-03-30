@@ -103,7 +103,7 @@
     UILabel *headLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.iconBtn.frame) +margin , PX_TO_PT(30), ScreenWidth/2, PX_TO_PT(60))];
     headLabel.text = @"我的头像";
     headLabel.textColor = R_G_B_16(0x323232);
-    headLabel.font = XNRFont(14);
+    headLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [headBtn addSubview:headLabel];
     
     UIButton *icon =[MyControl createButtonWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(174), PX_TO_PT(10), PX_TO_PT(100), PX_TO_PT(100)) ImageName:@"my_heagView" Target:self Action:@selector(uploadImage) Title:nil];
@@ -144,11 +144,12 @@
     UILabel *nickLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.nickNameBtn.frame) + margin, PX_TO_PT(14), ScreenWidth/2, PX_TO_PT(60))];
     nickLabel.text = @"我的昵称";
     nickLabel.textColor = R_G_B_16(0x323232);
-    nickLabel.font = XNRFont(14);
+    nickLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [nickBtn addSubview:nickLabel];
     
     // 显示昵称
     UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14), ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
+    nickNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     nickNameLabel.textAlignment = NSTextAlignmentRight;
     nickNameLabel.textColor = R_G_B_16(0x909090);
     if ([KSHttpRequest isBlankString:[DataCenter account].nickname]) {
@@ -198,7 +199,7 @@
         //主题
         UILabel*titleLabel=[MyControl createLabelWithFrame:CGRectMake(PX_TO_PT(112), iconY,ScreenWidth - PX_TO_PT(112),iconH) Font:16 Text:array[i]];
         titleLabel.textColor=R_G_B_16(0x323232);
-        titleLabel.font = XNRFont(14);
+        titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         [button addSubview:titleLabel];
         
         UIImageView *arrow3 = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.icon.frame)+PX_TO_PT(10), PX_TO_PT(23), PX_TO_PT(24), PX_TO_PT(42))];
@@ -219,6 +220,7 @@
     UILabel *userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14), ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
     userNameLabel.textAlignment = NSTextAlignmentRight;
     userNameLabel.textColor = R_G_B_16(0x909090);
+    userNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     if ([KSHttpRequest isBlankString:[DataCenter account].name]) {
         userNameLabel.text = [NSString stringWithFormat:@"添加"];
     }else{
@@ -229,6 +231,7 @@
     
     // 显示性别
     UILabel *sexLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14)+PX_TO_PT(88), ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
+    sexLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     sexLabel.textAlignment = NSTextAlignmentRight;
     sexLabel.textColor = R_G_B_16(0x909090);
     if ([KSHttpRequest isNULL:[DataCenter account].sex]) {
@@ -250,7 +253,6 @@
     // 显示所在地区
     UILabel *areaLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2+PX_TO_PT(30), PX_TO_PT(88)*2, ScreenWidth/2-PX_TO_PT(100), PX_TO_PT(88))];
     areaLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-//    areaLabel.backgroundColor = [UIColor redColor];
     areaLabel.numberOfLines = 0;
 //    areaLabel.textAlignment = NSTextAlignmentRight;
     areaLabel.textColor = R_G_B_16(0x909090);
@@ -269,6 +271,7 @@
     UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14) + PX_TO_PT(88)*3, ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
     typeLabel.textAlignment = NSTextAlignmentRight;
     typeLabel.textColor = R_G_B_16(0x909090);
+    typeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     typeLabel.text = [DataCenter account].typeName?[DataCenter account].typeName:@"选择";
     self.typeLabel = typeLabel;
     [bgView addSubview:typeLabel];
@@ -389,7 +392,7 @@
     UILabel *pwdLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.nickNameBtn.frame) + margin, PX_TO_PT(14), ScreenWidth/2, PX_TO_PT(60))];
     pwdLabel.text = @"修改密码";
     pwdLabel.textColor = R_G_B_16(0x323232);
-    pwdLabel.font = XNRFont(14);
+    pwdLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [bottomBtn addSubview:pwdLabel];
     
     UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(632),ScreenWidth,PX_TO_PT(1))];
@@ -598,7 +601,7 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:24];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"我";

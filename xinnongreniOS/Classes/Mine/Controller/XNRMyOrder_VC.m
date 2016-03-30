@@ -221,7 +221,7 @@
         UILabel *tempTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake((ScreenWidth/5.0)*i, PX_TO_PT(30),ScreenWidth/5.0 , PX_TO_PT(40))];
         tempTitleLabel.textColor = R_G_B_16(0x323232);
         tempTitleLabel.textAlignment = NSTextAlignmentCenter;
-        tempTitleLabel.font = [UIFont systemFontOfSize:16];
+        tempTitleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         tempTitleLabel.text = arr1[i];
         tempTitleLabel.tag = kLabelTag+i;
         [midBg addSubview:tempTitleLabel];
@@ -230,7 +230,7 @@
             [self buttonClick:button];
         }
     }
-    _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(100)-1, ScreenWidth/5.0, 1)];
+    _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4))];
     _selectLine.backgroundColor=R_G_B_16(0x00b38a);
     [midBg addSubview:_selectLine];
     
@@ -248,7 +248,7 @@
     UILabel *label = (UILabel *)[self.view viewWithTag:button.tag+1000];
     
     [UIView animateWithDuration:.3 animations:^{
-        self.selectLine.frame=CGRectMake((button.tag-KbtnTag)*ScreenWidth/5.0,  PX_TO_PT(100)-1, ScreenWidth/5.0, 1);
+        _selectLine.frame=CGRectMake((button.tag-KbtnTag)*ScreenWidth/5.0,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
     }];
     [self.mainScrollView setContentOffset:CGPointMake((ScreenWidth+10*SCALE)*(button.tag-KbtnTag),0) animated:NO];
     
@@ -365,7 +365,7 @@
     
     [UIView animateWithDuration:.3 animations:^{
         
-        self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(100)-1, ScreenWidth/5.0, 1);
+        self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
     }];
 }
 

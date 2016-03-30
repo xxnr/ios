@@ -94,7 +94,7 @@
     return YES;
 }
 
-#pragma mark -- UM
+#pragma mark -- UM推送
 -(void)umengTrack:(NSDictionary *)launchOptions {
     
     [MobClick startWithAppkey:UM_APPKEY reportPolicy:BATCH channelId:nil];

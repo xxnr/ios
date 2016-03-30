@@ -137,10 +137,10 @@
     bgView.backgroundColor = R_G_B_16(0xf4f4f4);
     [_contentView addSubview:bgView];
     
-    UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,IS_IPHONE4?40:80*SCALE, _contentView.frame.size.width, 20)];
+    UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,IS_FourInch?40:80*SCALE, _contentView.frame.size.width, 20)];
     titleLabel.textColor = [UIColor blackColor];
     titleLabel.text = @"请到银行办理";
-    titleLabel.font = [UIFont systemFontOfSize:18];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     [_contentView addSubview:titleLabel];
     
@@ -153,7 +153,7 @@
     UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(0, titleLabel.frame.origin.y+titleLabel.frame.size.height+25, 50, 35)];
     label1.textColor = [UIColor blackColor];
     label1.text = @"收款人:";
-    label1.font = [UIFont systemFontOfSize:14];
+    label1.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [bgView addSubview:label1];
     [label1 verticalUpAlignmentWithText:label1.text maxHeight:35];
     
@@ -162,7 +162,7 @@
     payeeLabel.text = @"";
     payeeLabel.numberOfLines = 0;
     payeeLabel.adjustsFontSizeToFitWidth = YES;
-    payeeLabel.font = [UIFont systemFontOfSize:14];
+    payeeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [bgView addSubview:payeeLabel];
     
     
@@ -170,7 +170,7 @@
     UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(0, payeeLabel.frame.origin.y+payeeLabel.frame.size.height, 50, 35)];
     label2.textColor = [UIColor blackColor];
     label2.text = @"开户行:";
-    label2.font = [UIFont systemFontOfSize:14];
+    label2.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     label2.textAlignment = NSTextAlignmentLeft;
     [bgView addSubview:label2];
     [label2 verticalUpAlignmentWithText:label2.text maxHeight:35];
@@ -180,7 +180,7 @@
     bankNameLabel.text = @"";
     bankNameLabel.numberOfLines = 0;
     bankNameLabel.adjustsFontSizeToFitWidth = YES;
-    bankNameLabel.font = [UIFont systemFontOfSize:14];
+    bankNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     bankNameLabel.textAlignment = NSTextAlignmentLeft;
     [bgView addSubview:bankNameLabel];
     
@@ -188,7 +188,7 @@
     UILabel *label3 = [[UILabel alloc]initWithFrame:CGRectMake(0, bankNameLabel.frame.origin.y+bankNameLabel.frame.size.height, 50, 35)];
     label3.textColor = [UIColor blackColor];
     label3.text = @"银行卡:";
-    label3.font = [UIFont systemFontOfSize:14];
+    label3.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     label3.textAlignment = NSTextAlignmentLeft;
     [bgView addSubview:label3];
     [label3 verticalUpAlignmentWithText:label3.text maxHeight:35];
@@ -198,7 +198,7 @@
     bankCardNoLabel.text = @"";
     bankCardNoLabel.numberOfLines = 0;
     bankCardNoLabel.adjustsFontSizeToFitWidth = YES;
-    bankCardNoLabel.font = [UIFont systemFontOfSize:14];
+    bankCardNoLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     bankCardNoLabel.textAlignment = NSTextAlignmentLeft;
     [bgView addSubview:bankCardNoLabel];
     
@@ -208,7 +208,7 @@
     UILabel *addLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, bankCardNoLabel.frame.origin.y+bankCardNoLabel.frame.size.height, 50, 35)];
     addLabel.textColor = [UIColor blackColor];
     addLabel.text = @"开户行:";
-    addLabel.font = [UIFont systemFontOfSize:14];
+    addLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     addLabel.textAlignment = NSTextAlignmentLeft;
     [bgView addSubview:addLabel];
     [label2 verticalUpAlignmentWithText:addLabel.text maxHeight:35];
@@ -218,7 +218,7 @@
     backNamelabelAdd.text = @"";
     backNamelabelAdd.numberOfLines = 0;
     backNamelabelAdd.adjustsFontSizeToFitWidth = YES;
-    backNamelabelAdd.font = [UIFont systemFontOfSize:14];
+    backNamelabelAdd.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     backNamelabelAdd.textAlignment = NSTextAlignmentLeft;
     [bgView addSubview:backNamelabelAdd];
     
@@ -226,7 +226,7 @@
     UILabel *addlabel3 = [[UILabel alloc]initWithFrame:CGRectMake(0, backNamelabelAdd.frame.origin.y+backNamelabelAdd.frame.size.height, 50, 35)];
     addlabel3.textColor = [UIColor blackColor];
     addlabel3.text = @"银行卡:";
-    addlabel3.font = [UIFont systemFontOfSize:14];
+    addlabel3.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     addlabel3.textAlignment = NSTextAlignmentLeft;
     [bgView addSubview:addlabel3];
     [addlabel3 verticalUpAlignmentWithText:addlabel3.text maxHeight:35];
@@ -236,7 +236,7 @@
     bankCardNoLabelAdd.text = @"";
     bankCardNoLabelAdd.numberOfLines = 0;
     bankCardNoLabelAdd.adjustsFontSizeToFitWidth = YES;
-    bankCardNoLabelAdd.font = [UIFont systemFontOfSize:14];
+    bankCardNoLabelAdd.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     bankCardNoLabelAdd.textAlignment = NSTextAlignmentLeft;
     [bgView addSubview:bankCardNoLabelAdd];
     

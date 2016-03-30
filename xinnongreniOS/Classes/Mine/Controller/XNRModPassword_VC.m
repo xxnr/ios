@@ -69,7 +69,7 @@
     self.makeSurePasswordTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 0, _newPasswordBg.frame.size.width-10, _newPasswordBg.frame.size.height)];
     self.makeSurePasswordTextField.borderStyle = UITextBorderStyleNone;
     self.makeSurePasswordTextField.placeholder = @"确认新密码";
-    self.makeSurePasswordTextField.font = XNRFont(18);
+    self.makeSurePasswordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.makeSurePasswordTextField.delegate = self;
     self.makeSurePasswordTextField.secureTextEntry = YES;
     //设置键盘类型
@@ -96,7 +96,7 @@
     self.newpasswordTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 0, _newPasswordBg.frame.size.width-10, _newPasswordBg.frame.size.height)];
     self.newpasswordTextField.borderStyle = UITextBorderStyleNone;
     self.newpasswordTextField.placeholder = @"请输入旧密码";
-    self.newpasswordTextField.font = XNRFont(18);
+    self.newpasswordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.newpasswordTextField.delegate = self;
     self.newpasswordTextField.secureTextEntry = YES;
     //设置键盘类型
@@ -121,7 +121,7 @@
     self.againPasswordTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 0, _newPasswordBg.frame.size.width-10, _newPasswordBg.frame.size.height)];
     self.againPasswordTextField.borderStyle = UITextBorderStyleNone;
     self.againPasswordTextField.placeholder = @"请输入新密码";
-    self.againPasswordTextField.font = XNRFont(18);
+    self.againPasswordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.againPasswordTextField.secureTextEntry=YES;
     self.againPasswordTextField.delegate = self;
     //设置键盘类型
@@ -141,7 +141,7 @@
     [self.finishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.finishButton.layer.masksToBounds = YES;
     self.finishButton.layer.cornerRadius = 5;
-    self.finishButton.titleLabel.font = XNRFont(18);
+    self.finishButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [self.view addSubview:self.finishButton];
 }
 //完成

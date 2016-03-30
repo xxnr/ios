@@ -88,13 +88,13 @@
     
     UILabel *brandNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(goodsImageView.frame) + PX_TO_PT(20), PX_TO_PT(40), ScreenWidth - CGRectGetMaxX(goodsImageView.frame) - PX_TO_PT(52), PX_TO_PT(100))];
     brandNameLabel.textColor = R_G_B_16(0x323232);
-    brandNameLabel.font = [UIFont systemFontOfSize:14];
+    brandNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     brandNameLabel.numberOfLines = 0;
     self.brandNameLabel = brandNameLabel;
     [topView addSubview:brandNameLabel];
     
     UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(goodsImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(brandNameLabel.frame), ScreenWidth - CGRectGetMaxX(goodsImageView.frame) - PX_TO_PT(52), PX_TO_PT(140))];
-    detailLabel.font = [UIFont systemFontOfSize:12];
+    detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     detailLabel.textColor = R_G_B_16(0x909090);
     detailLabel.numberOfLines = 0;
     self.detailLabel = detailLabel;
@@ -102,13 +102,13 @@
     
     UILabel *numLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(goodsImageView.frame) + PX_TO_PT(20), ScreenWidth, PX_TO_PT(70))];
     self.numLabel = numLabel;
-    numLabel.font = [UIFont systemFontOfSize:14];
+    numLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     numLabel.textAlignment = NSTextAlignmentLeft;
     numLabel.textColor = R_G_B_16(0x323232);
     [topView addSubview:numLabel];
     
     UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(goodsImageView.frame) + PX_TO_PT(20), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(70))];
-    priceLabel.font = [UIFont systemFontOfSize:14];
+    priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     priceLabel.textAlignment = NSTextAlignmentRight;
     priceLabel.textColor = R_G_B_16(0x323232);
     self.priceLabel = priceLabel;
@@ -143,14 +143,14 @@
             
             UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(8), 0, ScreenWidth/2, PX_TO_PT(45))];
             nameLabel.textColor = R_G_B_16(0x909090);
-            nameLabel.font = [UIFont systemFontOfSize:14];
+            nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
             nameLabel.textAlignment = NSTextAlignmentLeft;
             nameLabel.text = [NSString stringWithFormat:@"%@",subDic[@"name"]];
             [addtionLabel addSubview:nameLabel];
             
             UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(70), PX_TO_PT(45))];
             priceLabel.textColor = R_G_B_16(0x323232);
-            priceLabel.font = [UIFont systemFontOfSize:14];
+            priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
             priceLabel.textAlignment = NSTextAlignmentRight;
             priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[subDic[@"price"] floatValue ]];
             [addtionLabel addSubview:priceLabel];
@@ -178,27 +178,27 @@
     }
     UILabel *sectionOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
     sectionOneLabel.text = @"阶段一: 订金";
-    sectionOneLabel.font = [UIFont systemFontOfSize:14];
+    sectionOneLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     sectionOneLabel.textColor = R_G_B_16(0x323232);
     [self.midView addSubview:sectionOneLabel];
     
     UILabel *depositLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
     depositLabel.textAlignment = NSTextAlignmentRight;
     depositLabel.textColor = R_G_B_16(0xff4e00);
-    depositLabel.font = [UIFont systemFontOfSize:14];
+    depositLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.depositLabel = depositLabel;
     [self.midView addSubview:depositLabel];
     
     
     UILabel *sectionTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(80), ScreenWidth/2, PX_TO_PT(80))];
     sectionTwoLabel.text = @"阶段二: 尾款";
-    sectionTwoLabel.font = [UIFont systemFontOfSize:14];
+    sectionTwoLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     sectionTwoLabel.textColor = R_G_B_16(0x323232);
     [self.midView addSubview:sectionTwoLabel];
     
     UILabel *remainPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(80), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
     remainPriceLabel.textAlignment = NSTextAlignmentRight;
-    remainPriceLabel.font = [UIFont systemFontOfSize:14];
+    remainPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     remainPriceLabel.textColor = R_G_B_16(0x323232);
     self.remainPriceLabel = remainPriceLabel;
     [self.midView addSubview:remainPriceLabel];
@@ -207,13 +207,13 @@
     // 合计
     UILabel *goodsTotalLabelMid = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(160), ScreenWidth/2, PX_TO_PT(80))];
     goodsTotalLabelMid.textColor = R_G_B_16(0x323232);
-    goodsTotalLabelMid.font = [UIFont systemFontOfSize:14];
+    goodsTotalLabelMid.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.goodsTotalLabelMid = goodsTotalLabelMid;
     [self.midView addSubview:goodsTotalLabelMid];
     
     UILabel *totoalPriceLabelMid = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(160), ScreenWidth/2 - PX_TO_PT(32), PX_TO_PT(80))];
     totoalPriceLabelMid.textAlignment = NSTextAlignmentRight;
-    totoalPriceLabelMid.font = [UIFont systemFontOfSize:14];
+    totoalPriceLabelMid.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.totoalPriceLabelMid = totoalPriceLabelMid;
 //    [midView addSubview:totoalPriceLabelMid];
     
@@ -239,13 +239,13 @@
     
     UILabel *goodsTotalLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
     goodsTotalLabel.textColor = R_G_B_16(0x323232);
-    goodsTotalLabel.font = [UIFont systemFontOfSize:14];
+    goodsTotalLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.goodsTotalLabel = goodsTotalLabel;
     [bottomView addSubview:goodsTotalLabel];
     
     UILabel *totoalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2 - PX_TO_PT(32), PX_TO_PT(80))];
     totoalPriceLabel.textAlignment = NSTextAlignmentRight;
-    totoalPriceLabel.font = [UIFont systemFontOfSize:14];
+    totoalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.totoalPriceLabel = totoalPriceLabel;
     [bottomView addSubview:totoalPriceLabel];
     

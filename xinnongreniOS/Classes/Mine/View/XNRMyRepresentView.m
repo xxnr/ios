@@ -40,14 +40,15 @@
     [iconImageView setImage:[UIImage imageNamed:@"mine_represent"]];
     self.iconImageView = iconImageView;
     [self addSubview:iconImageView];
-//    
-//    UILabel  *noRepresentLabel = [[UILabel alloc] init];
-//    noRepresentLabel.font = [UIFont systemFontOfSize:16];
-//    noRepresentLabel.text = @"您还没有设置新农代表";
-//    noRepresentLabel.textAlignment = NSTextAlignmentCenter;
-//    noRepresentLabel.textColor = R_G_B_16(0x646464);
-//    self.noRepresentLabel = noRepresentLabel;
-//    [self addSubview:noRepresentLabel];
+
+    
+    UILabel  *noRepresentLabel = [[UILabel alloc] init];
+    noRepresentLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    noRepresentLabel.text = @"您还没有设置新农代表";
+    noRepresentLabel.textAlignment = NSTextAlignmentCenter;
+    noRepresentLabel.textColor = R_G_B_16(0x646464);
+    self.noRepresentLabel = noRepresentLabel;
+    [self addSubview:noRepresentLabel];
     
     UITextField *phoneText = [[UITextField alloc] init];
     phoneText.frame = CGRectMake(PX_TO_PT(31), PX_TO_PT(440), PX_TO_PT(469), PX_TO_PT(69));
@@ -56,7 +57,7 @@
     phoneText.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     phoneText.layer.cornerRadius = 5.0;
     phoneText.layer.masksToBounds = YES;
-    phoneText.font = [UIFont systemFontOfSize:16];
+    phoneText.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     phoneText.textAlignment = NSTextAlignmentCenter;
     phoneText.keyboardType = UIKeyboardTypeNumberPad;
     phoneText.alpha = 1.0;
@@ -88,7 +89,8 @@
     addRepresentBtn.frame = CGRectMake(PX_TO_PT(527),PX_TO_PT(440),PX_TO_PT(161),PX_TO_PT(61));
     [addRepresentBtn setTitle:@"添加"forState:UIControlStateNormal];
     [addRepresentBtn setTintColor:R_G_B_16(0xffffff)];
-    addRepresentBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+
+    addRepresentBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [addRepresentBtn setBackgroundColor:R_G_B_16(0x00b38a)];
     [addRepresentBtn addTarget:self action:@selector(addRepresent:) forControlEvents:UIControlEventTouchUpInside];
     addRepresentBtn.layer.cornerRadius = 5.0;

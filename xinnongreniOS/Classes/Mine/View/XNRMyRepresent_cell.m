@@ -48,7 +48,7 @@
     nickNameLabel.layer.masksToBounds = YES;
     nickNameLabel.adjustsFontSizeToFitWidth = YES;
     nickNameLabel.textColor = R_G_B_16(0xffffff);
-    nickNameLabel.font = [UIFont systemFontOfSize:16];
+    nickNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     nickNameLabel.textAlignment = NSTextAlignmentCenter;
     [nickNameLabel fitTextWidth_Ext];
     self.nickNameLabel = nickNameLabel;
@@ -57,7 +57,7 @@
     UILabel *phoneNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, nickNameLabelY, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(60))];
     phoneNumLabel.textAlignment = NSTextAlignmentRight;
     phoneNumLabel.textColor = R_G_B_16(0x00b38a);
-    phoneNumLabel.font = [UIFont systemFontOfSize:18];
+    phoneNumLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [phoneNumLabel fitTextWidth_Ext];
     self.phoneNumLabel = phoneNumLabel;
     [myRepView addSubview:phoneNumLabel];
@@ -89,7 +89,7 @@
 //        CGSize nameSize = [self.model.nickname sizeWithFont_BSExt:self.nickNameLabel.font maxSize:maxSize];
         
         
-//        CGSize size = [self.nickNameLabel.text boundingRectWithSize:CGSizeMake(MAXFLOAT, PX_TO_PT(60)) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16]} context:nil].size;
+//        CGSize size = [self.nickNameLabel.text boundingRectWithSize:CGSizeMake(MAXFLOAT, PX_TO_PT(60)) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]} context:nil].size;
 //        
 //        self.nickNameLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(18),size.width, PX_TO_PT(60));
         self.nickNameLabel.text = model.name;

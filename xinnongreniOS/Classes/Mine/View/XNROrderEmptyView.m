@@ -22,7 +22,6 @@
 {
     self = [super init];
     if (self) {
-        [self removeFromSuperview];
         self.userInteractionEnabled = YES;
         [self createView];
     }
@@ -37,7 +36,7 @@
     
     UILabel *noOrderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(imageView.frame) + PX_TO_PT(32), ScreenWidth, PX_TO_PT(36))];
     noOrderLabel.textColor = R_G_B_16(0x323232);
-    noOrderLabel.font = [UIFont systemFontOfSize:18];
+    noOrderLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     noOrderLabel.text = @"您还没有订单";
     noOrderLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:noOrderLabel];
@@ -55,7 +54,7 @@
     buyFerBtn.layer.cornerRadius = 5.0;
     buyFerBtn.layer.masksToBounds = YES;
     [buyFerBtn setTitle:@"去买化肥" forState:UIControlStateNormal];
-    buyFerBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    buyFerBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [buyFerBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
     [buyFerBtn addTarget:self action:@selector(buyClick:) forControlEvents:UIControlEventTouchUpInside];
     self.buyFerBtn = buyFerBtn;
@@ -67,7 +66,7 @@
     buyCarBtn.layer.cornerRadius = 5.0;
     buyCarBtn.layer.masksToBounds = YES;
     [buyCarBtn setTitle:@"去买汽车" forState:UIControlStateNormal];
-    buyCarBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    buyCarBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [buyCarBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
     [buyCarBtn addTarget:self action:@selector(buyClick:) forControlEvents:UIControlEventTouchDown];
     self.buyCarBtn = buyCarBtn;
@@ -82,11 +81,12 @@
         XNROrderEmptyViewbuySort type;
         if (button == self.buyFerBtn) {
             type = XNROrderEmptyView_buyFer;
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"pushFerVC" object:self];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"pushFerVC" object:self];
 
         }else{
             type = XNROrderEmptyView_buyCar;
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"pushCarVC" object:self];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"pushCarVC" object:self];
+            
         }
         [self.delegate XNROrderEmptyView:type];
     }

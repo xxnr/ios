@@ -15,7 +15,7 @@
 #import "XNROrderEmptyView.h"
 #import "XNRMyAllOrderFrame.h"
 
-@interface XNRPayView ()
+@interface XNRPayView ()<XNROrderEmptyViewBtnDelegate>
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
 @property (nonatomic, weak) UIButton *backtoTopBtn;
 
@@ -28,11 +28,24 @@
 {
     if (!_orderEmptyView) {
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
+        orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
+        orderEmptyView.delegate = self;
         [self addSubview:orderEmptyView];
     }
     return _orderEmptyView;
     
 }
+
+-(void)XNROrderEmptyView:(XNROrderEmptyViewbuySort)type
+{
+    if (type == XNROrderEmptyView_buyFer) {
+        
+    }else if (type == XNROrderEmptyView_buyCar){
+        
+    }
+    
+}
+
 
 -(id)initWithFrame:(CGRect)frame UrlString:(NSString *)urlString
 {
@@ -243,13 +256,13 @@
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(28), ScreenWidth/2, PX_TO_PT(32))];
         label.text = [NSString stringWithFormat:@"订单号 : %@",sectionModel.orderId];
         label.textColor = R_G_B_16(0x323232);
-        label.font = XNRFont(15);
+        label.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
         UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0,ScreenWidth/2-PX_TO_PT(32) , PX_TO_PT(89))];
         payTypeLabel.textColor = R_G_B_16(0xfe9b00);
-        payTypeLabel.font = [UIFont systemFontOfSize:14];
+        payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         payTypeLabel.textAlignment = NSTextAlignmentRight;
         payTypeLabel.text = sectionModel.value;
         [headView addSubview:payTypeLabel];
@@ -283,7 +296,7 @@
             
             
             UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth -PX_TO_PT(32), PX_TO_PT(80))];
-            totalPriceLabel.font = [UIFont systemFontOfSize:16];
+            totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             totalPriceLabel.textAlignment = NSTextAlignmentRight;
             totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
             
@@ -305,7 +318,7 @@
             sectionFour.tag = section + 1000;
             sectionFour.layer.cornerRadius = 5.0;
             sectionFour.layer.masksToBounds = YES;
-            sectionFour.titleLabel.font = [UIFont systemFontOfSize:16];
+            sectionFour.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchDown];
             [bottomView addSubview:sectionFour];
             
@@ -319,10 +332,51 @@
                 lineView.backgroundColor = R_G_B_16(0xc7c7c7);
                 [bottomView addSubview:lineView];
             }
+            return bottomView;
+        }else{
             
+            bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(100));
+            bottomView.backgroundColor = [UIColor whiteColor];
+            [self addSubview:bottomView];
+            
+            
+            UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth -PX_TO_PT(32), PX_TO_PT(80))];
+            totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+            totalPriceLabel.textAlignment = NSTextAlignmentRight;
+            totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
+            [bottomView addSubview:totalPriceLabel];
+            
+            NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
+            NSDictionary *priceStr=@{
+                                     
+                                     NSForegroundColorAttributeName:R_G_B_16(0xff4e00)
+                                     
+                                     };
+            
+            [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
+            
+            [totalPriceLabel setAttributedText:AttributedStringPrice];
+            
+            
+            UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(20))];
+            sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
+            [bottomView addSubview:sectionView];
+            
+            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+            sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+            [sectionView addSubview:sectionLine];
+            
+            
+            for (int i = 0; i<2; i++) {
+                
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+                [bottomView addSubview:lineView];
+            }
+            
+            return bottomView;
         }
         
-        return bottomView;
     }else{
         return nil;
     }

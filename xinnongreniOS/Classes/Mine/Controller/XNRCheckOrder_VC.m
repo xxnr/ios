@@ -110,7 +110,7 @@
 //        // 订单号
 //        UILabel *orderLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(20), PX_TO_PT(20), ScreenWidth, PX_TO_PT(28))];
 //        orderLabel.textColor = R_G_B_16(0x323232);
-//        orderLabel.font = [UIFont systemFontOfSize:14];
+//        orderLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
 //        orderLabel.text = [NSString stringWithFormat:@"订单号：%@",sectionModel.id];
 //        self.orderLabel = orderLabel;
 //        [orderView addSubview:orderLabel];
@@ -118,7 +118,7 @@
 //        // 交易状态
 //        UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(20), CGRectGetMaxY(orderLabel.frame) + PX_TO_PT(32), ScreenWidth, PX_TO_PT(28))];
 //        payTypeLabel.textColor = R_G_B_16(0x323232);
-//        payTypeLabel.font = [UIFont systemFontOfSize:14];
+//        payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
 //        payTypeLabel.text = [NSString stringWithFormat:@"交易状态：%@",sectionModel.value];
 //        self.payTypeLabel = payTypeLabel;
 //        [orderView addSubview:payTypeLabel];
@@ -143,7 +143,7 @@
 //
 //        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(64), PX_TO_PT(32), ScreenWidth/3, PX_TO_PT(32))];
 //        nameLabel.textColor = R_G_B_16(0x323232);
-//        nameLabel.font = [UIFont systemFontOfSize:16];
+//        nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
 //        nameLabel.text = sectionModel.recipientName;
 //
 //        self.nameLabel = nameLabel;
@@ -151,7 +151,7 @@
 //        
 //        UILabel *phoneNum = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nameLabel.frame), PX_TO_PT(32), ScreenWidth/2, PX_TO_PT(32))];
 //        phoneNum.textColor = R_G_B_16(0x323232);
-//        phoneNum.font = [UIFont systemFontOfSize:16];
+//        phoneNum.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
 //        phoneNum.text = sectionModel.recipientPhone;
 //
 //        self.phoneNum = phoneNum;
@@ -163,7 +163,7 @@
 //        
 //        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(addressImage.frame) + PX_TO_PT(20), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(32), ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), PX_TO_PT(32))];
 //        addressLabel.textColor = R_G_B_16(0xc7c7c7);
-//        addressLabel.font = [UIFont systemFontOfSize:16];
+//        addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
 //        addressLabel.text = sectionModel.address;
 //        addressLabel.adjustsFontSizeToFitWidth = YES;
 ////        addressLabel.backgroundColor = [UIColor redColor];
@@ -192,7 +192,7 @@
 //            
 //            
 //            UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
-//            totalPriceLabel.font = [UIFont systemFontOfSize:16];
+//            totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
 //            totalPriceLabel.textAlignment = NSTextAlignmentRight;
 //            totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.price.floatValue];
 //            [bottomView addSubview:totalPriceLabel];
@@ -213,7 +213,7 @@
 //            [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
 //            sectionFour.layer.cornerRadius = 5.0;
 //            sectionFour.layer.masksToBounds = YES;
-//            sectionFour.titleLabel.font = [UIFont systemFontOfSize:16];
+//            sectionFour.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
 //            sectionFour.tag = section + 1000;
 //            [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchUpInside];
 //            [bottomView addSubview:sectionFour];

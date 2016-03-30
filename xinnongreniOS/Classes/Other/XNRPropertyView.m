@@ -9,6 +9,7 @@
 #import "XNRPropertyView.h"
 #import "XNRPropertyBrandView.h"
 #import "XNRPropertyFootView.h"
+#import "XNRPropertyEmptyView.h"
 #import "XNRPropertyCollectionViewCell.h"
 #import "XNRProductInfo_model.h"
 #import "XNRProductPhotoModel.h"
@@ -24,6 +25,7 @@
 #define cellId @"selected_cell"
 #define headerViewId @"selectedHeaderView"
 #define footViewId @"selectedFootView"
+#define emptyViewId @"emptyFootView"
 #define buyBtnTag 1000
 
 
@@ -117,7 +119,9 @@
 - (void)initBaseViewAndData {
    
     if (!self.coverView && !self.attributesView) {
+        // 初始化一下
         _recordeSelected = 0;
+        _numText = 0;
         [self.addtionsArray removeAllObjects];
         _goodsArray = [NSMutableArray array];
         _dataArr = [NSMutableArray array];
@@ -138,9 +142,10 @@
         
         [self createTopView];
         
-        // 获得商品属性数据
-        [self getData];
     }
+    // 获得商品属性数据
+    [self getData];
+
     
 }
 #pragma mark - 数据请求
@@ -170,7 +175,7 @@
                     cellModel.name = skuModel.name;
                     cellModel.isEnable = YES;
                     [skuModel.values replaceObjectAtIndex:i withObject:cellModel];
-                    
+                    // 只有一个属性的SKU商品
                     if (skuModel.values.count == 1) {
                         cellModel.isSelected = YES;
                         [self.collectionView reloadData];
@@ -183,7 +188,7 @@
                         }
                         
                         // 3.生成请求参数
-                        NSDictionary *params = @{@"product":[NSString stringWithFormat:@"%@",_id],@"attributes":attributesArray,@"user-agent":@"IOS-v2.0"};
+                        NSDictionary *params = @{@"product":_id,@"attributes":attributesArray,@"user-agent":@"IOS-v2.0"};
                         NSLog(@"【请求参数:】%@",params);
                         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
                         manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -212,6 +217,9 @@
                                 NSArray *addtions = datas[@"additions"];
                                 NSDictionary *SKUprice = skuDict[@"price"];
                                 _SKUId = skuDict[@"_id"];
+                                if (skuDict[@"_id"]) {
+                                    self.shopcarModel._id = skuDict[@"_id"];
+                                }
 
                                 // 市场价
                                 if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
@@ -264,10 +272,7 @@
                                     
                                 }
 
-                                
-                                
                                 // 添加到购物车模型里面，方便加入到数据库
-                                self.shopcarModel._id = skuDict[@"_id"];
                                 XNRProductInfo_model *newInfoModel = [[XNRProductInfo_model alloc] init];
                                 newInfoModel.SKUAttributes = (NSMutableArray *)[XNRSKUAttributesModel objectArrayWithKeyValuesArray:attributes];
                                 newInfoModel.market_price = SKUprice[@"market_price"];
@@ -318,6 +323,8 @@
              // 判断是否是预售商品
             if ([_presale integerValue] ==  1) {// 预售
                 [self createExpectedView];
+                self.priceLabel.text = @"即将上线";
+                self.priceLabel.textColor = R_G_B_16(0x909090);
 
             }else{
                 [self createFirstView];
@@ -363,17 +370,18 @@
     
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame) + PX_TO_PT(20), 0, ScreenWidth-CGRectGetMaxX(imageView.frame)-PX_TO_PT(20)-PX_TO_PT(66), PX_TO_PT(100))];
     nameLabel.textColor = R_G_B_16(0x323232);
-    nameLabel.font = [UIFont systemFontOfSize:16];
+    nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     nameLabel.numberOfLines = 0;
     self.nameLabel = nameLabel;
     [self.attributesView addSubview:nameLabel];
     
     
-    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame) + PX_TO_PT(20), CGRectGetMaxY(nameLabel.frame), ScreenWidth-CGRectGetMaxX(imageView.frame)-PX_TO_PT(20), PX_TO_PT(34))];
+    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame) + PX_TO_PT(20), CGRectGetMaxY(nameLabel.frame), ScreenWidth-CGRectGetMaxX(imageView.frame)-PX_TO_PT(20), PX_TO_PT(38))];
     priceLabel.textColor = R_G_B_16(0xff4e00);
-    priceLabel.font = [UIFont systemFontOfSize:20];
+    priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(38)];
     self.priceLabel = priceLabel;
     [self.attributesView addSubview:priceLabel];
+    
 }
 
 -(void)createFirstView{
@@ -387,7 +395,7 @@
         UIButton *buyBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(buyBtnClick) Title:@"立即购买"];
         buyBtn.backgroundColor = [UIColor whiteColor];
         [buyBtn setTitleColor:R_G_B_16(0xfe9b00) forState:UIControlStateNormal];
-        buyBtn.titleLabel.font = XNRFont(16);
+        buyBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         buyBtn.tag = buyBtnTag;
         self.buyBtn = buyBtn;
         [bgViewF addSubview:buyBtn];
@@ -396,7 +404,7 @@
         UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(2), ScreenWidth/2, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
         addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
         [addBuyCarBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        addBuyCarBtn.titleLabel.font=XNRFont(16);
+        addBuyCarBtn.titleLabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
         self.addBuyCarBtn = addBuyCarBtn;
         [bgViewF addSubview:addBuyCarBtn];
 
@@ -421,7 +429,7 @@
         expectLabel.text = @"敬请期待";
         expectLabel.textAlignment = NSTextAlignmentCenter;
         expectLabel.textColor = R_G_B_16(0x909090);
-        expectLabel.font = [UIFont systemFontOfSize:18];
+        expectLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
         [bgExpectView addSubview:expectLabel];
         
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
@@ -441,7 +449,7 @@
         UIButton *admireBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(admireBtnClick) Title:@"确定"];
         admireBtn.backgroundColor = R_G_B_16(0xfe9b00);
         [admireBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        admireBtn.titleLabel.font=XNRFont(16);
+        admireBtn.titleLabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
         [bgView addSubview:admireBtn];
     }
 }
@@ -477,7 +485,7 @@
             [self synchShoppingCarDataWithoutToast];
             
             NSMutableArray *SKUs = [NSMutableArray array];
-            NSDictionary *param = @{@"_id":self.shopcarModel._id?self.shopcarModel._id:@"",@"count":_numText?_numText:@"1",@"additions":self.shopcarModel.additions};
+            NSDictionary *param = @{@"_id":self.shopcarModel._id?self.shopcarModel._id:_SKUId,@"count":_numText?_numText:@"1",@"additions":self.shopcarModel.additions};
             [SKUs addObject:param];
             NSLog(@"854990===%@-=-=-=",SKUs);
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -611,8 +619,11 @@
             NSLog(@"0-=9=90%@",addtionArray);
         }
     }
-    NSDictionary *params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"userId":[DataCenter account].userid,@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"token":[DataCenter account].token,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
-    NSLog(@"())__)%@",params);
+    NSDictionary *params;
+    if (self.shopcarModel._id) {
+        params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"userId":[DataCenter account].userid,@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"token":[DataCenter account].token,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
+        NSLog(@"())__)%@",params);
+    }
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -674,9 +685,12 @@
             NSLog(@"0-=9=90%@",addtionArray);
         }
     }
-    NSDictionary *params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"userId":[DataCenter account].userid,@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"token":[DataCenter account ].token,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
-    
-    NSLog(@"())__)%@",params);
+    NSDictionary *params;
+    if (self.shopcarModel._id) {
+        params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"userId":[DataCenter account].userid,@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"token":[DataCenter account ].token,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
+        
+        NSLog(@"())__)%@",params);
+    }
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -749,8 +763,6 @@
 -(void)createCollectionView
 {
     if (!_collectionView) {
-//        UICollectionViewLayout *collectionViewLayout = [[UICollectionViewLayout alloc] init];
-
         XNRCollectionViewFlowLayout *collectionViewLayout = [[XNRCollectionViewFlowLayout alloc] init];
         collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
         UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(220), ScreenWidth-2*PX_TO_PT(30), PX_TO_PT(680)) collectionViewLayout:collectionViewLayout];
@@ -759,6 +771,7 @@
         collectionView.dataSource = self;
         [collectionView registerClass:[XNRPropertyBrandView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewId];
         [collectionView registerClass:[XNRPropertyFootView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:footViewId];
+        [collectionView registerClass:[XNRPropertyEmptyView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:emptyViewId];
         [collectionView registerClass:[XNRPropertyCollectionViewCell class] forCellWithReuseIdentifier:cellId];
         [collectionView registerClass:[XNRPropertyCollectionViewCell class] forCellWithReuseIdentifier:@"addtionCell"];
         collectionView.backgroundColor = [UIColor clearColor];
@@ -1111,13 +1124,13 @@
     if (infoModel.SKUAttributes.count>indexPath.section) {
         XNRSKUAttributesModel *skuModel = infoModel.SKUAttributes[indexPath.section];
         XNRSKUCellModel *model = skuModel.values[indexPath.item];
-        CGSize valueSize = [model.cellValue sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
+        CGSize valueSize = [model.cellValue sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(28)]}];
         currentSize = CGSizeMake(valueSize.width + PX_TO_PT(10), valueSize.height+PX_TO_PT(10));
 
     }else if (infoModel.SKUAttributes.count<=indexPath.section){
         XNRAddtionsModel *addtionModel = infoModel.additions[indexPath.item];
         NSString *addtionStr = [NSString stringWithFormat:@"%@(+%@)",addtionModel.name,addtionModel.price];
-        CGSize valueSize = [addtionStr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
+        CGSize valueSize = [addtionStr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(28)]}];
         currentSize = CGSizeMake(valueSize.width+ PX_TO_PT(10), valueSize.height+ PX_TO_PT(10));
 
     }else{
@@ -1169,14 +1182,17 @@
             model = _goodsArray[i];
         }
         NSLog(@"++____%@",indexPath);
-        
+        if ([_presale integerValue] == 1) {
+            XNRPropertyEmptyView *emptyView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:emptyViewId forIndexPath:indexPath];
+            reusableview = emptyView;
+        }else{
             XNRPropertyFootView *footView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:footViewId forIndexPath:indexPath];
-        footView.com = ^(NSString *numTF){
-            _numText = numTF;
-        
-        };
+            footView.com = ^(NSString *numTF){
+                _numText = numTF;
+                
+            };
             reusableview = footView;
-
+        }
     }
     return reusableview;
 }

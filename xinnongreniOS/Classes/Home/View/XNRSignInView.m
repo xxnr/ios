@@ -39,7 +39,7 @@
     //截取显示图片2倍大小
     UIImage *image = [BeginImageContext beginImageContext:CGRectMake(0,0,600,600) View:tempImageView];
     
-    self.signSucessImageView = [MyControl createImageViewWithFrame:CGRectMake(ScreenWidth/2.0, (ScreenHeight-300)/2.0-(IS_IPHONE4?50:60)+150, 0, 0) ImageName:@"icon_signSuccess"];
+    self.signSucessImageView = [MyControl createImageViewWithFrame:CGRectMake(ScreenWidth/2.0, (ScreenHeight-300)/2.0-(IS_FourInch?50:60)+150, 0, 0) ImageName:@"icon_signSuccess"];
     self.signSucessImageView.image = image;
     self.signSucessImageView.layer.masksToBounds = YES;
     [self addSubview:self.signSucessImageView];

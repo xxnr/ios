@@ -48,7 +48,7 @@
     ferBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -150);
     ferBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -80, 0, 0);
     [ferBtn setTitleColor:R_G_B_16(0x66ccee) forState:UIControlStateNormal];
-    ferBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    ferBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [ferBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     ferBtn.tag = 1000;
     self.ferBtn = ferBtn;
@@ -62,7 +62,7 @@
     carBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -150);
     carBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -80, 0, 0);
     [carBtn setTitleColor:R_G_B_16(0xff7700) forState:UIControlStateNormal];
-    carBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    carBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [carBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.carBtn = carBtn;
     carBtn.tag = 1001;
