@@ -219,11 +219,22 @@
                 
                 sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
                 
-                for (XNRMyOrderModel *model in sectionModel.skus) {
-                    XNRMyAllOrderFrame *frameModel = [[XNRMyAllOrderFrame alloc] init];
-                    frameModel.orderModel = model;
+                if (sectionModel.skus.count == 0) {
+                    for (XNRMyOrderModel *model in sectionModel.products) {
+                        XNRMyAllOrderFrame *frameOrder = [[XNRMyAllOrderFrame alloc] init];
+                        frameOrder.orderModel = model;
+                        
+                        [sectionModel.orderFrameArray addObject:frameOrder];
+                    }
                     
-                    [sectionModel.orderFrameArray addObject:frameModel];
+                }else{
+                    for (XNRMyOrderModel *model in sectionModel.skus) {
+                        XNRMyAllOrderFrame *frameOrder = [[XNRMyAllOrderFrame alloc] init];
+                        frameOrder.orderModel = model;
+                        
+                        [sectionModel.orderFrameArray addObject:frameOrder];
+                    }
+                    
                 }
                 
                 
@@ -439,25 +450,28 @@
 {
     static NSString *cellID = @"cell";
     
-    XNRMyOrderSend_Cell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    XNRMyOrderServe_Cell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell)
     {
         //单元格复用cellID要一致
-        cell = [[XNRMyOrderSend_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
-        
+        cell = [[XNRMyOrderServe_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
     }
         
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-        if (sectionModel.products.count>0) {
+        if (sectionModel.skus.count>0) {
             XNRMyOrderModel *model = sectionModel.skus[indexPath.row];
             cell.attributesArray = model.attributes;
             cell.addtionsArray = model.additions;
             XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray [indexPath.row];
             cell.orderFrame = frameModel;
 
+        }else{
+            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
+            cell.attributesArray = model.attributes;
+            cell.addtionsArray = model.additions;
         }
     }
     

@@ -185,12 +185,24 @@
                 
                 sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
                 
-                for (XNRMyOrderModel *model in sectionModel.skus) {
-                    XNRMyAllOrderFrame *frameOrder = [[XNRMyAllOrderFrame alloc] init];
-                    frameOrder.orderModel = model;
-                    
-                    [sectionModel.orderFrameArray addObject:frameOrder];
+                if (sectionModel.skus.count == 0) {
+                    for (XNRMyOrderModel *model in sectionModel.products) {
+                        XNRMyAllOrderFrame *frameOrder = [[XNRMyAllOrderFrame alloc] init];
+                        frameOrder.orderModel = model;
+                        
+                        [sectionModel.orderFrameArray addObject:frameOrder];
+                    }
+
+                }else{
+                    for (XNRMyOrderModel *model in sectionModel.skus) {
+                        XNRMyAllOrderFrame *frameOrder = [[XNRMyAllOrderFrame alloc] init];
+                        frameOrder.orderModel = model;
+                        
+                        [sectionModel.orderFrameArray addObject:frameOrder];
+                    }
+
                 }
+                
                 
                 [_dataArr addObject:sectionModel];
             }
@@ -470,7 +482,7 @@
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-        if (sectionModel.orderFrameArray.count>0) {
+        if (sectionModel.skus.count>0) {
             XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
             cell.attributesArray = modelArray.attributes;
             cell.addtionsArray = modelArray.additions;

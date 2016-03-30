@@ -140,7 +140,6 @@
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         self.userInteractionEnabled = YES;
-        NSLog(@"jkfadsjkladfsjadfs%@",_shopcarModel.online);
         [self createUI];
     }
     return self;
