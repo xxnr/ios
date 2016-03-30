@@ -24,8 +24,4 @@
  *
  */
 -(id)initWithFrame:(CGRect)frame UrlString:(NSString *)urlString;
-/**
- *  空视图出现
- */
--(void)showEmptyView;
 @end

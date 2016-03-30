@@ -140,7 +140,6 @@
 
 - (void)backClick:(UIButton *)btn
 {
-//     [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

@@ -40,7 +40,7 @@
     UITextField *nickNameTF = [[UITextField alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(98))];
     nickNameTF.borderStyle = UITextBorderStyleNone;
     nickNameTF.backgroundColor = R_G_B_16(0xffffff);
-    nickNameTF.font = XNRFont(18);
+    nickNameTF.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     nickNameTF.clearButtonMode = UITextFieldViewModeWhileEditing;
     nickNameTF.textAlignment = NSTextAlignmentLeft;
     nickNameTF.delegate = self;
@@ -137,7 +137,7 @@
 -(void)createNav{
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:24];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"修改昵称";

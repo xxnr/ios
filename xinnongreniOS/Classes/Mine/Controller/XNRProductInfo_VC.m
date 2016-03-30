@@ -23,12 +23,14 @@
 #define kLeftBtn  3000
 #define kRightBtn 4000
 #define HEIGHT 100
-@interface XNRProductInfo_VC ()<UITextFieldDelegate,UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource,XNRProductInfo_cellDelegate,XNRToolBarBtnDelegate>{
+@interface XNRProductInfo_VC ()<UITextFieldDelegate,UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource,XNRProductInfo_cellDelegate,XNRToolBarBtnDelegate,UIScrollViewDelegate>{
     CGRect oldTableRect;
     CGFloat preY;
     NSMutableArray *_goodsArray;
     NSString *_Price;
     NSString *_marketPrice;
+    NSMutableArray *_infoModelArray;
+
 }
 @property(nonatomic,weak) UITableView *tableView;
 @property(nonatomic,weak) UIImageView *headView;
@@ -66,7 +68,6 @@
     }
     return _progressView;
 }
-
 
 -(XNRPropertyView *)propertyView{
     
@@ -172,16 +173,41 @@
 }
 
 -(void)createTableView:(NSMutableArray *)infoModelArray{
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
+    _infoModelArray = infoModelArray;
+    XNRProductInfo_frame *frame = [infoModelArray lastObject];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, frame.viewHeight)];
     tableView.delegate = self;
     tableView.dataSource = self;
-    tableView.pagingEnabled = YES;
-    XNRProductInfo_frame *frame = [infoModelArray lastObject];
-    tableView.contentSize = CGSizeMake(ScreenWidth, (frame.viewHeight)*2);
-    
     self.tableView = tableView;
     [self.view addSubview:tableView];
 }
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+}
+// 结束拖动
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    XNRProductInfo_frame *frameModel = [_infoModelArray lastObject];
+    
+    if (self.tableView.y > frameModel.viewHeight) {
+        self.tableView.pagingEnabled = YES;
+        
+    }else{
+        self.tableView.contentOffset = CGPointMake(0, frameModel.viewHeight-(ScreenHeight-64-PX_TO_PT(80)));
+        
+    }
+
+   
+}
+
+//将开始降速时
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView;
+{
+
+}
+
 
 -(void)XNRProductInfo_cellScroll
 {
@@ -208,6 +234,8 @@
             model.marketMax = dic[@"SKUMarketPrice"][@"max"];
 
             model._id = dic[@"_id"];
+            
+            model.online = _model.online;
             
             [model setValuesForKeysWithDictionary:dic];
             
@@ -281,11 +309,8 @@
     expectLabel.text = @"商品已下架";
     expectLabel.textAlignment = NSTextAlignmentCenter;
     expectLabel.textColor = R_G_B_16(0x909090);
-    expectLabel.font = [UIFont systemFontOfSize:18];
+    expectLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [bgView addSubview:expectLabel];
-
-    
-
 }
 
 #pragma mark-底部视图
@@ -301,7 +326,7 @@
     expectLabel.text = @"敬请期待";
     expectLabel.textAlignment = NSTextAlignmentCenter;
     expectLabel.textColor = R_G_B_16(0x909090);
-    expectLabel.font = [UIFont systemFontOfSize:18];
+    expectLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [bgExpectView addSubview:expectLabel];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
@@ -317,7 +342,7 @@
     UIButton *buyBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(buyBtnClick) Title:@"立即购买"];
     buyBtn.backgroundColor = [UIColor whiteColor];
     [buyBtn setTitleColor:R_G_B_16(0xfe9b00) forState:UIControlStateNormal];
-    buyBtn.titleLabel.font = XNRFont(16);
+    buyBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.buyBtn = buyBtn;
     [bgView addSubview:buyBtn];
     
@@ -325,7 +350,7 @@
      UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(2), ScreenWidth/2, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
     addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
     [addBuyCarBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    addBuyCarBtn.titleLabel.font=XNRFont(16);
+    addBuyCarBtn.titleLabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     self.addBuyCarBtn = addBuyCarBtn;
     [bgView addSubview:addBuyCarBtn];
     

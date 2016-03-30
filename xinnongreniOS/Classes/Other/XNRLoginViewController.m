@@ -132,7 +132,10 @@
     usernameTextField.borderStyle = UITextBorderStyleNone;
     usernameTextField.alpha = 1;
     usernameTextField.placeholder = @"请输入您的手机号";
-    usernameTextField.font = XNRFont(14);
+    if (self.loginName.length > 0) {
+        usernameTextField.text = self.loginName;
+    }
+    usernameTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     usernameTextField.delegate = self;
     usernameTextField.returnKeyType = UIReturnKeyDone;
     usernameTextField.keyboardType = UIKeyboardTypePhonePad;
@@ -162,7 +165,7 @@
     passwordTextField.borderStyle = UITextBorderStyleNone;
     passwordTextField.alpha = 1;
     passwordTextField.placeholder = @"请输入您的密码";
-    passwordTextField.font = XNRFont(14);
+    passwordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     passwordTextField.delegate = self;
     passwordTextField.secureTextEntry = YES;
     passwordTextField.returnKeyType = UIReturnKeyDone;
@@ -213,7 +216,7 @@
     [forgetBtn addTarget:self action:@selector(forgetClick:) forControlEvents:UIControlEventTouchUpInside];
     [forgetBtn setTitle:@"忘记密码?" forState:UIControlStateNormal];
     [forgetBtn setTitleColor:R_G_B_16(0x00ffc3) forState:UIControlStateNormal];
-    forgetBtn.titleLabel.font = XNRFont(16);
+    forgetBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.forgetBtn = forgetBtn;
     [self.mainView addSubview:forgetBtn];
 }
@@ -237,7 +240,7 @@
     loginBtn.layer.cornerRadius = 5;
     [loginBtn setTitle:@"确认登录" forState:UIControlStateNormal];
     [loginBtn setTitleColor:R_G_B_16(0xfbfffe) forState:UIControlStateNormal];
-    loginBtn.titleLabel.font = [UIFont systemFontOfSize:18];
+    loginBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.loginBtn = loginBtn;
     [self.mainView addSubview:loginBtn];
 }
@@ -250,7 +253,7 @@
     titleLabel.textColor = R_G_B_16(0xffffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"还没有账号？立即注册";
-    titleLabel.font = [UIFont systemFontOfSize:16];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     NSMutableAttributedString *AttributedString = [[NSMutableAttributedString alloc]initWithString:titleLabel.text];
     NSDictionary*dicStr = @{
                           NSForegroundColorAttributeName:R_G_B_16(0x00ffc3)

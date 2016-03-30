@@ -11,9 +11,10 @@
 #import "XNRMyRepresentModel.h"
 #import "XNRMyRepresent_cell.h"
 #import "XNRCustomerOrderController.h"
+#import "myAlertView.h"
 #define btnTag 1000
 
-@interface XNRMyRepresentViewController ()<UITableViewDelegate,UITableViewDataSource,XNRMyRepresentViewAddBtnDelegate>
+@interface XNRMyRepresentViewController ()<UITableViewDelegate,UITableViewDataSource,XNRMyRepresentViewAddBtnDelegate,LumAlertViewDelegate>
 {
     NSMutableArray *_dataArr;
     int currentPage;
@@ -45,6 +46,11 @@
 @property (nonatomic ,weak) UILabel *phoneNumLabel;
 
 @property (nonatomic ,weak) UILabel *headLabel;
+
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic,copy) NSString *phone;
+@property (nonatomic,strong)myAlertView *myAlert;
+@property (nonatomic,assign)BOOL isfirst;
 @end
 
 @implementation XNRMyRepresentViewController
@@ -58,6 +64,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    [self getCustomerData];
+    self.isfirst = YES;
     _dataArr = [[NSMutableArray alloc] init];
     self.view.backgroundColor = R_G_B_16(0xfafafa);
     [self setNavigationbarTitle];
@@ -185,7 +192,7 @@
     [leftBtn setTitleColor:R_G_B_16(0xffffff) forState:UIControlStateSelected];
     [leftBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateSelected];
     [leftBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"FFFFFF"]] forState:UIControlStateNormal];
-    leftBtn.titleLabel.font = [UIFont systemFontOfSize:18];
+    leftBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     leftBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
     [leftBtn addTarget:self action:@selector(bottomBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     leftBtn.tag = btnTag;
@@ -202,7 +209,7 @@
     [_rightBtn setTitleColor:R_G_B_16(0xffffff) forState:UIControlStateSelected];
     [_rightBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateSelected];
     [_rightBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"FFFFFF"]] forState:UIControlStateNormal];
-    _rightBtn.titleLabel.font = [UIFont systemFontOfSize:18];
+    _rightBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     _rightBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
     [_rightBtn addTarget:self action:@selector(bottomBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     _rightBtn.tag = btnTag + 1;
@@ -219,6 +226,7 @@
     self.selectedBtn = sender;
 
     if (sender.tag == btnTag) {
+        
         [self.topView removeFromSuperview];
         _tableView.hidden = NO;
         [self getCustomerData];
@@ -245,6 +253,12 @@
                     }
                 } else {
                     [self.mrv removeFromSuperview];
+
+                    if (self.isfirst) {
+                        [self getNominatedInviter];
+                    }
+                    self.isfirst = NO;
+            
                     XNRMyRepresentView *mrv = [[XNRMyRepresentView alloc] init];
                     mrv.delegate = self;
                     self.mrv = mrv;
@@ -267,6 +281,60 @@
     }
 }
 
+-(void)getNominatedInviter
+{
+    [KSHttpRequest get:KGetNominatedInviter parameters:nil success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            self.name = result[@"nominated_inviter"][@"name"];
+            self.phone = result[@"nominated_inviter"][@"phone"];
+            
+            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:self.name,@"name",self.phone,@"phone", nil];
+            myAlertView *alert = [[myAlertView alloc]initWithHeadTitle:@"是否要添加该用户为您的代表？" LeftButton:@"不是" RightButton:@"是的" andDic:dic];
+            alert.delegate = self;
+            self.myAlert = alert;
+            [alert show];
+            
+        }
+        else if ([result[@"code"]integerValue] == 1404)
+        {
+            self.name = @"";
+            self.phone = @"";
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+#
+-(void)alertView:(myAlertView *)lumAlertView Action:(NSInteger)index Dic:(NSDictionary *)dic
+{
+    if (index == 1) {
+        [KSHttpRequest post:KUserBindInviter parameters:@{@"userId":[DataCenter account].userid,@"inviter":self.phone,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+            if ([result[@"code"] integerValue]==1000) {
+
+                [self.mrv removeFromSuperview];
+//                [self createMyRepresentUI];
+                [self bottomBtnClicked:self.rightBtn];
+                [UILabel showMessage:@"设置代表成功"];
+                [self.myAlert dismissLumAleatView];
+                
+
+            } else {
+
+                [UILabel showMessage:result[@"message"]];
+                [self.myAlert dismissLumAleatView];
+
+            }
+        } failure:^(NSError *error) {
+            
+        }];
+    }
+    else
+    {
+        [self.myAlert dismissLumAleatView];
+ 
+    }
+    
+}
 -(void)getCustomerData
 {
     [_dataArr removeAllObjects];
@@ -285,7 +353,7 @@
             NSDictionary *priceStr=@{
                                      
                                      NSForegroundColorAttributeName:R_G_B_16(0x00b38a),
-                                     NSFontAttributeName:[UIFont systemFontOfSize:20]
+                                     NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(40)]
                                      };
             
             [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,1)];
@@ -347,7 +415,7 @@
     CGFloat customerLabelH = 30;
     UILabel *customerLabel = [[UILabel alloc] initWithFrame:CGRectMake(customerLabelX, customerLabelY, customerLabelW, customerLabelH)];
     customerLabel.text = @"您没有邀请用户哦~";
-    customerLabel.font = [UIFont systemFontOfSize:16];
+    customerLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     customerLabel.textColor = R_G_B_16(0x909090);
     customerLabel.textAlignment = NSTextAlignmentCenter;
     self.customerLabel = customerLabel;
@@ -372,7 +440,7 @@
     UILabel *headLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(imageView.frame) + PX_TO_PT(30), ScreenWidth, PX_TO_PT(36))];
     headLabel.textColor = R_G_B_16(0x646464);
     headLabel.textAlignment = NSTextAlignmentCenter;
-    headLabel.font = [UIFont systemFontOfSize:16];
+    headLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.headLabel = headLabel;
     [headView addSubview:headLabel];
 
@@ -403,21 +471,29 @@
                 if ([self.phoneNum  isEqualToString:[DataCenter account].phone]) {
                     [UILabel showMessage:@"不能设置自己为新农代表哦"];
                 }else{
-                    [KSHttpRequest post:KUserBindInviter parameters:@{@"userId":[DataCenter account].userid,@"inviter":phoneNum,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-                        if ([result[@"code"] integerValue]==1000) {
-                            [self.mrv removeFromSuperview];
-                            [self createMyRepresentUI];
-                            [UILabel showMessage:@"设置代表成功"];
-                        } else {
-                           
-                            [UILabel showMessage:result[@"message"]];
-                            
-                        }
-                    } failure:^(NSError *error) {
-                        
-                    }];
 
-                
+                    BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确定设置为您的代表吗？" chooseBtns:@[@"取消",@"确定"]];
+                    
+                    alertView.chooseBlock = ^void(UIButton *btn){
+                    
+                        if (btn.tag == 11) {
+                            [KSHttpRequest post:KUserBindInviter parameters:@{@"userId":[DataCenter account].userid,@"inviter":phoneNum,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+                                if ([result[@"code"] integerValue]==1000) {
+                                    [self.mrv removeFromSuperview];
+                                    [self createMyRepresentUI];
+                                    [UILabel showMessage:@"设置代表成功"];
+                                } else {
+                                    
+                                    [UILabel showMessage:result[@"message"]];
+                                    
+                                }
+                            } failure:^(NSError *error) {
+                                
+                            }];
+                        }
+                        
+                    };
+                    [alertView BMAlertShow];
                 }
                
                 
@@ -434,7 +510,6 @@
         
         [UILabel showMessage:title];
     }
-    
 }
 /**
  *  手机格式判断
@@ -468,7 +543,7 @@
     CGFloat myRepLabelH = 30;
     UILabel *myRepLabel = [[UILabel alloc] initWithFrame:CGRectMake(myRepLabelX, myRepLabelY, myRepLabelW, myRepLabelH)];
     myRepLabel.text = @"我的代表";
-    myRepLabel.font = [UIFont systemFontOfSize:16];
+    myRepLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     myRepLabel.textColor = R_G_B_16(0x646464);
     myRepLabel.textAlignment = NSTextAlignmentCenter;
     self.myRepLabel = myRepLabel;
@@ -491,7 +566,7 @@
     nickNameLabel.layer.masksToBounds = YES;
     nickNameLabel.adjustsFontSizeToFitWidth = YES;
     nickNameLabel.textColor = R_G_B_16(0xffffff);
-    nickNameLabel.font = [UIFont systemFontOfSize:16];
+    nickNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     nickNameLabel.textAlignment = NSTextAlignmentCenter;
     self.nickNameLabel = nickNameLabel;
     [myRepView addSubview:nickNameLabel];
@@ -499,7 +574,7 @@
     UILabel *phoneNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, nickNameLabelY, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(60))];
     phoneNumLabel.textAlignment = NSTextAlignmentRight;
     phoneNumLabel.textColor = R_G_B_16(0x00b38a);
-    phoneNumLabel.font = [UIFont systemFontOfSize:18];
+    phoneNumLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.phoneNumLabel = phoneNumLabel;
     [myRepView addSubview:phoneNumLabel];
     

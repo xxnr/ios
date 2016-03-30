@@ -56,10 +56,10 @@
 - (void)createGoodNameLabel
 {
     UILabel *goodNameLabel = [[UILabel alloc]init];
-    goodNameLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame)+PX_TO_PT(10), PX_TO_PT(330), PX_TO_PT(70));
+    goodNameLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame)+PX_TO_PT(10), PX_TO_PT(330), PX_TO_PT(80));
 //    goodNameLabel.backgroundColor = [UIColor redColor];
     goodNameLabel.textColor = R_G_B_16(0x323232);
-    goodNameLabel.font = [UIFont systemFontOfSize:14];
+    goodNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     goodNameLabel.numberOfLines = 0;
     self.goodNameLabel = goodNameLabel;
     [self.contentView addSubview:self.goodNameLabel];
@@ -70,7 +70,7 @@
 {
     UILabel *presentPriceLabel = [[UILabel alloc]init];
     presentPriceLabel.textColor = R_G_B_16(0xff4e00);
-    presentPriceLabel.font = [UIFont  systemFontOfSize:18];
+    presentPriceLabel.font = [UIFont  systemFontOfSize:PX_TO_PT(36)];
     presentPriceLabel.textAlignment = NSTextAlignmentLeft;
     self.presentPriceLabel = presentPriceLabel;
     [self.contentView addSubview:self.presentPriceLabel];
@@ -117,7 +117,7 @@
     }else{
         self.presentPriceLabel.textColor = R_G_B_16(0xff4e00);
     }
-    CGSize priceSize = [self.presentPriceLabel.text sizeWithAttributes:@{NSFontAttributeName:XNRFont(18)}];
+    CGSize priceSize = [self.presentPriceLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(36)]}];
     self.presentPriceLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame)+PX_TO_PT(90), priceSize.width, priceSize.height);
 }
 @end

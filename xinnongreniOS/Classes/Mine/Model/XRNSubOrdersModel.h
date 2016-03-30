@@ -17,6 +17,6 @@
 @property (nonatomic,copy) NSString *paidPrice;//已付款金额
 @property (nonatomic,assign)int payType;//付款方式
 @property (nonatomic,strong)NSMutableArray *payments;//每次付款详情
-
+@property (nonatomic,strong) NSString *orderId;
 
 @end

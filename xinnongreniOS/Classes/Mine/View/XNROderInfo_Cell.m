@@ -55,21 +55,21 @@
 //    
 //    UILabel *goodsNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(goodsImageView.frame) + PX_TO_PT(20), PX_TO_PT(32), ScreenWidth-CGRectGetMaxX(goodsImageView.frame) - PX_TO_PT(52), PX_TO_PT(100))];
 //    goodsNameLabel.textColor = R_G_B_16(0x323232);
-//    goodsNameLabel.font = [UIFont systemFontOfSize:16];
+//    goodsNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
 //    goodsNameLabel.numberOfLines = 0;
 //    self.goodsNameLabel = goodsNameLabel;
 //    [bgView addSubview:goodsNameLabel];
 //    
 //    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(goodsImageView.frame) + PX_TO_PT(32), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(36))];
 //    priceLabel.textColor = R_G_B_16(0xff4e00);
-//    priceLabel.font = [UIFont systemFontOfSize:16];
+//    priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
 //    priceLabel.textAlignment = NSTextAlignmentRight;
 //    self.priceLabel = priceLabel;
 //    [bgView addSubview:priceLabel];
 //    
 //    UILabel *numLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(goodsImageView.frame) + PX_TO_PT(34), ScreenWidth/2 - PX_TO_PT(32), PX_TO_PT(36))];
 //    numLabel.textColor = R_G_B_16(0x323232);
-//    numLabel.font = [UIFont systemFontOfSize:18];
+//    numLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
 //    numLabel.textAlignment = NSTextAlignmentLeft;
 //    self.numLabel = numLabel;
 //    [bgView addSubview:numLabel];
@@ -102,7 +102,7 @@
 //    
 //    sectionOne.textColor = R_G_B_16(0x323232);
 //    
-//    sectionOne.font = [UIFont systemFontOfSize:14];
+//    sectionOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
 //    
 //    sectionOne.text = @"阶段一: 订金";
 //    
@@ -114,7 +114,7 @@
 //    
 //    sectionTwo.textColor = R_G_B_16(0x323232);
 //    
-//    sectionTwo.font = [UIFont systemFontOfSize:14];
+//    sectionTwo.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
 //    
 //    sectionTwo.text = @"阶段二: 尾款";
 //    
@@ -126,7 +126,7 @@
 //    
 //    depositLabel.textColor = R_G_B_16(0x323232);
 //    
-//    depositLabel.font = [UIFont systemFontOfSize:16];
+//    depositLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
 //    
 //    depositLabel.textAlignment = NSTextAlignmentRight;
 //    
@@ -142,7 +142,7 @@
 //    
 //    remainPriceLabel.textColor = R_G_B_16(0x323232);
 //    
-//    remainPriceLabel.font = [UIFont systemFontOfSize:16];
+//    remainPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
 //    
 //    remainPriceLabel.textAlignment = NSTextAlignmentRight;
 //    

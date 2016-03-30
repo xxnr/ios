@@ -73,10 +73,10 @@
     successPay.text = @"支付成功";
     [self.contentView addSubview:successPay];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(59),ScreenWidth - PX_TO_PT(66), PX_TO_PT(1))];
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(59),ScreenWidth - PX_TO_PT(65), PX_TO_PT(1))];
     line1.backgroundColor = R_G_B_16(0xc7c7c7);
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(221), ScreenWidth, PX_TO_PT(1))];
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(222), ScreenWidth, PX_TO_PT(1))];
     line2.backgroundColor = R_G_B_16(0xc7c7c7);
     
     [self.contentView addSubview:line1];
@@ -104,15 +104,19 @@
 
     //付款方式
     if (model.payType) {
-        if (model.payType == 0) {
+        if (model.payType == 1) {
             _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：支付宝支付"];
         }
-        else if (model.payType == 1)
+        else if (model.payType == 2)
         {
             _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：银联支付"];
         }
+        else
+        {
+            _payTypeLabel.frame = CGRectMake(0, 0, 0, 0);
+            self.completeLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(130), ScreenWidth - PX_TO_PT(32), PX_TO_PT(28));
+        }
     }
-
     NSString *str = [model.datePaid substringToIndex:10];
     self.completeLabel.text = [NSString stringWithFormat:@"支付完成时间：%@",str];
 }

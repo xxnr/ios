@@ -59,14 +59,14 @@
     CGFloat titleLabelH = PX_TO_PT(80);
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleLabelX,titleLabelY,titleLabelW,titleLabelH)];
-    titleLabel.font = [UIFont systemFontOfSize:14];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     titleLabel.tintColor = R_G_B_16(0xc5c5c5);
     titleLabel.numberOfLines = 0;
     self.titleLabel = titleLabel;
     [self addSubview:titleLabel];
     
     UILabel *datecreatedLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleLabelX,CGRectGetMaxY(self.titleLabel.frame) + marginLabel,titleLabelW,PX_TO_PT(20))];
-    datecreatedLabel.font = [UIFont systemFontOfSize:12];
+    datecreatedLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     datecreatedLabel.tintColor = R_G_B_16(0x646464);
     self.datecreatedLabel = datecreatedLabel;
     [self addSubview:datecreatedLabel];

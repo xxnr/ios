@@ -15,7 +15,7 @@
 #import "MJExtension.h"
 #import "XNROrderEmptyView.h"
 #import "XNRMyAllOrderFrame.h"
-@interface XNRServeView()
+@interface XNRServeView()<XNROrderEmptyViewBtnDelegate>
 
 @property (nonatomic ,weak) UIView *headView;
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
@@ -30,10 +30,22 @@
 {
     if (!_orderEmptyView) {
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
+        orderEmptyView.delegate = self;
+        orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
         [self addSubview:orderEmptyView];
     }
     return _orderEmptyView;
     
+}
+
+-(void)XNROrderEmptyView:(XNROrderEmptyViewbuySort)type
+{
+    if (type == XNROrderEmptyView_buyFer) {
+        
+    }else if (type == XNROrderEmptyView_buyCar){
+    
+    }
+
 }
 
 #pragma mark - 滑动到顶部按钮
@@ -147,7 +159,6 @@
             if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datasDic = result[@"datas"];
             NSArray *rowsArr = datasDic[@"rows"];
-            
             for (NSDictionary *subDic in rowsArr) {
                 XNRMyOrderSectionModel *sectionModel = [[XNRMyOrderSectionModel alloc]init];
                 sectionModel.orderId = subDic[@"orderId"];
@@ -234,13 +245,13 @@
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(28), ScreenWidth/2, PX_TO_PT(32))];
         label.text = [NSString stringWithFormat:@"订单号 : %@",sectionModel.orderId];
         label.textColor = R_G_B_16(0x323232);
-        label.font = XNRFont(15);
+        label.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
         UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0,ScreenWidth/2-PX_TO_PT(32) , PX_TO_PT(89))];
         payTypeLabel.textColor = R_G_B_16(0xfe9b00);
-        payTypeLabel.font = [UIFont systemFontOfSize:14];
+        payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         payTypeLabel.textAlignment = NSTextAlignmentRight;
         payTypeLabel.text = sectionModel.value;
         [headView addSubview:payTypeLabel];
@@ -275,7 +286,7 @@
             
                 // 合计
                 UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
-                totalPriceLabel.font = [UIFont systemFontOfSize:16];
+                totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
                 totalPriceLabel.textAlignment = NSTextAlignmentRight;
                 totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
                 [bottomView addSubview:totalPriceLabel];
@@ -298,7 +309,7 @@
             [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
             sectionFour.layer.cornerRadius = 5.0;
             sectionFour.layer.masksToBounds = YES;
-            sectionFour.titleLabel.font = [UIFont systemFontOfSize:16];
+            sectionFour.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             sectionFour.tag = section + 1000;
             [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchUpInside];
             [bottomView addSubview:sectionFour];
@@ -327,7 +338,7 @@
                 
         
                 UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth -PX_TO_PT(32), PX_TO_PT(80))];
-                totalPriceLabel.font = [UIFont systemFontOfSize:16];
+                totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
                 totalPriceLabel.textAlignment = NSTextAlignmentRight;
                 totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
                 [bottomView addSubview:totalPriceLabel];

@@ -215,7 +215,7 @@
     
     UILabel *addressLabel = [MyControl createLabelWithFrame:CGRectMake(ScreenWidth/3+PX_TO_PT(20), 0, ScreenWidth, PX_TO_PT(96)) Font:16 Text:@"添加收货地址"];
     addressLabel.textAlignment = NSTextAlignmentLeft;
-    addressLabel.font = XNRFont(16);
+    addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     addressLabel.textColor = R_G_B_16(0x323232);
     self.addressLabel = addressLabel;
     [addressBtn addSubview:addressLabel];
@@ -248,7 +248,7 @@
     getGoodsAddressLabel.text = @"收货地址";
     getGoodsAddressLabel.textColor = R_G_B_16(0x323232);
     getGoodsAddressLabel.textAlignment = NSTextAlignmentLeft;
-    getGoodsAddressLabel.font = [UIFont systemFontOfSize:16];
+    getGoodsAddressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [headViewSpecial addSubview:getGoodsAddressLabel];
     
     UIButton *addressBtnSpecial = [[UIButton alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(180))];
@@ -344,13 +344,13 @@
     UIButton *totalPriceBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(220), 0, PX_TO_PT(220), PX_TO_PT(89)) ImageName:nil Target:self Action:@selector(makeSure) Title:nil];
     [totalPriceBtn setTitle:[NSString stringWithFormat:@"提交订单%@",[NSString stringWithFormat:@"(%ld)",_totalSelectNum]] forState:UIControlStateNormal];
     [totalPriceBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    totalPriceBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    totalPriceBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     totalPriceBtn.backgroundColor = R_G_B_16(0xfe9b00);
     [footView addSubview:totalPriceBtn];
     
     // 总计
     UILabel *totalPricelabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(220)-PX_TO_PT(20), PX_TO_PT(89))];
-    totalPricelabel.font=XNRFont(14);
+    totalPricelabel.font=[UIFont systemFontOfSize:PX_TO_PT(28)];
     totalPricelabel.textAlignment = NSTextAlignmentRight;
     totalPricelabel.textColor = R_G_B_16(0x323232);
     totalPricelabel.text = [NSString stringWithFormat:@"合计:￥%.2f",self.totalPrice];
@@ -359,7 +359,7 @@
     NSDictionary *depositStr=@{
                                
                                NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-                               NSFontAttributeName:[UIFont systemFontOfSize:16]
+                               NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]
                                
                                };
     
@@ -391,7 +391,7 @@
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(28), ScreenWidth, PX_TO_PT(32))];
         label.text = sectionModel.brandName;
         label.textColor = R_G_B_16(0x323232);
-        label.font = XNRFont(16);
+        label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         

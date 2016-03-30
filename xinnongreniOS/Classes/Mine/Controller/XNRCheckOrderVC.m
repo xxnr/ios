@@ -79,7 +79,7 @@
     [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
     sectionFour.layer.cornerRadius = 5.0;
     sectionFour.layer.masksToBounds = YES;
-    sectionFour.titleLabel.font = [UIFont systemFontOfSize:16];
+    sectionFour.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     //    sectionFour.tag = section + 1000;
     [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:sectionFour];
@@ -127,7 +127,6 @@
             
             if ([self.value isEqualToString: @"待付款"] || [self.value isEqualToString:@"部分付款"]) {
                 self.tableview.frame =CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth,ScreenHeight- CGRectGetMaxY(self.headView.frame) -PX_TO_PT(88) - 64);
-
                 // 底部视图
                 [self creatBottom];
                 
@@ -237,16 +236,16 @@
             
             UILabel *nameLabel = [[UILabel alloc] init];
             nameLabel.textColor = R_G_B_16(0x323232);
-            nameLabel.font = [UIFont systemFontOfSize:16];
+            nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             nameLabel.text = sectionModel.recipientName;
-            CGSize size = [nameLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16]}];
+            CGSize size = [nameLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]}];
             nameLabel.frame = CGRectMake(PX_TO_PT(78), PX_TO_PT(43), size.width, size.height);
             self.nameLabel = nameLabel;
             [addressView addSubview:nameLabel];
             
             UILabel *phoneNum = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nameLabel.frame)+PX_TO_PT(42), PX_TO_PT(43), ScreenWidth/2, PX_TO_PT(32))];
             phoneNum.textColor = R_G_B_16(0x323232);
-            phoneNum.font = [UIFont systemFontOfSize:16];
+            phoneNum.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             phoneNum.text = sectionModel.recipientPhone;
             
             self.phoneNum = phoneNum;
@@ -571,6 +570,8 @@
         if (_dataArray.count>0) {
             XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
             XRNSubOrdersModel *model = sectionModel.subOrders[indexPath.row];
+            model.orderId = sectionModel.id;
+            
             cell1.value = self.value;
             [cell1 setCellDataWithModel:model];
             

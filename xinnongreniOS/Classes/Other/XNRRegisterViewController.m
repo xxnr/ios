@@ -85,7 +85,7 @@
     phoneNumTextField.borderStyle = UITextBorderStyleNone;
     phoneNumTextField.placeholder = @"请输入您的手机号";
     phoneNumTextField.alpha = 1;
-    phoneNumTextField.font = XNRFont(14);
+    phoneNumTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     phoneNumTextField.delegate = self;
     //设置键盘类型
     phoneNumTextField.returnKeyType = UIReturnKeyDone;
@@ -107,7 +107,7 @@
     UITextField *verifyNumTextField = [[UITextField alloc]initWithFrame:CGRectMake(PX_TO_PT(96), PX_TO_PT(154), ScreenWidth-PX_TO_PT(160), PX_TO_PT(52))];
     verifyNumTextField.borderStyle = UITextBorderStyleNone;
     verifyNumTextField.placeholder = @"请输入短信验证码";
-    verifyNumTextField.font = XNRFont(14);
+    verifyNumTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     verifyNumTextField.delegate = self;
     //设置键盘类型
     verifyNumTextField.returnKeyType = UIReturnKeyDone;
@@ -146,7 +146,7 @@
     newpasswordTextField.borderStyle = UITextBorderStyleNone;
     newpasswordTextField.secureTextEntry=YES;
     newpasswordTextField.placeholder = @"请设置您的密码";
-    newpasswordTextField.font = XNRFont(14);
+    newpasswordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     newpasswordTextField.delegate = self;
     //设置键盘类型
     newpasswordTextField.keyboardType=UIKeyboardTypeDefault;
@@ -170,7 +170,7 @@
     againPasswordTextField.borderStyle = UITextBorderStyleNone;
     againPasswordTextField.secureTextEntry=YES;
     againPasswordTextField.placeholder = @"请输入您的确认密码";
-    againPasswordTextField.font = XNRFont(14);
+    againPasswordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     againPasswordTextField.delegate = self;
     //设置键盘类型
     againPasswordTextField.keyboardType=UIKeyboardTypeDefault;
@@ -318,7 +318,7 @@
     [registerButton setTitleColor:R_G_B_16(0xfbfffe) forState:UIControlStateNormal];
     registerButton.layer.masksToBounds = YES;
     registerButton.layer.cornerRadius = 5;
-    registerButton.titleLabel.font = XNRFont(18);
+    registerButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.registerButton = registerButton;
     [self.mainView addSubview:registerButton];
 }
@@ -335,7 +335,7 @@
     protocolLabel.text = @"我已阅读并同意《新新农人用户协议》";
     protocolLabel.textAlignment = NSTextAlignmentLeft;
     protocolLabel.textColor = R_G_B_16(0xfbfffe);
-    protocolLabel.font = XNRFont(14);
+    protocolLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [self.mainView addSubview:protocolLabel];
   
     //设定内容样式
@@ -368,7 +368,6 @@
 #pragma mark - 按钮响应事件
 - (void)btnClick:(UIButton *)button
 {
-    
     [[NSUserDefaults standardUserDefaults]setValue:self.newpasswordTextField.text forKey:@"password"];
         NSLog(@"注册");
         if(self.phoneNumTextField.text.length==0||self.verifyNumTextField.text.length==0||self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0){
@@ -422,24 +421,32 @@
         [BMProgressView LoadViewDisappear:self.view];
         NSDictionary *datasDic = result[@"datas"];
         if([result[@"code"] isEqualToString:@"1000"]){
-            UserInfo *info = [DataCenter account];
-            info.loginName = datasDic[@"loginName"];
-            info.nickname=datasDic[@"nickname"];
-            info.no=datasDic[@"no"];
-            info.phone=datasDic[@"phone"];
-            info.userType=datasDic[@"userType"];
-            info.userid=datasDic[@"userid"];
-            info.token = result[@"token"];
-            info.loginState = YES;
-            info.password = _newpasswordTextField.text;
-            [DataCenter saveAccount:info];
-            // 直接跳转完善资料页面
-            XNRFinishMineDataController *fmdc = [[XNRFinishMineDataController alloc] init];
-            fmdc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:fmdc animated:YES];
+            
+//            [[NSUserDefaults standardUserDefaults]setValue:self.phoneNumTextField.text forKey:@"userPhone"];
+            //                    NSString *str = [[NSUserDefaults standardUserDefaults]valueForKey:@"userPhone"];
+
+            
+//            UserInfo *info = [DataCenter account];
+//            info.loginName = datasDic[@"loginName"];
+//            info.nickname=datasDic[@"nickname"];
+//            info.no=datasDic[@"no"];
+//            info.phone=datasDic[@"phone"];
+//            info.userType=datasDic[@"userType"];
+//            info.userid=datasDic[@"userid"];
+//            info.token = result[@"token"];
+//            info.loginState = YES;
+//            info.password = _newpasswordTextField.text;
+//            [DataCenter saveAccount:info];
+//            // 直接跳转完善资料页面
+//            XNRFinishMineDataController *fmdc = [[XNRFinishMineDataController alloc] init];
+//            fmdc.hidesBottomBarWhenPushed = YES;
+//            [self.navigationController pushViewController:fmdc animated:YES];
 
 //            [self.navigationController popViewControllerAnimated:YES];
             
+            XNRLoginViewController *loginVC = [[XNRLoginViewController alloc]init];
+            loginVC.loginName = datasDic[@"loginName"];
+            [self.navigationController pushViewController:loginVC animated:YES];
             
         }else{
             
@@ -477,7 +484,7 @@
     loginLabel.text = @"已有账号?登录";
     loginLabel.textAlignment = NSTextAlignmentCenter;
     loginLabel.textColor = R_G_B_16(0xfbfffe);
-    loginLabel.font = [UIFont systemFontOfSize:16];
+    loginLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [self.mainView addSubview:loginLabel];
     //设定内容样式
     NSMutableAttributedString * attributedString =

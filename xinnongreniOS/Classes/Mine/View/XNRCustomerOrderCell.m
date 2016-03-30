@@ -42,7 +42,7 @@
 //    UILabel *brandNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(32), (ScreenWidth/3)*2, PX_TO_PT(100))];
     UILabel *brandNameLabel = [[UILabel alloc] init];
     brandNameLabel.textColor = R_G_B_16(0x323232);
-    brandNameLabel.font = [UIFont systemFontOfSize:18];
+    brandNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [brandNameLabel fitTextHeight_Ext];
     brandNameLabel.numberOfLines = 0;
     self.brandNameLabel = brandNameLabel;
@@ -50,14 +50,14 @@
     
     UILabel *numLabel = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth/3)*2, PX_TO_PT(32), ScreenWidth/3-PX_TO_PT(32), PX_TO_PT(80))];
     numLabel.textColor = R_G_B_16(0xc7c7c7);
-    numLabel.font = [UIFont systemFontOfSize:18];
+    numLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     numLabel.textAlignment = NSTextAlignmentRight;
     self.numLabel = numLabel;
     [orderView addSubview:numLabel];
     
     UILabel *orderPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(180), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
     orderPriceLabel.textAlignment = NSTextAlignmentRight;
-    orderPriceLabel.font = [UIFont systemFontOfSize:16];
+    orderPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.orderPriceLabel = orderPriceLabel;
     [orderView addSubview:orderPriceLabel];
     
@@ -94,7 +94,7 @@
     NSDictionary *depositStr=@{
                                
                                NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-                               NSFontAttributeName:[UIFont systemFontOfSize:18]
+                               NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(36)]
                                
                                };
     

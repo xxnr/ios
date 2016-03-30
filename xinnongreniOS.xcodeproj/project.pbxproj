@@ -61,6 +61,7 @@
 		49079BD81BF6F89000628039 /* XNRMyRepresentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49079BD71BF6F89000628039 /* XNRMyRepresentView.m */; };
 		490F0B121C9EFEFD00BDC7E0 /* XNRShoppingCarFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 490F0B111C9EFEFD00BDC7E0 /* XNRShoppingCarFrame.m */; };
 		490F0B151CA0FA8000BDC7E0 /* XNRProductInfo_frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 490F0B141CA0FA8000BDC7E0 /* XNRProductInfo_frame.m */; };
+		4915EBA21CAA4F9800A728BB /* XNRPropertyEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4915EBA11CAA4F9800A728BB /* XNRPropertyEmptyView.m */; };
 		491610C91C8C422200F1E243 /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4916108E1C8C422200F1E243 /* DACircularProgressView.m */; };
 		491610CA1C8C422200F1E243 /* DALabeledCircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 491610901C8C422200F1E243 /* DALabeledCircularProgressView.m */; };
 		491610CB1C8C422200F1E243 /* ImageError.png in Resources */ = {isa = PBXBuildFile; fileRef = 491610921C8C422200F1E243 /* ImageError.png */; };
@@ -419,6 +420,7 @@
 		9C293EB61CA128FD00D9C7F6 /* XRNSubOrdersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C293EB51CA128FD00D9C7F6 /* XRNSubOrdersModel.m */; };
 		9C293EB91CA1292F00D9C7F6 /* XNRSubOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C293EB81CA1292F00D9C7F6 /* XNRSubOrderCell.m */; };
 		9C392DE71CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C392DE61CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m */; };
+		9C392DF11CA9420300AD0F27 /* myAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C392DF01CA9420300AD0F27 /* myAlertView.m */; };
 		9C4FCB451C8FFDFD00C5B427 /* XNBrandsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */; };
 		9C63D88C1C9FD9AA004AFE0F /* XNRCheckOrderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C63D88B1C9FD9AA004AFE0F /* XNRCheckOrderVC.m */; };
 		9C63D88F1C9FDE12004AFE0F /* XNROrderInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C63D88E1C9FDE12004AFE0F /* XNROrderInfoCell.m */; };
@@ -552,6 +554,8 @@
 		490F0B111C9EFEFD00BDC7E0 /* XNRShoppingCarFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRShoppingCarFrame.m; sourceTree = "<group>"; };
 		490F0B131CA0FA8000BDC7E0 /* XNRProductInfo_frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRProductInfo_frame.h; sourceTree = "<group>"; };
 		490F0B141CA0FA8000BDC7E0 /* XNRProductInfo_frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRProductInfo_frame.m; sourceTree = "<group>"; };
+		4915EBA01CAA4F9800A728BB /* XNRPropertyEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPropertyEmptyView.h; sourceTree = "<group>"; };
+		4915EBA11CAA4F9800A728BB /* XNRPropertyEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPropertyEmptyView.m; sourceTree = "<group>"; };
 		4916108D1C8C422200F1E243 /* DACircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DACircularProgressView.h; sourceTree = "<group>"; };
 		4916108E1C8C422200F1E243 /* DACircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DACircularProgressView.m; sourceTree = "<group>"; };
 		4916108F1C8C422200F1E243 /* DALabeledCircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DALabeledCircularProgressView.h; sourceTree = "<group>"; };
@@ -1278,6 +1282,8 @@
 		9C293EB81CA1292F00D9C7F6 /* XNRSubOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSubOrderCell.m; sourceTree = "<group>"; };
 		9C392DE51CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		9C392DE61CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		9C392DEF1CA9420300AD0F27 /* myAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myAlertView.h; sourceTree = "<group>"; };
+		9C392DF01CA9420300AD0F27 /* myAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = myAlertView.m; sourceTree = "<group>"; };
 		9C4FCB431C8FFDFD00C5B427 /* XNBrandsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNBrandsModel.h; sourceTree = "<group>"; };
 		9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNBrandsModel.m; sourceTree = "<group>"; };
 		9C63D88A1C9FD9AA004AFE0F /* XNRCheckOrderVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCheckOrderVC.h; sourceTree = "<group>"; };
@@ -1710,6 +1716,8 @@
 		1F1533051B09D1E200CA374B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				9C392DEF1CA9420300AD0F27 /* myAlertView.h */,
+				9C392DF01CA9420300AD0F27 /* myAlertView.m */,
 				84AAA58B1B439335005AA154 /* XNROderInfo_Cell.h */,
 				84AAA58C1B439335005AA154 /* XNROderInfo_Cell.m */,
 				9C63D88D1C9FDE12004AFE0F /* XNROrderInfoCell.h */,
@@ -2707,6 +2715,8 @@
 				491AF0581C79C0E500AA3CC8 /* XNRPropertyBrandView.m */,
 				491AF05D1C7C636800AA3CC8 /* XNRPropertyFootView.h */,
 				491AF05E1C7C636800AA3CC8 /* XNRPropertyFootView.m */,
+				4915EBA01CAA4F9800A728BB /* XNRPropertyEmptyView.h */,
+				4915EBA11CAA4F9800A728BB /* XNRPropertyEmptyView.m */,
 				491AF0541C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.h */,
 				491AF0551C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.m */,
 			);
@@ -3334,6 +3344,7 @@
 				49E895FF1BEDC2BB00B3671E /* UIImage+GIF.m in Sources */,
 				1F15331D1B09D54A00CA374B /* XNRMineController.m in Sources */,
 				491611281C8D189400F1E243 /* IQKeyboardManager.m in Sources */,
+				9C392DF11CA9420300AD0F27 /* myAlertView.m in Sources */,
 				49E896011BEDC2BB00B3671E /* UIImage+WebP.m in Sources */,
 				49F414FB1C3CA71A001A28CA /* XNRShopCarSectionModel.m in Sources */,
 				9C4FCB451C8FFDFD00C5B427 /* XNBrandsModel.m in Sources */,
@@ -3344,6 +3355,7 @@
 				49F99EEB1C155D130000556A /* XNRProductInfo_cell.m in Sources */,
 				49F6B19A1C2A6EE100DCF8CF /* MJPhotoBrowser.m in Sources */,
 				491610FB1C8C454300F1E243 /* MBProgressHUD+Add.m in Sources */,
+				4915EBA21CAA4F9800A728BB /* XNRPropertyEmptyView.m in Sources */,
 				1FE1D60B1B12EE2600F0D158 /* MJArgument.m in Sources */,
 				49F7A57B1C58469400A1FA45 /* MJRefreshAutoNormalFooter.m in Sources */,
 				49EC525B1BEBBA5E00AA8898 /* BSLanguage.m in Sources */,
@@ -3675,6 +3687,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ksfc.xxnr;
 				PRODUCT_NAME = xinnongreniOS;
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT}/**";
 			};
 			name = Debug;
@@ -3724,6 +3737,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ksfc.xxnr;
 				PRODUCT_NAME = xinnongreniOS;
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT}/**";
 			};
 			name = Release;

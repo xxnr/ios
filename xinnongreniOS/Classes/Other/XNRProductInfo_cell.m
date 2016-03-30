@@ -140,7 +140,7 @@
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         self.userInteractionEnabled = YES;
-        
+        NSLog(@"jkfadsjkladfsjadfs%@",_shopcarModel.online);
         [self createUI];
     }
     return self;
@@ -184,14 +184,11 @@
     return [NSString stringWithFormat:@"%ld/%ld",(long)index+1,(long)[_picBrowserList count]];
 }
 
-
-
 -(void)createUI
 {
     [self createHeadView];
     [self createMidView];
     [self createBottomView];
-    
 }
 
 -(void)createHeadView
@@ -232,7 +229,6 @@
         pageControl.layer.borderColor = [UIColor whiteColor].CGColor;
         pageControl.pageIndicatorTintColor = [UIColor whiteColor]; // 非当前页的小圆点颜色
         self.pageControl = pageControl;
-
 }
 
 -(void)createMidView
@@ -305,7 +301,7 @@
     propertyLabel.textAlignment = NSTextAlignmentLeft;
     propertyLabel.numberOfLines = 0;
     propertyLabel.textColor = R_G_B_16(0x323232);
-    propertyLabel.font = [UIFont systemFontOfSize:14];
+    propertyLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.propertyLabel = propertyLabel;
     [propertyBtn addSubview:propertyLabel];
     
@@ -317,7 +313,7 @@
 
     UILabel *scrollLabel = [[UILabel alloc] init];
     scrollLabel.textColor = R_G_B_16(0x323232);
-    scrollLabel.font = [UIFont systemFontOfSize:14];
+    scrollLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     scrollLabel.text = @"继续拖动，查看商品详情";
     scrollLabel.textAlignment = NSTextAlignmentCenter;
     self.scrollLabel = scrollLabel;
@@ -367,7 +363,7 @@
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(W*i, 0, W, H)];
         label.textAlignment = NSTextAlignmentCenter;
-        label.font = [UIFont systemFontOfSize:16];
+        label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         label.textColor = R_G_B_16(0x646464);
         label.text = array[i];
         label.tag = KlabelTag + i;
@@ -470,6 +466,7 @@
     self.scrollView.frame = self.infoFrame.imageViewF;
     self.goodNameLabel.frame = self.infoFrame.productNameLabelF;
     self.priceLabel.frame = self.infoFrame.priceLabelF;
+    self.presaleLabel.frame = self.infoFrame.priceLabelF;
     self.marketPriceLabel.frame = self.infoFrame.marketPriceLabelF;
     self.depositLabel.frame = self.infoFrame.depositLabelF;
     self.descriptionLabel.frame = self.infoFrame.introduceLabelF;
@@ -521,22 +518,27 @@
         self.priceLabel.text = [NSString stringWithFormat:@"￥%@ - %@",self.model.min,self.model.max];
     }
     
-    self.depositLabel.text = [NSString stringWithFormat:@"订金:￥%.2f",self.model.deposit];
-    
-    if ([self.depositLabel.text rangeOfString:@".00"].length == 3) {
-        self.depositLabel.text = [self.depositLabel.text substringToIndex:self.depositLabel.text.length-3];
+    if ([_shopcarModel.online integerValue] != 0 || _shopcarModel.online == nil) {
+        self.depositLabel.text = [NSString stringWithFormat:@"订金:￥%.2f",self.model.deposit];
+        
+        if ([self.depositLabel.text rangeOfString:@".00"].length == 3) {
+            self.depositLabel.text = [self.depositLabel.text substringToIndex:self.depositLabel.text.length-3];
+            NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.depositLabel.text];
+            NSDictionary *depositStr=@{
+                                       
+                                       NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
+                                       NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(38)]
+                                       
+                                       };
+            
+            [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(3,AttributedStringDeposit.length-3)];
+            
+            [_depositLabel setAttributedText:AttributedStringDeposit];
+            
+        }
+
     }
-    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.depositLabel.text];
-    NSDictionary *depositStr=@{
-                               
-                               NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-                               NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(38)]
-                               
-                               };
     
-    [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(3,AttributedStringDeposit.length-3)];
-    
-    [_depositLabel setAttributedText:AttributedStringDeposit];
     
     CGSize marketPriceSize;
     if ([self.model.marketMin floatValue]==[self.model.marketMax floatValue]) {
@@ -606,9 +608,8 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.model.app_body_url]];
     [self.webView loadRequest:request];
     NSLog(@"=====%@",self.model.app_body_url);
-
-    
 }
+
 #pragma mark -  scrollView的代理
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
