@@ -191,14 +191,6 @@
     XNRMyOrderModel *model = self.orderFrame.orderModel;
     _info = model;
     
-    self.addtionsLabel.hidden = NO;
-    self.addtionPriceLabel.hidden = NO;
-
-//    [self createTopView:_addtionsArray];
-    if (_addtionsArray.count == 0) {
-        self.addtionsLabel.hidden = YES;
-        self.addtionPriceLabel.hidden = YES;
-    }
     
     NSLog(@"attributesArray%@",_attributesArray);
     
@@ -206,7 +198,13 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,_info.thumbnail];
     [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
     // 商品名
-    self.goodsNameLabel.text = _info.productName;
+    if (_info.productName) {
+        self.goodsNameLabel.text = _info.productName;
+
+    }else{
+        self.goodsNameLabel.text = _info.name;
+
+    }
     
     // 属性
     NSMutableString *displayStr = [[NSMutableString alloc] initWithString:@""];
@@ -248,10 +246,5 @@
     // 尾款
     self.remainPriceLabel.text = [NSString stringWithFormat:@"¥%.2f",(_info.price.floatValue + totalPrice - _info.deposit.floatValue) * count];
     
-//    if (_info.deposit && [_info.deposit floatValue]>0) {
-//        self.bgView.hidden = NO;
-//    }else{
-//        self.bgView.hidden = YES;
-//    }
 }
 @end

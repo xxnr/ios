@@ -480,7 +480,7 @@
                             [KSHttpRequest post:KUserBindInviter parameters:@{@"userId":[DataCenter account].userid,@"inviter":phoneNum,@"user-agent":@"IOS-v2.0"} success:^(id result) {
                                 if ([result[@"code"] integerValue]==1000) {
                                     [self.mrv removeFromSuperview];
-                                    [self createMyRepresentUI];
+                                    [self bottomBtnClicked:self.rightBtn];
                                     [UILabel showMessage:@"设置代表成功"];
                                 } else {
                                     

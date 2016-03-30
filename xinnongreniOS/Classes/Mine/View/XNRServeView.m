@@ -176,18 +176,30 @@
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
                 
                 sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
-                if ([sectionModel.orderId isEqualToString:@"8d0bdc4190"]) {
-                    NSLog(@"%@",sectionModel.skus);
+                if (sectionModel.skus.count == 0) {
+                    for (XNRMyOrderModel *model in sectionModel.products) {
+                        XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
+                        // 把订单模型传递给frame模型
+                        orderFrame.orderModel = model;
+                        
+                        
+                        [sectionModel.orderFrameArray addObject:orderFrame];
+                        NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
+                    }
+
+                }else{
+                    for (XNRMyOrderModel *model in sectionModel.skus) {
+                        XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
+                        // 把订单模型传递给frame模型
+                        orderFrame.orderModel = model;
+                        
+                        [sectionModel.orderFrameArray addObject:orderFrame];
+                        NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
+                    }
+
+                
                 }
-                for (XNRMyOrderModel *model in sectionModel.skus) {
-                    XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
-                    // 把订单模型传递给frame模型
-                    orderFrame.orderModel = model;
-                    
-                    [sectionModel.orderFrameArray addObject:orderFrame];
-                    NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
-                }
-                [_dataArr addObject:sectionModel];
+                               [_dataArr addObject:sectionModel];
             }
                
 
@@ -475,13 +487,17 @@
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
         if (sectionModel.orderFrameArray.count>0) {
-//            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
-            XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
+            XNRMyOrderModel *modelArray;
+            if (sectionModel.skus.count == 0) {
+            modelArray = sectionModel.products[indexPath.row];
+
+            }else{
+            modelArray = sectionModel.skus[indexPath.row];
+            }
             cell.attributesArray = modelArray.attributes;
             cell.addtionsArray = modelArray.additions;
             XNRMyAllOrderFrame *orderFrame = sectionModel.orderFrameArray[indexPath.row];
             cell.orderFrame = orderFrame;
-//            [cell setCellDataWithShoppingCartModel:model];
 
         }
     }

@@ -32,6 +32,7 @@
     NSMutableArray *_infoModelArray;
 
 }
+@property (nonatomic, strong) UIScrollView *scrollView;
 @property(nonatomic,weak) UITableView *tableView;
 @property(nonatomic,weak) UIImageView *headView;
 @property(nonatomic,weak) UITextField *numTextField;
@@ -56,6 +57,7 @@
 @property (nonatomic ,strong) NSMutableArray *additions;
 
 @property (nonatomic ,weak) XNRPropertyView *propertyView;
+
 @end
 
 @implementation XNRProductInfo_VC
@@ -161,7 +163,7 @@
     
     // 键盘即将隐藏, 就会发出UIKeyboardWillHideNotification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
+    [self.view addSubview:self.scrollView];
 }
 
 -(void)keyboardWillHide:(NSNotification *)note
@@ -170,6 +172,21 @@
         self.numTextField.text = @"1";
     }
 
+}
+
+-(UIScrollView *)scrollView
+{
+    if (_scrollView == nil)
+    {
+        _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+        _scrollView.contentSize = CGSizeMake(ScreenWidth, ScreenHeight * 2);
+        _scrollView.backgroundColor = [UIColor redColor];
+        //设置分页效果
+        _scrollView.pagingEnabled = YES;
+        //禁用滚动
+        _scrollView.scrollEnabled = NO;
+    }
+    return _scrollView;
 }
 
 -(void)createTableView:(NSMutableArray *)infoModelArray{
