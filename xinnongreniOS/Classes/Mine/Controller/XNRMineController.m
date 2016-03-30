@@ -129,6 +129,9 @@
                     for (int i=0; i<self.verifiedTypes.count; i++) {
                         if ([self.verifiedTypes[i] isEqualToString:[DataCenter account].typeName]) {
                             self.badgeImage.frame = CGRectMake(CGRectGetMaxX(self.typeLabel.frame) + PX_TO_PT(14), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), PX_TO_PT(28), PX_TO_PT(36));
+                            
+                            [self.view addSubview:self.badgeImage];
+                            
                             self.badgeImage.hidden = NO;
                             
                             break;
@@ -224,7 +227,15 @@
         typeLabel.numberOfLines = 0;
         self.typeLabel = typeLabel;
         [self.bgView addSubview:typeLabel];
-        
+    
+    
+        UIImageView *BadgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(typeLabel.frame) + PX_TO_PT(14), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), PX_TO_PT(28), PX_TO_PT(37))];
+        BadgeImage.contentMode = UIViewContentModeScaleAspectFit;
+        BadgeImage.image = [UIImage imageNamed:@"badge"];
+        BadgeImage.hidden = YES;
+        self.badgeImage = BadgeImage;
+        [self.bgView addSubview:BadgeImage];
+    
         UIImageView *arrowImg = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(50), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(10), PX_TO_PT(18), PX_TO_PT(32))];
         [arrowImg setImage:[UIImage imageNamed:@"icon_arrow_back"]];
         self.arrowImg = arrowImg;
