@@ -553,7 +553,7 @@
     footerView.backgroundColor = [UIColor clearColor];
     tableView.tableFooterView = footerView;
     
-    tableView.separatorStyle = UITableViewCellAccessoryDisclosureIndicator;
+//    tableView.separatorStyle = UITableViewCellAccessoryDisclosureIndicator;
 
     self.tableView = tableView;
     [self.view addSubview:tableView];

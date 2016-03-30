@@ -122,9 +122,9 @@
                 }
                 // 类型
                 self.typeLabel.text = [DataCenter account].typeName?[NSString stringWithFormat:@"类型:%@",[DataCenter account].typeName]:@"类型:还没有填写哦~";
-                CGSize size = [self.typeLabel.text sizeWithAttributes:@{NSFontAttributeName:XNRFont(12)}];
+                CGSize size = [self.typeLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(26)]}];
                 
-                self.typeLabel.frame = CGRectMake(PX_TO_PT(200), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), size.width, PX_TO_PT(20));
+                self.typeLabel.frame = CGRectMake(PX_TO_PT(200), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), size.width, PX_TO_PT(24));
                 
                 //徽章
                 if ([DataCenter account].typeName) {

@@ -9,6 +9,7 @@
 #import "XNRHomeSelectBrandView.h"
 #import "XNRHomeSelectedCellectionCell.h"
 #import "XNBrandsModel.h"
+#import "XNRCollectionViewFlowLayout.h"
 
 #import "XNRSelectItemArrModel.h"
 #define coll_cell_margin PX_TO_PT(35)
@@ -505,6 +506,7 @@
 
 - (void)createView {
     
+//    XNRCollectionViewFlowLayout *collectionViewLayout = [[XNRCollectionViewFlowLayout alloc]init];
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
 
@@ -747,7 +749,7 @@
 //定义每个UICollectionViewCell 的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat cellW = (self.bounds.size.width-4*coll_cell_margin)/3;
-    currentSize = CGSizeMake(cellW,cellW / 3);
+    currentSize = CGSizeMake(cellW-1,cellW / 3);
 //    currentSize = CGSizeMake(PX_TO_PT(207), PX_TO_PT(61));
     return currentSize;
 }
