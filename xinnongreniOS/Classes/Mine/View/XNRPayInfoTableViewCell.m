@@ -116,7 +116,7 @@
         {
             _payTypeLabel.frame = CGRectMake(0, 0, 0, 0);
             self.completeLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(130), ScreenWidth - PX_TO_PT(32), PX_TO_PT(28));
-            self.line2.frame = CGRectMake(0, PX_TO_PT(186), ScreenWidth, PX_TO_PT(1));
+            self.line2.frame = CGRectMake(0, PX_TO_PT(184), ScreenWidth, PX_TO_PT(1));
 
         }
     }
