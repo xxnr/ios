@@ -10,8 +10,10 @@
 #import "XNRMyOrderRecive_Cell.h"
 #import "XNRMyOrderModel.h"
 #import "XNRMyOrderPayCell.h"
+#import "XNRMyOrderServe_Cell.h"
 #import "XNRMyOrderSectionModel.h"
 #import "XNROrderEmptyView.h"
+#import "XNRMyAllOrderFrame.h"
 @interface XNRReciveView()<XNROrderEmptyViewBtnDelegate>
 
 @property (nonatomic, weak)XNROrderEmptyView *orderEmptyView;
@@ -23,6 +25,7 @@
 {
     if (!_orderEmptyView) {
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
+        orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
         orderEmptyView.delegate = self;
         [self addSubview:orderEmptyView];
     }
@@ -226,11 +229,22 @@
                 sectionModel.value = orderStatus[@"value"];
                 
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
+                
+                sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
+               
+                for (XNRMyOrderModel *model in sectionModel.skus) {
+                    XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
+                    // 把订单模型传递给frame模型
+                    orderFrame.orderModel = model;
+                    
+                    [sectionModel.orderFrameArray addObject:orderFrame];
+                    NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
+                }
+
                 [_dataArr addObject:sectionModel];
             }
         }
         
-//        [self showEmptyView];
         [_orderEmptyView removeFromSuperview];
         if (_dataArr.count == 0) {
             [self orderEmptyView];
@@ -294,13 +308,13 @@
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(28), ScreenWidth/2, PX_TO_PT(32))];
         label.text = [NSString stringWithFormat:@"订单号 : %@",sectionModel.orderId];
         label.textColor = R_G_B_16(0x323232);
-        label.font = XNRFont(15);
+        label.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
         UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0,ScreenWidth/2-PX_TO_PT(32) , PX_TO_PT(89))];
         payTypeLabel.textColor = R_G_B_16(0xfe9b00);
-        payTypeLabel.font = [UIFont systemFontOfSize:14];
+        payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         payTypeLabel.textAlignment = NSTextAlignmentRight;
         payTypeLabel.text = sectionModel.value;
         [headView addSubview:payTypeLabel];
@@ -336,7 +350,7 @@
                 
     
                 UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
-                totalPriceLabel.font = [UIFont systemFontOfSize:16];
+                totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
                 totalPriceLabel.textAlignment = NSTextAlignmentRight;
                 totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
                 [bottomView addSubview:totalPriceLabel];
@@ -407,7 +421,7 @@
 {
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[section];
-        return sectionModel.products.count;
+        return sectionModel.orderFrameArray.count;
     }else{
         return 0;
     }
@@ -418,13 +432,10 @@
 {
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-        if (sectionModel.products.count>0) {
-            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
-            if (model.deposit && [model.deposit floatValue]>0) {
-                return PX_TO_PT(460);
-            }else{
-                return PX_TO_PT(300);
-            }
+        if (sectionModel.orderFrameArray.count>0) {
+            XNRMyAllOrderFrame *frame = sectionModel.orderFrameArray[indexPath.row];
+            return frame.cellHeight;
+            
         }else{
             return 0;
         }
@@ -447,11 +458,11 @@
 {
     static NSString *cellID = @"cell";
     
-   XNRMyOrderRecive_Cell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+   XNRMyOrderServe_Cell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell)
     {
         //单元格复用cellID要一致
-        cell = [[XNRMyOrderRecive_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
+        cell = [[XNRMyOrderServe_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
         
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -459,9 +470,9 @@
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-        if (sectionModel.products.count>0) {
-            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
-            [cell setCellDataWithShoppingCartModel:model];
+        if (sectionModel.skus.count>0) {
+            XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
+            cell.orderFrame = frameModel;
         }
     }
     

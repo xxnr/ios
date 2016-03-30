@@ -61,6 +61,7 @@
 		49079BD81BF6F89000628039 /* XNRMyRepresentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49079BD71BF6F89000628039 /* XNRMyRepresentView.m */; };
 		490F0B121C9EFEFD00BDC7E0 /* XNRShoppingCarFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 490F0B111C9EFEFD00BDC7E0 /* XNRShoppingCarFrame.m */; };
 		490F0B151CA0FA8000BDC7E0 /* XNRProductInfo_frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 490F0B141CA0FA8000BDC7E0 /* XNRProductInfo_frame.m */; };
+		4915EBA21CAA4F9800A728BB /* XNRPropertyEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4915EBA11CAA4F9800A728BB /* XNRPropertyEmptyView.m */; };
 		491610C91C8C422200F1E243 /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4916108E1C8C422200F1E243 /* DACircularProgressView.m */; };
 		491610CA1C8C422200F1E243 /* DALabeledCircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 491610901C8C422200F1E243 /* DALabeledCircularProgressView.m */; };
 		491610CB1C8C422200F1E243 /* ImageError.png in Resources */ = {isa = PBXBuildFile; fileRef = 491610921C8C422200F1E243 /* ImageError.png */; };
@@ -553,6 +554,8 @@
 		490F0B111C9EFEFD00BDC7E0 /* XNRShoppingCarFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRShoppingCarFrame.m; sourceTree = "<group>"; };
 		490F0B131CA0FA8000BDC7E0 /* XNRProductInfo_frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRProductInfo_frame.h; sourceTree = "<group>"; };
 		490F0B141CA0FA8000BDC7E0 /* XNRProductInfo_frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRProductInfo_frame.m; sourceTree = "<group>"; };
+		4915EBA01CAA4F9800A728BB /* XNRPropertyEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPropertyEmptyView.h; sourceTree = "<group>"; };
+		4915EBA11CAA4F9800A728BB /* XNRPropertyEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPropertyEmptyView.m; sourceTree = "<group>"; };
 		4916108D1C8C422200F1E243 /* DACircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DACircularProgressView.h; sourceTree = "<group>"; };
 		4916108E1C8C422200F1E243 /* DACircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DACircularProgressView.m; sourceTree = "<group>"; };
 		4916108F1C8C422200F1E243 /* DALabeledCircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DALabeledCircularProgressView.h; sourceTree = "<group>"; };
@@ -2712,6 +2715,8 @@
 				491AF0581C79C0E500AA3CC8 /* XNRPropertyBrandView.m */,
 				491AF05D1C7C636800AA3CC8 /* XNRPropertyFootView.h */,
 				491AF05E1C7C636800AA3CC8 /* XNRPropertyFootView.m */,
+				4915EBA01CAA4F9800A728BB /* XNRPropertyEmptyView.h */,
+				4915EBA11CAA4F9800A728BB /* XNRPropertyEmptyView.m */,
 				491AF0541C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.h */,
 				491AF0551C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.m */,
 			);
@@ -3350,6 +3355,7 @@
 				49F99EEB1C155D130000556A /* XNRProductInfo_cell.m in Sources */,
 				49F6B19A1C2A6EE100DCF8CF /* MJPhotoBrowser.m in Sources */,
 				491610FB1C8C454300F1E243 /* MBProgressHUD+Add.m in Sources */,
+				4915EBA21CAA4F9800A728BB /* XNRPropertyEmptyView.m in Sources */,
 				1FE1D60B1B12EE2600F0D158 /* MJArgument.m in Sources */,
 				49F7A57B1C58469400A1FA45 /* MJRefreshAutoNormalFooter.m in Sources */,
 				49EC525B1BEBBA5E00AA8898 /* BSLanguage.m in Sources */,

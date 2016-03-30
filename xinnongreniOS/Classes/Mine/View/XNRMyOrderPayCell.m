@@ -60,7 +60,7 @@
     UILabel *goodsNameLabel = [[UILabel alloc] init];
     goodsNameLabel.textColor = R_G_B_16(0x323232);
     goodsNameLabel.numberOfLines = 0;
-    goodsNameLabel.font = [UIFont systemFontOfSize:16];
+    goodsNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.goodsNameLabel = goodsNameLabel;
     [self.contentView addSubview:goodsNameLabel];
     
@@ -73,14 +73,14 @@
     
     UILabel *priceLabel = [[UILabel alloc] init];
     priceLabel.textColor = R_G_B_16(0xff4e00);
-    priceLabel.font = [UIFont systemFontOfSize:16];
+    priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     priceLabel.textAlignment = NSTextAlignmentRight;
     self.priceLabel = priceLabel;
     [self.contentView addSubview:priceLabel];
     
     UILabel *numLabel = [[UILabel alloc] init];
     numLabel.textColor = R_G_B_16(0x323232);
-    numLabel.font = [UIFont systemFontOfSize:18];
+    numLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     numLabel.textAlignment = NSTextAlignmentLeft;
     self.numLabel = numLabel;
     [self.contentView addSubview:numLabel];
@@ -97,7 +97,7 @@
     UILabel *addtionPriceLabel = [[UILabel alloc]init];
     addtionPriceLabel.textColor = R_G_B_16(0x323232);
     addtionPriceLabel.textAlignment = NSTextAlignmentRight;
-    addtionPriceLabel.font = [UIFont systemFontOfSize:16];
+    addtionPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.addtionPriceLabel = addtionPriceLabel;
     [self.contentView addSubview:self.addtionPriceLabel];
     
@@ -123,28 +123,28 @@
     
     UILabel *sectionOne = [[UILabel alloc] init];
     sectionOne.textColor = R_G_B_16(0x323232);
-    sectionOne.font = [UIFont systemFontOfSize:14];
+    sectionOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     sectionOne.text = @"阶段一: 订金";
     self.sectionOne = sectionOne;
     [self.contentView addSubview:sectionOne];
     
     UILabel *sectionTwo = [[UILabel alloc] init];
     sectionTwo.textColor = R_G_B_16(0x323232);
-    sectionTwo.font = [UIFont systemFontOfSize:14];
+    sectionTwo.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     sectionTwo.text = @"阶段二: 尾款";
     self.sectionTwo = sectionTwo;
     [self.contentView addSubview:sectionTwo];
     
     UILabel *depositLabel = [[UILabel alloc] init];
     depositLabel.textColor = R_G_B_16(0x323232);
-    depositLabel.font = [UIFont systemFontOfSize:16];
+    depositLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     depositLabel.textAlignment = NSTextAlignmentRight;
     self.depositLabel = depositLabel;
     [self.contentView addSubview:depositLabel];
     
     UILabel *remainPriceLabel = [[UILabel alloc] init];
     remainPriceLabel.textColor = R_G_B_16(0x323232);
-    remainPriceLabel.font = [UIFont systemFontOfSize:16];
+    remainPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     remainPriceLabel.textAlignment = NSTextAlignmentRight;
     self.remainPriceLabel = remainPriceLabel;
     [self.contentView addSubview:remainPriceLabel];
@@ -195,12 +195,12 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,_info.thumbnail];
     [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
     // 商品名
-    self.goodsNameLabel.text = _info.name;
+    self.goodsNameLabel.text = _info.productName;
     
     // 属性
     NSMutableString *displayStr = [[NSMutableString alloc] initWithString:@""];
     for (NSDictionary *subDic in _attributesArray) {
-        [displayStr appendString:[NSString stringWithFormat:@" %@:%@;",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
+        [displayStr appendString:[NSString stringWithFormat:@"%@:%@;",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
     }
     self.attributesLabel.text = displayStr;
     

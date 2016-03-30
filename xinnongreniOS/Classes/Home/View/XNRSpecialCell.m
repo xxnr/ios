@@ -61,14 +61,14 @@
 
     
     UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.image.frame) + margin, PX_TO_PT(20), ScreenWidth - CGRectGetMaxX(self.image.frame)-PX_TO_PT(32), PX_TO_PT(100))];
-    detailLabel.font = [UIFont systemFontOfSize:16];
+    detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     detailLabel.textColor = R_G_B_16(0x323232);
     detailLabel.numberOfLines = 0;
     self.detailLabel = detailLabel;
     [self addSubview:detailLabel];
     
     UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.image.frame) + margin, CGRectGetMaxY(self.detailLabel.frame), PX_TO_PT(200), PX_TO_PT(100))];
-    priceLabel.font = [UIFont systemFontOfSize:16];
+    priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     priceLabel.textColor = R_G_B_16(0xff4e00);
     self.priceLabel = priceLabel;
     [self addSubview:priceLabel];

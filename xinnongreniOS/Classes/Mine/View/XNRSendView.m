@@ -23,11 +23,22 @@
 {
     if (!_orderEmptyView) {
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
+        orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
         orderEmptyView.delegate = self;
         [self addSubview:orderEmptyView];
     }
     return _orderEmptyView;
     
+}
+
+#pragma mark - 图片为空的代理方法
+-(void)XNROrderEmptyView:(XNROrderEmptyViewbuySort)type
+{
+    if (type == XNROrderEmptyView_buyFer) {
+        
+    }else if(type == XNROrderEmptyView_buyCar){
+        
+    }
 }
 
 
@@ -283,13 +294,13 @@
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(28), ScreenWidth/2, PX_TO_PT(32))];
         label.text = [NSString stringWithFormat:@"订单号 : %@",sectionModel.orderId];
         label.textColor = R_G_B_16(0x323232);
-        label.font = XNRFont(15);
+        label.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
         UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0,ScreenWidth/2-PX_TO_PT(32) , PX_TO_PT(89))];
         payTypeLabel.textColor = R_G_B_16(0xfe9b00);
-        payTypeLabel.font = [UIFont systemFontOfSize:14];
+        payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         payTypeLabel.textAlignment = NSTextAlignmentRight;
         payTypeLabel.text = sectionModel.value;
         [headView addSubview:payTypeLabel];
@@ -324,7 +335,7 @@
                 
         
         UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth -PX_TO_PT(32), PX_TO_PT(80))];
-        totalPriceLabel.font = [UIFont systemFontOfSize:16];
+        totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         totalPriceLabel.textAlignment = NSTextAlignmentRight;
         totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
         [bottomView addSubview:totalPriceLabel];

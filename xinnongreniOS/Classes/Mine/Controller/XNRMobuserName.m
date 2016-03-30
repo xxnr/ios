@@ -38,7 +38,7 @@
     userNameTF.borderStyle = UITextBorderStyleNone;
     userNameTF.backgroundColor = R_G_B_16(0xffffff);
     userNameTF.placeholder = @"请输入您的真实姓名";
-    userNameTF.font = XNRFont(18);
+    userNameTF.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     userNameTF.clearButtonMode = UITextFieldViewModeWhileEditing;
     userNameTF.textAlignment = NSTextAlignmentLeft;
     userNameTF.delegate = self;
@@ -191,7 +191,7 @@
 -(void)createNav{
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:24];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"修改姓名";

@@ -12,6 +12,7 @@
 @property (nonatomic,weak) UILabel *payMoneyLabel;
 @property (nonatomic,weak) UILabel *payTypeLabel;
 @property (nonatomic,weak) UILabel *completeLabel;
+@property (nonatomic,weak) UIView *line2;
 @property (nonatomic,strong) NSArray *arr;
 
 @end
@@ -78,7 +79,7 @@
     
     UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(222), ScreenWidth, PX_TO_PT(1))];
     line2.backgroundColor = R_G_B_16(0xc7c7c7);
-    
+    self.line2 = line2;
     [self.contentView addSubview:line1];
     
     [self.contentView addSubview:line2];
@@ -115,6 +116,8 @@
         {
             _payTypeLabel.frame = CGRectMake(0, 0, 0, 0);
             self.completeLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(130), ScreenWidth - PX_TO_PT(32), PX_TO_PT(28));
+            self.line2.frame = CGRectMake(0, PX_TO_PT(184), ScreenWidth, PX_TO_PT(1));
+
         }
     }
     NSString *str = [model.datePaid substringToIndex:10];

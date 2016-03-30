@@ -10,7 +10,7 @@
 #import "XNRShoppingCartModel.h"
 @class XNRShoppingCarFrame;
 
-typedef void(^XNRShoppingCartTableViewCellBlock)();
+typedef void(^XNRShoppingCartTableViewCellBlock)(NSIndexPath *indexP);
 
 
 @protocol XNRShoppingCartTableViewCellDelegate <NSObject>

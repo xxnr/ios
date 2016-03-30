@@ -56,7 +56,7 @@
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(20, 0, 200, _aboutUsBg.frame.size.height)];
     label.textColor = [UIColor blackColor];
     label.text = @"关于我们";
-    label.font = XNRFont(18);
+    label.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [_aboutUsBg addSubview:label];
     
     UIImageView *imageView = [MyControl createImageViewWithFrame:CGRectMake(ScreenWidth-20-10, (45-18)/2.0, 10, 18) ImageName:@"nextArrow"];
@@ -76,7 +76,7 @@
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(20, 0, 200, _aboutUsBg.frame.size.height)];
     label.textColor = [UIColor blackColor];
     label.text = @"退出登录";
-    label.font = XNRFont(18);
+    label.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [_quiteBg addSubview:label];
     
     UIImageView *imageView = [MyControl createImageViewWithFrame:CGRectMake(ScreenWidth-20-10, (45-18)/2.0, 10, 18) ImageName:@"nextArrow"];

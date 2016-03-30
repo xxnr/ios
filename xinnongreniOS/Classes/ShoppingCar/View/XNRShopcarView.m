@@ -46,7 +46,7 @@
     titleLabel1.text = @"您的购物车还是空空的哦";
     titleLabel1.textAlignment = NSTextAlignmentCenter;
     titleLabel1.textColor = R_G_B_16(0x757575);
-    titleLabel1.font = [UIFont systemFontOfSize:16];
+    titleLabel1.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     titleLabel1.numberOfLines = NO;
     self.titleLabel1 = titleLabel1;
     [bgView addSubview:titleLabel1];
@@ -56,7 +56,7 @@
     titleLabel2.textAlignment = NSTextAlignmentCenter;
 
     titleLabel2.textColor = R_G_B_16(0x757575);
-    titleLabel2.font = [UIFont systemFontOfSize:16];
+    titleLabel2.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     titleLabel2.numberOfLines = NO;
     self.titleLabel2 = titleLabel2;
     [bgView addSubview:titleLabel2];
@@ -69,7 +69,7 @@
     [ferBtn setTitleColor:R_G_B_16(0xfafafa) forState:UIControlStateHighlighted];
     [ferBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fafafa"]] forState:UIControlStateNormal];
     [ferBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateHighlighted];
-    ferBtn.titleLabel.font = XNRFont(16);
+    ferBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     ferBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
     ferBtn.layer.borderWidth = 1.0;
     ferBtn.layer.cornerRadius = 5;
@@ -86,7 +86,7 @@
     [carBtn setTitleColor:R_G_B_16(0xfafafa) forState:UIControlStateHighlighted];
     [carBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fafafa"]] forState:UIControlStateNormal];
     [carBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateHighlighted];
-    carBtn.titleLabel.font = XNRFont(16);
+    carBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     carBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
     carBtn.layer.borderWidth = 1.0;
     carBtn.layer.cornerRadius = 5;

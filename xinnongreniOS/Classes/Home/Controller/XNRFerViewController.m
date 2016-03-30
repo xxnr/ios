@@ -112,13 +112,6 @@
     // 刷新
     [self setupTotalRefresh];
     
-
-    // 综合
-    // 价格
-//    [self setuoPriceRefresh];
-    // 筛选
-//    [self setuoSelectRefresh];
-
 }
 #pragma mark - 刷新
 -(void)setupTotalRefresh{
@@ -206,7 +199,7 @@
 #pragma mark  - 获得商品数据
 -(void)getData
 {
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+//    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -336,7 +329,7 @@
     }
 }
 -(void)getTotalData{
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+//    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [_totalArray removeAllObjects];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

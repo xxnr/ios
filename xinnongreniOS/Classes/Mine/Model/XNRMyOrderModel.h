@@ -28,7 +28,7 @@
 /**
  *  商品名称
  */
-@property (copy,nonatomic) NSString *name;
+@property (copy,nonatomic) NSString *productName;
 /**
  *  待付金额
  */

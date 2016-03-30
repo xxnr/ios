@@ -132,7 +132,7 @@
         [displayStr appendString:[NSString stringWithFormat:@"%@:%@ ",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
         [displayStr appendString:@";"];
     }
-//    CGSize size = [displayStr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
+
     CGSize size = [displayStr boundingRectWithSize:CGSizeMake(PX_TO_PT(325), MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(28)]} context:nil].size;
     
     detailLabel.frame = CGRectMake(CGRectGetMaxX(goodsImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(brandNameLabel.frame) + PX_TO_PT(19), PX_TO_PT(325), size.height);
@@ -378,7 +378,7 @@
     //    NSDictionary *depositStr=@{
     //
     //                               NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-    ////                               NSFontAttributeName:[UIFont systemFontOfSize:18]
+    ////                               NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(36)]
     //
     //                               };
     //
@@ -390,7 +390,7 @@
     //    NSDictionary *depositStrMid=@{
     //
     //                               NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-    ////                               NSFontAttributeName:[UIFont systemFontOfSize:18]
+    ////                               NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(36)]
     //
     //                               };
     //

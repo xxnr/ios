@@ -534,7 +534,7 @@
 
     resetBtn.frame = CGRectMake(PX_TO_PT(29),PX_TO_PT(29),PX_TO_PT(269),PX_TO_PT(61));
 
-    resetBtn.titleLabel.font = XNRFont(14);
+    resetBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     resetBtn.layer.borderColor = R_G_B_16(0x66d1b9).CGColor;
 
     resetBtn.layer.borderWidth = 1.0;
@@ -551,7 +551,7 @@
     
     UIButton *admireBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     admireBtn.frame = CGRectMake(CGRectGetMaxX(self.resetBtn.frame) + PX_TO_PT(39), PX_TO_PT(29),PX_TO_PT(383) , PX_TO_PT(61));
-    admireBtn.titleLabel.font = XNRFont(14);
+    admireBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
 //    admireBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
 //    admireBtn.layer.borderWidth = 1.0;
     admireBtn.layer.cornerRadius = 5.0;

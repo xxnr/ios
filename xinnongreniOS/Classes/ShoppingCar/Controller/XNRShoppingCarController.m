@@ -133,6 +133,13 @@
     // 创建导航栏
     [self createNavgation];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:@"refreshTableView" object:nil];
+    
+}
+
+-(void)refreshTableView
+{
+    [self.shoppingCarTableView reloadData];
 }
 
 #pragma mark - 刷新
@@ -275,14 +282,14 @@
     
     UILabel *allSelectLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(selectedBottomBtn.frame) + PX_TO_PT(20), PX_TO_PT(28), ScreenWidth/2, PX_TO_PT(32))];
     allSelectLabel.text = @"全选";
-    allSelectLabel.font = XNRFont(16);
+    allSelectLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     allSelectLabel.textAlignment = NSTextAlignmentLeft;
     allSelectLabel.textColor = R_G_B_16(0x323232);
     [_bottomView addSubview:allSelectLabel];
     
     _totalPriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth-PX_TO_PT(220)-PX_TO_PT(20), PX_TO_PT(88))];
     _totalPriceLabel.textColor = R_G_B_16(0x323232);
-    _totalPriceLabel.font = XNRFont(14);
+    _totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     _totalPriceLabel.textAlignment = NSTextAlignmentRight;
     _totalPriceLabel.adjustsFontSizeToFitWidth = YES;
     [_bottomView addSubview:_totalPriceLabel];
@@ -292,7 +299,7 @@
     _settlementBtn.enabled = NO;
     [_settlementBtn setTitle:@"去结算" forState:UIControlStateNormal];
     [_settlementBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    _settlementBtn.titleLabel.font = XNRFont(14);
+    _settlementBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [_bottomView addSubview:_settlementBtn];
     
     _deleteBtn = [MyControl createButtonWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(220), 0, PX_TO_PT(220), PX_TO_PT(88)) ImageName:nil Target:self Action:@selector(deleteBtnClick:) Title:nil];
@@ -300,7 +307,7 @@
     _deleteBtn.enabled = NO;
     [_deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
     [_deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    _deleteBtn.titleLabel.font = XNRFont(14);
+    _deleteBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     _deleteBtn.hidden = YES;
     [_bottomView addSubview:_deleteBtn];
 
@@ -554,8 +561,8 @@
     // 取出商品的skuid和数量
     NSMutableArray *tempMarr = [[NSMutableArray alloc]init];
     for (int i=0; i<allGoodArr.count; i++) {
-        XNRShoppingCarFrame *model = allGoodArr[i];
-        NSDictionary *params = @{@"_id":model.shoppingCarModel._id,@"count":model.shoppingCarModel.num?model.shoppingCarModel.num:@"1",@"additions":model.shoppingCarModel.additions};
+        XNRShoppingCartModel *model = allGoodArr[i];
+        NSDictionary *params = @{@"_id":model._id,@"count":model.num?model.num:@"1",@"additions":model.additions};
         NSLog(@"898990======%@",params);
         [tempMarr addObject:params];
     }
@@ -655,14 +662,15 @@
         self.selectedHeadBtn = selectedHeadBtn;
         [headView addSubview:selectedHeadBtn];
         // 已下架的商品selectedHeadBtn隐藏
-        for (int i = 0; i<sectionModel.SKUFrameList.count; i++) {
-            XNRShoppingCarFrame *model = sectionModel.SKUFrameList[i];
-            if (sectionModel.SKUFrameList.count == 1 && [model.shoppingCarModel.online integerValue] == 0) {
-                selectedHeadBtn.hidden = YES;
-            }else{
+        for (int i = 0; i<sectionModel.SKUList.count; i++) {
+            XNRShoppingCartModel *model = sectionModel.SKUList[i];
+            if ([model.online integerValue] == 1 && [model.online integerValue] == 0) {
                 selectedHeadBtn.hidden = NO;
+            }else if([model.online integerValue] == 1){// 非下架
+                selectedHeadBtn.hidden = NO;
+            }else if([model.online integerValue] == 0){// 下架
+                selectedHeadBtn.hidden = YES;
             }
-            
         }
        
         UIImageView *shopcarImage = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(selectedHeadBtn.frame) + PX_TO_PT(20), PX_TO_PT(26), PX_TO_PT(36), PX_TO_PT(36))];
@@ -673,7 +681,7 @@
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(shopcarImage.frame) + PX_TO_PT(24), PX_TO_PT(28), ScreenWidth, PX_TO_PT(32))];
         label.text = sectionModel.brandName;
         label.textColor = R_G_B_16(0x323232);
-        label.font = XNRFont(16);
+        label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
@@ -752,7 +760,7 @@
     NSDictionary *depositStr=@{
                                
                                NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-                               NSFontAttributeName:[UIFont systemFontOfSize:18]
+                               NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(36)]
                                
                                };
     
@@ -824,21 +832,6 @@
     }
 }
 
-//cell点击方法
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if (_dataArr.count > 0) {
-//        
-//        XNRProductInfo_VC *info_VC = [[XNRProductInfo_VC alloc] init];
-//        info_VC.hidesBottomBarWhenPushed = YES;
-//        XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
-//        XNRShoppingCarFrame *model = sectionModel.SKUFrameList[indexPath.row];
-//        info_VC.model = model.shoppingCarModel;
-//        [self.navigationController pushViewController:info_VC animated:YES];
-//
-//    }
-//}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellID = @"cell";
@@ -871,15 +864,16 @@
             [self recordSelectedShopGoods];
         }];
         // 自定义跳转
-        cell.pushBlock = ^(){
+        cell.pushBlock = ^(NSIndexPath *indexP){
             if (_dataArr.count > 0) {
                 
                 XNRProductInfo_VC *info_VC = [[XNRProductInfo_VC alloc] init];
                 info_VC.hidesBottomBarWhenPushed = YES;
-                XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
-                XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
+                XNRShopCarSectionModel *sectionModel = _dataArr[indexP.section];
+                XNRShoppingCartModel *model = sectionModel.SKUList[indexP.row];
                 info_VC.model = model;
-                NSLog(@"model.goodId===%@",model.goodsId);
+                NSLog(@"model.goodIdmodel===%@",model);
+                NSLog(@"----+++__+%@",indexP);
                 
                 info_VC.isFrom = YES;
                 [self.navigationController pushViewController:info_VC animated:YES];

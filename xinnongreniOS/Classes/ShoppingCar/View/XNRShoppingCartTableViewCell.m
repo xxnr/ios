@@ -67,9 +67,6 @@
 @property (nonatomic, weak) UIButton *pushBtn;
 @property (nonatomic, weak) UIButton *cancelBtn;
 
-
-
-
 @property (nonatomic, copy) void(^com)(NSIndexPath *indexPath);
 @end
 
@@ -79,7 +76,7 @@
     if (self) {
         self.com = com;
         self.contentView.userInteractionEnabled = YES;
-        self.backgroundColor = [UIColor clearColor];
+        self.contentView.backgroundColor = [UIColor clearColor];
         [self createUI];
         
         // 注册消息通知
@@ -93,24 +90,15 @@
 -(void)cancelBtnPresent{
     if ([self.model.online integerValue] == 0) {// 下架
         self.goodNameLabel.frame = CGRectMake(CGRectGetMaxX(self.picImageView.frame)+PX_TO_PT(20), PX_TO_PT(40), ScreenWidth-CGRectGetMaxX(self.picImageView.frame)-PX_TO_PT(20)-PX_TO_PT(150), PX_TO_PT(80));
-        self.goodNameLabel.backgroundColor = [UIColor redColor];
-        UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        cancelBtn.frame = CGRectMake(CGRectGetMaxX(self.goodNameLabel.frame)+PX_TO_PT(80), PX_TO_PT(40), PX_TO_PT(40), PX_TO_PT(40));
-        [cancelBtn setImage:[UIImage imageNamed:@"address_delete"] forState:UIControlStateNormal];
-        [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
-        self.cancelBtn = cancelBtn;
-        [self.contentView addSubview:cancelBtn];
+        [self createCancelBtn];
     }
-
-
+    
 }
 -(void)normalBtnPresent{
-    if ([self.model.online integerValue] == 0) {
+    if ([self.model.online integerValue] == 0) {// 下架
         self.goodNameLabel.frame = self.shoppingCarFrame.goodNameLabelF;
-        self.cancelBtn.hidden = YES;
+        [self.cancelBtn removeFromSuperview];
     }
-    
-    
 }
 
 -(void)cancelBtnClick{
@@ -130,7 +118,8 @@
                     [KSHttpRequest post:KchangeShopCarNum parameters:params1 success:^(id result) {
                         if ([result[@"code"] integerValue] == 1000) {
                             [UILabel showMessage:@"删除成功"];
-                        }
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+                         }
                     } failure:^(NSError *error) {
                         
                     }];
@@ -143,10 +132,17 @@
             
         
         }
-    
-    
-
     };
+    [alertView BMAlertShow];
+}
+
+-(void)createCancelBtn{
+    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelBtn.frame = CGRectMake(CGRectGetMaxX(self.goodNameLabel.frame)+PX_TO_PT(80), PX_TO_PT(40), PX_TO_PT(40), PX_TO_PT(40));
+    [cancelBtn setImage:[UIImage imageNamed:@"address_delete"] forState:UIControlStateNormal];
+    [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    self.cancelBtn = cancelBtn;
+    [self.contentView addSubview:cancelBtn];
 }
 
 -(void)textFieldChanged:(NSNotification*)noti {
@@ -209,7 +205,7 @@
     UILabel *presentPriceLabel = [[UILabel alloc]init];
     presentPriceLabel.textColor = R_G_B_16(0x323232);
     presentPriceLabel.textAlignment = NSTextAlignmentRight;
-    presentPriceLabel.font = [UIFont systemFontOfSize:16];
+    presentPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.presentPriceLabel = presentPriceLabel;
     [self.contentView addSubview:self.presentPriceLabel];
     
@@ -231,7 +227,7 @@
 }
 
 -(void)pushBtnClick{
-    self.pushBlock();
+    self.pushBlock(self.indexPath);
 }
 
 -(void)createDepositView{
@@ -239,7 +235,7 @@
     UILabel *sectionOneLabel = [[UILabel alloc] init];
     sectionOneLabel.text = @"阶段一: 订金";
     sectionOneLabel.textColor = R_G_B_16(0x323232);
-    sectionOneLabel.font = [UIFont systemFontOfSize:14];
+    sectionOneLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     sectionOneLabel.textAlignment = NSTextAlignmentLeft;
     self.sectionOneLabel = sectionOneLabel;
     [self.contentView addSubview:sectionOneLabel];
@@ -247,21 +243,21 @@
     UILabel *sectionTwoLabel = [[UILabel alloc] init];
     sectionTwoLabel.text = @"阶段二: 尾款";
     sectionTwoLabel.textColor = R_G_B_16(0x323232);
-    sectionTwoLabel.font = [UIFont systemFontOfSize:14];
+    sectionTwoLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     sectionTwoLabel.textAlignment = NSTextAlignmentLeft;
     self.sectionTwoLabel = sectionTwoLabel;
     [self.contentView addSubview:sectionTwoLabel];
         
     UILabel *subscriptionLabel = [[UILabel alloc] init];
     subscriptionLabel.textColor = R_G_B_16(0xff4e00);
-    subscriptionLabel.font = [UIFont systemFontOfSize:16];
+    subscriptionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     subscriptionLabel.textAlignment = NSTextAlignmentRight;
     self.subscriptionLabel = subscriptionLabel;
     [self.contentView addSubview:subscriptionLabel];
         
     UILabel *remainLabel = [[UILabel alloc] init];
     remainLabel.textColor = R_G_B_16(0x323232);
-    remainLabel.font = [UIFont systemFontOfSize:16];
+    remainLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     remainLabel.textAlignment = NSTextAlignmentRight;
     self.remainLabel = remainLabel;
     [self.contentView addSubview:remainLabel];
@@ -349,7 +345,7 @@
     UILabel *presentPriceLabel = [[UILabel alloc]init];
     presentPriceLabel.textColor = R_G_B_16(0x323232);
     presentPriceLabel.textAlignment = NSTextAlignmentRight;
-    presentPriceLabel.font = [UIFont systemFontOfSize:16];
+    presentPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.presentPriceLabel = presentPriceLabel;
     [self.contentView addSubview:self.presentPriceLabel];
 }
@@ -367,7 +363,7 @@
     UILabel *addtionPriceLabel = [[UILabel alloc]init];
     addtionPriceLabel.textColor = R_G_B_16(0x323232);
     addtionPriceLabel.textAlignment = NSTextAlignmentRight;
-    addtionPriceLabel.font = [UIFont systemFontOfSize:16];
+    addtionPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.addtionPriceLabel = addtionPriceLabel;
     [self.contentView addSubview:self.addtionPriceLabel];
 }
@@ -546,10 +542,7 @@
     
     // 2.设置frame
     [self setupFrame];
-    
-
 }
-
 
 -(void)setupFrame{
     
@@ -589,7 +582,6 @@
     self.numLabel.frame = self.shoppingCarFrame.onlineLabelF;
 
 }
-
 #pragma mark - 设置现在的数据
 - (void)setupData
 {
@@ -615,7 +607,6 @@
         [displayStr appendString:[NSString stringWithFormat:@"%@:%@;",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
     }
     self.introduceLabel.text = displayStr;
-    
     
     // 附加选项
     NSMutableString *addtionStr = [[NSMutableString alloc] initWithString:@""];
@@ -651,7 +642,8 @@
     if ([model.online integerValue] == 0) {
         self.selectedBtn.hidden = YES;
         self.offLineLabel.hidden = NO;
-        
+        self.cancelBtn.hidden = NO;
+
         self.backgroundColor = R_G_B_16(0xf0f0f0);
         self.goodNameLabel.textColor = R_G_B_16(0x909090);
         self.presentPriceLabel.textColor = R_G_B_16(0x909090);
@@ -659,6 +651,8 @@
         self.sectionTwoLabel.textColor = R_G_B_16(0x909090);
         self.subscriptionLabel.textColor = R_G_B_16(0x909090);
         self.remainLabel.textColor = R_G_B_16(0x909090);
+        self.addtionsLabel.textColor = R_G_B_16(0x909090);
+        self.addtionPriceLabel.textColor = R_G_B_16(0x909090);
         
         self.leftBtn.hidden = YES;
         self.numTextField.hidden = YES;
@@ -669,17 +663,17 @@
         if (!_numLabel) {
             UILabel *numLabel = [[UILabel alloc] init];
             numLabel.textColor = R_G_B_16(0x909090);
+            numLabel.textAlignment = NSTextAlignmentCenter;
             numLabel.text = [NSString stringWithFormat:@"x %@",model.num];
             self.numLabel = numLabel;
             [self.contentView addSubview:numLabel];
 
         }
-        
-
     }else{
         self.backgroundColor = [UIColor whiteColor];
         self.selectedBtn.hidden = NO;
         self.offLineLabel.hidden = YES;
+        self.cancelBtn.hidden = YES;
         
         self.leftBtn.hidden = NO;
         self.numTextField.hidden = NO;
@@ -694,7 +688,8 @@
         self.sectionTwoLabel.textColor = R_G_B_16(0x323232);
         self.subscriptionLabel.textColor = R_G_B_16(0xff4e00);
         self.remainLabel.textColor = R_G_B_16(0x323232);
-
+        self.addtionsLabel.textColor = R_G_B_16(0x323232);
+        self.addtionPriceLabel.textColor = R_G_B_16(0x323232);
 
     }
     
