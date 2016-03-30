@@ -71,6 +71,8 @@
                 info.sex = dict[@"sex"];
                 NSArray *Arr = dict[@"verifiedTypesInJson"];
                 
+                [self.verifiedTypes removeAllObjects];
+                
                 for (int i=0 ; i<Arr.count; i++) {
                     NSString *name =dict[@"verifiedTypesInJson"][i][@"typeName"];
                     [self.verifiedTypes addObject:name];
@@ -129,8 +131,6 @@
                     for (int i=0; i<self.verifiedTypes.count; i++) {
                         if ([self.verifiedTypes[i] isEqualToString:[DataCenter account].typeName]) {
                             self.badgeImage.frame = CGRectMake(CGRectGetMaxX(self.typeLabel.frame) + PX_TO_PT(14), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), PX_TO_PT(28), PX_TO_PT(36));
-                            
-                            [self.view addSubview:self.badgeImage];
                             
                             self.badgeImage.hidden = NO;
                             

@@ -58,21 +58,30 @@
         label3.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         [bgview addSubview:label3];
 
+        UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(216), ScreenWidth, PX_TO_PT(1))];
+        line1.backgroundColor = R_G_B_16(0xE2E2E2);
+        [bgview addSubview:line1];
         
         UIButton *leftButton = [[UIButton alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(bgview.frame), view.width/2, PX_TO_PT(101))];
-        leftButton.backgroundColor = [UIColor whiteColor];
-        [leftButton setTitle:leftTitile forState:UIControlStateNormal];
+        [leftButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#FFFFFF"]] forState:UIControlStateNormal];
+        [leftButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#FAFAFA"]] forState:UIControlStateHighlighted];        [leftButton setTitle:leftTitile forState:UIControlStateNormal];
         [leftButton setTitleColor:R_G_B_16(0x00B38A) forState:UIControlStateNormal];
         [leftButton addTarget:self action:@selector(leftAction) forControlEvents:UIControlEventTouchDown];
         [view addSubview:leftButton];
         
         UIButton *rightButton = [[UIButton alloc]initWithFrame:CGRectMake(view.width/2, CGRectGetMaxY(bgview.frame), view.width/2, PX_TO_PT(101))];
         [rightButton setTitle:rightTitile forState:UIControlStateNormal];
-        rightButton.backgroundColor = R_G_B_16(0xFAFAFA);
-//        rightButton.backgroundColor = [UIColor redColor];
+        rightButton.backgroundColor = [UIColor whiteColor];
+        [rightButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#FFFFFF"]] forState:UIControlStateNormal];
+        [rightButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#FAFAFA"]] forState:UIControlStateHighlighted];
+//        rightButton.backgroundColor = R_G_B_16(0xFAFAFA);
         [rightButton setTitleColor:R_G_B_16(0x00B38A) forState:UIControlStateNormal];
         [rightButton addTarget:self action:@selector(rightAction) forControlEvents:UIControlEventTouchDown];
         [view addSubview:rightButton];
+        
+        UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(view.width/2, CGRectGetMaxY(bgview.frame), PX_TO_PT(1), PX_TO_PT(101))];
+        line2.backgroundColor =R_G_B_16(0xE2E2E2);
+        [view addSubview:line2];
     }
     
     return self;
