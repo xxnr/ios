@@ -141,12 +141,10 @@
         [window addSubview:attributesView];
         
         [self createTopView];
+        // 获得商品属性数据
+        [self getData];
         
     }
-    // 获得商品属性数据
-    [self getData];
-
-    
 }
 #pragma mark - 数据请求
 -(void)getData
@@ -485,7 +483,7 @@
             [self synchShoppingCarDataWithoutToast];
             
             NSMutableArray *SKUs = [NSMutableArray array];
-            NSDictionary *param = @{@"_id":self.shopcarModel._id?self.shopcarModel._id:_SKUId,@"count":_numText?_numText:@"1",@"additions":self.shopcarModel.additions};
+            NSDictionary *param = @{@"_id":self.shopcarModel._id?self.shopcarModel._id:@"",@"count":_numText?_numText:@"1",@"additions":self.shopcarModel.additions};
             [SKUs addObject:param];
             NSLog(@"854990===%@-=-=-=",SKUs);
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
