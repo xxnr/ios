@@ -51,7 +51,7 @@
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         [bgview addSubview:imageView];
         
-        UILabel *label3 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame) + PX_TO_PT(10), PX_TO_PT(144), PX_TO_PT(200), PX_TO_PT(30))];
+        UILabel *label3 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame) + PX_TO_PT(10), PX_TO_PT(144), PX_TO_PT(300), PX_TO_PT(30))];
         
         label3.text = [dic objectForKey:@"phone"];
         label3.textColor = R_G_B_16(0x646464);

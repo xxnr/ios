@@ -163,7 +163,7 @@
     
     // 键盘即将隐藏, 就会发出UIKeyboardWillHideNotification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    [self.view addSubview:self.scrollView];
+//    [self.view addSubview:self.scrollView];
 }
 
 -(void)keyboardWillHide:(NSNotification *)note
@@ -180,7 +180,7 @@
     {
         _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
         _scrollView.contentSize = CGSizeMake(ScreenWidth, ScreenHeight * 2);
-        _scrollView.backgroundColor = [UIColor redColor];
+//        _scrollView.backgroundColor = [UIColor redColor];
         //设置分页效果
         _scrollView.pagingEnabled = YES;
         //禁用滚动
