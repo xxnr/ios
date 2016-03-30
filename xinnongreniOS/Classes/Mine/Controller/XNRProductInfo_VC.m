@@ -178,7 +178,6 @@
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, frame.viewHeight)];
     tableView.delegate = self;
     tableView.dataSource = self;
-    tableView.pagingEnabled = YES;
     
     self.tableView = tableView;
     [self.view addSubview:tableView];
