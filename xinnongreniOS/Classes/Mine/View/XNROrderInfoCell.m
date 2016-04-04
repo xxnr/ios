@@ -200,7 +200,7 @@
             priceLabel.textColor = R_G_B_16(0x323232);
             priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
             priceLabel.textAlignment = NSTextAlignmentRight;
-            priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[subDic[@"price"] floatValue ]];
+            priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[subDic[@"price"] doubleValue ]];
             [addtionLabel addSubview:priceLabel];
             
             UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(nameLabel.frame)*i, ScreenWidth-PX_TO_PT(64), PX_TO_PT(3))];
@@ -309,7 +309,7 @@
         [self createTopView:_model];
 //    }
     
-    if (_model.deposit && [_model.deposit floatValue] > 0) {
+    if (_model.deposit && [_model.deposit doubleValue] > 0) {
         
         self.bottomView.hidden = YES;
 //        if (_model.additions.count == 0) {
@@ -346,27 +346,27 @@
     CGFloat totalPrice = 0;
     for (NSDictionary *subDic in self.model.additions) {
         price = [NSString stringWithFormat:@"%@",[subDic objectForKey:@"price"]];
-        totalPrice = totalPrice + [price floatValue];
+        totalPrice = totalPrice + [price doubleValue];
     }
     
-    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue];
+    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.doubleValue];
     self.numLabel.text = [NSString stringWithFormat:@"x %@",self.model.count];
     // 订金
-    self.depositLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.floatValue*[_model.count floatValue]];
+    self.depositLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.doubleValue*[_model.count doubleValue]];
     
     // 尾款
-    self.remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",(self.model.price.floatValue+totalPrice - self.model.deposit.floatValue) * [_model.count floatValue]];
+    self.remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",(self.model.price.doubleValue+totalPrice - self.model.deposit.doubleValue) * [_model.count doubleValue]];
     //    // 商品件数
     //    self.goodsTotalLabel.text = [NSString stringWithFormat:@"共%@件商品",self.model.goodsCount];
     //    self.goodsTotalLabelMid.text = [NSString stringWithFormat:@"共%@件商品",self.model.goodsCount];
     //    _totalPrice = 0;
     //        // 合计
-    //        if (self.model.deposit &&[self.model.deposit floatValue] > 0) {
+    //        if (self.model.deposit &&[self.model.deposit doubleValue] > 0) {
     //
-    //            _totalPrice = _totalPrice + model.goodsCount.intValue *[[NSString stringWithFormat:@"%@",model.deposit] floatValue];
+    //            _totalPrice = _totalPrice + model.goodsCount.intValue *[[NSString stringWithFormat:@"%@",model.deposit] doubleValue];
     //
     //        }else{
-    //            _totalPrice = _totalPrice + model.goodsCount.intValue*[[NSString stringWithFormat:@"%@",self.model.unitPrice] floatValue];
+    //            _totalPrice = _totalPrice + model.goodsCount.intValue*[[NSString stringWithFormat:@"%@",self.model.unitPrice] doubleValue];
     //        }
     //        NSLog(@"totalPrice === %.2f",_totalPrice);
     //

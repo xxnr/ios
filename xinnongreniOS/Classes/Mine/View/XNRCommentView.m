@@ -239,15 +239,13 @@
             }
         }
         NSLog(@"-=-=-=--=%@",_dataArr);
-        if (_dataArr.count == 0) {
-            [self orderEmptyView];
-            
-        }
-        else{
-            [self.orderEmptyView removeFromSuperview];
-        }
+        
         //刷新列表
         [self.tableView reloadData];
+        
+        if (_dataArr.count == 0) {
+            [self orderEmptyView];
+        }
         
         //  如果到达最后一页 就消除footer
         
@@ -342,7 +340,7 @@
         UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
         totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         totalPriceLabel.textAlignment = NSTextAlignmentRight;
-        totalPriceLabel.text = [NSString stringWithFormat:@"总计：￥%.2f",sectionModel.totalPrice.floatValue];
+        totalPriceLabel.text = [NSString stringWithFormat:@"总计：￥%.2f",sectionModel.totalPrice.doubleValue];
         [bottomView addSubview:totalPriceLabel];
         
         

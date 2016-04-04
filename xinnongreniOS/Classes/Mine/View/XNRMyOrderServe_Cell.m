@@ -220,7 +220,7 @@
     for (NSDictionary *subDic in _addtionsArray) {
         [addtionStr appendString:[NSString stringWithFormat:@"%@;",[subDic objectForKey:@"name"]]];
         price = [NSString stringWithFormat:@"%@",[subDic objectForKey:@"price"]];
-        totalPrice = totalPrice + [price floatValue];
+        totalPrice = totalPrice + [price doubleValue];
     }
     // 附加选项
     self.addtionsLabel.text = [NSString stringWithFormat:@"附加项目:%@",addtionStr];
@@ -234,17 +234,17 @@
 //
 //    }
     // 价格
-    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",_info.price.floatValue];
+    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",_info.price.doubleValue];
     
     // 数量
     self.numLabel.text = [NSString stringWithFormat:@"x %@",_info.count];
     
     NSInteger count = [_info.count integerValue];
     // 订金
-    self.depositLabel.text = [NSString stringWithFormat:@"¥%.2f",_info.deposit.floatValue * count];
+    self.depositLabel.text = [NSString stringWithFormat:@"¥%.2f",_info.deposit.doubleValue * count];
     
     // 尾款
-    self.remainPriceLabel.text = [NSString stringWithFormat:@"¥%.2f",(_info.price.floatValue + totalPrice - _info.deposit.floatValue) * count];
+    self.remainPriceLabel.text = [NSString stringWithFormat:@"¥%.2f",(_info.price.doubleValue + totalPrice - _info.deposit.doubleValue) * count];
     
 }
 @end

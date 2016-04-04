@@ -38,7 +38,7 @@
 @property (nonatomic ,weak) UIButton *button;
 @property (nonatomic,weak) UIImageView *badgeImage;
 @property (nonatomic, strong) NSMutableArray *verifiedTypes;
-
+@property (nonatomic,assign) BOOL isBroker;
 
 @property (nonatomic, strong) NSMutableArray *userArray;
 @end
@@ -76,6 +76,9 @@
                 for (int i=0 ; i<Arr.count; i++) {
                     NSString *name =dict[@"verifiedTypesInJson"][i][@"typeName"];
                     [self.verifiedTypes addObject:name];
+                    if ([name isEqualToString:@"新农经纪人"]) {
+                        self.isBroker = YES;
+                    }
                 }
                 
                 info.provinceID = province[@"id"];
@@ -125,6 +128,7 @@
                 CGSize size = [self.typeLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(26)]}];
                 
                 self.typeLabel.frame = CGRectMake(PX_TO_PT(200), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), size.width, PX_TO_PT(24));
+                
                 
                 //徽章
                 if ([DataCenter account].typeName) {
@@ -425,6 +429,7 @@
         if (IS_Login == YES) {
         //新农代表
         XNRMyRepresentViewController *representVC=[[XNRMyRepresentViewController alloc]init];
+        representVC.isBroker = self.isBroker;
         representVC.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:representVC animated:YES];
         }else{

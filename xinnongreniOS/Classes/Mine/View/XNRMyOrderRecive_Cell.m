@@ -123,7 +123,7 @@
     
     self.depositLabel = depositLabel;
     
-    //    depositLabel.text = [NSString stringWithFormat:@"￥%.2f",sectionModel.deposit.floatValue];
+    //    depositLabel.text = [NSString stringWithFormat:@"￥%.2f",sectionModel.deposit.doubleValue];
     
     [bgView addSubview:depositLabel];
     
@@ -139,7 +139,7 @@
     
     self.remainPriceLabel = remainPriceLabel;
     
-    //    remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",sectionModel.totalPrice.floatValue - sectionModel.deposit.floatValue];
+    //    remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",sectionModel.totalPrice.doubleValue - sectionModel.deposit.doubleValue];
     
     [bgView addSubview:remainPriceLabel];
     
@@ -173,7 +173,7 @@
     self.goodsNameLabel.text = _info.productName;
     
     // 价格
-    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",_info.price.floatValue];
+    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",_info.price.doubleValue];
     
     // 数量
     self.numLabel.text = [NSString stringWithFormat:@"x %@",_info.count];
@@ -181,15 +181,15 @@
     NSInteger count = [_info.count integerValue];
     
     // 订金
-    self.depositLabel.text = [NSString stringWithFormat:@"¥%.2f",_info.deposit.floatValue * count];
+    self.depositLabel.text = [NSString stringWithFormat:@"¥%.2f",_info.deposit.doubleValue * count];
     
     // 尾款
-    self.remainPriceLabel.text = [NSString stringWithFormat:@"¥%.2f",(_info.price.floatValue - _info.deposit.floatValue) * count];
+    self.remainPriceLabel.text = [NSString stringWithFormat:@"¥%.2f",(_info.price.doubleValue - _info.deposit.doubleValue) * count];
 
     
     
     
-    if (_info.deposit && [_info.deposit floatValue]>0) {
+    if (_info.deposit && [_info.deposit doubleValue]>0) {
         
         self.bgView.hidden = NO;
         

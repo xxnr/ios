@@ -71,8 +71,8 @@
     UILabel *shouldPayMoneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(150), ScreenWidth - PX_TO_PT(34), PX_TO_PT(28))];
     shouldPayMoneyLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     shouldPayMoneyLabel.textColor = R_G_B_16(0x646464);
-    shouldPayMoneyLabel.text = [NSString stringWithFormat:@"应支付金额：¥%.2f",[self.model.price floatValue]];
-    
+    shouldPayMoneyLabel.text = [NSString stringWithFormat:@"应支付金额：¥%.2f",[self.model.price doubleValue]];
+
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:shouldPayMoneyLabel.text];
     NSDictionary *dict=@{
                          
@@ -92,7 +92,7 @@
     UILabel *alreadyPayMoneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), CGRectGetMaxY(shouldPayMoneyLabel.frame) + PX_TO_PT(25),ScreenWidth - PX_TO_PT(34), PX_TO_PT(28))];
     alreadyPayMoneyLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     alreadyPayMoneyLabel.textColor = R_G_B_16(0x646464);
-    alreadyPayMoneyLabel.text = [NSString stringWithFormat:@"已支付金额：¥%.2f",[self.model.paidPrice floatValue]];
+    alreadyPayMoneyLabel.text = [NSString stringWithFormat:@"已支付金额：¥%.2f",[self.model.paidPrice doubleValue]];
     
     NSMutableAttributedString *AttributedStringDeposit1 = [[NSMutableAttributedString alloc]initWithString:alreadyPayMoneyLabel.text];
     NSDictionary *dict1=@{

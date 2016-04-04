@@ -241,7 +241,7 @@
             }
             
         }else{
-            totalPrice = totalPrice + model.goodsCount.intValue * model.unitPrice.floatValue;
+            totalPrice = totalPrice + model.goodsCount.intValue * model.unitPrice.doubleValue;
         }
     }
     

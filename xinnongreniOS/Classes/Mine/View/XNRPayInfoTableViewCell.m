@@ -87,7 +87,7 @@
 
 -(void)setCellDataWithModel:(XNRPayInfoModel *)model
 {
-    self.payMoneyLabel.text = [NSString stringWithFormat:@"支付金额：¥%.2f",[model.price floatValue]];
+    self.payMoneyLabel.text = [NSString stringWithFormat:@"支付金额：¥%.2f",[model.price doubleValue]];
     
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:_payMoneyLabel.text];
     NSDictionary *dict=@{

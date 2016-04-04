@@ -123,7 +123,7 @@
         for (NSDictionary *subDic in self.shoppingCarModel.additions) {
             [addtionsStr appendString:[NSString stringWithFormat:@"%@;",[subDic objectForKey:@"name"]]];
             price = [NSString stringWithFormat:@"%@",[subDic objectForKey:@"price"]];
-            totalPrice = totalPrice + [price floatValue];
+            totalPrice = totalPrice + [price doubleValue];
         }
         CGFloat addtionsLabelX = PX_TO_PT(86);
         CGFloat addtionsLabelY = CGRectGetMaxY(_PriceLabelF)+PX_TO_PT(36);
@@ -158,7 +158,7 @@
     }
     _topLineF = CGRectMake(topLineX, topLineY, topLineW, topLineH);
 
-    if (self.shoppingCarModel.deposit && [self.shoppingCarModel.deposit floatValue]>0.00) {
+    if (self.shoppingCarModel.deposit && [self.shoppingCarModel.deposit doubleValue]>0.00) {
         // 订金
         CGFloat sectionOneLabelX = PX_TO_PT(86);
         CGFloat sectionOneLabelY = CGRectGetMaxY(_topLineF);
@@ -218,7 +218,7 @@
     
     
     // 计算cell的高度
-    if (self.shoppingCarModel.deposit && [self.shoppingCarModel.deposit floatValue]>0) {
+    if (self.shoppingCarModel.deposit && [self.shoppingCarModel.deposit doubleValue]>0) {
         _cellHeight = CGRectGetMaxY(_bottomLineF);
     }else{
         _cellHeight = CGRectGetMaxY(_topLineF) ;

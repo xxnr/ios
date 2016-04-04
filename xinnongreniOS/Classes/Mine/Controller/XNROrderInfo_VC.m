@@ -472,7 +472,7 @@
         XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
         XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
         
-        if ([model.deposit floatValue] == 0.00) {
+        if ([model.deposit doubleValue] == 0.00) {
             if (model.additions.count == 0) {
                 return PX_TO_PT(300);
             }else{
@@ -602,14 +602,14 @@
                 self.addorderModel1.orderID = orders[0][@"id"];
                 //                    addorderModel1.paymentId = orders[0][@"payment"][@"paymentId"];
                 NSString *deposit1 = orders[0][@"payment"][@"price"];
-                self.addorderModel1.money = [NSString stringWithFormat:@"%.2f",deposit1.floatValue];
+                self.addorderModel1.money = [NSString stringWithFormat:@"%.2f",deposit1.doubleValue];
                 
                 //第二个订单
                 self.addorderModel2 = [[XNRAddOrderModel alloc]init];
                 self.addorderModel2.orderID = orders[1][@"id"];
                 //                    addorderModel2.paymentId = orders[1][@"payment"][@"paymentId"];
                 NSString *deposit2 = orders[1][@"payment"][@"price"];
-                self.addorderModel2.money = [NSString stringWithFormat:@"%.2f",deposit2.floatValue];
+                self.addorderModel2.money = [NSString stringWithFormat:@"%.2f",deposit2.doubleValue];
                 
                 [self.tableview reloadData];
 
@@ -637,7 +637,7 @@
         vc.hidesBottomBarWhenPushed = YES;
         vc.orderID = orderDataId;
         vc.paymentId = paymentId;
-        vc.payMoney = [NSString stringWithFormat:@"%.2f",deposit.floatValue];
+        vc.payMoney = [NSString stringWithFormat:@"%.2f",deposit.doubleValue];
         vc.recieveName = self.recipientNameLabel.text;
         vc.recievePhone = self.recipientPhoneLabel.text;
         vc.recieveAddress = _addressDetail.text;
