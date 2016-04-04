@@ -196,14 +196,17 @@
     
     // 图片
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,_info.thumbnail];
-    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+//    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        image = [UIImage imageNamed:@"icon_loading_wrong"];
+    }];
+
     // 商品名
     if (_info.productName) {
         self.goodsNameLabel.text = _info.productName;
 
     }else{
         self.goodsNameLabel.text = _info.name;
-
     }
     
     // 属性

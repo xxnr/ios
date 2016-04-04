@@ -85,7 +85,7 @@ static NSString *const DELETE_ITEMS_WITH_PREFIX_SQL = @"DELETE from %@ where id 
     self = [super init];
     if (self) {
         NSString * dbPath = [PATH_OF_DOCUMENT stringByAppendingPathComponent:dbName];
-        debugLog(@"dbPath = %@", dbPath);
+        NSLog(@"dbPath = %@", dbPath);
         if (_dbQueue) {
             [self close];
         }
@@ -141,13 +141,12 @@ static NSString *const DELETE_ITEMS_WITH_PREFIX_SQL = @"DELETE from %@ where id 
 - (BOOL)putObject:(id)object withId:(NSString *)objectId intoTable:(NSString *)tableName {
     NSString *brandName;
     
-    
     if ([object isKindOfClass:[NSDictionary class]]) {
         NSDictionary *model = (NSDictionary *)object;
         if ([model objectForKey:@"brandName"]) {
             brandName = [model objectForKey:@"brandName"];
         } else {
-            brandName = @"dfqqfd";
+            brandName = @"";
         }
     }
     

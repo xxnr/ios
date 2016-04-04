@@ -230,7 +230,13 @@
             [self buttonClick:button];
         }
     }
-    _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4))];
+    if (IS_FourInch) {
+        _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(6))];
+
+    }else{
+        _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4))];
+
+    }
     _selectLine.backgroundColor=R_G_B_16(0x00b38a);
     [midBg addSubview:_selectLine];
     
@@ -248,8 +254,14 @@
     UILabel *label = (UILabel *)[self.view viewWithTag:button.tag+1000];
     
     [UIView animateWithDuration:.3 animations:^{
-        _selectLine.frame=CGRectMake((button.tag-KbtnTag)*ScreenWidth/5.0,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
-    }];
+        if (IS_FourInch) {
+            _selectLine.frame=CGRectMake((button.tag-KbtnTag)*ScreenWidth/5.0,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(6));
+
+        }else{
+            _selectLine.frame=CGRectMake((button.tag-KbtnTag)*ScreenWidth/5.0,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
+
+        }
+           }];
     [self.mainScrollView setContentOffset:CGPointMake((ScreenWidth+10*SCALE)*(button.tag-KbtnTag),0) animated:NO];
     
     index = (int)button.tag;
@@ -364,8 +376,12 @@
     
     
     [UIView animateWithDuration:.3 animations:^{
-        
-        self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
+        if (IS_FourInch) {
+             self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(6));
+        }else{
+             self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
+        }
+       
     }];
 }
 

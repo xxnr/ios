@@ -7,7 +7,6 @@
 //
 
 #import "XNRRealNameViewController.h"
-#import "CoreTFManagerVC.h"
 #import "PECropViewController.h"
 
 //科目类型
@@ -41,20 +40,12 @@ typedef enum{
     
     [super viewDidAppear:animated];
     
-    [CoreTFManagerVC installManagerForVC:self scrollView:nil tfModels:^NSArray *{
-        
-        TFModel *tfm1=[TFModel modelWithTextFiled:self.nameTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm2=[TFModel modelWithTextFiled:self.IdCardTextField inputView:nil name:@"" insetBottom:0];
-        return @[tfm1,tfm2];
-        
-    }];
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
     
-    [CoreTFManagerVC uninstallManagerForVC:self];
 }
 
 - (void)viewDidLoad {

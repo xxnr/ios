@@ -9,6 +9,9 @@
 #import "XNRSubmitOrderCell.h"
 #import "UIImageView+WebCache.h"
 #import "XNRAddtionsModel.h"
+#import "XNROrderInfoFrame.h"
+#import "XNRShoppingCartModel.h"
+#define margin PX_TO_PT(20)
 
 @interface XNRSubmitOrderCell()
 
@@ -16,11 +19,13 @@
     CGFloat _totalPrice;
 }
 
-@property (nonatomic ,weak) UIView *topView;
+@property (nonatomic ,weak) UIView *topLine;
 
-@property (nonatomic ,weak) UIView *midView;
+@property (nonatomic ,weak) UIView *midLine;
 
-@property (nonatomic ,weak) UIView *bottomView;
+@property (nonatomic ,weak) UIView *bottomLine;
+
+@property (nonatomic ,weak) UIView *addtionsLine;
 
 @property (nonatomic ,weak) UIImageView *goodsImageView;
 
@@ -34,19 +39,18 @@
 
 @property (nonatomic ,weak) UILabel *remainPriceLabel;
 
-@property (nonatomic ,weak) UILabel *goodsTotalLabel;
-
-@property (nonatomic ,weak) UILabel *totoalPriceLabel;
-
-@property (nonatomic ,weak) UILabel *goodsTotalLabelMid;
-
-@property (nonatomic ,weak) UILabel *totoalPriceLabelMid;
 
 @property (nonatomic, weak) UILabel *numLabel;
 
 @property (nonatomic ,weak) UIView *addtionView;
 
 @property (nonatomic,weak) UILabel *addtionLabel;
+@property (nonatomic ,weak) UILabel *nameLabel;
+@property (nonatomic ,weak) UILabel *addtionPriceLabel;
+
+
+@property (nonatomic, weak) UILabel *sectionOneLabel;
+@property (nonatomic, weak) UILabel *sectionTwoLabel;
 
 @property (nonatomic ,strong) XNRShoppingCartModel *model;
 
@@ -67,245 +71,211 @@
 
 -(void)createView{
     
-//    [self createTopView];
+    [self createTopView];
+    
 //    [self createMidView];
-//    [self createBottomView];
-    [_model.additions removeAllObjects];
+    
+    [self createBottomView];
   
 }
 
--(void)createTopView:(XNRShoppingCartModel *)addtionsModel{
+-(void)createTopView{
     
-    UIView *topView = [[UIView  alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(300))];
-    self.topView = topView;
-    [self.contentView addSubview:topView];
-    
-    UIImageView *goodsImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(30), PX_TO_PT(180), PX_TO_PT(180))];
+    UIImageView *goodsImageView = [[UIImageView alloc] init];
     goodsImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     goodsImageView.layer.borderWidth = 1.0;
     self.goodsImageView = goodsImageView;
-    [topView addSubview:goodsImageView];
+    [self.contentView addSubview:goodsImageView];
     
-    UILabel *brandNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(goodsImageView.frame) + PX_TO_PT(20), PX_TO_PT(40), ScreenWidth - CGRectGetMaxX(goodsImageView.frame) - PX_TO_PT(52), PX_TO_PT(100))];
+    UILabel *brandNameLabel = [[UILabel alloc] init];
     brandNameLabel.textColor = R_G_B_16(0x323232);
-    brandNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    brandNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     brandNameLabel.numberOfLines = 0;
     self.brandNameLabel = brandNameLabel;
-    [topView addSubview:brandNameLabel];
+    [self.contentView addSubview:brandNameLabel];
     
-    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(goodsImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(brandNameLabel.frame), ScreenWidth - CGRectGetMaxX(goodsImageView.frame) - PX_TO_PT(52), PX_TO_PT(140))];
-    detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+    
+    UILabel *detailLabel = [[UILabel alloc] init];
+    detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     detailLabel.textColor = R_G_B_16(0x909090);
     detailLabel.numberOfLines = 0;
     self.detailLabel = detailLabel;
-    [topView addSubview:detailLabel];
+    [self.contentView addSubview:detailLabel];
     
-    UILabel *numLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(goodsImageView.frame) + PX_TO_PT(20), ScreenWidth, PX_TO_PT(70))];
-    self.numLabel = numLabel;
-    numLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    UILabel *numLabel = [[UILabel alloc] init];
+    numLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     numLabel.textAlignment = NSTextAlignmentLeft;
     numLabel.textColor = R_G_B_16(0x323232);
-    [topView addSubview:numLabel];
+    self.numLabel = numLabel;
+    [self.contentView addSubview:numLabel];
     
-    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(goodsImageView.frame) + PX_TO_PT(20), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(70))];
-    priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    UILabel *priceLabel = [[UILabel alloc] init];
+    priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     priceLabel.textAlignment = NSTextAlignmentRight;
     priceLabel.textColor = R_G_B_16(0x323232);
     self.priceLabel = priceLabel;
-    [topView addSubview:priceLabel];
+    [self.contentView addSubview:priceLabel];
     
-    
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0,0, ScreenWidth, PX_TO_PT(1))];
-    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
-    [topView addSubview:topLine];
-    
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(300), ScreenWidth, PX_TO_PT(1))];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
-//    [topView addSubview:bottomLine];
-    if (addtionsModel.additions.count>0) {
-        
-        UIView *addtionView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(topView.frame), ScreenWidth, addtionsModel.additions.count*PX_TO_PT(45))];
-        self.addtionView = addtionView;
-//        addtionView.backgroundColor = [UIColor redColor];
-        [self.contentView addSubview:addtionView];
-        
-        for (int i = 0; i<addtionsModel.additions.count; i++) {
-            UILabel *addtionLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(45)*i, ScreenWidth-PX_TO_PT(64), PX_TO_PT(45))];
-            addtionLabel.backgroundColor = R_G_B_16(0xf0f0f0);
-            [addtionLabel.layer setMasksToBounds:YES];
-            [addtionLabel.layer setCornerRadius:10.0];
-//            addtionLabel.layer.cornerRadius = 7.0;
-//            addtionLabel.layer.masksToBounds = YES;
-            self.addtionLabel = addtionLabel;
-            [addtionView addSubview:addtionLabel];
-        
-            NSDictionary *subDic = addtionsModel.additions[i];
-            
-            UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(8), 0, ScreenWidth/2, PX_TO_PT(45))];
-            nameLabel.textColor = R_G_B_16(0x909090);
-            nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-            nameLabel.textAlignment = NSTextAlignmentLeft;
-            nameLabel.text = [NSString stringWithFormat:@"%@",subDic[@"name"]];
-            [addtionLabel addSubview:nameLabel];
-            
-            UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(70), PX_TO_PT(45))];
-            priceLabel.textColor = R_G_B_16(0x323232);
-            priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-            priceLabel.textAlignment = NSTextAlignmentRight;
-            priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[subDic[@"price"] floatValue ]];
-            [addtionLabel addSubview:priceLabel];
-            
-            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(nameLabel.frame)*i, ScreenWidth-PX_TO_PT(64), PX_TO_PT(3))];
-            lineView.backgroundColor = [UIColor whiteColor];
-            [addtionView addSubview:lineView];
-
-        }
-        
-    }
 }
--(void)createMidView:(XNRShoppingCartModel *)addtionsArray{
+-(void)createMidView{
     
-    if (addtionsArray.additions.count == 0) {
-        UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.topView.frame), ScreenWidth, PX_TO_PT(160))];
-        self.midView = midView;
-        [self.contentView addSubview:midView];
+    UIView *addtionView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.priceLabel.frame), ScreenWidth, _model.additions.count*PX_TO_PT(44))];
+    self.addtionView = addtionView;
+    [self.contentView addSubview:addtionView];
+    
+    for (int i = 0; i<_model.additions.count; i++) {
+        NSDictionary *subDic = _model.additions[i];
 
-    }else{
-        UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.addtionView.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(160))];
-        self.midView = midView;
-        [self.contentView addSubview:midView];
+        CGFloat attributesLabelX = PX_TO_PT(30);
+        CGFloat attributesLabelY = PX_TO_PT(44) * i;
+        CGFloat attributesLabelW = ScreenWidth -PX_TO_PT(60);
+        CGFloat  attributesLabelH = PX_TO_PT(44);
+        UILabel *addtionLabel = [[UILabel alloc] init];
+        addtionLabel.backgroundColor = R_G_B_16(0xf0f0f0);
+        [addtionLabel.layer setMasksToBounds:YES];
+        [addtionLabel.layer setCornerRadius:10.0];
+        self.addtionLabel = addtionLabel;
+         addtionLabel.frame = CGRectMake(attributesLabelX, attributesLabelY, attributesLabelW, attributesLabelH);
+        [addtionView addSubview:addtionLabel];
+
+        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(8), 0, ScreenWidth/2, PX_TO_PT(44))];
+        nameLabel.textColor = R_G_B_16(0x909090);
+        nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+        nameLabel.textAlignment = NSTextAlignmentLeft;
+        self.nameLabel = nameLabel;
+        nameLabel.text = [NSString stringWithFormat:@"%@",subDic[@"name"]];
+        [addtionLabel addSubview:nameLabel];
         
+        UILabel *addtionPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(70), PX_TO_PT(44))];
+        addtionPriceLabel.textColor = R_G_B_16(0x323232);
+        addtionPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+        addtionPriceLabel.textAlignment = NSTextAlignmentRight;
+        addtionPriceLabel.text = [NSString stringWithFormat:@"¥%.2f",[subDic[@"price"] floatValue ]];
+        self.addtionPriceLabel = addtionPriceLabel;
+        [addtionLabel addSubview:addtionPriceLabel];
+        
+        
+        CGFloat attributesLineViewX = PX_TO_PT(30);
+        CGFloat attributesLineViewY = i*CGRectGetMaxY(nameLabel.frame);
+        CGFloat attributesLineViewW = ScreenWidth - PX_TO_PT(60);
+        CGFloat  attributesLineViewH = PX_TO_PT(3);
+        UIView *addtionsLine = [[UIView alloc] init];
+        addtionsLine.backgroundColor = [UIColor whiteColor];
+        self.addtionsLine = addtionsLine;
+        addtionsLine.frame = CGRectMake(attributesLineViewX, attributesLineViewY, attributesLineViewW, attributesLineViewH);
+        [addtionView addSubview:addtionsLine];
+
+
     }
-    UILabel *sectionOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
-    sectionOneLabel.text = @"阶段一: 订金";
-    sectionOneLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    sectionOneLabel.textColor = R_G_B_16(0x323232);
-    [self.midView addSubview:sectionOneLabel];
-    
-    UILabel *depositLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
-    depositLabel.textAlignment = NSTextAlignmentRight;
-    depositLabel.textColor = R_G_B_16(0xff4e00);
-    depositLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    self.depositLabel = depositLabel;
-    [self.midView addSubview:depositLabel];
-    
-    
-    UILabel *sectionTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(80), ScreenWidth/2, PX_TO_PT(80))];
-    sectionTwoLabel.text = @"阶段二: 尾款";
-    sectionTwoLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    sectionTwoLabel.textColor = R_G_B_16(0x323232);
-    [self.midView addSubview:sectionTwoLabel];
-    
-    UILabel *remainPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(80), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(80))];
-    remainPriceLabel.textAlignment = NSTextAlignmentRight;
-    remainPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    remainPriceLabel.textColor = R_G_B_16(0x323232);
-    self.remainPriceLabel = remainPriceLabel;
-    [self.midView addSubview:remainPriceLabel];
-    
-    
-    // 合计
-    UILabel *goodsTotalLabelMid = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(160), ScreenWidth/2, PX_TO_PT(80))];
-    goodsTotalLabelMid.textColor = R_G_B_16(0x323232);
-    goodsTotalLabelMid.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    self.goodsTotalLabelMid = goodsTotalLabelMid;
-    [self.midView addSubview:goodsTotalLabelMid];
-    
-    UILabel *totoalPriceLabelMid = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(160), ScreenWidth/2 - PX_TO_PT(32), PX_TO_PT(80))];
-    totoalPriceLabelMid.textAlignment = NSTextAlignmentRight;
-    totoalPriceLabelMid.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    self.totoalPriceLabelMid = totoalPriceLabelMid;
-//    [midView addSubview:totoalPriceLabelMid];
-    
-    for (int i = 0; i<3; i++) {
-        if (addtionsArray.additions.count == 0) {
-            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-            [self.midView addSubview:lineView];
-        }else{
-            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-            [self.midView addSubview:lineView];
-        }
-    }
-    
 }
 
 -(void)createBottomView{
     
-    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.topView.frame), ScreenWidth, PX_TO_PT(80))];
-    self.bottomView = bottomView;
-    [self.contentView addSubview:bottomView];
+    UILabel *sectionOneLabel = [[UILabel alloc] init];
+    sectionOneLabel.text = @"阶段一: 订金";
+    sectionOneLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    sectionOneLabel.textColor = R_G_B_16(0x323232);
+    self.sectionOneLabel = sectionOneLabel;
+    [self.contentView addSubview:sectionOneLabel];
     
-    UILabel *goodsTotalLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
-    goodsTotalLabel.textColor = R_G_B_16(0x323232);
-    goodsTotalLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    self.goodsTotalLabel = goodsTotalLabel;
-    [bottomView addSubview:goodsTotalLabel];
+    UILabel *depositLabel = [[UILabel alloc] init];
+    depositLabel.textAlignment = NSTextAlignmentRight;
+    depositLabel.textColor = R_G_B_16(0xff4e00);
+    depositLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    self.depositLabel = depositLabel;
+    [self.contentView addSubview:depositLabel];
     
-    UILabel *totoalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2 - PX_TO_PT(32), PX_TO_PT(80))];
-    totoalPriceLabel.textAlignment = NSTextAlignmentRight;
-    totoalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    self.totoalPriceLabel = totoalPriceLabel;
-    [bottomView addSubview:totoalPriceLabel];
     
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UILabel *sectionTwoLabel = [[UILabel alloc] init];
+    sectionTwoLabel.text = @"阶段二: 尾款";
+    sectionTwoLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    sectionTwoLabel.textColor = R_G_B_16(0x323232);
+    self.sectionTwoLabel = sectionTwoLabel;
+    [self.contentView addSubview:sectionTwoLabel];
+    
+    UILabel *remainPriceLabel = [[UILabel alloc] init];
+    remainPriceLabel.textAlignment = NSTextAlignmentRight;
+    remainPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    remainPriceLabel.textColor = R_G_B_16(0x323232);
+    self.remainPriceLabel = remainPriceLabel;
+    [self.contentView addSubview:remainPriceLabel];
+    
+    UIView *topLine = [[UIView alloc] init];
     topLine.backgroundColor = R_G_B_16(0xc7c7c7);
-    [bottomView addSubview:topLine];
+    self.topLine = topLine;
+    [self.contentView addSubview:topLine];
     
+    UIView *midLine = [[UIView alloc] init];
+    midLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    self.midLine = midLine;
+    [self.contentView addSubview:midLine];
     
-    UIView *bottonLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(1))];
-    bottonLine.backgroundColor = R_G_B_16(0xc7c7c7);
-    [bottomView addSubview:bottonLine];
+    UIView *bottomLine = [[UIView alloc] init];
+    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    self.bottomLine = bottomLine;
+    [self.contentView addSubview:bottomLine];
 
-    
 }
 
--(void)setCellDataWithModel:(XNRShoppingCartModel *)model
+-(void)setOrderFrame:(XNROrderInfoFrame *)orderFrame
 {
-    // 把重复叠加的视图都移除一下
-    [self.topView removeFromSuperview];
-    [self.midView removeFromSuperview];
-    [self.bottomView removeFromSuperview];
+    [self.addtionView removeFromSuperview];
+    _orderFrame = orderFrame;
+    [self setupFrame];
+    [self setupData];
+    [self createMidView];
+
+
+}
+
+-(void)setupFrame{
+    
+    self.goodsImageView.frame = _orderFrame.picImageViewF;
+    self.brandNameLabel.frame = _orderFrame.goodNameLabelF;
+    self.detailLabel.frame = _orderFrame.attributesLabelF;
+    self.numLabel.frame = _orderFrame.numberLabelF;
+    self.priceLabel.frame = _orderFrame.PriceLabelF;
+    
+//    self.addtionLabel.frame = _orderFrame.addtionsLabelF;
+//    self.addtionsLine.frame = _orderFrame.addtionslineViewF;
+   
+    
+    self.sectionOneLabel.frame = _orderFrame.sectionOneLabelF;
+    self.sectionTwoLabel.frame = _orderFrame.sectionTwoLabelF;
+    
+    self.depositLabel.frame = _orderFrame.depositeLabelF;
+    self.remainPriceLabel.frame = _orderFrame.finalPaymentLabelF;
+    
+    self.topLine.frame = _orderFrame.topLineF;
+    self.midLine.frame = _orderFrame.middleLineF;
+    self.bottomLine.frame = _orderFrame.bottomLineF;
+
+
+
+}
+-(void)setupData{
+    
+    XNRShoppingCartModel *model = self.orderFrame.shoppingCarModel;
     
     _model = model;
-    if (_model.additions.count == 0) {
-        [self createTopView:nil];
-    }else
-    {
-        [self createTopView:_model];
-    }
-
-    if (_model.deposit && [_model.deposit floatValue] > 0) {
-        
-        self.bottomView.hidden = YES;
-        if (_model.additions.count == 0) {
-            [self createMidView:nil];
-            
-        }else{
-            [self createMidView:_model];
-        }
-        
-    }else{
-        self.midView.hidden = YES;
-        
-    }
-
-    
     
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl];
     //图片
     [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        image = [UIImage imageNamed:@"icon_loading_wrong"];
+    }];
+
     NSLog(@"-----------%@",self.model.goodsName);
     
     //商品名
     self.brandNameLabel.text = self.model.productName;
-
+    
     NSMutableString *displayStr = [[NSMutableString alloc] initWithString:@""];
     for (NSDictionary *subDic in self.model.attributes) {
         [displayStr appendString:[NSString stringWithFormat:@"%@:%@",[subDic objectForKey:@"name"],[subDic objectForKey:@"value"]]];
         [displayStr appendString:@";"];
-
+        
     }
     self.detailLabel.text = displayStr;
     
@@ -315,15 +285,17 @@
         price = [NSString stringWithFormat:@"%@",[subDic objectForKey:@"price"]];
         totalPrice = totalPrice + [price floatValue];
     }
-
+    
     self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue];
+    
     self.numLabel.text = [NSString stringWithFormat:@"x %@",self.model.count];
+    
+    
     // 订金
     self.depositLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.floatValue*[_model.count floatValue]];
     
     // 尾款
     self.remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",(self.model.price.floatValue+totalPrice - self.model.deposit.floatValue) * [_model.count floatValue]];
-
 }
 
 

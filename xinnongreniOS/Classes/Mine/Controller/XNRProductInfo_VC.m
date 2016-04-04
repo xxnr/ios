@@ -9,7 +9,6 @@
 #import "CWStarRateView.h"
 #import "XNRShoppingCartModel.h"
 #import "UIImageView+WebCache.h"
-#import "CoreTFManagerVC.h"
 #import "XNRTabBarController.h"
 #import "XNROrderInfo_VC.h"
 #import "XNRProductInfo_model.h"
@@ -128,26 +127,21 @@
 -(void)viewWillDisappear:(BOOL)animated{
     
     [_numTextField resignFirstResponder];
-    [[XNRPropertyView sharedInstanceWithModel:self.model] changeSelfToIdentify];
+    
+    if (self.navigationController.childViewControllers.count-1 > [self.navigationController.childViewControllers indexOfObject:self]) {
+        
+    } else {
+        [[XNRPropertyView sharedInstanceWithModel:self.model] changeSelfToIdentify];
+    }
 }
 -(void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
-    
-    [CoreTFManagerVC installManagerForVC:self scrollView:nil tfModels:^NSArray *{
-        
-        TFModel *tfm1=[TFModel modelWithTextFiled:self.numTextField inputView:nil name:@"" insetBottom:0];
-        
-        return @[tfm1];
-        
-    }];
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
-    
-    [CoreTFManagerVC uninstallManagerForVC:self];
 }
 
 - (void)viewDidLoad {

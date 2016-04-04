@@ -144,6 +144,7 @@
 		493AEF2F1C2144FE0088003A /* XNRTownModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 493AEF2E1C2144FE0088003A /* XNRTownModel.m */; };
 		493AF2981C27B41D002AEDE7 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 493AF2971C27B41D002AEDE7 /* UIView+Frame.m */; };
 		4950CDFB1C045A65006200AD /* XNRChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4950CDFA1C045A65006200AD /* XNRChatController.m */; };
+		496E74CF1CABF95100559992 /* XNROrderInfoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 496E74CE1CABF95100559992 /* XNROrderInfoFrame.m */; };
 		497662631C5AE32300FB041D /* XNRToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 497662621C5AE32300FB041D /* XNRToolBar.m */; };
 		4976FC1D1BE9A2AA0002E8F8 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4976FBB91BE9A2AA0002E8F8 /* AlipaySDK.bundle */; };
 		4976FC1E1BE9A2AA0002E8F8 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4976FBBA1BE9A2AA0002E8F8 /* AlipaySDK.framework */; };
@@ -693,6 +694,9 @@
 		4950CDF91C045A65006200AD /* XNRChatController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRChatController.h; sourceTree = "<group>"; };
 		4950CDFA1C045A65006200AD /* XNRChatController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRChatController.m; sourceTree = "<group>"; };
 		4950CDFD1C045E28006200AD /* XNRBusinessLogic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XNRBusinessLogic.h; sourceTree = "<group>"; };
+		496E74CC1CABED4500559992 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		496E74CD1CABF95100559992 /* XNROrderInfoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNROrderInfoFrame.h; sourceTree = "<group>"; };
+		496E74CE1CABF95100559992 /* XNROrderInfoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNROrderInfoFrame.m; sourceTree = "<group>"; };
 		497662611C5AE32300FB041D /* XNRToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRToolBar.h; sourceTree = "<group>"; };
 		497662621C5AE32300FB041D /* XNRToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRToolBar.m; sourceTree = "<group>"; };
 		4976FBB91BE9A2AA0002E8F8 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
@@ -1771,6 +1775,7 @@
 			children = (
 				9C06A4301CA2A21000B0DED9 /* Bugtags.bundle */,
 				9C06A4311CA2A21000B0DED9 /* Bugtags.framework */,
+				491610FE1C8D189400F1E243 /* IQKeyBoardManager */,
 				4916108A1C8C422200F1E243 /* MWPhotoBrowser */,
 				49F7A5481C58469400A1FA45 /* MJRefresh_new */,
 				49F7A5441C58466700A1FA45 /* UMessage_Sdk_1.2.6 */,
@@ -1996,6 +2001,8 @@
 				9CC0CE6D1C8811EE008D5228 /* XNRAddOrderModel.m */,
 				490F0B101C9EFEFD00BDC7E0 /* XNRShoppingCarFrame.h */,
 				490F0B111C9EFEFD00BDC7E0 /* XNRShoppingCarFrame.m */,
+				496E74CD1CABF95100559992 /* XNROrderInfoFrame.h */,
+				496E74CE1CABF95100559992 /* XNROrderInfoFrame.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2151,7 +2158,8 @@
 				491611201C8D189400F1E243 /* KeyboardManager.h */,
 				491611211C8D189400F1E243 /* Resources */,
 			);
-			path = IQKeyBoardManager;
+			name = IQKeyBoardManager;
+			path = ../Other/IQKeyBoardManager;
 			sourceTree = "<group>";
 		};
 		491610FF1C8D189400F1E243 /* Categories */ = {
@@ -2670,7 +2678,6 @@
 		53445E8E1B14127F009F79E5 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				491610FE1C8D189400F1E243 /* IQKeyBoardManager */,
 				1F16AF501B259F67002C1E73 /* YMHProtoclViewController.h */,
 				1F16AF511B259F67002C1E73 /* YMHProtoclViewController.m */,
 				9C392DE51CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.h */,
@@ -3048,6 +3055,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 1F1532C61B09C58700CA374B;
 			productRefGroup = 1F1532D01B09C58800CA374B /* Products */;
@@ -3420,6 +3428,7 @@
 				4937712B1C1A1A50008F27F8 /* XNRMobuserName.m in Sources */,
 				9C63D88F1C9FDE12004AFE0F /* XNROrderInfoCell.m in Sources */,
 				49F7A5791C58469400A1FA45 /* MJRefreshHeader.m in Sources */,
+				496E74CF1CABF95100559992 /* XNROrderInfoFrame.m in Sources */,
 				84B77CFD1B26BDE6001923E4 /* PECropRectView.m in Sources */,
 				84FE644C1B183DB300F0C67C /* XNRMYOrderComment_Cell.m in Sources */,
 				9CC0CE651C87F49C008D5228 /* XNRPayOrder_VC.m in Sources */,
@@ -3553,6 +3562,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				8446C25F1B1D6D19005CA932 /* en */,
+				496E74CC1CABED4500559992 /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

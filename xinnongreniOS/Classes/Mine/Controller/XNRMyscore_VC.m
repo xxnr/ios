@@ -103,7 +103,7 @@
     //积分数
     self.myScore=[[UILabel alloc]initWithFrame:CGRectMake(15, 45, ScreenWidth-30, 45)];
     self.myScore.textColor=R_G_B_16(0x00b38a);
-    self.myScore.font=XNRFont(40) ;
+    self.myScore.font=[UIFont systemFontOfSize:PX_TO_PT(80)] ;
     self.myScore.text=@"0";
     [myScoreBg addSubview:self.myScore];
     self.tableview.tableHeaderView=headView;

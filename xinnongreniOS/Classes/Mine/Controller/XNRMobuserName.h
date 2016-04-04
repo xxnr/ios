@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+typedef void(^XNRMobuserNameControllerBlock)(NSString *userName);
 
 @interface XNRMobuserName : UIViewController
+
+@property (nonatomic, copy) XNRMobuserNameControllerBlock com;
 
 @end

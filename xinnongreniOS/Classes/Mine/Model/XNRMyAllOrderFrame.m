@@ -41,19 +41,37 @@
     CGSize  attributesLabelSize = [attributesStr sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(28)] maxSize:attributesLabelMaxSize];
     _attributesLabelF = (CGRect){{attributesLabelX, attributesLabelY}, attributesLabelSize};
     
-    // 数量
-    CGFloat productNumLabelX = PX_TO_PT(30);
-    CGFloat productNumLabelY =  CGRectGetMaxY(_picImageViewF) + PX_TO_PT(30);
-    CGFloat productNumLabelW = PX_TO_PT(180);
-    CGFloat productNumLabelH = PX_TO_PT(36);
-    _productNumLabelF = CGRectMake(productNumLabelX, productNumLabelY, productNumLabelW, productNumLabelH);
+    if (CGRectGetMaxY(_attributesLabelF)>CGRectGetMaxY(_picImageViewF)) {
+        // 数量
+        CGFloat productNumLabelX = PX_TO_PT(30);
+        CGFloat productNumLabelY =  CGRectGetMaxY(_attributesLabelF) + PX_TO_PT(30);
+        CGFloat productNumLabelW = PX_TO_PT(180);
+        CGFloat productNumLabelH = PX_TO_PT(36);
+        _productNumLabelF = CGRectMake(productNumLabelX, productNumLabelY, productNumLabelW, productNumLabelH);
+        
+        // 价格
+        CGFloat priceLabelX = ScreenWidth/2;
+        CGFloat priceLabelY =  CGRectGetMaxY(_attributesLabelF) + PX_TO_PT(30);
+        CGFloat priceLabelW = ScreenWidth/2-PX_TO_PT(30);
+        CGFloat priceLabelH = PX_TO_PT(32);
+        _priceLabelF = CGRectMake(priceLabelX, priceLabelY, priceLabelW, priceLabelH);
+    }else{
+        // 数量
+        CGFloat productNumLabelX = PX_TO_PT(30);
+        CGFloat productNumLabelY =  CGRectGetMaxY(_picImageViewF) + PX_TO_PT(30);
+        CGFloat productNumLabelW = PX_TO_PT(180);
+        CGFloat productNumLabelH = PX_TO_PT(36);
+        _productNumLabelF = CGRectMake(productNumLabelX, productNumLabelY, productNumLabelW, productNumLabelH);
+        
+        // 价格
+        CGFloat priceLabelX = ScreenWidth/2;
+        CGFloat priceLabelY =  CGRectGetMaxY(_picImageViewF) + PX_TO_PT(30);
+        CGFloat priceLabelW = ScreenWidth/2-PX_TO_PT(30);
+        CGFloat priceLabelH = PX_TO_PT(32);
+        _priceLabelF = CGRectMake(priceLabelX, priceLabelY, priceLabelW, priceLabelH);
+    }
     
-    // 价格
-    CGFloat priceLabelX = ScreenWidth/2;
-    CGFloat priceLabelY =  CGRectGetMaxY(_picImageViewF) + PX_TO_PT(30);
-    CGFloat priceLabelW = ScreenWidth/2-PX_TO_PT(30);
-    CGFloat priceLabelH = PX_TO_PT(32);
-    _priceLabelF = CGRectMake(priceLabelX, priceLabelY, priceLabelW, priceLabelH);
+    
     
     // 附加选项
     if (self.orderModel.additions.count == 0){
