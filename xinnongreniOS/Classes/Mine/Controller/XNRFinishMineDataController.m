@@ -294,9 +294,9 @@
         self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId,NSString *province_id,NSString *city_id,NSString *county_id){
             
             weakSelf.LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
-            weakSelf.provinceID = province_id;
-            weakSelf.cityID  = city_id;
-            weakSelf.countyID = county_id;
+            weakSelf.provinceID = provinceID;
+            weakSelf.cityID  = cityId;
+            weakSelf.countyID = countyId;
             
             UserInfo *info = [DataCenter account];
             info.province = province;

@@ -477,9 +477,6 @@
         [_timer invalidate];
         _timer = nil;
     }
-//    XNRTabBarController *tab = (XNRTabBarController *)self.tabBarController;
-//    tab.selectedIndex = 0;
-//    [UIApplication sharedApplication].keyWindow.rootViewController = tab;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -487,13 +484,11 @@
 -(void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
-    
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
-    
 }
 
 //消失时回收键盘
