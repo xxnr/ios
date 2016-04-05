@@ -95,7 +95,11 @@
 - (void)setSubViews
 {
     //图片
-    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+//    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    
+    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        image = [UIImage imageNamed:@"icon_loading_wrong"];
+    }];
     
     //商品名
 //    CGSize maxSize = CGSizeMake(PX_TO_PT(330), MAXFLOAT);

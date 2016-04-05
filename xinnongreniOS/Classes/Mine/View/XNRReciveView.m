@@ -232,43 +232,36 @@
                 
                 sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
                 
-//                if (sectionModel.skus.count == 0) {
-//                    for (XNRMyOrderModel *model in sectionModel.products) {
-//                        XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
-//                        // 把订单模型传递给frame模型
-//                        orderFrame.orderModel = model;
-//                        
-//                        [sectionModel.orderFrameArray addObject:orderFrame];
-//                        NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
-//                    }
-//
-//                }else{
-//
-//                
-//                }
-                for (XNRMyOrderModel *model in sectionModel.skus) {
-                    XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
-                    // 把订单模型传递给frame模型
-                    orderFrame.orderModel = model;
-                    
-                    [sectionModel.orderFrameArray addObject:orderFrame];
-                    NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
-                }
+                if (sectionModel.skus.count == 0) {
+                    for (XNRMyOrderModel *model in sectionModel.products) {
+                        XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
+                        // 把订单模型传递给frame模型
+                        orderFrame.orderModel = model;
+                        
+                        [sectionModel.orderFrameArray addObject:orderFrame];
+                        NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
+                    }
 
-               
+                }else{
+                    for (XNRMyOrderModel *model in sectionModel.skus) {
+                        XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
+                        // 把订单模型传递给frame模型
+                        orderFrame.orderModel = model;
+                        
+                        [sectionModel.orderFrameArray addObject:orderFrame];
+                        NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
+                    }
+                }
                
                 [_dataArr addObject:sectionModel];
             }
         }
-        
-        [_orderEmptyView removeFromSuperview];
-        if (_dataArr.count == 0) {
-            [self orderEmptyView];
-            
-        }
-
         //刷新列表
         [self.tableView reloadData];
+        
+        if (_dataArr.count == 0) {
+            [self orderEmptyView];
+        }
         
 
         
@@ -489,9 +482,9 @@
             XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
             cell.attributesArray = modelArray.attributes;
             cell.addtionsArray = modelArray.additions;
-            XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
-            cell.orderFrame = frameModel;
         }
+        XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
+        cell.orderFrame = frameModel;
     }
     
     return cell;

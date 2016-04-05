@@ -242,12 +242,12 @@
             }
         }
         
+        //刷新列表
+        [self.tableView reloadData];
+        
         if (_dataArr.count == 0) {
             [self orderEmptyView];
         }
-
-        //刷新列表
-        [self.tableView reloadData];
         
             
 
@@ -348,7 +348,7 @@
         UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth -PX_TO_PT(32), PX_TO_PT(80))];
         totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         totalPriceLabel.textAlignment = NSTextAlignmentRight;
-        totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
+        totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.doubleValue];
         [bottomView addSubview:totalPriceLabel];
                 
         NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
@@ -465,14 +465,10 @@
             XNRMyOrderModel *model = sectionModel.skus[indexPath.row];
             cell.attributesArray = model.attributes;
             cell.addtionsArray = model.additions;
-            XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray [indexPath.row];
-            cell.orderFrame = frameModel;
 
-        }else{
-            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
-            cell.attributesArray = model.attributes;
-            cell.addtionsArray = model.additions;
         }
+        XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray [indexPath.row];
+        cell.orderFrame = frameModel;
     }
     
     

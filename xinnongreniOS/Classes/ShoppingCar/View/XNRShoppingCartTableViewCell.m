@@ -8,7 +8,6 @@
 
 #import "XNRShoppingCartTableViewCell.h"
 #import "UIImageView+WebCache.h"
-#import "CoreTFManagerVC.h"
 #import "XNRToolBar.h"
 #import "XNRSKUAttributesModel.h"
 #import "XNRShoppingCarFrame.h"
@@ -87,19 +86,27 @@
     }
     return self;
 }
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
 -(void)cancelBtnPresent{
-    if ([self.model.online integerValue] == 0) {// 下架
+    if ([self.model.online integerValue] == 0) {// 下架 （点击编辑）
         self.goodNameLabel.frame = CGRectMake(CGRectGetMaxX(self.picImageView.frame)+PX_TO_PT(20), PX_TO_PT(40), ScreenWidth-CGRectGetMaxX(self.picImageView.frame)-PX_TO_PT(20)-PX_TO_PT(150), PX_TO_PT(80));
         [self createCancelBtn];
     }
     
 }
 -(void)normalBtnPresent{
-    if ([self.model.online integerValue] == 0) {// 下架
+    if ([self.model.online integerValue] == 0) {// 下架 （点击完成）
         self.goodNameLabel.frame = self.shoppingCarFrame.goodNameLabelF;
         [self.cancelBtn removeFromSuperview];
+//        self.cancelBtn.hidden = YES;
     }
 }
+
 
 -(void)cancelBtnClick{
 //    NSMutableArray *cancelArray = [NSMutableArray array];
@@ -138,7 +145,7 @@
 
 -(void)createCancelBtn{
     UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelBtn.frame = CGRectMake(CGRectGetMaxX(self.goodNameLabel.frame)+PX_TO_PT(80), PX_TO_PT(40), PX_TO_PT(40), PX_TO_PT(40));
+    cancelBtn.frame = CGRectMake(CGRectGetMaxX(self.goodNameLabel.frame)+PX_TO_PT(80), PX_TO_PT(40), PX_TO_PT(60), PX_TO_PT(60));
     [cancelBtn setImage:[UIImage imageNamed:@"address_delete"] forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
     self.cancelBtn = cancelBtn;
@@ -475,8 +482,7 @@
     self.changeBottomBlock();
     //刷新数据
     [self setupData];
-    
-    
+
     if (IS_Login) {
         //单次申请购物车接口
         [self requestShoppingCarURL];
@@ -573,9 +579,9 @@
     self.sectionTwoLabel.frame = self.shoppingCarFrame.sectionTwoLabelF;
     self.remainLabel.frame = self.shoppingCarFrame.finalPaymentLabelF;
     
-    self.textTopLine.frame = CGRectMake(CGRectGetMaxX(self.leftBtn.frame), CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20), PX_TO_PT(84), PX_TO_PT(1));
-
-    self.textbottomLine.frame  =  CGRectMake(CGRectGetMaxX(self.leftBtn.frame),  CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(67), PX_TO_PT(84), PX_TO_PT(1));
+    self.textTopLine.frame = self.shoppingCarFrame.textTopLineF;
+    
+    self.textbottomLine.frame = self.shoppingCarFrame.textbottomLineF;
     
     self.pushBtn.frame = self.shoppingCarFrame.pushBtnF;
     
@@ -585,6 +591,7 @@
 #pragma mark - 设置现在的数据
 - (void)setupData
 {
+    self.cancelBtn.hidden = YES;
     XNRShoppingCartModel *model = self.shoppingCarFrame.shoppingCarModel;
     _model = model;
     if (model.selectState) {
@@ -596,7 +603,11 @@
 
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,model.imgUrl];
     //图片
-    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+//    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        image = [UIImage imageNamed:@"icon_loading_wrong"];
+    }];
+
     NSLog(@"-----------%@",model.additions);
     //商品名
     self.goodNameLabel.text = model.productName;
@@ -615,7 +626,7 @@
     for (NSDictionary *subDic in model.additions) {
         [addtionStr appendString:[NSString stringWithFormat:@"%@;",[subDic objectForKey:@"name"]]];
         price = [NSString stringWithFormat:@"%@",[subDic objectForKey:@"price"]];
-        totalPrice = totalPrice + [price floatValue];
+        totalPrice = totalPrice + [price doubleValue];
     }
     // 附加选项
     self.addtionsLabel.text = [NSString stringWithFormat:@"附加项目:%@",addtionStr];
@@ -624,13 +635,21 @@
     self.addtionPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",totalPrice];
     
     //现价
-    self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.price.floatValue];
+    self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.price.doubleValue];
 
+<<<<<<< HEAD
+//    // 订金
+//    self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",model.deposit.doubleValue *[_model.num doubleValue]];
+//
+//    // 尾款
+//    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",(model.price.doubleValue + totalPrice - model.deposit.doubleValue)*[model.num doubleValue]];
+=======
     // 订金
-    self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",model.deposit.floatValue *[_model.num floatValue]];
+>>>>>>> origin/master
+    self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",model.deposit.floatValue *[_model.num integerValue]];
     
     // 尾款
-    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",(model.price.floatValue + totalPrice - model.deposit.floatValue)*[model.num floatValue]];
+    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",(model.price.doubleValue + totalPrice - model.deposit.doubleValue)*[model.num integerValue]];
     
     if (_model.num == 0) {
         self.numTextField.text = @"1";

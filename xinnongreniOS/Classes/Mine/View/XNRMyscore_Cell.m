@@ -25,7 +25,7 @@
         
         self.date=[[UILabel alloc]initWithFrame:CGRectMake(10, 15, 130, 20)];
         self.date.textColor=R_G_B_16(0x8b8b8b);
-        self.date.font=XNRFont(13) ;
+        self.date.font=[UIFont systemFontOfSize:PX_TO_PT(26)] ;
         //self.date.backgroundColor=[UIColor yellowColor];
         [self.contentView addSubview:self.date];
     }
@@ -45,7 +45,7 @@
         self.score=[[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth-200, 15, 150, 20)];
         
         self.score.textColor=R_G_B_16(0x8b8b8b);
-        self.score.font=XNRFont(13);
+        self.score.font=[UIFont systemFontOfSize:PX_TO_PT(26)];
         [self.contentView addSubview:self.score];
         
     }

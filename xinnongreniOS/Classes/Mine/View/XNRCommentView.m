@@ -81,14 +81,9 @@
     
 }
 
-
-
 -(void)backtoTopBtnClick{
     
     [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
-    
-    
-    
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -186,7 +181,6 @@
 -(void)headRefresh{
     
     _currentPage = 1;
-    [self.orderEmptyView removeFromSuperview];
     [_dataArr removeAllObjects];
     
     [self getData];
@@ -224,30 +218,49 @@
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
                 
                 sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
-                for (XNRMyOrderModel *model in sectionModel.skus) {
-                    XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
-                    // 把订单模型传递给frame模型
-                    orderFrame.orderModel = model;
-                    
-                    [sectionModel.orderFrameArray addObject:orderFrame];
-                    NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
-                }
+                if (sectionModel.skus.count == 0) {
+                    for (XNRMyOrderModel *model in sectionModel.products) {
+                        XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
+                        // 把订单模型传递给frame模型
+                        orderFrame.orderModel = model;
+                        
+                        [sectionModel.orderFrameArray addObject:orderFrame];
+                        NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
+                    }
 
+                }else{
+                    for (XNRMyOrderModel *model in sectionModel.skus) {
+                        XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
+                        // 把订单模型传递给frame模型
+                        orderFrame.orderModel = model;
+                        
+                        [sectionModel.orderFrameArray addObject:orderFrame];
+                        NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
+                    }
+
+                }
+                
                 
                 
                 [_dataArr addObject:sectionModel];
             }
         }
         NSLog(@"-=-=-=--=%@",_dataArr);
+        
+        //刷新列表
+        [self.tableView reloadData];
+        
         if (_dataArr.count == 0) {
             [self orderEmptyView];
-            
+<<<<<<< HEAD
         }
-        else{
-            [self.orderEmptyView removeFromSuperview];
+
+=======
+            
         }
         //刷新列表
         [self.tableView reloadData];
+>>>>>>> origin/master
         
         //  如果到达最后一页 就消除footer
         
@@ -342,7 +355,7 @@
         UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
         totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         totalPriceLabel.textAlignment = NSTextAlignmentRight;
-        totalPriceLabel.text = [NSString stringWithFormat:@"总计：￥%.2f",sectionModel.totalPrice.floatValue];
+        totalPriceLabel.text = [NSString stringWithFormat:@"总计：￥%.2f",sectionModel.totalPrice.doubleValue];
         [bottomView addSubview:totalPriceLabel];
         
         
@@ -442,15 +455,17 @@
     }
    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.backgroundColor=R_G_B_16(0xf4f4f4);
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-        if (sectionModel.products.count>0) {
-            XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
-            cell.orderFrame  = frameModel;
-//            [cell setCellDataWithShoppingCartModel:model];
+        if (sectionModel.skus.count>0) {
+            XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
+            cell.attributesArray = modelArray.attributes;
+            cell.addtionsArray = modelArray.additions;
         }
+        XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
+        cell.orderFrame  = frameModel;
+
     }
     
     return cell;

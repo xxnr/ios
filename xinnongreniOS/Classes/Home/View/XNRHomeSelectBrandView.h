@@ -17,7 +17,7 @@ typedef void(^brandViewBlock)(NSArray *param1, NSArray *param2, NSArray *param3,
 
 @interface XNRHomeSelectBrandView : UIView
 
-+ (void)showSelectedBrandViewWith:(brandViewBlock)com andTarget:(UIView *)target andType:(XNRType)type andParam:(NSArray *)param andShowTx:(NSArray *)txarr andkind:(NSArray *)kind;
++ (void)showSelectedBrandViewWith:(brandViewBlock)com andTarget:(UIView *)target andType:(XNRType)type andParam:(NSArray *)param andShowTx:(NSArray *)txarr andkind:(NSString *)kind;
 
 +(void)cancelSelectedBrandView;
 

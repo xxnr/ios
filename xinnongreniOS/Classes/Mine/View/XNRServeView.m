@@ -300,7 +300,7 @@
                 UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
                 totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
                 totalPriceLabel.textAlignment = NSTextAlignmentRight;
-                totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
+                totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.doubleValue];
                 [bottomView addSubview:totalPriceLabel];
                 
                 NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
@@ -352,7 +352,7 @@
                 UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth -PX_TO_PT(32), PX_TO_PT(80))];
                 totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
                 totalPriceLabel.textAlignment = NSTextAlignmentRight;
-                totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
+                totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.doubleValue];
                 [bottomView addSubview:totalPriceLabel];
                 
                 NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
@@ -394,7 +394,7 @@
 
 -(void)sectionFourClick:(UIButton *)sender{
     XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
-    if (sectionModel.deposit && [sectionModel.deposit floatValue]>0) {
+    if (sectionModel.deposit && [sectionModel.deposit doubleValue]>0) {
         self.payBlock(sectionModel.orderId,sectionModel.deposit);
     }else{
         self.payBlock(sectionModel.orderId,sectionModel.totalPrice);
@@ -487,15 +487,11 @@
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
         if (sectionModel.orderFrameArray.count>0) {
-            XNRMyOrderModel *modelArray;
-            if (sectionModel.skus.count == 0) {
-            modelArray = sectionModel.products[indexPath.row];
-
-            }else{
-            modelArray = sectionModel.skus[indexPath.row];
+            if (sectionModel.skus.count >0) {
+                XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
+                cell.attributesArray = modelArray.attributes;
+                cell.addtionsArray = modelArray.additions;
             }
-            cell.attributesArray = modelArray.attributes;
-            cell.addtionsArray = modelArray.additions;
             XNRMyAllOrderFrame *orderFrame = sectionModel.orderFrameArray[indexPath.row];
             cell.orderFrame = orderFrame;
 

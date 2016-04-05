@@ -119,7 +119,7 @@
     self.myTextField.delegate = self;
     self.myTextField.hidden = YES;
     
-    self.sepMoney = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(252), PX_TO_PT(35), PX_TO_PT(226), PX_TO_PT(28))];
+    self.sepMoney = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(252), PX_TO_PT(35), PX_TO_PT(226), PX_TO_PT(35))];
     self.sepMoney.textColor = R_G_B_16(0xFF4E00);
     self.sepMoney.textAlignment = UITextAlignmentCenter;
     self.sepMoney.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
@@ -142,7 +142,7 @@
 -(void)getMinPayPrice
 {
     [KSHttpRequest post:KgetMinPayPrice parameters:@{@"token":[DataCenter account].token,@"orderId":self.orderID} success:^(id result) {
-        if ([result[@"code"] floatValue] == 1000) {
+        if ([result[@"code"] doubleValue] == 1000) {
 
             if (result[@"payprice"] != nil) {
                 self.minPrice = [NSString stringWithFormat:@"%@",result[@"payprice"]];
@@ -258,7 +258,7 @@
 -(void)setTop:(NSString *)holdMoney andFullMoney:(NSString *)fullMoney
 {
     self.holdPrice = holdMoney;
-    self.priceLabel.text = [NSString stringWithFormat:@"待付金额：%.2f元",holdMoney.floatValue];
+    self.priceLabel.text = [NSString stringWithFormat:@"待付金额：%.2f元",holdMoney.doubleValue];
     self.priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     
     
@@ -274,7 +274,7 @@
     
     [self.priceLabel setAttributedText:AttributedStringDeposit];
     
-    self.totalLabel.text = [NSString stringWithFormat:@"订单总额：%.2f元",fullMoney.floatValue];
+    self.totalLabel.text = [NSString stringWithFormat:@"订单总额：%.2f元",fullMoney.doubleValue];
     self.totalLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     
     NSMutableAttributedString *AttributedStringDeposit2 = [[NSMutableAttributedString alloc]initWithString:self.totalLabel.text];
@@ -431,7 +431,7 @@
     //显示的金额
     self.showMoney = [[UIView alloc]init];
     self.showMoney.backgroundColor = [UIColor whiteColor];
-    self.showMoney.frame = CGRectMake(0, PX_TO_PT(389), ScreenWidth, PX_TO_PT(95));
+    self.showMoney.frame = CGRectMake(0, PX_TO_PT(389), ScreenWidth, PX_TO_PT(100));
     
     [self.view addSubview:self.showMoney];
     
@@ -618,14 +618,14 @@
         //            self.sepMoney.hidden = NO;
         [self.sepMoneyView addSubview:self.sepMoney];
         
-        if ([self.minPrice floatValue] > [self.holdPrice floatValue]) {
+        if ([self.minPrice doubleValue] > [self.holdPrice doubleValue]) {
             _Money = self.holdPrice;
-            self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.holdPrice floatValue]];
+            self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.holdPrice doubleValue]];
         }
         else
         {
             _Money = self.minPrice;
-            self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.minPrice floatValue]];
+            self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.minPrice doubleValue]];
             
         }
 
@@ -641,7 +641,7 @@
     self.sepMoneyView.frame = CGRectMake(0, 0, ScreenWidth, self.showMoney.height);
     [self.showMoney addSubview:self.sepMoneyView];
 
-    self.btn1 = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(200), PX_TO_PT(24), PX_TO_PT(51), PX_TO_PT(51))];
+    self.btn1 = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(200), PX_TO_PT(24), PX_TO_PT(51), PX_TO_PT(52))];
     self.btn1.tag = 3;
     self.btn1.enabled = NO;
     [self.btn1 setImage:[UIImage imageNamed:@"01_discount_default1"] forState:UIControlStateNormal];
@@ -650,19 +650,19 @@
     [self.btn1 addTarget:self action:@selector(reviseMoney:) forControlEvents:UIControlEventTouchDown];
     [self.sepMoneyView addSubview:self.btn1];
     
-    self.btn2 = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(480), PX_TO_PT(24), PX_TO_PT(51), PX_TO_PT(51))];
+    self.btn2 = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(480), PX_TO_PT(24), PX_TO_PT(51), PX_TO_PT(52))];
     self.btn2.tag = 4;
     [self.btn2 setImage:[UIImage imageNamed:@"02_discount_default2"] forState:UIControlStateNormal];
     [self.btn2 setImage: [UIImage imageNamed:@"06_discount_press2"] forState:UIControlStateSelected];
     [self.btn2 setImage:[UIImage imageNamed:@"04_discount_gray2"] forState:UIControlStateDisabled];
     [self.btn2 addTarget:self action:@selector(reviseMoney:) forControlEvents:UIControlEventTouchDown];
     [self.sepMoneyView addSubview:self.btn2];
-    if ([_Money floatValue] == [self.holdPrice floatValue]) {
+    if ([_Money doubleValue] == [self.holdPrice doubleValue]) {
         self.btn2.enabled = NO;
     }
 
     
-    UILabel *str = [[UILabel alloc]initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(20))];
+    UILabel *str = [[UILabel alloc]initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(23))];
     str.backgroundColor = [UIColor whiteColor];
     str.textAlignment = UITextAlignmentCenter;
     str.text = [NSString stringWithFormat:@"+-可调节金额，幅度500元；最低调至%@元，不足按实际金额支付",self.minPrice];
@@ -686,33 +686,33 @@
 {
     NSString *s =[self.sepMoney.text substringFromIndex:1];
     sender.enabled = YES;
-    if (sender.tag == 3 && ([s floatValue] <= [self.minPrice floatValue])) {
+    if (sender.tag == 3 && ([s doubleValue] <= [self.minPrice doubleValue])) {
         sender.enabled = NO;
         self.btn2.enabled = YES;
     }
-    else if(sender.tag == 3 && ([s floatValue] - 500) < [self.minPrice floatValue])
+    else if(sender.tag == 3 && ([s doubleValue] - 500) < [self.minPrice doubleValue])
     {
         _Money = self.minPrice;
         sender.enabled = NO;
-        self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.minPrice floatValue]];
+        self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.minPrice doubleValue]];
 
     }
-    else if (sender.tag == 4 && ([s floatValue]+500) > [self.holdPrice floatValue])
+    else if (sender.tag == 4 && ([s doubleValue]+500) > [self.holdPrice doubleValue])
     {
         
         _Money = self.holdPrice;
         sender.enabled = NO;
         self.btn1.enabled = YES;
-        self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.holdPrice floatValue]];
+        self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.holdPrice doubleValue]];
     }
-    else if ([self.holdPrice floatValue] < [self.minPrice floatValue])
+    else if ([self.holdPrice doubleValue] < [self.minPrice doubleValue])
     {
         _Money = self.holdPrice;
-        self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.holdPrice floatValue]];
+        self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[self.holdPrice doubleValue]];
     }
     else
     {
-       float mon = [s floatValue];
+       float mon = [s doubleValue];
         if (sender.tag == 3) {
             self.btn2.enabled = YES;
             mon -= 500.00;
@@ -722,16 +722,16 @@
             mon += 500.00;
         }
         
-        if (mon >= [self.holdPrice floatValue]) {
+        if (mon >= [self.holdPrice doubleValue]) {
             self.btn2.enabled = NO;
         }
-        else if(mon <= [self.minPrice floatValue])
+        else if(mon <= [self.minPrice doubleValue])
         {
             self.btn1.enabled = NO;
         }
         _Money = [NSString stringWithFormat:@"%.2f",mon];
 
-        self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[_Money floatValue]];
+        self.sepMoney.text = [NSString stringWithFormat:@"¥%.2f",[_Money doubleValue]];
     }
     
 //    sender.userInteractionEnabled = YES;
@@ -838,7 +838,7 @@
 - (void)goPayBtnClick:(UIButton *)button
 {
     if (_isInWhiteList && !self.isFull)  {
-        if ([self.myTextField.text floatValue] == 0.00) {
+        if ([self.myTextField.text doubleValue] == 0.00) {
             UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入金额" delegate:nil
                                                      cancelButtonTitle:@"确定" otherButtonTitles: nil];
             [alertView show];

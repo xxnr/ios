@@ -310,7 +310,7 @@
             UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth -PX_TO_PT(32), PX_TO_PT(80))];
             totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             totalPriceLabel.textAlignment = NSTextAlignmentRight;
-            totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
+            totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.doubleValue];
             
             [bottomView addSubview:totalPriceLabel];
             
@@ -355,7 +355,7 @@
             UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth -PX_TO_PT(32), PX_TO_PT(80))];
             totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             totalPriceLabel.textAlignment = NSTextAlignmentRight;
-            totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
+            totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.doubleValue];
             [bottomView addSubview:totalPriceLabel];
             
             NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
@@ -396,7 +396,7 @@
 }
 -(void)sectionFourClick:(UIButton *)sender{
     XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
-    if (sectionModel.deposit && [sectionModel.deposit floatValue]>0) {
+    if (sectionModel.deposit && [sectionModel.deposit doubleValue]>0) {
         self.payBlock(sectionModel.orderId,sectionModel.deposit);
         
     }else{
@@ -486,11 +486,9 @@
             XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
             cell.attributesArray = modelArray.attributes;
             cell.addtionsArray = modelArray.additions;
-            XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
-           cell.orderFrame = frameModel;
-
-            
         }
+        XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
+        cell.orderFrame = frameModel;
     }
     
     return cell;

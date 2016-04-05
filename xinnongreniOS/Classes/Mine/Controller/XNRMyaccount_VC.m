@@ -49,6 +49,8 @@
 @property (nonatomic ,weak) UILabel *areaLabel;
 
 @property (nonatomic ,copy) NSString *typeNum;
+@property (nonatomic ,copy) NSString *nickName;
+
 
 @property (nonatomic ,weak) XNRTypeView *typeView;
 @end
@@ -109,8 +111,8 @@
     UIButton *icon =[MyControl createButtonWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(174), PX_TO_PT(10), PX_TO_PT(100), PX_TO_PT(100)) ImageName:@"my_heagView" Target:self Action:@selector(uploadImage) Title:nil];
     icon.clipsToBounds=YES;
     icon.layer.cornerRadius=PX_TO_PT(100)/2;
-    NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,[DataCenter account].photo];
-    if (![KSHttpRequest isBlankString:[DataCenter account].photo]) {
+    if (_model.photo) {
+        NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,_model.photo];
         NSURL *url = [NSURL URLWithString:urlStr];
         [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:url options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
@@ -152,11 +154,7 @@
     nickNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     nickNameLabel.textAlignment = NSTextAlignmentRight;
     nickNameLabel.textColor = R_G_B_16(0x909090);
-    if ([KSHttpRequest isBlankString:[DataCenter account].nickname]) {
-        nickNameLabel.text = @"";
-    }else{
-        nickNameLabel.text = [DataCenter account].nickname;
-    }
+    nickNameLabel.text = _model.nickname;
     self.nickNameLabel = nickNameLabel;
     [nickBtn addSubview:nickNameLabel];
     
@@ -173,6 +171,9 @@
 -(void)nickBtnClick
 {
     XNRMobNickNameController *nickNameVC = [[XNRMobNickNameController alloc] init];
+    nickNameVC.com = ^(NSString *nickName){
+        self.nickNameLabel.text = nickName;
+    };
     nickNameVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:nickNameVC animated:YES];
     
@@ -221,10 +222,11 @@
     userNameLabel.textAlignment = NSTextAlignmentRight;
     userNameLabel.textColor = R_G_B_16(0x909090);
     userNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    if ([KSHttpRequest isBlankString:[DataCenter account].name]) {
-        userNameLabel.text = [NSString stringWithFormat:@"添加"];
+    if (_model.name) {
+        userNameLabel.text = _model.name;
     }else{
-        userNameLabel.text = [DataCenter account].name;
+        userNameLabel.text = [NSString stringWithFormat:@"添加"];
+
     }
     self.userNameLabel = userNameLabel;
     [bgView addSubview:userNameLabel];
@@ -282,6 +284,10 @@
 {
     if (button.tag == KbtnTag) {
         XNRMobuserName *userNameVC = [[XNRMobuserName alloc] init];
+        userNameVC.com = ^(NSString *userName){
+            self.userNameLabel.text = userName;
+        
+        };
         userNameVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:userNameVC animated:YES];
         
@@ -450,25 +456,9 @@
         info.address = [NSString stringWithFormat:@"%@%@",model.areaName,model.address];
         [DataCenter saveAccount:info];
         
-//        修改地址(服务器改为默认地址)
-//        [self updateAddress:model];
     }];
     vc.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-#pragma mark - 修改地址
-- (void)updateAddress:(XNRAddressManageModel *)model
-{
-    //userId:用户ID, areaId：省份ID,address:手动填写的具体地址,type:（1.默认地址2.非默认地址）,receiptPhone:收货人手机号,receiptPeople：收货人名称
-    NSString *address = [model.address stringByReplacingCharactersInRange:NSMakeRange(0, model.areaName.length) withString:@""];
-    [KSHttpRequest post:KUpdateUserAddress parameters:@{@"userId":[DataCenter account].userid,@"areaId":model.address,@"address":address,@"type":@"1",@"receiptPhone":model.receiptPhone,@"receiptPeople":model.receiptPeople,@"addressId":model.addressId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-        
-        if ([result[@"code"] isEqualToString:@"1000"]) {
-        }
-    } failure:^(NSError *error) {
-        
-    }];
 }
 
 #pragma mark-昵称
@@ -521,11 +511,7 @@
         if ([result[@"code"] integerValue] == 1000) {
             [KSHttpRequest post:KUserModify parameters:@{@"userPhoto":result[@"imageUrl"],@"user-agent":@"IOS-v2.0"} success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
-                    UserInfo *info = [DataCenter account];
-                    info.photo = [NSString stringWithFormat:@"%@",result[@"imageUrl"]];
-                    [DataCenter saveAccount:info];
-                    // 刷新
-                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(RefreshMyAccount) name:@"RefreshMyAccount" object:nil];
+                    
                     [BMProgressView LoadViewDisappear:self.view];
                     [UILabel showMessage:@"头像上传成功"];
                     [_icon setImage:croppedImage forState:UIControlStateNormal];

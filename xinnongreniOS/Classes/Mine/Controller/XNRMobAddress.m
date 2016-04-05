@@ -186,14 +186,14 @@
     [self.townPickerView hide];
     [self.addressPickerView show];
     __weak __typeof(&*self)weakSelf = self;
-    self.addressPickerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId){
+    self.addressPickerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId,NSString *province_id,NSString *city_id,NSString *county_id){
         
         
         weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
         
-        weakSelf.provinceID = provinceID;
-        weakSelf.cityID = cityId;
-        weakSelf.countyID = countyId;
+        weakSelf.provinceID = province_id;
+        weakSelf.cityID = city_id;
+        weakSelf.countyID = county_id;
         // 保存一下省，市，县的地址和ID
         UserInfo *info = [DataCenter account];
         info.provinceID = provinceID;
@@ -215,10 +215,10 @@
     
     __weak __typeof(&*self)weakSelf = self;
 
-    self.townPickerView.com = ^(NSString *townName,NSString *townId){
+    self.townPickerView.com = ^(NSString *townName,NSString *townId,NSString *town_id){
         
         weakSelf.streetLabel.text = [NSString stringWithFormat:@"%@",townName];
-        weakSelf.townID = townId;
+        weakSelf.townID = town_id;
         // 保存一下镇的ID
         UserInfo *info = [DataCenter account];
         info.townID = townId;

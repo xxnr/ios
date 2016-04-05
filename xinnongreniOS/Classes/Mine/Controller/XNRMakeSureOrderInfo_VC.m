@@ -241,7 +241,7 @@
             }
             
         }else{
-            totalPrice = totalPrice + model.goodsCount.intValue * model.unitPrice.floatValue;
+            totalPrice = totalPrice + model.goodsCount.intValue * model.unitPrice.doubleValue;
         }
     }
     
@@ -306,7 +306,7 @@
                      width:(CGFloat)width
                   fontSize:(CGFloat)fontSize
 {
-    CGRect rect = [string boundingRectWithSize:CGSizeMake(width, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:XNRFont(fontSize)} context:nil];
+    CGRect rect = [string boundingRectWithSize:CGSizeMake(width, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil];
     
     return rect.size.height;
 }
