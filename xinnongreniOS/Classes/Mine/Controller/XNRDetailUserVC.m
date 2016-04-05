@@ -55,7 +55,7 @@
         name.text = nameArr[i];
         [cell addSubview:name];
         
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(2))];
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(1))];
         line.backgroundColor = R_G_B_16(0xE0E0E0);
         [self.view addSubview:line];
         

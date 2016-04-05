@@ -340,7 +340,7 @@
     [userTypeBtn addSubview:userTypeLabel];
     
     for (int i = 1; i<5; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(2))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(1))];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [self.bottomView addSubview:lineView];
     }
@@ -353,43 +353,6 @@
 {
     [self.nameTf resignFirstResponder];
     [self.phoneNumTextField resignFirstResponder];
-//    if (button.tag == 1000) {
-//        [self.townManagerView hide];
-////        [self.typeView hide];
-//        __weak __typeof(&*self)weakSelf = self;
-//        [self.addressManagerView show];
-//        self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId){
-//            
-//            weakSelf.LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
-//            weakSelf.provinceID = provinceID;
-//            weakSelf.cityID  = cityId;
-//            weakSelf.countyID = countyId;
-//            
-//            UserInfo *info = [DataCenter account];
-//            info.province = province;
-//            info.city = city;
-//            info.county = county;
-//            info.countyID = countyId;
-//            [DataCenter saveAccount:info];
-//        };
-//        
-//    }
-//    
-//    if (button.tag == 1001) {
-//        if ([self.LocalAddressLabel.text isEqualToString:@"选择所在的省市区"]) {
-//            [UILabel showMessage:@"请选择地区"];
-//        }else{
-//            [self.addressManagerView hide];
-////            [self.typeView hide];
-//            __weak __typeof(&*self)weakSelf = self;
-//            [self.townManagerView show];
-//            self.townManagerView.com = ^(NSString *townName,NSString *townId){
-//                weakSelf.streetLabel.text = [NSString stringWithFormat:@"%@",townName];
-//                weakSelf.townID = townId;
-//                
-//            };
-//        }
-//    }
     
     if (button.tag == 1000) {
         [self.townManagerView hide];
