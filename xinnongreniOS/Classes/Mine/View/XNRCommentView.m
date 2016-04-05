@@ -243,9 +243,6 @@
             [self orderEmptyView];
             
         }
-        else{
-            [self.orderEmptyView removeFromSuperview];
-        }
         //刷新列表
         [self.tableView reloadData];
         

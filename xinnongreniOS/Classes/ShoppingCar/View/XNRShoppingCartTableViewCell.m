@@ -8,7 +8,6 @@
 
 #import "XNRShoppingCartTableViewCell.h"
 #import "UIImageView+WebCache.h"
-#import "CoreTFManagerVC.h"
 #import "XNRToolBar.h"
 #import "XNRSKUAttributesModel.h"
 #import "XNRShoppingCarFrame.h"

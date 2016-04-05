@@ -58,7 +58,7 @@
         label3.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         [bgview addSubview:label3];
 
-        UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(216), ScreenWidth, PX_TO_PT(1))];
+        UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(215), ScreenWidth, PX_TO_PT(1))];
         line1.backgroundColor = R_G_B_16(0xE2E2E2);
         [bgview addSubview:line1];
         

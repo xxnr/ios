@@ -515,11 +515,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated{
     
-    
-    
     [super viewDidDisappear:animated];
-    
-    [CoreTFManagerVC uninstallManagerForVC:self];
 }
 
 

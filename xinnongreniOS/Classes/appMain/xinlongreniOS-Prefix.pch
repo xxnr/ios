@@ -33,7 +33,6 @@
 #import "MJExtension.h"
 #import "BMAlertView.h"
 #import "MJRefresh.h"
-#import "CoreTFManagerVC.h"
 
 
 //#import "IQKeyboardManager.h"

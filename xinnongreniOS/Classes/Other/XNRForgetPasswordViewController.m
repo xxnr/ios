@@ -7,7 +7,6 @@
 //
 
 #import "XNRForgetPasswordViewController.h"
-#import "CoreTFManagerVC.h"
 #import "KSHttpRequest.h"
 #import "XNRLoginViewController.h"
 #import "RSA.h"
@@ -488,23 +487,11 @@
 -(void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
-    
-    [CoreTFManagerVC installManagerForVC:self scrollView:nil tfModels:^NSArray *{
-        
-        TFModel *tfm1=[TFModel modelWithTextFiled:self.phoneNumTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm2=[TFModel modelWithTextFiled:self.verifyNumTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm3=[TFModel modelWithTextFiled:self.newpasswordTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm4=[TFModel modelWithTextFiled:self.againPasswordTextField inputView:nil name:@"" insetBottom:0];
-        return @[tfm1,tfm2,tfm3,tfm4];
-        
-    }];
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
-    
-    [CoreTFManagerVC uninstallManagerForVC:self];
 }
 
 //消失时回收键盘
