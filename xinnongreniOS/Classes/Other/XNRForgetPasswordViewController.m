@@ -477,9 +477,6 @@
         [_timer invalidate];
         _timer = nil;
     }
-//    XNRTabBarController *tab = (XNRTabBarController *)self.tabBarController;
-//    tab.selectedIndex = 0;
-//    [UIApplication sharedApplication].keyWindow.rootViewController = tab;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
