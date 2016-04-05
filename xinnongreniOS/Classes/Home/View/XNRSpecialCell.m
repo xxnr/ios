@@ -165,7 +165,7 @@
         self.shopcarBtn.hidden = YES;
     }else{
         self.priceLabel.textColor = R_G_B_16(0xff4e00);
-        self.priceLabel.text = [NSString stringWithFormat:@"%.2f",model.unitPrice.floatValue];
+        self.priceLabel.text = [NSString stringWithFormat:@"%.2f",model.unitPrice.doubleValue];
         self.shopcarBtn.hidden = NO;
     }
 }

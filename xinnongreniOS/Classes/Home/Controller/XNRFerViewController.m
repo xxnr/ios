@@ -52,6 +52,7 @@
 @property (nonatomic ,weak) XNRHomeSelectBrandView *selectBrandView;
 
 @property (nonatomic,strong)NSArray *brands;
+@property (nonatomic,copy)NSString *currentBrand;
 @property (nonatomic,strong)NSArray *gxArr;
 @property (nonatomic,strong)NSArray *txArr;
 @property (nonatomic,strong)NSArray *kinds;
@@ -211,7 +212,7 @@
     
     NSDictionary *dic = [NSDictionary dictionary];
 
-        dic = @{@"classId":_classId,@"brand":self.brands?self.brands:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"};
+        dic = @{@"classId":_classId,@"brand":self.currentBrand?self.currentBrand:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"};
 
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
@@ -342,11 +343,11 @@
     
     NSDictionary *dic = [NSDictionary dictionary];
     if (self.atts.count != 0) {
-        dic = @{@"classId":_classId,@"brand":self.brands?self.brands:@"",@"attributes":self.atts?self.atts:nil,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
+        dic = @{@"classId":_classId,@"brand":self.currentBrand?self.currentBrand:@"",@"attributes":self.atts?self.atts:nil,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
     }
     else
     {
-        dic = @{@"classId":_classId,@"brand":self.brands?self.brands:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
+        dic = @{@"classId":_classId,@"brand":self.currentBrand?self.currentBrand:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
     }
 
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -394,11 +395,11 @@
     
     NSDictionary *dic = [NSDictionary dictionary];
     if (self.atts.count != 0) {
-        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.brands?self.brands:@"",@"attributes":self.atts,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
+        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.currentBrand?self.currentBrand:@"",@"attributes":self.atts,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
     }
     else
     {
-        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.brands?self.brands:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
+        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.currentBrand?self.currentBrand:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
     }
 
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -438,6 +439,7 @@
     [dics setObject:_classId forKey:@"classId"];
     // 品牌的ID
     NSMutableString *str = [NSMutableString string];
+    self.currentBrand = nil;
 
     if (param1.count > 0) {
         
@@ -452,7 +454,7 @@
                 [str appendString:@","];
             }
         }
-        self.brands = str;
+        self.currentBrand = str;
 //        [dics setObject:str forKey:@"brand"];
 
     }

@@ -64,7 +64,7 @@
     [self.view addSubview:label];
     
     UILabel *payMoney = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(311), PX_TO_PT(244), PX_TO_PT(350), PX_TO_PT(27))];
-    float f = [self.money floatValue];
+    float f = [self.money doubleValue];
     payMoney.text = [NSString stringWithFormat:@"支付金额：¥%.2f元",f];
     payMoney.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [self.view addSubview:payMoney];

@@ -1,4 +1,4 @@
-//
+ //
 //  XNRMyRepresentViewController.m
 //  xinnongreniOS
 //
@@ -12,8 +12,12 @@
 #import "XNRMyRepresent_cell.h"
 #import "XNRCustomerOrderController.h"
 #import "myAlertView.h"
+#import "XNRBookUser.h"
+#import "XNRUser_Cell.h"
+#import "XNRAddLatentUserVC.h"
+#import "XNRDetailUserVC.h"
 #define btnTag 1000
-
+#define tbTag 2000
 @interface XNRMyRepresentViewController ()<UITableViewDelegate,UITableViewDataSource,XNRMyRepresentViewAddBtnDelegate,LumAlertViewDelegate>
 {
     NSMutableArray *_dataArr;
@@ -23,6 +27,7 @@
 
 @property (nonatomic, weak) UIButton *leftBtn;
 @property (nonatomic, weak) UIButton *rightBtn;
+@property (nonatomic,weak) UIButton *bookBtn;
 @property (nonatomic, weak) UIButton *selectedBtn; // 临时button
 @property (nonatomic, strong) XNRMyRepresentView *mrv;
 @property (nonatomic, strong) UITableView *tableView;
@@ -51,20 +56,41 @@
 @property (nonatomic,copy) NSString *phone;
 @property (nonatomic,strong)myAlertView *myAlert;
 @property (nonatomic,assign)BOOL isfirst;
+@property (nonatomic,weak)UIView *firstView;
+@property (nonatomic,weak)UIView *secondView;
+@property (nonatomic,weak) UIView *thirdView;
+@property (nonatomic,weak) UIView *BookView;
+@property (nonatomic,weak) UITableView *tableView2;
+@property (nonatomic,strong)NSMutableArray *userArr;
+@property (nonatomic,weak)UILabel *bookTop1Label;
+@property (nonatomic,weak)UILabel *bookTop2Label;
+@property (nonatomic,weak) UIView *coverView;
+@property (nonatomic,weak) UIButton *addbtn;
+@property (nonatomic,assign)BOOL isadd;
 @end
 
 @implementation XNRMyRepresentViewController
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+    if (_isadd) {
+        [self creatBookView];
+        [self bookViewGetData];
+    }
     [self setupCustomerRefresh];
     
 }
-
+-(void)viewDidDisappear:(BOOL)animated
+{
+    if (_isadd) {
+        [self.thirdView removeFromSuperview];
+    }
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    [self getCustomerData];
     self.isfirst = YES;
+    _userArr = [NSMutableArray array];
     _dataArr = [[NSMutableArray alloc] init];
     self.view.backgroundColor = R_G_B_16(0xfafafa);
     [self setNavigationbarTitle];
@@ -192,7 +218,7 @@
     [leftBtn setTitleColor:R_G_B_16(0xffffff) forState:UIControlStateSelected];
     [leftBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateSelected];
     [leftBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"FFFFFF"]] forState:UIControlStateNormal];
-    leftBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    leftBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     leftBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
     [leftBtn addTarget:self action:@selector(bottomBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     leftBtn.tag = btnTag;
@@ -202,20 +228,44 @@
     UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.rightBtn = rightBtn;
     _rightBtn.frame = CGRectMake(btnW, btnY, btnW, btnH);
-    [_rightBtn setTitle:@"我的新农代表" forState:UIControlStateNormal];
+    [_rightBtn setTitle:@"我的代表" forState:UIControlStateNormal];
     [_rightBtn setImage:[UIImage imageNamed:@"huise"] forState:UIControlStateNormal];
     [_rightBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
     [_rightBtn setImage:[UIImage imageNamed:@"baise"] forState:UIControlStateSelected];
     [_rightBtn setTitleColor:R_G_B_16(0xffffff) forState:UIControlStateSelected];
     [_rightBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateSelected];
     [_rightBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"FFFFFF"]] forState:UIControlStateNormal];
-    _rightBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    _rightBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     _rightBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
     [_rightBtn addTarget:self action:@selector(bottomBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     _rightBtn.tag = btnTag + 1;
     [self.view addSubview:_rightBtn];
-    
+
+    UIButton *bookBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.bookBtn = bookBtn;
+    _bookBtn.frame = CGRectMake(CGRectGetMaxX(self.rightBtn.frame), btnY, ScreenWidth/3, btnH);
+    [_bookBtn setTitle:@"客户登记" forState:UIControlStateNormal];
+    [_bookBtn setImage:[UIImage imageNamed:@"customer2"] forState:UIControlStateNormal];
+    [_bookBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
+    [_bookBtn setImage:[UIImage imageNamed:@"customer"] forState:UIControlStateSelected];
+    [_bookBtn setTitleColor:R_G_B_16(0xffffff) forState:UIControlStateSelected];
+    [_bookBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateSelected];
+    [_bookBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"FFFFFF"]] forState:UIControlStateNormal];
+    _bookBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    _bookBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+    [_bookBtn addTarget:self action:@selector(bottomBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    _bookBtn.tag = btnTag + 2;
+    _bookBtn.hidden = YES;
+    [self.view addSubview:_bookBtn];
     [self bottomBtnClicked:_leftBtn];
+    
+    if (self.isBroker) {
+        _bookBtn.hidden = NO;
+        self.leftBtn.frame = CGRectMake(0, btnY, ScreenWidth/3, btnH);
+        self.rightBtn.frame = CGRectMake(CGRectGetMaxX(self.leftBtn.frame), btnY, ScreenWidth/3, btnH);
+        self.bookBtn.frame = CGRectMake(CGRectGetMaxX(self.rightBtn.frame), btnY, ScreenWidth/3, btnH);
+        
+    }
 
 }
 
@@ -227,16 +277,36 @@
 
     if (sender.tag == btnTag) {
         
+//        [self.topView removeFromSuperview];
+//        _tableView.hidden = NO;
+//        [self getCustomerData];
+//        [self.mrv removeFromSuperview];
+//        [self.myRepLabel removeFromSuperview];
+//        [self.myRepView removeFromSuperview];
+//        [self createCustomerLabel];
+
+        
         [self.topView removeFromSuperview];
         _tableView.hidden = NO;
+        
+//        _tableView.hidden = NO;
+//        self.thirdView.hidden = YES;
+
         [self getCustomerData];
+        
+        [self.thirdView removeFromSuperview];
         [self.mrv removeFromSuperview];
-        [self.myRepLabel removeFromSuperview];
+        [self.myRepTopView removeFromSuperview];
+//        [self.myRepLabel removeFromSuperview];
         [self.myRepView removeFromSuperview];
         [self createCustomerLabel];
-    } else {
+    } else if(sender.tag == btnTag + 1){
         _tableView.hidden = sender.selected;
         self.topView.hidden = sender.selected;
+        [self.firstView removeFromSuperview];
+//        self.thirdView.hidden = YES;
+        [self.thirdView removeFromSuperview];
+
         [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue]==1000) {
                 self.phoneNum = result[@"datas"][@"inviter"];
@@ -282,8 +352,158 @@
             
         }];
     }
+    else if(sender.tag == btnTag + 2)
+    {
+        
+        _tableView.hidden = YES;
+        self.topView.hidden = YES;
+        self.mrv.hidden = YES;
+//        [self.firstView removeFromSuperview];
+        [self.mrv removeFromSuperview];
+        [self.myRepTopView removeFromSuperview];
+        [self.myRepLabel removeFromSuperview];
+        [self.myRepView removeFromSuperview];
+        
+        [self.thirdView removeFromSuperview];
+        
+        [self creatBookView];
+        [self bookViewGetData];
+        
+    }
+}
+-(void)creatBookView
+{
+
+    //添加顶部视图
+    UIView *thirdView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(100))];
+    thirdView.backgroundColor = [UIColor clearColor];
+    self.thirdView = thirdView;
+    
+    UIView *BooktopView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(220))];
+    BooktopView.backgroundColor = [UIColor whiteColor];
+    [self.thirdView addSubview:BooktopView];
+    
+    UILabel *top1Label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(29), ScreenWidth/2, PX_TO_PT(32))];
+    top1Label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    top1Label.textColor =R_G_B_16(0x646464);
+    self.bookTop1Label = top1Label;
+    [BooktopView addSubview:top1Label];
+    
+    UILabel *top2Label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), CGRectGetMaxY(top1Label.frame) + PX_TO_PT(18), ScreenWidth/2, PX_TO_PT(33))];
+    top2Label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    top2Label.textColor = R_G_B_16(0x646464);
+    self.bookTop2Label = top2Label;
+    [BooktopView addSubview:top2Label];
+    
+    UIButton *addBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(605), PX_TO_PT(29),PX_TO_PT(80), PX_TO_PT(80))];
+    addBtn.backgroundColor = R_G_B_16(0xE2E2E2);
+//    [addBtn setBackgroundImage:[UIImage imageNamed:@"icon-++-0"] forState:UIControlStateNormal];
+    [addBtn setImage:[UIImage imageNamed:@"icon-++-0"] forState:UIControlStateNormal];
+    addBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [addBtn addTarget:self action:@selector(addUser:) forControlEvents:UIControlEventTouchDown];
+    addBtn.layer.cornerRadius = 20;
+    addBtn.layer.masksToBounds = YES;
+    self.addbtn = addBtn;
+    [BooktopView addSubview:addBtn];
+    
+    UIView *top2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(top2Label.frame)+PX_TO_PT(29), ScreenWidth, PX_TO_PT(80))];
+    top2.backgroundColor = R_G_B_16(0xE8E8E8);
+    [BooktopView addSubview:top2];
+    UILabel *top3Label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(25), PX_TO_PT(200), PX_TO_PT(32))];
+    top3Label.text = @"已登记客户";
+    top3Label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    top3Label.textColor = R_G_B_16(0x323232);
+    [top2 addSubview:top3Label];
+    
+    UITableView *tableView2 = [[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(BooktopView.frame), ScreenWidth, ScreenHeight - 64 - PX_TO_PT(100) - PX_TO_PT(240)) style:UITableViewStylePlain];
+    tableView2.backgroundColor = [UIColor clearColor];
+    tableView2.delegate = self;
+    tableView2.dataSource = self;
+    tableView2.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView2 = tableView2;
+    _tableView2.tag = tbTag + 1;
+    [self.thirdView addSubview:tableView2];
+    
+    [self.view addSubview:self.thirdView];
+}
+-(void)addUser:(UIButton *)sender
+{
+    self.isadd = YES;
+    XNRAddLatentUserVC *addLatentUser = [[XNRAddLatentUserVC alloc]init];
+    [self.navigationController pushViewController:addLatentUser animated:YES];
 }
 
+-(void)bookViewGetData
+{
+    
+    [KSHttpRequest get:KGetQuery parameters:nil success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            _userArr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];
+            
+            if(_userArr.count == 0){                
+            
+            
+                BOOL isadd = [[NSUserDefaults standardUserDefaults]boolForKey:@"key"];
+                if (isadd == NO) {
+                    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+                    view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+                    UIImageView *iamgeview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+                    [iamgeview setImage:[UIImage imageNamed:@"mask"]];
+                    iamgeview.contentMode = UIViewContentModeScaleAspectFit;
+                    [view addSubview:iamgeview];
+                    
+                    UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(262), PX_TO_PT(619), PX_TO_PT(197), PX_TO_PT(95))];
+                    [btn addTarget:self action:@selector(coverClick:) forControlEvents:UIControlEventTouchDown];
+                    [view addSubview:btn];
+                    
+                    self.coverView = view;
+                   UIWindow *window = [[UIApplication sharedApplication].delegate window];
+                    [window addSubview:view];
+                    
+                    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"key"];
+                }
+            }
+            self.bookTop1Label.text = [NSString stringWithFormat:@"共登记%@名客户",result[@"count"]];
+            self.bookTop2Label.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
+            
+            if ([result[@"countLeftToday"] integerValue] == 0) {
+                self.addbtn.backgroundColor = R_G_B_16(0xE2E2E2);
+            }
+            else
+            {
+                self.addbtn.backgroundColor = R_G_B_16(0xFE9B00);
+            }
+            NSInteger i = [result[@"count"] integerValue]/10;
+            NSInteger j = [result[@"countLeftToday"] integerValue]/10;
+            
+            [self setDifFont:self.bookTop1Label andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00)];
+            [self setDifFont:self.bookTop2Label andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A)];
+            
+            [self.tableView2 reloadData];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+-(void)coverClick:(UIButton *)sender
+{
+    [self.coverView removeFromSuperview];
+}
+-(void)setDifFont:(UILabel *)label andPosit:(NSInteger )posit andlength:(NSInteger)length andColor:(UIColor *)color
+{
+    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:label.text];
+    NSDictionary *dict=@{
+                         
+                         NSForegroundColorAttributeName:color,
+                         NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(40)],
+                         
+                         };
+    
+    [AttributedStringDeposit addAttributes:dict range:NSMakeRange(posit,length)];
+    
+    [label setAttributedText:AttributedStringDeposit];
+
+}
 -(void)getNominatedInviter
 {
     [KSHttpRequest get:KGetNominatedInviter parameters:nil success:^(id result) {
@@ -404,6 +624,7 @@
 
 -(void)createCustomerLabel{
     UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(260))];
+    
     topView.backgroundColor = R_G_B_16(0xf0f0f0);
     self.topView = topView;
     [self.view addSubview:topView];
@@ -448,6 +669,7 @@
     [headView addSubview:headLabel];
 
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64) style:UITableViewStylePlain];
+    _tableView.tag = tbTag;
     _tableView.backgroundColor = [UIColor colorWithHexString_Ext:@"#EEEEEE"];
     _tableView.separatorColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -455,7 +677,6 @@
     _tableView.dataSource = self;
     _tableView.tableHeaderView = headView;
     [self.view addSubview:_tableView];
-    
 }
 
 - (void)myRepresentViewWith:(XNRMyRepresentView *)representView and:(NSString *)phoneNum {
@@ -528,10 +749,11 @@
 
 
 -(void)createMyRepresentUI {
-    [self.myRepLabel removeFromSuperview];
+    [self.myRepTopView removeFromSuperview];
     [self.myRepView removeFromSuperview];
     
     UIView *myRepTopView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(260))];
+//    myRepTopView.frame = CGRectMake(300, 33, 234, 33);
     myRepTopView.backgroundColor = R_G_B_16(0xf0f0f0);
     self.myRepTopView = myRepTopView;
     [self.view addSubview:myRepTopView];
@@ -596,46 +818,88 @@
 #pragma mark -- tableViewDelegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return PX_TO_PT(96);
+    if (tableView.tag == tbTag) {
+        return PX_TO_PT(96);
+    }
+    else
+    {
+        return PX_TO_PT(77);
+    }
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _dataArr.count;
+    if (tableView.tag == tbTag) {
+        return _dataArr.count;
+    }
+    else
+    {
+        return _userArr.count;
+    }
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRCustomerOrderController *customerVC = [[XNRCustomerOrderController alloc] init];
-    customerVC.hidesBottomBarWhenPushed = YES;
-    XNRMyRepresentModel *model = _dataArr[indexPath.row];
-    customerVC.inviteeId = model.userId;
-    
-    [self.navigationController pushViewController:customerVC animated:YES];
+    if (tableView.tag == tbTag) {
+        XNRCustomerOrderController *customerVC = [[XNRCustomerOrderController alloc] init];
+        customerVC.hidesBottomBarWhenPushed = YES;
+        XNRMyRepresentModel *model = _dataArr[indexPath.row];
+        customerVC.inviteeId = model.userId;
+        
+        [self.navigationController pushViewController:customerVC animated:YES];
+
+    }
+    else
+    {
+        XNRDetailUserVC *detailUser = [[XNRDetailUserVC alloc]init];
+        detailUser.hidesBottomBarWhenPushed = YES;
+        XNRBookUser *user = _userArr[indexPath.row];
+        detailUser._id = user._id;
+        [self.navigationController pushViewController:detailUser animated:YES];
+    }
 
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellID = @"cellID";
-    XNRMyRepresent_cell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if (!cell) {
-        cell = [[XNRMyRepresent_cell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    
-    if (_dataArr.count > 0) {
-        XNRMyRepresentModel *model = _dataArr[indexPath.row];
-        cell.model = model;
-    }
+    if (tableView.tag == tbTag) {
+        static NSString *cellID = @"cellID";
+        XNRMyRepresent_cell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+        if (!cell) {
+            cell = [[XNRMyRepresent_cell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        if (_dataArr.count > 0) {
+            XNRMyRepresentModel *model = _dataArr[indexPath.row];
+            cell.model = model;
+        }
+        
+        return cell;
 
-    return cell;
+    }
+    else
+    {
+        
+        static NSString *cell2ID = @"cell2ID";
+        XNRUser_Cell *cell2 = [tableView dequeueReusableCellWithIdentifier:cell2ID];
+        if (!cell2) {
+            cell2 = [[XNRUser_Cell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell2ID];
+            cell2.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        if (_userArr.count > 0) {
+            XNRBookUser *user = _userArr[indexPath.row];
+            cell2.model = user;
+        }
+        return cell2;
+    }
 }
 
 -(void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 
 }
+
 
 
 @end

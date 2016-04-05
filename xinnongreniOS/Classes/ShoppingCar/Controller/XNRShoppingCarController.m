@@ -740,10 +740,10 @@
             }
             if (model.shoppingCarModel.selectState&&[model.shoppingCarModel.online integerValue]==1) {
                 // 合计xxxx
-                if (model.shoppingCarModel.deposit && [model.shoppingCarModel.deposit floatValue] > 0) {
-                    _totalPrice = _totalPrice + model.shoppingCarModel.num.intValue*[[NSString stringWithFormat:@"%@",model.shoppingCarModel.deposit] floatValue];
+                if (model.shoppingCarModel.deposit && [model.shoppingCarModel.deposit doubleValue] > 0) {
+                    _totalPrice = _totalPrice + model.shoppingCarModel.num.intValue*[[NSString stringWithFormat:@"%@",model.shoppingCarModel.deposit] doubleValue];
                 }else{
-                    _totalPrice = _totalPrice + model.shoppingCarModel.num.intValue*[[NSString stringWithFormat:@"%@",model.shoppingCarModel.price] floatValue];
+                    _totalPrice = _totalPrice + model.shoppingCarModel.num.intValue*[[NSString stringWithFormat:@"%@",model.shoppingCarModel.price] doubleValue];
                 }
                 NSLog(@"totalPriceg === %.2f",_totalPrice);
                 goodsNumSelected = goodsNumSelected + model.shoppingCarModel.num.integerValue;

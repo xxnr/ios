@@ -515,7 +515,7 @@
     self.descriptionLabel.text = [NSString stringWithFormat:@"%@",self.model.Desc];
     
     
-    if ([self.model.min floatValue]== [self.model.max floatValue]) {
+    if ([self.model.min doubleValue]== [self.model.max doubleValue]) {
         self.priceLabel.text = [NSString stringWithFormat:@"￥%@",self.model.min];
 
     }else{
@@ -545,8 +545,8 @@
     
     
     CGSize marketPriceSize;
-    if ([self.model.marketMin floatValue]==[self.model.marketMax floatValue]) {
-        if ([self.model.marketMin floatValue] == 0.00 && [self.model.marketMax floatValue] == 0.00) {
+    if ([self.model.marketMin doubleValue]==[self.model.marketMax doubleValue]) {
+        if ([self.model.marketMin doubleValue] == 0.00 && [self.model.marketMax doubleValue] == 0.00) {
             self.marketPriceLabel.hidden = YES;
         }else{
             self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价￥%@",self.model.marketMin];

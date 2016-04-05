@@ -348,6 +348,8 @@
 #pragma mark - 性别
 -(void)selelctedBtnClick:(UIButton *)button
 {
+    [self.nameTf resignFirstResponder];
+
     _tempBtn.selected = NO;
     button.selected = YES;
     _tempBtn = button;

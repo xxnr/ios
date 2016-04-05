@@ -626,7 +626,7 @@
     for (NSDictionary *subDic in model.additions) {
         [addtionStr appendString:[NSString stringWithFormat:@"%@;",[subDic objectForKey:@"name"]]];
         price = [NSString stringWithFormat:@"%@",[subDic objectForKey:@"price"]];
-        totalPrice = totalPrice + [price floatValue];
+        totalPrice = totalPrice + [price doubleValue];
     }
     // 附加选项
     self.addtionsLabel.text = [NSString stringWithFormat:@"附加项目:%@",addtionStr];
@@ -635,9 +635,17 @@
     self.addtionPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",totalPrice];
     
     //现价
-    self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.price.floatValue];
+    self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.price.doubleValue];
 
+<<<<<<< HEAD
+//    // 订金
+//    self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",model.deposit.doubleValue *[_model.num doubleValue]];
+//
+//    // 尾款
+//    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",(model.price.doubleValue + totalPrice - model.deposit.doubleValue)*[model.num doubleValue]];
+=======
     // 订金
+>>>>>>> origin/master
     self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",model.deposit.floatValue *[_model.num integerValue]];
     
     // 尾款

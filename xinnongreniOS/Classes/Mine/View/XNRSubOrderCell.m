@@ -148,7 +148,7 @@ static BOOL isPay = NO;
     }
 
     //应付款金额
-    _shouldPayMoneyLabel.text = [NSString stringWithFormat:@"应支付金额：¥%.2f",[model.price floatValue]];
+    _shouldPayMoneyLabel.text = [NSString stringWithFormat:@"应支付金额：¥%.2f",[model.price doubleValue]];
     
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:_shouldPayMoneyLabel.text];
     NSDictionary *dict=@{
@@ -162,7 +162,7 @@ static BOOL isPay = NO;
 
 
     //已付款金额
-    _alreadyPayMoneyLabel.text = [NSString stringWithFormat:@"已支付金额：¥%.2f",[model.paidPrice floatValue]];
+    _alreadyPayMoneyLabel.text = [NSString stringWithFormat:@"已支付金额：¥%.2f",[model.paidPrice doubleValue]];
     
     NSMutableAttributedString *AttributedStringDeposit1 = [[NSMutableAttributedString alloc]initWithString:_alreadyPayMoneyLabel.text];
     NSDictionary *dict1=@{

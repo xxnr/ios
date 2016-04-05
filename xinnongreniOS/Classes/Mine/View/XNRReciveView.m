@@ -256,15 +256,12 @@
                 [_dataArr addObject:sectionModel];
             }
         }
-        
-        [_orderEmptyView removeFromSuperview];
-        if (_dataArr.count == 0) {
-            [self orderEmptyView];
-            
-        }
-
         //刷新列表
         [self.tableView reloadData];
+        
+        if (_dataArr.count == 0) {
+            [self orderEmptyView];
+        }
         
 
         
