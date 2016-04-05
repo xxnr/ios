@@ -219,7 +219,7 @@
     phoneView.alpha = 1;
     self.phoneView = phoneView;
     // 手机号
-    UITextField *phone = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), PX_TO_PT(40), ScreenWidth, PX_TO_PT(36))];
+    UITextField *phone = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), PX_TO_PT(33), ScreenWidth, PX_TO_PT(36))];
     phone.textAlignment = NSTextAlignmentLeft;
     phone.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"请填写客户联系方式" attributes:@{NSForegroundColorAttributeName:R_G_B_16(0x909090)}];
 
@@ -478,16 +478,26 @@
                     [self.phoneView addSubview:line];
                     
                     UIImageView *icon = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(191), PX_TO_PT(119), PX_TO_PT(30), PX_TO_PT(30))];
-                    icon.image = [UIImage imageNamed:@"提示-拷贝-2"];
+                    icon.image = [UIImage imageNamed:@"reg-prinpt"];
                     icon.contentMode = UIViewContentModeScaleAspectFit;
                     self.icon = icon;
                     [self.phoneView addSubview:icon];
                     
                     UILabel *warnLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(icon.frame)+PX_TO_PT(14), PX_TO_PT(120), ScreenWidth, PX_TO_PT(25))];
+                    
                     warnLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
                     warnLabel.textColor = R_G_B_16(0xDF3D3E);
+                    warnLabel.numberOfLines = 0;
                     warnLabel.text = result[@"message"];
+                    
+//                    CGSize size = [warnLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(24)]}];
+                    
+                    CGSize size = [warnLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(24)] constrainedToSize:CGSizeMake(ScreenWidth - CGRectGetMaxX(icon.frame)-PX_TO_PT(14), PX_TO_PT(198))];
+                    
+                    warnLabel.frame = CGRectMake(CGRectGetMaxX(icon.frame)+PX_TO_PT(14), PX_TO_PT(120), ScreenWidth - CGRectGetMaxX(icon.frame)-PX_TO_PT(14) , size.height);
+                    
                     self.warnLabel = warnLabel;
+                    
                     [self.phoneView addSubview:warnLabel];
 
                     self.iswarn = YES;
