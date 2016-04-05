@@ -65,7 +65,7 @@
 
 #else
 
-#define HOST @"http://101.200.194.203"//@"http://192.168.0.66"//
+#define HOST @"http://101.200.194.203"
 
 #endif
 
@@ -74,8 +74,17 @@
 //#define HOST @"http://101.200.194.203/"
 #define IMAGEHOST @"http://101.200.194.203"
 
-//设置字体和大小
-#define XNRFont(s) [UIFont fontWithName:@"Arial" size:s+2]
+//设置字的大小
+#define XNRFont12 [UIFont systemFontOfSize:PX_TO_PT(24)]
+#define XNRFont13 [UIFont systemFontOfSize:PX_TO_PT(26)]
+#define XNRFont14 [UIFont systemFontOfSize:PX_TO_PT(28)]
+#define XNRFont15 [UIFont systemFontOfSize:PX_TO_PT(30)]
+#define XNRFont16 [UIFont systemFontOfSize:PX_TO_PT(32)]
+#define XNRFont17 [UIFont systemFontOfSize:PX_TO_PT(34)]
+#define XNRFont18 [UIFont systemFontOfSize:PX_TO_PT(36)]
+#define XNRFont19 [UIFont systemFontOfSize:PX_TO_PT(38)]
+#define XNRFont20 [UIFont systemFontOfSize:PX_TO_PT(40)]
+
 
 
 //是否登录

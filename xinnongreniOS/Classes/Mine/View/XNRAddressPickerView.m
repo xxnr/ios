@@ -17,8 +17,6 @@
 @property (nonatomic ,weak) UIButton *leftBtn;
 @property (nonatomic ,weak) UIButton *rightBtn;
 
-@property (nonatomic ,weak) UIView *maskView;
-
 @property (nonatomic ,strong) NSMutableArray *provinceArr;
 
 @property (nonatomic ,strong) NSMutableArray *cityArr;
@@ -31,9 +29,14 @@
 
 @property (nonatomic ,copy) NSString *county;
 
-@property (nonatomic ,copy) NSString *provinceId;
-@property (nonatomic ,copy) NSString *cityId;
-@property (nonatomic ,copy) NSString *countyId;
+@property (nonatomic ,copy) NSString *provinceID;
+@property (nonatomic ,copy) NSString *cityID;
+@property (nonatomic ,copy) NSString *countyID;
+
+@property (nonatomic ,copy) NSString *province_Id;
+@property (nonatomic ,copy) NSString *city_Id;
+@property (nonatomic ,copy) NSString *county_Id;
+
 
 @end
 
@@ -102,7 +105,7 @@
             type = rightBtnType;
             
             if (self.com) {
-                self.com(self.province,self.city,self.county,self.provinceId,self.cityId,self.countyId);
+                self.com(self.province,self.city,self.county,self.provinceID,self.cityID,self.countyID,self.province_Id,self.city_Id,self.county_Id);
             }
             
         }
@@ -135,7 +138,8 @@
         }
         XNRProviceModel *province = _provinceArr[0];
         self.province = province.name;
-        self.provinceId = province.ID;
+        self.province_Id = province._id;
+        self.provinceID = province.ID;
         [self getCityDataWith:province.ID];
         
         [self.pickerView reloadComponent:0];
@@ -160,8 +164,10 @@
         }
         XNRCityModel *city = _cityArr [0];
         self.city = city.name;
-        self.cityId = city.ID;
+        self.city_Id = city._id;
+        self.cityID = city.ID;
         [self getCountyDataWith:city.ID];
+        
         [self.pickerView reloadComponent:1];
         [self.pickerView selectRow:0 inComponent:1 animated:YES];
         
@@ -186,12 +192,12 @@
         if (_countyArr.count>0) {
             XNRCountyModel *county = _countyArr[0];
             self.county = county.name;
-            self.countyId = county.ID;
-
+            self.countyID = county.ID;
+            self.county_Id = county._id;
+ 
         }
         [self.pickerView reloadComponent:2];
         [self.pickerView selectRow:0 inComponent:2 animated:YES];
-        
         
     } failure:^(NSError *error) {
         
@@ -253,7 +259,8 @@
         XNRProviceModel *province = _provinceArr[row];
         [self getProvinceData];
         self.province = province.name;
-        self.provinceId = province.ID;
+        self.province_Id = province._id;
+        self.provinceID = province.ID;
         [self getCityDataWith:province.ID];
         
         if (_cityArr.count>0) {
@@ -261,14 +268,19 @@
                 XNRCityModel *city = _cityArr [0];
                 [self getCountyDataWith:city.ID];
                 self.city = city.name;
-                self.cityId = city.ID;
+                self.city_Id = city._id;
+                self.cityID = city.ID;
+
             }
         }
 
         if (_countyArr.count>0) {
             XNRCountyModel *county = _countyArr[0];
             self.county = county.name;
-            self.countyId = county.name;
+            self.county_Id = county._id;
+            
+            self.countyID = county.ID;
+
 
         }
         
@@ -277,21 +289,26 @@
     }
     if (1 == component){
         self.county = @"";
-        self.countyId = @"";
+        self.countyID = @"";
         // 获取第一列选中的行对应的城市
         if (_cityArr.count>0) {
             XNRCityModel *city = _cityArr[row];
             // 获取对应的县
             [self getCountyDataWith:city.ID];
             self.city = city.name;
-            self.cityId = city.ID;
-        }
+            self.city_Id = city._id;
+            self.cityID = city.ID;
+            
+    }
         
        
         if (_countyArr.count>0) {
             XNRCountyModel *county = [_countyArr objectAtIndex:0];
             self.county = county.name;
-            self.countyId = county.ID;
+            self.county_Id = county._id;
+            
+            self.countyID = county.ID;
+
         }
         
     
@@ -300,7 +317,11 @@
         if (_countyArr.count>0) {
             XNRCountyModel *county = _countyArr[row];
             self.county = county.name;
-            self.countyId = county.ID;
+            self.county_Id = county._id;
+            
+            self.countyID = county.ID;
+
+            
         }
        
         
@@ -312,7 +333,6 @@
 
 - (void)show{
     
-//    self.com = com;
     [UIView animateWithDuration:0.3 animations:^{
         self.frame = CGRectMake(0, ScreenHeight-PX_TO_PT(600), ScreenWidth, PX_TO_PT(600));
         

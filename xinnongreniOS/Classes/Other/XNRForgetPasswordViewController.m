@@ -124,7 +124,7 @@
     getVerifyButton.backgroundColor = R_G_B_16(0x00b38a);
     [getVerifyButton setTitle:@"免费获取验证码" forState:UIControlStateNormal];
     [getVerifyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    getVerifyButton.titleLabel.font = XNRFont(10);
+    getVerifyButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(20)];
     getVerifyButton.layer.masksToBounds = YES;
     getVerifyButton.layer.cornerRadius = 5;
     self.getVerifyButton = getVerifyButton;
@@ -487,11 +487,19 @@
 -(void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
+<<<<<<< HEAD
+=======
+    
+>>>>>>> master
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
+<<<<<<< HEAD
+=======
+    
+>>>>>>> master
 }
 
 //消失时回收键盘

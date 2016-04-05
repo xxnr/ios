@@ -139,7 +139,7 @@
     if (_townArray.count>0) {
         XNRTownModel *town  = _townArray[row];
         NSString *name = town.name;
-        NSString *townID = town.ID;
+        NSString *townID = town._id;
         self.townLabel.text = name;
         self.com(name,townID);
         

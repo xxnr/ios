@@ -329,7 +329,11 @@
     
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,self.model.imgs];
     //图片
-    [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+//    [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        image = [UIImage imageNamed:@"icon_loading_wrong"];
+    }];
+
     NSLog(@"-----------%@",self.model.productName);
     
     //商品名

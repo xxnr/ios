@@ -284,18 +284,19 @@
     [self.eMailTF resignFirstResponder];
     __weak __typeof(&*self)weakSelf = self;
     [self.addressManagerView show];
-    self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId){
+    self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId,NSString *province_id,NSString *city_id,NSString *county_id){
         
         weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
         
-        weakSelf.provinceID = provinceID;
-        weakSelf.cityID  = cityId;
-        weakSelf.countyID = countyId;
+        weakSelf.provinceID = province_id;
+        weakSelf.cityID  = city_id;
+        weakSelf.countyID = county_id;
         
         UserInfo *info = [DataCenter account];
         info.province = province;
         info.city = city;
         info.county = county;
+        info.cityID = cityId;
         info.countyID = countyId;
         [DataCenter saveAccount:info];
     };
@@ -311,10 +312,10 @@
 
     __weak __typeof(&*self)weakSelf = self;
     [self.townManagerView show];
-    self.townManagerView.com = ^(NSString *townName,NSString *townId){
+    self.townManagerView.com = ^(NSString *townName,NSString *townId,NSString *town_id){
         
         weakSelf.townLabel.text = townName;
-        weakSelf.townID = townId;
+        weakSelf.townID = town_id;
     
     };
     
@@ -510,11 +511,11 @@
 
 }
 
-
-
-
 -(void)viewDidDisappear:(BOOL)animated{
+<<<<<<< HEAD
     
+=======
+>>>>>>> master
     [super viewDidDisappear:animated];
 }
 

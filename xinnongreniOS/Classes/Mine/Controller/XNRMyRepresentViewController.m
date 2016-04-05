@@ -246,6 +246,9 @@
                     self.phoneNumLabel.text = _phoneNum;
                     if (result[@"datas"][@"inviterName"]) {
                         self.nickNameLabel.text = result[@"datas"][@"inviterName"];
+                        CGSize nickNameSize = [self.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]}];
+                        self.nickNameLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(18), nickNameSize.width+PX_TO_PT(24), PX_TO_PT(60));
+
                     }else{
                         self.nickNameLabel.text = @"好友未填姓名";
                         self.nickNameLabel.backgroundColor = R_G_B_16(0xf0f0f0);
@@ -560,7 +563,8 @@
     [self.view addSubview:myRepView];
     
     CGFloat nickNameLabelY = (PX_TO_PT(96) - PX_TO_PT(60))*0.5;
-    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(220), PX_TO_PT(60))];
+//    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(220), PX_TO_PT(60))];
+    UILabel *nickNameLabel = [[UILabel alloc] init];
     nickNameLabel.backgroundColor = R_G_B_16(0x00b38a);
     nickNameLabel.layer.cornerRadius = 5.0;
     nickNameLabel.layer.masksToBounds = YES;

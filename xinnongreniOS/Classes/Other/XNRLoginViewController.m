@@ -441,24 +441,6 @@
         
     }];
 
-//    [KSHttpRequest post:KAddToCart parameters:params success:^(id result) {
-//        NSLog(@"%@",result);
-//        
-//        if([result[@"code"] integerValue] == 1000){
-//
-//        }else {
-//            
-//            [UILabel showMessage:result[@"message"]];
-//            [BMProgressView LoadViewDisappear:self.view];
-//
-//        }
-//        
-//    } failure:^(NSError *error) {
-//        
-//        NSLog(@"%@",error);
-//        
-//    }];
-    
 }
 
 #pragma mark - 正则表达式判断手机号格式

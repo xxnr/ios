@@ -20,6 +20,8 @@
 #import "XNRSelPayOrder_VC.h"
 #import "XNRAddOrderModel.h"
 #import "XNRMyAllOrderFrame.h"
+#import "XNROrderInfoFrame.h"
+#import "AppDelegate.h"
 @interface XNROrderInfo_VC ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>{
     
     NSString *orderDataId;    //订单id
@@ -109,13 +111,10 @@
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     NSDictionary *params = @{@"SKUs":self.dataArray,@"user-agent":@"IOS-v2.0"};
-//    NSLog(@"---------返回数据:+_-------%@",params);
 
     [manager POST:KGetShoppingCartOffline parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"---------params:+_-------%@",params);
-//        NSLog(@"---------返回数据:+_-------%@",str);
-
+        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -136,15 +135,26 @@
                                 sectionModel.unitPrice = dict[@"price"];
                             }
             
-                                sectionModel.SKUList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"SKUList"]];
-                                [_dataArr addObject:sectionModel];
-            
+                        sectionModel.SKUList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"SKUList"]];
+                            
+
                             for (int i = 0; i<sectionModel.SKUList.count; i++) {
                                 XNRShoppingCartModel *model = sectionModel.SKUList[i];
-            
-                                model.num = model.totalCount;
+                                XNROrderInfoFrame *frameModel = [[XNROrderInfoFrame alloc] init];
+                                // 传递购物车模型数据
+                                frameModel.shoppingCarModel = model;
+                                
+                                frameModel.shoppingCarModel.num = frameModel.shoppingCarModel.count;
+                                [sectionModel.SKUFrameList addObject:frameModel];
+                                
+                                NSLog(@"++_)_%@",sectionModel.SKUFrameList);
+                                
+                                
                             }
+                            [_dataArr addObject:sectionModel];
+
                         }
+            
                         [self.tableview reloadData];
                     }else{
                         
@@ -418,7 +428,6 @@
     footView.backgroundColor = [UIColor blackColor];
     footView.backgroundColor =  R_G_B_16(0xf4f4f4);
     [self.view addSubview:footView];
-    
     return  footView;
 
 }
@@ -426,14 +435,12 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return PX_TO_PT(88);
-//    return 0;
 
 }
 
 //段尾高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-//    return PX_TO_PT(100);
     if (section == _dataArr.count-1) {
         return 0.0;
     }
@@ -470,22 +477,9 @@
     
     if (_dataArr.count>0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
-        XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
+        XNROrderInfoFrame *frameModel = sectionModel.SKUFrameList[indexPath.row];
+        return frameModel.cellHeight;
         
-        if ([model.deposit floatValue] == 0.00) {
-            if (model.additions.count == 0) {
-                return PX_TO_PT(300);
-            }else{
-                return PX_TO_PT(300)+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-            }
-        }else{
-            if (model.additions.count == 0) {
-                return PX_TO_PT(460);
-
-            }else{
-                return PX_TO_PT(460)+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-            }
-        }
     }else{
         return 0;
     }
@@ -501,8 +495,11 @@
     }
     if (_dataArr.count>0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
-        XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
-        [cell setCellDataWithModel:model];
+        if (sectionModel.SKUFrameList.count>0) {
+            XNROrderInfoFrame *frameModel = sectionModel.SKUFrameList[indexPath.row];
+            cell.orderFrame = frameModel;
+        }
+       
     }
     cell.backgroundColor=R_G_B_16(0xf4f4f4);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -516,7 +513,6 @@
     XNRAddressManageViewController*vc=[[XNRAddressManageViewController alloc]init];
     
     [vc setAddressChoseBlock:^(XNRAddressManageModel *model) {
-        
         self.nextAddresModel = model;
         NSLog(@"%@",model.address);
         NSLog(@"%@",model.addressId);
@@ -620,6 +616,21 @@
         }
             [self selectVC];
 
+        }else{
+            [UILabel showMessage:resultObj[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            //发送刷新通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+            
+            XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+            
+            vc.hidesBottomBarWhenPushed = YES;
+            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+            [currentVc.navigationController pushViewController:vc animated:YES];
+
+        
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"===%@",error);
@@ -684,6 +695,9 @@
 }
 
 -(void)backClick{
+    
+    NSNotification *tification = [[NSNotification alloc]initWithName:@"hhh" object:self userInfo:@{@"hh":@"XNROrderInfo_VC"}];
+    [[NSNotificationCenter defaultCenter] postNotification:tification];
     
     [self.navigationController popViewControllerAnimated:YES];
 }

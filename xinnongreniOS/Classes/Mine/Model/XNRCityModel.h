@@ -13,6 +13,8 @@
 @property (nonatomic ,copy) NSString *areaId;
 
 @property (nonatomic ,copy) NSString *ID;
+@property (nonatomic ,copy) NSString *_id;
+
 
 @property (nonatomic ,copy) NSString *name;
 
