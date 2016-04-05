@@ -160,6 +160,7 @@
     phoneNumTF.placeholder = @"请输入收货人电话";
     phoneNumTF.textColor = R_G_B_16(0x909090);
     phoneNumTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    phoneNumTF.keyboardType = UIKeyboardTypePhonePad;
     phoneNumTF.text = self.model.receiptPhone;
     phoneNumTF.delegate = self;
     phoneNumTF.tag = textFieldTag +1;

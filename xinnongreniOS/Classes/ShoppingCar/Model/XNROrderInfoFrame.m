@@ -114,9 +114,9 @@
     CGFloat topLineW = ScreenWidth;
     CGFloat topLineY;
     if (self.shoppingCarModel.additions.count>0) {
-        topLineY = CGRectGetMaxY(_addtionsLabelF)+PX_TO_PT(36);
+        topLineY = CGRectGetMaxY(_addtionsLabelF);
     }else{
-        topLineY =  CGRectGetMaxY(_PriceLabelF)+PX_TO_PT(36);;
+        topLineY =  CGRectGetMaxY(_PriceLabelF);
         
     }
     _topLineF = CGRectMake(topLineX, topLineY, topLineW, topLineH);
