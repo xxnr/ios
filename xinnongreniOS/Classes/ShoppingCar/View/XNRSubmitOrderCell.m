@@ -285,9 +285,15 @@
         price = [NSString stringWithFormat:@"%@",[subDic objectForKey:@"price"]];
         totalPrice = totalPrice + [price doubleValue];
     }
+<<<<<<< HEAD
 
     self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.doubleValue];
 
+=======
+    
+    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.price.floatValue];
+    
+>>>>>>> origin/master
     self.numLabel.text = [NSString stringWithFormat:@"x %@",self.model.count];
     
     
@@ -295,8 +301,12 @@
     self.depositLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.deposit.doubleValue*[_model.count doubleValue]];
     
     // 尾款
+<<<<<<< HEAD
     self.remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",(self.model.price.doubleValue+totalPrice - self.model.deposit.doubleValue) * [_model.count doubleValue]];
 
+=======
+    self.remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",(self.model.price.floatValue+totalPrice - self.model.deposit.floatValue) * [_model.count floatValue]];
+>>>>>>> origin/master
 }
 
 
