@@ -486,11 +486,9 @@
             XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
             cell.attributesArray = modelArray.attributes;
             cell.addtionsArray = modelArray.additions;
-            XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
-           cell.orderFrame = frameModel;
-
-            
         }
+        XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
+        cell.orderFrame = frameModel;
     }
     
     return cell;

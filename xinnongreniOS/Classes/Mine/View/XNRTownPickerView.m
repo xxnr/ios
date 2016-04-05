@@ -16,6 +16,8 @@
 
 @property (nonatomic ,copy) NSString *town;
 @property (nonatomic ,copy) NSString *townID;
+@property (nonatomic ,copy) NSString *town_Id;
+
 
 @property (nonatomic ,weak) UIButton *leftBtn;
 @property (nonatomic ,weak) UIButton *rightBtn;
@@ -63,6 +65,7 @@
                 XNRTownModel *model = _townArray[0];
                 self.town = model.name;
                 self.townID = model.ID;
+                self.town_Id = model._id;
             }
            
             [self.pickerView reloadAllComponents];
@@ -85,6 +88,7 @@
                 XNRTownModel *model = _townArray[0];
                 self.town = model.name;
                 self.townID = model.ID;
+                self.town_Id = model._id;
             }
            
         [self.pickerView reloadAllComponents];
@@ -133,7 +137,7 @@
             type = eLeftBtnType;
         }else{
             type = eRightBtnType;
-            self.com(self.town,self.townID);
+            self.com(self.town,self.townID,self.town_Id);
         }
         [self.delegate XNRTownPickerViewBtnClick:type];
       }
@@ -165,6 +169,7 @@
         XNRTownModel *town  = _townArray[row];
         self.town = town.name;
         self.townID = town.ID;
+        self.town_Id = town._id;
     }
     
 }

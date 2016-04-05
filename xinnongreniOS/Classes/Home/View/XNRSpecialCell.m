@@ -153,7 +153,11 @@
 -(void)setCellDataWithShoppingCartModel:(XNRShoppingCartModel *)model
 {
     _model = model;
-    [self.image sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+//    [self.image sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    [self.image sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        image = [UIImage imageNamed:@"icon_loading_wrong"];
+    }];
+
     self.detailLabel.text = model.goodsName;
     if ([self.model.presale integerValue] == 1) {
         self.priceLabel.textColor = R_G_B_16(0xc7c7c7);

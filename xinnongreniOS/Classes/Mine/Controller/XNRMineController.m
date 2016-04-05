@@ -97,14 +97,16 @@
                 [_userArray addObject:model];
                 
                 // 头像
-                if ([KSHttpRequest isBlankString:dict[@"photo"]]) {
+                if ([KSHttpRequest isBlankString:dict[@"photo"]]) {// 没有头像
                     self.icon.image=[UIImage imageNamed:@"icon_head"];
+                    
                 }else{
                     NSString *imageUrl = [NSString stringWithFormat:@"%@%@",HOST,dict[@"photo"]];
-                    [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                    } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-                        self.icon.image = image;
+
+                    [self.icon sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_head"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                        image = [UIImage imageNamed:@"icon_loading_wrong"];
                     }];
+
                 }
                 // 昵称
                 if ([KSHttpRequest isBlankString:dict[@"nickname"]]) {

@@ -92,9 +92,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+    // 创建导航栏
+    [self createNavgation];
+
     self.selectedBottomBtn.selected = NO;
     
-    [self.editeBtn setTitle:@"编辑" forState:UIControlStateNormal];
+//    [self.editeBtn setTitle:@"编辑" forState:UIControlStateNormal];
     _deleteBtn.hidden = YES;
     _settlementBtn.hidden = NO;
     _totalPriceLabel.hidden = NO;
@@ -125,13 +128,11 @@
     _modifyDataArr = [[NSMutableArray alloc] init];
     _MapOfAllStateArr = [NSMutableArray array];
     
-    
     //创建订单
     [self createShoppingCarTableView];
     //创建底部视图
     [self createBottomView];
-    // 创建导航栏
-    [self createNavgation];
+  
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:@"refreshTableView" object:nil];
     
@@ -242,8 +243,8 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)editeBtnClick{
-    sort = !sort;
-    if (sort) {// 完成
+//    sort = !sort;
+    if ([self.editeBtn.titleLabel.text isEqualToString:@"编辑"]) {// 完成
         [self.editeBtn setTitle:@"完成" forState:UIControlStateNormal];
         _totalPriceLabel.hidden  = YES;
         _settlementBtn.hidden = YES;
@@ -372,49 +373,31 @@
 #pragma mark - 删除
 -(void)deleteBtnClick:(UIButton *)button{
     
-    BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确认要删除该商品吗?" chooseBtns:@[@"取消",@"确定"]];
-    
-    alertView.chooseBlock = ^void(UIButton *btn){
+    if (_totalPrice == 0) {
+        [UILabel showMessage:@"请至少选择一件商品"];
+    }else{
+        BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确认要删除该商品吗?" chooseBtns:@[@"取消",@"确定"]];
         
-        if (btn.tag == 11) {
+        alertView.chooseBlock = ^void(UIButton *btn){
             
-            NSMutableArray *arr1 = [NSMutableArray array];
-            NSMutableArray *arr2 = [NSMutableArray array];
-            
-            //1.先删除购物车 中的数据 并且用arr1、arr2记录要删除的数据
-            for (XNRShopCarSectionModel *sectionModel in _dataArr) {
+            if (btn.tag == 11) {
                 
-                if (sectionModel.isSelected) {
-                    if (!IS_Login) { //未登录时 把数据库这条数据删除
-                        for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
-                            DatabaseManager *manager = [DatabaseManager sharedInstance];
-                            [manager deleteShoppingCarWithModel:carModel.shoppingCarModel];
-                        }
-                    } else { //TODO:服务器调用接口 让服务器把这条数据删除
-                        for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
-                    NSDictionary *params1 = @{@"userId":[DataCenter account].userid,@"SKUId":carModel.shoppingCarModel._id,@"quantity":@"0",@"additions":carModel.shoppingCarModel.additions,@"user-agent":@"IOS-v2.0"};
-                            [KSHttpRequest post:KchangeShopCarNum parameters:params1 success:^(id result) {
-                                if ([result[@"code"] integerValue] == 1000) {
-                                    [UILabel showMessage:@"删除成功"];
-                                }
-                            } failure:^(NSError *error) {
-                                
-                            }];
-                        }
-                    }
+                NSMutableArray *arr1 = [NSMutableArray array];
+                NSMutableArray *arr2 = [NSMutableArray array];
+                
+                //1.先删除购物车 中的数据 并且用arr1、arr2记录要删除的数据
+                for (XNRShopCarSectionModel *sectionModel in _dataArr) {
                     
-                    [arr1 addObject:sectionModel];
-                    
-                } else {
-                    for (XNRShoppingCarFrame *model in sectionModel.SKUFrameList) {
-                        if (model.shoppingCarModel.selectState) {
-                            if (!IS_Login) {//未登录时 把数据库这条数据删除
+                    if (sectionModel.isSelected) {
+                        if (!IS_Login) { //未登录时 把数据库这条数据删除
+                            for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
                                 DatabaseManager *manager = [DatabaseManager sharedInstance];
-                                [manager deleteShoppingCarWithModel:model.shoppingCarModel];
-                            } else {
-                                //TODO:服务器调用接口 让服务器把这条数据删除
-                                NSDictionary *params2 = @{@"userId":[DataCenter account].userid,@"SKUId":model.shoppingCarModel._id,@"quantity":@"0",@"additions":model.shoppingCarModel.additions,@"user-agent":@"IOS-v2.0"};
-                                [KSHttpRequest post:KchangeShopCarNum parameters:params2 success:^(id result) {
+                                [manager deleteShoppingCarWithModel:carModel.shoppingCarModel];
+                            }
+                        } else { //TODO:服务器调用接口 让服务器把这条数据删除
+                            for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
+                                NSDictionary *params1 = @{@"userId":[DataCenter account].userid,@"SKUId":carModel.shoppingCarModel._id,@"quantity":@"0",@"additions":carModel.shoppingCarModel.additions,@"user-agent":@"IOS-v2.0"};
+                                [KSHttpRequest post:KchangeShopCarNum parameters:params1 success:^(id result) {
                                     if ([result[@"code"] integerValue] == 1000) {
                                         [UILabel showMessage:@"删除成功"];
                                     }
@@ -422,42 +405,66 @@
                                     
                                 }];
                             }
-                            [arr2 addObject:model];
+                        }
+                        
+                        [arr1 addObject:sectionModel];
+                        
+                    } else {
+                        for (XNRShoppingCarFrame *model in sectionModel.SKUFrameList) {
+                            if (model.shoppingCarModel.selectState) {
+                                if (!IS_Login) {//未登录时 把数据库这条数据删除
+                                    DatabaseManager *manager = [DatabaseManager sharedInstance];
+                                    [manager deleteShoppingCarWithModel:model.shoppingCarModel];
+                                } else {
+                                    //TODO:服务器调用接口 让服务器把这条数据删除
+                                    NSDictionary *params2 = @{@"userId":[DataCenter account].userid,@"SKUId":model.shoppingCarModel._id,@"quantity":@"0",@"additions":model.shoppingCarModel.additions,@"user-agent":@"IOS-v2.0"};
+                                    [KSHttpRequest post:KchangeShopCarNum parameters:params2 success:^(id result) {
+                                        if ([result[@"code"] integerValue] == 1000) {
+                                            [UILabel showMessage:@"删除成功"];
+                                        }
+                                    } failure:^(NSError *error) {
+                                        
+                                    }];
+                                }
+                                [arr2 addObject:model];
+                            }
                         }
                     }
                 }
-            }
-            
-            //2.删除数据源里面的记录的数据
-            for (int i = 0; i < arr1.count; i++) {
-                XNRShopCarSectionModel *sectionModel = arr1[i];
-                [_dataArr removeObject:sectionModel];
-            }
-            for (XNRShopCarSectionModel *sectionModel in _dataArr) {
-                for (XNRShoppingCarFrame *cellModel in arr2) {
-                    [sectionModel.SKUFrameList removeObject:cellModel];
-
+                
+                //2.删除数据源里面的记录的数据
+                for (int i = 0; i < arr1.count; i++) {
+                    XNRShopCarSectionModel *sectionModel = arr1[i];
+                    [_dataArr removeObject:sectionModel];
                 }
-                NSLog(@"sectionModel.SKUFrameList%tu",sectionModel.SKUFrameList.count);
+                for (XNRShopCarSectionModel *sectionModel in _dataArr) {
+                    for (XNRShoppingCarFrame *cellModel in arr2) {
+                        [sectionModel.SKUFrameList removeObject:cellModel];
+                        
+                    }
+                    NSLog(@"sectionModel.SKUFrameList%tu",sectionModel.SKUFrameList.count);
+                }
+                [self.shoppingCarTableView reloadData];
+                
+                if (_dataArr.count == 0) {
+                    [self.shopCarView show];
+                    self.editeBtn.hidden = YES;
+                    self.navigationItem.title = @"购物车";
+                }else{
+                    [self.shopCarView removeFromSuperview];
+                }
+                
             }
-            [self.shoppingCarTableView reloadData];
+            // 改变底部
+            [self changeBottom];
             
-            if (_dataArr.count == 0) {
-                [self.shopCarView show];
-                self.editeBtn.hidden = YES;
-                self.navigationItem.title = @"购物车";
-            }else{
-                [self.shopCarView removeFromSuperview];
-            }
-            
-        }
-        // 改变底部
-        [self changeBottom];
+        };
         
-    };
-    
-    [alertView BMAlertShow];
+        [alertView BMAlertShow];
 
+    
+    }
+    
 }
 
 #pragma mark - 跳转订单信息页
@@ -894,6 +901,7 @@
         XNRShopCarSectionModel *sectionModle = _dataArr[indexPath.section];
         if (sectionModle.SKUFrameList.count > 0) {
             XNRShoppingCarFrame *frame = sectionModle.SKUFrameList[indexPath.row];
+            NSLog(@"-=-=-=fkdo%@",frame.shoppingCarModel.additions);
             //传递数据模型model
             cell.shoppingCarFrame = frame;
 //            [cell setCellDataWithShoppingCartModel:model];

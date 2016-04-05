@@ -352,22 +352,63 @@
 -(BOOL)btnClick:(UIButton *)button
 {
     [self.nameTf resignFirstResponder];
+    [self.phoneNumTextField resignFirstResponder];
+//    if (button.tag == 1000) {
+//        [self.townManagerView hide];
+////        [self.typeView hide];
+//        __weak __typeof(&*self)weakSelf = self;
+//        [self.addressManagerView show];
+//        self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId){
+//            
+//            weakSelf.LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
+//            weakSelf.provinceID = provinceID;
+//            weakSelf.cityID  = cityId;
+//            weakSelf.countyID = countyId;
+//            
+//            UserInfo *info = [DataCenter account];
+//            info.province = province;
+//            info.city = city;
+//            info.county = county;
+//            info.countyID = countyId;
+//            [DataCenter saveAccount:info];
+//        };
+//        
+//    }
+//    
+//    if (button.tag == 1001) {
+//        if ([self.LocalAddressLabel.text isEqualToString:@"选择所在的省市区"]) {
+//            [UILabel showMessage:@"请选择地区"];
+//        }else{
+//            [self.addressManagerView hide];
+////            [self.typeView hide];
+//            __weak __typeof(&*self)weakSelf = self;
+//            [self.townManagerView show];
+//            self.townManagerView.com = ^(NSString *townName,NSString *townId){
+//                weakSelf.streetLabel.text = [NSString stringWithFormat:@"%@",townName];
+//                weakSelf.townID = townId;
+//                
+//            };
+//        }
+//    }
+    
     if (button.tag == 1000) {
         [self.townManagerView hide];
-//        [self.typeView hide];
+        [self.typeView hide];
         __weak __typeof(&*self)weakSelf = self;
         [self.addressManagerView show];
-        self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId){
+        self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId,NSString *province_id,NSString *city_id,NSString *county_id){
             
             weakSelf.LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
-            weakSelf.provinceID = provinceID;
-            weakSelf.cityID  = cityId;
-            weakSelf.countyID = countyId;
+            weakSelf.provinceID = province_id;
+            weakSelf.cityID  = city_id;
+            weakSelf.countyID = county_id;
             
             UserInfo *info = [DataCenter account];
             info.province = province;
             info.city = city;
             info.county = county;
+            
+            info.cityID = cityId;
             info.countyID = countyId;
             [DataCenter saveAccount:info];
         };
@@ -379,17 +420,18 @@
             [UILabel showMessage:@"请选择地区"];
         }else{
             [self.addressManagerView hide];
-//            [self.typeView hide];
+            [self.typeView hide];
             __weak __typeof(&*self)weakSelf = self;
             [self.townManagerView show];
-            self.townManagerView.com = ^(NSString *townName,NSString *townId){
+            self.townManagerView.com = ^(NSString *townName,NSString *townId,NSString *town_id){
                 weakSelf.streetLabel.text = [NSString stringWithFormat:@"%@",townName];
-                weakSelf.townID = townId;
+                weakSelf.townID = town_id;
                 
             };
         }
     }
     
+
     if (button.tag == 1002) {
         [self.addressManagerView hide];
         [self.townManagerView hide];
@@ -475,15 +517,17 @@
 #pragma mark - 性别
 -(void)selelctedBtnClick:(UIButton *)button
 {
+    [self.nameTf resignFirstResponder];
+    [self.phoneNumTextField resignFirstResponder];
     _tempBtn.selected = NO;
     button.selected = YES;
     _tempBtn = button;
     
     if (button.tag == sexBtn + 1) {
-        self.sex = @"flase";
+        self.sex = @"true";
         
     }else if (button.tag == sexBtn + 2){
-        self.sex = @"ture";
+        self.sex = @"false";
     }
 }
 

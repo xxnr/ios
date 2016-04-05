@@ -56,6 +56,8 @@
 @property (nonatomic,copy) NSString *phone;
 @property (nonatomic,strong)myAlertView *myAlert;
 @property (nonatomic,assign)BOOL isfirst;
+@property (nonatomic,weak)UIView *firstView;
+@property (nonatomic,weak)UIView *secondView;
 @property (nonatomic,weak) UIView *thirdView;
 @property (nonatomic,weak) UIView *BookView;
 @property (nonatomic,weak) UITableView *tableView2;
@@ -275,20 +277,36 @@
 
     if (sender.tag == btnTag) {
         
+//        [self.topView removeFromSuperview];
+//        _tableView.hidden = NO;
+//        [self getCustomerData];
+//        [self.mrv removeFromSuperview];
+//        [self.myRepLabel removeFromSuperview];
+//        [self.myRepView removeFromSuperview];
+//        [self createCustomerLabel];
+
+        
         [self.topView removeFromSuperview];
         _tableView.hidden = NO;
-        self.thirdView.hidden = YES;
         
+//        _tableView.hidden = NO;
+//        self.thirdView.hidden = YES;
+
         [self getCustomerData];
+        
+        [self.thirdView removeFromSuperview];
         [self.mrv removeFromSuperview];
-        [self.myRepLabel removeFromSuperview];
+        [self.myRepTopView removeFromSuperview];
+//        [self.myRepLabel removeFromSuperview];
         [self.myRepView removeFromSuperview];
         [self createCustomerLabel];
     } else if(sender.tag == btnTag + 1){
         _tableView.hidden = sender.selected;
         self.topView.hidden = sender.selected;
-        self.thirdView.hidden = YES;
-        
+        [self.firstView removeFromSuperview];
+//        self.thirdView.hidden = YES;
+        [self.thirdView removeFromSuperview];
+
         [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue]==1000) {
                 self.phoneNum = result[@"datas"][@"inviter"];
@@ -298,6 +316,9 @@
                     self.phoneNumLabel.text = _phoneNum;
                     if (result[@"datas"][@"inviterName"]) {
                         self.nickNameLabel.text = result[@"datas"][@"inviterName"];
+                        CGSize nickNameSize = [self.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]}];
+                        self.nickNameLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(18), nickNameSize.width+PX_TO_PT(24), PX_TO_PT(60));
+
                     }else{
                         self.nickNameLabel.text = @"好友未填姓名";
                         self.nickNameLabel.backgroundColor = R_G_B_16(0xf0f0f0);
@@ -337,6 +358,11 @@
         _tableView.hidden = YES;
         self.topView.hidden = YES;
         self.mrv.hidden = YES;
+//        [self.firstView removeFromSuperview];
+        [self.mrv removeFromSuperview];
+        [self.myRepTopView removeFromSuperview];
+        [self.myRepLabel removeFromSuperview];
+        [self.myRepView removeFromSuperview];
         
         [self.thirdView removeFromSuperview];
         
@@ -422,7 +448,7 @@
                     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
                     view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
                     UIImageView *iamgeview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-                    [iamgeview setImage:[UIImage imageNamed:@"新农代表-未登记客户_03"]];
+                    [iamgeview setImage:[UIImage imageNamed:@"mask"]];
                     iamgeview.contentMode = UIViewContentModeScaleAspectFit;
                     [view addSubview:iamgeview];
                     
@@ -598,6 +624,7 @@
 
 -(void)createCustomerLabel{
     UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(260))];
+    
     topView.backgroundColor = R_G_B_16(0xf0f0f0);
     self.topView = topView;
     [self.view addSubview:topView];
@@ -650,7 +677,6 @@
     _tableView.dataSource = self;
     _tableView.tableHeaderView = headView;
     [self.view addSubview:_tableView];
-    
 }
 
 - (void)myRepresentViewWith:(XNRMyRepresentView *)representView and:(NSString *)phoneNum {
@@ -723,10 +749,11 @@
 
 
 -(void)createMyRepresentUI {
-    [self.myRepLabel removeFromSuperview];
+    [self.myRepTopView removeFromSuperview];
     [self.myRepView removeFromSuperview];
     
     UIView *myRepTopView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(260))];
+//    myRepTopView.frame = CGRectMake(300, 33, 234, 33);
     myRepTopView.backgroundColor = R_G_B_16(0xf0f0f0);
     self.myRepTopView = myRepTopView;
     [self.view addSubview:myRepTopView];
@@ -758,7 +785,8 @@
     [self.view addSubview:myRepView];
     
     CGFloat nickNameLabelY = (PX_TO_PT(96) - PX_TO_PT(60))*0.5;
-    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(220), PX_TO_PT(60))];
+//    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(220), PX_TO_PT(60))];
+    UILabel *nickNameLabel = [[UILabel alloc] init];
     nickNameLabel.backgroundColor = R_G_B_16(0x00b38a);
     nickNameLabel.layer.cornerRadius = 5.0;
     nickNameLabel.layer.masksToBounds = YES;
@@ -790,7 +818,7 @@
 #pragma mark -- tableViewDelegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView.tag == btnTag) {
+    if (tableView.tag == tbTag) {
         return PX_TO_PT(96);
     }
     else
@@ -801,7 +829,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView.tag == btnTag) {
+    if (tableView.tag == tbTag) {
         return _dataArr.count;
     }
     else
@@ -812,7 +840,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView.tag == btnTag) {
+    if (tableView.tag == tbTag) {
         XNRCustomerOrderController *customerVC = [[XNRCustomerOrderController alloc] init];
         customerVC.hidesBottomBarWhenPushed = YES;
         XNRMyRepresentModel *model = _dataArr[indexPath.row];
@@ -834,7 +862,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView.tag == btnTag) {
+    if (tableView.tag == tbTag) {
         static NSString *cellID = @"cellID";
         XNRMyRepresent_cell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
         if (!cell) {

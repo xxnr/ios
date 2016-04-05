@@ -9,7 +9,6 @@
 #import "XNRLoginViewController.h"
 #import "XNRRegisterViewController.h"
 #import "XNRForgetPasswordViewController.h"
-#import "CoreTFManagerVC.h"
 #import "XNRTabBarController.h"
 #import "QCheckBox.h"
 #import "XNRTabBarController.h"
@@ -442,24 +441,6 @@
         
     }];
 
-//    [KSHttpRequest post:KAddToCart parameters:params success:^(id result) {
-//        NSLog(@"%@",result);
-//        
-//        if([result[@"code"] integerValue] == 1000){
-//
-//        }else {
-//            
-//            [UILabel showMessage:result[@"message"]];
-//            [BMProgressView LoadViewDisappear:self.view];
-//
-//        }
-//        
-//    } failure:^(NSError *error) {
-//        
-//        NSLog(@"%@",error);
-//        
-//    }];
-    
 }
 
 #pragma mark - 正则表达式判断手机号格式
@@ -475,19 +456,11 @@
     
     [super viewDidAppear:animated];
     
-    [CoreTFManagerVC installManagerForVC:self scrollView:nil tfModels:^NSArray *{
-        
-        TFModel *tfm1=[TFModel modelWithTextFiled:self.usernameTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm2=[TFModel modelWithTextFiled:self.passwordTextField inputView:nil name:@"" insetBottom:0];
-        return @[tfm1,tfm2];
-        
-    }];
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
-    [CoreTFManagerVC uninstallManagerForVC:self];
     
 }
 

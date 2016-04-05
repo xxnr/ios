@@ -55,6 +55,10 @@
         name.text = nameArr[i];
         [cell addSubview:name];
         
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(2))];
+        line.backgroundColor = R_G_B_16(0xE0E0E0);
+        [self.view addSubview:line];
+        
         [self.view addSubview:cell];
     }
 }
@@ -66,22 +70,20 @@
             user = [XNRCustomer objectWithKeyValues:result[@"potentialCustomer"]];
             self.customer = user;
             _intentionArr = [NSMutableArray arrayWithArray:[XNRBuyIntentionModel objectArrayWithKeyValuesArray:result[@"potentialCustomer"][@"buyIntentions"]]];
-            
-//            for (int i=0; i<user.buyIntentions.count; i++) {
-//                XNRBuyIntentionModel *model = [[XNRBuyIntentionModel alloc]init];
-//                model._id = result[@"potentialCustomer"][@"buyIntentions"][i][@"_id"];
-//                model.name = result[@"potentialCustomer"][@"buyIntentions"][i][@"name"];
-//                [_intentionArr addObject:model];
-//            }
             NSMutableString *pro = [[NSMutableString alloc]init];
             for (int i=0; i<self.intentionArr.count; i++) {
                 XNRBuyIntentionModel *intent = self.intentionArr[i];
                 NSString *str = intent.name;
                 [pro appendString:str];
-                [pro appendString:@";"];
+                if (i+1 == self.intentionArr.count) {
+                    
+                }
+                else{
+                    
+                    [pro appendString:@";"];}
             }
             NSString *sex = @"";
-            if ([user.sex integerValue] == 1) {
+            if ([user.sex integerValue] == 0) {
                 sex = @"女";
             }
             else

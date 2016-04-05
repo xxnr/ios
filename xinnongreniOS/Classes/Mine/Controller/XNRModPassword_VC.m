@@ -7,7 +7,6 @@
 //
 
 #import "XNRModPassword_VC.h"
-#import "CoreTFManagerVC.h"
 #import "KSHttpRequest.h"
 #import "DataCenter.h"
 #import "XNRLoginViewController.h"
@@ -270,22 +269,11 @@
     
     [super viewDidAppear:animated];
     
-    [CoreTFManagerVC installManagerForVC:self scrollView:nil tfModels:^NSArray *{
-        
-       
-        TFModel *tfm2=[TFModel modelWithTextFiled:self.makeSurePasswordTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm3=[TFModel modelWithTextFiled:self.newpasswordTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm4=[TFModel modelWithTextFiled:self.againPasswordTextField inputView:nil name:@"" insetBottom:0];
-        return @[tfm2,tfm3,tfm4];
-        
-    }];
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
-    
-    [CoreTFManagerVC uninstallManagerForVC:self];
 }
 
 //消失时回收键盘

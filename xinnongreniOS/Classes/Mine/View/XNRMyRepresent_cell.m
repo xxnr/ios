@@ -41,8 +41,8 @@
     [self addSubview:myRepView];
     
     CGFloat nickNameLabelY = (myRepLabelH - PX_TO_PT(60))*0.5;
-    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(220), PX_TO_PT(60))];
-//    UILabel *nickNameLabel = [[UILabel alloc] init];
+//    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(220), PX_TO_PT(60))];
+    UILabel *nickNameLabel = [[UILabel alloc] init];
     nickNameLabel.backgroundColor = R_G_B_16(0x00b38a);
     nickNameLabel.layer.cornerRadius = 5.0;
     nickNameLabel.layer.masksToBounds = YES;
@@ -85,13 +85,8 @@
 - (void)setModel:(XNRMyRepresentModel *)model {
     _model = model;
     if (model.name && model.name.length>0) {
-//        CGSize maxSize = CGSizeMake(MAXFLOAT, PX_TO_PT(60));
-//        CGSize nameSize = [self.model.nickname sizeWithFont_BSExt:self.nickNameLabel.font maxSize:maxSize];
-        
-        
-//        CGSize size = [self.nickNameLabel.text boundingRectWithSize:CGSizeMake(MAXFLOAT, PX_TO_PT(60)) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]} context:nil].size;
-//        
-//        self.nickNameLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(18),size.width, PX_TO_PT(60));
+        CGSize nickNameLabelSize = [model.name sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]}];
+        self.nickNameLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(18), nickNameLabelSize.width+PX_TO_PT(24), PX_TO_PT(60));
         self.nickNameLabel.text = model.name;
         
     }else{

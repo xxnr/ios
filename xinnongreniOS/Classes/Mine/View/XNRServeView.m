@@ -487,15 +487,11 @@
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
         if (sectionModel.orderFrameArray.count>0) {
-            XNRMyOrderModel *modelArray;
-            if (sectionModel.skus.count == 0) {
-            modelArray = sectionModel.products[indexPath.row];
-
-            }else{
-            modelArray = sectionModel.skus[indexPath.row];
+            if (sectionModel.skus.count >0) {
+                XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
+                cell.attributesArray = modelArray.attributes;
+                cell.addtionsArray = modelArray.additions;
             }
-            cell.attributesArray = modelArray.attributes;
-            cell.addtionsArray = modelArray.additions;
             XNRMyAllOrderFrame *orderFrame = sectionModel.orderFrameArray[indexPath.row];
             cell.orderFrame = orderFrame;
 

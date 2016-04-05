@@ -14,6 +14,9 @@
 
 @property (nonatomic ,copy) NSString *ID;
 
+@property (nonatomic ,copy) NSString *_id;
+
+
 @property (nonatomic ,copy) NSString *name;
 
 @property (nonatomic ,copy) NSString *businessId;
