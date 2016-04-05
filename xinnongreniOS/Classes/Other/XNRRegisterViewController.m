@@ -557,10 +557,6 @@
 -(void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
-<<<<<<< HEAD
-=======
-    
->>>>>>> master
 }
 
 -(void)viewDidDisappear:(BOOL)animated{

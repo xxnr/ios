@@ -137,10 +137,7 @@
 -(void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
-<<<<<<< HEAD
-    
-=======
->>>>>>> master
+
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
@@ -193,10 +190,6 @@
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, frame.viewHeight)];
     tableView.delegate = self;
     tableView.dataSource = self;
-<<<<<<< HEAD
-//    tableView.pagingEnabled = YES;
-=======
->>>>>>> master
     
     self.tableView = tableView;
     [self.view addSubview:tableView];

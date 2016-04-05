@@ -487,19 +487,11 @@
 -(void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
-<<<<<<< HEAD
-=======
-    
->>>>>>> master
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
-<<<<<<< HEAD
-=======
-    
->>>>>>> master
 }
 
 //消失时回收键盘
