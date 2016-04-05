@@ -289,9 +289,9 @@
         
         weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
         
-        weakSelf.provinceID = province_id;
-        weakSelf.cityID  = city_id;
-        weakSelf.countyID = county_id;
+        weakSelf.provinceID = provinceID;
+        weakSelf.cityID  = cityId;
+        weakSelf.countyID = countyId;
         
         UserInfo *info = [DataCenter account];
         info.province = province;
@@ -316,11 +316,9 @@
     self.townManagerView.com = ^(NSString *townName,NSString *townId,NSString *town_id){
         
         weakSelf.townLabel.text = townName;
-        weakSelf.townID = town_id;
+        weakSelf.townID = townId;
     
     };
-    
-
 }
 #pragma mark --UITextFieldDelegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField

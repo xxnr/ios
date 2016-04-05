@@ -252,15 +252,8 @@
         
         if (_dataArr.count == 0) {
             [self orderEmptyView];
-<<<<<<< HEAD
         }
 
-=======
-            
-        }
-        //刷新列表
-        [self.tableView reloadData];
->>>>>>> origin/master
         
         //  如果到达最后一页 就消除footer
         
