@@ -323,6 +323,9 @@
 #pragma mark --UITextFieldDelegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    [self.addressManagerView hide];
+    [self.townManagerView hide];
+    
     if (textField.tag == textFieldTag) {
         
     }else if (textField.tag == textFieldTag + 1){

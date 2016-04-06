@@ -603,10 +603,13 @@
 
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,model.imgUrl];
     //图片
-//    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        image = [UIImage imageNamed:@"icon_loading_wrong"];
-    }];
+    
+    if (urlStr == nil || [urlStr isEqualToString:@""]) {
+        [self.picImageView setImage:[UIImage imageNamed:@"icon_placehold"]];
+    }else{
+        [self.picImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    }
+
 
     NSLog(@"-----------%@",model.additions);
     //商品名
