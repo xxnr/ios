@@ -637,13 +637,9 @@
     //现价
     self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.price.doubleValue];
 
-<<<<<<< HEAD
     // 订金
 
     self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",model.deposit.doubleValue *[_model.num integerValue]];
-=======
-    self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",model.deposit.floatValue *[_model.num integerValue]];
->>>>>>> xxnr-chung
     
     // 尾款
     self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",(model.price.doubleValue + totalPrice - model.deposit.doubleValue)*[model.num integerValue]];

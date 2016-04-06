@@ -131,10 +131,13 @@
     
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
     MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
+    
+    footer.refreshingTitleHidden = YES;
+    footer.automaticallyHidden = YES;
+
     // 设置刷新图片
     [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
     
-    footer.refreshingTitleHidden = YES;
     // 设置尾部
     self.tableView.mj_footer = footer;
     

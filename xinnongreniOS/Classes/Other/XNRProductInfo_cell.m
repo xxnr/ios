@@ -187,7 +187,7 @@
 {
     [self createHeadView];
     [self createMidView];
-    [self createBottomView];
+//    [self createBottomView];
 }
 
 -(void)createHeadView
@@ -472,7 +472,7 @@
     self.bgView.frame = self.infoFrame.attributeLabelF;
     self.scrollLabel.frame = self.infoFrame.drawViewF;
     self.midView.frame = self.infoFrame.describtionViewF;
-    self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.midView.frame), ScreenWidth, ScreenHeight-64-PX_TO_PT(160));
+//    self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.midView.frame), ScreenWidth, ScreenHeight-64-PX_TO_PT(160));
     
 }
 
