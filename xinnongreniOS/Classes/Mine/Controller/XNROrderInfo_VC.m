@@ -695,7 +695,8 @@
 }
 
 -(void)backClick{
-        
+    NSNotification *tification = [[NSNotification alloc]initWithName:@"hhh" object:self userInfo:@{@"hh":@"XNROrderInfo_VC"}];
+    [[NSNotificationCenter defaultCenter] postNotification:tification];
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)didReceiveMemoryWarning {

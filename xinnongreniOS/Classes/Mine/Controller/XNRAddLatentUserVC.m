@@ -347,7 +347,6 @@
     
 }
 
-
 #pragma mark --UITextFieldDelegate
 -(BOOL)btnClick:(UIButton *)button
 {
@@ -407,6 +406,16 @@
     
     return YES;
 }
+
+#pragma mark --UITextFieldDelegate
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    [self.addressManagerView hide];
+    [self.townManagerView hide];
+    
+    return YES;
+}
+
 #pragma mark - 正则表达式判断手机号格式
 - (BOOL)validateMobile:(NSString *)mobile
 {

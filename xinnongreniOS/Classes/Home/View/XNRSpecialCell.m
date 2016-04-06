@@ -153,9 +153,18 @@
 -(void)setCellDataWithShoppingCartModel:(XNRShoppingCartModel *)model
 {
     _model = model;
-    [self.image sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        image = [UIImage imageNamed:@"icon_loading_wrong"];
-    }];
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl];
+    
+    if (urlStr == nil || [urlStr isEqualToString:@""]) {
+        [self.image setImage:[UIImage imageNamed:@"icon_placehold"]];
+    }else{
+        [self.image sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    }
+
+
+//    [self.image sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+//        image = [UIImage imageNamed:@"icon_loading_wrong"];
+//    }];
 
     self.detailLabel.text = model.goodsName;
     if ([self.model.presale integerValue] == 1) {

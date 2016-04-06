@@ -494,11 +494,14 @@
             XNRProductPhotoModel *photoModel = self.model.pictures[i];
             
             NSString *imageUrl=[HOST stringByAppendingString:photoModel.imgUrl];
+    
             
-//            [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-            [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                image = [UIImage imageNamed:@"icon_loading_wrong"];
-            }];
+            if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
+                [headView setImage:[UIImage imageNamed:@"icon_placehold"]];
+            }else{
+                [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+            }
+
 
             self.headView = headView;
             [self.scrollView addSubview:headView];
