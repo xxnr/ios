@@ -150,13 +150,13 @@
     
     MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
     
+    footer.refreshingTitleHidden = YES;
+    footer.automaticallyHidden = YES;
+
     // 设置刷新图片
     
     [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
     
-    
-    
-    footer.refreshingTitleHidden = YES;
     
     // 设置尾部
     

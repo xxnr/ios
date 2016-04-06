@@ -46,8 +46,8 @@
     
     [self setNavigationbarTitle];
     [self createTopView];
-    self.mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100),ScreenWidth+10*SCALE,ScreenHeight-64)];
-    self.mainScrollView.contentSize=CGSizeMake((ScreenWidth+10*SCALE)*5, ScreenHeight-64);
+    self.mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100),ScreenWidth+PX_TO_PT(20),ScreenHeight-64)];
+    self.mainScrollView.contentSize=CGSizeMake((ScreenWidth+PX_TO_PT(20))*5, ScreenHeight-64);
     self.mainScrollView.showsHorizontalScrollIndicator = NO;
     self.mainScrollView.showsVerticalScrollIndicator = NO;
     self.mainScrollView.userInteractionEnabled = YES;
@@ -204,7 +204,7 @@
     midBg.backgroundColor =[UIColor whiteColor];
     [self.view addSubview:midBg];
     
-    NSArray *arr1 = @[@"全部",@"待付款",@"待发货",@"已发货",@"已完成"];
+    NSArray *arr1 = @[@"全部",@"待付款",@"待发货",@"待收货",@"已完成"];
     CGFloat x = 0*SCALE;
     CGFloat y = 0*SCALE;
     CGFloat w = ScreenWidth/5.0;
@@ -231,7 +231,7 @@
         }
     }
     if (IS_FourInch) {
-        _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(6))];
+        _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(94), ScreenWidth/5.0, PX_TO_PT(6))];
 
     }else{
         _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4))];
@@ -255,7 +255,7 @@
     
     [UIView animateWithDuration:.3 animations:^{
         if (IS_FourInch) {
-            _selectLine.frame=CGRectMake((button.tag-KbtnTag)*ScreenWidth/5.0,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(6));
+            _selectLine.frame=CGRectMake((button.tag-KbtnTag)*ScreenWidth/5.0,  PX_TO_PT(94), ScreenWidth/5.0, PX_TO_PT(6));
 
         }else{
             _selectLine.frame=CGRectMake((button.tag-KbtnTag)*ScreenWidth/5.0,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
@@ -377,7 +377,7 @@
     
     [UIView animateWithDuration:.3 animations:^{
         if (IS_FourInch) {
-             self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(6));
+             self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(94), ScreenWidth/5.0, PX_TO_PT(6));
         }else{
              self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
         }

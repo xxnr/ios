@@ -44,7 +44,6 @@
     NSInteger _recordeSelected;
     NSString *_presale;
     BOOL _state;
-    NSString *_isForm;
 }
 
 @property (nonatomic ,weak) UIView *coverView;
@@ -395,7 +394,7 @@
     self.imageView = imageView;
     [self.attributesView addSubview:imageView];
     
-    UIButton *cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(54), PX_TO_PT(20), PX_TO_PT(34), PX_TO_PT(34))];
+    UIButton *cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(70), PX_TO_PT(20), PX_TO_PT(50), PX_TO_PT(50))];
     [cancelBtn setImage:[UIImage imageNamed:@"details--close"] forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
     self.cancelBtn = cancelBtn;
@@ -1268,14 +1267,7 @@
         self.coverView.hidden = YES;
     }];
 }
--(void)hhh:(NSNotification *)notification
-{
-   NSString* hh = [notification.userInfo valueForKey:@"hh"];
-    _isForm = hh;
-}
 -(void)show:(XNRPropertyViewType)buyType{
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hhh:) name:@"hhh" object:nil];
     
     _type = buyType;
     self.coverView.hidden = NO;
@@ -1291,9 +1283,5 @@
             [self createFirstView];
         }
     }];
-}
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 @end
