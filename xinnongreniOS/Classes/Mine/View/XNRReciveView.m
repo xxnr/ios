@@ -170,13 +170,15 @@
     
     MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
     
+    footer.refreshingTitleHidden = YES;
+    footer.automaticallyHidden = YES;
+
     // 设置刷新图片
     
     [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
     
     
     
-    footer.refreshingTitleHidden = YES;
     
     // 设置尾部
     
@@ -293,7 +295,7 @@
 -(void)createMainTableView{
     
     
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-60*SCALE-5-64) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64) style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.showsVerticalScrollIndicator = YES;
     self.tableView.delegate = self;

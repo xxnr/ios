@@ -102,11 +102,12 @@
                     
                 }else{
                     NSString *imageUrl = [NSString stringWithFormat:@"%@%@",HOST,dict[@"photo"]];
-
-                    [self.icon sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_head"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                        image = [UIImage imageNamed:@"icon_loading_wrong"];
-                    }];
-
+                    
+                    if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
+                        [self.icon setImage:[UIImage imageNamed:@"icon_head"]];
+                    }else{
+                        [self.icon sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_head"]];
+                    }
                 }
                 // 昵称
                 if ([KSHttpRequest isBlankString:dict[@"nickname"]]) {

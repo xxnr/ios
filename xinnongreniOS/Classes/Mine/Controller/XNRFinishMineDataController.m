@@ -345,6 +345,16 @@
     return YES;
 }
 
+#pragma mark --UITextFieldDelegate
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    [self.addressManagerView hide];
+    [self.townManagerView hide];
+    
+    return YES;
+}
+
+
 #pragma mark - 性别
 -(void)selelctedBtnClick:(UIButton *)button
 {

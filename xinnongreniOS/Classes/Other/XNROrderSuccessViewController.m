@@ -134,7 +134,6 @@
 
 - (void)backClick:(UIButton *)btn
 {
-//    [self.navigationController popViewControllerAnimated:YES];
  
     [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadOrderList" object:nil];
 
