@@ -68,6 +68,7 @@
     XNRSeePayInfoVC *infoVC = [[XNRSeePayInfoVC alloc]init];
     infoVC.model = model;
     [self.navigationController pushViewController:infoVC animated:YES];
+    
 }
 -(void)creatBottom
 {
@@ -363,6 +364,9 @@
 }
 
 -(void)sectionFourClick:(UIButton *)sender{
+    
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+
     //    XNRCheckOrderSectionModel *sectionModel = _dataArray[sender.tag - 1000];
     XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
     //    if (sectionModel.deposit && [sectionModel.deposit floatValue]>0) {
@@ -609,6 +613,8 @@
 
 -(void)backClick{
     
+//    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"payInfoClick" object:nil];
+
     if (self.isRoot) {
         [self.navigationController popViewControllerAnimated:YES];
         

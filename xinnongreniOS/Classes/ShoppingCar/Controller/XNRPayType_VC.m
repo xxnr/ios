@@ -126,19 +126,29 @@
     
 
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(dealAlipayResult:) name:@"alipayResult" object:nil];
-}
--(void)dealloc{
     
+
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(librate) name:@"succss_Push" object:nil];
+}
+
+//-(void)librate
+//{
+//    [[NSNotificationCenter defaultCenter] removeObserver:self ];
+////    [[NSNotificationCenter defaultCenter]removeObserver:self forKeyPath:@"alipayResult"];
+////    [[NSNotificationCenter defaultCenter]removeObserver:self forKeyPath:@"succss_Push"];
+//}
+-(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+
 }
 #pragma mark-支付成功回调
--(void)orderSuccessDeal {
-    
-    XNROrderSuccessViewController *vc=[[XNROrderSuccessViewController alloc]init];
-    vc.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:vc animated:YES];
-    
-}
+//-(void)orderSuccessDeal {
+//    
+//    XNROrderSuccessViewController *vc=[[XNROrderSuccessViewController alloc]init];
+//    vc.hidesBottomBarWhenPushed=YES;
+//    [self.navigationController pushViewController:vc animated:YES];
+//    
+//}
 -(void)getMinPayPrice
 {
     [KSHttpRequest post:KgetMinPayPrice parameters:@{@"token":[DataCenter account].token,@"orderId":self.orderID} success:^(id result) {
@@ -901,6 +911,9 @@
         
         NSLog(@"支付失败");
     }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
 }
 -(NSString *)generateTradeNO
 {
@@ -1044,7 +1057,6 @@
         _Money = self.myTextField.text;
     }
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

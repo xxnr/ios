@@ -11,6 +11,7 @@
 #import "XNRTownPickerView.h"
 #import "XNRTypeView.h"
 #import "XNRSelProVC.h"
+#import "XNRMyRepresentViewController.h"
 
 #define sexBtn  1000
 @interface XNRAddLatentUserVC()<XNRAddressPickerViewBtnDelegate,XNRTownPickerViewBtnDelegate,UITextFieldDelegate,XNRTypeViewBtnDelegate>
@@ -32,16 +33,18 @@
 @property (nonatomic ,copy) NSString *typeName;
 @property (nonatomic ,copy) NSString *typeNum;
 
-@property (nonatomic ,weak) UITextField *nameTf;
+@property (nonatomic,weak) UITextField *nameTf;
 @property (nonatomic,weak) UITextField *phoneNumTextField;
 
 //@property (nonatomic ,weak) UIButton *LocalAddressBtn;
 @property (nonatomic ,weak) UILabel *LocalAddressLabel;
-//@property (nonatomic ,weak) UIButton *streetBtn;
+@property (nonatomic ,weak) UIButton *streetBtn;
 @property (nonatomic ,weak) UILabel *streetLabel;
 //@property (nonatomic ,weak) UIButton *userTypeBtn;
 @property (nonatomic ,weak) UILabel *userTypeLabel;
 
+@property (nonatomic ,weak)UIButton *userTypeBtn;
+@property (nonatomic,weak) UIView *line;
 @property (nonatomic,weak)UIView *phoneView;
 @property (nonatomic,weak)UIView *bottomView;
 @property (nonatomic ,copy) NSString *sex;
@@ -52,6 +55,7 @@
 @property (nonatomic,assign)BOOL iswarn;
 @property (nonatomic,copy)NSMutableArray *interestedProArr;
 @property (nonatomic,copy)NSMutableArray *interestedProIdArr;
+@property (nonatomic,assign)int nameLength;
 
 @end
 
@@ -160,10 +164,31 @@
 }
 -(void)notification:(NSNotification *)notification
 {
-//    self.interestedProArr = [NSArray array];
+    [_userTypeBtn removeFromSuperview];
+    [_userTypeLabel removeFromSuperview];
+    [_line removeFromSuperview];
+    
+    // 类型
+    UIButton *userTypeBtn = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(_streetBtn.frame), ScreenWidth, PX_TO_PT(98))];
+    [userTypeBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    userTypeBtn.tag = 1002;
+    self.userTypeBtn = userTypeBtn;
+    //    [self.bottomView addSubview:userTypeBtn];
+    
+    UILabel *userTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,PX_TO_PT(38), ScreenWidth, PX_TO_PT(33))];
+    userTypeLabel.textColor = R_G_B_16(0x909090);
+    userTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    userTypeLabel.text = @"选择客户想买的商品";
+    self.userTypeLabel = userTypeLabel;
+    
+    UIView *lastLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*4, ScreenWidth, PX_TO_PT(1))];
+    lastLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    self.line = lastLine;
+    [self.bottomView addSubview:lastLine];
+    
+    
     self.interestedProArr = [notification.userInfo valueForKey:@"selProArr"];
     
-//    self.interestedProIdArr = [NSArray array];
     self.interestedProIdArr = [notification.userInfo valueForKey:@"selProId_Arr"];
     
     NSMutableString *str = [[NSMutableString alloc]init];
@@ -179,11 +204,22 @@
     if (str.length > 0) {
         
         self.userTypeLabel.text = str;
+        CGSize size = [self.userTypeLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(ScreenWidth - CGRectGetMaxX(self.titleLabel.frame)-PX_TO_PT(60), MAXFLOAT)];
+        self.userTypeLabel.numberOfLines = 0;
+        self.userTypeLabel.frame = CGRectMake(0,PX_TO_PT(38), size.width,size.height);
+        self.userTypeBtn.frame = CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(_streetBtn.frame), ScreenWidth - CGRectGetMaxX(self.titleLabel.frame)-PX_TO_PT(60), size.height);
+        self.line.frame = CGRectMake(0, CGRectGetMaxY(self.userTypeBtn.frame) + PX_TO_PT(68), ScreenWidth, PX_TO_PT(1));
     }
-    else
-    {
-        self.userTypeLabel.text = @"请选择意向商品";
-    }
+//    else
+//    {
+//        self.userTypeLabel.text = @"选择客户想买的商品";
+//    }
+
+    
+    [_userTypeBtn addSubview:_userTypeLabel];
+    [self.bottomView addSubview:_userTypeBtn];
+    [self.bottomView addSubview:_line];
+    
 }
 -(void)keyboardWillBeHidden:(NSNotification *)note
 {
@@ -205,9 +241,10 @@
     // 姓名
     UITextField *nameTf = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), PX_TO_PT(34), ScreenWidth, PX_TO_PT(36))];
     nameTf.textAlignment = NSTextAlignmentLeft;
-    nameTf.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"请填写真实姓名" attributes:@{NSForegroundColorAttributeName:R_G_B_16(0x909090)}];
+    nameTf.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"请填写客户的真实姓名" attributes:@{NSForegroundColorAttributeName:R_G_B_16(0x909090)}];
     nameTf.textColor = R_G_B_16(0x323232);
     nameTf.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    nameTf.delegate = self;
     self.nameTf = nameTf;
     [self.view addSubview:nameTf];
     
@@ -317,6 +354,7 @@
     UIButton *streetBtn = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(LocalAddressBtn.frame), ScreenWidth, PX_TO_PT(98))];
     [streetBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     streetBtn.tag = 1001;
+    self.streetBtn = streetBtn;
     [self.bottomView addSubview:streetBtn];
     
     UILabel *streetLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,PX_TO_PT(38), ScreenWidth, PX_TO_PT(33))];
@@ -330,20 +368,26 @@
     UIButton *userTypeBtn = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(streetBtn.frame), ScreenWidth, PX_TO_PT(98))];
     [userTypeBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     userTypeBtn.tag = 1002;
-    [self.bottomView addSubview:userTypeBtn];
+    self.userTypeBtn = userTypeBtn;
+//    [self.bottomView addSubview:userTypeBtn];
     
     UILabel *userTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,PX_TO_PT(38), ScreenWidth, PX_TO_PT(33))];
     userTypeLabel.textColor = R_G_B_16(0x909090);
     userTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-    userTypeLabel.text = @"选择意向商品";
+    userTypeLabel.text = @"选择客户想买的商品";
     self.userTypeLabel = userTypeLabel;
-    [userTypeBtn addSubview:userTypeLabel];
-    
-    for (int i = 1; i<5; i++) {
+    [_userTypeBtn addSubview:_userTypeLabel];
+    [self.bottomView addSubview:_userTypeBtn];
+
+    for (int i = 1; i<4; i++) {
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(1))];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [self.bottomView addSubview:lineView];
     }
+    UIView *lastLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*4, ScreenWidth, PX_TO_PT(1))];
+    lastLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    self.line = lastLine;
+    [self.bottomView addSubview:lastLine];
     
 }
 
@@ -436,6 +480,7 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    self.iswarn = NO;
     //验证手机号输入是否正确
     if (textField == self.phoneNumTextField) {
         [KSHttpRequest get:KGetIsAvailable parameters:@{@"phone":textField.text} success:^(id result) {
@@ -461,8 +506,7 @@
                     warnLabel.textColor = R_G_B_16(0xDF3D3E);
                     warnLabel.numberOfLines = 0;
                     warnLabel.text = result[@"message"];
-                    
-//                    CGSize size = [warnLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(24)]}];
+//                    warnLabel.text = @"请修改填写的手机号";
                     
                     CGSize size = [warnLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(24)] constrainedToSize:CGSizeMake(ScreenWidth - CGRectGetMaxX(icon.frame)-PX_TO_PT(14), PX_TO_PT(198))];
                     
@@ -481,6 +525,36 @@
             
         }];
     }
+    
+   else if (textField == self.nameTf) {
+        //                NSString * mstr = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        //                CGSize textSize = [mstr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0]}];
+        //
+        //                if (textSize.width>PX_TO_PT(210)&&![string isEqualToString:@""]) {
+        //                    [textField resignFirstResponder];
+        //                    mstr = [mstr substringWithRange:NSMakeRange(0, 6)];
+        //                    [UILabel showMessage:[NSString stringWithFormat:@"不能超过%d个汉字",(int)mstr.length]];
+        
+        int strlength = 0;
+        char* p = (char*)[textField.text cStringUsingEncoding:NSUnicodeStringEncoding];
+        for (int i=0 ; i<[textField.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+            if (*p) {
+                p++;
+                strlength++;
+            }
+            else {
+                p++;
+            }
+            
+        }
+       
+       self.nameLength = strlength;
+
+        if (strlength > 11) {
+            [UILabel showMessage:[NSString stringWithFormat:@"您的输入超过限制"]];
+        }
+   }
+
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
@@ -530,14 +604,18 @@
 -(void)saveBtn {
     [self.phoneNumTextField resignFirstResponder];
     BOOL flag = [self validateMobile:self.phoneNumTextField.text];
-    if ([self.LocalAddressLabel.text isEqualToString:@""] || [self.streetLabel.text isEqualToString:@""] || [self.phoneNumTextField.text isEqualToString:@""]||[self.userTypeLabel.text isEqualToString:@""] || [self.nameTf.text isEqualToString:@""]) {
+    if ([self.LocalAddressLabel.text isEqualToString:@"选择所在的省市区"] || [self.streetLabel.text isEqualToString:@"选择所在街道或乡镇"] || [self.phoneNumTextField.text isEqualToString:@""]||[self.userTypeLabel.text isEqualToString:@"选择客户想买的商品"] || [self.nameTf.text isEqualToString:@""]) {
         
         [UILabel showMessage:@"请完善信息"];
     }
-    else if(!flag)
+    else if(!flag ||self.iswarn)
     {
-    [UILabel showMessage:@"手机号输入格式不正确"];
+    [UILabel showMessage:@"请修改填写的手机号"];
                      
+    }
+    else if(self.nameLength>11)
+    {
+        [UILabel showMessage:@"您输入的姓名超过限制"];
     }
     else{
         NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
@@ -573,16 +651,6 @@
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
         }];
-//        [KSHttpRequest post:KGetAdd parameters:dic success:^(id result) {
-//            
-//            if ([result[@"code"]integerValue] == 1000) {
-//                [UILabel showMessage:@"客户登记成功"];
-//                [self.navigationController popViewControllerAnimated:NO];
-//            }
-//            
-//        } failure:^(NSError *error) {
-//            
-//        }];
     }
     
 }
@@ -607,6 +675,7 @@
 
 -(void)backClick
 {
+//    [XNRMyRepresentViewController isfirstTab];
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)dealloc

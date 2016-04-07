@@ -23,7 +23,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.arr = [NSArray arrayWithObjects:@"一",@"二",@"三",@"四",@"五",@"六",@"七",@"八", nil];
+//        self.arr = [NSArray arrayWithObjects:@"一",@"二",@"三",@"四",@"五",@"六",@"七",@"八", nil];
         [self createView];
         self.contentView.backgroundColor = [UIColor whiteColor];
     }
@@ -99,9 +99,9 @@
     
     [_payMoneyLabel setAttributedText:AttributedStringDeposit];
 
-    int j = model.slice - 1;
+//    int j = model.slice - 1;
     
-    self.numLabel.text = [NSString stringWithFormat:@"第%@次",self.arr[j]];
+    self.numLabel.text = [NSString stringWithFormat:@"第%d次",model.slice];
 
     //付款方式
     if (model.payType) {
@@ -120,7 +120,15 @@
 
         }
     }
-    NSString *str = [model.datePaid substringToIndex:10];
-    self.completeLabel.text = [NSString stringWithFormat:@"支付完成时间：%@",str];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //输入格式
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
+    dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"Asia/Shanghai"];
+    NSDate *dateFormatted = [dateFormatter dateFromString:model.datePaid];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSString *locationTimeString=[dateFormatter stringFromDate:dateFormatted];
+
+    self.completeLabel.text = [NSString stringWithFormat:@"支付完成时间：%@",locationTimeString];
 }
 @end

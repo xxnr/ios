@@ -48,7 +48,7 @@
     manager.enable = YES;
     // 调用友盟的方法
     [self umengTrack:launchOptions];
-    
+
     currentIndex = 0;
     // 网络监听
     [self monitorNetwork];
@@ -174,6 +174,8 @@
 }
 
 
+<<<<<<< HEAD
+=======
 //- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 //{
 //    if(buttonIndex==1)
@@ -184,6 +186,7 @@
 //    }
 //}
 
+>>>>>>> xxnr-chung
 
 #pragma mark - 设置网络监听
 - (void)monitorNetwork

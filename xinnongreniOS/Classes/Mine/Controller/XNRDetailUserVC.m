@@ -9,8 +9,13 @@
 #import "XNRDetailUserVC.h"
 #import "XNRCustomer.h"
 #import "XNRBuyIntentionModel.h"
+#import "XNRMyRepresentViewController.h"
+#import "XNRPotentialCustomer.h"
+#import "XNRAddressModel.h"
+#import "XNRAddressDetail.h"
+#import "MJExtension.h"
 @interface XNRDetailUserVC ()
-@property (nonatomic,strong)XNRCustomer *customer;
+@property (nonatomic,strong)XNRPotentialCustomer *customer;
 @property (nonatomic,strong)NSMutableArray *intentionArr;
 @property (nonatomic,strong)NSMutableArray *detailLabels;
 @end
@@ -29,20 +34,6 @@
 
     // Do any additional setup after loading the view.
 }
-//-(NSMutableArray *)intentionArr
-//{
-//    if (!_intentionArr) {
-//        _intentionArr = [NSMutableArray array];
-//    }
-//    return _intentionArr;
-//}
-//-(NSMutableArray *)detailLabels
-//{
-//    if (!_detailLabels) {
-//        _detailLabels = [NSMutableArray array];
-//    }
-//    return _detailLabels;
-//}
 -(void)createView
 {
     NSArray *nameArr = @[@"姓名",@"手机号",@"性别",@"地区",@"街道",@"意向商品"];
@@ -55,10 +46,11 @@
         name.text = nameArr[i];
         [cell addSubview:name];
         
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(1))];
-        line.backgroundColor = R_G_B_16(0xE0E0E0);
-        [self.view addSubview:line];
-        
+        if (i+1 < nameArr.count) {
+            UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(1.5))];
+            line.backgroundColor = R_G_B_16(0xE0E0E0);
+            [self.view addSubview:line];
+        }
         [self.view addSubview:cell];
     }
 }
@@ -66,43 +58,59 @@
 {
     [KSHttpRequest get:KGetPotentialCustomer parameters:@{@"_id":self._id} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
-            XNRCustomer *user = [[XNRCustomer alloc]init];
-            user = [XNRCustomer objectWithKeyValues:result[@"potentialCustomer"]];
+            XNRPotentialCustomer *user = [[XNRPotentialCustomer alloc]init];
+            user = [XNRPotentialCustomer objectWithKeyValues:result[@"potentialCustomer"]];
             self.customer = user;
             _intentionArr = [NSMutableArray arrayWithArray:[XNRBuyIntentionModel objectArrayWithKeyValuesArray:result[@"potentialCustomer"][@"buyIntentions"]]];
             NSMutableString *pro = [[NSMutableString alloc]init];
-            for (int i=0; i<self.intentionArr.count; i++) {
-                XNRBuyIntentionModel *intent = self.intentionArr[i];
-                NSString *str = intent.name;
-                [pro appendString:str];
-                if (i+1 == self.intentionArr.count) {
-                    
+            if (user.buyIntentions) {
+                for (int i=0; i<self.intentionArr.count; i++) {
+                    XNRBuyIntentionModel *intent = self.intentionArr[i];
+                    NSString *str = intent.name;
+                    [pro appendString:str];
+                    if (i+1 == self.intentionArr.count) {
+                        
+                    }
+                    else{
+                        
+                        [pro appendString:@";"];}
                 }
-                else{
-                    
-                    [pro appendString:@";"];}
             }
+          
             NSString *sex = @"";
-            if ([user.sex integerValue] == 0) {
-                sex = @"女";
+            if (user.sex) {
+                if ([user.sex integerValue] == 0) {
+                    sex = @"女";
+                }
+                else
+                {
+                    sex = @"男";
+                }
             }
-            else
-            {
-                sex = @"男";
-            }
+            XNRAddressModel *address = [XNRAddressModel objectWithKeyValues:result[@"potentialCustomer"][@"address"] ];
+            
+//            address.province = result[@"potentialCustomer"][@"address"][@"province"];
+            
             NSMutableString *city = [NSMutableString string];
-            [city appendString:result[@"potentialCustomer"][@"address"][@"province"][@"uppername"]];
-            [city appendString:@" "];
-
-            [city appendString:result[@"potentialCustomer"][@"address"][@"city"][@"uppername"]];
-            [city appendString:@" "];
-            [city appendString:result[@"potentialCustomer"][@"address"][@"county"][@"uppername"]];
+            if (address.province) {
+                [city appendString:result[@"potentialCustomer"][@"address"][@"province"][@"name"]];
+                [city appendString:@" "];
+            }
+            if (address.city) {
+                [city appendString:result[@"potentialCustomer"][@"address"][@"city"][@"name"]];
+                [city appendString:@" "];
+            }
+            if (address.county) {
+                [city appendString:result[@"potentialCustomer"][@"address"][@"county"][@"name"]];
+            }
+            NSString *town;
+            if (address.town) {
+                town = [NSString stringWithString:result[@"potentialCustomer"][@"address"][@"town"][@"name"]];
+            }
             
-            NSString *town = [NSString stringWithString:result[@"potentialCustomer"][@"address"][@"town"][@"name"]];
+            NSArray *arr1 = [NSArray arrayWithObjects:user.name,user.phone,sex,city,town,nil];
             
-            NSArray *arr1 = [NSArray arrayWithObjects:user.name,user.phone,sex,city,town,pro,nil];
-            
-            for (int i=0; i < 6; i++) {
+            for (int i=0; i < 5; i++) {
             
                 UILabel *detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(192), PX_TO_PT(35)+PX_TO_PT(99)*i, ScreenWidth - PX_TO_PT(192), PX_TO_PT(35))];
                 detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
@@ -111,21 +119,24 @@
                 [self.view addSubview:detailLabel];
                 NSLog(@"%@",self.view.subviews);
             }
-            
+           
+            CGSize size = [pro sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(ScreenWidth - PX_TO_PT(192), MAXFLOAT)];
 
+            UILabel *interestLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(192), PX_TO_PT(35)+PX_TO_PT(99)*5, ScreenWidth - PX_TO_PT(192),size.height)];
+            interestLabel.numberOfLines = 0;
+            interestLabel.text = pro;
+            interestLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+            interestLabel.textColor = R_G_B_16(0x646464);
+            [self.view addSubview:interestLabel];
             
-//            UILabel *label1 = _detailLabels[0];
-//            label1.text = user.name;
-//            
-//            UILabel *label2 = _detailLabels[1];
-//            label2.text = user.phone;
-//            UILabel *label3 = _detailLabels[2];
-//            label3.text = user.sex;
-//            UILabel *label4 = _detailLabels[3];
-//            label4.text = user.remarks;
-//            UILabel *label5 = _detailLabels[4];
-//            
-//            label5.text = pro;
+            
+            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(68),ScreenWidth, PX_TO_PT(1.5))];
+            lastLine.backgroundColor = R_G_B_16(0xE0E0E0);
+            [self.view addSubview:lastLine];
+
+            UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastLine.frame)+PX_TO_PT(1), ScreenWidth, ScreenHeight -CGRectGetMaxY(lastLine.frame)-PX_TO_PT(1))];
+            bgView.backgroundColor = R_G_B_16(0xf8f8f8);
+            [self.view addSubview:bgView];
         }
     } failure:^(NSError *error) {
         
@@ -157,6 +168,7 @@
 
 -(void)backClick
 {
+//    [XNRMyRepresentViewController isfirstTab];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
