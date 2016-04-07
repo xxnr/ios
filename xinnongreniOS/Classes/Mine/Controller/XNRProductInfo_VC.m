@@ -203,22 +203,6 @@
 
 }
 
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-//{
-//    // 1.差距
-//    CGFloat delta = scrollView.contentSize.height - scrollView.contentOffset.y;
-//    // 刚好能完整看到footer的高度
-//    CGFloat sawFooterH = self.view.height - self.tabBarController.tabBar.height;
-//    
-//    // 2.如果能看见整个footer
-//    if (delta <= (sawFooterH - 0)) {
-//        NSLog(@"看全了footer");
-//        // 进入上拉刷新状态
-//       
-//
-//        
-//    }
-//}
 
 
 -(void)loadMoreData{
@@ -462,16 +446,16 @@
            
 //            [self createTableView:_goodsArray];
             // 判断一下从主页还是从购物车进入的详情页（加载不同的视图）
-            if (_isFrom) {
+//            if (_isFrom) {
                 if ([model.online integerValue] == 0) {
                     [self createonlineView];
                 }else{
                     [self createBottomView];
 
                 }
-            }else{
-                [self createBottomView];
-            }
+//            }else{
+//                [self createBottomView];
+//            }
 
             if ([dic[@"presale"] integerValue] == 1) {
                 
@@ -586,8 +570,8 @@
 -(void)addBuyCar
 {
     NSLog(@"-==------===%@",self.propertyView);
-
     [self.propertyView show:XNRSecondType];
+    
 }
 #pragma 加减数量
 -(void)btnClick:(UIButton*)button{

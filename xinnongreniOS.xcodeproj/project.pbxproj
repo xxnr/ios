@@ -173,6 +173,7 @@
 		499B78D71C1AB454003ECE87 /* XNRCityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 499B78D61C1AB454003ECE87 /* XNRCityModel.m */; };
 		49A7BD8E1C75747900913927 /* XNRProductPhotoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7BD8D1C75747900913927 /* XNRProductPhotoModel.m */; };
 		49ADEE1E1C536CE700525AA8 /* XNRNewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49ADEE1D1C536CE700525AA8 /* XNRNewFeatureViewController.m */; };
+		49B3A23F1CB520CA00EA72B0 /* libUMCheckUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B3A23D1CB520CA00EA72B0 /* libUMCheckUpdate.a */; };
 		49CD5E2F1C07FF1B004235C4 /* XNRferView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E2E1C07FF1B004235C4 /* XNRferView.m */; };
 		49CD5E351C0814EC004235C4 /* XNRSpecialCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E341C0814EC004235C4 /* XNRSpecialCell.m */; };
 		49CD5E381C093144004235C4 /* XNRFerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E371C093144004235C4 /* XNRFerViewController.m */; };
@@ -827,6 +828,8 @@
 		49A7BD8D1C75747900913927 /* XNRProductPhotoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRProductPhotoModel.m; sourceTree = "<group>"; };
 		49ADEE1C1C536CE700525AA8 /* XNRNewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRNewFeatureViewController.h; sourceTree = "<group>"; };
 		49ADEE1D1C536CE700525AA8 /* XNRNewFeatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRNewFeatureViewController.m; sourceTree = "<group>"; };
+		49B3A23D1CB520CA00EA72B0 /* libUMCheckUpdate.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMCheckUpdate.a; sourceTree = "<group>"; };
+		49B3A23E1CB520CA00EA72B0 /* UMCheckUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCheckUpdate.h; sourceTree = "<group>"; };
 		49CD5E2D1C07FF1B004235C4 /* XNRferView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRferView.h; sourceTree = "<group>"; };
 		49CD5E2E1C07FF1B004235C4 /* XNRferView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRferView.m; sourceTree = "<group>"; };
 		49CD5E331C0814EC004235C4 /* XNRSpecialCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSpecialCell.h; sourceTree = "<group>"; };
@@ -1366,6 +1369,7 @@
 				49EC526F1BEBCDDB00AA8898 /* libz.tbd in Frameworks */,
 				49EC526D1BEBCDD100AA8898 /* libc++.tbd in Frameworks */,
 				4976FC351BE9CD690002E8F8 /* CoreMotion.framework in Frameworks */,
+				49B3A23F1CB520CA00EA72B0 /* libUMCheckUpdate.a in Frameworks */,
 				49E8960B1BEF4ADB00B3671E /* libUPPayPlugin.a in Frameworks */,
 				4976FC311BE9CD3B0002E8F8 /* CoreGraphics.framework in Frameworks */,
 				4976FC2F1BE9CD290002E8F8 /* CoreText.framework in Frameworks */,
@@ -1816,6 +1820,7 @@
 		1F15330C1B09D2CE00CA374B /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				49B3A23C1CB520CA00EA72B0 /* UMCheckUpdate */,
 				9C06A4301CA2A21000B0DED9 /* Bugtags.bundle */,
 				9C06A4311CA2A21000B0DED9 /* Bugtags.framework */,
 				491610FE1C8D189400F1E243 /* IQKeyBoardManager */,
@@ -2390,6 +2395,15 @@
 				4976FC1C1BE9A2AA0002E8F8 /* RSADataVerifier.m */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		49B3A23C1CB520CA00EA72B0 /* UMCheckUpdate */ = {
+			isa = PBXGroup;
+			children = (
+				49B3A23D1CB520CA00EA72B0 /* libUMCheckUpdate.a */,
+				49B3A23E1CB520CA00EA72B0 /* UMCheckUpdate.h */,
+			);
+			path = UMCheckUpdate;
 			sourceTree = "<group>";
 		};
 		49E895D31BEDC2BB00B3671E /* SDWebImage */ = {
@@ -3725,7 +3739,7 @@
 					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3738,6 +3752,7 @@
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_All_1/UMessage_Sdk_1.2.6",
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_All_1/UMessage_Sdk_Demo/UMessage_Sdk_Demo/UMessage_Sdk_1.2.6",
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_1.2.6",
+					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMCheckUpdate",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -3775,7 +3790,7 @@
 					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3788,6 +3803,7 @@
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_All_1/UMessage_Sdk_1.2.6",
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_All_1/UMessage_Sdk_Demo/UMessage_Sdk_Demo/UMessage_Sdk_1.2.6",
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_1.2.6",
+					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMCheckUpdate",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (

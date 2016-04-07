@@ -367,7 +367,13 @@
                 self.priceLabel.textColor = R_G_B_16(0x909090);
 
             }else{
-                [self createFirstView];
+                if (_type == XNRFirstType ) {// 立即购买
+                    [self createSecondView];
+                }else if (_type == XNRSecondType){// 加入购物车
+                    [self createSecondView];
+                }else if(_type == XNRisFormType){// 属性选择
+                    [self createFirstView];
+                }
             }
             
             NSString *imageUrl=[HOST stringByAppendingString:dic[@"thumbnail"]];

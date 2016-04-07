@@ -95,5 +95,8 @@
 
 @property (nonatomic ,copy) NSString *cartId;
 
+@property (nonatomic ,copy) NSString *currentVersion;
+
+
 
 @end
