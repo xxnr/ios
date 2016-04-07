@@ -31,7 +31,7 @@
     UIButton *_settlementBtn;   //去结算
     UIButton *_deleteBtn;       // 删除
     UILabel *_totalPriceLabel;  //总价
-    float _totalPrice;      //总价
+    double _totalPrice;      //总价
     NSString*_shoppingCarID;    //购物车id
     NSMutableArray *_modifyDataArr; // 更新的数据
     float totalPrice;
@@ -508,6 +508,7 @@
                 
                 XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
                 sectionModel.brandName = subDic[@"brandName"];
+                sectionModel.offlineEntryCount = subDic[@"offlineEntryCount"];
                 sectionModel.SKUList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"SKUList"]];
                 [_dataArr addObject:sectionModel];
                 
@@ -669,16 +670,10 @@
         self.selectedHeadBtn = selectedHeadBtn;
         [headView addSubview:selectedHeadBtn];
         // 已下架的商品selectedHeadBtn隐藏
-        for (int i = 0; i<sectionModel.SKUList.count; i++) {
-            XNRShoppingCartModel *model = sectionModel.SKUList[i];
-            if ([model.online integerValue] == 1 && [model.online integerValue] == 0) {
-                selectedHeadBtn.hidden = NO;
-            }else if([model.online integerValue] == 1){// 非下架
-                selectedHeadBtn.hidden = NO;
-            }else if([model.online integerValue] == 0){// 下架
-                selectedHeadBtn.hidden = YES;
-            }
+        if ([sectionModel.offlineEntryCount integerValue] == sectionModel.SKUList.count) {
+            selectedHeadBtn.hidden = YES;
         }
+        
        
         UIImageView *shopcarImage = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(selectedHeadBtn.frame) + PX_TO_PT(20), PX_TO_PT(26), PX_TO_PT(36), PX_TO_PT(36))];
         [shopcarImage setImage:[UIImage imageNamed:@"shopcar_icon"]];
@@ -722,6 +717,7 @@
     [self valiteAllCarShopModelIsSelected];
     
     [self changeBottom];
+    
     [self recordSelectedShopGoods];
     
 }
@@ -854,7 +850,9 @@
             
             BOOL isAll = YES;
             for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
-                isAll = isAll && carModel.shoppingCarModel.selectState;
+                if ([carModel.shoppingCarModel.online integerValue] == 1) {
+                    isAll = isAll && carModel.shoppingCarModel.selectState;
+                }
             }
             
             if (isAll) {
@@ -914,7 +912,11 @@
     BOOL isAllAll = YES;
     for (XNRShopCarSectionModel *sectionModel in _dataArr) {
         for (XNRShoppingCarFrame *model in sectionModel.SKUFrameList) {
-            isAllAll = isAllAll && sectionModel.isSelected && ([model.shoppingCarModel.online integerValue]==1);
+            if ([model.shoppingCarModel.online integerValue] == 1) {
+//                isAllAll = isAllAll && sectionModel.isSelected;
+                isAllAll = isAllAll && model.shoppingCarModel.selectState;
+
+            }
         }
         
     }

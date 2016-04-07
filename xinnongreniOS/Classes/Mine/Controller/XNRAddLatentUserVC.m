@@ -32,16 +32,18 @@
 @property (nonatomic ,copy) NSString *typeName;
 @property (nonatomic ,copy) NSString *typeNum;
 
-@property (nonatomic ,weak) UITextField *nameTf;
+@property (nonatomic,weak) UITextField *nameTf;
 @property (nonatomic,weak) UITextField *phoneNumTextField;
 
 //@property (nonatomic ,weak) UIButton *LocalAddressBtn;
 @property (nonatomic ,weak) UILabel *LocalAddressLabel;
-//@property (nonatomic ,weak) UIButton *streetBtn;
+@property (nonatomic ,weak) UIButton *streetBtn;
 @property (nonatomic ,weak) UILabel *streetLabel;
 //@property (nonatomic ,weak) UIButton *userTypeBtn;
 @property (nonatomic ,weak) UILabel *userTypeLabel;
 
+@property (nonatomic ,weak)UIButton *userTypeBtn;
+@property (nonatomic,weak) UIView *line;
 @property (nonatomic,weak)UIView *phoneView;
 @property (nonatomic,weak)UIView *bottomView;
 @property (nonatomic ,copy) NSString *sex;
@@ -52,6 +54,7 @@
 @property (nonatomic,assign)BOOL iswarn;
 @property (nonatomic,copy)NSMutableArray *interestedProArr;
 @property (nonatomic,copy)NSMutableArray *interestedProIdArr;
+@property (nonatomic,assign)int nameLength;
 
 @end
 
@@ -179,11 +182,24 @@
     if (str.length > 0) {
         
         self.userTypeLabel.text = str;
+        CGSize size = [self.userTypeLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(ScreenWidth - CGRectGetMaxX(self.titleLabel.frame)-PX_TO_PT(60), MAXFLOAT)];
+        self.userTypeLabel.numberOfLines = 0;
+        self.userTypeLabel.frame = CGRectMake(0,PX_TO_PT(38), size.width,size.height);
+        self.userTypeBtn.frame = CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(_streetBtn.frame), ScreenWidth - CGRectGetMaxX(self.titleLabel.frame)-PX_TO_PT(60), size.height);
+        self.line.frame = CGRectMake(0, CGRectGetMaxY(self.userTypeBtn.frame) + PX_TO_PT(68), ScreenWidth, PX_TO_PT(1));
     }
     else
     {
-        self.userTypeLabel.text = @"请选择意向商品";
+        self.userTypeLabel.text = @"选择客户想买的商品";
     }
+    [_userTypeBtn removeFromSuperview];
+    [_userTypeLabel removeFromSuperview];
+    [_line removeFromSuperview];
+    
+    [_userTypeBtn addSubview:_userTypeLabel];
+    [self.bottomView addSubview:_userTypeBtn];
+    [self.bottomView addSubview:_line];
+    
 }
 -(void)keyboardWillBeHidden:(NSNotification *)note
 {
@@ -205,9 +221,10 @@
     // 姓名
     UITextField *nameTf = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), PX_TO_PT(34), ScreenWidth, PX_TO_PT(36))];
     nameTf.textAlignment = NSTextAlignmentLeft;
-    nameTf.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"请填写真实姓名" attributes:@{NSForegroundColorAttributeName:R_G_B_16(0x909090)}];
+    nameTf.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"请填写客户的真实姓名" attributes:@{NSForegroundColorAttributeName:R_G_B_16(0x909090)}];
     nameTf.textColor = R_G_B_16(0x323232);
     nameTf.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    nameTf.delegate = self;
     self.nameTf = nameTf;
     [self.view addSubview:nameTf];
     
@@ -219,7 +236,7 @@
     phoneView.alpha = 1;
     self.phoneView = phoneView;
     // 手机号
-    UITextField *phone = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), PX_TO_PT(40), ScreenWidth, PX_TO_PT(36))];
+    UITextField *phone = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), PX_TO_PT(33), ScreenWidth, PX_TO_PT(36))];
     phone.textAlignment = NSTextAlignmentLeft;
     phone.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"请填写客户联系方式" attributes:@{NSForegroundColorAttributeName:R_G_B_16(0x909090)}];
 
@@ -317,6 +334,7 @@
     UIButton *streetBtn = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(LocalAddressBtn.frame), ScreenWidth, PX_TO_PT(98))];
     [streetBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     streetBtn.tag = 1001;
+    self.streetBtn = streetBtn;
     [self.bottomView addSubview:streetBtn];
     
     UILabel *streetLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,PX_TO_PT(38), ScreenWidth, PX_TO_PT(33))];
@@ -330,66 +348,34 @@
     UIButton *userTypeBtn = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(streetBtn.frame), ScreenWidth, PX_TO_PT(98))];
     [userTypeBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     userTypeBtn.tag = 1002;
-    [self.bottomView addSubview:userTypeBtn];
+    self.userTypeBtn = userTypeBtn;
+//    [self.bottomView addSubview:userTypeBtn];
     
     UILabel *userTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,PX_TO_PT(38), ScreenWidth, PX_TO_PT(33))];
     userTypeLabel.textColor = R_G_B_16(0x909090);
     userTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-    userTypeLabel.text = @"选择意向商品";
+    userTypeLabel.text = @"选择客户想买的商品";
     self.userTypeLabel = userTypeLabel;
-    [userTypeBtn addSubview:userTypeLabel];
-    
-    for (int i = 1; i<5; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(2))];
+    [_userTypeBtn addSubview:_userTypeLabel];
+    [self.bottomView addSubview:_userTypeBtn];
+
+    for (int i = 1; i<4; i++) {
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(1))];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [self.bottomView addSubview:lineView];
     }
+    UIView *lastLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*4, ScreenWidth, PX_TO_PT(1))];
+    lastLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    self.line = lastLine;
+    [self.bottomView addSubview:lastLine];
     
 }
-
 
 #pragma mark --UITextFieldDelegate
 -(BOOL)btnClick:(UIButton *)button
 {
     [self.nameTf resignFirstResponder];
     [self.phoneNumTextField resignFirstResponder];
-//    if (button.tag == 1000) {
-//        [self.townManagerView hide];
-////        [self.typeView hide];
-//        __weak __typeof(&*self)weakSelf = self;
-//        [self.addressManagerView show];
-//        self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId){
-//            
-//            weakSelf.LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
-//            weakSelf.provinceID = provinceID;
-//            weakSelf.cityID  = cityId;
-//            weakSelf.countyID = countyId;
-//            
-//            UserInfo *info = [DataCenter account];
-//            info.province = province;
-//            info.city = city;
-//            info.county = county;
-//            info.countyID = countyId;
-//            [DataCenter saveAccount:info];
-//        };
-//        
-//    }
-//    
-//    if (button.tag == 1001) {
-//        if ([self.LocalAddressLabel.text isEqualToString:@"选择所在的省市区"]) {
-//            [UILabel showMessage:@"请选择地区"];
-//        }else{
-//            [self.addressManagerView hide];
-////            [self.typeView hide];
-//            __weak __typeof(&*self)weakSelf = self;
-//            [self.townManagerView show];
-//            self.townManagerView.com = ^(NSString *townName,NSString *townId){
-//                weakSelf.streetLabel.text = [NSString stringWithFormat:@"%@",townName];
-//                weakSelf.townID = townId;
-//                
-//            };
-//        }
-//    }
     
     if (button.tag == 1000) {
         [self.townManagerView hide];
@@ -444,6 +430,16 @@
     
     return YES;
 }
+
+#pragma mark --UITextFieldDelegate
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    [self.addressManagerView hide];
+    [self.townManagerView hide];
+    
+    return YES;
+}
+
 #pragma mark - 正则表达式判断手机号格式
 - (BOOL)validateMobile:(NSString *)mobile
 {
@@ -478,16 +474,25 @@
                     [self.phoneView addSubview:line];
                     
                     UIImageView *icon = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(191), PX_TO_PT(119), PX_TO_PT(30), PX_TO_PT(30))];
-                    icon.image = [UIImage imageNamed:@"提示-拷贝-2"];
+                    icon.image = [UIImage imageNamed:@"reg-prinpt"];
                     icon.contentMode = UIViewContentModeScaleAspectFit;
                     self.icon = icon;
                     [self.phoneView addSubview:icon];
                     
                     UILabel *warnLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(icon.frame)+PX_TO_PT(14), PX_TO_PT(120), ScreenWidth, PX_TO_PT(25))];
+                    
                     warnLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
                     warnLabel.textColor = R_G_B_16(0xDF3D3E);
-                    warnLabel.text = result[@"message"];
+                    warnLabel.numberOfLines = 0;
+//                    warnLabel.text = result[@"message"];
+                    warnLabel.text = @"请修改填写的手机号";
+                    
+                    CGSize size = [warnLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(24)] constrainedToSize:CGSizeMake(ScreenWidth - CGRectGetMaxX(icon.frame)-PX_TO_PT(14), PX_TO_PT(198))];
+                    
+                    warnLabel.frame = CGRectMake(CGRectGetMaxX(icon.frame)+PX_TO_PT(14), PX_TO_PT(120), ScreenWidth - CGRectGetMaxX(icon.frame)-PX_TO_PT(14) , size.height);
+                    
                     self.warnLabel = warnLabel;
+                    
                     [self.phoneView addSubview:warnLabel];
 
                     self.iswarn = YES;
@@ -499,6 +504,36 @@
             
         }];
     }
+    
+   else if (textField == self.nameTf) {
+        //                NSString * mstr = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        //                CGSize textSize = [mstr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0]}];
+        //
+        //                if (textSize.width>PX_TO_PT(210)&&![string isEqualToString:@""]) {
+        //                    [textField resignFirstResponder];
+        //                    mstr = [mstr substringWithRange:NSMakeRange(0, 6)];
+        //                    [UILabel showMessage:[NSString stringWithFormat:@"不能超过%d个汉字",(int)mstr.length]];
+        
+        int strlength = 0;
+        char* p = (char*)[textField.text cStringUsingEncoding:NSUnicodeStringEncoding];
+        for (int i=0 ; i<[textField.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+            if (*p) {
+                p++;
+                strlength++;
+            }
+            else {
+                p++;
+            }
+            
+        }
+       
+       self.nameLength = strlength;
+
+        if (strlength > 11) {
+            [UILabel showMessage:[NSString stringWithFormat:@"您的输入超过限制"]];
+        }
+   }
+
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
@@ -514,6 +549,69 @@
     }
     
 }
+//-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+//{
+//    if (textField == self.nameTf) {
+////                NSString * mstr = [textField.text stringByReplacingCharactersInRange:range withString:string];
+////                CGSize textSize = [mstr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0]}];
+////        
+////                if (textSize.width>PX_TO_PT(210)&&![string isEqualToString:@""]) {
+////                    [textField resignFirstResponder];
+////                    mstr = [mstr substringWithRange:NSMakeRange(0, 6)];
+////                    [UILabel showMessage:[NSString stringWithFormat:@"不能超过%d个汉字",(int)mstr.length]];
+//        
+//        int strlength = 0;
+//        char* p = (char*)[textField.text cStringUsingEncoding:NSUnicodeStringEncoding];
+//        for (int i=0 ; i<[textField.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+//            if (*p) {
+//                p++;
+//                strlength++;
+//            }
+//            else {
+//                p++;
+//            }
+//            
+//        }
+//        
+//        if (strlength > 11 && ![string isEqualToString: @"\\"]) {
+//        [UILabel showMessage:[NSString stringWithFormat:@"您的输入超过限制"]];
+//        return NO;
+//        }
+//    }
+//        return YES;
+//}
+
+//-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+//{
+//    if (textField == self.nameTf) {
+////        NSString * mstr = [textField.text stringByReplacingCharactersInRange:range withString:string];
+////        CGSize textSize = [mstr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0]}];
+////        
+////        if (textSize.width>PX_TO_PT(210)&&![string isEqualToString:@""]) {
+////            [textField resignFirstResponder];
+////            mstr = [mstr substringWithRange:NSMakeRange(0, 6)];
+////            [UILabel showMessage:[NSString stringWithFormat:@"不能超过%d个汉字",(int)mstr.length]];
+////            return NO;
+////        }
+////        return YES;
+//
+//        if(self.nameTf.text.length > 6)
+//        {
+//            [UILabel showMessage:@"您的输入超出限制"];
+//            return NO;
+//
+//        }
+//        return YES;
+//    }
+//    
+//    else
+//    {
+//        return YES;
+//    }
+//    
+//    
+//}
+//
 #pragma mark - 性别
 -(void)selelctedBtnClick:(UIButton *)button
 {
@@ -556,6 +654,10 @@
     {
     [UILabel showMessage:@"手机号输入格式不正确"];
                      
+    }
+    else if(self.nameLength>11)
+    {
+        [UILabel showMessage:@"您输入的姓名超过限制"];
     }
     else{
         NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];

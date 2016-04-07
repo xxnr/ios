@@ -98,9 +98,13 @@
         dm = [[self alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
     });
     dm.shopcarModel = shopcarModel;
-    dm.shopcarModel.additions = [NSMutableArray array];
+//    dm.shopcarModel.additions = [NSMutableArray array];
     [dm initBaseViewAndData];
     return dm;
+}
+
+-(void)innitialAddtions{
+    self.shopcarModel.additions = [NSMutableArray array];
 }
 
 // 懒加载（立即购买的时候，把所有的附加选项_id添加到数组里面）
@@ -134,7 +138,12 @@
         [self.addtionsArray removeAllObjects];
         self.goodsArray = [NSMutableArray array];
         _dataArr = [NSMutableArray array];
-        
+        if (_isForm) {
+            
+        }else{
+            [self innitialAddtions];
+        }
+
         UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
         UIView *coverView = [[UIView alloc] initWithFrame:window.bounds];
         [coverView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelBtnClick)]];
@@ -362,10 +371,13 @@
             }
             
             NSString *imageUrl=[HOST stringByAppendingString:dic[@"thumbnail"]];
-            
-            [self.imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                image = [UIImage imageNamed:@"icon_loading_wrong"];
-            }];
+                        
+            if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
+                [self.imageView setImage:[UIImage imageNamed:@"icon_placehold"]];
+            }else{
+                [self.imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+            }
+
 
             [self.goodsArray addObject:model];
            
@@ -395,7 +407,7 @@
     self.imageView = imageView;
     [self.attributesView addSubview:imageView];
     
-    UIButton *cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(54), PX_TO_PT(20), PX_TO_PT(34), PX_TO_PT(34))];
+    UIButton *cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(70), PX_TO_PT(20), PX_TO_PT(50), PX_TO_PT(50))];
     [cancelBtn setImage:[UIImage imageNamed:@"details--close"] forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
     self.cancelBtn = cancelBtn;
@@ -1268,15 +1280,10 @@
         self.coverView.hidden = YES;
     }];
 }
--(void)hhh:(NSNotification *)notification
-{
-   NSString* hh = [notification.userInfo valueForKey:@"hh"];
-    _isForm = hh;
-}
 -(void)show:(XNRPropertyViewType)buyType{
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hhh:) name:@"hhh" object:nil];
-    
+    _isForm = nil;
     _type = buyType;
     self.coverView.hidden = NO;
     [self.bgView removeFromSuperview];
@@ -1292,8 +1299,14 @@
         }
     }];
 }
--(void)dealloc
+
+-(void)hhh:(NSNotification *)notification
 {
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    NSString* hh = [notification.userInfo valueForKey:@"hh"];
+    _isForm = hh;
 }
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 @end

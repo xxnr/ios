@@ -101,7 +101,7 @@
     self.brandNameLabel = brandNameLabel;
     [topView addSubview:brandNameLabel];
     
-    UILabel *statusLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, PX_TO_PT(44), ScreenWidth - PX_TO_PT(32), PX_TO_PT(28))];
+    UILabel *statusLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(brandNameLabel.frame)+PX_TO_PT(10), PX_TO_PT(44), ScreenWidth - PX_TO_PT(32)-CGRectGetMaxX(brandNameLabel.frame)-PX_TO_PT(10), PX_TO_PT(28))];
     statusLabel.textAlignment = UITextAlignmentRight;
     statusLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     statusLabel.textColor = R_G_B_16(0xFE9B00);
@@ -133,9 +133,9 @@
         [displayStr appendString:@";"];
     }
 
-    CGSize size = [displayStr boundingRectWithSize:CGSizeMake(PX_TO_PT(325), MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(28)]} context:nil].size;
+    CGSize size = [displayStr boundingRectWithSize:CGSizeMake(ScreenWidth - CGRectGetMaxX(goodsImageView.frame) - PX_TO_PT(20)-PX_TO_PT(32), MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(28)]} context:nil].size;
     
-    detailLabel.frame = CGRectMake(CGRectGetMaxX(goodsImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(brandNameLabel.frame) + PX_TO_PT(19), PX_TO_PT(325), size.height);
+    detailLabel.frame = CGRectMake(CGRectGetMaxX(goodsImageView.frame) + PX_TO_PT(20), CGRectGetMaxY(brandNameLabel.frame) + PX_TO_PT(19), ScreenWidth - CGRectGetMaxX(goodsImageView.frame) - PX_TO_PT(20)-PX_TO_PT(32), size.height);
     detailLabel.numberOfLines = 0;
     self.detailLabel = detailLabel;
     [topView addSubview:detailLabel];
@@ -329,10 +329,11 @@
     
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,self.model.imgs];
     //图片
-//    [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-    [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        image = [UIImage imageNamed:@"icon_loading_wrong"];
-    }];
+    if (urlStr == nil || [urlStr isEqualToString:@""]) {
+        [self.goodsImageView setImage:[UIImage imageNamed:@"icon_placehold"]];
+    }else{
+        [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    }
 
     NSLog(@"-----------%@",self.model.productName);
     

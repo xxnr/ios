@@ -160,6 +160,7 @@
     phoneNumTF.placeholder = @"请输入收货人电话";
     phoneNumTF.textColor = R_G_B_16(0x909090);
     phoneNumTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    phoneNumTF.keyboardType = UIKeyboardTypePhonePad;
     phoneNumTF.text = self.model.receiptPhone;
     phoneNumTF.delegate = self;
     phoneNumTF.tag = textFieldTag +1;
@@ -288,9 +289,9 @@
         
         weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
         
-        weakSelf.provinceID = province_id;
-        weakSelf.cityID  = city_id;
-        weakSelf.countyID = county_id;
+        weakSelf.provinceID = provinceID;
+        weakSelf.cityID  = cityId;
+        weakSelf.countyID = countyId;
         
         UserInfo *info = [DataCenter account];
         info.province = province;
@@ -315,15 +316,16 @@
     self.townManagerView.com = ^(NSString *townName,NSString *townId,NSString *town_id){
         
         weakSelf.townLabel.text = townName;
-        weakSelf.townID = town_id;
+        weakSelf.townID = townId;
     
     };
-    
-
 }
 #pragma mark --UITextFieldDelegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    [self.addressManagerView hide];
+    [self.townManagerView hide];
+    
     if (textField.tag == textFieldTag) {
         
     }else if (textField.tag == textFieldTag + 1){

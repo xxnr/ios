@@ -74,10 +74,13 @@
 }
 -(void)setModel:(XNRMessageModel *)model{
     _model = model;
-//    [self.imgView sd_setImageWithURL:[NSURL URLWithString:model.image] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-    [self.imgView sd_setImageWithURL:[NSURL URLWithString:model.image] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        image = [UIImage imageNamed:@"icon_loading_wrong"];
-    }];
+    
+    if (model.image == nil || [model.image isEqualToString:@""]) {
+        [self.imgView setImage:[UIImage imageNamed:@"icon_placehold"]];
+    }else{
+        [self.imgView sd_setImageWithURL:[NSURL URLWithString:model.image] placeholderImage:[UIImage imageNamed:@"icon_loading-wrong"]];
+    }
+
 
     self.titleLabel.text = model.title;
     

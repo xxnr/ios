@@ -29,20 +29,6 @@
 
     // Do any additional setup after loading the view.
 }
-//-(NSMutableArray *)intentionArr
-//{
-//    if (!_intentionArr) {
-//        _intentionArr = [NSMutableArray array];
-//    }
-//    return _intentionArr;
-//}
-//-(NSMutableArray *)detailLabels
-//{
-//    if (!_detailLabels) {
-//        _detailLabels = [NSMutableArray array];
-//    }
-//    return _detailLabels;
-//}
 -(void)createView
 {
     NSArray *nameArr = @[@"姓名",@"手机号",@"性别",@"地区",@"街道",@"意向商品"];
@@ -55,10 +41,11 @@
         name.text = nameArr[i];
         [cell addSubview:name];
         
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(2))];
-        line.backgroundColor = R_G_B_16(0xE0E0E0);
-        [self.view addSubview:line];
-        
+        if (i+1 < nameArr.count) {
+            UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(1))];
+            line.backgroundColor = R_G_B_16(0xE0E0E0);
+            [self.view addSubview:line];
+        }
         [self.view addSubview:cell];
     }
 }
@@ -91,18 +78,19 @@
                 sex = @"男";
             }
             NSMutableString *city = [NSMutableString string];
-            [city appendString:result[@"potentialCustomer"][@"address"][@"province"][@"uppername"]];
+            [city appendString:result[@"potentialCustomer"][@"address"][@"province"][@"name"]];
             [city appendString:@" "];
 
-            [city appendString:result[@"potentialCustomer"][@"address"][@"city"][@"uppername"]];
+            [city appendString:result[@"potentialCustomer"][@"address"][@"city"][@"name"]];
+            NSLog(@"%@",city);
             [city appendString:@" "];
-            [city appendString:result[@"potentialCustomer"][@"address"][@"county"][@"uppername"]];
+            [city appendString:result[@"potentialCustomer"][@"address"][@"county"][@"name"]];
             
             NSString *town = [NSString stringWithString:result[@"potentialCustomer"][@"address"][@"town"][@"name"]];
             
-            NSArray *arr1 = [NSArray arrayWithObjects:user.name,user.phone,sex,city,town,pro,nil];
+            NSArray *arr1 = [NSArray arrayWithObjects:user.name,user.phone,sex,city,town,nil];
             
-            for (int i=0; i < 6; i++) {
+            for (int i=0; i < 5; i++) {
             
                 UILabel *detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(192), PX_TO_PT(35)+PX_TO_PT(99)*i, ScreenWidth - PX_TO_PT(192), PX_TO_PT(35))];
                 detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
@@ -111,21 +99,24 @@
                 [self.view addSubview:detailLabel];
                 NSLog(@"%@",self.view.subviews);
             }
-            
+           
+            CGSize size = [pro sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(ScreenWidth - PX_TO_PT(192), MAXFLOAT)];
 
+            UILabel *interestLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(192), PX_TO_PT(35)+PX_TO_PT(99)*5, ScreenWidth - PX_TO_PT(192),size.height)];
+            interestLabel.numberOfLines = 0;
+            interestLabel.text = pro;
+            interestLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+            interestLabel.textColor = R_G_B_16(0x646464);
+            [self.view addSubview:interestLabel];
             
-//            UILabel *label1 = _detailLabels[0];
-//            label1.text = user.name;
-//            
-//            UILabel *label2 = _detailLabels[1];
-//            label2.text = user.phone;
-//            UILabel *label3 = _detailLabels[2];
-//            label3.text = user.sex;
-//            UILabel *label4 = _detailLabels[3];
-//            label4.text = user.remarks;
-//            UILabel *label5 = _detailLabels[4];
-//            
-//            label5.text = pro;
+            
+            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(68),ScreenWidth, PX_TO_PT(1))];
+            lastLine.backgroundColor = R_G_B_16(0xE0E0E0);
+            [self.view addSubview:lastLine];
+
+            UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastLine.frame)+PX_TO_PT(1), ScreenWidth, ScreenHeight -CGRectGetMaxY(lastLine.frame)-PX_TO_PT(1))];
+            bgView.backgroundColor = R_G_B_16(0xf8f8f8);
+            [self.view addSubview:bgView];
         }
     } failure:^(NSError *error) {
         

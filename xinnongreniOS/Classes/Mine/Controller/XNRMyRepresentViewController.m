@@ -1,4 +1,4 @@
- //
+//
 //  XNRMyRepresentViewController.m
 //  xinnongreniOS
 //
@@ -18,11 +18,17 @@
 #import "XNRDetailUserVC.h"
 #define btnTag 1000
 #define tbTag 2000
+
+#define IS_IPHONE4 (([[UIScreen mainScreen] bounds].size.height == 480) ? YES : NO)
+#define IS_IPHONE5 (([[UIScreen mainScreen] bounds].size.height == 568) ? YES : NO)
+#define IS_IPhone6 (667 == [[UIScreen mainScreen] bounds].size.height ? YES : NO)
+#define IS_IPhone6plus (736 == [[UIScreen mainScreen] bounds].size.height ? YES : NO)
+
 @interface XNRMyRepresentViewController ()<UITableViewDelegate,UITableViewDataSource,XNRMyRepresentViewAddBtnDelegate,LumAlertViewDelegate>
 {
     NSMutableArray *_dataArr;
     int currentPage;
-    
+    int currentPage2;
 }
 
 @property (nonatomic, weak) UIButton *leftBtn;
@@ -65,8 +71,12 @@
 @property (nonatomic,weak)UILabel *bookTop1Label;
 @property (nonatomic,weak)UILabel *bookTop2Label;
 @property (nonatomic,weak) UIView *coverView;
+@property (nonatomic,weak)UIView *bgview;
 @property (nonatomic,weak) UIButton *addbtn;
+@property (nonatomic,weak) UIButton *addbtn2;
+@property (nonatomic,weak)UIView *circleView;
 @property (nonatomic,assign)BOOL isadd;
+@property (nonatomic,assign)BOOL isFirstTableView;
 @end
 
 @implementation XNRMyRepresentViewController
@@ -77,8 +87,7 @@
         [self creatBookView];
         [self bookViewGetData];
     }
-    [self setupCustomerRefresh];
-    
+
 }
 -(void)viewDidDisappear:(BOOL)animated
 {
@@ -96,12 +105,21 @@
     [self setNavigationbarTitle];
     [self setBottomButton];
     [self createTableView];
+    [self setupCustomerRefresh:_tableView];
+
 }
 
 #pragma mark - 刷新
 
--(void)setupCustomerRefresh{
+-(void)setupCustomerRefresh:(UITableView *)tableview{
     
+    if (tableview.tag == tbTag) {
+        self.isFirstTableView = YES;
+    }
+    else
+    {
+        self.isFirstTableView = NO;
+    }
     MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
     
     NSMutableArray *idleImage = [NSMutableArray array];
@@ -143,7 +161,8 @@
     
     header.stateLabel.hidden = YES;
 
-    self.tableView.mj_header = header;
+    tableview.mj_header = header;
+
 //    [self.tableView.mj_header beginRefreshing];
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
     
@@ -157,22 +176,35 @@
     
     // 设置尾部
     
-    self.tableView.mj_footer = footer;
+    tableview.mj_footer = footer;
 
 }
 
 -(void)headRefresh{
     
-    currentPage = 1;
-    [_dataArr removeAllObjects];
-    [self getCustomerData];
-    
+    if (self.isFirstTableView) {
+        currentPage = 1;
+        [_dataArr removeAllObjects];
+        [self getCustomerData];
+    }
+    else
+    {
+        currentPage2 = 1;
+        [_userArr removeAllObjects];
+        [self bookViewGetData];
+    }
 }
 
 -(void)footRefresh{
-    
-    currentPage ++;
-    [self getCustomerData];
+    if (self.isFirstTableView) {
+        currentPage ++;
+        [self getCustomerData];
+    }
+    else
+    {
+        currentPage2++;
+        [self bookViewGetData];
+    }
 }
 
 
@@ -206,7 +238,7 @@
 -(void)setBottomButton
 {
     CGFloat btnW = ScreenWidth * 0.5;
-    CGFloat btnH = PX_TO_PT(100);
+    CGFloat btnH = PX_TO_PT(98);
     CGFloat btnY = ScreenHeight - btnH - 64;
     
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -225,6 +257,7 @@
     self.leftBtn = leftBtn;
     [self.view addSubview:_leftBtn];
     
+
     UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.rightBtn = rightBtn;
     _rightBtn.frame = CGRectMake(btnW, btnY, btnW, btnH);
@@ -240,6 +273,7 @@
     [_rightBtn addTarget:self action:@selector(bottomBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     _rightBtn.tag = btnTag + 1;
     [self.view addSubview:_rightBtn];
+    
 
     UIButton *bookBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.bookBtn = bookBtn;
@@ -259,13 +293,20 @@
     [self.view addSubview:_bookBtn];
     [self bottomBtnClicked:_leftBtn];
     
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, PX_TO_PT(1), btnH)];
+    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    [self.bookBtn addSubview:line2];
+
     if (self.isBroker) {
         _bookBtn.hidden = NO;
         self.leftBtn.frame = CGRectMake(0, btnY, ScreenWidth/3, btnH);
         self.rightBtn.frame = CGRectMake(CGRectGetMaxX(self.leftBtn.frame), btnY, ScreenWidth/3, btnH);
         self.bookBtn.frame = CGRectMake(CGRectGetMaxX(self.rightBtn.frame), btnY, ScreenWidth/3, btnH);
-        
     }
+    
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame)-PX_TO_PT(1), 0, PX_TO_PT(2), btnH)];
+    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    [self.leftBtn addSubview:line1];
 
 }
 
@@ -276,35 +317,23 @@
     self.selectedBtn = sender;
 
     if (sender.tag == btnTag) {
-        
-//        [self.topView removeFromSuperview];
-//        _tableView.hidden = NO;
-//        [self getCustomerData];
-//        [self.mrv removeFromSuperview];
-//        [self.myRepLabel removeFromSuperview];
-//        [self.myRepView removeFromSuperview];
-//        [self createCustomerLabel];
 
-        
+        self.isFirstTableView = YES;
         [self.topView removeFromSuperview];
         _tableView.hidden = NO;
         
-//        _tableView.hidden = NO;
-//        self.thirdView.hidden = YES;
-
         [self getCustomerData];
         
         [self.thirdView removeFromSuperview];
         [self.mrv removeFromSuperview];
         [self.myRepTopView removeFromSuperview];
-//        [self.myRepLabel removeFromSuperview];
         [self.myRepView removeFromSuperview];
         [self createCustomerLabel];
     } else if(sender.tag == btnTag + 1){
+        self.isFirstTableView = NO;
         _tableView.hidden = sender.selected;
         self.topView.hidden = sender.selected;
         [self.firstView removeFromSuperview];
-//        self.thirdView.hidden = YES;
         [self.thirdView removeFromSuperview];
 
         [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
@@ -354,7 +383,7 @@
     }
     else if(sender.tag == btnTag + 2)
     {
-        
+        self.isFirstTableView = NO;
         _tableView.hidden = YES;
         self.topView.hidden = YES;
         self.mrv.hidden = YES;
@@ -369,19 +398,30 @@
         [self creatBookView];
         [self bookViewGetData];
         
+        [self setupCustomerRefresh:_tableView2];
+
     }
 }
 -(void)creatBookView
 {
 
+
+
     //添加顶部视图
-    UIView *thirdView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(100))];
+    UIView *thirdView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(88)-PX_TO_PT(98))];
     thirdView.backgroundColor = [UIColor clearColor];
     self.thirdView = thirdView;
     
     UIView *BooktopView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(220))];
     BooktopView.backgroundColor = [UIColor whiteColor];
     [self.thirdView addSubview:BooktopView];
+    
+    UIView *bgview = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(140))];
+    bgview.backgroundColor = [UIColor whiteColor];
+    bgview.hidden = YES;
+    self.bgview = bgview;
+    [self.view addSubview:bgview];
+
     
     UILabel *top1Label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(29), ScreenWidth/2, PX_TO_PT(32))];
     top1Label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
@@ -395,27 +435,66 @@
     self.bookTop2Label = top2Label;
     [BooktopView addSubview:top2Label];
     
-    UIButton *addBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(605), PX_TO_PT(29),PX_TO_PT(80), PX_TO_PT(80))];
-    addBtn.backgroundColor = R_G_B_16(0xE2E2E2);
-//    [addBtn setBackgroundImage:[UIImage imageNamed:@"icon-++-0"] forState:UIControlStateNormal];
-    [addBtn setImage:[UIImage imageNamed:@"icon-++-0"] forState:UIControlStateNormal];
-    addBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    if (IS_IPHONE4 || IS_IPHONE5) {
+        top1Label.frame = CGRectMake(PX_TO_PT(33), PX_TO_PT(15), ScreenWidth/2, PX_TO_PT(32));
+        top2Label.frame = CGRectMake(PX_TO_PT(33), CGRectGetMaxY(top1Label.frame)+PX_TO_PT(10), ScreenWidth/2, PX_TO_PT(32));
+        top1Label.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        top2Label.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+ 
+    }
+
+
+    UIButton *addBtn = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(80)-PX_TO_PT(34), PX_TO_PT(29),PX_TO_PT(80), PX_TO_PT(80))];
+    [addBtn setBackgroundImage:[UIImage imageNamed:@"6add-orange"] forState:UIControlStateNormal];
+
     [addBtn addTarget:self action:@selector(addUser:) forControlEvents:UIControlEventTouchDown];
-    addBtn.layer.cornerRadius = 20;
+    addBtn.layer.cornerRadius = PX_TO_PT(80)/2;
     addBtn.layer.masksToBounds = YES;
     self.addbtn = addBtn;
     [BooktopView addSubview:addBtn];
     
-    UIView *top2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(top2Label.frame)+PX_TO_PT(29), ScreenWidth, PX_TO_PT(80))];
+    if (IS_IPHONE4) {
+        BooktopView.frame = CGRectMake(0, PX_TO_PT(14), ScreenWidth, PX_TO_PT(100));
+        bgview.frame = CGRectMake(0, PX_TO_PT(14), ScreenWidth, PX_TO_PT(100));
+       
+        addBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(64)-PX_TO_PT(34),  (PX_TO_PT(100)-PX_TO_PT(64))/2,PX_TO_PT(64), PX_TO_PT(64));
+        addBtn.layer.cornerRadius = PX_TO_PT(64)/2;
+
+    }
+    else if (IS_IPHONE5){
+        BooktopView.frame = CGRectMake(0, PX_TO_PT(14), ScreenWidth, PX_TO_PT(100));
+        bgview.frame =CGRectMake(0, PX_TO_PT(14), ScreenWidth, PX_TO_PT(100));
+        addBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(64)-PX_TO_PT(34), (PX_TO_PT(100)-PX_TO_PT(64))/2,PX_TO_PT(64), PX_TO_PT(64));
+        addBtn.layer.cornerRadius = PX_TO_PT(64)/2;
+
+    }
+    else if (IS_IPhone6){
+        BooktopView.frame = CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(140));
+        bgview.frame = CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(140));
+        addBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(80)-PX_TO_PT(34),  (PX_TO_PT(140)-PX_TO_PT(80))/2,PX_TO_PT(80), PX_TO_PT(80));
+        addBtn.layer.cornerRadius = PX_TO_PT(80)/2;
+
+    }
+    else if (IS_IPhone6plus){
+        BooktopView.frame = CGRectMake(0, PX_TO_PT(30), ScreenWidth, PX_TO_PT(150));
+        bgview.frame = CGRectMake(0, PX_TO_PT(30), ScreenWidth, PX_TO_PT(150));
+        addBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(96)-PX_TO_PT(34),  (PX_TO_PT(150)-PX_TO_PT(96))/2,PX_TO_PT(96), PX_TO_PT(96));
+        addBtn.layer.cornerRadius = PX_TO_PT(96)/2;
+
+    }
+    
+//    UIView *top2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(top2Label.frame)+PX_TO_PT(29), ScreenWidth, PX_TO_PT(80))];
+    UIView *top2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(BooktopView.frame), ScreenWidth, PX_TO_PT(80))];
     top2.backgroundColor = R_G_B_16(0xE8E8E8);
-    [BooktopView addSubview:top2];
+    [self.thirdView addSubview:top2];
+    
     UILabel *top3Label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(25), PX_TO_PT(200), PX_TO_PT(32))];
     top3Label.text = @"已登记客户";
     top3Label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     top3Label.textColor = R_G_B_16(0x323232);
     [top2 addSubview:top3Label];
     
-    UITableView *tableView2 = [[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(BooktopView.frame), ScreenWidth, ScreenHeight - 64 - PX_TO_PT(100) - PX_TO_PT(240)) style:UITableViewStylePlain];
+    UITableView *tableView2 = [[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(top2.frame), ScreenWidth, ScreenHeight - 64 - PX_TO_PT(98) - PX_TO_PT(240)) style:UITableViewStylePlain];
     tableView2.backgroundColor = [UIColor clearColor];
     tableView2.delegate = self;
     tableView2.dataSource = self;
@@ -436,30 +515,104 @@
 -(void)bookViewGetData
 {
     
-    [KSHttpRequest get:KGetQuery parameters:nil success:^(id result) {
+    [KSHttpRequest get:KGetQuery parameters:@{@"page":[NSString stringWithFormat:@"%d",currentPage2]} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             _userArr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];
             
-            if(_userArr.count == 0){                
-            
+            if(_userArr.count == 0){
             
                 BOOL isadd = [[NSUserDefaults standardUserDefaults]boolForKey:@"key"];
                 if (isadd == NO) {
-                    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-                    view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
-                    UIImageView *iamgeview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-                    [iamgeview setImage:[UIImage imageNamed:@"mask"]];
+                self.thirdView.hidden = YES;
+                self.bgview.hidden = NO;
+                self.circleView.hidden = NO;
+                    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(40), ScreenWidth, ScreenHeight-PX_TO_PT(40))];
+                view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+                
+
+                    UIImageView *iamgeview = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, ScreenWidth, view.height)];
+                
+                UIView *coverView = [[UIView alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(80)-PX_TO_PT(26),PX_TO_PT(29), PX_TO_PT(80), PX_TO_PT(80))];
+                coverView.backgroundColor = [UIColor whiteColor];
+                coverView.layer.cornerRadius = PX_TO_PT(80)/2;
+                coverView.layer.masksToBounds = YES;
+                self.circleView.hidden = YES;
+                self.circleView = coverView;
+                
+                UIButton *addbtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(8), PX_TO_PT(8),PX_TO_PT(80), PX_TO_PT(80))];
+                [addbtn setBackgroundImage:[UIImage imageNamed:@"6add-orange"] forState:UIControlStateNormal];
+                addbtn.enabled = NO;
+                addbtn.layer.cornerRadius = PX_TO_PT(80)/2;
+                addbtn.layer.masksToBounds = YES;
+                [self.circleView addSubview:addbtn];
+
+                UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(262), PX_TO_PT(630), PX_TO_PT(197), PX_TO_PT(100))];
+                [btn addTarget:self action:@selector(coverClick:) forControlEvents:UIControlEventTouchDown];
+                
+                
+                if (IS_IPHONE4) {
+                    UIImage *image = [UIImage imageNamed:@"text_icon-4"];
+                    
+                    [iamgeview setImage:image];
+                    coverView.frame = CGRectMake(ScreenWidth-PX_TO_PT(80)-PX_TO_PT(26),  PX_TO_PT(128)+PX_TO_PT(8),PX_TO_PT(80), PX_TO_PT(80));
+                    iamgeview.frame = CGRectMake((ScreenWidth-image.size.width)/2, CGRectGetMaxY(coverView.frame), image.size.width,image.size.height);
+                    addbtn.frame = CGRectMake(PX_TO_PT(8),  PX_TO_PT(8),PX_TO_PT(64), PX_TO_PT(64));
+                    btn.frame = CGRectMake(PX_TO_PT(262), PX_TO_PT(550), PX_TO_PT(197), PX_TO_PT(100));
+
+                    addbtn.layer.cornerRadius = PX_TO_PT(64)/2;
+                    coverView.layer.cornerRadius = PX_TO_PT(80)/2;
+
+                }
+                else if (IS_IPHONE5){
+                    UIImage *image = [UIImage imageNamed:@"text-_icon5"];
+                    [iamgeview setImage:image];
+                    coverView.frame = CGRectMake(ScreenWidth-PX_TO_PT(80)-PX_TO_PT(26),    PX_TO_PT(128)+PX_TO_PT(8),PX_TO_PT(80), PX_TO_PT(80));
+                    iamgeview.frame = CGRectMake((ScreenWidth-image.size.width)/2, CGRectGetMaxY(coverView.frame), image.size.width,image.size.height);
+                    addbtn.frame = CGRectMake(PX_TO_PT(8), PX_TO_PT(8),PX_TO_PT(64), PX_TO_PT(64));
+                    btn.frame = CGRectMake(PX_TO_PT(262), PX_TO_PT(630), PX_TO_PT(197), PX_TO_PT(100));
+
+                    addbtn.layer.cornerRadius = PX_TO_PT(64)/2;
+                    coverView.layer.cornerRadius = PX_TO_PT(80)/2;
+
+
+                }
+                else if (IS_IPhone6){
+                    UIImage *image = [UIImage imageNamed:@"text_icon6"];
+                    [iamgeview setImage:image];
+                    coverView.frame = CGRectMake(ScreenWidth-PX_TO_PT(100)-PX_TO_PT(26),PX_TO_PT(128)+PX_TO_PT(8),PX_TO_PT(96), PX_TO_PT(96));
+                    iamgeview.frame = CGRectMake((ScreenWidth-image.size.width)/2, CGRectGetMaxY(coverView.frame), image.size.width,image.size.height);
+                    addbtn.frame = CGRectMake(PX_TO_PT(8), PX_TO_PT(8),PX_TO_PT(80), PX_TO_PT(80));
+                    btn.frame = CGRectMake(PX_TO_PT(262), PX_TO_PT(630), PX_TO_PT(197), PX_TO_PT(100));
+
+                    addbtn.layer.cornerRadius = PX_TO_PT(80)/2;
+                    coverView.layer.cornerRadius = PX_TO_PT(96)/2;
+
+
+                }
+                else if (IS_IPhone6plus){
+                    UIImage *image = [UIImage imageNamed:@"text_icon6p"];
+                    [iamgeview setImage:image];
+                    coverView.frame = CGRectMake(ScreenWidth-PX_TO_PT(112)-PX_TO_PT(26),    PX_TO_PT(128)+PX_TO_PT(8),PX_TO_PT(112), PX_TO_PT(112));
+                    iamgeview.frame = CGRectMake((ScreenWidth-image.size.width)/2, CGRectGetMaxY(coverView.frame), image.size.width,image.size.height);
+                    addbtn.frame = CGRectMake(PX_TO_PT(8), PX_TO_PT(8),PX_TO_PT(96), PX_TO_PT(96));
+                    btn.frame = CGRectMake(PX_TO_PT(262), PX_TO_PT(700), PX_TO_PT(197), PX_TO_PT(100));
+
+                    addbtn.layer.cornerRadius = PX_TO_PT(96)/2;
+                    coverView.layer.cornerRadius = PX_TO_PT(112)/2;
+                }
                     iamgeview.contentMode = UIViewContentModeScaleAspectFit;
                     [view addSubview:iamgeview];
-                    
-                    UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(262), PX_TO_PT(619), PX_TO_PT(197), PX_TO_PT(95))];
-                    [btn addTarget:self action:@selector(coverClick:) forControlEvents:UIControlEventTouchDown];
-                    [view addSubview:btn];
-                    
+              
+                [view addSubview:coverView];
+
+                [view addSubview:btn];
+
+                
                     self.coverView = view;
                    UIWindow *window = [[UIApplication sharedApplication].delegate window];
                     [window addSubview:view];
-                    
+                
+                
                     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"key"];
                 }
             }
@@ -467,35 +620,91 @@
             self.bookTop2Label.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
             
             if ([result[@"countLeftToday"] integerValue] == 0) {
-                self.addbtn.backgroundColor = R_G_B_16(0xE2E2E2);
+//                self.addbtn.backgroundColor = R_G_B_16(0xE2E2E2);
+                
+                if (IS_IPHONE4) {
+                    [self.addbtn setBackgroundImage:[UIImage imageNamed:@"4add-gray"] forState:UIControlStateNormal];
+                }
+                else if (IS_IPHONE5){
+                    [self.addbtn setBackgroundImage:[UIImage imageNamed:@"5add-gray"] forState:UIControlStateNormal];
+                }
+                else if (IS_IPhone6){
+                    [self.addbtn setBackgroundImage:[UIImage imageNamed:@"6add-gray"] forState:UIControlStateNormal];
+                }
+                else if (IS_IPhone6plus){
+                    [self.addbtn setBackgroundImage:[UIImage imageNamed:@"add-orange"] forState:UIControlStateNormal];
+                }
+
+                self.addbtn.enabled = NO;
             }
             else
             {
-                self.addbtn.backgroundColor = R_G_B_16(0xFE9B00);
+                if (IS_IPHONE4) {
+                    [self.addbtn setBackgroundImage:[UIImage imageNamed:@"4add-orange"] forState:UIControlStateNormal];
+                }
+                else if (IS_IPHONE5){
+                    [self.addbtn setBackgroundImage:[UIImage imageNamed:@"5add-orange"] forState:UIControlStateNormal];
+                }
+                else if (IS_IPhone6){
+                    [self.addbtn setBackgroundImage:[UIImage imageNamed:@"6add-orange"] forState:UIControlStateNormal];
+                }
+                else if (IS_IPhone6plus){
+                    [self.addbtn setBackgroundImage:[UIImage imageNamed:@"add-orange"] forState:UIControlStateNormal];
+                }
+                
+                self.addbtn.enabled = YES;
             }
             NSInteger i = [result[@"count"] integerValue]/10;
             NSInteger j = [result[@"countLeftToday"] integerValue]/10;
             
-            [self setDifFont:self.bookTop1Label andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00)];
-            [self setDifFont:self.bookTop2Label andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A)];
-            
+            if (IS_IPHONE4 || IS_IPHONE5) {
+                [self setDifFont:self.bookTop1Label andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+                [self setDifFont:self.bookTop2Label andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+            }
+            else
+            {
+                [self setDifFont:self.bookTop1Label andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+                [self setDifFont:self.bookTop2Label andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+            }
             [self.tableView2 reloadData];
+            
+            //  如果到达最后一页 就消除footer
+            
+            NSInteger pages = [result[@"totalPageNo"] integerValue];
+            
+            NSInteger page = [result[@"currentPageNo"] integerValue];
+            
+            self.tableView2.mj_footer.hidden = pages == page;
+            
+            [self.tableView2.mj_header endRefreshing];
+            
+            [self.tableView2.mj_footer endRefreshing];
+            
+
         }
     } failure:^(NSError *error) {
+        [self.tableView2.mj_header endRefreshing];
         
+        [self.tableView2.mj_footer endRefreshing];
+
     }];
+    
+
 }
 -(void)coverClick:(UIButton *)sender
 {
+    self.circleView.hidden = YES;
+    self.bgview.hidden = YES;
+    self.thirdView.hidden = NO;
     [self.coverView removeFromSuperview];
 }
--(void)setDifFont:(UILabel *)label andPosit:(NSInteger )posit andlength:(NSInteger)length andColor:(UIColor *)color
+-(void)setDifFont:(UILabel *)label andPosit:(NSInteger )posit andlength:(NSInteger)length andColor:(UIColor *)color andFont:(UIFont *)font
 {
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:label.text];
     NSDictionary *dict=@{
                          
                          NSForegroundColorAttributeName:color,
-                         NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(40)],
+                         NSFontAttributeName:font,
                          
                          };
     
@@ -668,7 +877,7 @@
     self.headLabel = headLabel;
     [headView addSubview:headLabel];
 
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(98)-64) style:UITableViewStylePlain];
     _tableView.tag = tbTag;
     _tableView.backgroundColor = [UIColor colorWithHexString_Ext:@"#EEEEEE"];
     _tableView.separatorColor = [UIColor clearColor];

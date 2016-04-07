@@ -23,7 +23,7 @@
 }
 -(void)creatContent
 {
-    UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(25), PX_TO_PT(140), PX_TO_PT(27))];
+    UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(25), PX_TO_PT(140), PX_TO_PT(30))];
     nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     nameLabel.textColor = R_G_B_16(0x646464);
     self.nameLabel = nameLabel;
@@ -35,6 +35,7 @@
     
     UILabel *registerLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(111), PX_TO_PT(25), PX_TO_PT(111), PX_TO_PT(42))];
     registerLabel.text = @"已注册";
+    registerLabel.textAlignment = UITextAlignmentCenter;
     registerLabel.textColor = R_G_B_16(0x00B38A);
     registerLabel.backgroundColor = [UIColor whiteColor];
     registerLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];

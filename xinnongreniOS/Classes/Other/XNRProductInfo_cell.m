@@ -187,7 +187,7 @@
 {
     [self createHeadView];
     [self createMidView];
-    [self createBottomView];
+//    [self createBottomView];
 }
 
 -(void)createHeadView
@@ -472,7 +472,7 @@
     self.bgView.frame = self.infoFrame.attributeLabelF;
     self.scrollLabel.frame = self.infoFrame.drawViewF;
     self.midView.frame = self.infoFrame.describtionViewF;
-    self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.midView.frame), ScreenWidth, ScreenHeight-64-PX_TO_PT(160));
+//    self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.midView.frame), ScreenWidth, ScreenHeight-64-PX_TO_PT(160));
     
 }
 
@@ -494,11 +494,14 @@
             XNRProductPhotoModel *photoModel = self.model.pictures[i];
             
             NSString *imageUrl=[HOST stringByAppendingString:photoModel.imgUrl];
+    
             
-//            [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-            [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                image = [UIImage imageNamed:@"icon_loading_wrong"];
-            }];
+            if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
+                [headView setImage:[UIImage imageNamed:@"icon_placehold"]];
+            }else{
+                [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+            }
+
 
             self.headView = headView;
             [self.scrollView addSubview:headView];

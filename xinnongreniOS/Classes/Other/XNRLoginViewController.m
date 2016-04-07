@@ -279,6 +279,7 @@
 #pragma mark - 登录
 - (void)loginClick:(UIButton *)button
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"notSelectedAttributes" object:nil];
     if (self.com) {
         self.com();
     }
