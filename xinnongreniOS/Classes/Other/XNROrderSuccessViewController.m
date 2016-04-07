@@ -95,6 +95,7 @@
 
 -(void)leftBtnClick:(UIButton *)button
 {
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"succss_Push" object:nil];
     XNRMyOrder_VC *orderVC=[[XNRMyOrder_VC alloc]init];
     orderVC.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:orderVC animated:NO];
@@ -103,7 +104,7 @@
 - (void)rightBtnClick:(UIButton *)button
 {
     NSLog(@"查看订单");
-    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"succss_Push" object:nil];
     XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
     vc.orderID = self.orderID;

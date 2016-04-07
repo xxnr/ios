@@ -253,11 +253,7 @@
         if (_dataArr.count == 0) {
             [self orderEmptyView];
         }
-<<<<<<< HEAD
-=======
 
-        
->>>>>>> xxnr-chung
         //  如果到达最后一页 就消除footer
         
         NSInteger pages = [result[@"datas"][@"pages"] integerValue];

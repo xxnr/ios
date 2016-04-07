@@ -153,6 +153,10 @@
 -(void)setCellDataWithShoppingCartModel:(XNRShoppingCartModel *)model
 {
     _model = model;
+    if ([_model.goodsName isEqualToString:@"测试权限"]) {
+        NSLog(@"%@",_model.imgUrl);
+        
+    }
 //    [self.image sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
     [self.image sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         image = [UIImage imageNamed:@"icon_loading_wrong"];
@@ -165,7 +169,7 @@
         self.shopcarBtn.hidden = YES;
     }else{
         self.priceLabel.textColor = R_G_B_16(0xff4e00);
-        self.priceLabel.text = [NSString stringWithFormat:@"%.2f",model.unitPrice.doubleValue];
+        self.priceLabel.text = [NSString stringWithFormat:@"¥%.2f",model.unitPrice.doubleValue];
         self.shopcarBtn.hidden = NO;
     }
 }
