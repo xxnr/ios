@@ -61,7 +61,6 @@
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic,copy) NSString *phone;
 @property (nonatomic,strong)myAlertView *myAlert;
-@property (nonatomic,assign)BOOL isfirst;
 @property (nonatomic,weak)UIView *firstView;
 @property (nonatomic,weak)UIView *secondView;
 @property (nonatomic,weak) UIView *thirdView;
@@ -76,8 +75,10 @@
 @property (nonatomic,weak) UIButton *addbtn2;
 @property (nonatomic,weak)UIView *circleView;
 @property (nonatomic,assign)BOOL isadd;
+@property (nonatomic,assign)BOOL isfirst;
 @property (nonatomic,assign)BOOL isFirstTableView;
 @end
+BOOL firstOrTcd;
 
 @implementation XNRMyRepresentViewController
 -(void)viewWillAppear:(BOOL)animated
@@ -95,9 +96,14 @@
         [self.thirdView removeFromSuperview];
     }
 }
+//+(void)firstTab
+//{
+//    firstOrTcd = YES;
+//}
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    [self getCustomerData];
+    currentPage2 = 1;
     self.isfirst = YES;
     _userArr = [NSMutableArray array];
     _dataArr = [[NSMutableArray alloc] init];
@@ -106,9 +112,12 @@
     [self setBottomButton];
     [self createTableView];
     [self setupCustomerRefresh:_tableView];
-
+    
+//    if (firstOrTcd) {
+//        [self setupCustomerRefresh:_tableView2];
+//    }
+//    firstOrTcd = NO;
 }
-
 #pragma mark - 刷新
 
 -(void)setupCustomerRefresh:(UITableView *)tableview{
@@ -398,7 +407,7 @@
         [self creatBookView];
         [self bookViewGetData];
         
-        [self setupCustomerRefresh:_tableView2];
+//        [self setupCustomerRefresh:_tableView2];
 
     }
 }
@@ -515,7 +524,7 @@
 -(void)bookViewGetData
 {
     
-    [KSHttpRequest get:KGetQuery parameters:@{@"page":[NSString stringWithFormat:@"%d",currentPage2]} success:^(id result) {
+    [KSHttpRequest get:KGetQuery parameters:/*@{@"page":[NSString stringWithFormat:@"%d",currentPage2]}*/nil success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             _userArr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];
             
@@ -530,12 +539,14 @@
                 view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
                 
 
-                    UIImageView *iamgeview = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, ScreenWidth, view.height)];
+                
+                UIImageView *iamgeview = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, ScreenWidth, view.height)];
                 
                 UIView *coverView = [[UIView alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(80)-PX_TO_PT(26),PX_TO_PT(29), PX_TO_PT(80), PX_TO_PT(80))];
                 coverView.backgroundColor = [UIColor whiteColor];
                 coverView.layer.cornerRadius = PX_TO_PT(80)/2;
                 coverView.layer.masksToBounds = YES;
+                coverView.alpha = 1;
                 self.circleView.hidden = YES;
                 self.circleView = coverView;
                 
@@ -619,7 +630,7 @@
             self.bookTop1Label.text = [NSString stringWithFormat:@"共登记%@名客户",result[@"count"]];
             self.bookTop2Label.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
             
-            if ([result[@"countLeftToday"] integerValue] == 0) {
+            if ([result[@"countLeftToday"] integerValue] < 1) {
 //                self.addbtn.backgroundColor = R_G_B_16(0xE2E2E2);
                 
                 if (IS_IPHONE4) {
