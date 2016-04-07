@@ -140,7 +140,8 @@
 
 -(void)refreshTableView
 {
-    [self.shoppingCarTableView reloadData];
+    [self getDataFromNetwork];
+//    [self.shoppingCarTableView reloadData];
 }
 
 #pragma mark - 刷新

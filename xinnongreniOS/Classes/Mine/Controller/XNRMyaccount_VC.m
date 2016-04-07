@@ -259,15 +259,20 @@
 //    areaLabel.textAlignment = NSTextAlignmentRight;
     areaLabel.textColor = R_G_B_16(0x909090);
     [areaLabel fitTextWidth_Ext];
-    if (_model.county) {
-        areaLabel.text = [NSString stringWithFormat:@"%@%@%@%@",_model.province,_model.city,_model.county,_model.town];
+    if (_model.province) {
+        if (_model.county) {
+            areaLabel.text = [NSString stringWithFormat:@"%@%@%@%@",_model.province,_model.city,_model.county,_model.town];
+        }else{
+            areaLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.province,_model.city,_model.town];
+        }
+
     }else{
-        areaLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.province,_model.city,_model.town];
+        areaLabel.textAlignment = NSTextAlignmentRight;
+        areaLabel.text = @"添加";
     }
     
     self.areaLabel = areaLabel;
     [bgView addSubview:areaLabel];
-
 
     // 显示类型
     UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14) + PX_TO_PT(88)*3, ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];

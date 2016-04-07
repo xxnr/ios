@@ -160,6 +160,7 @@
     // 创建浏览器对象
     [self.picBrowserList removeAllObjects];
     NSInteger count = _model.pictures.count;
+    
     for (int i = 0; i<count; i++) {
         XNRProductPhotoModel *photoModel = _model.pictures[i];
         MWPhoto *photo=[MWPhoto photoWithURL:[NSURL URLWithString:[HOST stringByAppendingString:photoModel.originalUrl]]];
@@ -195,6 +196,7 @@
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.tag = 1000;
     scrollView.delegate = self;
+    scrollView.userInteractionEnabled = YES;
     self.scrollView = scrollView;
     [self addSubview:scrollView];
 }
@@ -476,42 +478,48 @@
     
 }
 
+-(void)setupHeadView
+{
+    // 添加图片
+    CGFloat imageW = self.scrollView.width;
+    CGFloat imageH = self.scrollView.height;
+    for (int i = 0; i<self.model.pictures.count; i++) {
+        UIImageView *headView = [[UIImageView alloc] init];
+        // 设置frame
+        headView.y = 0;
+        headView.width = imageW;
+        headView.height = imageH;
+        headView.x =i * imageW;
+        headView.userInteractionEnabled = YES;
+        self.headView = headView;
+        [self.scrollView addSubview:headView];
+        
+        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoTap:)];
+        [headView addGestureRecognizer:gestureRecognizer];    //商品图片
+        XNRProductPhotoModel *photoModel = self.model.pictures[i];
+        
+        NSString *imageUrl=[HOST stringByAppendingString:photoModel.imgUrl];
+        
+        if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
+            [headView setImage:[UIImage imageNamed:@"icon_placehold"]];
+        }else{
+            [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+        }
+    
+    }
+    // 3.设置其他属性
+    self.scrollView.contentSize = CGSizeMake(self.model.pictures.count * imageW, 0);
+    self.scrollView.pagingEnabled = YES;
+    self.scrollView.showsHorizontalScrollIndicator = NO;
+    self.scrollView.bounces = NO;
+    [self setupPageController];
+
+
+}
+
 -(void)upDataWithModel
 {
-        // 添加图片
-        CGFloat imageW = self.scrollView.width;
-        CGFloat imageH = self.scrollView.height;
-        for (int i = 0; i<self.model.pictures.count; i++) {
-            UIImageView *headView = [[UIImageView alloc] init];
-             // 设置frame
-            headView.y = 0;
-            headView.width = imageW;
-            headView.height = imageH;
-            headView.x =i * imageW;
-            headView.userInteractionEnabled = YES;
-            UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoTap:)];
-            [headView addGestureRecognizer:gestureRecognizer];    //商品图片
-            XNRProductPhotoModel *photoModel = self.model.pictures[i];
-            
-            NSString *imageUrl=[HOST stringByAppendingString:photoModel.imgUrl];
-    
-            
-            if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
-                [headView setImage:[UIImage imageNamed:@"icon_placehold"]];
-            }else{
-                [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-            }
-
-
-            self.headView = headView;
-            [self.scrollView addSubview:headView];
-        }
-        // 3.设置其他属性
-        self.scrollView.contentSize = CGSizeMake(self.model.pictures.count * imageW, 0);
-        self.scrollView.pagingEnabled = YES;
-        self.scrollView.showsHorizontalScrollIndicator = NO;
-        self.scrollView.bounces = NO;
-        [self setupPageController];
+    [self setupHeadView];
     
     self.goodNameLabel.text = [NSString stringWithFormat:@"%@",self.model.name];
     // 商品描述

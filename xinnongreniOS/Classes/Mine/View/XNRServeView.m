@@ -132,7 +132,7 @@
     footer.refreshingTitleHidden = YES;
     
     footer.automaticallyHidden = YES;
-
+    
     // 设置刷新图片
     [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
     
@@ -222,6 +222,7 @@
         NSInteger page = [result[@"datas"][@"page"] integerValue];
         
         self.tableView.mj_footer.hidden = pages == page;
+
         [self.tableView reloadData];
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
