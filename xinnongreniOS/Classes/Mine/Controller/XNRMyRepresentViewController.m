@@ -528,8 +528,6 @@ BOOL firstOrTcd;
     [KSHttpRequest get:KGetQuery parameters:/*@{@"page":[NSString stringWithFormat:@"%d",currentPage2]}*/nil success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             
-            
-
             _userArr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];
             
             if(_userArr.count == 0){
@@ -542,12 +540,8 @@ BOOL firstOrTcd;
                     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(40), ScreenWidth, ScreenHeight-PX_TO_PT(40))];
                     UIColor *color = [UIColor blackColor];
                     view.backgroundColor = [color colorWithAlphaComponent:0.6];
-//                view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
-                
-
                 
                 UIImageView *iamgeview = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, ScreenWidth, view.height)];
-                
                 UIView *coverView = [[UIView alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(80)-PX_TO_PT(26),PX_TO_PT(29), PX_TO_PT(80), PX_TO_PT(80))];
                 coverView.backgroundColor = [UIColor whiteColor];
                 coverView.layer.cornerRadius = PX_TO_PT(80)/2;
