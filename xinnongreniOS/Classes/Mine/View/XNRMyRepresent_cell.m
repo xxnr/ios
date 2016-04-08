@@ -63,13 +63,12 @@
     [myRepView addSubview:phoneNumLabel];
     
     // 小红点
-    UIImageView *redImageView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nickNameLabel.frame)-PX_TO_PT(48), PX_TO_PT(2), PX_TO_PT(24), PX_TO_PT(24))];
-//    UIImageView *redImageView = [[UIImageView alloc] init];
+    UIImageView *redImageView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nickNameLabel.frame)-PX_TO_PT(20), PX_TO_PT(2), PX_TO_PT(24), PX_TO_PT(24))];
     redImageView.backgroundColor = [UIColor redColor];
     redImageView.layer.cornerRadius = PX_TO_PT(12);
     redImageView.layer.masksToBounds = YES;
     self.redImageView = redImageView;
-    [nickNameLabel addSubview:redImageView];
+    [myRepView addSubview:redImageView];
     
     UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
     topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
@@ -84,14 +83,16 @@
 
 - (void)setModel:(XNRMyRepresentModel *)model {
     _model = model;
+    
     if (model.name && model.name.length>0) {
         CGSize nickNameLabelSize = [model.name sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]}];
         self.nickNameLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(18), nickNameLabelSize.width+PX_TO_PT(24), PX_TO_PT(60));
         self.nickNameLabel.text = model.name;
         
     }else{
-       
         self.nickNameLabel.text = @"该好友未填姓名";
+        CGSize nickNameLabelSize = [self.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]}];
+        self.nickNameLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(18), nickNameLabelSize.width+PX_TO_PT(24), PX_TO_PT(60));
         self.nickNameLabel.backgroundColor = R_G_B_16(0xf0f0f0);
         self.nickNameLabel.textColor = R_G_B_16(0xa2a2a2);
 
@@ -99,7 +100,7 @@
     if (model.newOrdersNumber == 0) {
         self.redImageView.hidden = YES;
     }else{
-        self.redImageView.frame = CGRectMake(CGRectGetMaxX(self.nickNameLabel.frame)-PX_TO_PT(56), PX_TO_PT(2), PX_TO_PT(24), PX_TO_PT(24));
+        self.redImageView.frame = CGRectMake(CGRectGetMaxX(self.nickNameLabel.frame)-PX_TO_PT(10), PX_TO_PT(8), PX_TO_PT(24), PX_TO_PT(24));
         self.redImageView.hidden = NO;
     }
 
