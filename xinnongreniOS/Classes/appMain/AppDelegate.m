@@ -174,20 +174,6 @@
 }
 
 
-<<<<<<< HEAD
-=======
-//- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    if(buttonIndex==1)
-//    {
-//        // 此处加入应用在app store的地址，方便用户去更新，一种实现方式如下：
-//        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://itunes.apple.com/cn/app/xin-xin-nong-ren-hu-lian-wang/id%@?l=en&mt=8", kStoreAppId]];
-//        [[UIApplication sharedApplication] openURL:url];
-//    }
-//}
-
->>>>>>> xxnr-chung
-
 #pragma mark - 设置网络监听
 - (void)monitorNetwork
 {

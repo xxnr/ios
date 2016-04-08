@@ -14,6 +14,7 @@
 #import "XNRMyOrderSectionModel.h"
 #import "XNROrderEmptyView.h"
 #import "XNRMyAllOrderFrame.h"
+#define MAX_PAGE_SIZE 20
 
 @interface XNRPayView ()<XNROrderEmptyViewBtnDelegate>
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
@@ -133,7 +134,7 @@
     MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
     
     footer.refreshingTitleHidden = YES;
-    footer.automaticallyHidden = YES;
+//    footer.automaticallyHidden = YES;
 
     // 设置刷新图片
     [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
@@ -165,7 +166,7 @@
 {
     
     //typeValue说明：1为待付款，2为待发货，3已发货（待收货），4已收货
-    [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"typeValue":@"1",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"typeValue":@"1",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datasDic = result[@"datas"];
