@@ -15,6 +15,8 @@
 #import "MJExtension.h"
 #import "XNROrderEmptyView.h"
 #import "XNRMyAllOrderFrame.h"
+#define MAX_PAGE_SIZE 10
+
 @interface XNRServeView()<XNROrderEmptyViewBtnDelegate>
 
 @property (nonatomic ,weak) UIView *headView;
@@ -79,6 +81,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _currentPage = 1;
         _dataArr = [[NSMutableArray alloc]init];
         //获取数据
         [self getData];
@@ -129,12 +132,13 @@
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
     MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
     
-    footer.refreshingTitleHidden = YES;
     
-    footer.automaticallyHidden = YES;
+//    footer.automaticallyHidden = YES;
     
     // 设置刷新图片
     [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
+    footer.refreshingTitleHidden = YES;
+
     
     // 设置尾部
     self.tableView.mj_footer = footer;
@@ -160,7 +164,7 @@
 - (void)getData
 {
     // typeValue说明：1未付款 ，2待发货，3已发货，4已收货  全部订单为空
-    [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid?[DataCenter account].userid:@"",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"typeValue":@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid?[DataCenter account].userid:@"",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"typeValue":@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datasDic = result[@"datas"];
             NSArray *rowsArr = datasDic[@"rows"];
@@ -220,9 +224,9 @@
         //  如果到达最后一页 就消除footer
         NSInteger pages = [result[@"datas"][@"pages"] integerValue];
         NSInteger page = [result[@"datas"][@"page"] integerValue];
-        
+        NSLog(@"pages = %ld----page = %ld",pages,page);
         self.tableView.mj_footer.hidden = pages == page;
-
+            
         [self.tableView reloadData];
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
