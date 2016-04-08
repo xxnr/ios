@@ -175,6 +175,8 @@
     
     [[[AppDelegate shareAppDelegate].tabBarController selectedViewController] pushViewController:photoBrowser animated:YES];
     
+    NSLog(@"AppDelegate===%@", [[AppDelegate shareAppDelegate].tabBarController selectedViewController]);
+    
 }
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
     return [_picBrowserList count];
@@ -432,7 +434,7 @@
         self.priceLabel.text = [NSString stringWithFormat:@"￥%@ - %@",self.model.min,self.model.max];
     }
     
-    if ([_shopcarModel.online integerValue] != 0 || _shopcarModel.online == nil) {
+    if ([_model.online integerValue] != 0 || _model.online == nil) {
         self.depositLabel.text = [NSString stringWithFormat:@"订金:￥%.2f",self.model.deposit];
         
         if ([self.depositLabel.text rangeOfString:@".00"].length == 3) {
@@ -451,6 +453,8 @@
             
         }
 
+    }else{
+        [self.bgView removeFromSuperview];
     }
     
     
@@ -542,12 +546,12 @@
 
     }else{
         
-        if (self.webView.scrollView.contentOffset.y<-40) {
-            if ([self.delegate performSelector:@selector(XNRProductInfo_cellScroll)] ) {
-                [self.delegate XNRProductInfo_cellScroll];
-                
-            }
-        }
+//        if (self.webView.scrollView.contentOffset.y<-40) {
+//            if ([self.delegate performSelector:@selector(XNRProductInfo_cellScroll)] ) {
+//                [self.delegate XNRProductInfo_cellScroll];
+//                
+//            }
+//        }
 
     
     }

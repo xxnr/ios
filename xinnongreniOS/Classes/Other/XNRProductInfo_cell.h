@@ -19,7 +19,7 @@ typedef void(^XNRProductInfo_cellLoginBlock)();
 
 @optional;
 
--(void)XNRProductInfo_cellScroll;
+-(void)XNRProductInfo_cellScroll:(UIViewController *)photoBroser;
 
 @end
 
