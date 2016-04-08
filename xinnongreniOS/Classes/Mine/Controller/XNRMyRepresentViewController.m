@@ -396,25 +396,23 @@ BOOL firstOrTcd;
         _tableView.hidden = YES;
         self.topView.hidden = YES;
         self.mrv.hidden = YES;
+        
+        [self.thirdView removeFromSuperview];
 //        [self.firstView removeFromSuperview];
         [self.mrv removeFromSuperview];
         [self.myRepTopView removeFromSuperview];
         [self.myRepLabel removeFromSuperview];
         [self.myRepView removeFromSuperview];
         
-        [self.thirdView removeFromSuperview];
         
         [self creatBookView];
         [self bookViewGetData];
-        
 //        [self setupCustomerRefresh:_tableView2];
 
     }
 }
 -(void)creatBookView
 {
-
-
 
     //添加顶部视图
     UIView *thirdView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(88)-PX_TO_PT(98))];
@@ -513,6 +511,9 @@ BOOL firstOrTcd;
     [self.thirdView addSubview:tableView2];
     
     [self.view addSubview:self.thirdView];
+    
+//    [self bookViewGetData];
+
 }
 -(void)addUser:(UIButton *)sender
 {
@@ -523,20 +524,25 @@ BOOL firstOrTcd;
 
 -(void)bookViewGetData
 {
-    
+
     [KSHttpRequest get:KGetQuery parameters:/*@{@"page":[NSString stringWithFormat:@"%d",currentPage2]}*/nil success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
+            
+            
+
             _userArr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];
             
-            if(_userArr.count == 0){
+//            if(_userArr.count == 0){
             
                 BOOL isadd = [[NSUserDefaults standardUserDefaults]boolForKey:@"key"];
-                if (isadd == NO) {
+//                if (isadd == NO) {
                 self.thirdView.hidden = YES;
                 self.bgview.hidden = NO;
                 self.circleView.hidden = NO;
                     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(40), ScreenWidth, ScreenHeight-PX_TO_PT(40))];
-                view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+                    UIColor *color = [UIColor blackColor];
+                    view.backgroundColor = [color colorWithAlphaComponent:0.6];
+//                view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
                 
 
                 
@@ -551,7 +557,7 @@ BOOL firstOrTcd;
                 self.circleView = coverView;
                 
                 UIButton *addbtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(8), PX_TO_PT(8),PX_TO_PT(80), PX_TO_PT(80))];
-                [addbtn setBackgroundImage:[UIImage imageNamed:@"6add-orange"] forState:UIControlStateNormal];
+                [addbtn setBackgroundImage:[[UIImage imageNamed:@"6add-orange"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
                 addbtn.enabled = NO;
                 addbtn.layer.cornerRadius = PX_TO_PT(80)/2;
                 addbtn.layer.masksToBounds = YES;
@@ -625,13 +631,10 @@ BOOL firstOrTcd;
                 
                 
                     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"key"];
-                }
-            }
-            self.bookTop1Label.text = [NSString stringWithFormat:@"共登记%@名客户",result[@"count"]];
-            self.bookTop2Label.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
+//                }
+//            }
             
             if ([result[@"countLeftToday"] integerValue] < 1) {
-//                self.addbtn.backgroundColor = R_G_B_16(0xE2E2E2);
                 
                 if (IS_IPHONE4) {
                     [self.addbtn setBackgroundImage:[UIImage imageNamed:@"4add-gray"] forState:UIControlStateNormal];
@@ -665,17 +668,23 @@ BOOL firstOrTcd;
                 
                 self.addbtn.enabled = YES;
             }
+            self.bookTop1Label.text = [NSString stringWithFormat:@"共登记%@名客户",result[@"count"]];
+            self.bookTop2Label.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
+
             NSInteger i = [result[@"count"] integerValue]/10;
             NSInteger j = [result[@"countLeftToday"] integerValue]/10;
             
-            if (IS_IPHONE4 || IS_IPHONE5) {
-                [self setDifFont:self.bookTop1Label andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
-                [self setDifFont:self.bookTop2Label andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
-            }
-            else
-            {
-                [self setDifFont:self.bookTop1Label andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
-                [self setDifFont:self.bookTop2Label andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+            if (self.bookTop1Label) {
+                
+                if (IS_IPHONE4 || IS_IPHONE5) {
+                    [self setDifFont:self.bookTop1Label andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+                    [self setDifFont:self.bookTop2Label andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+                }
+                else
+                {
+                    [self setDifFont:self.bookTop1Label andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+                    [self setDifFont:self.bookTop2Label andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+                }
             }
             [self.tableView2 reloadData];
             
