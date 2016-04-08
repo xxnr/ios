@@ -236,7 +236,7 @@
                                 }
 
                                 // 市场价
-                                if (![KSHttpRequest isBlankString:marketPrice[@"min"]] && ![KSHttpRequest isBlankString:marketPrice[@"max"]]) {
+                                if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]]) {
                                     if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
                                         _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",[marketPrice[@"min"] floatValue]];
                                         if ([_marketPrice rangeOfString:@".00"].length == 3) {

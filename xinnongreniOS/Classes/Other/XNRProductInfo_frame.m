@@ -74,7 +74,7 @@
 
     // 商品属性
     if (self.infoModel.Desc == nil || [self.infoModel.Desc isEqualToString:@""]) {// 商品描述为空
-        if ([KSHttpRequest isBlankString:self.infoModel.marketMin]) {
+        if ([KSHttpRequest isNULL:self.infoModel.marketMin]) {
             CGFloat attributeLabelX = 0;
             CGFloat attributeLabelY = CGRectGetMaxY(_depositLabelF)+PX_TO_PT(28);
             CGFloat attributeLabelW = ScreenWidth;

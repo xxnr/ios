@@ -460,7 +460,7 @@
     
     CGSize marketPriceSize;
     if (self.model.marketMin == self.model.marketMax) {
-        if ([KSHttpRequest isBlankString:self.model.marketMin] && [KSHttpRequest isBlankString:self.model.marketMax]) {
+        if ([KSHttpRequest isNULL:self.model.marketMin] && [KSHttpRequest isNULL:self.model.marketMax]) {
             self.marketPriceLabel.hidden = YES;
         }else{
             self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价￥%@",self.model.marketMin];
