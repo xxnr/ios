@@ -63,6 +63,7 @@
             self.customer = user;
             _intentionArr = [NSMutableArray arrayWithArray:[XNRBuyIntentionModel objectArrayWithKeyValuesArray:result[@"potentialCustomer"][@"buyIntentions"]]];
             NSMutableString *pro = [[NSMutableString alloc]init];
+            [pro appendString:@""];
             if (user.buyIntentions) {
                 for (int i=0; i<self.intentionArr.count; i++) {
                     XNRBuyIntentionModel *intent = self.intentionArr[i];
@@ -92,19 +93,20 @@
 //            address.province = result[@"potentialCustomer"][@"address"][@"province"];
             
             NSMutableString *city = [NSMutableString string];
-            if (address.province) {
+            [city appendString:@""];
+            if (address.province != 0) {
                 [city appendString:result[@"potentialCustomer"][@"address"][@"province"][@"name"]];
                 [city appendString:@" "];
             }
-            if (address.city) {
+            if (address.city != 0) {
                 [city appendString:result[@"potentialCustomer"][@"address"][@"city"][@"name"]];
                 [city appendString:@" "];
             }
-            if ([KSHttpRequest isNULL:address.county]) {
+            if (address.county.count != 0) {
                 [city appendString:result[@"potentialCustomer"][@"address"][@"county"][@"name"]];
             }
-            NSString *town;
-            if (address.town) {
+            NSString *town = @"";
+            if (address.town.count != 0) {
                 town = [NSString stringWithString:result[@"potentialCustomer"][@"address"][@"town"][@"name"]];
             }
             
@@ -138,7 +140,8 @@
             bgView.backgroundColor = R_G_B_16(0xf8f8f8);
             [self.view addSubview:bgView];
         }
-    } failure:^(NSError *error) {
+
+      } failure:^(NSError *error) {
         
     }];
 }
