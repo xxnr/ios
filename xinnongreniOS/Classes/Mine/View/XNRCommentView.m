@@ -15,6 +15,7 @@
 #import "XNRFerViewController.h"
 #import "XNRMyOrderServe_Cell.h"
 #import "XNRMyAllOrderFrame.h"
+#define MAX_PAGE_SIZE 20
 @interface XNRCommentView()<XNROrderEmptyViewBtnDelegate>
 @property (nonatomic ,strong) UITableView *tableView;
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
@@ -168,7 +169,7 @@
     MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
     
     footer.refreshingTitleHidden = YES;
-    footer.automaticallyHidden = YES;
+//    footer.automaticallyHidden = YES;
     // 设置刷新图片
     [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
 
@@ -197,7 +198,7 @@
 {
     
     //typeValue说明：1为待支付（代付款）：3为商品准备中（待发货），4已发货（待收货
-    [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"typeValue":@"4",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"typeValue":@"4",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datasDic = result[@"datas"];
             NSArray *rowsArr = datasDic[@"rows"];

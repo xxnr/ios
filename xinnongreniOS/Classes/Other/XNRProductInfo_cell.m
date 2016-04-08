@@ -139,7 +139,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
-        self.userInteractionEnabled = YES;
+        self.contentView.userInteractionEnabled = YES;
+        
         [self createUI];
     }
     return self;
@@ -160,6 +161,7 @@
     // 创建浏览器对象
     [self.picBrowserList removeAllObjects];
     NSInteger count = _model.pictures.count;
+    
     for (int i = 0; i<count; i++) {
         XNRProductPhotoModel *photoModel = _model.pictures[i];
         MWPhoto *photo=[MWPhoto photoWithURL:[NSURL URLWithString:[HOST stringByAppendingString:photoModel.originalUrl]]];
@@ -170,7 +172,10 @@
     photoBrowser.displayActionButton=NO;
     photoBrowser.alwaysShowControls=NO;
     [photoBrowser setCurrentPhotoIndex:self.pageControl.currentPage];
+    
     [[[AppDelegate shareAppDelegate].tabBarController selectedViewController] pushViewController:photoBrowser animated:YES];
+    
+    NSLog(@"AppDelegate===%@", [[AppDelegate shareAppDelegate].tabBarController selectedViewController]);
     
 }
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
@@ -187,6 +192,9 @@
 {
     [self createHeadView];
     [self createMidView];
+    
+    [self setupHeadView];
+
 //    [self createBottomView];
 }
 
@@ -195,8 +203,9 @@
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.tag = 1000;
     scrollView.delegate = self;
+//    scrollView.userInteractionEnabled = YES;
     self.scrollView = scrollView;
-    [self addSubview:scrollView];
+    [self.contentView addSubview:scrollView];
 }
 -(void)setupPageController
 {
@@ -209,12 +218,12 @@
         noLabel.backgroundColor = R_G_B_16(0x00b38a);
         noLabel.textColor = [UIColor whiteColor];
         self.noLabel = noLabel;
-        [self addSubview:noLabel];
+        [self.contentView addSubview:noLabel];
     }
     // 1.添加
     UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(700)-PX_TO_PT(60), ScreenWidth, PX_TO_PT(60))];
     bgView.backgroundColor = [UIColor lightGrayColor];
-    [self addSubview:bgView];
+    [self.contentView addSubview:bgView];
     
         UIPageControl *pageControl = [[UIPageControl alloc] init];
         pageControl.numberOfPages = _model.pictures.count;
@@ -338,112 +347,6 @@
     [self.propertyView show:XNRisFormType];
 }
 
--(void)createBottomView
-{
-    UIView *midView = [[UIView alloc] init];
-    midView.backgroundColor = R_G_B_16(0xf2f2f2);
-    self.midView = midView;
-    [self.contentView addSubview:midView];
-    
-    
-    NSArray *array = @[@"商品描述",@"详细参数",@"服务说明"];
-    CGFloat X = 0;
-    CGFloat Y = 0;
-    CGFloat W = ScreenWidth/3.0;
-    CGFloat H = PX_TO_PT(80);
-    
-    for (int i = 0; i<array.count; i++) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(X+i*W, Y, W, H);
-        button.tag = KbtnTag+i;
-        [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        self.button = button;
-        [midView addSubview:button];
-        
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(W*i, 0, W, H)];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-        label.textColor = R_G_B_16(0x646464);
-        label.text = array[i];
-        label.tag = KlabelTag + i;
-        [midView addSubview:label];
-        
-        if (i == 0) {
-            button.selected =YES;
-            self.tempBtn = button;
-            
-            label.textColor = R_G_B_16(0x00b38a);
-            self.tempLabel = label;
-        }
-    }
-    
-    UIView *selectLine = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(35), PX_TO_PT(77), PX_TO_PT(180), PX_TO_PT(3))];
-    selectLine.backgroundColor = R_G_B_16(0x00b38a);
-    self.selectLine = selectLine;
-    [midView addSubview:selectLine];
-    
-    for (int i = 1; i<3; i++) {
-        UIView *dividedLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3*i, PX_TO_PT(20), PX_TO_PT(1), PX_TO_PT(40))];
-        dividedLine.backgroundColor = R_G_B_16(0xc7c7c7);
-        [midView addSubview:dividedLine];
-        
-    }
-}
-
--(void)buttonClick:(UIButton *)button
-{
-    static int index = 1000;
-    UILabel *titleLabel = (UILabel *)[self viewWithTag:button.tag + KbtnTag];
-    [UIView animateWithDuration:.3 animations:^{
-        self.selectLine.frame = CGRectMake((button.tag - KbtnTag)*ScreenWidth/3 + PX_TO_PT(35), PX_TO_PT(77), PX_TO_PT(180), PX_TO_PT(3));
-        
-    }];
-    index = (int)button.tag;
-    if (button.tag == KbtnTag) {
-        self.tempBtn.selected = NO;
-        button.selected = YES;
-        self.tempBtn = button;
-        
-        
-        self.tempLabel.textColor = R_G_B_16(0x646464);
-        titleLabel.textColor = R_G_B_16(0x00b38a);
-        self.tempLabel = titleLabel;
-        [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_model.app_body_url]];
-        [self.webView loadRequest:request];
-        [BMProgressView LoadViewDisappear:self];
-        
-    }else if (button.tag == KbtnTag + 1)
-    {
-        self.tempBtn.selected = NO;
-        button.selected = YES;
-        self.tempBtn = button;
-
-        [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_model.app_standard_url]];
-        [self.webView loadRequest:request];
-        [BMProgressView LoadViewDisappear:self];
-
-        self.tempLabel.textColor = R_G_B_16(0x646464);
-        titleLabel.textColor = R_G_B_16(0x00b38a);
-        self.tempLabel = titleLabel;
-    }else{
-        self.tempBtn.selected = NO;
-        button.selected = YES;
-        self.tempBtn = button;
-        
-        
-        self.tempLabel.textColor = R_G_B_16(0x646464);
-        titleLabel.textColor = R_G_B_16(0x00b38a);
-        self.tempLabel = titleLabel;
-        
-        [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_model.app_support_url]];
-        [self.webView loadRequest:request];
-        [BMProgressView LoadViewDisappear:self];
-
-    }
-}
 // 设置frame和数据
 -(void)setInfoFrame:(XNRProductInfo_frame *)infoFrame
 {
@@ -476,42 +379,48 @@
     
 }
 
+-(void)setupHeadView
+{
+    // 添加图片
+    CGFloat imageW = self.scrollView.width;
+    CGFloat imageH = self.scrollView.height;
+    for (int i = 0; i<self.model.pictures.count; i++) {
+        UIImageView *headView = [[UIImageView alloc] init];
+        // 设置frame
+        headView.y = 0;
+        headView.width = imageW;
+        headView.height = imageH;
+        headView.x =i * imageW;
+        headView.userInteractionEnabled = YES;
+        self.headView = headView;
+        [self.scrollView addSubview:headView];
+        
+        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoTap:)];
+        [headView addGestureRecognizer:gestureRecognizer];    //商品图片
+        XNRProductPhotoModel *photoModel = self.model.pictures[i];
+        
+        NSString *imageUrl=[HOST stringByAppendingString:photoModel.imgUrl];
+        
+        if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
+            [headView setImage:[UIImage imageNamed:@"icon_placehold"]];
+        }else{
+            [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+        }
+    
+    }
+    // 3.设置其他属性
+    self.scrollView.contentSize = CGSizeMake(self.model.pictures.count * imageW, 0);
+    self.scrollView.pagingEnabled = YES;
+    self.scrollView.showsHorizontalScrollIndicator = NO;
+    self.scrollView.bounces = NO;
+    [self setupPageController];
+
+
+}
+
 -(void)upDataWithModel
 {
-        // 添加图片
-        CGFloat imageW = self.scrollView.width;
-        CGFloat imageH = self.scrollView.height;
-        for (int i = 0; i<self.model.pictures.count; i++) {
-            UIImageView *headView = [[UIImageView alloc] init];
-             // 设置frame
-            headView.y = 0;
-            headView.width = imageW;
-            headView.height = imageH;
-            headView.x =i * imageW;
-            headView.userInteractionEnabled = YES;
-            UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoTap:)];
-            [headView addGestureRecognizer:gestureRecognizer];    //商品图片
-            XNRProductPhotoModel *photoModel = self.model.pictures[i];
-            
-            NSString *imageUrl=[HOST stringByAppendingString:photoModel.imgUrl];
-    
-            
-            if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
-                [headView setImage:[UIImage imageNamed:@"icon_placehold"]];
-            }else{
-                [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-            }
-
-
-            self.headView = headView;
-            [self.scrollView addSubview:headView];
-        }
-        // 3.设置其他属性
-        self.scrollView.contentSize = CGSizeMake(self.model.pictures.count * imageW, 0);
-        self.scrollView.pagingEnabled = YES;
-        self.scrollView.showsHorizontalScrollIndicator = NO;
-        self.scrollView.bounces = NO;
-        [self setupPageController];
+    [self setupHeadView];
     
     self.goodNameLabel.text = [NSString stringWithFormat:@"%@",self.model.name];
     // 商品描述
@@ -525,7 +434,7 @@
         self.priceLabel.text = [NSString stringWithFormat:@"￥%@ - %@",self.model.min,self.model.max];
     }
     
-    if ([_shopcarModel.online integerValue] != 0 || _shopcarModel.online == nil) {
+    if ([_model.online integerValue] != 0 || _model.online == nil) {
         self.depositLabel.text = [NSString stringWithFormat:@"订金:￥%.2f",self.model.deposit];
         
         if ([self.depositLabel.text rangeOfString:@".00"].length == 3) {
@@ -544,6 +453,8 @@
             
         }
 
+    }else{
+        [self.bgView removeFromSuperview];
     }
     
     
@@ -635,12 +546,12 @@
 
     }else{
         
-        if (self.webView.scrollView.contentOffset.y<-40) {
-            if ([self.delegate performSelector:@selector(XNRProductInfo_cellScroll)] ) {
-                [self.delegate XNRProductInfo_cellScroll];
-                
-            }
-        }
+//        if (self.webView.scrollView.contentOffset.y<-40) {
+//            if ([self.delegate performSelector:@selector(XNRProductInfo_cellScroll)] ) {
+//                [self.delegate XNRProductInfo_cellScroll];
+//                
+//            }
+//        }
 
     
     }

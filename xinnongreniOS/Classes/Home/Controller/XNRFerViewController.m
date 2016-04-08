@@ -164,12 +164,38 @@
 -(void)headRefresh{
     currentPage = 1;
 //    [_totalArray removeAllObjects];
-    [self getData];
+//    [self getData];
+    
+    [self getTotalData];
+    if (isSort) { // 正序
+        NSLog(@"正序");
+        [self getPriceDataWith:@"price-asc"];
+    }else{   // 反序
+        NSLog(@"反序");
+        [self getPriceDataWith:@"price-desc"];
+    }
+    
+
+    [self getselectDataWithName:self.brands and:self.gxArr and:self.txArr and:self.reservePrice and:self.kinds];
+    [self.tableView reloadData];
+
 
 }
 -(void)footRefresh{
     currentPage ++;
-    [self getData];
+//    [self getData];
+    [self getTotalData];
+    if (isSort) { // 正序
+        NSLog(@"正序");
+        [self getPriceDataWith:@"price-asc"];
+    }else{   // 反序
+        NSLog(@"反序");
+        [self getPriceDataWith:@"price-desc"];
+    }
+    [self getselectDataWithName:self.brands and:self.gxArr and:self.txArr and:self.reservePrice and:self.kinds];
+
+    [self.tableView reloadData];
+
     
 }
 #pragma mark - 返回顶部啊按钮
@@ -349,7 +375,7 @@
     {
         dic = @{@"classId":_classId,@"brand":self.currentBrand?self.currentBrand:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"user-agent":@"IOS-v2.0"};
     }
-
+//        dic = @{@"classId":_classId,@"user-agent":@"IOS-v2.0"};
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
 //        NSLog(@"---------返回数据:---------%@",str);
@@ -371,10 +397,23 @@
         [self.tableView reloadData];
         // 筛选为空
         [self noselectViewShowAndHidden:_totalArray];
+        
+        //  如果到达最后一页 就消除footer
+        NSInteger pages = [resultDic[@"datas"][@"pages"] integerValue];
+        NSInteger page = [resultDic[@"datas"][@"page"] integerValue];
+        self.tableView.mj_footer.hidden = pages == page;
+        
+        [self.tableView reloadData];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+        
         [BMProgressView LoadViewDisappear:self.view];
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+
         [BMProgressView LoadViewDisappear:self.view];
         
     }];
@@ -424,10 +463,24 @@
         // 筛选为空
         [self noselectViewShowAndHidden:_ferArray];
         
-        [BMProgressView LoadViewDisappear:self.view];
         //        self.tableView.legendFooter.hidden = YES;
         
+        //  如果到达最后一页 就消除footer
+        NSInteger pages = [resultDic[@"datas"][@"pages"] integerValue];
+        NSInteger page = [resultDic[@"datas"][@"page"] integerValue];
+        self.tableView.mj_footer.hidden = pages == page;
+        
+        [self.tableView reloadData];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+        
+        [BMProgressView LoadViewDisappear:self.view];
+        
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+
         [BMProgressView LoadViewDisappear:self.view];
         
     }];
@@ -435,6 +488,7 @@
 }
 
 -(void)getselectDataWithName:(NSArray *)param1 and:(NSArray *)param2 and:(NSArray *)param3 and:(NSString *)param4 and:(NSArray *)kinds{
+    [_carArray removeAllObjects];
     NSMutableDictionary *dics = [NSMutableDictionary dictionary];
     [dics setObject:_classId forKey:@"classId"];
     // 品牌的ID
@@ -526,10 +580,30 @@
         self.tableView.mj_footer.hidden = YES;
         [self.tableView reloadData];
         
+        //  如果到达最后一页 就消除footer
+        NSInteger pages = [resultDic[@"datas"][@"pages"] integerValue];
+        NSInteger page = [resultDic[@"datas"][@"page"] integerValue];
+        self.tableView.mj_footer.hidden = pages == page;
+        
+        [self.tableView reloadData];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+        
+        [BMProgressView LoadViewDisappear:self.view];
+        
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"===%@",error);
-
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+        
+        [BMProgressView LoadViewDisappear:self.view];
+        
     }];
+
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        NSLog(@"===%@",error);
+//
+//    }];
 }
 -(void)noselectViewShowAndHidden:(NSMutableArray *)array{
     if (array.count == 0) {

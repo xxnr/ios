@@ -81,6 +81,11 @@
  *  获取用户类型列表
  */
 #define Kusertypes [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/usertypes"]
+/**
+ *  提示用户更新
+ */
+#define KuserUpData [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/ISOupgrade"]
+
 
 
 /**--------------------

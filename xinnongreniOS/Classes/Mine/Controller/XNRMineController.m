@@ -72,13 +72,16 @@
                 NSArray *Arr = dict[@"verifiedTypesInJson"];
                 
                 [self.verifiedTypes removeAllObjects];
-                
+
+                self.isBroker = NO;
+
                 for (int i=0 ; i<Arr.count; i++) {
                     NSString *name =dict[@"verifiedTypesInJson"][i][@"typeName"];
                     [self.verifiedTypes addObject:name];
                     if ([name isEqualToString:@"新农经纪人"]) {
                         self.isBroker = YES;
                     }
+                    
                 }
                 
                 info.provinceID = province[@"id"];

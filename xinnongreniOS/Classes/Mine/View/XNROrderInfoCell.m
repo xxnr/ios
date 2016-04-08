@@ -179,6 +179,7 @@
         //        addtionView.backgroundColor = [UIColor redColor];
         [self.contentView addSubview:addtionView];
         
+
         for (int i = 0; i<addtionsModel.additions.count; i++) {
             UILabel *addtionLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(45)*i, ScreenWidth-PX_TO_PT(64), PX_TO_PT(45))];
             addtionLabel.backgroundColor = R_G_B_16(0xf0f0f0);
@@ -297,6 +298,7 @@
 -(void)setCellDataWithModel:(XNRCheckOrderModel *)model
 {
     // 把重复叠加的视图都移除一下
+    [self.addtionLabel removeFromSuperview];
     [self.topView removeFromSuperview];
     [self.midView removeFromSuperview];
     [self.bottomView removeFromSuperview];

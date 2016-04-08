@@ -120,8 +120,15 @@
 
         }
     }
-    NSString *str = [model.datePaid substringToIndex:10];
-    NSString *str1 = [model.datePaid substringWithRange:NSMakeRange(11, 5)];
-    self.completeLabel.text = [NSString stringWithFormat:@"支付完成时间：%@ %@",str,str1];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //输入格式
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
+    dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"Asia/Shanghai"];
+    NSDate *dateFormatted = [dateFormatter dateFromString:model.datePaid];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSString *locationTimeString=[dateFormatter stringFromDate:dateFormatted];
+
+    self.completeLabel.text = [NSString stringWithFormat:@"支付完成时间：%@",locationTimeString];
 }
 @end

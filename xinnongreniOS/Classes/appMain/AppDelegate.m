@@ -18,10 +18,13 @@
 #import "UMessage.h"
 #import "IQKeyboardManager.h"
 #import <Bugtags/Bugtags.h>
+#import "KSHttpRequest.h"
 
 #define GET_PROFILE_LIST app/profile/getProfileList
 #define UMSYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #define _IPHONE80_ 80000
+
+#define kStoreAppId  @"1021223448"  // （appid数字串）
 
 @interface AppDelegate ()<UITabBarControllerDelegate>
 {
@@ -63,6 +66,24 @@
     
     // 获得当前软件的版本号
     NSString *currentVersion = [NSBundle mainBundle].infoDictionary[versionKey];
+//    UserInfo *info = [DataCenter account];
+//    info.currentVersion = currentVersion;
+//    [DataCenter saveAccount:info];
+    
+//    [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion} success:^(id result) {
+//        if ([result[@"code"] integerValue] == 1000) {
+//            // 友盟提示更新
+//
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:result[@"message"]delegate:self cancelButtonTitle:@"取消"otherButtonTitles:@"更新",nil];
+//            [alert show];
+//            
+//        }
+//        
+//    } failure:^(NSError *error) {
+//        
+//    }];
+
+    
     if ([currentVersion isEqualToString:lastVersion]) {
         self.window.rootViewController = _tabBarController;
     }else{
@@ -153,7 +174,6 @@
 }
 
 
-
 #pragma mark - 设置网络监听
 - (void)monitorNetwork
 {
@@ -226,5 +246,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     
 }
+
+
 
 @end

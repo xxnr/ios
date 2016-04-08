@@ -9,8 +9,13 @@
 #import "XNRDetailUserVC.h"
 #import "XNRCustomer.h"
 #import "XNRBuyIntentionModel.h"
+#import "XNRMyRepresentViewController.h"
+#import "XNRPotentialCustomer.h"
+#import "XNRAddressModel.h"
+#import "XNRAddressDetail.h"
+#import "MJExtension.h"
 @interface XNRDetailUserVC ()
-@property (nonatomic,strong)XNRCustomer *customer;
+@property (nonatomic,strong)XNRPotentialCustomer *customer;
 @property (nonatomic,strong)NSMutableArray *intentionArr;
 @property (nonatomic,strong)NSMutableArray *detailLabels;
 @end
@@ -42,7 +47,7 @@
         [cell addSubview:name];
         
         if (i+1 < nameArr.count) {
-            UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(1))];
+            UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(1.5))];
             line.backgroundColor = R_G_B_16(0xE0E0E0);
             [self.view addSubview:line];
         }
@@ -53,40 +58,57 @@
 {
     [KSHttpRequest get:KGetPotentialCustomer parameters:@{@"_id":self._id} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
-            XNRCustomer *user = [[XNRCustomer alloc]init];
-            user = [XNRCustomer objectWithKeyValues:result[@"potentialCustomer"]];
+            XNRPotentialCustomer *user = [[XNRPotentialCustomer alloc]init];
+            user = [XNRPotentialCustomer objectWithKeyValues:result[@"potentialCustomer"]];
             self.customer = user;
             _intentionArr = [NSMutableArray arrayWithArray:[XNRBuyIntentionModel objectArrayWithKeyValuesArray:result[@"potentialCustomer"][@"buyIntentions"]]];
             NSMutableString *pro = [[NSMutableString alloc]init];
-            for (int i=0; i<self.intentionArr.count; i++) {
-                XNRBuyIntentionModel *intent = self.intentionArr[i];
-                NSString *str = intent.name;
-                [pro appendString:str];
-                if (i+1 == self.intentionArr.count) {
-                    
+            [pro appendString:@""];
+            if (user.buyIntentions) {
+                for (int i=0; i<self.intentionArr.count; i++) {
+                    XNRBuyIntentionModel *intent = self.intentionArr[i];
+                    NSString *str = intent.name;
+                    [pro appendString:str];
+                    if (i+1 == self.intentionArr.count) {
+                        
+                    }
+                    else{
+                        
+                        [pro appendString:@";"];}
                 }
-                else{
-                    
-                    [pro appendString:@";"];}
             }
+          
             NSString *sex = @"";
-            if ([user.sex integerValue] == 0) {
-                sex = @"女";
+            if (user.sex) {
+                if ([user.sex integerValue] == 0) {
+                    sex = @"女";
+                }
+                else
+                {
+                    sex = @"男";
+                }
             }
-            else
-            {
-                sex = @"男";
-            }
-            NSMutableString *city = [NSMutableString string];
-            [city appendString:result[@"potentialCustomer"][@"address"][@"province"][@"name"]];
-            [city appendString:@" "];
-
-            [city appendString:result[@"potentialCustomer"][@"address"][@"city"][@"name"]];
-            NSLog(@"%@",city);
-            [city appendString:@" "];
-            [city appendString:result[@"potentialCustomer"][@"address"][@"county"][@"name"]];
+            XNRAddressModel *address = [XNRAddressModel objectWithKeyValues:result[@"potentialCustomer"][@"address"] ];
             
-            NSString *town = [NSString stringWithString:result[@"potentialCustomer"][@"address"][@"town"][@"name"]];
+//            address.province = result[@"potentialCustomer"][@"address"][@"province"];
+            
+            NSMutableString *city = [NSMutableString string];
+            [city appendString:@""];
+            if (address.province != 0) {
+                [city appendString:result[@"potentialCustomer"][@"address"][@"province"][@"name"]];
+                [city appendString:@" "];
+            }
+            if (address.city != 0) {
+                [city appendString:result[@"potentialCustomer"][@"address"][@"city"][@"name"]];
+                [city appendString:@" "];
+            }
+            if (address.county.count != 0) {
+                [city appendString:result[@"potentialCustomer"][@"address"][@"county"][@"name"]];
+            }
+            NSString *town = @"";
+            if (address.town.count != 0) {
+                town = [NSString stringWithString:result[@"potentialCustomer"][@"address"][@"town"][@"name"]];
+            }
             
             NSArray *arr1 = [NSArray arrayWithObjects:user.name,user.phone,sex,city,town,nil];
             
@@ -110,7 +132,7 @@
             [self.view addSubview:interestLabel];
             
             
-            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(68),ScreenWidth, PX_TO_PT(1))];
+            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(68),ScreenWidth, PX_TO_PT(1.5))];
             lastLine.backgroundColor = R_G_B_16(0xE0E0E0);
             [self.view addSubview:lastLine];
 
@@ -148,6 +170,7 @@
 
 -(void)backClick
 {
+//    [XNRMyRepresentViewController isfirstTab];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

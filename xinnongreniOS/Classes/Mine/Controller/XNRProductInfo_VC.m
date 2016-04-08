@@ -19,6 +19,7 @@
 #import "XNRToolBar.h"
 #import "XNRPropertyView.h"
 #import "XNRProductInfo_frame.h"
+#import "MWPhotoBrowser.h"
 #define kLeftBtn  3000
 #define kRightBtn 4000
 #define HEIGHT 100
@@ -189,6 +190,9 @@
     [self createWebView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notSelectedAttributes) name:@"notSelectedAttributes" object:nil];
+    
+    NSLog(@"navigation===%@",self.navigationController);
+    
 }
 
 -(void)dealloc
@@ -203,22 +207,6 @@
 
 }
 
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-//{
-//    // 1.差距
-//    CGFloat delta = scrollView.contentSize.height - scrollView.contentOffset.y;
-//    // 刚好能完整看到footer的高度
-//    CGFloat sawFooterH = self.view.height - self.tabBarController.tabBar.height;
-//    
-//    // 2.如果能看见整个footer
-//    if (delta <= (sawFooterH - 0)) {
-//        NSLog(@"看全了footer");
-//        // 进入上拉刷新状态
-//       
-//
-//        
-//    }
-//}
 
 
 -(void)loadMoreData{
@@ -420,13 +408,6 @@
 //}
 
 
--(void)XNRProductInfo_cellScroll
-{
-    CGPoint point = self.tableView.contentOffset;
-    [UIView animateWithDuration:0.5 animations:^{
-        self.tableView.contentOffset = CGPointMake(point.x, 0);
-    }];
-}
 #pragma mark-获取网络数据
 -(void)getData {
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
@@ -462,16 +443,16 @@
            
 //            [self createTableView:_goodsArray];
             // 判断一下从主页还是从购物车进入的详情页（加载不同的视图）
-            if (_isFrom) {
+//            if (_isFrom) {
                 if ([model.online integerValue] == 0) {
                     [self createonlineView];
                 }else{
                     [self createBottomView];
 
                 }
-            }else{
-                [self createBottomView];
-            }
+//            }else{
+//                [self createBottomView];
+//            }
 
             if ([dic[@"presale"] integerValue] == 1) {
                 
@@ -586,8 +567,8 @@
 -(void)addBuyCar
 {
     NSLog(@"-==------===%@",self.propertyView);
-
     [self.propertyView show:XNRSecondType];
+    
 }
 #pragma 加减数量
 -(void)btnClick:(UIButton*)button{
