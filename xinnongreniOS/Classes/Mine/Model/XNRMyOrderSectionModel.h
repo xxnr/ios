@@ -25,7 +25,12 @@
 
 @property (nonatomic, strong) NSMutableArray *products;
 
-@property (nonatomic ,copy) NSString *type;
+@property (nonatomic, strong) NSMutableArray *skus;
+
+
+//@property (nonatomic ,copy) NSString *type;
+
+@property (nonatomic,assign) NSInteger type;
 
 @property (nonatomic ,copy) NSString *value;
 
@@ -34,5 +39,9 @@
 @property (nonatomic ,copy) NSString *deposit;
 
 @property (nonatomic ,copy) NSString *duePrice;
+
+@property (nonatomic, strong) NSMutableArray *orderFrameArray;
+
+
 
 @end

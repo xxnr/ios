@@ -9,7 +9,6 @@
 #import "XNRLoginViewController.h"
 #import "XNRRegisterViewController.h"
 #import "XNRForgetPasswordViewController.h"
-#import "CoreTFManagerVC.h"
 #import "XNRTabBarController.h"
 #import "QCheckBox.h"
 #import "XNRTabBarController.h"
@@ -132,7 +131,10 @@
     usernameTextField.borderStyle = UITextBorderStyleNone;
     usernameTextField.alpha = 1;
     usernameTextField.placeholder = @"请输入您的手机号";
-    usernameTextField.font = XNRFont(14);
+    if (self.loginName.length > 0) {
+        usernameTextField.text = self.loginName;
+    }
+    usernameTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     usernameTextField.delegate = self;
     usernameTextField.returnKeyType = UIReturnKeyDone;
     usernameTextField.keyboardType = UIKeyboardTypePhonePad;
@@ -162,7 +164,7 @@
     passwordTextField.borderStyle = UITextBorderStyleNone;
     passwordTextField.alpha = 1;
     passwordTextField.placeholder = @"请输入您的密码";
-    passwordTextField.font = XNRFont(14);
+    passwordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     passwordTextField.delegate = self;
     passwordTextField.secureTextEntry = YES;
     passwordTextField.returnKeyType = UIReturnKeyDone;
@@ -213,7 +215,7 @@
     [forgetBtn addTarget:self action:@selector(forgetClick:) forControlEvents:UIControlEventTouchUpInside];
     [forgetBtn setTitle:@"忘记密码?" forState:UIControlStateNormal];
     [forgetBtn setTitleColor:R_G_B_16(0x00ffc3) forState:UIControlStateNormal];
-    forgetBtn.titleLabel.font = XNRFont(16);
+    forgetBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.forgetBtn = forgetBtn;
     [self.mainView addSubview:forgetBtn];
 }
@@ -237,7 +239,7 @@
     loginBtn.layer.cornerRadius = 5;
     [loginBtn setTitle:@"确认登录" forState:UIControlStateNormal];
     [loginBtn setTitleColor:R_G_B_16(0xfbfffe) forState:UIControlStateNormal];
-    loginBtn.titleLabel.font = [UIFont systemFontOfSize:18];
+    loginBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.loginBtn = loginBtn;
     [self.mainView addSubview:loginBtn];
 }
@@ -250,7 +252,7 @@
     titleLabel.textColor = R_G_B_16(0xffffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"还没有账号？立即注册";
-    titleLabel.font = [UIFont systemFontOfSize:16];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     NSMutableAttributedString *AttributedString = [[NSMutableAttributedString alloc]initWithString:titleLabel.text];
     NSDictionary*dicStr = @{
                           NSForegroundColorAttributeName:R_G_B_16(0x00ffc3)
@@ -277,6 +279,7 @@
 #pragma mark - 登录
 - (void)loginClick:(UIButton *)button
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"notSelectedAttributes" object:nil];
     if (self.com) {
         self.com();
     }
@@ -353,8 +356,12 @@
             info.photo = datasDic[@"photo"];
             info.province = province[@"name"];
             info.city = city[@"name"];
-            info.county = county[@"name"];
-            info.town = town[@"name"];
+            if (![KSHttpRequest isNULL:county]) {
+                info.county = county[@"name"];
+            }
+            if (![KSHttpRequest isNULL:town]) {
+                info.town = town[@"name"];
+            }
             info.cartId = datasDic[@"cartId"];
             
             [DataCenter saveAccount:info];
@@ -404,14 +411,11 @@
 #pragma mark - 上传购物车数据
 - (void)synchShoppingCarDataWith:(XNRShoppingCartModel *)model
 {
+    NSLog(@"ufiodsfoie%@",model.additions);
     NSMutableArray *addtionsArray = [NSMutableArray array];
-//    for (XNRAddtionsModel *addtionModel in model.additions) {
-//            [addtionsArray addObject:addtionModel._id];
-//            NSLog(@"=+++__+_++ERTYU%@",model.additions);
-//
-//    }
-//    XNRAddtionsModel *addtionModel = [model.additions lastObject];
-//    [addtionsArray addObject:addtionModel._id];
+    for (NSDictionary *dict in model.additions) {
+        [addtionsArray addObject:dict[@"ref"]];
+    }
     NSDictionary *params = @{@"SKUId":model._id?model._id:@"",@"userId":[DataCenter account].userid,@"quantity":model.num,@"additions":addtionsArray,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
     NSLog(@"--=0=9%@",params);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -424,7 +428,7 @@
     
     [manager POST:KAddToCart parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"---------返回数据:---------%@",str);
+//        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -442,24 +446,6 @@
         
     }];
 
-//    [KSHttpRequest post:KAddToCart parameters:params success:^(id result) {
-//        NSLog(@"%@",result);
-//        
-//        if([result[@"code"] integerValue] == 1000){
-//
-//        }else {
-//            
-//            [UILabel showMessage:result[@"message"]];
-//            [BMProgressView LoadViewDisappear:self.view];
-//
-//        }
-//        
-//    } failure:^(NSError *error) {
-//        
-//        NSLog(@"%@",error);
-//        
-//    }];
-    
 }
 
 #pragma mark - 正则表达式判断手机号格式
@@ -475,19 +461,11 @@
     
     [super viewDidAppear:animated];
     
-    [CoreTFManagerVC installManagerForVC:self scrollView:nil tfModels:^NSArray *{
-        
-        TFModel *tfm1=[TFModel modelWithTextFiled:self.usernameTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm2=[TFModel modelWithTextFiled:self.passwordTextField inputView:nil name:@"" insetBottom:0];
-        return @[tfm1,tfm2];
-        
-    }];
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
-    [CoreTFManagerVC uninstallManagerForVC:self];
     
 }
 

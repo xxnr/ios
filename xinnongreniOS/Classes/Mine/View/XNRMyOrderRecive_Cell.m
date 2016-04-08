@@ -51,21 +51,21 @@
     
     UILabel *goodsNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(iconImageView.frame) + PX_TO_PT(32), PX_TO_PT(32), ScreenWidth - CGRectGetMaxX(iconImageView.frame) -PX_TO_PT(64), PX_TO_PT(100))];
     goodsNameLabel.textColor = R_G_B_16(0x323232);
-    goodsNameLabel.font = [UIFont systemFontOfSize:16];
+    goodsNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     goodsNameLabel.numberOfLines = 0;
     self.goodsNameLabel = goodsNameLabel;
     [topView addSubview:goodsNameLabel];
     
     UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(32), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(36))];
     priceLabel.textColor = R_G_B_16(0xff4e00);
-    priceLabel.font = [UIFont systemFontOfSize:16];
+    priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     priceLabel.textAlignment = NSTextAlignmentRight;
     self.priceLabel = priceLabel;
     [topView addSubview:priceLabel];
     
     UILabel *numLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(34), ScreenWidth/2 - PX_TO_PT(32), PX_TO_PT(36))];
     numLabel.textColor = R_G_B_16(0x323232);
-    numLabel.font = [UIFont systemFontOfSize:18];
+    numLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     numLabel.textAlignment = NSTextAlignmentLeft;
     self.numLabel = numLabel;
     [topView addSubview:numLabel];
@@ -93,7 +93,7 @@
     
     sectionOne.textColor = R_G_B_16(0x323232);
     
-    sectionOne.font = [UIFont systemFontOfSize:14];
+    sectionOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     
     sectionOne.text = @"阶段一: 订金";
     
@@ -105,7 +105,7 @@
     
     sectionTwo.textColor = R_G_B_16(0x323232);
     
-    sectionTwo.font = [UIFont systemFontOfSize:14];
+    sectionTwo.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     
     sectionTwo.text = @"阶段二: 尾款";
     
@@ -117,13 +117,13 @@
     
     depositLabel.textColor = R_G_B_16(0x323232);
     
-    depositLabel.font = [UIFont systemFontOfSize:16];
+    depositLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     
     depositLabel.textAlignment = NSTextAlignmentRight;
     
     self.depositLabel = depositLabel;
     
-    //    depositLabel.text = [NSString stringWithFormat:@"￥%.2f",sectionModel.deposit.floatValue];
+    //    depositLabel.text = [NSString stringWithFormat:@"￥%.2f",sectionModel.deposit.doubleValue];
     
     [bgView addSubview:depositLabel];
     
@@ -133,13 +133,13 @@
     
     remainPriceLabel.textColor = R_G_B_16(0x323232);
     
-    remainPriceLabel.font = [UIFont systemFontOfSize:16];
+    remainPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     
     remainPriceLabel.textAlignment = NSTextAlignmentRight;
     
     self.remainPriceLabel = remainPriceLabel;
     
-    //    remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",sectionModel.totalPrice.floatValue - sectionModel.deposit.floatValue];
+    //    remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",sectionModel.totalPrice.doubleValue - sectionModel.deposit.doubleValue];
     
     [bgView addSubview:remainPriceLabel];
     
@@ -168,29 +168,33 @@
 {
     // 图片
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,_info.thumbnail];
-    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    if (urlStr == nil || [urlStr isEqualToString:@""]) {
+        [self.iconImageView setImage:[UIImage imageNamed:@"icon_placehold"]];
+    }else{
+        [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    }
+
     // 商品名
-    self.goodsNameLabel.text = _info.name;
+    self.goodsNameLabel.text = _info.productName;
     
     // 价格
-    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",_info.price.floatValue];
+    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",_info.price.doubleValue];
     
     // 数量
     self.numLabel.text = [NSString stringWithFormat:@"x %@",_info.count];
     
+    NSInteger count = [_info.count integerValue];
+    
     // 订金
-    
-    self.depositLabel.text = [NSString stringWithFormat:@"¥%.2f",_info.deposit.floatValue];
-    
-    
+    self.depositLabel.text = [NSString stringWithFormat:@"¥%.2f",_info.deposit.doubleValue * count];
     
     // 尾款
+    self.remainPriceLabel.text = [NSString stringWithFormat:@"¥%.2f",(_info.price.doubleValue - _info.deposit.doubleValue) * count];
+
     
-    self.remainPriceLabel.text = [NSString stringWithFormat:@"¥%.2f",_info.price.floatValue - _info.deposit.floatValue];
     
     
-    
-    if (_info.deposit && [_info.deposit floatValue]>0) {
+    if (_info.deposit && [_info.deposit doubleValue]>0) {
         
         self.bgView.hidden = NO;
         

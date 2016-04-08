@@ -135,12 +135,17 @@
     addAddressVC.titleLabel = @"添加收货地址";
     addAddressVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:addAddressVC animated:YES];
-
 }
 
 - (void)backClick:(UIButton *)btn
 {
-//     [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
+    if (_dataArr.count>0) {
+        XNRAddressManageModel *model = _dataArr[0];
+        model.selected = YES;
+        self.addressChoseBlock(model);
+        [self.addressManageTableView reloadData];
+    }
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

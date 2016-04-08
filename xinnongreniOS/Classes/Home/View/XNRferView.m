@@ -34,10 +34,19 @@
         [self createUI];
         // 有筛选条件的时候，筛选按钮变色
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectBtnChange) name:@"selectBtnChange" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectBtnChangeblack) name:@"selectBtnChangeblack" object:nil];
+
     }
     return self;
 }
+-(void)selectBtnChangeblack{
+    
+    [self.selectedBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateSelected];
+    
+    [self.selectedBtn setImage:[UIImage imageNamed:@"icon_select_gray"] forState:UIControlStateSelected];
 
+}
 -(void)selectBtnChange{
     [self.selectedBtn setImage:[UIImage imageNamed:@"icon_select_orange"] forState:UIControlStateSelected];
     [self.selectedBtn setTitleColor:R_G_B_16(0xff4e00) forState:UIControlStateSelected];
@@ -45,7 +54,7 @@
 
 -(void)createUI{
     UIButton *totalBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    totalBtn.frame = CGRectMake(0,0, ScreenWidth/3, PX_TO_PT(100));
+    totalBtn.frame = CGRectMake(0,0, ScreenWidth/3, PX_TO_PT(89));
     [totalBtn setTitle:@"综合" forState:UIControlStateNormal];
     totalBtn.titleLabel.font = [UIFont systemFontOfSize:(18)];
     [totalBtn setTitleColor:R_G_B_16(0xff4e00) forState:UIControlStateSelected];
@@ -56,7 +65,7 @@
     [self addSubview:totalBtn];
 
     UIButton *priceBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    priceBtn.frame = CGRectMake(CGRectGetMaxX(self.totalBtn.frame),0, ScreenWidth/3, PX_TO_PT(100));
+    priceBtn.frame = CGRectMake(CGRectGetMaxX(self.totalBtn.frame),0, ScreenWidth/3, PX_TO_PT(89));
     [priceBtn setTitle:@"价格" forState:UIControlStateNormal];
     priceBtn.adjustsImageWhenHighlighted = NO;
     priceBtn.titleLabel.font = [UIFont systemFontOfSize:(18)];
@@ -68,8 +77,11 @@
     [self addSubview:priceBtn];
     
     UIButton *selectedBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    selectedBtn.frame = CGRectMake(CGRectGetMaxX(self.priceBtn.frame),0, ScreenWidth/3, PX_TO_PT(100));
+    selectedBtn.frame = CGRectMake(CGRectGetMaxX(self.priceBtn.frame),0, ScreenWidth/3, PX_TO_PT(89));
     [selectedBtn setTitle:@"筛选" forState:UIControlStateNormal];
+    [selectedBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
+//    [selectedBtn setTitleColor:R_G_B_16(0xff4e00) forState:UIControlStateSelected];
+
     [selectedBtn setImage:[UIImage imageNamed:@"icon_select_gray"] forState:UIControlStateNormal];
     selectedBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -90);
     selectedBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 0);
@@ -81,12 +93,12 @@
     [self addSubview:selectedBtn];
     
     for (int i = 1; i<3; i++) {
-        UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(i*(ScreenWidth/3), 0, 1, PX_TO_PT(100))];
+        UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(i*(ScreenWidth/3), 0, 1, PX_TO_PT(89))];
         midView.backgroundColor = R_G_B_16(0xc7c7c7);
         [self addSubview:midView];
     }
     
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
     bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [self addSubview:bottomLine];
 
@@ -100,11 +112,13 @@
         XNRferViewDoType type;
         if (button == self.totalBtn) {
             self.priceBtn.selected = NO;
+//            self.selectedBtn.selected = NO;
             [self.imageView1 removeFromSuperview];
             [self.imageView2 removeFromSuperview];
             type = XNRferView_DoTotalType;
         } else if (button == self.priceBtn) {
             self.totalBtn.selected = NO;
+//            self.selectedBtn.selected = NO;
             type = XNRferView_DoPriceType;
             isDerictor = !isDerictor;
             if (isDerictor == YES) {
@@ -121,12 +135,19 @@
                 [self addSubview:imageView2];
             }
         } else {
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"selectBtnChange" object:nil];
+////            self.priceBtn.selected = NO;
+////            self.totalBtn.selected = NO;
+//            [self.imageView1 removeFromSuperview];
+//            [self.imageView2 removeFromSuperview];
+
             type = XNRferView_DoSelectType;
             NSLog(@"++++++++++++=========");
 //            [self.imageView1 removeFromSuperview];
 //            [self.imageView2 removeFromSuperview];
 
         }
+        
         [self.delegate ferView:type];
     }
     

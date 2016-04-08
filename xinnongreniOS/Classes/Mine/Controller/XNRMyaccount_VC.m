@@ -49,6 +49,8 @@
 @property (nonatomic ,weak) UILabel *areaLabel;
 
 @property (nonatomic ,copy) NSString *typeNum;
+@property (nonatomic ,copy) NSString *nickName;
+
 
 @property (nonatomic ,weak) XNRTypeView *typeView;
 @end
@@ -103,14 +105,14 @@
     UILabel *headLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.iconBtn.frame) +margin , PX_TO_PT(30), ScreenWidth/2, PX_TO_PT(60))];
     headLabel.text = @"我的头像";
     headLabel.textColor = R_G_B_16(0x323232);
-    headLabel.font = XNRFont(14);
+    headLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [headBtn addSubview:headLabel];
     
     UIButton *icon =[MyControl createButtonWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(174), PX_TO_PT(10), PX_TO_PT(100), PX_TO_PT(100)) ImageName:@"my_heagView" Target:self Action:@selector(uploadImage) Title:nil];
     icon.clipsToBounds=YES;
     icon.layer.cornerRadius=PX_TO_PT(100)/2;
-    NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,[DataCenter account].photo];
-    if (![KSHttpRequest isBlankString:[DataCenter account].photo]) {
+    if (_model.photo) {
+        NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,_model.photo];
         NSURL *url = [NSURL URLWithString:urlStr];
         [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:url options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
@@ -144,18 +146,15 @@
     UILabel *nickLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.nickNameBtn.frame) + margin, PX_TO_PT(14), ScreenWidth/2, PX_TO_PT(60))];
     nickLabel.text = @"我的昵称";
     nickLabel.textColor = R_G_B_16(0x323232);
-    nickLabel.font = XNRFont(14);
+    nickLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [nickBtn addSubview:nickLabel];
     
     // 显示昵称
     UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14), ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
+    nickNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     nickNameLabel.textAlignment = NSTextAlignmentRight;
     nickNameLabel.textColor = R_G_B_16(0x909090);
-    if ([KSHttpRequest isBlankString:[DataCenter account].nickname]) {
-        nickNameLabel.text = @"";
-    }else{
-        nickNameLabel.text = [DataCenter account].nickname;
-    }
+    nickNameLabel.text = _model.nickname;
     self.nickNameLabel = nickNameLabel;
     [nickBtn addSubview:nickNameLabel];
     
@@ -172,6 +171,9 @@
 -(void)nickBtnClick
 {
     XNRMobNickNameController *nickNameVC = [[XNRMobNickNameController alloc] init];
+    nickNameVC.com = ^(NSString *nickName){
+        self.nickNameLabel.text = nickName;
+    };
     nickNameVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:nickNameVC animated:YES];
     
@@ -198,7 +200,7 @@
         //主题
         UILabel*titleLabel=[MyControl createLabelWithFrame:CGRectMake(PX_TO_PT(112), iconY,ScreenWidth - PX_TO_PT(112),iconH) Font:16 Text:array[i]];
         titleLabel.textColor=R_G_B_16(0x323232);
-        titleLabel.font = XNRFont(14);
+        titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         [button addSubview:titleLabel];
         
         UIImageView *arrow3 = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.icon.frame)+PX_TO_PT(10), PX_TO_PT(23), PX_TO_PT(24), PX_TO_PT(42))];
@@ -219,16 +221,19 @@
     UILabel *userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14), ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
     userNameLabel.textAlignment = NSTextAlignmentRight;
     userNameLabel.textColor = R_G_B_16(0x909090);
-    if ([KSHttpRequest isBlankString:[DataCenter account].name]) {
-        userNameLabel.text = [NSString stringWithFormat:@"添加"];
+    userNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    if (_model.name) {
+        userNameLabel.text = _model.name;
     }else{
-        userNameLabel.text = [DataCenter account].name;
+        userNameLabel.text = [NSString stringWithFormat:@"添加"];
+
     }
     self.userNameLabel = userNameLabel;
     [bgView addSubview:userNameLabel];
     
     // 显示性别
     UILabel *sexLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14)+PX_TO_PT(88), ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
+    sexLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     sexLabel.textAlignment = NSTextAlignmentRight;
     sexLabel.textColor = R_G_B_16(0x909090);
     if ([KSHttpRequest isNULL:[DataCenter account].sex]) {
@@ -249,26 +254,41 @@
 
     // 显示所在地区
     UILabel *areaLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2+PX_TO_PT(30), PX_TO_PT(88)*2, ScreenWidth/2-PX_TO_PT(100), PX_TO_PT(88))];
-    areaLabel.font = [UIFont systemFontOfSize:14];
-//    areaLabel.backgroundColor = [UIColor redColor];
+    areaLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     areaLabel.numberOfLines = 0;
 //    areaLabel.textAlignment = NSTextAlignmentRight;
     areaLabel.textColor = R_G_B_16(0x909090);
     [areaLabel fitTextWidth_Ext];
-    if (_model.county) {
-        areaLabel.text = [NSString stringWithFormat:@"%@%@%@%@",_model.province,_model.city,_model.county,_model.town];
+    if (_model.province) {
+        if (_model.county) {
+            if (_model.town) {
+                            areaLabel.text = [NSString stringWithFormat:@"%@%@%@%@",_model.province,_model.city,_model.county,_model.town];
+            }else{
+                            areaLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.province,_model.city,_model.county];
+            }
+
+        }else{
+            if (_model.town) {
+                areaLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.province,_model.city,_model.town];
+
+            }else{
+                areaLabel.text = [NSString stringWithFormat:@"%@%@",_model.province,_model.city];
+            }
+        }
+
     }else{
-        areaLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.province,_model.city,_model.town];
+        areaLabel.textAlignment = NSTextAlignmentRight;
+        areaLabel.text = @"添加";
     }
     
     self.areaLabel = areaLabel;
     [bgView addSubview:areaLabel];
 
-
     // 显示类型
     UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14) + PX_TO_PT(88)*3, ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
     typeLabel.textAlignment = NSTextAlignmentRight;
     typeLabel.textColor = R_G_B_16(0x909090);
+    typeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     typeLabel.text = [DataCenter account].typeName?[DataCenter account].typeName:@"选择";
     self.typeLabel = typeLabel;
     [bgView addSubview:typeLabel];
@@ -279,6 +299,10 @@
 {
     if (button.tag == KbtnTag) {
         XNRMobuserName *userNameVC = [[XNRMobuserName alloc] init];
+        userNameVC.com = ^(NSString *userName){
+            self.userNameLabel.text = userName;
+        
+        };
         userNameVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:userNameVC animated:YES];
         
@@ -389,7 +413,7 @@
     UILabel *pwdLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.nickNameBtn.frame) + margin, PX_TO_PT(14), ScreenWidth/2, PX_TO_PT(60))];
     pwdLabel.text = @"修改密码";
     pwdLabel.textColor = R_G_B_16(0x323232);
-    pwdLabel.font = XNRFont(14);
+    pwdLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [bottomBtn addSubview:pwdLabel];
     
     UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(632),ScreenWidth,PX_TO_PT(1))];
@@ -447,25 +471,9 @@
         info.address = [NSString stringWithFormat:@"%@%@",model.areaName,model.address];
         [DataCenter saveAccount:info];
         
-//        修改地址(服务器改为默认地址)
-//        [self updateAddress:model];
     }];
     vc.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-#pragma mark - 修改地址
-- (void)updateAddress:(XNRAddressManageModel *)model
-{
-    //userId:用户ID, areaId：省份ID,address:手动填写的具体地址,type:（1.默认地址2.非默认地址）,receiptPhone:收货人手机号,receiptPeople：收货人名称
-    NSString *address = [model.address stringByReplacingCharactersInRange:NSMakeRange(0, model.areaName.length) withString:@""];
-    [KSHttpRequest post:KUpdateUserAddress parameters:@{@"userId":[DataCenter account].userid,@"areaId":model.address,@"address":address,@"type":@"1",@"receiptPhone":model.receiptPhone,@"receiptPeople":model.receiptPeople,@"addressId":model.addressId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-        
-        if ([result[@"code"] isEqualToString:@"1000"]) {
-        }
-    } failure:^(NSError *error) {
-        
-    }];
 }
 
 #pragma mark-昵称
@@ -518,11 +526,7 @@
         if ([result[@"code"] integerValue] == 1000) {
             [KSHttpRequest post:KUserModify parameters:@{@"userPhoto":result[@"imageUrl"],@"user-agent":@"IOS-v2.0"} success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
-                    UserInfo *info = [DataCenter account];
-                    info.photo = [NSString stringWithFormat:@"%@",result[@"imageUrl"]];
-                    [DataCenter saveAccount:info];
-                    // 刷新
-                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(RefreshMyAccount) name:@"RefreshMyAccount" object:nil];
+                    
                     [BMProgressView LoadViewDisappear:self.view];
                     [UILabel showMessage:@"头像上传成功"];
                     [_icon setImage:croppedImage forState:UIControlStateNormal];
@@ -598,7 +602,7 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:24];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"我";

@@ -134,7 +134,7 @@
     // 1.收货人
     UILabel *recivePerson = [[UILabel alloc] initWithFrame:CGRectMake(x,y,w,h)];
     recivePerson.text = @"收货人:";
-    recivePerson.font = XNRFont(14);
+    recivePerson.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     recivePerson.textColor = R_G_B_16(0x323232);
     self.recivePerson = recivePerson;
     [topBgView addSubview:recivePerson];
@@ -142,7 +142,7 @@
     UITextField *recivePersonTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.recivePerson.frame), y, ScreenWidth-w, h)];
     recivePersonTF.placeholder = @"请输入收货人姓名";
     recivePersonTF.textColor = R_G_B_16(0x909090);
-    recivePersonTF.font = XNRFont(14);
+    recivePersonTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     recivePersonTF.text = self.model.receiptPeople;
     recivePersonTF.delegate = self;
     recivePersonTF.tag = textFieldTag;
@@ -151,7 +151,7 @@
     // 2.联系电话
     UILabel *phoneNum = [[UILabel alloc] initWithFrame:CGRectMake(x, PX_TO_PT(96)+MARGIN,PX_TO_PT(180),h)];
     phoneNum.text = @"联系电话:";
-    phoneNum.font = XNRFont(14);
+    phoneNum.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     phoneNum.textColor = R_G_B_16(0x323232);
     self.phoneNum = phoneNum;
     [topBgView addSubview:phoneNum];
@@ -159,7 +159,8 @@
     UITextField *phoneNumTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.phoneNum.frame), PX_TO_PT(96)+MARGIN, ScreenWidth-w, h)];
     phoneNumTF.placeholder = @"请输入收货人电话";
     phoneNumTF.textColor = R_G_B_16(0x909090);
-    phoneNumTF.font = XNRFont(14);
+    phoneNumTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    phoneNumTF.keyboardType = UIKeyboardTypePhonePad;
     phoneNumTF.text = self.model.receiptPhone;
     phoneNumTF.delegate = self;
     phoneNumTF.tag = textFieldTag +1;
@@ -168,7 +169,7 @@
     // 3.省市区县
     UILabel *address = [[UILabel alloc] initWithFrame:CGRectMake(x, PX_TO_PT(96)*2+MARGIN,PX_TO_PT(180),h)];
     address.text = @"省市区县:";
-    address.font = XNRFont(14);
+    address.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     address.textColor = R_G_B_16(0x323232);
     self.address = address;
     [topBgView addSubview:address];
@@ -179,7 +180,7 @@
     
     UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0, ScreenWidth, PX_TO_PT(96))];
     addressLabel.textColor = R_G_B_16(0x909090);
-    addressLabel.font = XNRFont(14);
+    addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     if (self.model.areaName) {
         if (self.model.countyName) {
             UserInfo *info = [DataCenter account];
@@ -205,7 +206,7 @@
     // 4.乡镇
     UILabel *town = [[UILabel alloc] initWithFrame:CGRectMake(x, PX_TO_PT(96)*3 + MARGIN, PX_TO_PT(100), h)];
     town.text = @"乡镇:";
-    town.font = XNRFont(14);
+    town.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     town.textColor = R_G_B_16(0x323232);
     self.town = town;
     [topBgView addSubview:town];
@@ -217,7 +218,7 @@
     UILabel *townLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(96))];
     townLabel.text = @"请选择乡镇";
     townLabel.textColor = R_G_B_16(0x909090);
-    townLabel.font = XNRFont(14);
+    townLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     
     if (self.model) {
         if (self.model.townName) {
@@ -231,7 +232,7 @@
     // 5.详细地址
     UILabel *detailAddress = [[UILabel alloc] initWithFrame:CGRectMake(x, PX_TO_PT(96)*4+MARGIN,PX_TO_PT(180),h)];
     detailAddress.text = @"详细地址:";
-    detailAddress.font = XNRFont(14);
+    detailAddress.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     detailAddress.textColor = R_G_B_16(0x323232);
     self.detailAddress = detailAddress;
     [topBgView addSubview:detailAddress];
@@ -239,7 +240,7 @@
     UITextField *detailAddressTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.detailAddress.frame), PX_TO_PT(96)*4+MARGIN, ScreenWidth-w, h)];
     detailAddressTF.placeholder = @"不必重复填写省市区信息";
     detailAddressTF.textColor = R_G_B_16(0x909090);
-    detailAddressTF.font = XNRFont(14);
+    detailAddressTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     detailAddressTF.text = self.model.address;
     detailAddressTF.delegate = self;
     detailAddressTF.tag = textFieldTag + 2;
@@ -249,7 +250,7 @@
     // 6.邮编
     UILabel *eMail = [[UILabel alloc] initWithFrame:CGRectMake(x, PX_TO_PT(96)*5+MARGIN,PX_TO_PT(100),h)];
     eMail.text = @"邮编:";
-    eMail.font = XNRFont(14);
+    eMail.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     eMail.textColor = R_G_B_16(0x323232);
     self.eMail = eMail;
     [topBgView addSubview:eMail];
@@ -257,7 +258,7 @@
     UITextField *emailTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.eMail.frame), PX_TO_PT(96)*5+MARGIN, ScreenWidth-w, h)];
     emailTF.placeholder = @"(选填)请输入邮政编码";
     emailTF.textColor = R_G_B_16(0x909090);
-    emailTF.font = XNRFont(14);
+    emailTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     emailTF.tag = textFieldTag + 3;
     emailTF.delegate = self;
 
@@ -284,7 +285,7 @@
     [self.eMailTF resignFirstResponder];
     __weak __typeof(&*self)weakSelf = self;
     [self.addressManagerView show];
-    self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId){
+    self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId,NSString *province_id,NSString *city_id,NSString *county_id){
         
         weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
         
@@ -296,6 +297,7 @@
         info.province = province;
         info.city = city;
         info.county = county;
+        info.cityID = cityId;
         info.countyID = countyId;
         [DataCenter saveAccount:info];
     };
@@ -311,18 +313,19 @@
 
     __weak __typeof(&*self)weakSelf = self;
     [self.townManagerView show];
-    self.townManagerView.com = ^(NSString *townName,NSString *townId){
+    self.townManagerView.com = ^(NSString *townName,NSString *townId,NSString *town_id){
         
         weakSelf.townLabel.text = townName;
         weakSelf.townID = townId;
     
     };
-    
-
 }
 #pragma mark --UITextFieldDelegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    [self.addressManagerView hide];
+    [self.townManagerView hide];
+    
     if (textField.tag == textFieldTag) {
         
     }else if (textField.tag == textFieldTag + 1){
@@ -345,7 +348,7 @@
     UILabel *defaultAddress = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(20), PX_TO_PT(29), PX_TO_PT(240), PX_TO_PT(40))];
     defaultAddress.text = @"设为默认地址";
     defaultAddress.textColor = R_G_B_16(0x323232);
-    defaultAddress.font = XNRFont(14);
+    defaultAddress.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [midView addSubview:defaultAddress];
     
     UISwitch *mySwitch = [[UISwitch alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(140), PX_TO_PT(12), PX_TO_PT(100), PX_TO_PT(40))];
@@ -510,73 +513,9 @@
 
 }
 
-#pragma mark - 键盘躲避
-
--(void)viewDidAppear:(BOOL)animated{
-    
-    
-    
-    [super viewDidAppear:animated];
-    
-    
-    
-    [CoreTFManagerVC installManagerForVC:self scrollView:nil tfModels:^NSArray *{
-        
-        
-        
-        TFModel *tfm1=[TFModel modelWithTextFiled:self.recivePersonTF inputView:nil name:@"" insetBottom:0];
-        
-        TFModel *tfm2=[TFModel modelWithTextFiled:self.phoneNumTF inputView:nil name:@"" insetBottom:0];
-        
-        TFModel *tfm5=[TFModel modelWithTextFiled:self.detailAddressTF inputView:nil name:@"" insetBottom:0];
-        
-        TFModel *tfm6=[TFModel modelWithTextFiled:self.eMailTF inputView:nil name:@"" insetBottom:0];
-        
-        return @[tfm1,tfm2,tfm5,tfm6];
-        
-        
-    }];
-    
-}
-
-
-
 -(void)viewDidDisappear:(BOOL)animated{
-    
-    
-    
     [super viewDidDisappear:animated];
-    
-    [CoreTFManagerVC uninstallManagerForVC:self];
 }
-
-
-
-//消失时回收键盘
-
-- (void)viewWillDisappear:(BOOL)animated
-
-{
-    
-    [super viewWillDisappear:animated];
-    
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
-    
-    [self.recivePersonTF resignFirstResponder];
-    
-    [self.phoneNumTF resignFirstResponder];
-    
-    [self.detailAddressTF resignFirstResponder];
-
-    [self.eMailTF resignFirstResponder];
-
-    
-    
-}
-
-
-
-
 
 
 @end

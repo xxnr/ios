@@ -28,7 +28,9 @@
 /**
  *  商品名称
  */
+@property (copy,nonatomic) NSString *productName;
 @property (copy,nonatomic) NSString *name;
+
 /**
  *  待付金额
  */
@@ -41,5 +43,10 @@
  *  商品图片
  */
 @property (nonatomic ,copy) NSString *thumbnail;
+
+@property (nonatomic ,strong) NSMutableArray *additions;
+
+@property (nonatomic ,strong) NSMutableArray *attributes;
+
 
 @end

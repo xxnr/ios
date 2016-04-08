@@ -8,9 +8,10 @@
 
 #import "XNRMakeSureOrderInfo_VC.h"
 #import "XNRAddressManageViewController.h"
-#import "XNROderInfo_Cell.h"
+#import "XNROrderInfoCell.h"
 #import "XNRPayType_VC.h"
 #import "XNRTabBarController.h"
+#import "XNROrderInfoCell.h"
 @interface XNRMakeSureOrderInfo_VC ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>{
 }
     
@@ -70,14 +71,14 @@
     
     UILabel*namelabel=[MyControl createLabelWithFrame:CGRectMake(0, 0, ScreenWidth/2, 30*SCALE) Font:15 Text:self.recipientName];
     namelabel.center= CGPointMake(90*SCALE, 45*SCALE/2);
-    namelabel.font=XNRFont(16);
+    namelabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     namelabel.textColor = TITLECOLOR;
     [name addSubview: namelabel];
     
     UILabel*phoneNum=[MyControl createLabelWithFrame:CGRectMake(0, 0, ScreenWidth/2, 30*SCALE) Font:15 Text: self.recipientPhone];
     
     phoneNum.center= CGPointMake(ScreenWidth-ScreenWidth/4+10, 45*SCALE/2);
-    phoneNum.font=XNRFont(16);
+    phoneNum.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     phoneNum.textColor = TITLECOLOR;
     [name addSubview: phoneNum];
     
@@ -90,14 +91,14 @@
     
     UILabel*addresslabel=[MyControl createLabelWithFrame:CGRectMake(10, 0, ScreenWidth/2, 30*SCALE) Font:15 Text:@"收货地址"];
     addresslabel.center= CGPointMake(90*SCALE, 45*SCALE/2);
-    addresslabel.font=XNRFont(16);
+    addresslabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     addresslabel.textColor = TITLECOLOR;
     [address addSubview: addresslabel];
     
     _addressDetail=[MyControl createLabelWithFrame:CGRectMake(0, 0, ScreenWidth/2+30, 30*SCALE) Font:15 Text:self.building];
     _addressDetail.center= CGPointMake(90*SCALE+80*SCALE+30, 45*SCALE/2);
     _addressDetail.textAlignment=NSTextAlignmentCenter;
-    _addressDetail.font=XNRFont(16);
+    _addressDetail.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     _addressDetail.textColor = TITLECOLOR;
     [address addSubview: _addressDetail];
     
@@ -115,14 +116,14 @@
     
     UILabel*datelabel=[MyControl createLabelWithFrame:CGRectMake(0, 0, ScreenWidth/2, 30*SCALE) Font:15 Text:@"到货日期"];
     datelabel.center= CGPointMake(90*SCALE, 45*SCALE/2);
-    datelabel.font=XNRFont(16);
+    datelabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     datelabel.textColor = TITLECOLOR;
     [date addSubview: datelabel];
     
     _dateDetail=[MyControl createLabelWithFrame:CGRectMake(0, 0, ScreenWidth/2+30, 30*SCALE) Font:15 Text:self.deliveryTime];
     _dateDetail.center= CGPointMake(90*SCALE+80*SCALE+30, 45*SCALE/2);
     _dateDetail.textAlignment=NSTextAlignmentCenter;
-    _dateDetail.font=XNRFont(16);
+    _dateDetail.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     _dateDetail.textColor = TITLECOLOR;
     [date addSubview: _dateDetail];
     
@@ -163,7 +164,7 @@
     //商品总额
     UILabel*totalPricelabel=[MyControl createLabelWithFrame:CGRectMake(10, 0, 100, 45*SCALE) Font:15 Text:@"商品总额:"];
  
-    totalPricelabel.font=XNRFont(16);
+    totalPricelabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     totalPricelabel.textColor = TITLECOLOR;
     [totalPrice addSubview: totalPricelabel];
     
@@ -171,7 +172,7 @@
     _totalPriceDetail.adjustsFontSizeToFitWidth = YES;
     _totalPriceDetail.textAlignment = NSTextAlignmentRight;
     _totalPriceDetail.textColor=R_G_B_16(0xdd1b23);
-    _totalPriceDetail.font=XNRFont(16);
+    _totalPriceDetail.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     [totalPrice addSubview: _totalPriceDetail];
     
     
@@ -192,11 +193,11 @@
     //title
     UILabel*orderWordslabel=[MyControl createLabelWithFrame:CGRectMake(0, 0, ScreenWidth/2, 45*SCALE) Font:15 Text:@"订单留言:"];
     orderWordslabel.center= CGPointMake(90*SCALE, 45*SCALE/2);
-    orderWordslabel.font=XNRFont(16);
+    orderWordslabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     orderWordslabel.textColor = TITLECOLOR;
     [orderWords addSubview: orderWordslabel];
     _orderWordsContent=[[UILabel alloc]initWithFrame:CGRectMake(10, 35*SCALE, ScreenWidth-40, 45*SCALE)];
-    _orderWordsContent.font=XNRFont(16);
+    _orderWordsContent.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     _orderWordsContent.numberOfLines=0;
     _orderWordsContent.textColor=TITLECOLOR;
     _orderWordsContent.text=self.leaveMessage;
@@ -240,7 +241,7 @@
             }
             
         }else{
-            totalPrice = totalPrice + model.goodsCount.intValue * model.unitPrice.floatValue;
+            totalPrice = totalPrice + model.goodsCount.intValue * model.unitPrice.doubleValue;
         }
     }
     
@@ -254,7 +255,7 @@
     
     makeSure.backgroundColor=R_G_B_16(0x11c422);
     [makeSure setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    makeSure.titleLabel.font=XNRFont(16);
+    makeSure.titleLabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     makeSure.clipsToBounds=YES;
     [makeSure setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     makeSure.layer.cornerRadius=8;
@@ -271,10 +272,10 @@
 }
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString*cellID=@"XNROderInfo";
-    XNROderInfo_Cell*cell=[tableView dequeueReusableCellWithIdentifier:cellID];
+    XNROrderInfoCell*cell=[tableView dequeueReusableCellWithIdentifier:cellID];
     if(!cell){
         
-        cell=[[XNROderInfo_Cell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        cell=[[XNROrderInfoCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         
     }
     [cell setCellDataWithModel:_dataArray[indexPath.row]];
@@ -305,7 +306,7 @@
                      width:(CGFloat)width
                   fontSize:(CGFloat)fontSize
 {
-    CGRect rect = [string boundingRectWithSize:CGSizeMake(width, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:XNRFont(fontSize)} context:nil];
+    CGRect rect = [string boundingRectWithSize:CGSizeMake(width, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil];
     
     return rect.size.height;
 }

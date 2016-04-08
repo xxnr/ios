@@ -12,6 +12,7 @@
 #import "XNRChatController.h"
 #import "XNRShoppingCarController.h"
 #import "XNRMineController.h"
+
 @interface XNRTabBarController ()
 
 @end
@@ -41,13 +42,13 @@
     UITabBarItem *item = [UITabBarItem appearance];
     //设置未选中状态tabbaritem字体颜色
     NSMutableDictionary *norDic = [NSMutableDictionary dictionary];
-    norDic[NSFontAttributeName] = [UIFont systemFontOfSize:12.0];
+    norDic[NSFontAttributeName] = [UIFont systemFontOfSize:PX_TO_PT(24)];
     norDic[NSForegroundColorAttributeName] = R_G_B_16(0x646464);
     [item setTitleTextAttributes:norDic forState:UIControlStateNormal];
     
     //设置选中状态tabbaritem字体颜色
     NSMutableDictionary *selDic = [NSMutableDictionary dictionary];
-    selDic[NSFontAttributeName] = [UIFont systemFontOfSize:12.0];
+    selDic[NSFontAttributeName] = [UIFont systemFontOfSize:PX_TO_PT(24)];
     selDic[NSForegroundColorAttributeName] = R_G_B_16(0x00b38a);
     [item setTitleTextAttributes:selDic forState:UIControlStateSelected];
 

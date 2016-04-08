@@ -19,6 +19,8 @@
 #import "XNRFerViewController.h"
 #import "XNRCarSelect.h"
 #import "XNRHomeSelectBrandView.h"
+#define kStoreAppId  @"1021223448"  // （appid数字串）
+
 @interface XNRHomeController ()<UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,UICollectionViewDelegate,XNRHomeCollectionHeaderViewAddBtnDelegate,XNRFerSelectAddBtnDelegate>
 {
     NSMutableArray *_huafeiArr; //化肥数据
@@ -50,8 +52,36 @@
     
     //接收登录界面传递的页面刷新通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dealPageRefresh) name:@"PageRefresh" object:nil];
+    
+    // 获得当前软件的版本号
+    NSString *versionKey = @"CFBundleVersion";
+    NSString *currentVersion = [NSBundle mainBundle].infoDictionary[versionKey];
+    // 提示更新
+    [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion} success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:result[@"message"]delegate:self cancelButtonTitle:@"取消"otherButtonTitles:@"更新",nil];
+            [alert show];
+            
+        }
+        
+        } failure:^(NSError *error) {
+        
+    }];
+
 
 }
+
+- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex==1)
+    {
+        // 此处加入应用在app store的地址，方便用户去更新，一种实现方式如下：
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://itunes.apple.com/cn/app/xin-xin-nong-ren-hu-lian-wang/id%@?l=en&mt=8", kStoreAppId]];
+        [[UIApplication sharedApplication] openURL:url];
+    }
+}
+
 
 #pragma mark - 页面刷新
 - (void)dealPageRefresh
@@ -94,7 +124,7 @@
 -(void)setNavigationbarBtn{
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:24];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
     titleLabel.textColor = R_G_B_16(0xfbffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"新新农人";
@@ -177,7 +207,7 @@
 }
 
 
-#pragma mark-获取轮播数据
+#pragma mark - 获取轮播数据
 -(void)getCircleData{
     [KSHttpRequest post:KHomeGetAdList parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
        

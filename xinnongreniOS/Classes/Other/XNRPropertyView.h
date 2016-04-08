@@ -10,9 +10,10 @@
 typedef enum : NSUInteger {
     XNRFirstType,
     XNRSecondType,
+    XNRisFormType,
 } XNRPropertyViewType ;
 
-typedef void(^XNRPropertyViewBlock)(NSMutableArray *dataArray,CGFloat totalPrice);
+typedef void(^XNRPropertyViewBlock)(NSMutableArray *dataArray,CGFloat totalPrice,NSString *totalNum);
 
 typedef void(^XNRPropertyViewValueBlock)(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice);
 
@@ -22,9 +23,11 @@ typedef void(^XNRPropertyViewLoginBlock)();
 
 @interface XNRPropertyView : UIView
 
--(void)show:(XNRPropertyViewType)buyType;
+//单例
++(id)sharedInstanceWithModel:(XNRShoppingCartModel *)shopcarModel;
+- (void)changeSelfToIdentify;
 
--(instancetype)initWithFrame:(CGRect)frame model:(XNRShoppingCartModel *)shopcarModel andType:(XNRPropertyViewType)type;
+-(void)show:(XNRPropertyViewType)buyType;
 
 @property (nonatomic, copy) XNRPropertyViewBlock com;
 

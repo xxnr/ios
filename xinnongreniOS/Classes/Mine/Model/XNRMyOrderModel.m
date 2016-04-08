@@ -14,4 +14,17 @@
 {
     
 }
+- (NSMutableArray *)attributes {
+    if (!_attributes) {
+        _attributes = [NSMutableArray array];
+    }
+    return _attributes;
+}
+- (NSMutableArray *)additions {
+    if (!_additions) {
+        _additions = [NSMutableArray array];
+    }
+    return _additions;
+}
+
 @end

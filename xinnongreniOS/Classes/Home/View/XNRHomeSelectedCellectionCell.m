@@ -26,10 +26,10 @@
     
     UILabel *itemTitleLabel = [[UILabel alloc] init];
     itemTitleLabel.frame = self.bounds;
-    itemTitleLabel.layer.cornerRadius = 5.0;
+    itemTitleLabel.layer.cornerRadius = PX_TO_PT(10);
     itemTitleLabel.layer.masksToBounds = YES;
     itemTitleLabel.textColor = R_G_B_16(0x646464);
-    itemTitleLabel.font = [UIFont systemFontOfSize:12.0];
+    itemTitleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     itemTitleLabel.textAlignment = NSTextAlignmentCenter;
     itemTitleLabel.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     itemTitleLabel.layer.borderWidth = .5;
@@ -59,7 +59,7 @@
 @property (nonatomic ,strong) NSArray *section2Params;
 
 @property(nonatomic, strong) NSArray *section3Items;
-@property (nonatomic, strong)NSArray *Section3Params;
+@property (nonatomic, strong)NSArray *section3Params;
 @end
 
 @implementation XNRHomeSelectedBrandItem
@@ -129,9 +129,9 @@
 {
     if (!_section3Items) {
         if (self.dataType == eXNRFerType) {
-            _section3Items = @[@"全部",@"0-1000元",@"1000-2000元",@"2000-3000元",@"3000元以上"];
-        }else{
-            _section3Items = @[@"全部",@"0-5万元",@"5-6万元",@"6-7万元",@"7万元以上"];
+            _section3Items = @[@"0-1000元",@"1000-2000元",@"2000-3000元",@"3000元以上"];
+        }else if (self.dataType == eXNRCarType){
+            _section3Items = @[@"0-5万元",@"5-6万元",@"6-7万元",@"7万元以上"];
         }
     }
     return _section3Items;
@@ -140,14 +140,14 @@
 
 -(NSArray *)section3Params
 {
-    if (!_Section3Params) {
+    if (!_section3Params) {
         if (self.dataType == eXNRFerType) {
-            _Section3Params = @[[NSNull null],@"0,1000",@"1000,2000",@"2000,3000",@"3000,1000000"];
+            _section3Params = @[@"0,1000",@"1000,2000",@"2000,3000",@"3000,1000000"];
         }else if (self.dataType == eXNRCarType){
-            _Section3Params = @[[NSNull null],@"0,50000",@"50000,60000",@"60000,70000",@"70000,1000000"];
+            _section3Params = @[@"0,50000",@"50000,60000",@"60000,70000",@"70000,1000000"];
         }
     }
-    return _Section3Params;
+    return _section3Params;
 
     
 }
@@ -169,7 +169,7 @@
         self.titleParam = [self.section2Params objectAtIndex:indexPath.item];
     }
     else {
-        self.titleParam = [self.Section3Params objectAtIndex:indexPath.item];
+        self.titleParam = [self.section3Params objectAtIndex:indexPath.item];
     }
     self.category = indexPath.section + 1;
     //    if (indexPath.item == 0) {
@@ -194,6 +194,7 @@
         self.brandName = model.titleStr;
         self.titleStr = model.titleStr;
         self.titleParam = model.titleStr;
+        self.isSelected = model.isSelected;
     }
     _indexPath = indexPath;
 }
@@ -206,16 +207,17 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self == [super initWithFrame:frame]) {
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
-        titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+//        UILabel *titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
+        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(35), 0, ScreenWidth - PX_TO_PT(35), self.bounds.size.height)];
+        titleLabel.font = [UIFont boldSystemFontOfSize:PX_TO_PT(26)];
         titleLabel.textColor = R_G_B_16(0x646464);
         titleLabel.backgroundColor = [UIColor clearColor];
         self.selectTitleLabel = titleLabel;
         [self addSubview:self.selectTitleLabel];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(titleLabel.frame)-PX_TO_PT(20), ScreenWidth, PX_TO_PT(2))];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-        [self addSubview:lineView];
+//        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(titleLabel.frame)-PX_TO_PT(20), ScreenWidth, PX_TO_PT(2))];
+//        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+//        [self addSubview:lineView];
     }
     return self;
 }

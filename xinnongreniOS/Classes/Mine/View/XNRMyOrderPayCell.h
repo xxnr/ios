@@ -8,10 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "XNRMyOrderModel.h"
+@class XNRMyAllOrderFrame;
 
 @interface XNRMyOrderPayCell : UITableViewCell
 
 @property (nonatomic,strong) XNRMyOrderModel*info;
 @property (nonatomic,copy)   void(^checkOrderBlock)(NSString*orderID);
-- (void)setCellDataWithShoppingCartModel:(XNRMyOrderModel*)info;
+
+@property (nonatomic, strong) XNRMyAllOrderFrame *orderFrame;
+
+
+@property (nonatomic ,strong) NSMutableArray *attributesArray;
+
+@property (nonatomic ,strong) NSMutableArray *addtionsArray;
+
 @end

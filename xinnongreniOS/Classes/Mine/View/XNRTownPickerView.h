@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef void(^XNRTownPickerViewBlock)(NSString *townName,NSString *townId);
+typedef void(^XNRTownPickerViewBlock)(NSString *townName,NSString *townId,NSString *town_id);
 
 typedef enum : NSUInteger {
     eLeftBtnType,

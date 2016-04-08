@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^XNRMobNickNameControllerBlock)(NSString *nickName);
+
+
 @interface XNRMobNickNameController : UIViewController
+
+
+@property (nonatomic, copy) XNRMobNickNameControllerBlock com;
 
 @end

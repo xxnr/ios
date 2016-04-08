@@ -9,15 +9,15 @@
 #import "XNRHomeSelectBrandView.h"
 #import "XNRHomeSelectedCellectionCell.h"
 #import "XNBrandsModel.h"
+#import "XNRCollectionViewFlowLayout.h"
 
-
-#define coll_cell_margin 20
-#define row_cell_margin 10
+#import "XNRSelectItemArrModel.h"
+#define coll_cell_margin PX_TO_PT(35)
+#define row_cell_margin PX_TO_PT(29)
 #define cellId @"selected_cell"
 #define headerViewId @"selectedHeaderView"
-
-#define initialRect CGRectMake(0,  -[UIScreen mainScreen].bounds.size.height + 44+ 64, [UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height - 64.0)
-#define displayRect CGRectMake(0, 44, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64.0-44)
+#define initialRect CGRectMake(0,  -[UIScreen mainScreen].bounds.size.height + PX_TO_PT(89) + 64, [UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height - 64.0)
+#define displayRect CGRectMake(0, PX_TO_PT(89) , [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64.0 - PX_TO_PT(89))
 
 @interface XNRHomeSelectBrandView ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 {
@@ -46,22 +46,30 @@
 
 @property (nonatomic, strong)NSArray *param;//
 
+
 @property (nonatomic, strong)NSMutableArray *kinds;
 
 @property (nonatomic, strong)NSMutableDictionary *currentTx;
 
 @property (nonatomic, strong)NSString *currentCategory;
 
+@property (nonatomic,strong)NSMutableArray *isSel;
+
+@property (nonatomic,strong)NSArray *getSel;
+
+@property (nonatomic,assign)BOOL isfirst;
+
+@property (nonatomic,assign)BOOL ItemDisEnabled;
 @end
 
 @implementation XNRHomeSelectBrandView
 
-
-+ (void)showSelectedBrandViewWith:(brandViewBlock)com andTarget:(UIView *)target andType:(XNRType)type andParam:(NSArray *)param {
++ (void)showSelectedBrandViewWith:(brandViewBlock)com andTarget:(UIView *)target andType:(XNRType)type andParam:(NSArray *)param andShowTx:(NSArray *)txarr andkind:(NSString *)kind{
     
-    XNRHomeSelectBrandView *selectedView = [[XNRHomeSelectBrandView alloc] initWithFrame:initialRect andType:type and:param];
+    XNRHomeSelectBrandView *selectedView = [[XNRHomeSelectBrandView alloc] initWithFrame:initialRect andType:type and:param and:txarr andkind:kind];
     selectedView.com = com;
     selectedView.tag = 10240;
+    target.backgroundColor = [UIColor whiteColor];
     [target addSubview:selectedView];
     
     [UIView animateWithDuration:0.3 animations:^{
@@ -95,30 +103,55 @@
     
 }
 
+
 - (NSMutableArray *)selecteItemArr {
     if (!_selecteItemArr) {
         _selecteItemArr = [NSMutableArray array];
+        
     }
     return _selecteItemArr;
 }
-- (instancetype)initWithFrame:(CGRect)frame andType:(XNRType)type and:(NSArray *)param {
+- (instancetype)initWithFrame:(CGRect)frame andType:(XNRType)type and:(NSArray *)param and:(NSArray *)txarr andkind:(NSString *)kind{
     if (self == [super initWithFrame:frame]) {
-        
+
         self.resArr = [NSMutableArray array];
         self.gxArr = [NSMutableArray array];
         self.txArr = [NSMutableArray array];
-        self.kinds = [NSMutableArray array];
-        self.currentTx = [NSMutableDictionary dictionary];
+        [self.txArr setArray:txarr];
+        self.kinds = [NSMutableArray arrayWithCapacity:2];
+        
+        [self.kinds addObject:@"型号"];
+        [self.kinds addObject:@"车系"];
 
+        self.isSel = [NSMutableArray array];
+        self.getSel = [NSArray array];
+        self.getSel = param;
+
+        self.currentTx = [NSMutableDictionary dictionary];
+        
         self.backgroundColor = R_G_B_16(0xf0f0f0);
         self.loadType = type;
         _param = param;
         [self createView];
         [self getCategorys];
         
+        
+        
     }
     return self;
 }
+//-(void)topView
+//{
+//    UIButton *but = [[UIButton alloc]initWithFrame:CGRectMake(0, 64, ScreenWidth, 44)];
+//    [but addTarget:self action:@selector(topClicked:) forControlEvents:UIControlEventTouchDown];
+//    [self addSubview:but];
+//}
+//-(void)topClicked:(UIButton *)sender
+//{
+//    if (self.com) {
+//        self.com()
+//    }
+//}
 -(void)getCategorys
 {
     [KSHttpRequest get:KHomeCategories parameters:nil success:^(id result) {
@@ -129,7 +162,23 @@
             }
             
             _param = [NSArray array];
-            [self getDataWith:_param];
+            
+            if ([XNRSelectItemArrModel defaultModel].XNRSelectItemArr.count > 0) {
+                NSMutableArray* mutArr = [NSMutableArray arrayWithArray:[XNRSelectItemArrModel defaultModel].XNRSelectItemArr];
+                
+                _currentTx = [NSMutableDictionary dictionaryWithDictionary:[XNRSelectItemArrModel defaultModel].XNRSelectItemDict];
+                
+//                _resArr = [mutArr objectAtIndex:0];
+//                _gxArr = [mutArr objectAtIndex:1];
+//                _txArr = [mutArr objectAtIndex:2];
+                _resArr = [NSMutableArray arrayWithArray:[mutArr objectAtIndex:0]];
+                _gxArr = [NSMutableArray arrayWithArray:[mutArr objectAtIndex:1]];
+                _txArr = [NSMutableArray arrayWithArray:[mutArr objectAtIndex:2]];
+//                [self.collectionView reloadData];
+            }
+
+                [self getDataWith:_param];
+            
         }
     } failure:^(NSError *error) {
         
@@ -141,71 +190,147 @@
     if (self.loadType == eXNRFerType) {
 
         self.currentCategory = _categorys[1];
-        NSString *url = [NSString stringWithFormat:@"%@/brands?category=%@",KHomeProducts,_categorys[1]];
-        [KSHttpRequest get:url parameters:nil success:^(id result) {
+        
+        // 获取化肥类别的属性
+        NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
+        [param setObject:_categorys[1] forKey:@"category"];
+        [param setObject:@"0" forKey:@"brand"];
+        [KSHttpRequest get:KBrands parameters:param success:^(id result) {
             
-            self.resArr = [NSMutableArray array];
+            
             if ([result[@"code"] integerValue] == 1000) {
-                NSArray *Farray = result[@"datas"];
-                for (NSDictionary *dicts in Farray) {
-                    XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
-                    [model setValuesForKeysWithDictionary:dicts];
-                    
-                    [self.resArr addObject:model];
-                }
-            }
-            
-            for (int i = 0; i < 2; i++) {
-                NSMutableArray *sectionDataArr = [NSMutableArray array];
-                if (i == 0)
+                
+                
+                NSArray *brands = result[@"brands"];
+                int i = 0;
+                for (NSDictionary *dicts in brands)
                 {
-                    XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc] init];
-                    itemData.titleStr = @"全部";
-                    itemData.isSelected = YES;
-                    itemData.titleParam = @"";
-                    itemData.indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-                    [sectionDataArr addObject:itemData];
-                }
-
-                int sectionCoutn = i == 0 ? (int)self.resArr.count : 5;
-                for (int j = 0; j < sectionCoutn; j++) {
-                    XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc] init];
-                    itemData.dataType = eXNRFerType;
+                    i++;
+                    XNRHomeSelectedBrandItem *model = [[XNRHomeSelectedBrandItem alloc] init];
+                    model.brandsId = dicts[@"_id"];
+                    model.titleStr = dicts[@"name"];
                     
-                    if (i==0) {
-                        if (self.resArr.count > 0) {
-                            [itemData exchangeResModelToItemWith:[self.resArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
+                    BOOL b = false;
+                    for (XNRHomeSelectedBrandItem* Bmodel in self.resArr) {
+                        if ([Bmodel.brandsId isEqualToString:model.brandsId]) {
+                            b = YES;
                         }
                     }
-                    //                    else if( i == 1)
-                    //                    {
-                    //                        [KSHttpRequest get:[NSString stringWithFormat:@"%@/brands?category=化肥&brand=0",KHomeProducts] parameters:nil success:^(id result) {
-                    //                            if ([result[@"code"] integerValue] == 1000) {
-                    //                                NSArray *att = result[@"attributes"];
-                    //                                NSDictionary *dic = att[0];
-                    //                                NSString *name = dic[@"_id"][@"name"];
-                    //                                NSArray *values = dic[@"values"];
-                    //                                [itemData exchangeResModelToItemWith:[values objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
-                    //                            }
-                    //                        } failure:^(NSError *error) {
-                    //
-                    //                        }];
-                    //                    }
-                    else
-                    {
-                        itemData.indexPath = [NSIndexPath indexPathForItem:j inSection:i];
+                    if (!b) {
+                        [self.resArr addObject:model];
                     }
-                    [sectionDataArr addObject:itemData];
+                    
                 }
-                [self.selecteItemArr addObject:sectionDataArr];
+                
+                //获取化肥类别的共有属性
+                [KSHttpRequest get:KAttibutes parameters:param success:^(id result) {
+                    if ([result[@"code"]integerValue] == 1000) {
+                        NSArray *arr = result[@"attributes"];
+                        
+                        NSArray *values = arr[0][@"values"];
+                        for (NSString *str in values) {
+                            XNRHomeSelectedBrandItem *model = [[XNRHomeSelectedBrandItem alloc]init];
+                            model.titleStr = str;
+                            
+                            BOOL b = false;
+                            for (XNRHomeSelectedBrandItem* Bmodel in self.gxArr) {
+                                if ([Bmodel.titleStr isEqualToString:model.titleStr]) {
+                                    b = YES;
+                                }
+                            }
+                            if (!b) {
+                                [self.gxArr addObject:model];
+                            }
+                            
+                        }
+//                        self.kinds[0] =arr[0][@"_id"][@"name"];
+//                        [self.kinds addObject:arr[0][@"_id"][@"name"]];
+                        [self.kinds setObject:arr[0][@"_id"][@"name"] atIndexedSubscript:0];
+                        //                        [self.gxArr setArray:arr[0][@"values"]];
+                        
+                        
+                        //把各数组添加到self.selecteItemArr 数组中
+                        for (int i = 0; i < 4; i++) {
+                            NSMutableArray *sectionDataArr = [NSMutableArray array];
+                            
+                            NSInteger sectionCoutn;
+                            if (i == 0) {
+                                sectionCoutn = self.resArr.count;
+                            }
+                            else if (i == 1)
+                            {
+                                sectionCoutn = self.gxArr.count;
+                            }
+                            else if(i == 2)
+                            {
+                                sectionCoutn = self.txArr.count;
+                                
+                            }
+                            else
+                            {
+                                sectionCoutn = 4;
+                            }
+                            for (int j = 0; j < sectionCoutn; j++) {
+                                XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc] init];
+                                itemData.dataType = eXNRFerType;
+                                
+                                if (i==0) {
+                                    //
+                                    if (self.resArr.count > 0) {
+                                        [itemData exchangeResModelToItemWith:[self.resArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j inSection:i]];
+                                    }
+                                }
+                                else if (i == 1)
+                                {
+                                    //
+                                    if (self.gxArr.count > 0)
+                                    {
+                                        [itemData exchangeResModelToItemWith:[self.gxArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j inSection:i]];
+                                    }
+                                }
+                                else if (i == 2)
+                                {
+                                    
+                                    if (self.txArr.count > 0) {
+                                        [itemData exchangeResModelToItemWith:[self.txArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j inSection:i]];
+                                    }
+                                }
+                                else if (i == 3)
+                                {
+                                    itemData.indexPath = [NSIndexPath indexPathForItem:j inSection:i];
+                                    
+                                    if ([XNRSelectItemArrModel defaultModel].XNRSelectItemArr.count > 0) {
+                                        XNRHomeSelectedBrandItem* item =
+                                        [[[XNRSelectItemArrModel defaultModel].XNRSelectItemArr objectAtIndex:3] objectAtIndex:j];
+                                        
+                                        itemData.isSelected = item.isSelected;
+                                    }
+
+                                }
+                                [sectionDataArr addObject:itemData];
+                            }
+                            [self.selecteItemArr addObject:sectionDataArr];
+                        }
+                    }
+                    [self configSearchAndSelectViewWith:params];
+                    
+                    [self.collectionView reloadData];
+                    
+                } failure:^(NSError *error) {
+                    
+                }];
+                
+                
+                [self configSearchAndSelectViewWith:params];
+                
+                [self.collectionView reloadData];
             }
             
-            [self configSearchAndSelectViewWith:params];
-            [self.collectionView reloadData];
+            
+            
         } failure:^(NSError *error) {
             
         }];
-        
         
     }
     
@@ -231,7 +356,17 @@
                     XNRHomeSelectedBrandItem *model = [[XNRHomeSelectedBrandItem alloc] init];
                     model.brandsId = dicts[@"_id"];
                     model.titleStr = dicts[@"name"];
-                    [self.resArr addObject:model];
+                    
+                    BOOL b = false;
+                    for (XNRHomeSelectedBrandItem* Bmodel in self.resArr) {
+                        if ([Bmodel.brandsId isEqualToString:model.brandsId]) {
+                            b = YES;
+                        }
+                    }
+                    if (!b) {
+                        [self.resArr addObject:model];
+                    }
+                    
                     
                 }
                 
@@ -245,24 +380,29 @@
                             XNRHomeSelectedBrandItem *model = [[XNRHomeSelectedBrandItem alloc]init];
                             model.titleStr = str;
                             
-                            [self.gxArr addObject:model];
+                            BOOL b = false;
+                            for (XNRHomeSelectedBrandItem* Bmodel in self.gxArr) {
+                                if ([Bmodel.titleStr isEqualToString:model.titleStr]) {
+                                    b = YES;
+                                }
+                            }
+                            if (!b) {
+                                [self.gxArr addObject:model];
+                            }
+
                             
                         }
-                        [self.kinds addObject:arr[0][@"_id"][@"name"]];
+//                        self.kinds[0] =arr[0][@"_id"][@"name"];
+                        [self.kinds setObject:arr[0][@"_id"][@"name"] atIndexedSubscript:0];
+
+//                        [self.kinds addObject:arr[0][@"_id"][@"name"]];
 //                        [self.gxArr setArray:arr[0][@"values"]];
                         
                         
                         //把品牌 车型 价格各数组添加到self.selecteItemArr 数组中
                         for (int i = 0; i < 4; i++) {
                             NSMutableArray *sectionDataArr = [NSMutableArray array];
-                            //                if (i == 0) {
-                            //                    XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc] init];
-                            //                    itemData.titleStr = @"全部";
-                            //                    itemData.isSelected = YES;
-                            //                    itemData.titleParam = @"";
-                            //                    itemData.indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-                            //                    [sectionDataArr addObject:itemData];
-                            //                }
+    
                             NSInteger sectionCoutn;
                             if (i == 0) {
                                 sectionCoutn = self.resArr.count;
@@ -273,12 +413,12 @@
                             }
                             else if(i == 2)
                             {
-                                sectionCoutn = 0;
+                                sectionCoutn = self.txArr.count;
                                 
                             }
                             else
                             {
-                                sectionCoutn = 5;
+                                sectionCoutn = 4;
                             }
                             for (int j = 0; j < sectionCoutn; j++) {
                                 XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc] init];
@@ -287,7 +427,7 @@
                                 if (i==0) {
                                     //
                                     if (self.resArr.count > 0) {
-                                        [itemData exchangeResModelToItemWith:[self.resArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
+                                        [itemData exchangeResModelToItemWith:[self.resArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j inSection:i]];
                                     }
                                 }
                                 else if (i == 1)
@@ -295,25 +435,37 @@
                                     //
                                     if (self.gxArr.count > 0)
                                     {
-                                        [itemData exchangeResModelToItemWith:[self.gxArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
+                                        [itemData exchangeResModelToItemWith:[self.gxArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j inSection:i]];
                                     }
                                 }
                                 else if (i == 2)
                                 {
 
                                     if (self.txArr.count > 0) {
-                                        [itemData exchangeResModelToItemWith:[self.txArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j+1 inSection:i]];
+                                        [itemData exchangeResModelToItemWith:[self.txArr objectAtIndex:j] andIndexPath:[NSIndexPath indexPathForItem:j inSection:i]];
                                     }
                                 }
                                 else if (i == 3)
                                 {
                                     itemData.indexPath = [NSIndexPath indexPathForItem:j inSection:i];
+                                    
+                                    if ([XNRSelectItemArrModel defaultModel].XNRSelectItemArr.count > 0) {
+                                        XNRHomeSelectedBrandItem* item =
+                                        [[[XNRSelectItemArrModel defaultModel].XNRSelectItemArr objectAtIndex:3] objectAtIndex:j];
+                                        
+                                        itemData.isSelected = item.isSelected;
+                                    }
+                                    
                                 }
                                 [sectionDataArr addObject:itemData];
                             }
+
                             [self.selecteItemArr addObject:sectionDataArr];
                         }
+//                        [self tx];
+
                     }
+
                     [self configSearchAndSelectViewWith:params];
                     
                     [self.collectionView reloadData];
@@ -328,7 +480,7 @@
                 [self.collectionView reloadData];
             }
 
-            
+//            [self tx];
             
         } failure:^(NSError *error) {
             
@@ -354,90 +506,104 @@
 
 - (void)createView {
     
+//    XNRCollectionViewFlowLayout *collectionViewLayout = [[XNRCollectionViewFlowLayout alloc]init];
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+
+//    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, PX_TO_PT(1002)) collectionViewLayout:collectionViewLayout];
+
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height - PX_TO_PT(120)-PX_TO_PT(89)) collectionViewLayout:collectionViewLayout];
     
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, self.bounds.size.height - PX_TO_PT(300)) collectionViewLayout:collectionViewLayout];
-
     collectionView.delegate = self;
     collectionView.dataSource = self;
     [collectionView registerClass:[XNRHomeSelectedBrandHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewId];
     [collectionView registerClass:[XNRHomeSelectedCellectionCell class] forCellWithReuseIdentifier:cellId];
     collectionView.backgroundColor = [UIColor clearColor];
+
     self.collectionView = collectionView;
     self.collectionView.collectionViewLayout = collectionViewLayout;
+
     [self addSubview:self.collectionView];
     
     //TODO:加btn
-    CGFloat w = (self.bounds.size.width-3*coll_cell_margin)/2;
+//    CGFloat w = (self.bounds.size.width-3*coll_cell_margin)/2;
+    
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.collectionView.frame), ScreenWidth, PX_TO_PT(120))];
+    view.backgroundColor = [UIColor whiteColor];
+    [self addSubview:view];
+    
     UIButton *resetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
-    resetBtn.frame = CGRectMake(PX_TO_PT(32),PX_TO_PT(980),w,w/4);
+    resetBtn.frame = CGRectMake(PX_TO_PT(29),PX_TO_PT(29),PX_TO_PT(269),PX_TO_PT(61));
 
-    resetBtn.titleLabel.font = XNRFont(14);
-    resetBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
+    resetBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    resetBtn.layer.borderColor = R_G_B_16(0x66d1b9).CGColor;
+
     resetBtn.layer.borderWidth = 1.0;
     resetBtn.layer.cornerRadius = 5.0;
     resetBtn.layer.masksToBounds = YES;
     [resetBtn setTitle:@"重置" forState:UIControlStateNormal];
     [resetBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
-    [resetBtn setTitleColor:R_G_B_16(0xfbffff) forState:UIControlStateHighlighted];
-    [resetBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#ffffff"]] forState:UIControlStateNormal];
-    [resetBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateHighlighted];
+    [resetBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [resetBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#FFFFFF"]] forState:UIControlStateNormal];
+    [resetBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
     [resetBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.resetBtn = resetBtn;
-    [self addSubview:resetBtn];
+    [view addSubview:resetBtn];
     
     UIButton *admireBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    admireBtn.frame = CGRectMake(CGRectGetMaxX(self.resetBtn.frame) + coll_cell_margin, PX_TO_PT(980),w , w/4);
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
-    admireBtn.titleLabel.font = XNRFont(14);
-    admireBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
-    admireBtn.layer.borderWidth = 1.0;
+    admireBtn.frame = CGRectMake(CGRectGetMaxX(self.resetBtn.frame) + PX_TO_PT(39), PX_TO_PT(29),PX_TO_PT(383) , PX_TO_PT(61));
+    admireBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+//    admireBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
+//    admireBtn.layer.borderWidth = 1.0;
     admireBtn.layer.cornerRadius = 5.0;
     admireBtn.layer.masksToBounds = YES;
     [admireBtn setTitle:@"确定" forState:UIControlStateNormal];
-    [admireBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
-    [admireBtn setTitleColor:R_G_B_16(0xfbffff) forState:UIControlStateHighlighted];
-    [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#ffffff"]] forState:UIControlStateNormal];
-    [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateHighlighted];
+    [admireBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+    [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00B38A"]] forState:UIControlStateNormal];
+    [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
     [admireBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.admireBtn = admireBtn;
-    [self addSubview:admireBtn];
+//    [self addSubview:admireBtn];
+    [view addSubview:admireBtn];
 }
 
 -(void)btnClick:(UIButton *)button
 {
     if (button == self.resetBtn) {
-        for (XNRHomeSelectedBrandItem *item in _selecteItemArr[0]) {
+        
+        [self.selecteItemArr[2] removeAllObjects];
+
+        [self.txArr removeAllObjects];
+        [self.resArr removeAllObjects];
+        [self.gxArr removeAllObjects];
+        
+        for (int i=0; i<_selecteItemArr.count;i++)
+        {
+        for (XNRHomeSelectedBrandItem *item in _selecteItemArr[i]) {
             item.isSelected = NO;
         }
-        for (XNRHomeSelectedBrandItem *item in _selecteItemArr[1]) {
-            item.isSelected = NO;
         }
-        XNRHomeSelectedBrandItem *item1 = _selecteItemArr[0][0];
-        XNRHomeSelectedBrandItem *item2 = _selecteItemArr[1][0];
-        item1.isSelected = YES;
-        item2.isSelected = YES;
+        
+//        [[XNRSelectItemArrModel defaultModel] cancel];
         
         [self.collectionView reloadData];
         
     }else if(button == self.admireBtn){
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"selectBtnChange" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"x" object:nil];
         [self loadSeletedDataWith:nil];
         [self cancel];
         
+        if (_selecteItemArr) {
+            
+            
+            [XNRSelectItemArrModel defaultModel].XNRSelectItemArr = [[NSMutableArray alloc]initWithArray:_selecteItemArr];
+            
+            [XNRSelectItemArrModel defaultModel].XNRSelectItemDict = [[NSMutableDictionary alloc] initWithDictionary:self.currentTx];
+
+        }
     }
     
     
@@ -459,6 +625,14 @@
     
     if (self.selecteItemArr.count > 0) {
         XNRHomeSelectedBrandItem *itemData = [self.selecteItemArr[indexPath.section] objectAtIndex:indexPath.item];
+
+        
+//        if (_isfirst == NO) {
+//            if ([_getSel containsObject:indexPath]) {
+//                itemData.isSelected = YES;
+//            }
+//        }
+        
         XNRHomeSelectedCellectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
         [cell updateCellStateAndDataWith:itemData];
         return cell;
@@ -466,22 +640,21 @@
         return [[UICollectionViewCell alloc] init];
     }
 }
-
+//
 //delegate
 //选择了某个cell
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    _isfirst = YES;
+    
+
+//    [self.currentTx setObject:self.txArr forKey:selectedItem.brandsId];
+
     XNRHomeSelectedBrandItem *selectedItem = [self.selecteItemArr[indexPath.section] objectAtIndex:indexPath.item];
-//    NSArray *arr = self.selecteItemArr[indexPath.section];
-//    for (XNRHomeSelectedBrandItem *cellItem in arr) {
-//        if (cellItem.isSelected && ) {
-//            cellItem.isSelected = NO;
-//        }
-//    }
     
     if (indexPath.section == 3) {
             NSArray *arr = self.selecteItemArr[indexPath.section];
             for (XNRHomeSelectedBrandItem *cellItem in arr) {
-                if (cellItem.isSelected) {
+                if (cellItem.isSelected && cellItem != selectedItem) {
                     cellItem.isSelected = NO;
                 }
             }
@@ -493,48 +666,71 @@
     else
     {
         selectedItem.isSelected = YES;
-    }
-    if (indexPath.section == 0 && selectedItem.isSelected == YES) {
         
+    }
+    if (indexPath.section == 0 && selectedItem.isSelected == YES  && !_ItemDisEnabled) {
+        
+        _ItemDisEnabled = YES;
+        
+//        self.currentCategory = _categorys[0];
         //  获取特有属性
         [KSHttpRequest get:KAttibutes parameters:@{@"category":self.currentCategory,@"brand":selectedItem.brandsId} success:^(id result) {
             NSMutableArray *txs = [NSMutableArray array];
             if ([result[@"code"] integerValue] == 1000) {
                 NSArray *arr = result[@"attributes"];
-                [self.kinds addObject: arr[0][@"_id"][@"name"] ];
+                
+                if (arr.count == 0) {
+                    return;
+                }
+                //                self.kinds[1] =arr[0][@"_id"][@"name"];
+                [self.kinds setObject:arr[0][@"_id"][@"name"] atIndexedSubscript:1];
+                
+                //                [self.kinds addObject: arr[0][@"_id"][@"name"] ];
                 NSArray *values = arr[0][@"values"];
                 int i=0;
                 for (NSString *str in values) {
                     XNRHomeSelectedBrandItem *model = [[XNRHomeSelectedBrandItem alloc]init];
                     model.titleStr = str;
                     
-                     [model exchangeResModelToItemWith:model andIndexPath:[NSIndexPath indexPathForItem:i+1 inSection:2]];
+                    [model exchangeResModelToItemWith:model andIndexPath:[NSIndexPath indexPathForItem:i+1 inSection:2]];
                     [self.txArr addObject:model];
                     [txs addObject:model];
                     i++;
                 }
                 [self.selecteItemArr setObject:self.txArr atIndexedSubscript:2];
-                [self.currentTx setObject:txs forKey:selectedItem.brandsId];
-//                XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc]init];
-//                NSMutableArray *sectionDataArr = [NSMutableArray array];
-//                for (int i=0; i < self.txArr.count; i++) {
-//                    [itemData exchangeResModelToItemWith:[self.txArr objectAtIndex:i] andIndexPath:[NSIndexPath indexPathForItem:i+1 inSection:2]];
-//                    [sectionDataArr addObject:itemData];
-//                }
+                [self.currentTx setObject:txs forKey:selectedItem.titleParam];
+                //                XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc]init];
+                //                NSMutableArray *sectionDataArr = [NSMutableArray array];
+                //                for (int i=0; i < self.txArr.count; i++) {
+                //                    [itemData exchangeResModelToItemWith:[self.txArr objectAtIndex:i] andIndexPath:[NSIndexPath indexPathForItem:i+1 inSection:2]];
+                //                    [sectionDataArr addObject:itemData];
+                //                }
                 [self.collectionView reloadData];
-
+                _ItemDisEnabled = NO;
+                
             }
         } failure:^(NSError *error) {
             
         }];
-
+        
+       
     }
     else if (indexPath.section == 0 && selectedItem.isSelected == NO)
     {
-        NSArray *arr = [self.currentTx valueForKey:selectedItem.brandsId];
-        for (int i=0; i<arr.count; i++) {
-            [self.txArr removeObject:arr[i]];
+        NSArray *arr = [self.currentTx valueForKey:selectedItem.titleParam];
+//        for (int i=0; i<arr.count; i++) {
+//            [self.txArr removeObject:arr[i]];
+//        }
+        NSMutableArray *removeArr = [[NSMutableArray alloc]init];
+        for (XNRHomeSelectedBrandItem *txItem in self.txArr) {
+            for (XNRHomeSelectedBrandItem *item in arr) {
+                if ([txItem.titleStr isEqualToString:item.titleStr]) {
+                    [removeArr addObject:txItem];
+                }
+            }
         }
+        [self.txArr removeObjectsInArray:removeArr];
+        
         [self.selecteItemArr setObject:self.txArr atIndexedSubscript:2];
         [self.collectionView reloadData];
 
@@ -553,12 +749,13 @@
 //定义每个UICollectionViewCell 的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat cellW = (self.bounds.size.width-4*coll_cell_margin)/3;
-    currentSize = CGSizeMake(cellW,cellW / 3);
+    currentSize = CGSizeMake(cellW-1,cellW / 3);
+//    currentSize = CGSizeMake(PX_TO_PT(207), PX_TO_PT(61));
     return currentSize;
 }
 //定义每个Section 的 margin
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(0, 0, 0, 0);//分别为上、左、下、右
+    return UIEdgeInsetsMake(0, coll_cell_margin, 0, coll_cell_margin);//分别为上、左、下、右
 }
 //每个section中不同的行之间的行间距
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
@@ -597,23 +794,17 @@
             headerView.selectTitleLabel.text = @"价格";
 
         }
-//        if (self.loadType == eXNRFerType) {
-//            headerView.selectTitleLabel.text = indexPath.section==0?@"品牌":@"价格";
-//
-//        }else if (self.loadType == eXNRCarType){
-//            headerView.selectTitleLabel.text = indexPath.section==0?@"车系":@"价格";
-//
-//        }
         reusableview = headerView;
     }
     return reusableview;
 }////返回头headerView的大小
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
-    NSArray *arr = self.selecteItemArr[2];
+//    NSArray *arr = self.selecteItemArr[2];
+    NSArray *arr = self.txArr;
     if (section == 2 && arr.count == 0) {
         return CGSizeMake(ScreenWidth, 0);
     }
-    return CGSizeMake(self.bounds.size.width, 44.0);
+    return CGSizeMake(self.bounds.size.width, PX_TO_PT(115));
 }
 
 
@@ -636,33 +827,73 @@
     //TODO:上传要筛选的数据
     
     NSArray *arr0 = self.selecteItemArr[0];// 品牌
-    NSArray *arr1 = self.selecteItemArr[1];// 价格
+    NSArray *arr1 = self.selecteItemArr[1];// 共性
+    NSArray *arr2 = self.selecteItemArr[2];// 特性
+    NSArray *arr3 = self.selecteItemArr[3];//价格
+
     
-    NSString *brandReq= [[NSString alloc] init];
+    NSMutableArray *brandsArr = [NSMutableArray array];
+    NSMutableArray *gxArr = [NSMutableArray array];
+    NSMutableArray *txArr = [NSMutableArray array];
     NSString *priceReq;
-    NSIndexPath *indexPaht1 = [NSIndexPath indexPathForRow:0 inSection:0];
-    NSIndexPath *indexPath2 = [NSIndexPath indexPathForRow:0 inSection:1];
     
+    NSMutableArray *indexPath1Arr = [NSMutableArray array];
+    NSMutableArray *indexPath2Arr = [NSMutableArray array];
+    NSMutableArray *indexPath3Arr = [NSMutableArray array];
+    NSIndexPath *indexPath4;
+    BOOL isYes = NO;
     //0.品牌
     for (XNRHomeSelectedBrandItem *item in arr0) {
         if (item.isSelected) {
-            brandReq = item.titleParam;
-            indexPaht1 = item.indexPath;
-            
+            isYes = YES;
+            [brandsArr addObject:item.brandsId];
+            [indexPath1Arr addObject:item.indexPath];
         }
     }
-    
-    //1.价格
+    //1.
     for (XNRHomeSelectedBrandItem *item in arr1) {
         if (item.isSelected) {
-            priceReq = item.titleParam;
-            indexPath2 = item.indexPath;
+            isYes = YES;
+            [gxArr addObject:item.titleParam];
+            [indexPath2Arr addObject:item.indexPath];
         }
     }
-    NSLog(@"%@====%@",brandReq,priceReq);
     
+    for (XNRHomeSelectedBrandItem *item in arr2) {
+        if (item.isSelected) {
+            isYes = YES;
+            [txArr addObject: item.titleParam];
+            [indexPath3Arr addObject:item.indexPath];
+        }
+    }
+    for (XNRHomeSelectedBrandItem *item in arr3) {
+        if (item.isSelected) {
+            isYes = YES;
+            priceReq = item.titleParam;
+            indexPath4 = item.indexPath;
+        }
+    }
+    for (int i=0; i<_selecteItemArr.count; i++) {
+        NSArray *Arr = _selecteItemArr[i];
+        for (int j = 0; j<Arr.count; j++) {
+            XNRHomeSelectedBrandItem *item = _selecteItemArr[i][j];
+            if (item.isSelected == YES) {
+                [self.isSel addObject:item.indexPath];
+            }
+        }
+    }
+
+  
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"selectBtnChange" object:nil];
+    
+    if (isYes == NO)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"selectBtnChangeblack" object:nil];
+    }
+
+  
     if (self.com) {
-        self.com(brandReq,priceReq,@[indexPaht1,indexPath2]);
+        self.com(brandsArr,gxArr,txArr,priceReq,self.kinds,self.isSel,arr2);
     };
     
     

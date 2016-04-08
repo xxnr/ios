@@ -86,7 +86,6 @@
 - (BOOL)insertShoppingCarWithModel:(XNRShoppingCartModel *)model {
     NSLog(@"++++++++++新增商品:%@",model);
     NSDictionary *dic  = [model keyValues];
-    NSLog(@"------======+++++++%@",dic);
     return [store putObject:dic withId:model._id intoTable:tableName];
 }
 

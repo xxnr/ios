@@ -113,13 +113,13 @@
     UILabel *areaLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, PX_TO_PT(80), PX_TO_PT(98))];
     areaLabel.text = @"地区";
     areaLabel.textColor = R_G_B_16(0x323232);
-    areaLabel.font = XNRFont(15);
+    areaLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
     self.areaLabel = areaLabel;
     [addressBtn addSubview:areaLabel];
     
     UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.areaLabel.frame) + PX_TO_PT(32), 0, ScreenWidth-CGRectGetMaxX(self.areaLabel.frame) + PX_TO_PT(32), PX_TO_PT(98))];
     addressLabel.textColor = R_G_B_16(0x909090);
-    addressLabel.font = XNRFont(15);
+    addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
     if ([DataCenter account].province) {
         
         if ([DataCenter account].county) {
@@ -145,14 +145,14 @@
     
     UILabel *strLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, PX_TO_PT(80), PX_TO_PT(98))];
     strLabel.textColor = R_G_B_16(0x323232);
-    strLabel.font = XNRFont(15);
+    strLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
     strLabel.text = @"街道";
     self.strLabel = strLabel;
     [streetBtn addSubview:strLabel];
     
     UILabel *streetLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.strLabel.frame) + PX_TO_PT(32), 0, ScreenWidth-CGRectGetMaxX(self.strLabel.frame) + PX_TO_PT(32), PX_TO_PT(98))];
     streetLabel.textColor = R_G_B_16(0x909090);
-    streetLabel.font = XNRFont(15);
+    streetLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
     if ([DataCenter account].town) {
         streetLabel.text = [DataCenter account].town;
     }else{
@@ -186,7 +186,7 @@
     [self.townPickerView hide];
     [self.addressPickerView show];
     __weak __typeof(&*self)weakSelf = self;
-    self.addressPickerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId){
+    self.addressPickerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId,NSString *province_id,NSString *city_id,NSString *county_id){
         
         
         weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
@@ -215,7 +215,7 @@
     
     __weak __typeof(&*self)weakSelf = self;
 
-    self.townPickerView.com = ^(NSString *townName,NSString *townId){
+    self.townPickerView.com = ^(NSString *townName,NSString *townId,NSString *town_id){
         
         weakSelf.streetLabel.text = [NSString stringWithFormat:@"%@",townName];
         weakSelf.townID = townId;
@@ -264,7 +264,7 @@
 -(void)createNav{
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:24];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"修改所在地区";

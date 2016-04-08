@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface XNRMyRepresentViewController : UIViewController
+@property (nonatomic,assign)BOOL isBroker;
 
++(void)isfirstTab;
 @end

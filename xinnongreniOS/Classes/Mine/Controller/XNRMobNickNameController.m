@@ -40,7 +40,7 @@
     UITextField *nickNameTF = [[UITextField alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(98))];
     nickNameTF.borderStyle = UITextBorderStyleNone;
     nickNameTF.backgroundColor = R_G_B_16(0xffffff);
-    nickNameTF.font = XNRFont(18);
+    nickNameTF.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     nickNameTF.clearButtonMode = UITextFieldViewModeWhileEditing;
     nickNameTF.textAlignment = NSTextAlignmentLeft;
     nickNameTF.delegate = self;
@@ -61,7 +61,7 @@
     
     UILabel *warnLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.bgView.frame)+PX_TO_PT(24), ScreenWidth, PX_TO_PT(20))];
     warnLabel.text = @"限6个汉字或12个英文字符";
-    warnLabel.font = XNRFont(10);
+    warnLabel.font = [UIFont systemFontOfSize:PX_TO_PT(20)];
     warnLabel.textColor = R_G_B_16(0x323232);
     self.warnLabel = warnLabel;
     [self.view addSubview:warnLabel];
@@ -85,12 +85,10 @@
     }else{
         [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"nickName":self.nickNameTF.text,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
-                //更新成功保存本地
-                UserInfo *info = [DataCenter account];
-                info.nickname = self.nickNameTF.text;
-                [DataCenter saveAccount:info];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
+                // 传值
+                if (self.com) {
+                    self.com(self.nickNameTF.text);
+                }
                 [self.navigationController popViewControllerAnimated:YES];
             }else{
                
@@ -123,21 +121,11 @@
     self.finishBtn.backgroundColor = R_G_B_16(0xe0e0e0);
     return YES;
 }
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    
-    
-}
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    return YES;
-}
-
-
 
 -(void)createNav{
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:24];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"修改昵称";

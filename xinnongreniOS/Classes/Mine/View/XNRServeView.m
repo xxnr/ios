@@ -14,7 +14,10 @@
 #import "XNRMyOrderPayCell.h"
 #import "MJExtension.h"
 #import "XNROrderEmptyView.h"
-@interface XNRServeView()
+#import "XNRMyAllOrderFrame.h"
+#define MAX_PAGE_SIZE 10
+
+@interface XNRServeView()<XNROrderEmptyViewBtnDelegate>
 
 @property (nonatomic ,weak) UIView *headView;
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
@@ -23,14 +26,28 @@
 
 @end
 @implementation XNRServeView
+
+
 -(XNROrderEmptyView *)orderEmptyView
 {
     if (!_orderEmptyView) {
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
+        orderEmptyView.delegate = self;
+        orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
         [self addSubview:orderEmptyView];
     }
     return _orderEmptyView;
     
+}
+
+-(void)XNROrderEmptyView:(XNROrderEmptyViewbuySort)type
+{
+    if (type == XNROrderEmptyView_buyFer) {
+        
+    }else if (type == XNROrderEmptyView_buyCar){
+    
+    }
+
 }
 
 #pragma mark - 滑动到顶部按钮
@@ -48,11 +65,11 @@
     [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
     
 }
+
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     NSLog(@"%f",scrollView.contentOffset.y);
     if (scrollView.contentOffset.y == 0) {
-//        self.backtoTopBtn.hidden = YES;
         [self.backtoTopBtn removeFromSuperview];
     }else{
         self.backtoTopBtn.hidden = NO;
@@ -64,6 +81,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _currentPage = 1;
         _dataArr = [[NSMutableArray alloc]init];
         //获取数据
         [self getData];
@@ -71,10 +89,7 @@
         //创建订单
         [self createMainTableView];
         [self setupAllViewRefresh];
-        
-        
-        
-        
+
     }
     return self;
 }
@@ -116,14 +131,19 @@
     
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
     MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
+    
+    
+//    footer.automaticallyHidden = YES;
+    
     // 设置刷新图片
     [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
-    
     footer.refreshingTitleHidden = YES;
+
+    
     // 设置尾部
     self.tableView.mj_footer = footer;
     
-    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"reloadOrderList" object:nil];
     
 }
 -(void)headRefresh{
@@ -144,11 +164,10 @@
 - (void)getData
 {
     // typeValue说明：1未付款 ，2待发货，3已发货，4已收货  全部订单为空
-    [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid?[DataCenter account].userid:@"",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"typeValue":@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid?[DataCenter account].userid:@"",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"typeValue":@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datasDic = result[@"datas"];
             NSArray *rowsArr = datasDic[@"rows"];
-            
             for (NSDictionary *subDic in rowsArr) {
                 XNRMyOrderSectionModel *sectionModel = [[XNRMyOrderSectionModel alloc]init];
                 sectionModel.orderId = subDic[@"orderId"];
@@ -160,22 +179,54 @@
                 sectionModel.totalPrice = orders[@"totalPrice"];
                 sectionModel.deposit = orders[@"deposit"];
                 NSDictionary *orderStatus = orders[@"orderStatus"];
-                sectionModel.type = orderStatus[@"type"];
+                sectionModel.type = [orderStatus[@"type"] integerValue];
                 sectionModel.value = orderStatus[@"value"];
                 
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
-                [_dataArr addObject:sectionModel];
+                
+                sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
+                if (sectionModel.skus.count == 0) {
+                    for (XNRMyOrderModel *model in sectionModel.products) {
+                        XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
+                        // 把订单模型传递给frame模型
+                        orderFrame.orderModel = model;
+                        
+                        
+                        [sectionModel.orderFrameArray addObject:orderFrame];
+                        NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
+                    }
+
+                }else{
+                    for (XNRMyOrderModel *model in sectionModel.skus) {
+                        XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
+                        // 把订单模型传递给frame模型
+                        orderFrame.orderModel = model;
+                        
+                        [sectionModel.orderFrameArray addObject:orderFrame];
+                        NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
+                    }
+
+                
+                }
+                               [_dataArr addObject:sectionModel];
             }
                
 
         }
         
         //刷新列表
+        [self.tableView reloadData];
+        
+        if (_dataArr.count == 0) {
+            [self orderEmptyView];
+        }
+        
         //  如果到达最后一页 就消除footer
         NSInteger pages = [result[@"datas"][@"pages"] integerValue];
         NSInteger page = [result[@"datas"][@"page"] integerValue];
-        
+        NSLog(@"pages = %ld----page = %ld",pages,page);
         self.tableView.mj_footer.hidden = pages == page;
+            
         [self.tableView reloadData];
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
@@ -216,13 +267,13 @@
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(28), ScreenWidth/2, PX_TO_PT(32))];
         label.text = [NSString stringWithFormat:@"订单号 : %@",sectionModel.orderId];
         label.textColor = R_G_B_16(0x323232);
-        label.font = XNRFont(15);
+        label.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
         UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0,ScreenWidth/2-PX_TO_PT(32) , PX_TO_PT(89))];
         payTypeLabel.textColor = R_G_B_16(0xfe9b00);
-        payTypeLabel.font = [UIFont systemFontOfSize:14];
+        payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         payTypeLabel.textAlignment = NSTextAlignmentRight;
         payTypeLabel.text = sectionModel.value;
         [headView addSubview:payTypeLabel];
@@ -249,17 +300,17 @@
     if (_dataArr.count>0) {
         UIView *bottomView = [[UIView alloc] init];
         XNRMyOrderSectionModel *sectionModel = _dataArr[section];
-        if ([sectionModel.type integerValue] ==  1 || [sectionModel.type integerValue] == 2) {
+        if (sectionModel.type ==  1 || sectionModel.type == 2) {
                 
                 bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
                 bottomView.backgroundColor = [UIColor whiteColor];
                 [self addSubview:bottomView];
             
-        
+                // 合计
                 UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
-                totalPriceLabel.font = [UIFont systemFontOfSize:16];
+                totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
                 totalPriceLabel.textAlignment = NSTextAlignmentRight;
-                totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
+                totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.doubleValue];
                 [bottomView addSubview:totalPriceLabel];
                 
                 NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
@@ -273,12 +324,14 @@
                 
                 [totalPriceLabel setAttributedText:AttributedStringPrice];
             
+            
+            
             UIButton *sectionFour = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
             sectionFour.backgroundColor = R_G_B_16(0xfe9b00);
             [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
             sectionFour.layer.cornerRadius = 5.0;
             sectionFour.layer.masksToBounds = YES;
-            sectionFour.titleLabel.font = [UIFont systemFontOfSize:16];
+            sectionFour.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             sectionFour.tag = section + 1000;
             [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchUpInside];
             [bottomView addSubview:sectionFour];
@@ -307,9 +360,9 @@
                 
         
                 UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth -PX_TO_PT(32), PX_TO_PT(80))];
-                totalPriceLabel.font = [UIFont systemFontOfSize:16];
+                totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
                 totalPriceLabel.textAlignment = NSTextAlignmentRight;
-                totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
+                totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.doubleValue];
                 [bottomView addSubview:totalPriceLabel];
                 
                 NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
@@ -351,7 +404,7 @@
 
 -(void)sectionFourClick:(UIButton *)sender{
     XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
-    if (sectionModel.deposit && [sectionModel.deposit floatValue]>0) {
+    if (sectionModel.deposit && [sectionModel.deposit doubleValue]>0) {
         self.payBlock(sectionModel.orderId,sectionModel.deposit);
     }else{
         self.payBlock(sectionModel.orderId,sectionModel.totalPrice);
@@ -373,7 +426,7 @@
     
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[section];
-        if ([sectionModel.type integerValue] ==  1 || [sectionModel.type integerValue] == 2) {
+        if (sectionModel.type ==  1 || sectionModel.type == 2) {
             return PX_TO_PT(180);
         }else{
             return PX_TO_PT(100);
@@ -395,7 +448,7 @@
 {
     if (_dataArr.count > 0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[section];
-        return sectionModel.products.count;
+        return sectionModel.orderFrameArray.count;
     } else {
         return 0;
     }
@@ -406,21 +459,17 @@
 {
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-        if (sectionModel.products.count>0) {
-            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
-            if (model.deposit && [model.deposit floatValue]>0) {
-                return PX_TO_PT(460);
-            }else{
-                return PX_TO_PT(300);
-            }
+        if (sectionModel.orderFrameArray.count>0) {
+            XNRMyAllOrderFrame *frame = sectionModel.orderFrameArray[indexPath.row];
+            return frame.cellHeight;
+            
         }else{
             return 0;
         }
+        
     }else{
         return 0;
     }
-    
-    
 }
 
 //cell点击方法
@@ -447,9 +496,14 @@
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-        if (sectionModel.products.count>0) {
-            XNRMyOrderModel *model = sectionModel.products[indexPath.row];
-            [cell setCellDataWithShoppingCartModel:model];
+        if (sectionModel.orderFrameArray.count>0) {
+            if (sectionModel.skus.count >0) {
+                XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
+                cell.attributesArray = modelArray.attributes;
+                cell.addtionsArray = modelArray.additions;
+            }
+            XNRMyAllOrderFrame *orderFrame = sectionModel.orderFrameArray[indexPath.row];
+            cell.orderFrame = orderFrame;
 
         }
     }
@@ -457,5 +511,9 @@
     return cell;
 
 }
-
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"reloadOrderList" object:nil];
+    
+}
 @end

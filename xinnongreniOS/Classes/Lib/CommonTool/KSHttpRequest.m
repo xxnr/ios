@@ -102,6 +102,7 @@ static int loginCount = 0;
          success(resultObj);
          
          if ([[resultObj objectForKey:@"code"] intValue]==1401) {
+             [UILabel showMessage:resultObj[@"message"]];
              UserInfo *infos = [[UserInfo alloc]init];
              infos.loginState = NO;
              [DataCenter saveAccount:infos];

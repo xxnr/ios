@@ -13,10 +13,11 @@
 #import "XNRSendView.h"          //待发货
 #import "XNRReciveView.h"        //已发货
 #import "XNRCommentView.h"       //已完成
-#import "XNRCheckOrder_VC.h"     //查看订单
+#import "XNRCheckOrderVC.h"     //查看订单
 #import "XNRTabBarController.h"
 #import "XNRMineController.h"
 #import "XNRTabBarController.h"
+#import "XNRFerViewController.h"
 
 #define KbtnTag          1000
 #define kLabelTag        2000
@@ -31,6 +32,7 @@
 @property (nonatomic,retain) XNRServeView   *ServeView;// 0
 @property (nonatomic,retain) XNRPayView     *PayView; // 1
 @property(nonatomic,retain)UIScrollView*mainScrollView;
+@property (nonatomic,copy)NSString *orderId;
 @end
 
 
@@ -40,11 +42,12 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = R_G_B_16(0xf4f4f4);
+    self.view.userInteractionEnabled = YES;
     
     [self setNavigationbarTitle];
     [self createTopView];
-    self.mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100),ScreenWidth+10*SCALE,ScreenHeight-64)];
-    self.mainScrollView.contentSize=CGSizeMake((ScreenWidth+10*SCALE)*5, ScreenHeight-64);
+    self.mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100),ScreenWidth+PX_TO_PT(20),ScreenHeight-64)];
+    self.mainScrollView.contentSize=CGSizeMake((ScreenWidth+PX_TO_PT(20))*5, ScreenHeight-64);
     self.mainScrollView.showsHorizontalScrollIndicator = NO;
     self.mainScrollView.showsVerticalScrollIndicator = NO;
     self.mainScrollView.userInteractionEnabled = YES;
@@ -55,8 +58,32 @@
     self.mainScrollView.bounces = NO;
     [self.view addSubview:self.mainScrollView];
     [self createMidView];
-
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushFerVC) name:@"pushFerVC" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushCarVC) name:@"pushCarVC" object:nil];
+}
+
+-(void)pushFerVC
+{
+    XNRFerViewController *ferView = [[XNRFerViewController alloc] init];
+    ferView.type = eXNRFerType;
+    ferView.tempTitle = @"化肥";
+    ferView.classId = @"531680A5";
+    ferView.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:ferView animated:YES];
+}
+
+-(void)pushCarVC
+{
+    
+    XNRFerViewController *carView = [[XNRFerViewController alloc] init];
+    carView.type = eXNRCarType;
+    carView.classId = @"6C7D8F66";
+    carView.tempTitle = @"汽车";
+    carView.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:carView animated:YES];
+
 }
 
 #pragma mark--创建中部视图
@@ -64,6 +91,7 @@
     
     if(nil==self.ServeView){ // 全部
         self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
+    
         [self.mainScrollView addSubview:self.ServeView];
         __weak __typeof(&*self)weakSelf=self;
         
@@ -72,11 +100,12 @@
             vc.hidesBottomBarWhenPushed = YES;
             vc.orderID = orderID;
             vc.payMoney = money;
+
             [weakSelf.navigationController pushViewController:vc animated:YES];
         }];
         // 查看订单
         [self.ServeView setCheckOrderBlock:^(NSString *orderID,NSString *type) {
-            XNRCheckOrder_VC *vc=[[XNRCheckOrder_VC alloc]init];
+            XNRCheckOrderVC *vc=[[XNRCheckOrderVC alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
             vc.orderID = orderID;
             vc.myOrderType = type;
@@ -103,12 +132,11 @@
                 
                 // 查看订单
                 [self.PayView setCheckOrderBlock:^(NSString *orderID) {
-                    XNRCheckOrder_VC*vc=[[XNRCheckOrder_VC alloc] init];
+                    XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc] init];
                     vc.hidesBottomBarWhenPushed = YES;
                     vc.orderID=orderID;
                     vc.myOrderType = @"待付款";
                     vc.isRoot = YES ;
-                    
                     [weakSelf.navigationController pushViewController:vc animated:YES];
                     
                 }];
@@ -119,7 +147,7 @@
                 self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
                 __weak __typeof(&*self)weakSelf=self;
                 [self.SendView setCheckOrderBlock:^(NSString *orderID) {
-                    XNRCheckOrder_VC*vc=[[XNRCheckOrder_VC alloc]init];
+                    XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
                     vc.hidesBottomBarWhenPushed=YES;
                     vc.orderID= orderID;
                     vc.isRoot = YES ;
@@ -134,7 +162,7 @@
                 __weak __typeof(&*self)weakSelf=self;
                 //查看订单
                 [self.ReciveView setCheckOrderBlock:^(NSString *orderID) {
-                    XNRCheckOrder_VC *vc=[[XNRCheckOrder_VC alloc]init];
+                    XNRCheckOrderVC *vc=[[XNRCheckOrderVC alloc]init];
                     vc.hidesBottomBarWhenPushed=YES;
                     vc.isRoot = YES ;
                     vc.orderID=orderID;
@@ -150,7 +178,7 @@
                 __weak __typeof(&*self)weakSelf=self;
                 // 查看订单
                 [self.CommentView setCheckOrderBlock:^(NSString *orderID) {
-                    XNRCheckOrder_VC *vc=[[XNRCheckOrder_VC alloc]init];
+                    XNRCheckOrderVC *vc=[[XNRCheckOrderVC alloc]init];
                     vc.hidesBottomBarWhenPushed=YES;
                     vc.isRoot = YES ;
                     vc.orderID=orderID;
@@ -176,7 +204,7 @@
     midBg.backgroundColor =[UIColor whiteColor];
     [self.view addSubview:midBg];
     
-    NSArray *arr1 = @[@"全部",@"待付款",@"待发货",@"已发货",@"已完成"];
+    NSArray *arr1 = @[@"全部",@"待付款",@"待发货",@"待收货",@"已完成"];
     CGFloat x = 0*SCALE;
     CGFloat y = 0*SCALE;
     CGFloat w = ScreenWidth/5.0;
@@ -193,20 +221,22 @@
         UILabel *tempTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake((ScreenWidth/5.0)*i, PX_TO_PT(30),ScreenWidth/5.0 , PX_TO_PT(40))];
         tempTitleLabel.textColor = R_G_B_16(0x323232);
         tempTitleLabel.textAlignment = NSTextAlignmentCenter;
-        tempTitleLabel.font = [UIFont systemFontOfSize:16];
+        tempTitleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         tempTitleLabel.text = arr1[i];
         tempTitleLabel.tag = kLabelTag+i;
         [midBg addSubview:tempTitleLabel];
         
         if (i==0) {
-//            button.selected = YES;
-//            _tempBtn = button;
-//            tempTitleLabel.textColor = R_G_B_16(0x00b38a);
-//            _tempLabel = tempTitleLabel;
             [self buttonClick:button];
         }
     }
-    _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(100)-1, ScreenWidth/5.0, 1)];
+    if (IS_FourInch) {
+        _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(94), ScreenWidth/5.0, PX_TO_PT(6))];
+
+    }else{
+        _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4))];
+
+    }
     _selectLine.backgroundColor=R_G_B_16(0x00b38a);
     [midBg addSubview:_selectLine];
     
@@ -224,8 +254,14 @@
     UILabel *label = (UILabel *)[self.view viewWithTag:button.tag+1000];
     
     [UIView animateWithDuration:.3 animations:^{
-        self.selectLine.frame=CGRectMake((button.tag-KbtnTag)*ScreenWidth/5.0,  PX_TO_PT(100)-1, ScreenWidth/5.0, 1);
-    }];
+        if (IS_FourInch) {
+            _selectLine.frame=CGRectMake((button.tag-KbtnTag)*ScreenWidth/5.0,  PX_TO_PT(94), ScreenWidth/5.0, PX_TO_PT(6));
+
+        }else{
+            _selectLine.frame=CGRectMake((button.tag-KbtnTag)*ScreenWidth/5.0,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
+
+        }
+           }];
     [self.mainScrollView setContentOffset:CGPointMake((ScreenWidth+10*SCALE)*(button.tag-KbtnTag),0) animated:NO];
     
     index = (int)button.tag;
@@ -253,7 +289,6 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-        [self.SendView showEmptyView];
     }
     
     if(button.tag==KbtnTag+3){
@@ -261,7 +296,6 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-        [self.ReciveView showEmptyView];
     }
     
     if(button.tag==KbtnTag+4){
@@ -269,7 +303,6 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-        [self.CommentView showEmptyView];
     }
 }
 
@@ -292,7 +325,6 @@
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
         
-//        [self.ReciveView showEmptyView];
     }else if (0.5<=offset&&offset<1.5){
         tag=1;
         UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
@@ -305,7 +337,6 @@
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
         
-//        [self.PayView showEmptyView];
     }else if (1.5<=offset&&offset<2.5){
         tag=2;
         UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
@@ -317,7 +348,6 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-//        [self.SendView showEmptyView];
 
     }else if (2.5<=offset&&offset<3.5){
         tag=3;
@@ -330,7 +360,6 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-        [self.ReciveView showEmptyView];
 
     }else{
         tag=4;
@@ -343,13 +372,16 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-        [self.CommentView showEmptyView];
     }
     
     
     [UIView animateWithDuration:.3 animations:^{
-        
-        self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(100)-1, ScreenWidth/5.0, 1);
+        if (IS_FourInch) {
+             self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(94), ScreenWidth/5.0, PX_TO_PT(6));
+        }else{
+             self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
+        }
+       
     }];
 }
 
@@ -391,12 +423,15 @@
     [self.navigationController popToRootViewControllerAnimated:NO];
 
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
 /*
 #pragma mark - Navigation
 

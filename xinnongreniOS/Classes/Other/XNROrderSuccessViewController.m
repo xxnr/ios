@@ -7,7 +7,7 @@
 //
 
 #import "XNROrderSuccessViewController.h"
-#import "XNRCheckOrder_VC.h"
+#import "XNRCheckOrderVC.h"
 #import "XNRMyOrder_VC.h"
 @interface XNROrderSuccessViewController ()
 
@@ -23,6 +23,7 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = R_G_B_16(0xFAFAFA);
+//    [self getData];
     
     [self setNav];
 
@@ -30,6 +31,26 @@
     [self createBtn];
 }
 
+//-(void)getData
+//{
+//    [KSHttpRequest get:KAlipaySuccess parameters:nil success:^(id result) {
+//        
+//        NSLog(@"%@",result);
+//    } failure:^(NSError *error) {
+//        
+//    }];
+//}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic setValue:self.orderID forKey:@"orderId"];
+    
+//    NSNotification *notification = [NSNotification notificationWithName:@"deleteModel" object:nil userInfo:dic];
+//    [[NSNotificationCenter defaultCenter]postNotification:notification];
+   
+}
 -(void)createCenter
 {
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(123), PX_TO_PT(170), PX_TO_PT(140), PX_TO_PT(140))];
@@ -43,7 +64,7 @@
     [self.view addSubview:label];
     
     UILabel *payMoney = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(311), PX_TO_PT(244), PX_TO_PT(350), PX_TO_PT(27))];
-    float f = [self.money floatValue];
+    float f = [self.money doubleValue];
     payMoney.text = [NSString stringWithFormat:@"支付金额：¥%.2f元",f];
     payMoney.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [self.view addSubview:payMoney];
@@ -74,6 +95,7 @@
 
 -(void)leftBtnClick:(UIButton *)button
 {
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"succss_Push" object:nil];
     XNRMyOrder_VC *orderVC=[[XNRMyOrder_VC alloc]init];
     orderVC.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:orderVC animated:NO];
@@ -82,8 +104,8 @@
 - (void)rightBtnClick:(UIButton *)button
 {
     NSLog(@"查看订单");
-    
-    XNRCheckOrder_VC*vc=[[XNRCheckOrder_VC alloc]init];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"succss_Push" object:nil];
+    XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
     vc.orderID = self.orderID;
     vc.orderNO = self.paymentId;
@@ -112,7 +134,9 @@
 
 - (void)backClick:(UIButton *)btn
 {
-//    [self.navigationController popViewControllerAnimated:YES];
+ 
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadOrderList" object:nil];
+
     for (UIViewController *vc in self.navigationController.viewControllers) {
         if ([vc isKindOfClass:[XNRMyOrder_VC class]]) {
             [self.navigationController popToViewController:vc animated:YES];
@@ -120,6 +144,8 @@
         }
     }
     [self.navigationController popToRootViewControllerAnimated:YES];
+    
+//    NSNotification *notification = [[NSNotification alloc]initWithName:@"reloadOrderList" object:nil userInfo:nil];
 
 }
 

@@ -81,13 +81,13 @@
     // 姓名
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.selectBtn.frame) + PX_TO_PT(22), PX_TO_PT(30), PX_TO_PT(150), PX_TO_PT(36))];
     nameLabel.textColor = R_G_B_16(0x323232);
-    nameLabel.font = XNRFont(12);
+    nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     self.nameLabel = nameLabel;
     [bgView addSubview:nameLabel];
     // 电话
     UILabel *phoneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.nameLabel.frame) + PX_TO_PT(22), PX_TO_PT(30), PX_TO_PT(220), PX_TO_PT(36))];
     phoneLabel.textColor = R_G_B_16(0x323232);
-    phoneLabel.font = XNRFont(12);
+    phoneLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     self.phoneLabel = phoneLabel;
     [bgView addSubview:phoneLabel];
     
@@ -98,7 +98,7 @@
     defaultLabel.textAlignment = NSTextAlignmentCenter;
     defaultLabel.backgroundColor = R_G_B_16(0xfe9b00);
     defaultLabel.textColor = [UIColor whiteColor];
-    defaultLabel.font = XNRFont(12);
+    defaultLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     defaultLabel.text = @"默认";
     self.defaultLabel = defaultLabel;
     [bgView addSubview:defaultLabel];
@@ -109,7 +109,7 @@
 //    addressNamelabel.adjustsFontSizeToFitWidth = YES;
 //    addressNamelabel.backgroundColor = [UIColor redColor];
 //    addressNamelabel.numberOfLines = 0;
-    addressNamelabel.font = XNRFont(12);
+    addressNamelabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     addressNamelabel.textAlignment = NSTextAlignmentLeft;
     self.addressNamelabel = addressNamelabel;
     [bgView addSubview:addressNamelabel];
@@ -118,7 +118,7 @@
     [editorBtn setImage:[UIImage imageNamed:@"address_edit"] forState:UIControlStateNormal];
     [editorBtn setTitle:@"编辑" forState:UIControlStateNormal];
     editorBtn.titleLabel.textColor = R_G_B_16(0x323232);
-    editorBtn.titleLabel.font = XNRFont(12);
+    editorBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     [editorBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -20)];
     self.editorBtn = editorBtn;
     [bgView addSubview:editorBtn];
@@ -127,7 +127,7 @@
     [deleteBtn setImage:[UIImage imageNamed:@"address_delete"] forState:UIControlStateNormal];
     [deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
     deleteBtn.titleLabel.textColor = R_G_B_16(0x323232);
-    deleteBtn.titleLabel.font = XNRFont(12);
+    deleteBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     [deleteBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -20)];
     self.deleteBtn = deleteBtn;
     [bgView addSubview:deleteBtn];

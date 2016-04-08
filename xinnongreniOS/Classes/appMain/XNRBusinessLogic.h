@@ -52,6 +52,10 @@
  *  获取下线列表
  */
 #define KUserGetInvitee [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/user/getInvitee"]
+
+//获取新农代表
+#define KGetNominatedInviter [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/user/getNominatedInviter"]
+
 /**
  *  用户绑定邀请人
  */
@@ -77,6 +81,11 @@
  *  获取用户类型列表
  */
 #define Kusertypes [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/usertypes"]
+/**
+ *  提示用户更新
+ */
+#define KuserUpData [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/ISOupgrade"]
+
 
 
 /**--------------------
@@ -209,6 +218,30 @@
  */
 #define KGetAreaTown [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/area/getAreaTown"]
 
+/**
+ *  获取报备用户列表
+ */
+#define KGetQuery [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/potentialCustomer/query"]
+
+/**
+ *  添加用户
+ 
+ */
+#define KGetAdd [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/potentialCustomer/add"]
+/**
+ *  判断手机号是否能添加为潜在客户
+ */
+#define KGetIsAvailable [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/potentialCustomer/isAvailable"]
+
+/**
+ *  获取意向商品列表
+ */
+#define KGetIntentionProducts [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/intentionProducts"]
+
+/**
+ *  获取报备用户详情
+ */
+#define KGetPotentialCustomer [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/potentialCustomer/get"]
 
 /**--------------------
     订单相关
@@ -252,6 +285,7 @@
  *  支付宝确认
  */
 #define KDynamic [NSString stringWithFormat:@"%@/%@",HOST,@"dynamic/alipay/nofity.asp"]
+
 
 
 /**

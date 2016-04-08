@@ -40,7 +40,7 @@
     selectLabel.textAlignment = NSTextAlignmentCenter;
 
     selectLabel.textColor = R_G_B_16(0xc7c7c7);
-    selectLabel.font = [UIFont systemFontOfSize:14];
+    selectLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [self addSubview:selectLabel];
     
 }

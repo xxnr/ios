@@ -19,6 +19,9 @@
 #import "XNRPayType_VC.h"
 #import "XNRSelPayOrder_VC.h"
 #import "XNRAddOrderModel.h"
+#import "XNRMyAllOrderFrame.h"
+#import "XNROrderInfoFrame.h"
+#import "AppDelegate.h"
 @interface XNROrderInfo_VC ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>{
     
     NSString *orderDataId;    //订单id
@@ -108,13 +111,10 @@
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     NSDictionary *params = @{@"SKUs":self.dataArray,@"user-agent":@"IOS-v2.0"};
-    NSLog(@"---------返回数据:+_-------%@",params);
 
     [manager POST:KGetShoppingCartOffline parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"---------params:+_-------%@",params);
-        NSLog(@"---------返回数据:+_-------%@",str);
-
+        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -135,15 +135,26 @@
                                 sectionModel.unitPrice = dict[@"price"];
                             }
             
-                                sectionModel.SKUList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"SKUList"]];
-                                [_dataArr addObject:sectionModel];
-            
+                        sectionModel.SKUList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"SKUList"]];
+                            
+
                             for (int i = 0; i<sectionModel.SKUList.count; i++) {
                                 XNRShoppingCartModel *model = sectionModel.SKUList[i];
-            
-                                model.num = model.totalCount;
+                                XNROrderInfoFrame *frameModel = [[XNROrderInfoFrame alloc] init];
+                                // 传递购物车模型数据
+                                frameModel.shoppingCarModel = model;
+                                
+                                frameModel.shoppingCarModel.num = frameModel.shoppingCarModel.count;
+                                [sectionModel.SKUFrameList addObject:frameModel];
+                                
+                                NSLog(@"++_)_%@",sectionModel.SKUFrameList);
+                                
+                                
                             }
+                            [_dataArr addObject:sectionModel];
+
                         }
+            
                         [self.tableview reloadData];
                     }else{
                         
@@ -214,7 +225,7 @@
     
     UILabel *addressLabel = [MyControl createLabelWithFrame:CGRectMake(ScreenWidth/3+PX_TO_PT(20), 0, ScreenWidth, PX_TO_PT(96)) Font:16 Text:@"添加收货地址"];
     addressLabel.textAlignment = NSTextAlignmentLeft;
-    addressLabel.font = XNRFont(16);
+    addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     addressLabel.textColor = R_G_B_16(0x323232);
     self.addressLabel = addressLabel;
     [addressBtn addSubview:addressLabel];
@@ -238,7 +249,7 @@
     model.selected = YES;
     self.nextAddresModel = model;
     // headViewSpecial
-    UIView *headViewSpecial = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(260))];
+    UIView *headViewSpecial = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(280))];
     headViewSpecial.backgroundColor = [UIColor whiteColor];
     self.headViewSpecial = headViewSpecial;
     [self.view addSubview:headViewSpecial];
@@ -247,7 +258,7 @@
     getGoodsAddressLabel.text = @"收货地址";
     getGoodsAddressLabel.textColor = R_G_B_16(0x323232);
     getGoodsAddressLabel.textAlignment = NSTextAlignmentLeft;
-    getGoodsAddressLabel.font = [UIFont systemFontOfSize:16];
+    getGoodsAddressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [headViewSpecial addSubview:getGoodsAddressLabel];
     
     UIButton *addressBtnSpecial = [[UIButton alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(180))];
@@ -263,6 +274,9 @@
     [downImageViewSpecial setImage:[UIImage imageNamed:@"orderInfo_down"]];
     [headViewSpecial addSubview:downImageViewSpecial];
     
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(downImageViewSpecial.frame), ScreenWidth, PX_TO_PT(20))];
+    view.backgroundColor = R_G_B_16(0xf7f7f7);
+    [headViewSpecial addSubview:view];
     
     _recipientNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), PX_TO_PT(112), PX_TO_PT(200), PX_TO_PT(36))];
     _recipientNameLabel.textColor = R_G_B_16(0x323232);
@@ -338,24 +352,24 @@
     
     // 提交订单
     UIButton *totalPriceBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(220), 0, PX_TO_PT(220), PX_TO_PT(89)) ImageName:nil Target:self Action:@selector(makeSure) Title:nil];
-    [totalPriceBtn setTitle:@"提交订单" forState:UIControlStateNormal];
+    [totalPriceBtn setTitle:[NSString stringWithFormat:@"提交订单%@",[NSString stringWithFormat:@"(%ld)",_totalSelectNum]] forState:UIControlStateNormal];
     [totalPriceBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    totalPriceBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    totalPriceBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     totalPriceBtn.backgroundColor = R_G_B_16(0xfe9b00);
     [footView addSubview:totalPriceBtn];
     
     // 总计
     UILabel *totalPricelabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(220)-PX_TO_PT(20), PX_TO_PT(89))];
-    totalPricelabel.font=XNRFont(14);
+    totalPricelabel.font=[UIFont systemFontOfSize:PX_TO_PT(28)];
     totalPricelabel.textAlignment = NSTextAlignmentRight;
     totalPricelabel.textColor = R_G_B_16(0x323232);
-    totalPricelabel.text = [NSString stringWithFormat:@"总计:￥%.2f",self.totalPrice];
+    totalPricelabel.text = [NSString stringWithFormat:@"合计:￥%.2f",self.totalPrice];
     
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:totalPricelabel.text];
     NSDictionary *depositStr=@{
                                
                                NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-                               NSFontAttributeName:[UIFont systemFontOfSize:16]
+                               NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]
                                
                                };
     
@@ -379,7 +393,7 @@
     if (_dataArr.count > 0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[section];
         
-        UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(88))];
+        UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(88))];
         headView.backgroundColor = [UIColor whiteColor];
         [self.view addSubview:headView];
         
@@ -387,7 +401,7 @@
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(28), ScreenWidth, PX_TO_PT(32))];
         label.text = sectionModel.brandName;
         label.textColor = R_G_B_16(0x323232);
-        label.font = XNRFont(16);
+        label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
@@ -411,75 +425,22 @@
 {
     
     UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(20))];
+    footView.backgroundColor = [UIColor blackColor];
     footView.backgroundColor =  R_G_B_16(0xf4f4f4);
     [self.view addSubview:footView];
-    
     return  footView;
-
-//    if (_dataArr.count>0) {
-//        XNRShopCarSectionModel *sectionModel = _dataArr[section];
-//        UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(100))];
-//        footView.backgroundColor = [UIColor whiteColor];
-//        [self.view addSubview:footView];
-//        
-//        UIView *divideView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(20))];
-//        divideView.backgroundColor = R_G_B_16(0xf4f4f4);
-//        [footView addSubview:divideView];
-//        
-//        UILabel *goodsTotalLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth/2, PX_TO_PT(80))];
-//        goodsTotalLabel.textColor = R_G_B_16(0x323232);
-//        goodsTotalLabel.font = [UIFont systemFontOfSize:14];
-//        goodsTotalLabel.text = [NSString stringWithFormat:@"共%@件商品",sectionModel.goodsCount];
-//        self.goodsTotalLabel = goodsTotalLabel;
-//        [footView addSubview:goodsTotalLabel];
-//        
-//        
-//        UILabel *totoalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2 - PX_TO_PT(32), PX_TO_PT(80))];
-//        totoalPriceLabel.textAlignment = NSTextAlignmentRight;
-//        totoalPriceLabel.font = [UIFont systemFontOfSize:14];
-//        if (sectionModel.deposit && [sectionModel.deposit floatValue]>0) {
-//            totoalPriceLabel.text = [NSString stringWithFormat:@"合计：%.2f",sectionModel.deposit.floatValue * sectionModel.goodsCount.integerValue];
-//        }else{
-//            totoalPriceLabel.text = [NSString stringWithFormat:@"合计：%.2f",sectionModel.unitPrice.floatValue * sectionModel.goodsCount.integerValue];
-//        }
-//                        NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:totoalPriceLabel.text];
-//                        NSDictionary *depositStr=@{
-//        
-//                                                   NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-//                                                   // NSFontAttributeName:[UIFont systemFontOfSize:18]
-//        
-//                                                   };
-//        
-//                        [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(3,AttributedStringDeposit.length-3)];
-//        
-//                        [totoalPriceLabel setAttributedText:AttributedStringDeposit];
-//        
-//        self.totoalPriceLabel = totoalPriceLabel;
-//        [footView addSubview:totoalPriceLabel];
-//        
-//        for (int i = 0; i<2; i++) {
-//            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-//            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-//            [footView addSubview:lineView];
-//        }
-//        return footView;
-//
-//    }else{
-//        return nil;
-//    }
-    
 
 }
 //段头高度
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return PX_TO_PT(88);
+
 }
 
 //段尾高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-//    return PX_TO_PT(100);
     if (section == _dataArr.count-1) {
         return 0.0;
     }
@@ -505,6 +466,7 @@
     if (_dataArr.count > 0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[section];
         return sectionModel.SKUList.count;
+        return 1;
     } else {
         return 0;
     }
@@ -515,22 +477,9 @@
     
     if (_dataArr.count>0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
-        XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
+        XNROrderInfoFrame *frameModel = sectionModel.SKUFrameList[indexPath.row];
+        return frameModel.cellHeight;
         
-        if ([model.deposit floatValue] == 0.00) {
-            if (model.additions.count == 0) {
-                return PX_TO_PT(300);
-            }else{
-                return PX_TO_PT(300)+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-            }
-        }else{
-            if (model.additions.count == 0) {
-                return PX_TO_PT(460);
-
-            }else{
-                return PX_TO_PT(460)+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-            }
-        }
     }else{
         return 0;
     }
@@ -546,8 +495,11 @@
     }
     if (_dataArr.count>0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[indexPath.section];
-        XNRShoppingCartModel *model = sectionModel.SKUList[indexPath.row];
-        [cell setCellDataWithModel:model];
+        if (sectionModel.SKUFrameList.count>0) {
+            XNROrderInfoFrame *frameModel = sectionModel.SKUFrameList[indexPath.row];
+            cell.orderFrame = frameModel;
+        }
+       
     }
     cell.backgroundColor=R_G_B_16(0xf4f4f4);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -561,7 +513,6 @@
     XNRAddressManageViewController*vc=[[XNRAddressManageViewController alloc]init];
     
     [vc setAddressChoseBlock:^(XNRAddressManageModel *model) {
-        
         self.nextAddresModel = model;
         NSLog(@"%@",model.address);
         NSLog(@"%@",model.addressId);
@@ -606,55 +557,86 @@
         [UILabel showMessage:@"请选择一个地址，没有地址我们的服务人员送不到货哦"];
         return;
     }
-
-    [KSHttpRequest post:KAddOrder parameters:@{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"products":[self.dataArray JSONString_Ext],@"payType":@"1",@"user-agent":@"IOS-v2.0"}success:^(id result) {
-
-        NSLog(@"%@",result);
-        if ([result[@"code"] integerValue] == 1000) {
-            NSArray *orders = result[@"orders"];
+    
+    NSDictionary *params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"SKUs":self.dataArray,@"token":[DataCenter account].token,@"payType":@"1",@"user-agent":@"IOS-v2.0"};
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+    manager.requestSerializer.timeoutInterval = 10.f;
+    [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    [manager POST:KAddOrder parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+//        NSLog(@"---------返回数据:---------%@",str);
+        id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        
+        NSDictionary *resultDic;
+        if ([resultObj isKindOfClass:[NSDictionary class]]) {
+            resultDic = (NSDictionary *)resultObj;
+        }
+        if ([resultObj[@"code"] integerValue] == 1000) {
+            NSArray *orders = resultObj[@"orders"];
             NSLog(@"%tu",orders.count);
             NSLog(@"%d",(int)self.numOrder);
-                if (orders.count == 1) {
-                    self.numOrder = 1;
-                    NSDictionary *subDic = orders[0];
-                    //获取预处理订单id 订单号
-                    orderDataId = subDic[@"id"];
-                    deposit = subDic[@"deposit"];
-                    NSDictionary *payment = subDic[@"payment"];
-                    // 支付id
-                    paymentId = payment[@"paymentId"];
-                    
-                    [self.tableview reloadData];
-                    
-                }
-                else if (orders.count == 2)
-                {
-                    self.numOrder = 2;
-                    //第一个订单
-                    self.addorderModel1 = [[XNRAddOrderModel alloc]init];
-                    self.addorderModel1.orderID = orders[0][@"id"];
-//                    addorderModel1.paymentId = orders[0][@"payment"][@"paymentId"];
-                    NSString *deposit1 = orders[0][@"payment"][@"price"];
-                    self.addorderModel1.money = [NSString stringWithFormat:@"%.2f",deposit1.floatValue];
-                    
-                    //第二个订单
-                    self.addorderModel2 = [[XNRAddOrderModel alloc]init];
-                    self.addorderModel2.orderID = orders[1][@"id"];
-//                    addorderModel2.paymentId = orders[1][@"payment"][@"paymentId"];
-                    NSString *deposit2 = orders[1][@"payment"][@"price"];
-                    self.addorderModel2.money = [NSString stringWithFormat:@"%.2f",deposit2.floatValue];
+            if (orders.count == 1) {
+                self.numOrder = 1;
+                NSDictionary *subDic = orders[0];
+                //获取预处理订单id 订单号
+                orderDataId = subDic[@"id"];
+                deposit = subDic[@"deposit"];
+                NSDictionary *payment = subDic[@"payment"];
+                // 支付id
+                paymentId = payment[@"paymentId"];
+                
+                [self.tableview reloadData];
+                
+            }else if (orders.count == 2){
+                self.numOrder = 2;
+                //第一个订单
+                self.addorderModel1 = [[XNRAddOrderModel alloc]init];
+                self.addorderModel1.orderID = orders[0][@"id"];
+                //                    addorderModel1.paymentId = orders[0][@"payment"][@"paymentId"];
+                NSString *deposit1 = orders[0][@"payment"][@"price"];
+                self.addorderModel1.money = [NSString stringWithFormat:@"%.2f",deposit1.doubleValue];
+                
+                //第二个订单
+                self.addorderModel2 = [[XNRAddOrderModel alloc]init];
+                self.addorderModel2.orderID = orders[1][@"id"];
+                //                    addorderModel2.paymentId = orders[1][@"payment"][@"paymentId"];
+                NSString *deposit2 = orders[1][@"payment"][@"price"];
+                self.addorderModel2.money = [NSString stringWithFormat:@"%.2f",deposit2.doubleValue];
+                
+                [self.tableview reloadData];
 
-                    [self.tableview reloadData];
-
-                }else{
-                    [UILabel showMessage:result[@"message"]];
-                }
-                [self selectVC];
             
+        }else{
+            
+            [UILabel showMessage:resultObj[@"message"]];
         }
-    } failure:^(NSError *error) {
+            [self selectVC];
+
+        }else{
+            [UILabel showMessage:resultObj[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            //发送刷新通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
             
-        }];
+            XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+            
+            vc.hidesBottomBarWhenPushed = YES;
+            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+            [currentVc.navigationController pushViewController:vc animated:YES];
+
+        
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"===%@",error);
+        
+    }];
+
     [self selectVC];
 
 }
@@ -666,7 +648,7 @@
         vc.hidesBottomBarWhenPushed = YES;
         vc.orderID = orderDataId;
         vc.paymentId = paymentId;
-        vc.payMoney = [NSString stringWithFormat:@"%.2f",deposit.floatValue];
+        vc.payMoney = [NSString stringWithFormat:@"%.2f",deposit.doubleValue];
         vc.recieveName = self.recipientNameLabel.text;
         vc.recievePhone = self.recipientPhoneLabel.text;
         vc.recieveAddress = _addressDetail.text;
@@ -678,7 +660,6 @@
         XNRSelPayOrder_VC *selVC = [[XNRSelPayOrder_VC alloc]init];
         selVC.addOrderModel1 =self.addorderModel1;
         selVC.addOrderModel2 = self.addorderModel2;
-        
         [self.navigationController pushViewController:selVC animated:YES];
         
     }
@@ -714,7 +695,8 @@
 }
 
 -(void)backClick{
-    
+    NSNotification *tification = [[NSNotification alloc]initWithName:@"hhh" object:self userInfo:@{@"hh":@"XNROrderInfo_VC"}];
+    [[NSNotificationCenter defaultCenter] postNotification:tification];
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)didReceiveMemoryWarning {

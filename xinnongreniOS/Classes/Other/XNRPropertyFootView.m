@@ -49,6 +49,13 @@
     if (self.numTextField.text.length>4) {
         self.numTextField.text = [self.numTextField.text substringToIndex:4];
     }
+    if ([self.numTextField.text isEqualToString:@"9999"]) {
+        self.rightBtn.enabled = NO;
+    }else{
+        self.rightBtn.enabled = YES;
+    }
+    
+
     if (self.com) {
         self.com (self.numTextField.text);
     }
@@ -61,6 +68,10 @@
         
         self.numTextField.text = @"1";
     }
+    if (self.com) {
+        self.com (self.numTextField.text);
+    }
+
     
 }
 
@@ -94,7 +105,7 @@
         
     }
 
-    numTextField.font = XNRFont(14);
+    numTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     numTextField.delegate = self;
     numTextField.returnKeyType = UIReturnKeyDone;
         //设置键盘类型
@@ -159,6 +170,13 @@
     self.com (self.numTextField.text);
 
     }
+    
+    if ([self.numTextField.text isEqualToString:@"9999"]) {
+        self.rightBtn.enabled = NO;
+    }else{
+        self.rightBtn.enabled = YES;
+    }
+
 
 }
 

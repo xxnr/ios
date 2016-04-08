@@ -79,6 +79,7 @@
 @property (nonatomic,copy) NSString *num;                 //数量
 @property (nonatomic,copy) NSString *timeStamp;           //时间戳(用于显示添加购物车时间)
 @property (nonatomic,copy) NSString *shoppingCarCount;    //累加数(用于商品排序)
+@property (nonatomic, copy) NSString *online;
 
 
 

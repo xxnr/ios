@@ -39,7 +39,6 @@
     showView.layer.cornerRadius = 5;
     [bcView addSubview:showView];
 
-
     
     UIImageView *loadView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"xxnr_loading"]];
     loadView.center = showView.center;

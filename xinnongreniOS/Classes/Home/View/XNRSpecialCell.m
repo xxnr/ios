@@ -37,9 +37,9 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        [self createUI];
         self.backgroundColor = [UIColor clearColor];
         self.userInteractionEnabled = YES;
-    [self createUI];
     }
     return self;
 }
@@ -53,15 +53,22 @@
     self.image = image;
     [self addSubview:image];
     
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.image.frame) + PX_TO_PT(19), ScreenWidth, PX_TO_PT(2))];
+    
+    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [self.contentView addSubview:lineView];
+    
+
+    
     UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.image.frame) + margin, PX_TO_PT(20), ScreenWidth - CGRectGetMaxX(self.image.frame)-PX_TO_PT(32), PX_TO_PT(100))];
-    detailLabel.font = [UIFont systemFontOfSize:16];
+    detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     detailLabel.textColor = R_G_B_16(0x323232);
     detailLabel.numberOfLines = 0;
     self.detailLabel = detailLabel;
     [self addSubview:detailLabel];
     
     UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.image.frame) + margin, CGRectGetMaxY(self.detailLabel.frame), PX_TO_PT(200), PX_TO_PT(100))];
-    priceLabel.font = [UIFont systemFontOfSize:16];
+    priceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     priceLabel.textColor = R_G_B_16(0xff4e00);
     self.priceLabel = priceLabel;
     [self addSubview:priceLabel];
@@ -72,10 +79,6 @@
 //    [shopcarBtn addTarget:self action:@selector(shopcarBtnClick) forControlEvents:UIControlEventTouchUpInside];
 //    self.shopcarBtn = shopcarBtn;
 //    [self addSubview:shopcarBtn];
-    
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.image.frame) + PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-    [self addSubview:lineView];
     
 }
 
@@ -104,7 +107,7 @@
 ////        NSMutableArray *goodsArray = [[NSMutableArray alloc] init];
 ////        NSDictionary *goodsId = @{@"productId":self.model.goodsId,@"count":@"1"};
 ////        [goodsArray addObject:goodsId];
-////        [KSHttpRequest post:KGetShoppingCartOffline parameters:@{@"products":[goodsArray JSONString_Ext]} success:^(id result) {
+//        [KSHttpRequest post:KGetShoppingCartOffline parameters:@{@"products":[goodsArray JSONString_Ext]} success:^(id result) {
 ////            if ([result[@"code"] integerValue] == 1000) {
 ////            [SVProgressHUD  showSuccessWithStatus:@"加入购物车成功"];
 ////
@@ -150,7 +153,20 @@
 -(void)setCellDataWithShoppingCartModel:(XNRShoppingCartModel *)model
 {
     _model = model;
-    [self.image sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl];
+    
+    if (urlStr == nil || [urlStr isEqualToString:@""]) {
+        [self.image setImage:[UIImage imageNamed:@"icon_placehold"]];
+    }else{
+        [self.image sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    }
+
+
+//    [self.image sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+//        image = [UIImage imageNamed:@"icon_loading_wrong"];
+//    }];
+
     self.detailLabel.text = model.goodsName;
     if ([self.model.presale integerValue] == 1) {
         self.priceLabel.textColor = R_G_B_16(0xc7c7c7);
@@ -158,7 +174,7 @@
         self.shopcarBtn.hidden = YES;
     }else{
         self.priceLabel.textColor = R_G_B_16(0xff4e00);
-        self.priceLabel.text = [NSString stringWithFormat:@"%.2f",model.unitPrice.floatValue];
+        self.priceLabel.text = [NSString stringWithFormat:@"¥%.2f",model.unitPrice.doubleValue];
         self.shopcarBtn.hidden = NO;
     }
 }

@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class XNROrderInfoFrame;
+
 @interface XNRSubmitOrderCell : UITableViewCell
 
--(void)setCellDataWithModel:(XNRShoppingCartModel*)model;
+@property (nonatomic, strong) XNROrderInfoFrame *orderFrame;
 
 
 @end
