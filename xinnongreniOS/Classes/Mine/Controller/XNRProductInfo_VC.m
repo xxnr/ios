@@ -19,6 +19,7 @@
 #import "XNRToolBar.h"
 #import "XNRPropertyView.h"
 #import "XNRProductInfo_frame.h"
+#import "MWPhotoBrowser.h"
 #define kLeftBtn  3000
 #define kRightBtn 4000
 #define HEIGHT 100
@@ -189,6 +190,9 @@
     [self createWebView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notSelectedAttributes) name:@"notSelectedAttributes" object:nil];
+    
+    NSLog(@"navigation===%@",self.navigationController);
+    
 }
 
 -(void)dealloc
@@ -404,13 +408,6 @@
 //}
 
 
--(void)XNRProductInfo_cellScroll
-{
-    CGPoint point = self.tableView.contentOffset;
-    [UIView animateWithDuration:0.5 animations:^{
-        self.tableView.contentOffset = CGPointMake(point.x, 0);
-    }];
-}
 #pragma mark-获取网络数据
 -(void)getData {
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];

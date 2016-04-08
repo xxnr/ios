@@ -442,6 +442,13 @@
     bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
     self.textbottomLine = bottomLine;
     [self.contentView addSubview:bottomLine];
+    
+    UILabel *numLabel = [[UILabel alloc] init];
+    numLabel.textColor = R_G_B_16(0x909090);
+    numLabel.textAlignment = NSTextAlignmentCenter;
+    self.numLabel = numLabel;
+    [self.contentView addSubview:numLabel];
+
 }
 
 -(void)XNRToolBarBtnClick
@@ -646,11 +653,11 @@
     // 尾款
     self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",(model.price.doubleValue + totalPrice - model.deposit.doubleValue)*[model.num integerValue]];
     
-    if (_model.num == 0) {
-        self.numTextField.text = @"1";
-    }else{
-        self.numTextField.text = [NSString stringWithFormat:@"%@",model.num];
-    }
+//    if (_model.num == 0) {
+//        self.numTextField.text = @"1";
+//    }else{
+//        self.numTextField.text = [NSString stringWithFormat:@"%@",model.num];
+//    }
     
     // 下架
     if ([model.online integerValue] == 0) {
@@ -674,15 +681,8 @@
         self.textTopLine.hidden = YES;
         self.textbottomLine.hidden = YES;
         
-        if (!_numLabel) {
-            UILabel *numLabel = [[UILabel alloc] init];
-            numLabel.textColor = R_G_B_16(0x909090);
-            numLabel.textAlignment = NSTextAlignmentCenter;
-            numLabel.text = [NSString stringWithFormat:@"x %@",model.num];
-            self.numLabel = numLabel;
-            [self.contentView addSubview:numLabel];
+        self.numLabel.text = [NSString stringWithFormat:@"x %@",model.num];
 
-        }
     }else{
         self.backgroundColor = [UIColor whiteColor];
         self.selectedBtn.hidden = NO;
@@ -704,7 +704,12 @@
         self.remainLabel.textColor = R_G_B_16(0x323232);
         self.addtionsLabel.textColor = R_G_B_16(0x323232);
         self.addtionPriceLabel.textColor = R_G_B_16(0x323232);
-
+        
+        if (_model.num == 0) {
+            self.numTextField.text = @"1";
+        }else{
+            self.numTextField.text = [NSString stringWithFormat:@"%@",model.num];
+        }
     }
     
 }

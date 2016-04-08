@@ -174,6 +174,7 @@
 		49A7BD8E1C75747900913927 /* XNRProductPhotoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7BD8D1C75747900913927 /* XNRProductPhotoModel.m */; };
 		49ADEE1E1C536CE700525AA8 /* XNRNewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49ADEE1D1C536CE700525AA8 /* XNRNewFeatureViewController.m */; };
 		49B3A23F1CB520CA00EA72B0 /* libUMCheckUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B3A23D1CB520CA00EA72B0 /* libUMCheckUpdate.a */; };
+		49B3A2421CB7533E00EA72B0 /* empty.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3A2411CB7533E00EA72B0 /* empty.m */; };
 		49CD5E2F1C07FF1B004235C4 /* XNRferView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E2E1C07FF1B004235C4 /* XNRferView.m */; };
 		49CD5E351C0814EC004235C4 /* XNRSpecialCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E341C0814EC004235C4 /* XNRSpecialCell.m */; };
 		49CD5E381C093144004235C4 /* XNRFerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E371C093144004235C4 /* XNRFerViewController.m */; };
@@ -834,6 +835,8 @@
 		49ADEE1D1C536CE700525AA8 /* XNRNewFeatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRNewFeatureViewController.m; sourceTree = "<group>"; };
 		49B3A23D1CB520CA00EA72B0 /* libUMCheckUpdate.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMCheckUpdate.a; sourceTree = "<group>"; };
 		49B3A23E1CB520CA00EA72B0 /* UMCheckUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCheckUpdate.h; sourceTree = "<group>"; };
+		49B3A2401CB7533E00EA72B0 /* empty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = empty.h; sourceTree = "<group>"; };
+		49B3A2411CB7533E00EA72B0 /* empty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = empty.m; sourceTree = "<group>"; };
 		49CD5E2D1C07FF1B004235C4 /* XNRferView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRferView.h; sourceTree = "<group>"; };
 		49CD5E2E1C07FF1B004235C4 /* XNRferView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRferView.m; sourceTree = "<group>"; };
 		49CD5E331C0814EC004235C4 /* XNRSpecialCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSpecialCell.h; sourceTree = "<group>"; };
@@ -2802,6 +2805,8 @@
 				4915EBA11CAA4F9800A728BB /* XNRPropertyEmptyView.m */,
 				491AF0541C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.h */,
 				491AF0551C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.m */,
+				49B3A2401CB7533E00EA72B0 /* empty.h */,
+				49B3A2411CB7533E00EA72B0 /* empty.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -3613,6 +3618,7 @@
 				49F7A5761C58469400A1FA45 /* MJRefreshBackFooter.m in Sources */,
 				53574AD21B267F3100AA00F3 /* MonitorNetworkViewController.m in Sources */,
 				8469F6281B3D4C2700085699 /* FMDatabasePool.m in Sources */,
+				49B3A2421CB7533E00EA72B0 /* empty.m in Sources */,
 				1FE1D64D1B12EE3200F0D158 /* AFURLRequestSerialization.m in Sources */,
 				49EC52661BEBBA5E00AA8898 /* UIImage+BSExt.m in Sources */,
 				493AF2981C27B41D002AEDE7 /* UIView+Frame.m in Sources */,
