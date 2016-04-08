@@ -102,11 +102,7 @@
                 [city appendString:result[@"potentialCustomer"][@"address"][@"city"][@"name"]];
                 [city appendString:@" "];
             }
-<<<<<<< HEAD
             if (address.county.count != 0) {
-=======
-            if ([KSHttpRequest isNULL:address.county]) {
->>>>>>> xxnr-chung
                 [city appendString:result[@"potentialCustomer"][@"address"][@"county"][@"name"]];
             }
             NSString *town = @"";
@@ -144,7 +140,8 @@
             bgView.backgroundColor = R_G_B_16(0xf8f8f8);
             [self.view addSubview:bgView];
         }
-    } failure:^(NSError *error) {
+
+      } failure:^(NSError *error) {
         
     }];
 }
