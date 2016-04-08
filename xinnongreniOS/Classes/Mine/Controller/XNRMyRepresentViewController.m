@@ -532,10 +532,10 @@ BOOL firstOrTcd;
 
             _userArr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];
             
-//            if(_userArr.count == 0){
+            if(_userArr.count == 0){
             
                 BOOL isadd = [[NSUserDefaults standardUserDefaults]boolForKey:@"key"];
-//                if (isadd == NO) {
+                if (isadd == NO) {
                 self.thirdView.hidden = YES;
                 self.bgview.hidden = NO;
                 self.circleView.hidden = NO;
@@ -631,8 +631,8 @@ BOOL firstOrTcd;
                 
                 
                     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"key"];
-//                }
-//            }
+                }
+            }
             
             if ([result[@"countLeftToday"] integerValue] < 1) {
                 
