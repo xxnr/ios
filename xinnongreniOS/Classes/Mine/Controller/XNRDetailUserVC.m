@@ -100,7 +100,7 @@
                 [city appendString:result[@"potentialCustomer"][@"address"][@"city"][@"name"]];
                 [city appendString:@" "];
             }
-            if (address.county) {
+            if ([KSHttpRequest isNULL:address.county]) {
                 [city appendString:result[@"potentialCustomer"][@"address"][@"county"][@"name"]];
             }
             NSString *town;

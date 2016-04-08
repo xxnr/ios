@@ -422,6 +422,7 @@
             model.max = dic[@"SKUPrice"][@"max"];
             
             model.marketMin = dic[@"SKUMarketPrice"][@"min"];
+            
             model.marketMax = dic[@"SKUMarketPrice"][@"max"];
 
             model._id = dic[@"_id"];

@@ -66,24 +66,7 @@
     
     // 获得当前软件的版本号
     NSString *currentVersion = [NSBundle mainBundle].infoDictionary[versionKey];
-//    UserInfo *info = [DataCenter account];
-//    info.currentVersion = currentVersion;
-//    [DataCenter saveAccount:info];
-    
-//    [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion} success:^(id result) {
-//        if ([result[@"code"] integerValue] == 1000) {
-//            // 友盟提示更新
-//
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:result[@"message"]delegate:self cancelButtonTitle:@"取消"otherButtonTitles:@"更新",nil];
-//            [alert show];
-//            
-//        }
-//        
-//    } failure:^(NSError *error) {
-//        
-//    }];
 
-    
     if ([currentVersion isEqualToString:lastVersion]) {
         self.window.rootViewController = _tabBarController;
     }else{

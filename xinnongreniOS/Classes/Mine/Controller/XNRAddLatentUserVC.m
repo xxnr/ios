@@ -404,7 +404,12 @@
         [self.addressManagerView show];
         self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId,NSString *province_id,NSString *city_id,NSString *county_id){
             
-            weakSelf.LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
+            if (county == nil||[county isEqualToString:@""]) {
+                weakSelf.LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@",province,city];
+                
+            }else{
+                weakSelf.LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
+            }
             weakSelf.provinceID = province_id;
             weakSelf.cityID  = city_id;
             weakSelf.countyID = county_id;
@@ -622,7 +627,15 @@
         [dic setObject:self.nameTf.text forKey:@"name"];
         [dic setObject:self.phoneNumTextField.text forKey:@"phone"];
         [dic setObject:self.sex forKey:@"sex"];
-        NSDictionary *addressDic = @{@"province":self.provinceID,@"city":self.cityID,@"county":self.countyID,@"town":self.townID};
+        NSDictionary *addressDic;
+        if ([self.countyID isEqualToString:@""]) {
+            addressDic = @{@"province":self.provinceID,@"city":self.cityID,@"town":self.townID};
+
+        }else{
+            addressDic = @{@"province":self.provinceID,@"city":self.cityID,@"county":self.countyID,@"town":self.townID};
+
+        }
+        
         [dic setObject:addressDic forKey:@"address"];
         [dic setObject:self.interestedProIdArr forKey:@"buyIntentions"];
         [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];

@@ -125,6 +125,7 @@
                     [KSHttpRequest post:KchangeShopCarNum parameters:params1 success:^(id result) {
                         if ([result[@"code"] integerValue] == 1000) {
                             [UILabel showMessage:@"删除成功"];
+                            [self.cancelBtn removeFromSuperview];
                             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
                          }
                     } failure:^(NSError *error) {

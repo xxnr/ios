@@ -278,7 +278,6 @@
             XNRCountyModel *county = _countyArr[0];
             self.county = county.name;
             self.county_Id = county._id;
-            
             self.countyID = county.ID;
 
 
@@ -290,6 +289,8 @@
     if (1 == component){
         self.county = @"";
         self.countyID = @"";
+        self.county_Id = @"";
+        
         // 获取第一列选中的行对应的城市
         if (_cityArr.count>0) {
             XNRCityModel *city = _cityArr[row];
@@ -306,7 +307,6 @@
             XNRCountyModel *county = [_countyArr objectAtIndex:0];
             self.county = county.name;
             self.county_Id = county._id;
-            
             self.countyID = county.ID;
 
         }
@@ -318,7 +318,6 @@
             XNRCountyModel *county = _countyArr[row];
             self.county = county.name;
             self.county_Id = county._id;
-            
             self.countyID = county.ID;
 
             
