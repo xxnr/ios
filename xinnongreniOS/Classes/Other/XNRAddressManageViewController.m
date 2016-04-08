@@ -139,10 +139,13 @@
 
 - (void)backClick:(UIButton *)btn
 {
-    XNRAddressManageModel *model = _dataArr[0];
-    model.selected = YES;
-    self.addressChoseBlock(model);
-    [self.addressManageTableView reloadData];
+    if (_dataArr.count>0) {
+        XNRAddressManageModel *model = _dataArr[0];
+        model.selected = YES;
+        self.addressChoseBlock(model);
+        [self.addressManageTableView reloadData];
+    }
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

@@ -236,22 +236,25 @@
                                 }
 
                                 // 市场价
-                                if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
-                                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",[marketPrice[@"min"] floatValue]];
-                                    if ([_marketPrice rangeOfString:@".00"].length == 3) {
-                                        _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
+                                if (![KSHttpRequest isBlankString:marketPrice[@"min"]] && ![KSHttpRequest isBlankString:marketPrice[@"max"]]) {
+                                    if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
+                                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",[marketPrice[@"min"] floatValue]];
+                                        if ([_marketPrice rangeOfString:@".00"].length == 3) {
+                                            _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
+                                        }
+                                        
+                                    }else{
+                                        NSString *minPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"min"] floatValue]];
+                                        NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] floatValue]];
+                                        if ([minPrice rangeOfString:@".00"].length == 3) {
+                                            minPrice = [minPrice substringToIndex:minPrice.length-3];
+                                        }
+                                        if ([maxPrice rangeOfString:@".00"].length == 3) {
+                                            maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
+                                        }
+                                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %@ - %@",minPrice,maxPrice];
                                     }
-                                    
-                                }else{
-                                    NSString *minPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"min"] floatValue]];
-                                    NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] floatValue]];
-                                    if ([minPrice rangeOfString:@".00"].length == 3) {
-                                        minPrice = [minPrice substringToIndex:minPrice.length-3];
-                                    }
-                                    if ([maxPrice rangeOfString:@".00"].length == 3) {
-                                        maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
-                                    }
-                                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %@ - %@",minPrice,maxPrice];
+
                                 }
                                 
                                 // 价格区间改变

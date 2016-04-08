@@ -292,8 +292,13 @@
         __weak __typeof(&*self)weakSelf = self;
         [self.addressManagerView show];
         self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId,NSString *province_id,NSString *city_id,NSString *county_id){
+            if (county == nil||[county isEqualToString:@""]) {
+                weakSelf.LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@",province,city];
+
+            }else{
+                weakSelf.LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
+            }
             
-            weakSelf.LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
             weakSelf.provinceID = provinceID;
             weakSelf.cityID  = cityId;
             weakSelf.countyID = countyId;
@@ -320,7 +325,7 @@
             [self.townManagerView show];
             self.townManagerView.com = ^(NSString *townName,NSString *townId,NSString *town_id){
                 weakSelf.streetLabel.text = [NSString stringWithFormat:@"%@",townName];
-                weakSelf.townID = town_id;
+                weakSelf.townID = townId;
                 
             };
         }
@@ -397,7 +402,7 @@
 }
 
 -(void)saveBtn {
-    if ([self.LocalAddressLabel.text isEqualToString:@""] || [self.streetLabel.text isEqualToString:@""] || [self.userTypeLabel.text isEqualToString:@""] || [self.nameTf.text isEqualToString:@""]) {
+    if ([self.LocalAddressLabel.text isEqualToString:@"选择所在的省市区"] || [self.streetLabel.text isEqualToString:@"选择所在街道或乡镇"] || [self.nameTf.text isEqualToString:@""]) {
         
         [UILabel showMessage:@"请完善信息"];
     }else{
@@ -409,7 +414,7 @@
         [dic setObject:addressDict forKey:@"address"];
         [dic setObject:self.nameTf.text forKey:@"userName"];
         [dic setObject:self.sex forKey:@"sex"];
-        [dic setObject:self.typeNum forKey:@"type"];
+        [dic setObject:self.typeNum?self.typeNum:@"" forKey:@"type"];
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         manager.requestSerializer=[AFJSONRequestSerializer serializer];//申明请求的数据是json类型

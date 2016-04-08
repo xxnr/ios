@@ -191,9 +191,9 @@
         
         weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
         
-        weakSelf.provinceID = province_id;
-        weakSelf.cityID = city_id;
-        weakSelf.countyID = county_id;
+        weakSelf.provinceID = provinceID;
+        weakSelf.cityID = cityId;
+        weakSelf.countyID = countyId;
         // 保存一下省，市，县的地址和ID
         UserInfo *info = [DataCenter account];
         info.provinceID = provinceID;
@@ -218,7 +218,7 @@
     self.townPickerView.com = ^(NSString *townName,NSString *townId,NSString *town_id){
         
         weakSelf.streetLabel.text = [NSString stringWithFormat:@"%@",townName];
-        weakSelf.townID = town_id;
+        weakSelf.townID = townId;
         // 保存一下镇的ID
         UserInfo *info = [DataCenter account];
         info.townID = townId;

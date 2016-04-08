@@ -102,7 +102,11 @@
                 [city appendString:result[@"potentialCustomer"][@"address"][@"city"][@"name"]];
                 [city appendString:@" "];
             }
+<<<<<<< HEAD
             if (address.county.count != 0) {
+=======
+            if ([KSHttpRequest isNULL:address.county]) {
+>>>>>>> xxnr-chung
                 [city appendString:result[@"potentialCustomer"][@"address"][@"county"][@"name"]];
             }
             NSString *town = @"";

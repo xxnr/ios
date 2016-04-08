@@ -261,9 +261,19 @@
     [areaLabel fitTextWidth_Ext];
     if (_model.province) {
         if (_model.county) {
-            areaLabel.text = [NSString stringWithFormat:@"%@%@%@%@",_model.province,_model.city,_model.county,_model.town];
+            if (_model.town) {
+                            areaLabel.text = [NSString stringWithFormat:@"%@%@%@%@",_model.province,_model.city,_model.county,_model.town];
+            }else{
+                            areaLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.province,_model.city,_model.county];
+            }
+
         }else{
-            areaLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.province,_model.city,_model.town];
+            if (_model.town) {
+                areaLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.province,_model.city,_model.town];
+
+            }else{
+                areaLabel.text = [NSString stringWithFormat:@"%@%@",_model.province,_model.city];
+            }
         }
 
     }else{
