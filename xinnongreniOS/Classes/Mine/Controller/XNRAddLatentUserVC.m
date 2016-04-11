@@ -662,6 +662,21 @@
                 [UILabel showMessage:@"客户登记成功"];
                 [self.navigationController popViewControllerAnimated:NO];
             }
+            else
+            {
+                [UILabel showMessage:resultObj[@"message"]];
+                UserInfo *infos = [[UserInfo alloc]init];
+                infos.loginState = NO;
+                [DataCenter saveAccount:infos];
+                //发送刷新通知
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+                
+                XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+                
+                vc.hidesBottomBarWhenPushed = YES;
+                //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+                [self.navigationController pushViewController:vc animated:YES];
+            }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
         }];

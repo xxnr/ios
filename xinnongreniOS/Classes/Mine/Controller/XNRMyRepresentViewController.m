@@ -29,6 +29,7 @@
     NSMutableArray *_dataArr;
     int currentPage;
     int currentPage2;
+    UITableView *currentTableView;
 }
 
 @property (nonatomic, weak) UIButton *leftBtn;
@@ -66,6 +67,7 @@
 @property (nonatomic,weak) UIView *thirdView;
 @property (nonatomic,weak) UIView *BookView;
 @property (nonatomic,weak) UITableView *tableView2;
+//@property(nonatomic,weak)UITableView *currentTableView;
 @property (nonatomic,strong)NSMutableArray *userArr;
 @property (nonatomic,weak)UILabel *bookTop1Label;
 @property (nonatomic,weak)UILabel *bookTop2Label;
@@ -79,7 +81,7 @@
 @property (nonatomic,assign)BOOL isFirstTableView;
 @end
 BOOL firstOrTcd;
-
+//static UITableView *currentTableView;
 @implementation XNRMyRepresentViewController
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -87,7 +89,14 @@ BOOL firstOrTcd;
     if (_isadd) {
         [self creatBookView];
         [self bookViewGetData];
+        currentTableView = self.tableView2;
     }
+    else
+    {
+        currentTableView = self.tableView;
+
+    }
+    [self setupCustomerRefresh];
 
 }
 -(void)viewDidDisappear:(BOOL)animated
@@ -107,11 +116,11 @@ BOOL firstOrTcd;
     self.isfirst = YES;
     _userArr = [NSMutableArray array];
     _dataArr = [[NSMutableArray alloc] init];
+    
     self.view.backgroundColor = R_G_B_16(0xfafafa);
     [self setNavigationbarTitle];
     [self setBottomButton];
     [self createTableView];
-    [self setupCustomerRefresh:_tableView];
     
 //    if (firstOrTcd) {
 //        [self setupCustomerRefresh:_tableView2];
@@ -132,15 +141,8 @@ BOOL firstOrTcd;
 }
 #pragma mark - 刷新
 
--(void)setupCustomerRefresh:(UITableView *)tableview{
+-(void)setupCustomerRefresh{
     
-    if (tableview.tag == tbTag) {
-        self.isFirstTableView = YES;
-    }
-    else
-    {
-        self.isFirstTableView = NO;
-    }
     MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
     
     NSMutableArray *idleImage = [NSMutableArray array];
@@ -182,7 +184,7 @@ BOOL firstOrTcd;
     
     header.stateLabel.hidden = YES;
 
-    tableview.mj_header = header;
+    currentTableView.mj_header = header;
 
 //    [self.tableView.mj_header beginRefreshing];
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
@@ -197,13 +199,13 @@ BOOL firstOrTcd;
     
     // 设置尾部
     
-    tableview.mj_footer = footer;
+    currentTableView.mj_footer = footer;
 
 }
 
 -(void)headRefresh{
     
-    if (self.isFirstTableView) {
+    if (currentTableView.tag == tbTag) {
         currentPage = 1;
         [_dataArr removeAllObjects];
         [self getCustomerData];
@@ -217,8 +219,8 @@ BOOL firstOrTcd;
 }
 
 -(void)footRefresh{
-    if (self.isFirstTableView) {
-        currentPage ++;
+    if (currentTableView.tag == tbTag) {
+        currentPage++;
         [self getCustomerData];
     }
     else
@@ -338,7 +340,7 @@ BOOL firstOrTcd;
     self.selectedBtn = sender;
 
     if (sender.tag == btnTag) {
-
+        currentTableView = self.tableView;
         self.isFirstTableView = YES;
         [self.topView removeFromSuperview];
         _tableView.hidden = NO;
@@ -396,7 +398,17 @@ BOOL firstOrTcd;
             }else{
                
                 [UILabel showMessage:result[@"message"]];
-            
+                UserInfo *infos = [[UserInfo alloc]init];
+                infos.loginState = NO;
+                [DataCenter saveAccount:infos];
+                //发送刷新通知
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+                
+                XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+                
+                vc.hidesBottomBarWhenPushed = YES;
+                //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+                [self.navigationController pushViewController:vc animated:YES];
             }
         } failure:^(NSError *error) {
             
@@ -419,9 +431,15 @@ BOOL firstOrTcd;
         
         [self creatBookView];
         [self bookViewGetData];
-//        [self setupCustomerRefresh:_tableView2];
+        
+        currentTableView = self.tableView2;
+
+//        [self setupCustomerRefresh];
 
     }
+    
+    [self setupCustomerRefresh];
+
 }
 -(void)creatBookView
 {
@@ -536,12 +554,11 @@ BOOL firstOrTcd;
 
 -(void)bookViewGetData
 {
-
-    [KSHttpRequest get:KGetQuery parameters:/*@{@"page":[NSString stringWithFormat:@"%d",currentPage2]}*/nil success:^(id result) {
+    [KSHttpRequest get:KGetQuery parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",currentPage2],@"max":@10} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             
-            _userArr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];
-            
+            NSMutableArray *arr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];
+            [_userArr addObjectsFromArray:arr];
             if(_userArr.count == 0){
             
                 BOOL isadd = [[NSUserDefaults standardUserDefaults]boolForKey:@"key"];
@@ -707,6 +724,22 @@ BOOL firstOrTcd;
             [self.tableView2.mj_footer endRefreshing];
             
 
+        }
+        else
+        {
+            [UILabel showMessage:result[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            //发送刷新通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+            
+            XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+            
+            vc.hidesBottomBarWhenPushed = YES;
+            //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+            [self.navigationController pushViewController:vc animated:YES];
+            
         }
     } failure:^(NSError *error) {
         [self.tableView2.mj_header endRefreshing];

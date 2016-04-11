@@ -140,7 +140,21 @@
             bgView.backgroundColor = R_G_B_16(0xf8f8f8);
             [self.view addSubview:bgView];
         }
-
+        else
+        {
+            [UILabel showMessage:result[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            //发送刷新通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+            
+            XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+            
+            vc.hidesBottomBarWhenPushed = YES;
+            //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
       } failure:^(NSError *error) {
         
     }];
