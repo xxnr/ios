@@ -345,12 +345,16 @@ BOOL firstOrTcd;
     self.selectedBtn = sender;
 
     if (sender.tag == btnTag) {
+        
+        [_dataArr removeAllObjects];
+        currentPage = 1;
+        [self getCustomerData];
         currentTableView = self.tableView;
+
         self.isFirstTableView = YES;
         [self.topView removeFromSuperview];
         _tableView.hidden = NO;
         
-        [self getCustomerData];
         
         [self.thirdView removeFromSuperview];
         [self.mrv removeFromSuperview];
@@ -434,6 +438,8 @@ BOOL firstOrTcd;
         [self.myRepView removeFromSuperview];
         
         
+        [self.userArr removeAllObjects];
+        currentPage2 = 1;
         [self creatBookView];
         [self bookViewGetData];
         
