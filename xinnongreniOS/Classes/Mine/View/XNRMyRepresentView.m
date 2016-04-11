@@ -115,13 +115,11 @@
 
 
 -(void)addRepresent:(UIButton *)sender {
-    
+    [self.phoneText resignFirstResponder];
     if ([self.delegate respondsToSelector:@selector(myRepresentViewWith:and:)]) {
         [self.delegate myRepresentViewWith:self and:self.phoneText.text];
     }
 }
-
-
 
 @end
 
