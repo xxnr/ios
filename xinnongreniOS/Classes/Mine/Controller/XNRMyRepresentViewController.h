@@ -11,5 +11,5 @@
 @interface XNRMyRepresentViewController : UIViewController
 @property (nonatomic,assign)BOOL isBroker;
 
-+(void)isfirstTab;
+//+(void)isfirstTab;
 @end

@@ -261,12 +261,13 @@
     
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl];
     //图片
-    
+    [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
     if (urlStr == nil || [urlStr isEqualToString:@""]) {
         [self.goodsImageView setImage:[UIImage imageNamed:@"icon_placehold"]];
     }else{
         [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-    }
+    }}];
 
 
     NSLog(@"-----------%@",self.model.goodsName);

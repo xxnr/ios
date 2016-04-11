@@ -194,11 +194,13 @@
     // 图片
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,_info.thumbnail];
     
+    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
     if (urlStr == nil || [urlStr isEqualToString:@""]) {
         [self.iconImageView setImage:[UIImage imageNamed:@"icon_placehold"]];
     }else{
         [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-    }
+    }}];
 
     // 商品名
     self.goodsNameLabel.text = _info.productName;
