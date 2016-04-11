@@ -72,7 +72,6 @@
         self.window.rootViewController = _tabBarController;
     }else{
         self.window.rootViewController = [[XNRNewFeatureViewController alloc] init];
-        
         // 存储这次试用的版本
         [defaults setObject:currentVersion forKey:versionKey];
         [defaults synchronize];
