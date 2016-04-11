@@ -54,9 +54,10 @@
     [self monitorNetwork];
     // 根控制器
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
+    [self.window makeKeyAndVisible];
+
     _tabBarController = [[XNRTabBarController alloc]init];
     _tabBarController.delegate = self;
-    [self.window makeKeyAndVisible];
     
     // 设置窗口的根控制器
     NSString *versionKey = @"CFBundleVersion";

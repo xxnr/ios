@@ -164,9 +164,8 @@
  */
 - (void)start
 {
-    // 显示主控制器（HMTabBarController）
+    // 显示主控制器（XNRTabBarController）
     XNRTabBarController *vc = [[XNRTabBarController alloc] init];
-    
     // 切换控制器
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     window.rootViewController = vc;

@@ -27,7 +27,7 @@
 
 #define KbtnTag 1000
 #define KlabelTag 2000
-@interface XNRProductInfo_VC ()<UITextFieldDelegate,UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource,XNRProductInfo_cellDelegate,XNRToolBarBtnDelegate,UIScrollViewDelegate>{
+@interface XNRProductInfo_VC ()<UITextFieldDelegate,UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource,XNRProductInfo_cellDelegate,XNRToolBarBtnDelegate,UIScrollViewDelegate,MWPhotoBrowserDelegate>{
     CGRect oldTableRect;
     CGFloat preY;
     NSMutableArray *_goodsArray;
@@ -66,9 +66,19 @@
 
 @property (nonatomic ,weak) XNRPropertyView *propertyView;
 
+@property (nonatomic, strong) NSMutableArray *picBrowserList;
+
+
 @end
 
 @implementation XNRProductInfo_VC
+
+- (NSMutableArray *)picBrowserList {
+    if (!_picBrowserList) {
+        _picBrowserList = [NSMutableArray array];
+    }
+    return _picBrowserList;
+}
 
 -(BMProgressView *)progressView{
     if (!_progressView) {
@@ -646,8 +656,34 @@
     login.hidesBottomBarWhenPushed = YES;
     [weakSelf.navigationController pushViewController:login animated:YES];
     };
+    // 图片浏览器的跳转
+    cell.photoBrowsercom = ^(NSInteger page){
+        
+        [self pushToPhotoBrowser:page andFrameModel:frame];
+    };
     cell.delegate = self;
     return cell;
+}
+
+-(void)pushToPhotoBrowser:(NSInteger)page andFrameModel:(XNRProductInfo_frame *)frame
+{
+    // 创建浏览器对象
+    [self.picBrowserList removeAllObjects];
+    NSInteger count = frame.infoModel.pictures.count;
+    
+    for (int i = 0; i<count; i++) {
+        XNRProductPhotoModel *photoModel = frame.infoModel.pictures[i];
+        MWPhoto *photo=[MWPhoto photoWithURL:[NSURL URLWithString:[HOST stringByAppendingString:photoModel.originalUrl]]];
+        [self.picBrowserList addObject:photo];
+    }
+    
+    MWPhotoBrowser *photoBrowser=[[MWPhotoBrowser alloc] initWithDelegate:self];
+    photoBrowser.displayActionButton=NO;
+    photoBrowser.alwaysShowControls=NO;
+    [photoBrowser setCurrentPhotoIndex:page];
+    
+    [self.navigationController pushViewController:photoBrowser animated:YES];
+
 }
 
 - (void)setNavigationbarTitle{
@@ -718,6 +754,17 @@
     }];
 
 }
+#pragma mark - MWPhotoBrowser的代理
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
+    return [_picBrowserList count];
+}
+- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index{
+    return _picBrowserList[index];
+}
+- (NSString *)photoBrowser:(MWPhotoBrowser *)photoBrowser titleForPhotoAtIndex:(NSUInteger)index{
+    return [NSString stringWithFormat:@"%ld/%ld",(long)index+1,(long)[_picBrowserList count]];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
