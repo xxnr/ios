@@ -728,10 +728,8 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
             
             XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
-            
             vc.hidesBottomBarWhenPushed = YES;
-            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
-            [currentVc.navigationController pushViewController:vc animated:YES];
+            [self.navigationController pushViewController:vc animated:YES];
 
         
         }
