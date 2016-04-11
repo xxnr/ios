@@ -98,8 +98,11 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
         
     }else{
-        [self.navigationController popToRootViewControllerAnimated:YES];
-        
+        if (self.loginFromProductInfo) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }else{
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
     }
     if (self.com) {
         self.com();

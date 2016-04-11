@@ -13,5 +13,6 @@
 @property (nonatomic, copy) void(^com)();
 @property (nonatomic,assign) BOOL loginFrom;
 @property (nonatomic,copy) NSString *loginName;
+@property (nonatomic, assign) BOOL loginFromProductInfo;
 
 @end

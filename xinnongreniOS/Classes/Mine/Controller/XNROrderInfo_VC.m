@@ -99,6 +99,19 @@
         _addressArr = [[NSMutableArray alloc] init];
         
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNOAddressView) name:@"initNOAddressView" object:nil];
+}
+
+-(void)initNOAddressView
+{
+    [self createHeadView];
+    
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)getData {
@@ -189,8 +202,7 @@
             }else{
                 [self createHeadView];
             }
-            
-            
+    
         } else {
             [UILabel showMessage:result[@"message"]];
         }
@@ -202,7 +214,7 @@
     }];
 }
 
-#pragma mark-创建头视图
+#pragma mark-创建没有地址的视图
 -(void)createHeadView{
     
     UIView *headViewNormal=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(96))];
@@ -243,6 +255,94 @@
     self.tableview.tableHeaderView = headViewNormal;
 
 }
+
+-(void)createAddressModelView:(XNRAddressManageModel *)model{
+    model.selected = YES;
+    self.nextAddresModel = model;
+    // headViewSpecial
+    UIView *headViewSpecial = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(280))];
+    headViewSpecial.backgroundColor = [UIColor whiteColor];
+    self.headViewSpecial = headViewSpecial;
+    [self.view addSubview:headViewSpecial];
+    
+    UILabel *getGoodsAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth, PX_TO_PT(80))];
+    getGoodsAddressLabel.text = @"收货地址";
+    getGoodsAddressLabel.textColor = R_G_B_16(0x323232);
+    getGoodsAddressLabel.textAlignment = NSTextAlignmentLeft;
+    getGoodsAddressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    [headViewSpecial addSubview:getGoodsAddressLabel];
+    
+    UIButton *addressBtnSpecial = [[UIButton alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(180))];
+    [addressBtnSpecial setBackgroundColor:R_G_B_16(0xfffaf0)];
+    [addressBtnSpecial addTarget:self action:@selector(addressManage) forControlEvents:UIControlEventTouchUpInside];
+    [headViewSpecial addSubview:addressBtnSpecial];
+    
+    UIImageView *upImageViewSpecial = [[UIImageView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(7))];
+    [upImageViewSpecial setImage:[UIImage imageNamed:@"orderInfo_address_bacground"]];
+    [headViewSpecial addSubview:upImageViewSpecial];
+    
+    UIImageView *downImageViewSpecial = [[UIImageView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(253), ScreenWidth, PX_TO_PT(7))];
+    [downImageViewSpecial setImage:[UIImage imageNamed:@"orderInfo_down"]];
+    [headViewSpecial addSubview:downImageViewSpecial];
+    
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(downImageViewSpecial.frame), ScreenWidth, PX_TO_PT(20))];
+    view.backgroundColor = R_G_B_16(0xf7f7f7);
+    [headViewSpecial addSubview:view];
+    
+    _recipientNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), PX_TO_PT(112), PX_TO_PT(200), PX_TO_PT(36))];
+    _recipientNameLabel.textColor = R_G_B_16(0x323232);
+    _recipientNameLabel.text = model.receiptPeople;
+    [headViewSpecial addSubview:_recipientNameLabel];
+    
+    _recipientPhoneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_recipientNameLabel.frame), PX_TO_PT(112), ScreenWidth/2, PX_TO_PT(36))];
+    _recipientPhoneLabel.textColor = R_G_B_16(0x323232);
+    _recipientPhoneLabel.text = [NSString stringWithFormat:@"%@",model.receiptPhone];
+    [headViewSpecial addSubview:_recipientPhoneLabel];
+    
+    
+    UIImageView *addressImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(_recipientNameLabel.frame) + PX_TO_PT(32), PX_TO_PT(26), PX_TO_PT(34))];
+    [addressImageView setImage:[UIImage imageNamed:@"orderInfo_address_picture"]];
+    [headViewSpecial addSubview:addressImageView];
+    
+    
+    _addressDetail = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), CGRectGetMaxY(_recipientNameLabel.frame) +PX_TO_PT(32), ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), PX_TO_PT(34))];
+    _addressDetail.textColor = R_G_B_16(0xc7c7c7);
+    [headViewSpecial addSubview:_addressDetail];
+    
+    NSString *address1 = [NSString stringWithFormat:@"%@%@",model.areaName,model.cityName];
+    NSString *address2 = [NSString stringWithFormat:@"%@%@%@",model.areaName,model.cityName,model.countyName];
+    if ([model.countyName isEqualToString:@""] || model.countyName == nil) {
+        if ([model.townName isEqualToString:@""] || model.townName == nil) {
+            _addressDetail.text = [NSString stringWithFormat:@"%@%@",address1,model.address];
+        }else{
+            _addressDetail.text = [NSString stringWithFormat:@"%@%@%@",address1,model.townName,model.address];
+            
+        }
+        
+    }else{
+        if ([model.townName isEqualToString:@""]|| model.townName == nil) {
+            _addressDetail.text = [NSString stringWithFormat:@"%@%@",address2,model.address];
+        }else{
+            _addressDetail.text = [NSString stringWithFormat:@"%@%@%@",address2,model.townName,model.address];
+            
+        }
+        
+    }
+    
+    // 箭头
+    UIImageView *arrowImageView=[[UIImageView  alloc] init];
+    arrowImageView.frame=CGRectMake(ScreenWidth-PX_TO_PT(32)-PX_TO_PT(24),PX_TO_PT(149) , PX_TO_PT(24), PX_TO_PT(42));
+    [arrowImageView setImage:[UIImage imageNamed:@"icon_arrow"]];
+    [headViewSpecial addSubview:arrowImageView];
+    self.tableview.tableHeaderView = headViewSpecial;
+    
+    UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    headLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    [headViewSpecial addSubview:headLine];
+    
+}
+
+
 #pragma mark - 创建有地址后的视图
 -(void)createAddressView:(NSMutableArray *)addressArray{
     XNRAddressManageModel *model = addressArray[0];
@@ -516,31 +616,34 @@
         self.nextAddresModel = model;
         NSLog(@"%@",model.address);
         NSLog(@"%@",model.addressId);
+        
         self.headViewNormal.hidden = YES;
-        NSString *address1 = [NSString stringWithFormat:@"%@%@",model.areaName,model.cityName];
-        NSString *address2 = [NSString stringWithFormat:@"%@%@%@",model.areaName,model.cityName,model.countyName];
-        if ([model.countyName isEqualToString:@""] || model.countyName == nil) {
-            if ([model.townName isEqualToString:@""] || model.townName == nil) {
-                _addressDetail.text = [NSString stringWithFormat:@"%@%@",address1,model.address];
-            }else{
-                _addressDetail.text = [NSString stringWithFormat:@"%@%@%@",address1,model.townName,model.address];
-
-            }
-            
-        }else{
-            if ([model.townName isEqualToString:@""]|| model.townName == nil) {
-                _addressDetail.text = [NSString stringWithFormat:@"%@%@",address2,model.address];
-            }else{
-                _addressDetail.text = [NSString stringWithFormat:@"%@%@%@",address2,model.townName,model.address];
-
-            }
-            
-        }
-        _recipientNameLabel.text = model.receiptPeople;
-        _recipientPhoneLabel.text = model.receiptPhone;
-        address = model.address;
-        _nameLabel.hidden = YES;
-        addressId = model.addressId;
+        [self createAddressModelView:model];
+        
+//        NSString *address1 = [NSString stringWithFormat:@"%@%@",model.areaName,model.cityName];
+//        NSString *address2 = [NSString stringWithFormat:@"%@%@%@",model.areaName,model.cityName,model.countyName];
+//        if ([model.countyName isEqualToString:@""] || model.countyName == nil) {
+//            if ([model.townName isEqualToString:@""] || model.townName == nil) {
+//                _addressDetail.text = [NSString stringWithFormat:@"%@%@",address1,model.address];
+//            }else{
+//                _addressDetail.text = [NSString stringWithFormat:@"%@%@%@",address1,model.townName,model.address];
+//
+//            }
+//            
+//        }else{
+//            if ([model.townName isEqualToString:@""]|| model.townName == nil) {
+//                _addressDetail.text = [NSString stringWithFormat:@"%@%@",address2,model.address];
+//            }else{
+//                _addressDetail.text = [NSString stringWithFormat:@"%@%@%@",address2,model.townName,model.address];
+//
+//            }
+//            
+//        }
+//        _recipientNameLabel.text = model.receiptPeople;
+//        _recipientPhoneLabel.text = model.receiptPhone;
+//        address = model.address;
+//        _nameLabel.hidden = YES;
+//        addressId = model.addressId;
     
     }];
     vc.hidesBottomBarWhenPushed=YES;
@@ -554,7 +657,7 @@
 -(void)makeSure{
     NSLog(@"确认订单");
     if([self.addressLabel.text isEqualToString:@"添加收货地址"]){
-        [UILabel showMessage:@"请选择一个地址，没有地址我们的服务人员送不到货哦"];
+        [UILabel showMessage:@"收货地址不能为空"];
         return;
     }
     

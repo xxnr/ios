@@ -174,7 +174,16 @@
         self.shopcarBtn.hidden = YES;
     }else{
         self.priceLabel.textColor = R_G_B_16(0xff4e00);
-        self.priceLabel.text = [NSString stringWithFormat:@"¥%.2f",model.unitPrice.doubleValue];
+//        self.priceLabel.text = [NSString stringWithFormat:@"¥%.2f",model.unitPrice.doubleValue];
+        if (model.unitPrice.floatValue>1) {
+            self.priceLabel.text = [NSString stringWithFormat:@"￥%.f",model.unitPrice.floatValue];
+        }else{
+            self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.unitPrice.floatValue];
+        }
+        if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
+            self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
+        }
+
         self.shopcarBtn.hidden = NO;
     }
 }
