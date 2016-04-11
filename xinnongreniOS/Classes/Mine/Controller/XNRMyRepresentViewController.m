@@ -97,7 +97,7 @@ BOOL firstOrTcd;
     {
         [_dataArr removeAllObjects];
         currentPage = 1;
-        [self getCustomerData];
+//        [self getCustomerData];
         currentTableView = self.tableView;
 
     }
@@ -136,6 +136,7 @@ BOOL firstOrTcd;
 
 -(void)removeRedPoint
 {
+    currentPage = 1;
     [self getCustomerData];
     
 }
@@ -319,6 +320,7 @@ BOOL firstOrTcd;
     _bookBtn.tag = btnTag + 2;
     _bookBtn.hidden = YES;
     [self.view addSubview:_bookBtn];
+    
     [self bottomBtnClicked:_leftBtn];
     
     UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, PX_TO_PT(1), btnH)];
@@ -347,6 +349,7 @@ BOOL firstOrTcd;
     if (sender.tag == btnTag) {
         
         [_dataArr removeAllObjects];
+        self.isadd = NO;
         currentPage = 1;
         [self getCustomerData];
         currentTableView = self.tableView;
@@ -363,6 +366,7 @@ BOOL firstOrTcd;
         [self createCustomerLabel];
     } else if(sender.tag == btnTag + 1){
         self.isFirstTableView = NO;
+        self.isadd = NO;
         _tableView.hidden = sender.selected;
         self.topView.hidden = sender.selected;
         [self.firstView removeFromSuperview];
@@ -836,7 +840,7 @@ BOOL firstOrTcd;
 }
 -(void)getCustomerData
 {
-    [_dataArr removeAllObjects];
+//    [_dataArr removeAllObjects];
     [KSHttpRequest post:KUserGetInvitee parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *arr = result[@"invitee"];
