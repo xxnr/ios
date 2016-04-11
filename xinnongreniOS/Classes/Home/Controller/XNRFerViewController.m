@@ -168,22 +168,11 @@
 }
 -(void)headRefresh{
     
-<<<<<<< HEAD
-    currentPage = 1;
-    
-    [self getTotalData];
-    if (isSort) { // 正序
-        NSLog(@"正序");
-        [self getPriceDataWith:@"price-asc"];
-    }else{   // 反序
-        NSLog(@"反序");
-        [self getPriceDataWith:@"price-desc"];
-=======
+
     if (self.currentBtn == 1) {
         currentPage1 = 1;
         [_totalArray removeAllObjects];
         [self getTotalData];
->>>>>>> ynn_ios
     }
     else if (self.currentBtn == 2)
     {
