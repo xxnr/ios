@@ -173,6 +173,9 @@
     XNRMobNickNameController *nickNameVC = [[XNRMobNickNameController alloc] init];
     nickNameVC.com = ^(NSString *nickName){
         self.nickNameLabel.text = nickName;
+        UserInfo *info = [DataCenter account];
+        info.nickname = nickName;
+        [DataCenter saveAccount:info];
     };
     nickNameVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:nickNameVC animated:YES];
@@ -301,6 +304,9 @@
         XNRMobuserName *userNameVC = [[XNRMobuserName alloc] init];
         userNameVC.com = ^(NSString *userName){
             self.userNameLabel.text = userName;
+            UserInfo *info = [DataCenter account];
+            info.name = userName;
+            [DataCenter saveAccount:info];
         
         };
         userNameVC.hidesBottomBarWhenPushed = YES;

@@ -89,6 +89,7 @@
                 if (self.com) {
                     self.com(self.nickNameTF.text);
                 }
+                
                 [self.navigationController popViewControllerAnimated:YES];
             }else{
                
