@@ -102,7 +102,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _payType=0;
+    _payType = 0;
     self.view.backgroundColor = R_G_B_16(0xFAFAFA);
     self.minPrice = @"3000";
 
