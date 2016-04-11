@@ -33,6 +33,7 @@
 - (void)viewDidLoad {
     self.view.backgroundColor = [UIColor whiteColor];
     [super viewDidLoad];
+    currentPage = 1;
     [self setNav];
     [self setupTableView];
     [self createbackBtn];

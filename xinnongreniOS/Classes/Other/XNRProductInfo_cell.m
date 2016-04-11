@@ -369,12 +369,13 @@
         XNRProductPhotoModel *photoModel = self.model.pictures[i];
         
         NSString *imageUrl=[HOST stringByAppendingString:photoModel.imgUrl];
-        
+        [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            
         if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
             [headView setImage:[UIImage imageNamed:@"icon_placehold"]];
         }else{
             [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-        }
+        }}];
     
     }
     // 3.设置其他属性

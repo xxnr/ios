@@ -95,12 +95,13 @@
 - (void)setSubViews
 {
     //图片
-    
+    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:self.model.imgUrl] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+
     if (self.model.imgUrl == nil || [self.model.imgUrl isEqualToString:@""]) {
         [self.picImageView setImage:[UIImage imageNamed:@"icon_placehold"]];
     }else{
         [self.picImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-    }
+    }}];
 
     
     //商品名

@@ -392,12 +392,14 @@
             }
             
             NSString *imageUrl=[HOST stringByAppendingString:dic[@"thumbnail"]];
-                        
+            
+            [self.imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                
             if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
                 [self.imageView setImage:[UIImage imageNamed:@"icon_placehold"]];
             }else{
                 [self.imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-            }
+            }}];
 
 
             [self.goodsArray addObject:model];
