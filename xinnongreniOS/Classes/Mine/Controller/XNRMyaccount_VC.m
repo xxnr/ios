@@ -243,9 +243,9 @@
         sexLabel.text = [NSString stringWithFormat:@"选择"];
     }
     else{
-        if ([[DataCenter account].sex integerValue] == 1) {
+        if ([[DataCenter account].sex integerValue] == 0) {
             sexLabel.text = @"男";
-        }else if([[DataCenter account].sex integerValue] == 0){
+        }else if([[DataCenter account].sex integerValue] == 1){
             sexLabel.text = @"女";
         }else{
             sexLabel.text = @"选择";
