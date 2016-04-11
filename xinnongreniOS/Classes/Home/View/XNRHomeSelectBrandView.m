@@ -154,6 +154,11 @@
 //}
 -(void)getCategorys
 {
+    [_categorys removeAllObjects];
+    [self.resArr removeAllObjects];
+    [self.gxArr removeAllObjects];
+    [self.txArr removeAllObjects];
+    
     [KSHttpRequest get:KHomeCategories parameters:nil success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             _categorys = [[NSMutableArray alloc]initWithCapacity:2];
@@ -682,7 +687,7 @@
                 if (arr.count == 0) {
                     return;
                 }
-                //                self.kinds[1] =arr[0][@"_id"][@"name"];
+                //self.kinds[1] =arr[0][@"_id"][@"name"];
                 [self.kinds setObject:arr[0][@"_id"][@"name"] atIndexedSubscript:1];
                 
                 //                [self.kinds addObject: arr[0][@"_id"][@"name"] ];

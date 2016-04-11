@@ -175,7 +175,6 @@
         NSLog(@"反序");
         [self getPriceDataWith:@"price-desc"];
     }
-    
 
     [self getselectDataWithName:self.brands and:self.gxArr and:self.txArr and:self.reservePrice and:self.kinds];
     [self.tableView reloadData];
@@ -344,6 +343,7 @@
                     weakSelf.gxArr = param2;
                     weakSelf.txArr = param3;
                     weakSelf.reservePrice = param4;
+                    weakSelf.kinds = kinds;
                     [weakSelf getselectDataWithName:param1 and:param2 and:param3 and:param4 and:kinds];
                 }
 
