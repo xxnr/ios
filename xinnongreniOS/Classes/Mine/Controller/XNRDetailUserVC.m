@@ -140,7 +140,8 @@
             bgView.backgroundColor = R_G_B_16(0xf8f8f8);
             [self.view addSubview:bgView];
         }
-    } failure:^(NSError *error) {
+
+      } failure:^(NSError *error) {
         
     }];
 }

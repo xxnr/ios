@@ -54,6 +54,11 @@
     [self getData];
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - 地址管理
 - (void)createAddressManageTableView
 {
@@ -139,10 +144,15 @@
 
 - (void)backClick:(UIButton *)btn
 {
-    XNRAddressManageModel *model = _dataArr[0];
-    model.selected = YES;
-    self.addressChoseBlock(model);
-    [self.addressManageTableView reloadData];
+    if (_dataArr.count>0) {
+        XNRAddressManageModel *model = _dataArr[0];
+        model.selected = YES;
+        self.addressChoseBlock(model);
+        [self.addressManageTableView reloadData];
+    }else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"initNOAddressView" object:nil];
+    }
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

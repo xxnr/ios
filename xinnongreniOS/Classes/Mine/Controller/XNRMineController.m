@@ -91,13 +91,20 @@
                 
                 
                 XNRUserInfoModel *model = [[XNRUserInfoModel alloc] init];
-                model.province = province[@"name"];
-                model.city = city[@"name"];
-                model.county = county[@"name"];
-                model.town = town[@"name"];
-                
                 [model setValuesForKeysWithDictionary:dict];
                 [_userArray addObject:model];
+                
+                model.province = province[@"name"];
+                model.city = city[@"name"];
+                
+                if (![KSHttpRequest isNULL:county]) {
+                    model.county = county[@"name"];
+
+                }
+                if (![KSHttpRequest isNULL:town]) {
+                    model.town = town[@"name"];
+                }
+
                 
                 // 头像
                 if ([KSHttpRequest isBlankString:dict[@"photo"]]) {// 没有头像
@@ -122,11 +129,22 @@
                 if ([KSHttpRequest isBlankString:province[@"name"]]) {
                     self.addressLabel.text = [NSString stringWithFormat:@"地区:%@",@"还没有填写哦~"];
                 }else{
-                    if ([KSHttpRequest isBlankString:county[@"name"]]) {
-                        self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",province[@"name"],city[@"name"],town[@"name"]];
+                    if ([KSHttpRequest isBlankString:model.county]) {
+                        if ([KSHttpRequest isNULL:model.town]) {
+                             self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@",province[@"name"],city[@"name"]];
+                        }else{
+                             self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",province[@"name"],city[@"name"],model.town];
+                        }
+                       
                     }else{
-                        NSString *address = [NSString stringWithFormat:@"%@%@",county[@"name"],town[@"name"]];
-                        self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",province[@"name"],city[@"name"],address];
+                        if ([KSHttpRequest isNULL:model.town]) {
+                            NSString *address = [NSString stringWithFormat:@"%@",county[@"name"]];
+                            self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",province[@"name"],city[@"name"],address];
+                        }else{
+                            NSString *address = [NSString stringWithFormat:@"%@%@",county[@"name"],model.town];
+                            self.addressLabel.text = [NSString stringWithFormat:@"地区:%@%@%@",province[@"name"],city[@"name"],address];
+                        }
+
                     }
                 }
                 // 类型

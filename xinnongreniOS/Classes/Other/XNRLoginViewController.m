@@ -98,8 +98,11 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
         
     }else{
-        [self.navigationController popToRootViewControllerAnimated:YES];
-        
+        if (self.loginFromProductInfo) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }else{
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
     }
     if (self.com) {
         self.com();
@@ -356,8 +359,12 @@
             info.photo = datasDic[@"photo"];
             info.province = province[@"name"];
             info.city = city[@"name"];
-            info.county = county[@"name"];
-            info.town = town[@"name"];
+            if (![KSHttpRequest isNULL:county]) {
+                info.county = county[@"name"];
+            }
+            if (![KSHttpRequest isNULL:town]) {
+                info.town = town[@"name"];
+            }
             info.cartId = datasDic[@"cartId"];
             
             [DataCenter saveAccount:info];

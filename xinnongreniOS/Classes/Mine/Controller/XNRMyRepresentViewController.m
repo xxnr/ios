@@ -117,6 +117,18 @@ BOOL firstOrTcd;
 //        [self setupCustomerRefresh:_tableView2];
 //    }
 //    firstOrTcd = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRedPoint) name:@"removeRedPoint" object:nil];
+}
+
+-(void)removeRedPoint
+{
+    [self getCustomerData];
+    
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 #pragma mark - 刷新
 

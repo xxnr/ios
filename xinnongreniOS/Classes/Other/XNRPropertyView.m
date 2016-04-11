@@ -236,22 +236,25 @@
                                 }
 
                                 // 市场价
-                                if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
-                                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",[marketPrice[@"min"] floatValue]];
-                                    if ([_marketPrice rangeOfString:@".00"].length == 3) {
-                                        _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
+                                if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]]) {
+                                    if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
+                                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",[marketPrice[@"min"] floatValue]];
+                                        if ([_marketPrice rangeOfString:@".00"].length == 3) {
+                                            _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
+                                        }
+                                        
+                                    }else{
+                                        NSString *minPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"min"] floatValue]];
+                                        NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] floatValue]];
+                                        if ([minPrice rangeOfString:@".00"].length == 3) {
+                                            minPrice = [minPrice substringToIndex:minPrice.length-3];
+                                        }
+                                        if ([maxPrice rangeOfString:@".00"].length == 3) {
+                                            maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
+                                        }
+                                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %@ - %@",minPrice,maxPrice];
                                     }
-                                    
-                                }else{
-                                    NSString *minPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"min"] floatValue]];
-                                    NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] floatValue]];
-                                    if ([minPrice rangeOfString:@".00"].length == 3) {
-                                        minPrice = [minPrice substringToIndex:minPrice.length-3];
-                                    }
-                                    if ([maxPrice rangeOfString:@".00"].length == 3) {
-                                        maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
-                                    }
-                                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %@ - %@",minPrice,maxPrice];
+
                                 }
                                 
                                 // 价格区间改变
@@ -271,7 +274,13 @@
 
                                     
                                         if (_deposit != nil) {
-                                            _totalPrice = [_deposit floatValue];
+                                            if ([_deposit floatValue] == 0.00) {
+                                                _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
+                                            }else{
+                                                _totalPrice = [_deposit floatValue];
+
+                                            }
+                                            
                                         }else{
                                             _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
                                         }
@@ -298,7 +307,13 @@
 
                                     
                                     if (_deposit != nil) {
-                                        _totalPrice = [_deposit floatValue];
+                                        if ([_deposit floatValue] == 0.00) {
+                                            _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
+                                        }else{
+                                            _totalPrice = [_deposit floatValue];
+                                            
+                                        }
+                                        
                                     }else{
                                         _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
                                     }
@@ -714,6 +729,9 @@
             vc.hidesBottomBarWhenPushed = YES;
             UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
             [currentVc.navigationController pushViewController:vc animated:YES];
+            
+            [self.coverView removeFromSuperview];
+            [self.attributesView removeFromSuperview];
          
             _state = NO;
 
@@ -983,7 +1001,13 @@
                             self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
                     }
                         if (_deposit != nil) {
-                            _totalPrice = [_deposit floatValue];
+                            if ([_deposit floatValue] == 0.00) {
+                                _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
+                            }else{
+                                _totalPrice = [_deposit floatValue];
+                                
+                            }
+                            
                         }else{
                             _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
                         }
@@ -1009,10 +1033,17 @@
                     }
 
                     if (_deposit != nil) {
-                        _totalPrice = [_deposit floatValue];
+                        if ([_deposit floatValue] == 0.00) {
+                            _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
+                        }else{
+                            _totalPrice = [_deposit floatValue];
+                            
+                        }
+                        
                     }else{
                         _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
                     }
+
 
                 }
                 
@@ -1107,7 +1138,12 @@
             if (indexPath.item == [infoModel.additions indexOfObject:addtionCellModel]) {
                 CGFloat addPrice = [addtionCellModel.price floatValue];
                 if (_deposit != nil) {
-                    _totalPrice = [_deposit floatValue];
+                    if ([_deposit floatValue] == 0.00) {
+                        _totalPrice = (currentPrice + addPrice);
+
+                    }else{
+                        _totalPrice = [_deposit floatValue];
+                    }
                 }else{
                     _totalPrice = (currentPrice + addPrice);
 

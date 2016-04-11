@@ -760,16 +760,38 @@
     self.tempBtn.selected = NO;
     button.selected = YES;
     self.tempBtn = button;
-    [self setselPayType];
+    [self SelPayType];
     NSLog(@"%@",_Money);
 }
--(void)setselPayType
+-(void)SelPayType
 {
     if (self.currentSelBtn.tag == kSelectedBtn) {
         self.selectedBtnOne.selected = YES;
         self.selectedBtnTwo.selected = NO;
         _payType = 1;
         [self payType];
+        
+    }else if (self.currentSelBtn.tag == kSelectedBtn + 1){
+        self.selectedBtnTwo.selected = YES;
+        self.selectedBtnOne.selected = NO;
+        _payType = 2;
+        [self payType];
+        
+    }else if (self.currentSelBtn.tag == kSelectedBtn + 2){
+        
+    }else{
+        
+    }
+    
+
+}
+-(void)setselPayType
+{
+    if (self.currentSelBtn.tag == kSelectedBtn) {
+//        self.selectedBtnOne.selected = YES;
+//        self.selectedBtnTwo.selected = NO;
+//        _payType = 1;
+//        [self payType];
         NSDictionary *params = @{@"consumer":@"app",@"orderId":self.orderID,@"price": _Money,@"user-agent":@"IOS-v2.0"};
         [KSHttpRequest post:KAlipay parameters:params success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
@@ -796,10 +818,10 @@
         
         
     }else if (self.currentSelBtn.tag == kSelectedBtn + 1){
-        self.selectedBtnTwo.selected = YES;
-        self.selectedBtnOne.selected = NO;
-        _payType = 2;
-        [self payType];
+//        self.selectedBtnTwo.selected = YES;
+//        self.selectedBtnOne.selected = NO;
+//        _payType = 2;
+//        [self payType];
         // 获取tn
         [KSHttpRequest post:KUnionpay parameters:@{@"consumer":@"app",@"responseStyle":@"v1.0",@"orderId":self.orderID,@"price":_Money,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             
@@ -856,6 +878,10 @@
         }
         
         _Money = self.myTextField.text;
+    }
+    
+    if (self.isFull) {
+        _Money = self.holdPrice;
     }
     _ispayType = YES;
     [self setselPayType];
