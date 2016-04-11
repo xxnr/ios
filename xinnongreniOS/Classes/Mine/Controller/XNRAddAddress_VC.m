@@ -286,8 +286,13 @@
     __weak __typeof(&*self)weakSelf = self;
     [self.addressManagerView show];
     self.addressManagerView.com = ^(NSString *province,NSString *city,NSString *county,NSString *provinceID,NSString *cityId,NSString *countyId,NSString *province_id,NSString *city_id,NSString *county_id){
-        
-        weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
+        if (county == nil || [county isEqualToString:@""]) {
+            weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@",province,city];
+
+        }else{
+            weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
+
+        }
         
         weakSelf.provinceID = provinceID;
         weakSelf.cityID  = cityId;

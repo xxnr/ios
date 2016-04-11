@@ -108,6 +108,7 @@
         propertyView.loginBlock = ^(){
             
             XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
+            login.loginFromProductInfo = YES;
             login.hidesBottomBarWhenPushed = YES;
             [weakSelf.navigationController pushViewController:login animated:YES];
             
@@ -257,6 +258,8 @@
         _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStylePlain];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        UIView * view = [[UIView alloc] init];
+        [_tableView setTableFooterView:view];
     }
     return _tableView;
 }
@@ -388,6 +391,7 @@
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, frame.viewHeight)];
     tableView.delegate = self;
     tableView.dataSource = self;
+    
     
     self.tableView = tableView;
     [self.view addSubview:tableView];
@@ -638,6 +642,7 @@
     // 登录页面的跳转
     cell.logincom = ^(){
     XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
+    login.loginFromProductInfo = YES;
     login.hidesBottomBarWhenPushed = YES;
     [weakSelf.navigationController pushViewController:login animated:YES];
     };

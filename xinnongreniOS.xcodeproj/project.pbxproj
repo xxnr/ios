@@ -169,6 +169,7 @@
 		498AB01F1BF8DACA003827E3 /* XNRMyRepresentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 498AB01E1BF8DACA003827E3 /* XNRMyRepresentModel.m */; };
 		498AB0221BF8E1AD003827E3 /* XNRMyRepresent_cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 498AB0211BF8E1AD003827E3 /* XNRMyRepresent_cell.m */; };
 		498AB0251BF97FED003827E3 /* XNRUserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 498AB0241BF97FED003827E3 /* XNRUserInfoModel.m */; };
+		49935DF01CBA78DD0014C24E /* XNRControllerTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 49935DEF1CBA78DD0014C24E /* XNRControllerTool.m */; };
 		499B78C91C1A812F003ECE87 /* XNRProviceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 499B78C81C1A812F003ECE87 /* XNRProviceModel.m */; };
 		499B78D71C1AB454003ECE87 /* XNRCityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 499B78D61C1AB454003ECE87 /* XNRCityModel.m */; };
 		49A7BD8E1C75747900913927 /* XNRProductPhotoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7BD8D1C75747900913927 /* XNRProductPhotoModel.m */; };
@@ -825,6 +826,8 @@
 		498AB0211BF8E1AD003827E3 /* XNRMyRepresent_cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMyRepresent_cell.m; sourceTree = "<group>"; };
 		498AB0231BF97FED003827E3 /* XNRUserInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRUserInfoModel.h; sourceTree = "<group>"; };
 		498AB0241BF97FED003827E3 /* XNRUserInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRUserInfoModel.m; sourceTree = "<group>"; };
+		49935DEE1CBA78DD0014C24E /* XNRControllerTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRControllerTool.h; sourceTree = "<group>"; };
+		49935DEF1CBA78DD0014C24E /* XNRControllerTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRControllerTool.m; sourceTree = "<group>"; };
 		499B78C71C1A812F003ECE87 /* XNRProviceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRProviceModel.h; sourceTree = "<group>"; };
 		499B78C81C1A812F003ECE87 /* XNRProviceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRProviceModel.m; sourceTree = "<group>"; };
 		499B78D51C1AB454003ECE87 /* XNRCityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCityModel.h; sourceTree = "<group>"; };
@@ -1895,6 +1898,8 @@
 				49ADEE1C1C536CE700525AA8 /* XNRNewFeatureViewController.h */,
 				49ADEE1D1C536CE700525AA8 /* XNRNewFeatureViewController.m */,
 				4950CDFD1C045E28006200AD /* XNRBusinessLogic.h */,
+				49935DEE1CBA78DD0014C24E /* XNRControllerTool.h */,
+				49935DEF1CBA78DD0014C24E /* XNRControllerTool.m */,
 			);
 			path = appMain;
 			sourceTree = "<group>";
@@ -3487,6 +3492,7 @@
 				9C6BCEA11CAE8D4400463096 /* XNRCustomer.m in Sources */,
 				1FE1D6111B12EE2600F0D158 /* NSObject+MJCoding.m in Sources */,
 				4916112E1C8D189400F1E243 /* IQToolbar.m in Sources */,
+				49935DF01CBA78DD0014C24E /* XNRControllerTool.m in Sources */,
 				491AF0501C76C5C500AA3CC8 /* XNRPropertyView.m in Sources */,
 				9C0620C11CB661FF009A82A2 /* XNRPotentialCustomer.m in Sources */,
 				499B78C91C1A812F003ECE87 /* XNRProviceModel.m in Sources */,
@@ -3700,7 +3706,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
@@ -3738,7 +3744,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -3769,7 +3775,7 @@
 					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3820,7 +3826,7 @@
 					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

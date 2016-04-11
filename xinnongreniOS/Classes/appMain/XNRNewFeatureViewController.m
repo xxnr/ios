@@ -170,6 +170,8 @@
     // 切换控制器
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     window.rootViewController = vc;
+    
+    
     // push : [self.navigationController pushViewController:vc animated:NO];
     // modal : [self presentViewController:vc animated:NO completion:nil];
     // window.rootViewController : window.rootViewController = vc;

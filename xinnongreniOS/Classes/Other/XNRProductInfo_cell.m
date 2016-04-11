@@ -174,8 +174,12 @@
     [photoBrowser setCurrentPhotoIndex:self.pageControl.currentPage];
     
     [[[AppDelegate shareAppDelegate].tabBarController selectedViewController] pushViewController:photoBrowser animated:YES];
+//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:photoBrowser];
+//    [[AppDelegate shareAppDelegate].tabBarController presentViewController:nav animated:YES completion:^{
+//        
+//    }];
     
-    NSLog(@"AppDelegate===%@", [[AppDelegate shareAppDelegate].tabBarController selectedViewController]);
+    NSLog(@"AppDelegate===%@====%@", [[AppDelegate shareAppDelegate].tabBarController selectedViewController],[AppDelegate shareAppDelegate].tabBarController);
     
 }
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
@@ -439,19 +443,19 @@
         
         if ([self.depositLabel.text rangeOfString:@".00"].length == 3) {
             self.depositLabel.text = [self.depositLabel.text substringToIndex:self.depositLabel.text.length-3];
-            NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.depositLabel.text];
-            NSDictionary *depositStr=@{
-                                       
-                                       NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-                                       NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(38)]
-                                       
-                                       };
-            
-            [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(3,AttributedStringDeposit.length-3)];
-            
-            [_depositLabel setAttributedText:AttributedStringDeposit];
-            
         }
+        NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.depositLabel.text];
+        NSDictionary *depositStr=@{
+                                   
+                                   NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
+                                   NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(38)]
+                                   
+                                   };
+        
+        [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(3,AttributedStringDeposit.length-3)];
+        
+        [_depositLabel setAttributedText:AttributedStringDeposit];
+
 
     }else{
         [self.bgView removeFromSuperview];
@@ -460,7 +464,7 @@
     
     CGSize marketPriceSize;
     if (self.model.marketMin == self.model.marketMax) {
-        if ([KSHttpRequest isNULL:self.model.marketMin] && [KSHttpRequest isNULL:self.model.marketMax]) {
+        if ([KSHttpRequest isNULL:self.model.marketMin] || [self.model.marketMin integerValue]==0 || [self.model.marketMin floatValue] == 0.00 ) {
             self.marketPriceLabel.hidden = YES;
         }else{
             self.marketPriceLabel.text = [NSString stringWithFormat:@"市场价￥%@",self.model.marketMin];

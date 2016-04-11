@@ -54,6 +54,11 @@
     [self getData];
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - 地址管理
 - (void)createAddressManageTableView
 {
@@ -144,6 +149,8 @@
         model.selected = YES;
         self.addressChoseBlock(model);
         [self.addressManageTableView reloadData];
+    }else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"initNOAddressView" object:nil];
     }
     
     [self.navigationController popViewControllerAnimated:YES];
