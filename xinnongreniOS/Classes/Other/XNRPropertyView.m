@@ -718,6 +718,11 @@
             [BMProgressView LoadViewDisappear:self];
             
         }else{
+            // 移除掉view
+            [self changeSelfToIdentify];
+//            [self.coverView removeFromSuperview];
+//            [self.attributesView removeFromSuperview];
+
             [UILabel showMessage:resultObj[@"message"]];
             [self cancelBtnClick];
             UserInfo *infos = [[UserInfo alloc]init];
@@ -732,9 +737,7 @@
             UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
             [currentVc.navigationController pushViewController:vc animated:YES];
             
-            [self.coverView removeFromSuperview];
-            [self.attributesView removeFromSuperview];
-         
+
             _state = NO;
 
         }
