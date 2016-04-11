@@ -28,12 +28,11 @@
 }
 -(void)createView{
     
-    UIImageView *addressEmptyView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(221), PX_TO_PT(241))];
+    UIImageView *addressEmptyView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(221), PX_TO_PT(221))];
     addressEmptyView.image = [UIImage imageNamed:@"noAddress_icon"];
     addressEmptyView.center = CGPointMake(ScreenWidth/2, ScreenHeight/3);
     self.addressEmptyView = addressEmptyView;
     [self addSubview:addressEmptyView];
-    
     
     UILabel *emptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.addressEmptyView.frame) + PX_TO_PT(32), ScreenWidth, PX_TO_PT(100))];
     emptyLabel.text = @"您还没有收货地址哦，添加一个吧~";

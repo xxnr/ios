@@ -168,10 +168,7 @@
 }
 -(void)headRefresh{
     
-<<<<<<< HEAD
 
-=======
->>>>>>> xxnr-chung
     if (self.currentBtn == 1) {
         currentPage1 = 1;
         [_totalArray removeAllObjects];
