@@ -718,25 +718,19 @@
             [BMProgressView LoadViewDisappear:self];
             
         }else{
-            // 移除掉view
-            [self changeSelfToIdentify];
-//            [self.coverView removeFromSuperview];
-//            [self.attributesView removeFromSuperview];
-
-            [UILabel showMessage:resultObj[@"message"]];
-            [self cancelBtnClick];
-            UserInfo *infos = [[UserInfo alloc]init];
-            infos.loginState = NO;
-            [DataCenter saveAccount:infos];
-            //发送刷新通知
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
-            
-            XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
-           
-            vc.hidesBottomBarWhenPushed = YES;
-            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
-            [currentVc.navigationController pushViewController:vc animated:YES];
-            
+                    [UILabel showMessage:resultObj[@"message"]];
+                    [self cancelBtnClick];
+                    UserInfo *infos = [[UserInfo alloc]init];
+                    infos.loginState = NO;
+                    [DataCenter saveAccount:infos];
+                    //发送刷新通知
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+                    
+                    XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+                    
+                    vc.hidesBottomBarWhenPushed = YES;
+                    UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+                    [currentVc.navigationController pushViewController:vc animated:YES];
 
             _state = NO;
 

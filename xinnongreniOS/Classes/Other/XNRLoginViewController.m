@@ -101,6 +101,7 @@
         if (self.loginFromProductInfo) {
             [self.navigationController popViewControllerAnimated:YES];
         }else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"notSelectedAttributes" object:nil];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }

@@ -41,13 +41,10 @@
     emptyLabel.textColor = R_G_B_16(0xc7c7c7);
     emptyLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [self addSubview:emptyLabel];
-
-
 }
 
 -(void)show{
     self.frame = CGRectMake(0, 44, ScreenWidth, ScreenHeight-44);
 }
-
 
 @end
