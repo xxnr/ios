@@ -167,7 +167,6 @@
 
 }
 -(void)headRefresh{
-    
     if (self.currentBtn == 1) {
         currentPage1 = 1;
         [_totalArray removeAllObjects];

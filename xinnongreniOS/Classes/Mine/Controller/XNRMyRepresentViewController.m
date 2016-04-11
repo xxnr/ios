@@ -554,7 +554,7 @@ BOOL firstOrTcd;
 
 -(void)bookViewGetData
 {
-    [KSHttpRequest get:KGetQuery parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",currentPage2],@"max":@10} success:^(id result) {
+    [KSHttpRequest get:KGetQuery parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",currentPage2],@"max":@11} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             
             NSMutableArray *arr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];

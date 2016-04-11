@@ -712,6 +712,13 @@
         }else{
             self.numTextField.text = [NSString stringWithFormat:@"%@",model.num];
         }
+        
+        if ([_model.num integerValue] == 9999) {
+            self.rightBtn.enabled = NO;
+        }else{
+            self.rightBtn.enabled = YES;
+        }
+
     }
     
 }
