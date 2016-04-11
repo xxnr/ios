@@ -526,7 +526,7 @@
             [UILabel showMessage:@"数量不能再减少了"];
         }
     }
-    if ([self.model.num isEqualToString:@"9999"]) {
+    if ([self.model.num integerValue] >= 9999) {
         self.rightBtn.enabled = NO;
     }else{
         self.rightBtn.enabled = YES;
@@ -713,7 +713,7 @@
             self.numTextField.text = [NSString stringWithFormat:@"%@",model.num];
         }
         
-        if ([_model.num integerValue] == 9999) {
+        if ([_model.num integerValue] >= 9999) {
             self.rightBtn.enabled = NO;
         }else{
             self.rightBtn.enabled = YES;
