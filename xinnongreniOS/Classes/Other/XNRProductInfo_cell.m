@@ -12,17 +12,15 @@
 #import "MJPhoto.h"
 #import "XNRProductPhotoModel.h"
 #import "XNRPropertyView.h"
-#import "MWPhotoBrowser.h"
 #import "AppDelegate.h"
 #import "XNRProductInfo_frame.h"
 
 #define KbtnTag 1000
 #define KlabelTag 2000
-@interface XNRProductInfo_cell()<UIScrollViewDelegate,MWPhotoBrowserDelegate>
+@interface XNRProductInfo_cell()<UIScrollViewDelegate>
 {
     NSString *_presale;
 }
-@property (nonatomic, strong) NSMutableArray *picBrowserList;
 
 @property (nonatomic, weak) UIImageView *headView;
 
@@ -75,12 +73,7 @@
 @end
 
 @implementation XNRProductInfo_cell
-- (NSMutableArray *)picBrowserList {
-    if (!_picBrowserList) {
-        _picBrowserList = [NSMutableArray array];
-    }
-    return _picBrowserList;
-}
+
 -(BMProgressView *)progressView{
     if (!_progressView) {
         BMProgressView *progressView = [[BMProgressView alloc] init];
@@ -158,38 +151,10 @@
 #pragma mark - 大图的点击
 -(void)photoTap:(UITapGestureRecognizer *)tap{
     
-    // 创建浏览器对象
-    [self.picBrowserList removeAllObjects];
-    NSInteger count = _model.pictures.count;
-    
-    for (int i = 0; i<count; i++) {
-        XNRProductPhotoModel *photoModel = _model.pictures[i];
-        MWPhoto *photo=[MWPhoto photoWithURL:[NSURL URLWithString:[HOST stringByAppendingString:photoModel.originalUrl]]];
-        [self.picBrowserList addObject:photo];
+    if (self.photoBrowsercom) {
+        self.photoBrowsercom(self.pageControl.currentPage);
     }
-    
-    MWPhotoBrowser *photoBrowser=[[MWPhotoBrowser alloc] initWithDelegate:self];
-    photoBrowser.displayActionButton=NO;
-    photoBrowser.alwaysShowControls=NO;
-    [photoBrowser setCurrentPhotoIndex:self.pageControl.currentPage];
-    
-    [[[AppDelegate shareAppDelegate].tabBarController selectedViewController] pushViewController:photoBrowser animated:YES];
-//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:photoBrowser];
-//    [[AppDelegate shareAppDelegate].tabBarController presentViewController:nav animated:YES completion:^{
-//        
-//    }];
-    
-    NSLog(@"AppDelegate===%@====%@", [[AppDelegate shareAppDelegate].tabBarController selectedViewController],[AppDelegate shareAppDelegate].tabBarController);
-    
-}
-- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
-    return [_picBrowserList count];
-}
-- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index{
-    return _picBrowserList[index];
-}
-- (NSString *)photoBrowser:(MWPhotoBrowser *)photoBrowser titleForPhotoAtIndex:(NSUInteger)index{
-    return [NSString stringWithFormat:@"%ld/%ld",(long)index+1,(long)[_picBrowserList count]];
+
 }
 
 -(void)createUI

@@ -13,6 +13,9 @@
 typedef void(^XNRProductInfo_cellBlock)(NSMutableArray *_dataArray,CGFloat totalPrice,NSString *totalNumber);
 typedef void(^XNRProductInfo_cellLoginBlock)();
 
+typedef void(^XNRProductInfo_cellPhotoBrowserBlock)(NSInteger page);
+
+
 
 
 @protocol XNRProductInfo_cellDelegate <NSObject>
@@ -28,6 +31,9 @@ typedef void(^XNRProductInfo_cellLoginBlock)();
 @property (nonatomic ,copy) XNRProductInfo_cellBlock con;
 
 @property (nonatomic ,copy) XNRProductInfo_cellLoginBlock logincom;
+
+@property (nonatomic ,copy) XNRProductInfo_cellPhotoBrowserBlock photoBrowsercom;
+
 
 @property (nonatomic ,copy) NSString *goodsId;
 
