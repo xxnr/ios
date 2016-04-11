@@ -88,11 +88,16 @@ BOOL firstOrTcd;
     [super viewWillAppear:YES];
     if (_isadd) {
         [self creatBookView];
+        [self.userArr removeAllObjects];
+        currentPage2 = 1;
         [self bookViewGetData];
         currentTableView = self.tableView2;
     }
     else
     {
+        [_dataArr removeAllObjects];
+        currentPage = 1;
+        [self getCustomerData];
         currentTableView = self.tableView;
 
     }
@@ -554,6 +559,7 @@ BOOL firstOrTcd;
 
 -(void)bookViewGetData
 {
+    
     [KSHttpRequest get:KGetQuery parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",currentPage2],@"max":@11} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             
@@ -1117,6 +1123,7 @@ BOOL firstOrTcd;
     {
         XNRDetailUserVC *detailUser = [[XNRDetailUserVC alloc]init];
         detailUser.hidesBottomBarWhenPushed = YES;
+        self.isadd = YES;
         XNRBookUser *user = _userArr[indexPath.row];
         detailUser._id = user._id;
         [self.navigationController pushViewController:detailUser animated:YES];
