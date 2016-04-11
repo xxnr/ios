@@ -164,8 +164,6 @@
 -(void)headRefresh{
     
     currentPage = 1;
-//    [_totalArray removeAllObjects];
-//    [self getData];
     
     [self getTotalData];
     if (isSort) { // 正序
