@@ -739,16 +739,12 @@ BOOL firstOrTcd;
             vc.hidesBottomBarWhenPushed = YES;
             //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
             [self.navigationController pushViewController:vc animated:YES];
-            
         }
     } failure:^(NSError *error) {
         [self.tableView2.mj_header endRefreshing];
-        
         [self.tableView2.mj_footer endRefreshing];
 
     }];
-    
-
 }
 -(void)coverClick:(UIButton *)sender
 {

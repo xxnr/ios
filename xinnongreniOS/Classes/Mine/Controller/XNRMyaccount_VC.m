@@ -243,9 +243,9 @@
         sexLabel.text = [NSString stringWithFormat:@"选择"];
     }
     else{
-        if ([[DataCenter account].sex integerValue] == 0) {
+        if ([[DataCenter account].sex integerValue] == 1) {
             sexLabel.text = @"男";
-        }else if([[DataCenter account].sex integerValue] == 1){
+        }else if([[DataCenter account].sex integerValue] == 0){
             sexLabel.text = @"女";
         }else{
             sexLabel.text = @"选择";
@@ -367,7 +367,7 @@
     if (buttonIndex ==0) {
         
     }else if (buttonIndex == 1){
-        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"false",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"ture",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 self.sexLabel.text = @"男";
                 UserInfo *info = [DataCenter account];
@@ -378,7 +378,7 @@
             
         }];
     }else{
-        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"true",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"false",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 self.sexLabel.text = @"女";
                 UserInfo *info = [DataCenter account];
