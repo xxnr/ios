@@ -140,7 +140,13 @@
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datas = result[@"datas"];
             
-            self.nameLabel.text = [NSString stringWithFormat:@"姓名：%@",datas[@"name"]];
+            if (![KSHttpRequest isNULL:datas[@"name"]]) {
+                self.nameLabel.text = [NSString stringWithFormat:@"姓名：%@",datas[@"name"]];
+            }
+            else
+            {
+                self.nameLabel.text = @"该好友未填姓名";
+            }
             self.phoneNum.text = [NSString stringWithFormat:@"手机号：%@",datas[@"account"]];
             self.totalLabel.text = [NSString stringWithFormat:@"%@",datas[@"total"]];
             
