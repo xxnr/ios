@@ -367,7 +367,7 @@
     if (buttonIndex ==0) {
         
     }else if (buttonIndex == 1){
-        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"ture",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"false",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 self.sexLabel.text = @"男";
                 UserInfo *info = [DataCenter account];
@@ -375,10 +375,10 @@
                 [DataCenter saveAccount:info];
              }
         } failure:^(NSError *error) {
-            
+        
         }];
     }else{
-        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"false",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"ture",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 self.sexLabel.text = @"女";
                 UserInfo *info = [DataCenter account];

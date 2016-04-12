@@ -753,7 +753,7 @@ BOOL firstOrTcd;
             XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
             
             vc.hidesBottomBarWhenPushed = YES;
-            //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+//            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
             [self.navigationController pushViewController:vc animated:YES];
         }
     } failure:^(NSError *error) {
