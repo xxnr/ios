@@ -9,9 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "XNRAddOrderModel.h"
 @interface XNRSelPayOrder_VC : UIViewController
-@property (nonatomic, strong)XNRAddOrderModel *addOrderModel1;
-@property (nonatomic, strong)XNRAddOrderModel *addOrderModel2;
-
-@property (nonatomic, strong)NSString *order1;
-@property (nonatomic, strong)NSString *order2;
+@property (nonatomic, strong)XNRAddOrderModel *addOrderModelSep;
+@property (nonatomic, strong)XNRAddOrderModel *addOrderModelFull;
 @end

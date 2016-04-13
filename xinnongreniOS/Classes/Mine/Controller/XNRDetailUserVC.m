@@ -90,7 +90,6 @@
             }
             XNRAddressModel *address = [XNRAddressModel objectWithKeyValues:result[@"potentialCustomer"][@"address"] ];
             
-//            address.province = result[@"potentialCustomer"][@"address"][@"province"];
             
             NSMutableString *city = [NSMutableString string];
             [city appendString:@""];
@@ -152,7 +151,6 @@
             XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
             
             vc.hidesBottomBarWhenPushed = YES;
-            //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
             [self.navigationController pushViewController:vc animated:YES];
         }
       } failure:^(NSError *error) {
@@ -185,7 +183,6 @@
 
 -(void)backClick
 {
-//    [XNRMyRepresentViewController isfirstTab];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

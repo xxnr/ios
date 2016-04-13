@@ -232,7 +232,6 @@
 		49EE99691C479FBE0064692B /* XNRCustomerOrderSectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EE99681C479FBE0064692B /* XNRCustomerOrderSectionModel.m */; };
 		49EF87EB1C48AC9E008C62AE /* XNRMyOrderSectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EF87EA1C48AC9E008C62AE /* XNRMyOrderSectionModel.m */; };
 		49EF87EE1C4B15D0008C62AE /* XNROrderEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EF87ED1C4B15D0008C62AE /* XNROrderEmptyView.m */; };
-		49EF87F11C4B89D0008C62AE /* XNROrderDetail_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EF87F01C4B89D0008C62AE /* XNROrderDetail_VC.m */; };
 		49EFDA5D1BF5E970006A8CD2 /* XNRMyRepresentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EFDA5C1BF5E970006A8CD2 /* XNRMyRepresentViewController.m */; };
 		49EFDFBD1C4C104800218C43 /* XNRCheckOrderSectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EFDFBC1C4C104800218C43 /* XNRCheckOrderSectionModel.m */; };
 		49EFE0091C4CF1E800218C43 /* BMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EFDFFF1C4CF1E800218C43 /* BMAlertView.m */; };
@@ -370,7 +369,6 @@
 		844AFE921B147ECF00EE29C8 /* b27_icon_star_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 844AFE8E1B147ECF00EE29C8 /* b27_icon_star_gray@2x.png */; };
 		844AFE931B147ECF00EE29C8 /* b27_icon_star_yellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 844AFE8F1B147ECF00EE29C8 /* b27_icon_star_yellow@2x.png */; };
 		844AFE941B147ECF00EE29C8 /* CWStarRateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844AFE911B147ECF00EE29C8 /* CWStarRateView.m */; };
-		8464E4401B16B3CC008FD57B /* XNRCheckOrder_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8464E43F1B16B3CC008FD57B /* XNRCheckOrder_VC.m */; };
 		8464E4431B16D582008FD57B /* XNRMyOrder_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8464E4421B16D582008FD57B /* XNRMyOrder_VC.m */; };
 		8469F6261B3D4C2700085699 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8469F61D1B3D4C2700085699 /* FMDatabase.m */; };
 		8469F6271B3D4C2700085699 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8469F61F1B3D4C2700085699 /* FMDatabaseAdditions.m */; };
@@ -437,9 +435,11 @@
 		9C6BCEA11CAE8D4400463096 /* XNRCustomer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BCEA01CAE8D4400463096 /* XNRCustomer.m */; };
 		9C6BCEA41CAE8F0C00463096 /* XNRBuyIntentionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BCEA31CAE8F0C00463096 /* XNRBuyIntentionModel.m */; };
 		9CC0CE5E1C855A5C008D5228 /* XNRPayType_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE5D1C855A5C008D5228 /* XNRPayType_VC.m */; };
-		9CC0CE651C87F49C008D5228 /* XNRPayOrder_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE631C87F49C008D5228 /* XNRPayOrder_VC.m */; };
 		9CC0CE6A1C87FF3C008D5228 /* XNRSelPayOrder_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE681C87FF3C008D5228 /* XNRSelPayOrder_VC.m */; };
 		9CC0CE6E1C8811EE008D5228 /* XNRAddOrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE6D1C8811EE008D5228 /* XNRAddOrderModel.m */; };
+		9CF687A41CBDF353005F1A5F /* XNRDeliveryTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687A31CBDF353005F1A5F /* XNRDeliveryTypeModel.m */; };
+		9CF687A71CBE0157005F1A5F /* XNROffLine_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687A61CBE0157005F1A5F /* XNROffLine_VC.m */; };
+		9CF687AA1CBE0FE1005F1A5F /* XNRRSCInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687A91CBE0FE1005F1A5F /* XNRRSCInfoModel.m */; };
 		9CF8AA2F1CACFF830058D8B9 /* XNRBookUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AA2E1CACFF830058D8B9 /* XNRBookUser.m */; };
 		9CF8AA321CAD07CB0058D8B9 /* XNRUser_Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AA311CAD07CB0058D8B9 /* XNRUser_Cell.m */; };
 		9CF8AA351CAD321D0058D8B9 /* XNRAddLatentUserVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AA341CAD321D0058D8B9 /* XNRAddLatentUserVC.m */; };
@@ -949,8 +949,6 @@
 		49EF87EA1C48AC9E008C62AE /* XNRMyOrderSectionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMyOrderSectionModel.m; sourceTree = "<group>"; };
 		49EF87EC1C4B15D0008C62AE /* XNROrderEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNROrderEmptyView.h; sourceTree = "<group>"; };
 		49EF87ED1C4B15D0008C62AE /* XNROrderEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNROrderEmptyView.m; sourceTree = "<group>"; };
-		49EF87EF1C4B89D0008C62AE /* XNROrderDetail_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNROrderDetail_VC.h; sourceTree = "<group>"; };
-		49EF87F01C4B89D0008C62AE /* XNROrderDetail_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNROrderDetail_VC.m; sourceTree = "<group>"; };
 		49EFDA5B1BF5E970006A8CD2 /* XNRMyRepresentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMyRepresentViewController.h; sourceTree = "<group>"; };
 		49EFDA5C1BF5E970006A8CD2 /* XNRMyRepresentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMyRepresentViewController.m; sourceTree = "<group>"; };
 		49EFDFBB1C4C104800218C43 /* XNRCheckOrderSectionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCheckOrderSectionModel.h; sourceTree = "<group>"; };
@@ -1205,8 +1203,6 @@
 		844AFE8F1B147ECF00EE29C8 /* b27_icon_star_yellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "b27_icon_star_yellow@2x.png"; sourceTree = "<group>"; };
 		844AFE901B147ECF00EE29C8 /* CWStarRateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWStarRateView.h; sourceTree = "<group>"; };
 		844AFE911B147ECF00EE29C8 /* CWStarRateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CWStarRateView.m; sourceTree = "<group>"; };
-		8464E43E1B16B3CC008FD57B /* XNRCheckOrder_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCheckOrder_VC.h; sourceTree = "<group>"; };
-		8464E43F1B16B3CC008FD57B /* XNRCheckOrder_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCheckOrder_VC.m; sourceTree = "<group>"; };
 		8464E4411B16D582008FD57B /* XNRMyOrder_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMyOrder_VC.h; sourceTree = "<group>"; };
 		8464E4421B16D582008FD57B /* XNRMyOrder_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMyOrder_VC.m; sourceTree = "<group>"; };
 		8469F61C1B3D4C2700085699 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
@@ -1333,12 +1329,16 @@
 		9C6BCEA31CAE8F0C00463096 /* XNRBuyIntentionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRBuyIntentionModel.m; sourceTree = "<group>"; };
 		9CC0CE5C1C855A5C008D5228 /* XNRPayType_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPayType_VC.h; sourceTree = "<group>"; };
 		9CC0CE5D1C855A5C008D5228 /* XNRPayType_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPayType_VC.m; sourceTree = "<group>"; };
-		9CC0CE621C87F49C008D5228 /* XNRPayOrder_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPayOrder_VC.h; sourceTree = "<group>"; };
-		9CC0CE631C87F49C008D5228 /* XNRPayOrder_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPayOrder_VC.m; sourceTree = "<group>"; };
 		9CC0CE671C87FF3C008D5228 /* XNRSelPayOrder_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSelPayOrder_VC.h; sourceTree = "<group>"; };
 		9CC0CE681C87FF3C008D5228 /* XNRSelPayOrder_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSelPayOrder_VC.m; sourceTree = "<group>"; };
 		9CC0CE6C1C8811EE008D5228 /* XNRAddOrderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRAddOrderModel.h; sourceTree = "<group>"; };
 		9CC0CE6D1C8811EE008D5228 /* XNRAddOrderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRAddOrderModel.m; sourceTree = "<group>"; };
+		9CF687A21CBDF353005F1A5F /* XNRDeliveryTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRDeliveryTypeModel.h; sourceTree = "<group>"; };
+		9CF687A31CBDF353005F1A5F /* XNRDeliveryTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRDeliveryTypeModel.m; sourceTree = "<group>"; };
+		9CF687A51CBE0157005F1A5F /* XNROffLine_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNROffLine_VC.h; sourceTree = "<group>"; };
+		9CF687A61CBE0157005F1A5F /* XNROffLine_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNROffLine_VC.m; sourceTree = "<group>"; };
+		9CF687A81CBE0FE1005F1A5F /* XNRRSCInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRSCInfoModel.h; sourceTree = "<group>"; };
+		9CF687A91CBE0FE1005F1A5F /* XNRRSCInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRSCInfoModel.m; sourceTree = "<group>"; };
 		9CF8AA2D1CACFF830058D8B9 /* XNRBookUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRBookUser.h; sourceTree = "<group>"; };
 		9CF8AA2E1CACFF830058D8B9 /* XNRBookUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRBookUser.m; sourceTree = "<group>"; };
 		9CF8AA301CAD07CB0058D8B9 /* XNRUser_Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRUser_Cell.h; sourceTree = "<group>"; };
@@ -1693,8 +1693,6 @@
 				84A5C5791B25A0B6004181E6 /* citydict.plist */,
 				8464E4411B16D582008FD57B /* XNRMyOrder_VC.h */,
 				8464E4421B16D582008FD57B /* XNRMyOrder_VC.m */,
-				8464E43E1B16B3CC008FD57B /* XNRCheckOrder_VC.h */,
-				8464E43F1B16B3CC008FD57B /* XNRCheckOrder_VC.m */,
 				9C63D88A1C9FD9AA004AFE0F /* XNRCheckOrderVC.h */,
 				9C63D88B1C9FD9AA004AFE0F /* XNRCheckOrderVC.m */,
 				9C06A42D1CA22BC000B0DED9 /* XNRSeePayInfoVC.h */,
@@ -2049,14 +2047,12 @@
 				1FE1D6671B12F1DE00F0D158 /* XNRShoppingCarController.m */,
 				84AAA5881B4391ED005AA154 /* XNROrderInfo_VC.h */,
 				84AAA5891B4391ED005AA154 /* XNROrderInfo_VC.m */,
-				49EF87EF1C4B89D0008C62AE /* XNROrderDetail_VC.h */,
-				49EF87F01C4B89D0008C62AE /* XNROrderDetail_VC.m */,
 				9CC0CE5C1C855A5C008D5228 /* XNRPayType_VC.h */,
 				9CC0CE5D1C855A5C008D5228 /* XNRPayType_VC.m */,
-				9CC0CE621C87F49C008D5228 /* XNRPayOrder_VC.h */,
-				9CC0CE631C87F49C008D5228 /* XNRPayOrder_VC.m */,
 				9CC0CE671C87FF3C008D5228 /* XNRSelPayOrder_VC.h */,
 				9CC0CE681C87FF3C008D5228 /* XNRSelPayOrder_VC.m */,
+				9CF687A51CBE0157005F1A5F /* XNROffLine_VC.h */,
+				9CF687A61CBE0157005F1A5F /* XNROffLine_VC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2066,6 +2062,10 @@
 			children = (
 				49F414F91C3CA71A001A28CA /* XNRShopCarSectionModel.h */,
 				49F414FA1C3CA71A001A28CA /* XNRShopCarSectionModel.m */,
+				9CF687A21CBDF353005F1A5F /* XNRDeliveryTypeModel.h */,
+				9CF687A31CBDF353005F1A5F /* XNRDeliveryTypeModel.m */,
+				9CF687A81CBE0FE1005F1A5F /* XNRRSCInfoModel.h */,
+				9CF687A91CBE0FE1005F1A5F /* XNRRSCInfoModel.m */,
 				53445EB01B148712009F79E5 /* XNRShoppingCartModel.h */,
 				53445EB11B148712009F79E5 /* XNRShoppingCartModel.m */,
 				49EFDFBB1C4C104800218C43 /* XNRCheckOrderSectionModel.h */,
@@ -3339,7 +3339,6 @@
 				84B77CFF1B26BDE6001923E4 /* PECropViewController.m in Sources */,
 				53C5502B1B5118D200964639 /* UILabel+ZSC.m in Sources */,
 				49F7A5841C58469400A1FA45 /* MJRefreshConst.m in Sources */,
-				8464E4401B16B3CC008FD57B /* XNRCheckOrder_VC.m in Sources */,
 				1F1533161B09D49300CA374B /* XNRHomeController.m in Sources */,
 				1FE1D6611B12EE4300F0D158 /* MyControl.m in Sources */,
 				1FE1D6491B12EE3200F0D158 /* AFHTTPSessionManager.m in Sources */,
@@ -3414,7 +3413,6 @@
 				1FE1D6531B12EE3200F0D158 /* UIButton+AFNetworking.m in Sources */,
 				842550231B206D8C00314ADF /* CircleLayout.m in Sources */,
 				84FE64491B183D8000F0C67C /* XNRMyOrderRecive_Cell.m in Sources */,
-				49EF87F11C4B89D0008C62AE /* XNROrderDetail_VC.m in Sources */,
 				53C7C46E1B16E6D100E441BC /* XNRRealNameViewController.m in Sources */,
 				49EC52681BEBBA5E00AA8898 /* UIView+BSExt.m in Sources */,
 				9C06A42C1CA155D600B0DED9 /* XNRPayInfoModel.m in Sources */,
@@ -3455,6 +3453,7 @@
 				49F6B19A1C2A6EE100DCF8CF /* MJPhotoBrowser.m in Sources */,
 				491610FB1C8C454300F1E243 /* MBProgressHUD+Add.m in Sources */,
 				4915EBA21CAA4F9800A728BB /* XNRPropertyEmptyView.m in Sources */,
+				9CF687AA1CBE0FE1005F1A5F /* XNRRSCInfoModel.m in Sources */,
 				1FE1D60B1B12EE2600F0D158 /* MJArgument.m in Sources */,
 				49F7A57B1C58469400A1FA45 /* MJRefreshAutoNormalFooter.m in Sources */,
 				49EC525B1BEBBA5E00AA8898 /* BSLanguage.m in Sources */,
@@ -3502,6 +3501,7 @@
 				49EFE0091C4CF1E800218C43 /* BMAlertView.m in Sources */,
 				49E895F51BEDC2BB00B3671E /* MKAnnotationView+WebCache.m in Sources */,
 				8446C2991B1D6D19005CA932 /* POPAnimation.mm in Sources */,
+				9CF687A41CBDF353005F1A5F /* XNRDeliveryTypeModel.m in Sources */,
 				9C06A42F1CA22BC000B0DED9 /* XNRSeePayInfoVC.m in Sources */,
 				84B77D081B26C0B1001923E4 /* ZSCPicShowView.m in Sources */,
 				53010F961B1DAD3E00017740 /* TFModel.m in Sources */,
@@ -3528,7 +3528,6 @@
 				496E74CF1CABF95100559992 /* XNROrderInfoFrame.m in Sources */,
 				84B77CFD1B26BDE6001923E4 /* PECropRectView.m in Sources */,
 				84FE644C1B183DB300F0C67C /* XNRMYOrderComment_Cell.m in Sources */,
-				9CC0CE651C87F49C008D5228 /* XNRPayOrder_VC.m in Sources */,
 				8469F6271B3D4C2700085699 /* FMDatabaseAdditions.m in Sources */,
 				491611251C8D189400F1E243 /* IQUIView+Hierarchy.m in Sources */,
 				49F6E23D1C2C7ED100164F2A /* XNRTownManagerView.m in Sources */,
@@ -3550,6 +3549,7 @@
 				53445EAF1B14866A009F79E5 /* XNRShoppingCartTableViewCell.m in Sources */,
 				49EC52611BEBBA5E00AA8898 /* NSString+BSExt.m in Sources */,
 				491AF05C1C7AC14300AA3CC8 /* XNRSKUAttributesModel.m in Sources */,
+				9CF687A71CBE0157005F1A5F /* XNROffLine_VC.m in Sources */,
 				49E895F61BEDC2BB00B3671E /* NSData+ImageContentType.m in Sources */,
 				4976FC381BEA47C50002E8F8 /* XNRShopcarView.m in Sources */,
 				491610C91C8C422200F1E243 /* DACircularProgressView.m in Sources */,

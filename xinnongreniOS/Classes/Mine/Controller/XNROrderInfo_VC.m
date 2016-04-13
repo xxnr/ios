@@ -15,6 +15,7 @@
 #import "XNROrderInfoModel.h"  //订单信息模型
 #import "XNRShoppingCartModel.h"
 #import "XNRShopCarSectionModel.h"
+#import "XNRDeliveryTypeModel.h"
 #import "MJExtension.h"
 #import "XNRPayType_VC.h"
 #import "XNRSelPayOrder_VC.h"
@@ -55,7 +56,7 @@
 @property (nonatomic ,strong) NSMutableArray *dataArr;
 
 @property (nonatomic ,strong) NSMutableArray *addressArr;
-
+@property (nonatomic,strong)NSMutableArray *deliveryArr;
 @property (nonatomic ,weak) UILabel *goodsTotalLabel;
 @property (nonatomic ,weak) UILabel *totoalPriceLabel;
 
@@ -63,9 +64,9 @@
 
 @property (nonatomic, assign)NSInteger numOrder;
 
-@property (nonatomic, strong)XNRAddOrderModel *addorderModel1;
+@property (nonatomic, strong)XNRAddOrderModel *addOrderModelSep;
 
-@property (nonatomic, strong)XNRAddOrderModel *addorderModel2;
+@property (nonatomic, strong)XNRAddOrderModel *addOrderModelFull;
 @end
 
 @implementation XNROrderInfo_VC
@@ -97,9 +98,10 @@
     if (self.isRoot) {// 获得地址信息
         [self getAddressData];
         _addressArr = [[NSMutableArray alloc] init];
-        
     }
     
+    _deliveryArr = [[NSMutableArray alloc] init];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNOAddressView) name:@"initNOAddressView" object:nil];
 }
 
@@ -113,6 +115,51 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+-(void)getDeliveries{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+    manager.requestSerializer.timeoutInterval = 10.f;
+    [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    
+    NSDictionary *params = @{@"userId":[DataCenter account].userid,@"SKUs":self.dataArray,@"user-agent":@"IOS-v2.0"};
+    
+    [manager POST:KGetDeliveries parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"---------返回数据:---------%@",str);
+        id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        
+        NSDictionary *resultDic;
+        if ([resultObj isKindOfClass:[NSDictionary class]]) {
+            resultDic = (NSDictionary *)resultObj;
+        }
+        if ([resultObj[@"code"] integerValue] == 1000) {
+            NSDictionary *datasDic = resultDic[@"datas"];
+            NSArray *items = datasDic[@"items"];
+            for (NSDictionary *subDic in items) {
+                XNRDeliveryTypeModel *sectionModel = [[XNRDeliveryTypeModel alloc] init];
+                sectionModel.deliveryType = subDic[@"deliveryType"];
+                sectionModel.deliveryName = subDic[@"deliveryName"];
+                [_deliveryArr addObject:sectionModel];
+            }
+            
+            
+            
+        }else{
+            
+            [UILabel showMessage:resultObj[@"message"]];
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"===%@",error);
+        
+    }];
+    
+}
+
 
 -(void)getData {
     
@@ -620,31 +667,7 @@
         self.headViewNormal.hidden = YES;
         [self createAddressModelView:model];
         
-//        NSString *address1 = [NSString stringWithFormat:@"%@%@",model.areaName,model.cityName];
-//        NSString *address2 = [NSString stringWithFormat:@"%@%@%@",model.areaName,model.cityName,model.countyName];
-//        if ([model.countyName isEqualToString:@""] || model.countyName == nil) {
-//            if ([model.townName isEqualToString:@""] || model.townName == nil) {
-//                _addressDetail.text = [NSString stringWithFormat:@"%@%@",address1,model.address];
-//            }else{
-//                _addressDetail.text = [NSString stringWithFormat:@"%@%@%@",address1,model.townName,model.address];
-//
-//            }
-//            
-//        }else{
-//            if ([model.townName isEqualToString:@""]|| model.townName == nil) {
-//                _addressDetail.text = [NSString stringWithFormat:@"%@%@",address2,model.address];
-//            }else{
-//                _addressDetail.text = [NSString stringWithFormat:@"%@%@%@",address2,model.townName,model.address];
-//
-//            }
-//            
-//        }
-//        _recipientNameLabel.text = model.receiptPeople;
-//        _recipientPhoneLabel.text = model.receiptPhone;
-//        address = model.address;
-//        _nameLabel.hidden = YES;
-//        addressId = model.addressId;
-    
+
     }];
     vc.hidesBottomBarWhenPushed=YES;
     
@@ -697,18 +720,18 @@
             }else if (orders.count == 2){
                 self.numOrder = 2;
                 //第一个订单
-                self.addorderModel1 = [[XNRAddOrderModel alloc]init];
-                self.addorderModel1.orderID = orders[0][@"id"];
-                //                    addorderModel1.paymentId = orders[0][@"payment"][@"paymentId"];
+                self.addOrderModelSep = [[XNRAddOrderModel alloc]init];
+                self.addOrderModelSep.orderID = orders[0][@"id"];
+                //                    addOrderModelSep.paymentId = orders[0][@"payment"][@"paymentId"];
                 NSString *deposit1 = orders[0][@"payment"][@"price"];
-                self.addorderModel1.money = [NSString stringWithFormat:@"%.2f",deposit1.doubleValue];
+                self.addOrderModelSep.money = [NSString stringWithFormat:@"%.2f",deposit1.doubleValue];
                 
                 //第二个订单
-                self.addorderModel2 = [[XNRAddOrderModel alloc]init];
-                self.addorderModel2.orderID = orders[1][@"id"];
-                //                    addorderModel2.paymentId = orders[1][@"payment"][@"paymentId"];
+                self.addOrderModelFull = [[XNRAddOrderModel alloc]init];
+                self.addOrderModelFull.orderID = orders[1][@"id"];
+                //                    addOrderModelFull.paymentId = orders[1][@"payment"][@"paymentId"];
                 NSString *deposit2 = orders[1][@"payment"][@"price"];
-                self.addorderModel2.money = [NSString stringWithFormat:@"%.2f",deposit2.doubleValue];
+                self.addOrderModelFull.money = [NSString stringWithFormat:@"%.2f",deposit2.doubleValue];
                 
                 [self.tableview reloadData];
 
@@ -759,8 +782,8 @@
     {
         // 选择支付订单controller
         XNRSelPayOrder_VC *selVC = [[XNRSelPayOrder_VC alloc]init];
-        selVC.addOrderModel1 =self.addorderModel1;
-        selVC.addOrderModel2 = self.addorderModel2;
+        selVC.addOrderModelSep =self.addOrderModelSep;
+        selVC.addOrderModelFull = self.addOrderModelFull;
         [self.navigationController pushViewController:selVC animated:YES];
         
     }
