@@ -36,11 +36,9 @@
 @property (nonatomic,weak) UITextField *nameTf;
 @property (nonatomic,weak) UITextField *phoneNumTextField;
 
-//@property (nonatomic ,weak) UIButton *LocalAddressBtn;
 @property (nonatomic ,weak) UILabel *LocalAddressLabel;
 @property (nonatomic ,weak) UIButton *streetBtn;
 @property (nonatomic ,weak) UILabel *streetLabel;
-//@property (nonatomic ,weak) UIButton *userTypeBtn;
 @property (nonatomic ,weak) UILabel *userTypeLabel;
 
 @property (nonatomic ,weak)UIButton *userTypeBtn;
@@ -705,7 +703,6 @@
 
 -(void)backClick
 {
-//    [XNRMyRepresentViewController isfirstTab];
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)dealloc

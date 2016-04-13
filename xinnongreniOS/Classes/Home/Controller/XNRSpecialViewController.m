@@ -22,9 +22,9 @@
 {
     XNRferViewDoType _fertype;
     BOOL isSort;
-    int currentPage1;
-    int currentPage2;
-    int currentPage3;
+    int totalCurPage;
+    int compositorCurPage;
+    int filterCurPage;
     BOOL isCancel;
 }
 
@@ -34,9 +34,9 @@
 
 @property (nonatomic, strong) NSMutableArray *totalArray;
 
-@property (nonatomic ,strong) NSMutableArray *ferArray;
+@property (nonatomic ,strong) NSMutableArray *compositorArr;
 
-@property (nonatomic ,strong) NSMutableArray *carArray;
+@property (nonatomic ,strong) NSMutableArray *filterArr;
 
 @property (nonatomic, weak) UIButton *backtoTopBtn;
 
@@ -102,12 +102,12 @@
     [self setupNav];
     [self setupTopView];
     [self setupTableView];
-    currentPage1 = 1;
-    currentPage2 = 1;
-    currentPage3 = 1;
+    totalCurPage = 1;
+    compositorCurPage = 1;
+    filterCurPage = 1;
     _totalArray = [NSMutableArray array];
-    _ferArray  = [NSMutableArray array];
-    _carArray = [NSMutableArray array];
+    _compositorArr  = [NSMutableArray array];
+    _filterArr = [NSMutableArray array];
     _atts = [NSArray array];
     [self createbackBtn];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -166,14 +166,14 @@
 }
 -(void)headRefresh{
     if (self.currentBtn == 1) {
-        currentPage1 = 1;
+        totalCurPage = 1;
         [_totalArray removeAllObjects];
         [self getTotalData];
     }
     else if (self.currentBtn == 2)
     {
-        currentPage2 = 1;
-        [_ferArray removeAllObjects];
+        compositorCurPage = 1;
+        [_compositorArr removeAllObjects];
         if (isSort) { // 正序
             NSLog(@"正序");
             [self getPriceDataWith:@"price-asc"];
@@ -185,8 +185,8 @@
     }
     else if (self.currentBtn == 3)
     {
-        currentPage3 = 1;
-        [_carArray removeAllObjects];
+        filterCurPage = 1;
+        [_filterArr removeAllObjects];
         [self getselectDataWithName:self.brands and:self.gxArr and:self.txArr and:self.reservePrice and:self.kinds];
     }
     [self.tableView reloadData];
@@ -196,12 +196,12 @@
 -(void)footRefresh{
     
     if (self.currentBtn == 1) {
-        currentPage1 ++;
+        totalCurPage ++;
         [self getTotalData];
     }
     else if (self.currentBtn == 2)
     {
-        currentPage2 ++;
+        compositorCurPage ++;
         if (isSort) { // 正序
             NSLog(@"正序");
             [self getPriceDataWith:@"price-asc"];
@@ -213,7 +213,7 @@
     }
     else if (self.currentBtn == 3)
     {
-        currentPage3 ++;
+        filterCurPage ++;
         [self getselectDataWithName:self.brands and:self.gxArr and:self.txArr and:self.reservePrice and:self.kinds];
     }
     [self.tableView reloadData];
@@ -273,9 +273,9 @@
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     
     NSDictionary *dic = [NSDictionary dictionary];
-    
-    dic = @{@"classId":_classId,@"brand":self.currentBrand?self.currentBrand:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage1],@"user-agent":@"IOS-v2.0"};
-    
+
+        dic = @{@"classId":_classId,@"brand":self.currentBrand?self.currentBrand:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",totalCurPage],@"user-agent":@"IOS-v2.0"};
+
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         //        NSLog(@"---------返回数据:---------%@",str);
@@ -331,14 +331,11 @@
 #pragma mark - 顶部按钮的点击事件
 -(void)ferView:(XNRferViewDoType)type
 {
-    //    currentPage1 = 1;
-    //    currentPage2 = 1;
-    //    currentPage3 = 1;
     
     _fertype = type;
     if (type == XNRferView_DoTotalType) {// 综合
         self.currentBtn = 1;
-        currentPage1 = 1;
+        totalCurPage = 1;
         [self.totalArray removeAllObjects];
         
         isCancel = NO;
@@ -348,8 +345,8 @@
         
     }else if (type == XNRferView_DoPriceType){ // 价格排序
         self.currentBtn = 2;
-        currentPage2 = 1;
-        [self.ferArray removeAllObjects];
+        compositorCurPage = 1;
+        [self.compositorArr removeAllObjects];
         
         isCancel = NO;
         [XNRHomeSelectBrandView cancelSelectedBrandView];
@@ -366,12 +363,12 @@
         
     }else if(type == XNRferView_DoSelectType){   // 筛选
         self.currentBtn = 3;
-        currentPage3 = 1;
-        [self.carArray removeAllObjects];
+        filterCurPage = 1;
+        [self.filterArr removeAllObjects];
         
         NSLog(@"筛选");
         self.kind = @"车系";
-        [_carArray removeAllObjects];
+        [_filterArr removeAllObjects];
         isCancel = !isCancel;
         NSLog(@"_____+=====%d",isCancel);
         if (isCancel) {
@@ -418,12 +415,12 @@
     
     NSDictionary *dic = [NSDictionary dictionary];
     if (self.atts.count != 0) {
-        dic = @{@"classId":_classId,@"brand":self.currentBrand?self.currentBrand:@"",@"attributes":self.atts?self.atts:nil,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage1],@"user-agent":@"IOS-v2.0"};
+        dic = @{@"classId":_classId,@"brand":self.currentBrand?self.currentBrand:@"",@"attributes":self.atts?self.atts:nil,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",totalCurPage],@"user-agent":@"IOS-v2.0"};
     }
     else
     {
         
-        dic = @{@"classId":_classId,@"brand":self.currentBrand?self.currentBrand:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage1],@"user-agent":@"IOS-v2.0"};
+        dic = @{@"classId":_classId,@"brand":self.currentBrand?self.currentBrand:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",totalCurPage],@"user-agent":@"IOS-v2.0"};
     }
     //        dic = @{@"classId":_classId,@"user-agent":@"IOS-v2.0"};
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -471,10 +468,6 @@
 }
 
 -(void)getPriceDataWith:(NSString *)sort{
-    //    [_totalArray removeAllObjects];
-    //    [_ferArray removeAllObjects];
-    //    [_carArray removeAllObjects];
-    
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -487,11 +480,11 @@
     
     NSDictionary *dic = [NSDictionary dictionary];
     if (self.atts.count != 0) {
-        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.currentBrand?self.currentBrand:@"",@"attributes":self.atts,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage2],@"user-agent":@"IOS-v2.0"};
+        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.currentBrand?self.currentBrand:@"",@"attributes":self.atts,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",compositorCurPage],@"user-agent":@"IOS-v2.0"};
     }
     else
     {
-        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.currentBrand?self.currentBrand:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage2],@"user-agent":@"IOS-v2.0"};
+        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.currentBrand?self.currentBrand:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",compositorCurPage],@"user-agent":@"IOS-v2.0"};
     }
     
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -509,12 +502,12 @@
             for (NSDictionary *dicts in arr) {
                 XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
                 [model setValuesForKeysWithDictionary:dicts];
-                [_ferArray addObject:model];
+                [_compositorArr addObject:model];
             }
         }
         [self.tableView reloadData];
         // 筛选为空
-        [self noselectViewShowAndHidden:_ferArray];
+        [self noselectViewShowAndHidden:_compositorArr];
         
         //        self.tableView.legendFooter.hidden = YES;
         
@@ -541,7 +534,6 @@
 }
 
 -(void)getselectDataWithName:(NSArray *)param1 and:(NSArray *)param2 and:(NSArray *)param3 and:(NSString *)param4 and:(NSArray *)kinds{
-    
     NSMutableDictionary *dics = [NSMutableDictionary dictionary];
     [dics setObject:_classId forKey:@"classId"];
     // 品牌的ID
@@ -597,11 +589,11 @@
     
     NSDictionary *dic = [NSDictionary dictionary];
     if (arr.count != 0) {
-        dic = @{@"attributes":arr,@"brand":str?str:@"",@"classId":_classId?_classId:@"",@"reservePrice":param4?param4:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage3],@"user-agent":@"IOS-v2.0"};
+        dic = @{@"attributes":arr,@"brand":str?str:@"",@"classId":_classId?_classId:@"",@"reservePrice":param4?param4:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",filterCurPage],@"user-agent":@"IOS-v2.0"};
     }
     else
     {
-        dic =@{@"brand":str?str:@"",@"classId":_classId?_classId:@"",@"reservePrice":param4?param4:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage3],@"user-agent":@"IOS-v2.0"};
+        dic =@{@"brand":str?str:@"",@"classId":_classId?_classId:@"",@"reservePrice":param4?param4:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",filterCurPage],@"user-agent":@"IOS-v2.0"};
     }
     
     
@@ -621,14 +613,14 @@
             for (NSDictionary *dicts in Array) {
                 XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
                 [model setValuesForKeysWithDictionary:dicts];
-                [_carArray addObject:model];
+                [_filterArr addObject:model];
             }
             [self.tableView reloadData];
             
         }
         
         // 筛选为空
-        [self noselectViewShowAndHidden:_carArray];
+        [self noselectViewShowAndHidden:_filterArr];
         //        self.tableView.legendFooter.hidden = YES;
         self.tableView.mj_footer.hidden = YES;
         [self.tableView reloadData];
@@ -712,9 +704,9 @@
     if (_fertype == XNRferView_DoTotalType) {
         return _totalArray.count;
     }else if (_fertype == XNRferView_DoPriceType){
-        return _ferArray.count;
+        return _compositorArr.count;
     }else{
-        return _carArray.count;
+        return _filterArr.count;
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -731,12 +723,12 @@
             
         }
     }else if (_fertype == XNRferView_DoPriceType){
-        if (_ferArray.count>0) {
-            model = _ferArray[indexPath.row];
+        if (_compositorArr.count>0) {
+            model = _compositorArr[indexPath.row];
         }
     }else{
-        if (_carArray.count>0) {
-            model = _carArray[indexPath.row];
+        if (_filterArr.count>0) {
+            model = _filterArr[indexPath.row];
         }else{
             model = _totalArray[indexPath.row];
         }
@@ -759,13 +751,13 @@
         }
         
     }else if (_fertype == XNRferView_DoPriceType){
-        if (_ferArray.count>0) {
-            model = _ferArray[indexPath.row];
-            
+        if (_compositorArr.count>0) {
+            model = _compositorArr[indexPath.row];
+
         }
     }else{
-        if (_carArray.count>0) {
-            model = _carArray[indexPath.row];
+        if (_filterArr.count>0) {
+            model = _filterArr[indexPath.row];
         }
     }
     

@@ -28,7 +28,7 @@
 {
     NSMutableArray *_dataArr;
     int currentPage;
-    int currentPage2;
+    int registerCurrentPage;
     UITableView *currentTableView;
 }
 
@@ -67,21 +67,18 @@
 @property (nonatomic,weak) UIView *thirdView;
 @property (nonatomic,weak) UIView *BookView;
 @property (nonatomic,weak) UITableView *tableView2;
-//@property(nonatomic,weak)UITableView *currentTableView;
 @property (nonatomic,strong)NSMutableArray *userArr;
-@property (nonatomic,weak)UILabel *bookTop1Label;
-@property (nonatomic,weak)UILabel *bookTop2Label;
+@property (nonatomic,weak)UILabel *bookTopTotalLabel;
+@property (nonatomic,weak)UILabel *bookTopRemainLabel;
 @property (nonatomic,weak) UIView *coverView;
 @property (nonatomic,weak)UIView *bgview;
 @property (nonatomic,weak) UIButton *addbtn;
-@property (nonatomic,weak) UIButton *addbtn2;
 @property (nonatomic,weak)UIView *circleView;
 @property (nonatomic,assign)BOOL isadd;
 @property (nonatomic,assign)BOOL isfirst;
 @property (nonatomic,assign)BOOL isFirstTableView;
 @end
-BOOL firstOrTcd;
-//static UITableView *currentTableView;
+
 @implementation XNRMyRepresentViewController
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -89,7 +86,7 @@ BOOL firstOrTcd;
     if (_isadd) {
         [self creatBookView];
         [self.userArr removeAllObjects];
-        currentPage2 = 1;
+        registerCurrentPage = 1;
         [self bookViewGetData];
         currentTableView = self.tableView2;
     }
@@ -104,20 +101,17 @@ BOOL firstOrTcd;
     [self setupCustomerRefresh];
 
 }
+
 -(void)viewDidDisappear:(BOOL)animated
 {
     if (_isadd) {
         [self.thirdView removeFromSuperview];
     }
 }
-//+(void)firstTab
-//{
-//    firstOrTcd = YES;
-//}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    [self getCustomerData];
-    currentPage2 = 1;
+    registerCurrentPage = 1;
     self.isfirst = YES;
     _userArr = [NSMutableArray array];
     _dataArr = [[NSMutableArray alloc] init];
@@ -126,11 +120,7 @@ BOOL firstOrTcd;
     [self setNavigationbarTitle];
     [self setBottomButton];
     [self createTableView];
-    
-//    if (firstOrTcd) {
-//        [self setupCustomerRefresh:_tableView2];
-//    }
-//    firstOrTcd = NO;
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRedPoint) name:@"removeRedPoint" object:nil];
 }
 
@@ -218,7 +208,7 @@ BOOL firstOrTcd;
     }
     else
     {
-        currentPage2 = 1;
+        registerCurrentPage = 1;
         [_userArr removeAllObjects];
         [self bookViewGetData];
     }
@@ -231,7 +221,7 @@ BOOL firstOrTcd;
     }
     else
     {
-        currentPage2++;
+        registerCurrentPage++;
         [self bookViewGetData];
     }
 }
@@ -443,7 +433,7 @@ BOOL firstOrTcd;
         
         
         [self.userArr removeAllObjects];
-        currentPage2 = 1;
+        registerCurrentPage = 1;
         [self creatBookView];
         [self bookViewGetData];
         
@@ -478,13 +468,13 @@ BOOL firstOrTcd;
     UILabel *top1Label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(29), ScreenWidth/2, PX_TO_PT(32))];
     top1Label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     top1Label.textColor =R_G_B_16(0x646464);
-    self.bookTop1Label = top1Label;
+    self.bookTopTotalLabel = top1Label;
     [BooktopView addSubview:top1Label];
     
     UILabel *top2Label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), CGRectGetMaxY(top1Label.frame) + PX_TO_PT(18), ScreenWidth/2, PX_TO_PT(33))];
     top2Label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     top2Label.textColor = R_G_B_16(0x646464);
-    self.bookTop2Label = top2Label;
+    self.bookTopRemainLabel = top2Label;
     [BooktopView addSubview:top2Label];
     
     if (IS_IPHONE4 || IS_IPHONE5) {
@@ -570,7 +560,7 @@ BOOL firstOrTcd;
 -(void)bookViewGetData
 {
     
-    [KSHttpRequest get:KGetQuery parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",currentPage2],@"max":@11} success:^(id result) {
+    [KSHttpRequest get:KGetQuery parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",registerCurrentPage],@"max":@11} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             
             NSMutableArray *arr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];
@@ -707,22 +697,22 @@ BOOL firstOrTcd;
                 
                 self.addbtn.enabled = YES;
             }
-            self.bookTop1Label.text = [NSString stringWithFormat:@"共登记%@名客户",result[@"count"]];
-            self.bookTop2Label.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
+            self.bookTopTotalLabel.text = [NSString stringWithFormat:@"共登记%@名客户",result[@"count"]];
+            self.bookTopRemainLabel.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
 
             NSInteger i = [result[@"count"] integerValue]/10;
             NSInteger j = [result[@"countLeftToday"] integerValue]/10;
             
-            if (self.bookTop1Label) {
+            if (self.bookTopTotalLabel) {
                 
                 if (IS_IPHONE4 || IS_IPHONE5) {
-                    [self setDifFont:self.bookTop1Label andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
-                    [self setDifFont:self.bookTop2Label andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+                    [self setDifFont:self.bookTopTotalLabel andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+                    [self setDifFont:self.bookTopRemainLabel andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
                 }
                 else
                 {
-                    [self setDifFont:self.bookTop1Label andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
-                    [self setDifFont:self.bookTop2Label andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+                    [self setDifFont:self.bookTopTotalLabel andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+                    [self setDifFont:self.bookTopRemainLabel andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
                 }
             }
             [self.tableView2 reloadData];

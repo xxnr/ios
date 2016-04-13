@@ -247,6 +247,10 @@
     订单相关
  --------------------*/
 /**
+ *  获取配送方式
+ */
+#define KGetDeliveries [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/cart/getDeliveries"]
+/**
  *  确认订单
  */
 #define KConfirmeOrder [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/order/confirmeOrder"]
@@ -277,6 +281,10 @@
  *  支付宝支付
  */
 #define KAlipay [NSString stringWithFormat:@"%@/%@",HOST,@"alipay"]
+/**
+ *  线下支付
+ */
+#define KOfflinepay [NSString stringWithFormat:@"%@/%@",HOST,@"offlinepay"]
 /**
  *  支付宝支付成功页面
  */
