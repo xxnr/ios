@@ -10,7 +10,6 @@
 #import "XNROrderSuccessViewController.h"
 #import "GBAlipayManager.h"
 #import "XNRTabBarController.h"
-#import "XNRPayTypeAlertView.h"
 #import "UPPayPlugin.h"
 #import "UPPayPluginDelegate.h"
 #import "XNRCheckOrderSectionModel.h"
@@ -32,8 +31,6 @@
 @property (nonatomic,strong)UIButton *confirmButton;
 
 @property (nonatomic,strong)UILabel *payLabel;
-
-@property (nonatomic,strong) XNRPayTypeAlertView *payTypeAlertView;
 
 @property (nonatomic, strong) UIImageView *aplipayImg;
 
@@ -175,33 +172,7 @@
     }];
 }
 
-/**
- *  如果用户在白名单中，则可以手动输入金额
- */
-//-(void)getUserType
-//{
-//    [KSHttpRequest post:KisInWhiteList parameters: nil success:^(id result) {
-//        
-//        if ([result[@"code"] integerValue] == 1000) {
-//            self.isInWhiteList = YES;
-//            self.sepMoneyView.hidden = YES;
-//            self.fullMoney.hidden = YES;
-//            self.myTextField =[[UITextField alloc]initWithFrame:CGRectMake(PX_TO_PT(252), PX_TO_PT(35), PX_TO_PT(226), PX_TO_PT(28))];
-//            self.myTextField.textColor = R_G_B_16(0xFF4E00);
-//            self.myTextField.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-//            self.myTextField.textColor = R_G_B_16(0xFF4E00);
-//            self.myTextField.textAlignment = NSTextAlignmentCenter;
-//            [self.showMoney addSubview:self.myTextField];
-//            
-//        }
-//        else if ([result[@"code"] integerValue] == 100)
-//        {
-//            [self setSepMoney];
-//        }
-//    } failure:^(NSError *error) {
-//        
-//    }];
-//}
+
 
 -(void)getData{
     [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
@@ -637,7 +608,6 @@
     }];
     
         self.myTextField.hidden = YES;
-        //            self.sepMoney.hidden = NO;
         [self.sepMoneyView addSubview:self.sepMoney];
         
         if ([self.minPrice doubleValue] > [self.holdPrice doubleValue]) {
@@ -811,6 +781,7 @@
 //        self.selectedBtnTwo.selected = NO;
 //        _payType = 1;
 //        [self payType];
+        
         NSDictionary *params = @{@"consumer":@"app",@"orderId":self.orderID,@"price": _Money,@"user-agent":@"IOS-v2.0"};
         [KSHttpRequest post:KAlipay parameters:params success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {

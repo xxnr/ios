@@ -384,10 +384,7 @@
             
             [UILabel showMessage:result[@"message"]];
             
-            
         }
-        
-        
     } failure:^(NSError *error) {
         
         

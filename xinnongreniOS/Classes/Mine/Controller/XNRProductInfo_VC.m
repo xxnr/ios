@@ -575,14 +575,14 @@
 {
     NSLog(@"-==++++++===%@",self.propertyView);
 
-    [self.propertyView show:XNRFirstType];
+    [self.propertyView show:XNRBuyType];
     
 }
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
     NSLog(@"-==------===%@",self.propertyView);
-    [self.propertyView show:XNRSecondType];
+    [self.propertyView show:XNRAddCartType];
     
 }
 #pragma 加减数量

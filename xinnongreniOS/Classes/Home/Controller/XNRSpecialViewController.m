@@ -1,12 +1,12 @@
 //
-//  XNRFerViewController.m
+//  XNRSpecialViewController.m
 //  xinnongreniOS
 //
-//  Created by xxnr on 15/11/28.
-//  Copyright © 2015年 qxhiOS. All rights reserved.
+//  Created by xxnr on 16/4/12.
+//  Copyright © 2016年 qxhiOS. All rights reserved.
 //
 
-#import "XNRFerViewController.h"
+#import "XNRSpecialViewController.h"
 #import "XNRferView.h"
 #import "XNRSpecialCell.h"
 #import "XNRProductInfo_VC.h"
@@ -18,7 +18,7 @@
 
 #define MAX_PAGE_SIZE 10
 
-@interface XNRFerViewController()<UITableViewDelegate,UITableViewDataSource,XNRferViewAddBtnDelegate>
+@interface XNRSpecialViewController()<UITableViewDelegate,UITableViewDataSource,XNRferViewAddBtnDelegate>
 {
     XNRferViewDoType _fertype;
     BOOL isSort;
@@ -50,9 +50,7 @@
 
 @property (nonatomic ,copy) NSString *reservePrice;
 @property (nonatomic, strong) NSArray *selectedItemArr;
-
 @property (nonatomic ,weak) XNRHomeSelectBrandView *selectBrandView;
-
 @property (nonatomic,strong)NSArray *brands;
 @property (nonatomic,copy)NSString *currentBrand;
 @property (nonatomic,strong)NSArray *gxArr;
@@ -65,7 +63,7 @@
 @property (nonatomic,assign)int currentBtn;
 @end
 
-@implementation XNRFerViewController
+@implementation XNRSpecialViewController
 
 -(XNRHomeSelectBrandView *)selectBrandView{
     if (!_selectBrandView) {
@@ -75,7 +73,7 @@
         
     }
     return _selectBrandView;
-
+    
 }
 
 -(BMProgressView *)progressView{
@@ -89,7 +87,7 @@
 
 #pragma mark  - 筛选为空的视图
 -(XNRNoSelectView *)noSelectView{
-
+    
     if (!_noSelectView) {
         XNRNoSelectView *noSelectView = [[XNRNoSelectView alloc] init];
         self.noSelectView = noSelectView;
@@ -156,15 +154,15 @@
     
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
     MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
-        // 设置刷新图片
+    // 设置刷新图片
     [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
     
     footer.refreshingTitleHidden = YES;
     // 设置尾部
     self.tableView.mj_footer = footer;
-
     
-
+    
+    
 }
 -(void)headRefresh{
     if (self.currentBtn == 1) {
@@ -183,7 +181,7 @@
             NSLog(@"反序");
             [self getPriceDataWith:@"price-desc"];
         }
-
+        
     }
     else if (self.currentBtn == 3)
     {
@@ -192,8 +190,8 @@
         [self getselectDataWithName:self.brands and:self.gxArr and:self.txArr and:self.reservePrice and:self.kinds];
     }
     [self.tableView reloadData];
-
-
+    
+    
 }
 -(void)footRefresh{
     
@@ -219,21 +217,21 @@
         [self getselectDataWithName:self.brands and:self.gxArr and:self.txArr and:self.reservePrice and:self.kinds];
     }
     [self.tableView reloadData];
-
-//    currentPage ++;
-////    [self getData];
-//    [self getTotalData];
-//    if (isSort) { // 正序
-//        NSLog(@"正序");
-//        [self getPriceDataWith:@"price-asc"];
-//    }else{   // 反序
-//        NSLog(@"反序");
-//        [self getPriceDataWith:@"price-desc"];
-//    }
-//    [self getselectDataWithName:self.brands and:self.gxArr and:self.txArr and:self.reservePrice and:self.kinds];
-//
-//    [self.tableView reloadData];
-
+    
+    //    currentPage ++;
+    ////    [self getData];
+    //    [self getTotalData];
+    //    if (isSort) { // 正序
+    //        NSLog(@"正序");
+    //        [self getPriceDataWith:@"price-asc"];
+    //    }else{   // 反序
+    //        NSLog(@"反序");
+    //        [self getPriceDataWith:@"price-desc"];
+    //    }
+    //    [self getselectDataWithName:self.brands and:self.gxArr and:self.txArr and:self.reservePrice and:self.kinds];
+    //
+    //    [self.tableView reloadData];
+    
     
 }
 #pragma mark - 返回顶部啊按钮
@@ -264,7 +262,7 @@
 #pragma mark  - 获得商品数据
 -(void)getData
 {
-//    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+    //    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -280,7 +278,7 @@
 
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"---------返回数据:---------%@",str);
+        //        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -320,7 +318,7 @@
         
     }];
     
-
+    
 }
 #pragma mark  - 顶部视图
 -(void)setupTopView
@@ -333,9 +331,6 @@
 #pragma mark - 顶部按钮的点击事件
 -(void)ferView:(XNRferViewDoType)type
 {
-//    totalCurPage = 1;
-//    compositorCurPage = 1;
-//    filterCurPage = 1;
     
     _fertype = type;
     if (type == XNRferView_DoTotalType) {// 综合
@@ -378,13 +373,13 @@
         NSLog(@"_____+=====%d",isCancel);
         if (isCancel) {
             __weak typeof(self) weakSelf=self;
-
+            
             [XNRHomeSelectBrandView showSelectedBrandViewWith:^(NSArray *param1, NSArray *param2, NSArray *param3, NSString *param4, NSArray *kinds,NSArray *selectedParams,NSArray *txarr){
                 weakSelf.selectedItemArr = selectedParams;
                 weakSelf.showTxArr = txarr;
                 weakSelf.kind = kinds[1];
                 if ([_classId isEqualToString:XNRFER]) {
-
+                    
                     weakSelf.brands = param1;
                     weakSelf.gxArr = param2;
                     weakSelf.txArr = param3;
@@ -399,21 +394,17 @@
                     weakSelf.kinds = kinds;
                     [weakSelf getselectDataWithName:param1 and:param2 and:param3 and:param4 and:kinds];
                 }
-
+                
             } andTarget:self.view andType:self.type andParam:self.selectedItemArr andShowTx:self.showTxArr andkind:self.kind];
             // 把视图提到前面
             [self.view bringSubviewToFront:self.ferView];
-
+            
         }else{
             [XNRHomeSelectBrandView cancelSelectedBrandView];
         }
     }
 }
 -(void)getTotalData{
-//    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
-//    [_totalArray removeAllObjects];
-//    [_compositorArr removeAllObjects];
-//    [_filterArr removeAllObjects];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -431,10 +422,10 @@
         
         dic = @{@"classId":_classId,@"brand":self.currentBrand?self.currentBrand:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",totalCurPage],@"user-agent":@"IOS-v2.0"};
     }
-//        dic = @{@"classId":_classId,@"user-agent":@"IOS-v2.0"};
+    //        dic = @{@"classId":_classId,@"user-agent":@"IOS-v2.0"};
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"---------返回数据:---------%@",str);
+        //        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -469,7 +460,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
-
+        
         [BMProgressView LoadViewDisappear:self.view];
         
     }];
@@ -477,10 +468,6 @@
 }
 
 -(void)getPriceDataWith:(NSString *)sort{
-//    [_totalArray removeAllObjects];
-//    [_compositorArr removeAllObjects];
-//    [_filterArr removeAllObjects];
-
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -499,10 +486,10 @@
     {
         dic = @{@"classId":_classId,@"sort":sort,@"brand":self.currentBrand?self.currentBrand:@"",@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",compositorCurPage],@"user-agent":@"IOS-v2.0"};
     }
-
+    
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"---------返回数据:---------%@",str);
+        //        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -539,24 +526,20 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
-
+        
         [BMProgressView LoadViewDisappear:self.view];
         
     }];
-
+    
 }
 
 -(void)getselectDataWithName:(NSArray *)param1 and:(NSArray *)param2 and:(NSArray *)param3 and:(NSString *)param4 and:(NSArray *)kinds{
-//    [_totalArray removeAllObjects];
-//    [_compositorArr removeAllObjects];
-//    [_filterArr removeAllObjects];
-
     NSMutableDictionary *dics = [NSMutableDictionary dictionary];
     [dics setObject:_classId forKey:@"classId"];
     // 品牌的ID
     NSMutableString *str = [NSMutableString string];
     self.currentBrand = nil;
-
+    
     if (param1.count > 0) {
         
         for (int i=0; i<param1.count; i++) {
@@ -571,8 +554,8 @@
             }
         }
         self.currentBrand = str;
-//        [dics setObject:str forKey:@"brand"];
-
+        //        [dics setObject:str forKey:@"brand"];
+        
     }
     //商品属性数组
     NSMutableArray *arr = [NSMutableArray array];
@@ -586,15 +569,15 @@
         [arr addObject:dic2];
         
     }
-  
+    
     if (arr > 0) {
-//        [dics setObject:arr forKey:@"attributes"];
+        //        [dics setObject:arr forKey:@"attributes"];
         self.atts = arr;
     }
     if (param4) {
-//        [dics setObject:param4 forKey:@"reservePrice"];
+        //        [dics setObject:param4 forKey:@"reservePrice"];
     }
-
+    
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -616,7 +599,7 @@
     
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"---------返回数据:---------%@",str);
+        
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -661,18 +644,18 @@
         [BMProgressView LoadViewDisappear:self.view];
         
     }];
-
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"===%@",error);
-//
-//    }];
+    
+    //    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    //        NSLog(@"===%@",error);
+    //
+    //    }];
 }
 -(void)noselectViewShowAndHidden:(NSMutableArray *)array{
     if (array.count == 0) {
         [self.noSelectView show];
-//        [self.tableView.legendFooter endRefreshing];
+        //        [self.tableView.legendFooter endRefreshing];
         self.tableView.mj_footer.hidden = YES;
-
+        
         self.backtoTopBtn.hidden = YES;
     }else{
         [self.noSelectView removeFromSuperview];
@@ -691,8 +674,8 @@
     footerView.backgroundColor = [UIColor clearColor];
     tableView.tableFooterView = footerView;
     
-//    tableView.separatorStyle = UITableViewCellAccessoryDisclosureIndicator;
-
+    //    tableView.separatorStyle = UITableViewCellAccessoryDisclosureIndicator;
+    
     self.tableView = tableView;
     [self.view addSubview:tableView];
 }
@@ -737,7 +720,7 @@
     if (_fertype == XNRferView_DoTotalType) {
         if (_totalArray.count>0) {
             model = _totalArray[indexPath.row];
-
+            
         }
     }else if (_fertype == XNRferView_DoPriceType){
         if (_compositorArr.count>0) {
@@ -748,11 +731,11 @@
             model = _filterArr[indexPath.row];
         }else{
             model = _totalArray[indexPath.row];
-      }
+        }
     }
     if (model) {
         [cell setCellDataWithShoppingCartModel:model];
-
+        
     }
     return cell;
 }
@@ -766,7 +749,7 @@
         if (_totalArray.count>0) {
             model = _totalArray[indexPath.row];
         }
-
+        
     }else if (_fertype == XNRferView_DoPriceType){
         if (_compositorArr.count>0) {
             model = _compositorArr[indexPath.row];
@@ -777,7 +760,7 @@
             model = _filterArr[indexPath.row];
         }
     }
-
+    
     info_VC.model = model;
     info_VC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:info_VC animated:YES];

@@ -17,7 +17,7 @@
 #import "XNRTabBarController.h"
 #import "XNRMineController.h"
 #import "XNRTabBarController.h"
-#import "XNRFerViewController.h"
+#import "XNRSpecialViewController.h"
 
 #define KbtnTag          1000
 #define kLabelTag        2000
@@ -66,23 +66,23 @@
 
 -(void)pushFerVC
 {
-    XNRFerViewController *ferView = [[XNRFerViewController alloc] init];
-    ferView.type = eXNRFerType;
-    ferView.tempTitle = @"化肥";
-    ferView.classId = @"531680A5";
-    ferView.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:ferView animated:YES];
+    XNRSpecialViewController *specialFer_VC = [[XNRSpecialViewController alloc] init];
+    specialFer_VC.type = eXNRFerType;
+    specialFer_VC.tempTitle = @"化肥";
+    specialFer_VC.classId = @"531680A5";
+    specialFer_VC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:specialFer_VC animated:YES];
 }
 
 -(void)pushCarVC
 {
     
-    XNRFerViewController *carView = [[XNRFerViewController alloc] init];
-    carView.type = eXNRCarType;
-    carView.classId = @"6C7D8F66";
-    carView.tempTitle = @"汽车";
-    carView.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:carView animated:YES];
+    XNRSpecialViewController *specialCar_VC = [[XNRSpecialViewController alloc] init];
+    specialCar_VC.type = eXNRCarType;
+    specialCar_VC.classId = @"6C7D8F66";
+    specialCar_VC.tempTitle = @"汽车";
+    specialCar_VC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:specialCar_VC animated:YES];
 
 }
 
