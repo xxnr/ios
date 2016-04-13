@@ -111,7 +111,6 @@
     
     self.goodNameLabel.text = self.model.goodsName;
     
-    
     //现价
     if (self.model.unitPrice.floatValue>1) {
         self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.f",self.model.unitPrice.floatValue];

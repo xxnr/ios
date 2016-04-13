@@ -12,11 +12,10 @@
 #import "XNRFerSelect.h"
 
 @protocol  XNRHomeCollectionHeaderViewAddBtnDelegate <NSObject>
+
 @optional
 -(void)HomeCollectionHeaderViewWith:(UIButton *)button;
-
 @end
-
 
 @interface XNRHomeCollectionHeaderView : UICollectionReusableView
 
