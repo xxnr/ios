@@ -29,8 +29,6 @@
 #define emptyViewId @"emptyFootView"
 #define buyBtnTag 1000
 
-
-
 @interface XNRPropertyView ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UICollectionViewDelegate>
 {
     CGSize currentSize;
@@ -88,23 +86,14 @@
 @implementation XNRPropertyView
 // 单例
 +(id)sharedInstanceWithModel:(XNRShoppingCartModel *)shopcarModel {
-    //此种单例创建优点
-    //1. 线程安全。
-    //2. 满足静态分析器的要求。
-    //3. 兼容了ARC
     static XNRPropertyView *dm = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         dm = [[self alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
     });
     dm.shopcarModel = shopcarModel;
-//    dm.shopcarModel.additions = [NSMutableArray array];
     [dm initBaseViewAndData];
     return dm;
-}
-
--(void)innitialAddtions{
-    self.shopcarModel.additions = [NSMutableArray array];
 }
 
 // 懒加载（立即购买的时候，把所有的附加选项_id添加到数组里面）
@@ -114,13 +103,6 @@
     }
     return _addtionsArray;
 }
-
-//-(NSMutableArray *)goodsArray{
-//    if (!_goodsArray) {
-//        _goodsArray = [NSMutableArray array];
-//    }
-//    return _goodsArray;
-//}
 
 - (void)changeSelfToIdentify {
     [self.coverView removeFromSuperview];
@@ -163,10 +145,13 @@
         [self getData];
     }
 }
+-(void)innitialAddtions{
+    self.shopcarModel.additions = [NSMutableArray array];
+}
+
 #pragma mark - 数据请求
 -(void)getData
 {
-    
     [KSHttpRequest post:KHomeGetAppProductDetails parameters:@{@"productId":self.shopcarModel.goodsId?self.shopcarModel.goodsId:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
@@ -201,153 +186,8 @@
                             NSLog(@"_recordeSelected%tu",_recordeSelected);
                             
                         }
-                        // 3.生成请求参数
-                        NSDictionary *params = @{@"product":_id,@"attributes":attributesArray,@"user-agent":@"IOS-v2.0"};
-                        NSLog(@"【请求参数:】%@",params);
-                        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-                        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-                        manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
-                        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
-                        [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
-                        manager.requestSerializer.timeoutInterval = 10.f;
-                        [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
-                        
-                        [manager POST:KSkuquery parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                            NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-                            NSLog(@"---------返回数据:---------%@",str);
-                            id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-                            
-                            NSDictionary *resultDic;
-                            if ([resultObj isKindOfClass:[NSDictionary class]]) {
-                                resultDic = (NSDictionary *)resultObj;
-                            }
-                            if ([resultObj[@"code"] integerValue] == 1000) {
-                                NSDictionary *datas = resultObj[@"data"];
-                                NSDictionary *price = datas[@"price"];
-                                NSDictionary *marketPrice = datas[@"market_price"];
-                                
-                                NSArray *attributes = datas[@"attributes"];
-                                NSDictionary *skuDict = datas[@"SKU"];
-                                NSArray *addtions = datas[@"additions"];
-                                NSDictionary *SKUprice = skuDict[@"price"];
-                                _SKUId = skuDict[@"_id"];
-                                if (skuDict[@"_id"]) {
-                                    self.shopcarModel._id = skuDict[@"_id"];
-                                }
-
-                                // 市场价
-                                if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]]) {
-                                    if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
-                                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",[marketPrice[@"min"] floatValue]];
-                                        if ([_marketPrice rangeOfString:@".00"].length == 3) {
-                                            _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
-                                        }
-                                        
-                                    }else{
-                                        NSString *minPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"min"] floatValue]];
-                                        NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] floatValue]];
-                                        if ([minPrice rangeOfString:@".00"].length == 3) {
-                                            minPrice = [minPrice substringToIndex:minPrice.length-3];
-                                        }
-                                        if ([maxPrice rangeOfString:@".00"].length == 3) {
-                                            maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
-                                        }
-                                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %@ - %@",minPrice,maxPrice];
-                                    }
-
-                                }
-                                
-                                // 价格区间改变
-                                if ([price[@"min"] floatValue] == [price[@"max"] floatValue]) {
-                                    
-                                    // 判断是否是预售商品
-                                    if ([_presale integerValue] ==  1) {// 预售
-                                        self.priceLabel.text = @"即将上线";
-                                        self.priceLabel.textColor = R_G_B_16(0x909090);
-                                        
-                                    }else{
-                                        self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[price[@"min"] floatValue]];
-                                        if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
-                                            self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
-                                       
-                                    }
-
-                                    
-                                        if (_deposit != nil) {
-                                            if ([_deposit floatValue] == 0.00) {
-                                                _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
-                                            }else{
-                                                _totalPrice = [_deposit floatValue];
-
-                                            }
-                                            
-                                        }else{
-                                            _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
-                                        }
-                                    }
-                                    
-                                } else {
-                                    NSString *minPrice = [NSString stringWithFormat:@"%.2f",[price[@"min"] floatValue]];
-                                    NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[price[@"max"] floatValue]];
-                                    if ([minPrice rangeOfString:@".00"].length == 3) {
-                                        minPrice = [minPrice substringToIndex:minPrice.length-3];
-                                    }
-                                    if ([maxPrice rangeOfString:@".00"].length == 3) {
-                                        maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
-                                    }
-                                    
-                                    // 判断是否是预售商品
-                                    if ([_presale integerValue] ==  1) {// 预售
-                                        self.priceLabel.text = @"即将上线";
-                                        self.priceLabel.textColor = R_G_B_16(0x909090);
-                                        
-                                    }else{
-                                        self.priceLabel.text = [NSString stringWithFormat:@"¥ %@ - %@",minPrice,maxPrice];
-                                        }
-
-                                    
-                                    if (_deposit != nil) {
-                                        if ([_deposit floatValue] == 0.00) {
-                                            _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
-                                        }else{
-                                            _totalPrice = [_deposit floatValue];
-                                            
-                                        }
-                                        
-                                    }else{
-                                        _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
-                                    }
-                                    
-                                }
-
-                                // 添加到购物车模型里面，方便加入到数据库
-                                XNRProductInfo_model *newInfoModel = [[XNRProductInfo_model alloc] init];
-                                newInfoModel.SKUAttributes = (NSMutableArray *)[XNRSKUAttributesModel objectArrayWithKeyValuesArray:attributes];
-                                newInfoModel.market_price = SKUprice[@"market_price"];
-                                newInfoModel.platform_price = SKUprice[@"platform_price"];
-                                newInfoModel._id = skuDict[@"_id"];
-                                
-                                _min = SKUprice[@"market_price"];
-                                NSLog(@"=+__++%@",_min);
-                                
-                                if (addtions.count>0) {
-                                    newInfoModel.additions = (NSMutableArray *)[XNRAddtionsModel objectArrayWithKeyValuesArray:addtions];
-                                }
-                                
-                                //5. 添加辅助分区（选完所有的基本分区后添加 少于所有基本分区数量就取消辅助分区）
-                                if (attributesArray.count == model.SKUAttributes.count) {
-                                    model.additions = newInfoModel.additions;
-                                } else {
-                                    model.additions = [NSMutableArray array];
-                                }
-
-                                
-                                [self.collectionView reloadData];
-                            }
-                        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                            NSLog(@"===%@",error);
-                            
-                        }];
+                        // 每一个section只有一个属性的sku的时候，自动生成请求参数
+                        [self selectedAttributesTOCreateParams:attributesArray andInfoModel:model];
                     }
                  }
             }
@@ -382,9 +222,9 @@
                 self.priceLabel.textColor = R_G_B_16(0x909090);
 
             }else{
-                if (_type == XNRFirstType ) {// 立即购买
+                if (_type == XNRBuyType ) {// 立即购买
                     [self createSecondView];
-                }else if (_type == XNRSecondType){// 加入购物车
+                }else if (_type == XNRAddCartType){// 加入购物车
                     [self createSecondView];
                 }else if(_type == XNRisFormType){// 属性选择
                     [self createFirstView];
@@ -413,6 +253,159 @@
         
     }];
 }
+
+-(void)selectedAttributesTOCreateParams:(NSMutableArray *)attributesArray andInfoModel:(XNRProductInfo_model *)model
+{
+    // 3.生成请求参数
+    NSDictionary *params = @{@"product":_id,@"attributes":attributesArray,@"user-agent":@"IOS-v2.0"};
+    NSLog(@"【请求参数:】%@",params);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+    manager.requestSerializer.timeoutInterval = 10.f;
+    [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    
+    [manager POST:KSkuquery parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"---------返回数据:---------%@",str);
+        id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        
+        NSDictionary *resultDic;
+        if ([resultObj isKindOfClass:[NSDictionary class]]) {
+            resultDic = (NSDictionary *)resultObj;
+        }
+        if ([resultObj[@"code"] integerValue] == 1000) {
+            NSDictionary *datas = resultObj[@"data"];
+            NSDictionary *price = datas[@"price"];
+            NSDictionary *marketPrice = datas[@"market_price"];
+            
+            NSArray *attributes = datas[@"attributes"];
+            NSDictionary *skuDict = datas[@"SKU"];
+            NSArray *addtions = datas[@"additions"];
+            NSDictionary *SKUprice = skuDict[@"price"];
+            _SKUId = skuDict[@"_id"];
+            if (skuDict[@"_id"]) {
+                self.shopcarModel._id = skuDict[@"_id"];
+            }
+            
+            // 市场价
+            if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]]) {
+                if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
+                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",[marketPrice[@"min"] floatValue]];
+                    if ([_marketPrice rangeOfString:@".00"].length == 3) {
+                        _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
+                    }
+                    
+                }else{
+                    NSString *minPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"min"] floatValue]];
+                    NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] floatValue]];
+                    if ([minPrice rangeOfString:@".00"].length == 3) {
+                        minPrice = [minPrice substringToIndex:minPrice.length-3];
+                    }
+                    if ([maxPrice rangeOfString:@".00"].length == 3) {
+                        maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
+                    }
+                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %@ - %@",minPrice,maxPrice];
+                }
+                
+            }
+            
+            // 价格区间改变
+            if ([price[@"min"] floatValue] == [price[@"max"] floatValue]) {
+                
+                // 判断是否是预售商品
+                if ([_presale integerValue] ==  1) {// 预售
+                    self.priceLabel.text = @"即将上线";
+                    self.priceLabel.textColor = R_G_B_16(0x909090);
+                    
+                }else{
+                    self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[price[@"min"] floatValue]];
+                    if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
+                        self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
+                        
+                    }
+                    
+                    
+                    if (_deposit != nil) {
+                        if ([_deposit floatValue] == 0.00) {
+                            _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
+                        }else{
+                            _totalPrice = [_deposit floatValue];
+                            
+                        }
+                        
+                    }else{
+                        _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
+                    }
+                }
+                
+            } else {
+                NSString *minPrice = [NSString stringWithFormat:@"%.2f",[price[@"min"] floatValue]];
+                NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[price[@"max"] floatValue]];
+                if ([minPrice rangeOfString:@".00"].length == 3) {
+                    minPrice = [minPrice substringToIndex:minPrice.length-3];
+                }
+                if ([maxPrice rangeOfString:@".00"].length == 3) {
+                    maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
+                }
+                
+                // 判断是否是预售商品
+                if ([_presale integerValue] ==  1) {// 预售
+                    self.priceLabel.text = @"即将上线";
+                    self.priceLabel.textColor = R_G_B_16(0x909090);
+                    
+                }else{
+                    self.priceLabel.text = [NSString stringWithFormat:@"¥ %@ - %@",minPrice,maxPrice];
+                }
+                
+                
+                if (_deposit != nil) {
+                    if ([_deposit floatValue] == 0.00) {
+                        _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
+                    }else{
+                        _totalPrice = [_deposit floatValue];
+                        
+                    }
+                    
+                }else{
+                    _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
+                }
+                
+            }
+            
+            // 添加到购物车模型里面，方便加入到数据库
+            XNRProductInfo_model *newInfoModel = [[XNRProductInfo_model alloc] init];
+            newInfoModel.SKUAttributes = (NSMutableArray *)[XNRSKUAttributesModel objectArrayWithKeyValuesArray:attributes];
+            newInfoModel.market_price = SKUprice[@"market_price"];
+            newInfoModel.platform_price = SKUprice[@"platform_price"];
+            newInfoModel._id = skuDict[@"_id"];
+            
+            _min = SKUprice[@"market_price"];
+            NSLog(@"=+__++%@",_min);
+            
+            if (addtions.count>0) {
+                newInfoModel.additions = (NSMutableArray *)[XNRAddtionsModel objectArrayWithKeyValuesArray:addtions];
+            }
+            
+            //5. 添加辅助分区（选完所有的基本分区后添加 少于所有基本分区数量就取消辅助分区）
+            if (attributesArray.count == model.SKUAttributes.count) {
+                model.additions = newInfoModel.additions;
+            } else {
+                model.additions = [NSMutableArray array];
+            }
+            
+            
+            [self.collectionView reloadData];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"===%@",error);
+        
+    }];
+    
+}
+
 
 -(void)createTopView{
     
@@ -481,9 +474,7 @@
         UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,PX_TO_PT(1) )];
         line.backgroundColor=R_G_B_16(0xc7c7c7);
         [bgViewF addSubview:line];
-        
     }
-    
 }
 
 -(void)createExpectedView
@@ -525,10 +516,10 @@
 #pragma mark - 确定
 -(void)admireBtnClick
 {
-    if (_type == XNRFirstType) {// 立即购买
+    if (_type == XNRBuyType) {// 立即购买
         [self buyBtnClick];
         
-    }else if (_type == XNRSecondType){// 加入购物车
+    }else if (_type == XNRAddCartType){// 加入购物车
         [self addBuyCar];
     }
 }
@@ -552,7 +543,6 @@
             // 先加入购物车
             _state = YES;
             [self synchShoppingCarDataWithoutToast];
-            
             NSMutableArray *SKUs = [NSMutableArray array];
             NSDictionary *param = @{@"_id":self.shopcarModel._id?self.shopcarModel._id:@"",@"count":_numText?_numText:@"1",@"additions":self.shopcarModel.additions};
             [SKUs addObject:param];
@@ -565,8 +555,6 @@
             manager.requestSerializer.timeoutInterval = 10.f;
             [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
             [manager POST:KGetShoppingCartOffline parameters:@{@"SKUs":SKUs,@"user-agent":@"IOS-v2.0"} success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//                NSLog(@"---------返回数据:---------%@",str);
                 id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
                 
                 NSDictionary *resultDic;
@@ -604,9 +592,6 @@
                             self.com(SKUs,_totalPrice*([_numText floatValue]?[_numText floatValue]:[@"1" intValue]),_numText?_numText:@"1");
                         });
                     }
-                    
-                   
-                    
                 }else{
                     
                     [UILabel showMessage:resultObj[@"message"]];
@@ -617,8 +602,6 @@
                 
             }];
         }
-
-
     }else{
         [UILabel showMessage:@"请选择商品信息"];
     }
@@ -635,9 +618,7 @@
             [self synchShoppingCarData];
             
         } else {
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                 BOOL b;
-                
                 DatabaseManager *manager = [DatabaseManager sharedInstance];
                 // 查询数据库是否有该商品
                 NSArray *modelArr = [manager queryGoodWithModel:self.shopcarModel];
@@ -667,7 +648,6 @@
                     [UILabel showMessage:@"加入购物车失败"];
                     [self cancelBtnClick];
                 }
-//            });
         }
 
     }else{
@@ -703,8 +683,6 @@
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     
     [manager POST:KAddToCart parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -718,20 +696,19 @@
             [BMProgressView LoadViewDisappear:self];
             
         }else{
-                    [UILabel showMessage:resultObj[@"message"]];
-                    [self cancelBtnClick];
-                    UserInfo *infos = [[UserInfo alloc]init];
-                    infos.loginState = NO;
-                    [DataCenter saveAccount:infos];
-                    //发送刷新通知
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
-                    
-                    XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
-                    
-                    vc.hidesBottomBarWhenPushed = YES;
-                    UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
-                    [currentVc.navigationController pushViewController:vc animated:YES];
-
+            [UILabel showMessage:resultObj[@"message"]];
+            [self cancelBtnClick];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            //发送刷新通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+            
+            XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+            
+            vc.hidesBottomBarWhenPushed = YES;
+            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+            [currentVc.navigationController pushViewController:vc animated:YES];
             _state = NO;
 
         }
@@ -770,8 +747,6 @@
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     
     [manager POST:KAddToCart parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -787,7 +762,6 @@
             
             
         }else{
-//        [UILabel showMessage:resultObj[@"message"]];
         [self cancelBtnClick];
         [BMProgressView LoadViewDisappear:self];
         _state = NO;
@@ -915,7 +889,6 @@
         // 0.先判断[点击]的cell 是否[可用]
         XNRSKUCellModel *selectedCellM = selectedSectionModel.values[indexPath.item];
         if (!selectedCellM.isEnable) {
-//            [UILabel showMessage:@"没有该条件的货物啦！"];
             return;
         }
         // 1.然后确定当前要[选中]的是[section] 中的[哪个cell] 并且 如果[点击]了已经选中的 要[取消]选中
@@ -1331,9 +1304,9 @@
     self.bgView = nil;
     [UIView animateWithDuration:.3 animations:^{
         self.attributesView.frame= CGRectMake(0, ScreenHeight-PX_TO_PT(980), ScreenWidth, PX_TO_PT(980));
-        if (buyType == XNRFirstType ) {// 立即购买
+        if (buyType == XNRBuyType ) {// 立即购买
             [self createSecondView];
-        }else if (buyType == XNRSecondType){// 加入购物车
+        }else if (buyType == XNRAddCartType){// 加入购物车
             [self createSecondView];
         }else if(buyType == XNRisFormType){// 属性选择
             [self createFirstView];

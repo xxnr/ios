@@ -40,6 +40,7 @@
 @property (nonatomic ,copy) NSString *sex;
 
 @property (nonatomic ,copy) NSString *userType;
+@property (nonatomic ,copy) NSString *userTypeInName;
 
 @property (nonatomic ,copy) NSString *province;
 @property (nonatomic ,copy) NSString *city;

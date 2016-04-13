@@ -17,15 +17,12 @@
 #import "XNRMobAddress.h"
 #import "XNRTypeModel.h"
 #import "XNRTypeView.h"
-#define uploadImageTag  2000   //上传头像
 #define KbtnTag 1000
-#define kUploadHeadImgUrl @"http://101.200.194.203/api/v2.0/user/uploadPortrait"      //上传头像
-#define kUpdateUserAddressUrl @"app/user/updateUserAddress"  //更新地址
+#define uploadImageTag  2000   //上传头像
 
-@interface XNRMyaccount_VC ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate,UIAlertViewDelegate,XNRTypeViewBtnDelegate>{
-    
-    
-}
+
+@interface XNRMyaccount_VC ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate,UIAlertViewDelegate,XNRTypeViewBtnDelegate>
+
 @property (nonatomic,weak) UIScrollView *mainScrollView;
 @property (nonatomic,weak) UIButton *iconBtn;
 @property (nonatomic,weak) UIButton *icon;
@@ -71,19 +68,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = R_G_B_16(0xf4f4f4);
-    //创建背景图
-    UIScrollView *mainScrollView = [MyControl createUIScrollViewWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) contentSize:CGSizeMake(ScreenWidth, 600*SCALE) pagingEnabled:NO showsHorizontalScrollIndicator:NO showsVerticalScrollIndicator:NO delegate:self];
-    mainScrollView.backgroundColor=R_G_B_16(0xf4f4f4);
-    self.mainScrollView = mainScrollView;
-    [self.view addSubview:mainScrollView];
     // 设置导航栏
     [self setNavigationbarTitle];
+    // 创建scrollView
+    [self createScrollView];
     //创建头视图
     [self createTop];
     //中部视图
     [self createMid];
     //底部视图
     [self createBottom];
+}
+
+-(void)createScrollView
+{
+    UIScrollView *mainScrollView = [MyControl createUIScrollViewWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) contentSize:CGSizeMake(ScreenWidth, 600*SCALE) pagingEnabled:NO showsHorizontalScrollIndicator:NO showsVerticalScrollIndicator:NO delegate:self];
+    mainScrollView.backgroundColor=R_G_B_16(0xf4f4f4);
+    self.mainScrollView = mainScrollView;
+    [self.view addSubview:mainScrollView];
+
+
 }
 
 -(void)createTop{
@@ -265,9 +269,9 @@
     if (_model.province) {
         if (_model.county) {
             if (_model.town) {
-                            areaLabel.text = [NSString stringWithFormat:@"%@%@%@%@",_model.province,_model.city,_model.county,_model.town];
+                areaLabel.text = [NSString stringWithFormat:@"%@%@%@%@",_model.province,_model.city,_model.county,_model.town];
             }else{
-                            areaLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.province,_model.city,_model.county];
+                areaLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.province,_model.city,_model.county];
             }
 
         }else{
@@ -332,12 +336,8 @@
             self.typeNum = typeNum;
             UserInfo *info = [DataCenter account];
             info.typeName = typeName;
-            
             [DataCenter saveAccount:info];
-        
-        
         };
-        
     }
 }
 
@@ -351,9 +351,7 @@
             if ([result[@"code"] integerValue] == 1000) {
                 UserInfo *info = [DataCenter account];
                 info.type = self.typeLabel.text;
-                
                 [DataCenter saveAccount:info];
-
             }
             
         } failure:^(NSError *error) {
@@ -391,9 +389,6 @@
         }];
 
     }
-        
-    
-
 }
 #pragma mark--底部视图
 -(void)createBottom{
@@ -460,35 +455,12 @@
 }
 #pragma mark--上传头像
 -(void)uploadImage{
-    UIActionSheet*action=[[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从手机相册选择" ,nil];
+    UIActionSheet *action=[[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从手机相册选择" ,nil];
     action.tag = uploadImageTag;
     [action showInView:self.view];
     
 }
-#pragma mark-填写用户送货地址
--(void)wirhtSendAddress {
-    
-    XNRAddressManageViewController*vc=[[XNRAddressManageViewController alloc]init];
-    [vc setAddressChoseBlock:^(XNRAddressManageModel *model) {
-        _sendAddressTip.text = model.address;
-        
-        UserInfo *info = [DataCenter account];
-        [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@%@",model.areaName,model.address] forKey:@"shopAddress"];
-        info.address = [NSString stringWithFormat:@"%@%@",model.areaName,model.address];
-        [DataCenter saveAccount:info];
-        
-    }];
-    vc.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:vc animated:YES];
-}
 
-#pragma mark-昵称
--(void)nickNameClick{
-    
-    UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"请输入昵称" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
-    al.alertViewStyle=UIAlertViewStylePlainTextInput;
-    [al show];
-}
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(actionSheet.tag == uploadImageTag){
     if(buttonIndex==0){
@@ -552,8 +524,6 @@
 }
 /**
  *  跳出图片编辑界面
- *
- *
  */
 - (void)cropViewControllerDidCancel:(PECropViewController *)controller
 {

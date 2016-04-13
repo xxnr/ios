@@ -7,7 +7,6 @@
 //
 
 #import "XNROrderEmptyView.h"
-#import "XNRFerViewController.h"
 @interface XNROrderEmptyView()
 
 @property (nonatomic ,weak) UIButton *buyFerBtn;

@@ -12,7 +12,6 @@
 #import "XNRMyOrderPayCell.h"
 #import "XNRMyOrderSectionModel.h"
 #import "XNROrderEmptyView.h"
-#import "XNRFerViewController.h"
 #import "XNRMyOrderServe_Cell.h"
 #import "XNRMyAllOrderFrame.h"
 #define MAX_PAGE_SIZE 20
