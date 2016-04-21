@@ -8,7 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum : NSUInteger {
+    XNRPayViewtype,
+    XNRSendViewType,
+    XNRReciveViewType,
+    XNRCommentViewType,
+} XNROrderType;
+
 @interface XNRMyOrder_VC : UIViewController
+
+@property (nonatomic, assign) XNROrderType type;
+
+@property (nonatomic, assign) BOOL isForm0rderBtn;
 
 
 @end

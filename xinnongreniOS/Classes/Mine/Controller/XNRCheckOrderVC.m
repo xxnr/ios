@@ -20,6 +20,7 @@
 #import "XNRSeePayInfoVC.h"
 #import "XNROrderInfoModel.h"
 #import "MJExtension.h"
+#import "UILabel+ZSC.h"
 
 @interface XNRCheckOrderVC ()<UITableViewDataSource,UITableViewDelegate>{
     
@@ -77,11 +78,12 @@
     
     UIButton *sectionFour = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(10), PX_TO_PT(132), PX_TO_PT(60))];
     sectionFour.backgroundColor = R_G_B_16(0xfe9b00);
+    [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
+    [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
     [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
     sectionFour.layer.cornerRadius = 5.0;
     sectionFour.layer.masksToBounds = YES;
     sectionFour.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-    //    sectionFour.tag = section + 1000;
     [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:sectionFour];
     
@@ -256,12 +258,12 @@
             [addressImage setImage:[UIImage imageNamed:@"orderInfo_address_picture"]];
             [addressView addSubview:addressImage];
             
-            UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(addressImage.frame) + PX_TO_PT(20), PX_TO_PT(100), ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), PX_TO_PT(32))];
+            UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(addressImage.frame) + PX_TO_PT(20), PX_TO_PT(100), ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), PX_TO_PT(70))];
             addressLabel.textColor = R_G_B_16(0x646464);
             addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
             addressLabel.text = sectionModel.address;
-            addressLabel.adjustsFontSizeToFitWidth = YES;
-            //        addressLabel.backgroundColor = [UIColor redColor];
+            addressLabel.numberOfLines = 0;
+            [addressLabel verticalUpAlignmentWithText:sectionModel.address maxHeight:PX_TO_PT(70)];
             self.addressLabel = addressLabel;
             [addressView addSubview:addressLabel];
             

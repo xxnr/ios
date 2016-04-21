@@ -16,7 +16,6 @@
 #import "XNRCheckOrderModel.h"
 #import "XNRShoppingCarController.h"
 #import "XNRProductInfo_VC.h"
-#import "XNROffLine_VC.h"
 #define kPayTypeBtn 1000
 #define kSelectedBtn 2000
 
@@ -488,10 +487,10 @@
         else if (i == 1) {
             self.selectedBtnTwo = selbtn;
         }
-        else if(i == 2)
-        {
-            self.selectedBtnThree = selbtn;
-        }
+//        else if(i == 2)
+//        {
+//            self.selectedBtnThree = selbtn;
+//        }
         else
         {
 //            btn.userInteractionEnabled = NO;
@@ -500,7 +499,7 @@
             selbtn.enabled = NO;
         }
         
-        if (i == 0 || i == 1 || i == 2) {
+        if (i == 0 || i == 1) {
             
             [btn addSubview:selbtn];
             [btn addSubview:imageView];
@@ -508,10 +507,10 @@
             [btn addSubview:lineView];
             [payTypeDetailView addSubview:btn];
         }
-        if (i == 2) {
-            self.realityBtn = btn;
-//            self.realityBtn.hidden = YES;
-        }
+//        if (i == 2) {
+//            self.realityBtn = btn;
+////            self.realityBtn.hidden = YES;
+//        }
     }
 }
 
@@ -761,14 +760,16 @@
         _payType = 2;
         [self payType];
         
-    }else if (self.currentSelBtn.tag == kSelectedBtn + 2){
-        self.selectedBtnThree.selected = YES;
-        self.selectedBtnOne.selected = NO;
-        self.selectedBtnTwo.selected = NO;
-        _payType = 3;
-        [self payType];
-
-    }else{
+    }
+//    else if (self.currentSelBtn.tag == kSelectedBtn + 2){
+//        self.selectedBtnThree.selected = YES;
+//        self.selectedBtnOne.selected = NO;
+//        self.selectedBtnTwo.selected = NO;
+//        _payType = 3;
+//        [self payType];
+//
+//    }
+    else{
         
     }
     
@@ -828,29 +829,30 @@
         }];
         
         
-    }else if (self.currentSelBtn.tag == kSelectedBtn + 2){
-        [KSHttpRequest get:KOfflinepay parameters:@{@"orderId":self.orderID,@"price":_Money} success:^(id result) {
-            if ([result[@"code"] integerValue] == 1000) {
-                
-            }
-            else
-            {
-                [UILabel showMessage:result[@"message"]];
-                UserInfo *infos = [[UserInfo alloc]init];
-                infos.loginState = NO;
-                [DataCenter saveAccount:infos];
-                //发送刷新通知
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
-                
-                XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
-                
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-            }
-        } failure:^(NSError *error) {
-            
-        }];
     }
+//    else if (self.currentSelBtn.tag == kSelectedBtn + 2){
+//        [KSHttpRequest get:KOfflinepay parameters:@{@"orderId":self.orderID,@"price":_Money} success:^(id result) {
+//            if ([result[@"code"] integerValue] == 1000) {
+//                
+//            }
+//            else
+//            {
+//                [UILabel showMessage:result[@"message"]];
+//                UserInfo *infos = [[UserInfo alloc]init];
+//                infos.loginState = NO;
+//                [DataCenter saveAccount:infos];
+//                //发送刷新通知
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+//                
+//                XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+//                
+//                vc.hidesBottomBarWhenPushed = YES;
+//                [self.navigationController pushViewController:vc animated:YES];
+//            }
+//        } failure:^(NSError *error) {
+//            
+//        }];
+//    }
     else{
         
     }

@@ -502,7 +502,9 @@
     [totalPriceBtn setTitle:[NSString stringWithFormat:@"提交订单%@",[NSString stringWithFormat:@"(%ld)",_totalSelectNum]] forState:UIControlStateNormal];
     [totalPriceBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     totalPriceBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-    totalPriceBtn.backgroundColor = R_G_B_16(0xfe9b00);
+    [totalPriceBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
+    [totalPriceBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
+
     [footView addSubview:totalPriceBtn];
     
     // 总计

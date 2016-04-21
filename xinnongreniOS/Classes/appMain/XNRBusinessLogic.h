@@ -146,8 +146,6 @@
 /**--------------------
       购物车
  --------------------*/
-
-
 /**
  *  获取购物车
  */
@@ -295,9 +293,22 @@
 #define KDynamic [NSString stringWithFormat:@"%@/%@",HOST,@"dynamic/alipay/nofity.asp"]
 
 
-
 /**
  *  获取支付的最小额度
  */
 #define KgetMinPayPrice [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/getMinPayPrice/"]
+
+
+/**--------------------
+ RSC相关
+ --------------------*/
+/**
+ *  填写RSC相关信息
+ */
+#define KRscInfoFill [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/info/fill"]
+/**
+ *  获取RSC相关
+ */
+#define KRscInfoGet [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/info/get"]
+
 #endif

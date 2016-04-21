@@ -11,6 +11,6 @@
 
 @interface XNRWebViewController : UIViewController
 
-@property (nonatomic, weak) XNRMessageModel *model;
+@property (nonatomic, strong) XNRMessageModel *model;
 
 @end

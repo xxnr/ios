@@ -12,7 +12,6 @@
 
 /**
  *  顶部对齐
- *
  *  @param text      文本内容
  *  @param maxHeight 最大高度
  */
