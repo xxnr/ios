@@ -42,6 +42,7 @@
 
 @property (nonatomic, strong) NSMutableArray *orderFrameArray;
 
-
+@property(nonatomic,copy)NSNumber *deliveryType;
+@property (nonatomic,copy)NSString *deliveryValue;
 
 @end

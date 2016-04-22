@@ -48,5 +48,7 @@
 
 @property (nonatomic ,strong) NSMutableArray *attributes;
 
+@property (nonatomic,assign) int deliverStatus;
+//@property (nonatomic,strong)NSMutableArray *subOrders;
 
 @end

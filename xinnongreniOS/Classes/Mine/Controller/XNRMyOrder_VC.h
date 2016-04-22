@@ -10,5 +10,5 @@
 
 @interface XNRMyOrder_VC : UIViewController
 
-
++(void)addObject;
 @end

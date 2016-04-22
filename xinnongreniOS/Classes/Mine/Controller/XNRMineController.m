@@ -18,6 +18,7 @@
 #import "UIImageView+WebCache.h"
 #import "XNRMyRepresentViewController.h"
 #import "XNRUserInfoModel.h"
+#import "XNROffLine_VC.h"
 
 #define KbtnTag          1000
 
@@ -183,6 +184,7 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     self.badgeImage.hidden = YES;
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -198,7 +200,6 @@
     self.verifiedTypes = [NSMutableArray array];
    
 }
-
 -(void)createScrollView{
     UIScrollView *mainScrollView =[MyControl createUIScrollViewWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) contentSize:CGSizeMake(ScreenWidth, 600*SCALE) pagingEnabled:NO showsHorizontalScrollIndicator:NO showsVerticalScrollIndicator:NO delegate:self];
     mainScrollView.backgroundColor=R_G_B_16(0xf4f4f4);
@@ -506,7 +507,6 @@
     self.navigationItem.titleView = titleLabel;
     
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

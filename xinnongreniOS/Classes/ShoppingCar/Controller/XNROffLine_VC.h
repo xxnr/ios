@@ -12,6 +12,6 @@
 
 @property (nonatomic,copy)NSString *orderID;
 @property (nonatomic,copy)NSString *paymentId;
-@property (nonatomic,strong)NSString *holdPayMoney;
+@property (nonatomic,copy)NSString *holdPayMoney;
 
 @end

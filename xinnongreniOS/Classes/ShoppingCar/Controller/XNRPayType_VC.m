@@ -808,10 +808,6 @@
         
         
     }else if (self.currentSelBtn.tag == kSelectedBtn + 1){
-//        self.selectedBtnTwo.selected = YES;
-//        self.selectedBtnOne.selected = NO;
-//        _payType = 2;
-//        [self payType];
         // 获取tn
         [KSHttpRequest post:KUnionpay parameters:@{@"consumer":@"app",@"responseStyle":@"v1.0",@"orderId":self.orderID,@"price":_Money,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             
@@ -831,7 +827,12 @@
     }else if (self.currentSelBtn.tag == kSelectedBtn + 2){
         [KSHttpRequest get:KOfflinepay parameters:@{@"orderId":self.orderID,@"price":_Money} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
+                XNROffLine_VC *offlineVC = [[XNROffLine_VC alloc]init];
+                offlineVC.orderID = self.orderID;
+                offlineVC.holdPayMoney = result[@"price"];
+                offlineVC.paymentId = result[@"paymentId"];
                 
+                [self.navigationController pushViewController:offlineVC animated:YES];
             }
             else
             {

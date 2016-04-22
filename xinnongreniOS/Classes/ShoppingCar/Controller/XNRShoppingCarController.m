@@ -481,7 +481,7 @@
         for (XNRShoppingCarFrame *cellModel in sectionModel.SKUFrameList) {
             if (cellModel.shoppingCarModel.selectState && [cellModel.shoppingCarModel.online integerValue] == 1) {
                 
-                NSDictionary *params = @{@"_id":cellModel.shoppingCarModel._id,@"count":cellModel.shoppingCarModel.num,@"additions":cellModel.shoppingCarModel.additions};
+                NSDictionary *params = @{@"_id":cellModel.shoppingCarModel._id,@"count":cellModel.shoppingCarModel.num,@"additions":cellModel.shoppingCarModel.additions,@"product":cellModel.shoppingCarModel.product_id};
                 [arr addObject:params];
 
             }
@@ -511,6 +511,7 @@
                 sectionModel.brandName = subDic[@"brandName"];
                 sectionModel.offlineEntryCount = subDic[@"offlineEntryCount"];
                 sectionModel.SKUList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"SKUList"]];
+                
                 [_dataArr addObject:sectionModel];
                 
                 for (int i = 0; i<sectionModel.SKUList.count; i++) {

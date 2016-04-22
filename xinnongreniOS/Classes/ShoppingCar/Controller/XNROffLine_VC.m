@@ -1,171 +1,309 @@
-////
-////  XNROffLine_VC.m
-////  xinnongreniOS
-////
-////  Created by 杨宁 on 16/4/13.
-////  Copyright © 2016年 qxhiOS. All rights reserved.
-////
 //
-//#import "XNROffLine_VC.h"
-//#import "XNRCheckOrderVC.h"
-//#import "XNRMyOrder_VC.h"
-//#import "XNRRSCInfoModel.h"
-//@interface XNROffLine_VC ()
-//@property (nonatomic,weak)UIView *topView;
-//@property (nonatomic,weak)UIView *midView;
-//@property (nonatomic,weak)UIView *bottomView;
-//@end
+//  XNROffLine_VC.m
+//  xinnongreniOS
 //
-//@implementation XNROffLine_VC
+//  Created by 杨宁 on 16/4/13.
+//  Copyright © 2016年 qxhiOS. All rights reserved.
 //
-//
-//- (void)viewDidLoad {
-//    [super viewDidLoad];
-//    
-//    self.view.backgroundColor = R_G_B_16(0xFAFAFA);
-//    
-//    [self setNav];
-//    
-//    [self createTop];
-//    [self createCenter];
-//    [self createBtn];
-//    
-//}
-//-(void)createTop
-//{
-//    UIView *topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180))];
-//    topView.backgroundColor = [UIColor whiteColor];
-//    self.topView = topView;
-//    [self.view addSubview:topView];
-//    
-////    UIImageView *imageView = [UIImageView alloc]initWithFrame:CGRectMake(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)
-//}
-//-(void)getServiceData
-//{
-//    [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-//        if ([result[@"code"] integerValue] == 1000) {
-//            
-//            [XNRRSCInfoModel objectWithKeyValues:result[@"rows"][@"RSCInfo"]];
-//
-//        }
-//        
-//    } failure:^(NSError *error) {
-//        NSLog(@"%@",error);
-//        
-//    }];
-//    
-//
-//}
-//-(void)createCenter
-//{
-//    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(123), PX_TO_PT(170), PX_TO_PT(140), PX_TO_PT(140))];
-//    imageView.image = [UIImage imageNamed:@"pay-right-btn"];
-//    [self.view addSubview:imageView];
-//    
-//    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(311), PX_TO_PT(185), PX_TO_PT(290), PX_TO_PT(35))];
-//    label.text = @"您已完成本次支付";
-//    label.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-//    label.textColor = R_G_B_16(0x00B38A);
-//    [self.view addSubview:label];
-//    
-//    UILabel *payMoney = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(311), PX_TO_PT(244), PX_TO_PT(350), PX_TO_PT(27))];
-//    float f = [self.money doubleValue];
-//    payMoney.text = [NSString stringWithFormat:@"支付金额：¥%.2f元",f];
-//    payMoney.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-//    [self.view addSubview:payMoney];
-//    
-//}
-//-(void)createBtn
-//{
-//    UIButton *leftBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(149), PX_TO_PT(440), PX_TO_PT(181), PX_TO_PT(61))];
-//    [leftBtn setTitle:@"返回订单列表" forState:UIControlStateNormal];
-//    leftBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
-//    [leftBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    [leftBtn setBackgroundColor:R_G_B_16(0xFDA940)];
-//    leftBtn.layer.cornerRadius = 6;
-//    [leftBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchDown];
-//    [self.view addSubview:leftBtn];
-//    
-//    UIButton *rightBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(389), PX_TO_PT(440), PX_TO_PT(181), PX_TO_PT(61))];
-//    [rightBtn setTitle:@"查看该笔订单" forState:UIControlStateNormal];
-//    rightBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
-//    [rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    [rightBtn setBackgroundColor:R_G_B_16(0xFDA940)];
-//    rightBtn.layer.cornerRadius = 6;
-//    [rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchDown];
-//    [self.view addSubview:rightBtn];
-//    
-//}
-//
-//- (void)rightBtnClick:(UIButton *)button
-//{
-//    NSLog(@"查看订单");
-//    [[NSNotificationCenter defaultCenter]postNotificationName:@"succss_Push" object:nil];
-//    XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
-//    vc.hidesBottomBarWhenPushed=YES;
-//    vc.orderID = self.orderID;
+
+#import "XNROffLine_VC.h"
+#import "XNRCheckOrderSectionModel.h"
+#import "XNRCheckOrderVC.h"
+#import "XNRMyOrder_VC.h"
+#import "XNRRSCInfoModel.h"
+#import "XNROfflinePayTypeModel.h"
+@interface XNROffLine_VC ()
+@property (nonatomic,weak)UIView *topView;
+@property (nonatomic,weak)UIView *midView;
+@property (nonatomic,weak)UIView *bottomView;
+@property (nonatomic,strong)NSMutableArray *PayTypeArr;
+@property (nonatomic,strong)XNRRSCInfoModel *model;
+@end
+
+@implementation XNROffLine_VC
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.view.backgroundColor = R_G_B_16(0xFAFAFA);
+    
+    [self setNav];
+    [self getServiceData];
+
+}
+-(void)createTop
+{
+    UIView *topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180))];
+    topView.backgroundColor = [UIColor whiteColor];
+    self.topView = topView;
+    [self.view addSubview:topView];
+    
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(40), PX_TO_PT(103), PX_TO_PT(100))];
+    imageView.image = [UIImage imageNamed:@"offline_payment2"];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [topView addSubview:imageView];
+    
+    UILabel *successLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame) + PX_TO_PT(67), PX_TO_PT(52), PX_TO_PT(300), PX_TO_PT(32))];
+    successLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    successLabel.text = @"线下支付提交成功!";
+    successLabel.textColor = R_G_B_16(0x646464);
+    [topView addSubview:successLabel];
+    
+    UILabel *holdMoneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame)+PX_TO_PT(67), CGRectGetMaxY(successLabel.frame)+PX_TO_PT(18), ScreenWidth-CGRectGetMaxX(imageView.frame)-PX_TO_PT(67), PX_TO_PT(32))];
+    holdMoneyLabel.text = [NSString stringWithFormat:@"待支付金额：¥%@",self.holdPayMoney];
+    holdMoneyLabel.textColor = R_G_B_16(0xFF4E00);
+    holdMoneyLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:holdMoneyLabel.text];
+    NSDictionary *depositStr=@{
+                               NSForegroundColorAttributeName:R_G_B_16(0x646464),
+                               NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(28)]
+                               };
+    
+    [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(0,6)];
+    [holdMoneyLabel setAttributedText:AttributedStringDeposit];
+    [topView addSubview:holdMoneyLabel];
+    
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(178), ScreenWidth, PX_TO_PT(2))];
+    line.backgroundColor = R_G_B_16(0xE0E0E0);
+    [topView addSubview:line];
+}
+-(void)createCenter
+{
+    [self.midView removeFromSuperview];
+
+    UILabel *headLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.topView.frame)+PX_TO_PT(25), ScreenWidth, PX_TO_PT(30))];
+    headLabel.text = @"请到服务网点完成线下支付";
+    headLabel.textColor = R_G_B_16(0x646464);
+    headLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
+    [self.view addSubview:headLabel];
+    
+    UIView *midView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(headLabel.frame)+PX_TO_PT(32), ScreenWidth, PX_TO_PT(400))];
+    midView.backgroundColor = [UIColor whiteColor];
+
+    self.midView = midView;
+    [self.view addSubview:_midView];
+    NSArray *titleNameArr = @[@"服务网点",@"网点名称",@"地址",@"电话"];
+    NSArray *detailArr = @[@" ",self.model.companyName,self.model.RSCAddress,self.model.RSCPhone];
+    CGFloat maxY = PX_TO_PT(30);
+    for (int i=0; i<4; i++) {
+        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), maxY, PX_TO_PT(130), PX_TO_PT(30))];
+        titleLabel.text = titleNameArr[i];
+        titleLabel.textColor = R_G_B_16(0x646464);
+        titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+        
+        NSString *str = detailArr[i];
+        CGSize size = [str sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(PX_TO_PT(500), MAXFLOAT)];
+        
+        UILabel *DetailLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(titleLabel.frame)+PX_TO_PT(29), maxY, PX_TO_PT(500), size.height)];
+        DetailLabel.text = str;
+        DetailLabel.textColor = R_G_B_16(0x323232);
+        DetailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+        DetailLabel.numberOfLines = 0;
+        [midView addSubview:DetailLabel];
+        [midView addSubview:titleLabel];
+        
+        maxY = CGRectGetMaxY(DetailLabel.frame)+PX_TO_PT(28);
+        
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, maxY+1, ScreenWidth, PX_TO_PT(1))];
+        line.backgroundColor = R_G_B_16(0xE0E0E0);
+        [midView addSubview:line];
+    }
+    
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(1), ScreenWidth, PX_TO_PT(1))];
+    line.backgroundColor = R_G_B_16(0xe0e0e0);
+    [midView addSubview:line];
+
+    midView.frame = CGRectMake(0, CGRectGetMaxY(headLabel.frame)+PX_TO_PT(32), ScreenWidth, maxY);
+    
+}
+
+-(void)createEmptyCenter
+{
+    [self.midView removeFromSuperview];
+    
+    UILabel *headLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.topView.frame)+PX_TO_PT(25), ScreenWidth, PX_TO_PT(30))];
+    headLabel.text = @"请到服务网点完成线下支付";
+    headLabel.textColor = R_G_B_16(0x646464);
+    headLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
+    [self.view addSubview:headLabel];
+    
+    UIView *midView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(headLabel.frame)+PX_TO_PT(32), ScreenWidth, PX_TO_PT(400))];
+    midView.backgroundColor = [UIColor whiteColor];
+    self.midView = midView;
+    [self.view addSubview:_midView];
+    UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(30), PX_TO_PT(130), PX_TO_PT(30))];
+    titleLabel.text = @"服务网点";
+    titleLabel.textColor = R_G_B_16(0x646464);
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    
+    [midView addSubview:titleLabel];
+
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth, PX_TO_PT(1))];
+    line.backgroundColor = R_G_B_16(0xE0E0E0);
+    [midView addSubview:line];
+    
+    UIImageView *emptyimageView = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(297), CGRectGetMaxY(line.frame)+PX_TO_PT(58), PX_TO_PT(126), PX_TO_PT(116))];
+    emptyimageView.image = [UIImage imageNamed:@"branches-0"];
+    emptyimageView.contentMode = UIViewContentModeScaleAspectFit;
+    [midView addSubview:emptyimageView];
+    
+    UILabel *detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(emptyimageView.frame)+PX_TO_PT(58), ScreenWidth, PX_TO_PT(30))];
+    detailLabel.text = @"小新正在为您匹配最近的网点,请稍后从我的订单查看";
+    detailLabel.textColor = R_G_B_16(0x909090);
+    detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    
+    [midView addSubview:detailLabel];
+    
+    for (int i=0; i<2; i++) {
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(394)*i, ScreenWidth, PX_TO_PT(1))];
+        line.backgroundColor = R_G_B_16(0xe0e0e0);
+        [midView addSubview:line];
+    }
+    
+}
+
+
+-(void)getServiceData
+{
+    [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            
+            XNRCheckOrderSectionModel *orderModel = [XNRCheckOrderSectionModel objectWithKeyValues:result[@"datas"][@"rows"]];
+            self.holdPayMoney = orderModel.duePrice;
+            
+            [self createTop];
+
+            if (orderModel.RSCInfo.count != 0) {
+                self.model = [XNRRSCInfoModel objectWithKeyValues:orderModel.RSCInfo];
+                [self createCenter];
+            }
+            else
+            {
+                [self createEmptyCenter];
+            }
+            [self getPayTypeData];
+
+        }
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+    }];
+    
+
+}
+-(void)getPayTypeData
+{
+    [KSHttpRequest get:KGetOfflinePayType parameters:nil success:^(id result) {
+        if ([result[@"code"]integerValue] == 1000) {
+            self.PayTypeArr = (NSMutableArray *)[XNROfflinePayTypeModel objectArrayWithKeyValuesArray:result[@"offlinePayType"]];
+            [self createBottom];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+-(void)createBottom
+{
+    [self.bottomView removeFromSuperview];
+    
+    UIView *bottomView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.midView.frame)+PX_TO_PT(19), ScreenWidth, PX_TO_PT(270))];
+    bottomView.backgroundColor = [UIColor whiteColor];
+    self.bottomView = bottomView;
+    [self.view addSubview:_bottomView];
+    
+    UILabel *payTypeLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(30), ScreenWidth, PX_TO_PT(30))];
+    payTypeLabel.text = @"付款方式";
+    payTypeLabel.textColor = R_G_B_16(0x646464);
+    payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    [bottomView addSubview:payTypeLabel];
+    
+    for (int i=0; i<2; i++) {
+        UILabel *payTypedetailLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32),  PX_TO_PT(90)*(i+1)+PX_TO_PT(30), ScreenWidth, PX_TO_PT(30))];
+        XNROfflinePayTypeModel *model = self.PayTypeArr[i];
+        payTypedetailLabel.text = model.name;
+        payTypedetailLabel.textColor = R_G_B_16(0x646464);
+        payTypedetailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+        [bottomView addSubview:payTypedetailLabel];
+    }
+    
+    for (int i=0; i<4; i++) {
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(90)*i, ScreenWidth, PX_TO_PT(2))];
+        line.backgroundColor = R_G_B_16(0xe0e0e0);
+        [bottomView addSubview:line];
+    }
+    
+}
+- (void)rightBtnClick:(UIButton *)button
+{
+    NSLog(@"查看订单");
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"succss_Push" object:nil];
+    XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
+    vc.hidesBottomBarWhenPushed=YES;
+    vc.orderID = self.orderID;
 //    vc.orderNO = self.paymentId;
-//    vc.myOrderType = @"确认订单";
-//    [self.navigationController pushViewController:vc animated:YES];
-//    
-//}
-//
-//#pragma mark  - 设置导航
-//- (void)setNav
-//{
-//    self.navigationItem.title = @"线下支付";
-//    
-//    UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//    
-//    backButton.frame=CGRectMake(0, 0, 80, 44);
-//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
-//    [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchDown];
-//    [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
-//    UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
-//    self.navigationItem.leftBarButtonItem=leftItem;
-//    
-//    
-//    UIButton *seeOrderBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-//    
-//    seeOrderBtn.frame=CGRectMake(PX_TO_PT(560), 0, ScreenWidth - PX_TO_PT(560), 44);
-//    seeOrderBtn.titleLabel.text = @"查看订单";
-//    seeOrderBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-//    seeOrderBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 34);
-//    [seeOrderBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchDown];
-//    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithCustomView:seeOrderBtn];
-//    self.navigationItem.rightBarButtonItem=rightItem;
-//}
-//
-//- (void)backClick:(UIButton *)btn
-//{
-//    
-//    [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadOrderList" object:nil];
-//    
-//    for (UIViewController *vc in self.navigationController.viewControllers) {
-//        if ([vc isKindOfClass:[XNRMyOrder_VC class]]) {
-//            [self.navigationController popToViewController:vc animated:YES];
-//            return;
-//        }
-//    }
-//    [self.navigationController popToRootViewControllerAnimated:YES];
-//    
-//
-//    
-//}
-//
-//- (void)didReceiveMemoryWarning {
-//    [super didReceiveMemoryWarning];
-//    // Dispose of any resources that can be recreated.
-//}
-//
-///*
-//#pragma mark - Navigation
-//
-//// In a storyboard-based application, you will often want to do a little preparation before navigation
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-//    // Get the new view controller using [segue destinationViewController].
-//    // Pass the selected object to the new view controller.
-//}
-//*/
-//
-//@end
+    vc.myOrderType = @"确认订单";
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+#pragma mark  - 设置导航
+- (void)setNav
+{
+    self.navigationItem.title = @"线下支付";
+    
+    UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchDown];
+    [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
+    self.navigationItem.leftBarButtonItem=leftItem;
+    
+    
+    UIButton *seeOrderBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    seeOrderBtn.frame=CGRectMake(PX_TO_PT(560), 0, ScreenWidth - PX_TO_PT(560), 44);
+    [seeOrderBtn setTitle:@"查看订单" forState:UIControlStateNormal];
+    seeOrderBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    seeOrderBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -34);
+    [seeOrderBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchDown];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithCustomView:seeOrderBtn];
+    self.navigationItem.rightBarButtonItem=rightItem;
+}
+
+- (void)backClick:(UIButton *)btn
+{
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadOrderList" object:nil];
+    
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[XNRMyOrder_VC class]]) {
+            [self.navigationController popToViewController:vc animated:YES];
+            return;
+        }
+    }
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+
+    
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

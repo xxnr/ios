@@ -215,7 +215,9 @@
                 NSDictionary *orderStatus = orders[@"orderStatus"];
                 sectionModel.type = [orderStatus[@"type"] integerValue];
                 sectionModel.value = orderStatus[@"value"];
-                
+                sectionModel.deliveryType = orders[@"deliveryType"][@"type"];
+                sectionModel.deliveryValue =orders[@"deliveryType"][@"value"];
+
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
                 
                 sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
@@ -345,7 +347,11 @@
         bottomView.backgroundColor = [UIColor whiteColor];
         [self addSubview:bottomView];
                 
-        
+        UILabel *deliveryLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(31), PX_TO_PT(0), ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
+        deliveryLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        deliveryLabel.text = sectionModel.deliveryValue;
+        [bottomView addSubview:deliveryLabel];
+
         UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth -PX_TO_PT(32), PX_TO_PT(80))];
         totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         totalPriceLabel.textAlignment = NSTextAlignmentRight;

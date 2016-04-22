@@ -14,6 +14,9 @@
 #import "XNRMyOrderSectionModel.h"
 #import "XNROrderEmptyView.h"
 #import "XNRMyAllOrderFrame.h"
+#import "XNRMyOrderSectionModel.h"
+#import "XNRMakeSureView.h"
+#import "XNRCarryVC.h"
 #define MAX_PAGE_SIZE 20
 
 @interface XNRReciveView()<XNROrderEmptyViewBtnDelegate>
@@ -231,7 +234,8 @@
                 NSDictionary *orderStatus = orders[@"orderStatus"];
                 sectionModel.type = [orderStatus[@"type"] integerValue];
                 sectionModel.value = orderStatus[@"value"];
-                
+                sectionModel.deliveryType = orders[@"deliveryType"][@"type"];
+                sectionModel.deliveryValue =orders[@"deliveryType"][@"value"];
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
                 
                 sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
@@ -352,54 +356,171 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (_dataArr.count>0) {
-        UIView *bottomView = [[UIView alloc] init];
-        XNRMyOrderSectionModel *sectionModel = _dataArr[section];
-        
-        
-                bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(100));
-                bottomView.backgroundColor = [UIColor whiteColor];
-                [self addSubview:bottomView];
-                
+    UIView *bottomView = [[UIView alloc] init];
+    XNRMyOrderSectionModel *sectionModel = _dataArr[section];
     
-                UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
-                totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-                totalPriceLabel.textAlignment = NSTextAlignmentRight;
-                totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
-                [bottomView addSubview:totalPriceLabel];
-                NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
-                NSDictionary *priceStr=@{
-                                         
-                                         NSForegroundColorAttributeName:R_G_B_16(0xff4e00)
-                                         
-                                         };
-                
-                [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
-                
-                [totalPriceLabel setAttributedText:AttributedStringPrice];
-
-                
-                
-                UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(20))];
-                sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
-                [bottomView addSubview:sectionView];
-                
-                for (int i = 0; i<2; i++) {
-                    
-                    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-                    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-                    [bottomView addSubview:lineView];
-                    
-                }
-        return bottomView;
-
+    if (_dataArr.count>0) {
         
-    }else{
+        if (sectionModel.type == 4) {
+            bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
+            bottomView.backgroundColor = [UIColor whiteColor];
+            [self addSubview:bottomView];
+            
+            UILabel *deliveryLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(31), PX_TO_PT(0), ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
+            deliveryLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+            deliveryLabel.text = sectionModel.deliveryValue;
+            [bottomView addSubview:deliveryLabel];
+            
+            // 合计
+            UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
+            totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+            totalPriceLabel.textAlignment = NSTextAlignmentRight;
+            totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.doubleValue];
+            [bottomView addSubview:totalPriceLabel];
+            
+            NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
+            NSDictionary *priceStr=@{
+                                     
+                                     NSForegroundColorAttributeName:R_G_B_16(0xff4e00)
+                                     
+                                     };
+            
+            [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
+            
+            [totalPriceLabel setAttributedText:AttributedStringPrice];
+            
+            
+            
+            UIButton *makeSureBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
+            makeSureBtn.backgroundColor = R_G_B_16(0xfe9b00);
+            [makeSureBtn setTitle:@"确认收货" forState:UIControlStateNormal];
+            makeSureBtn.layer.cornerRadius = 5.0;
+            makeSureBtn.layer.masksToBounds = YES;
+            makeSureBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+            makeSureBtn.tag = section + 1000;
+            [makeSureBtn addTarget:self action:@selector(makeSureClick:) forControlEvents:UIControlEventTouchUpInside];
+            [bottomView addSubview:makeSureBtn];
+            
+            
+            for (int i = 0; i<3; i++) {
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+                [bottomView addSubview:lineView];
+            }
+            
+            UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(160), ScreenWidth, PX_TO_PT(20))];
+            sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
+            [bottomView addSubview:sectionView];
+            
+            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+            sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+            [sectionView addSubview:sectionLine];
+            
+            return bottomView;
+
+        }
+        else if (sectionModel.type == 5)
+        {
+            bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
+            bottomView.backgroundColor = [UIColor whiteColor];
+            [self addSubview:bottomView];
+            
+            UILabel *deliveryLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(31), PX_TO_PT(0), ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
+            deliveryLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+            deliveryLabel.text = sectionModel.deliveryValue;
+            [bottomView addSubview:deliveryLabel];
+            
+            // 合计
+            UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
+            totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+            totalPriceLabel.textAlignment = NSTextAlignmentRight;
+            totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.doubleValue];
+            [bottomView addSubview:totalPriceLabel];
+            
+            NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
+            NSDictionary *priceStr=@{
+                                     
+                                     NSForegroundColorAttributeName:R_G_B_16(0xff4e00)
+                                     
+                                     };
+            
+            [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
+            
+            [totalPriceLabel setAttributedText:AttributedStringPrice];
+            
+            
+            
+            UIButton *holdNeckBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
+            holdNeckBtn.backgroundColor = R_G_B_16(0xfe9b00);
+            [holdNeckBtn setTitle:@"待自提" forState:UIControlStateNormal];
+            holdNeckBtn.layer.cornerRadius = 5.0;
+            holdNeckBtn.layer.masksToBounds = YES;
+            holdNeckBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+            holdNeckBtn.tag = section + 1000;
+            [holdNeckBtn addTarget:self action:@selector(holdNeckClick:) forControlEvents:UIControlEventTouchUpInside];
+            [bottomView addSubview:holdNeckBtn];
+            
+            
+            for (int i = 0; i<3; i++) {
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+                [bottomView addSubview:lineView];
+            }
+            
+            UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(160), ScreenWidth, PX_TO_PT(20))];
+            sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
+            [bottomView addSubview:sectionView];
+            
+            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+            sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+            [sectionView addSubview:sectionLine];
+            
+            return bottomView;
+            
+
+        }
         return nil;
-        
+    }
+    else{
+        return nil;
+    }
+
+}
+-(void)holdNeckClick:(UIButton *)sender{
+    
+    XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
+    XNRCarryVC *carryVC = [[XNRCarryVC alloc]init];
+    carryVC.orderId = sectionModel.orderId;
+    
+    for (int i=0; i<sectionModel.skus.count; i++) {
+        XNRMyOrderModel *model = sectionModel.skus[i];
+        if(model.deliverStatus == 4)
+        {
+            [carryVC.modelArr addObject:model];
+        }
     }
     
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:carryVC,@"carryVC", nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"carry" object:self userInfo:dic];
+}
+
+-(void)makeSureClick:(UIButton *)sender{
     
+    XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
+    XNRMakeSureView *makesureView = [[XNRMakeSureView alloc]init];
+    makesureView.orderId = sectionModel.orderId;
+    
+    for (int i=0; i<sectionModel.skus.count; i++) {
+        XNRMyOrderModel *model = sectionModel.skus[i];
+        if(model.deliverStatus == 4)
+        {
+            [makesureView.modelArr addObject:model];
+        }
+    }
+    
+    [makesureView createview];
+    
+    [self addSubview:makesureView];
 }
 
 #pragma mark - tableView代理方法
@@ -415,7 +536,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (_dataArr.count>0) {
-        return PX_TO_PT(100);
+        return PX_TO_PT(180);
     }else{
         return 0;
     }

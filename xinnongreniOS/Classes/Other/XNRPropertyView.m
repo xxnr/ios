@@ -288,6 +288,9 @@
             _SKUId = skuDict[@"_id"];
             if (skuDict[@"_id"]) {
                 self.shopcarModel._id = skuDict[@"_id"];
+//                self.shopcarModel._id = _id;
+                self.shopcarModel.product = skuDict[@"product"];
+                
             }
             
             // 市场价
@@ -544,7 +547,7 @@
             _state = YES;
             [self synchShoppingCarDataWithoutToast];
             NSMutableArray *SKUs = [NSMutableArray array];
-            NSDictionary *param = @{@"_id":self.shopcarModel._id?self.shopcarModel._id:@"",@"count":_numText?_numText:@"1",@"additions":self.shopcarModel.additions};
+            NSDictionary *param = @{@"_id":self.shopcarModel._id?self.shopcarModel._id:@"",@"count":_numText?_numText:@"1",@"additions":self.shopcarModel.additions,@"product":self.shopcarModel.product?self.shopcarModel.product:@""};
             [SKUs addObject:param];
             NSLog(@"854990===%@-=-=-=",SKUs);
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -1027,6 +1030,8 @@
                 
                 // 添加到购物车模型里面，方便加入到数据库
                 self.shopcarModel._id = skuDict[@"_id"];
+                self.shopcarModel.product = skuDict[@"product"];
+
                 XNRProductInfo_model *newInfoModel = [[XNRProductInfo_model alloc] init];
                 newInfoModel.SKUAttributes = (NSMutableArray *)[XNRSKUAttributesModel objectArrayWithKeyValuesArray:attributes];
                 newInfoModel.market_price = SKUprice[@"market_price"];

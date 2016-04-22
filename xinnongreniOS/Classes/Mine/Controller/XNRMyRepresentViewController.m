@@ -572,9 +572,9 @@
                 self.thirdView.hidden = YES;
                 self.bgview.hidden = NO;
                 self.circleView.hidden = NO;
-                    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(40), ScreenWidth, ScreenHeight-PX_TO_PT(40))];
-                    UIColor *color = [UIColor blackColor];
-                    view.backgroundColor = [color colorWithAlphaComponent:0.6];
+                UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(40), ScreenWidth, ScreenHeight-PX_TO_PT(40))];
+                UIColor *color = [UIColor blackColor];
+                view.backgroundColor = [color colorWithAlphaComponent:0.6];
                 
                 UIImageView *iamgeview = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, ScreenWidth, view.height)];
                 UIView *coverView = [[UIView alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(80)-PX_TO_PT(26),PX_TO_PT(29), PX_TO_PT(80), PX_TO_PT(80))];

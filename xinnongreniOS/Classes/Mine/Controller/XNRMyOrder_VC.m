@@ -18,6 +18,8 @@
 #import "XNRMineController.h"
 #import "XNRTabBarController.h"
 #import "XNRSpecialViewController.h"
+#import "XNROffLine_VC.h"
+#import "XNRCarryVC.h"
 
 #define KbtnTag          1000
 #define kLabelTag        2000
@@ -54,14 +56,52 @@
     self.mainScrollView.pagingEnabled = YES;
     self.mainScrollView.delegate = self;
     self.mainScrollView.backgroundColor =R_G_B_16(0xf4f4f4);
+    
+////    
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushFerVC) name:@"pushFerVC" object:nil];
+//    
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushCarVC) name:@"pushCarVC" object:nil];
+//    
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(seePayInfoNot:) name:@"seePayInfo" object:nil];
+//    
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(revisePayType:) name:@"revisePayType" object:nil];
+//    
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(carry:) name:@"carry" object:nil];
+    
+
     //取消反弹效果
     self.mainScrollView.bounces = NO;
     [self.view addSubview:self.mainScrollView];
     [self createMidView];
-    
+}
++(void)addObject
+{
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushFerVC) name:@"pushFerVC" object:nil];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushCarVC) name:@"pushCarVC" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(seePayInfoNot:) name:@"seePayInfo" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(revisePayType:) name:@"revisePayType" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(carry:) name:@"carry" object:nil];
+}
+-(void)carry:(NSNotification *)notification
+{
+    XNRCarryVC *vc = notification.userInfo[@"carryVC"];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)revisePayType:(NSNotification *)notification
+{
+    XNRPayType_VC *vc = notification.userInfo[@"payType"];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)seePayInfoNot:(NSNotification *)notification
+{
+    XNROffLine_VC *vc = notification.userInfo[@"checkVC"];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)pushFerVC
@@ -426,6 +466,24 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushFerVC) name:@"pushFerVC" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushCarVC) name:@"pushCarVC" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(seePayInfoNot:) name:@"seePayInfo" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(revisePayType:) name:@"revisePayType" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(carry:) name:@"carry" object:nil];
+
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 -(void)dealloc
