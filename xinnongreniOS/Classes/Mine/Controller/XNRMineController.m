@@ -20,6 +20,7 @@
 #import "SJAvatarBrowser.h"       // 浏览头像
 #import "UIImageView+WebCache.h"
 #import "XNRUserInfoModel.h"
+#import "XNROffLine_VC.h"
 
 #import "XNRMainGroup.h"
 #import "XNRMainItem.h"
@@ -264,6 +265,7 @@
 {
     return self.groups.count;
 }
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -701,7 +703,6 @@
     self.navigationItem.titleView = titleLabel;
     
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -86,7 +86,15 @@
  */
 #define KuserUpData [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/ISOupgrade"]
 
+/**
+ *  用户选择自提方式时获取收货人列表
+ */
 
+#define KqueryConsignees [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/user/queryConsignees"]
+/**
+ *用户选择自提方式时保存收货人
+ */
+#define KsaveConsignees [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/user/saveConsignees"]
 
 /**--------------------
         首页
@@ -283,6 +291,12 @@
  *  线下支付
  */
 #define KOfflinepay [NSString stringWithFormat:@"%@/%@",HOST,@"offlinepay"]
+
+/**
+ *   线下支付方式
+ */
+#define KGetOfflinePayType [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/getOfflinePayType"]
+
 /**
  *  支付宝支付成功页面
  */
@@ -299,6 +313,31 @@
 #define KgetMinPayPrice [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/getMinPayPrice/"]
 
 
+/**
+ *  确认收货
+ */
+#define KconfirmSKUReceived [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/order/confirmSKUReceived"]
+/**
+ *  获取自提码
+ */
+#define KgetDeliveryCode [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/order/getDeliveryCode"]
+
+/**
+ *  获取自提点省份列表
+ */
+#define KgetProvince [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/province"]
+/**
+ *  获取自提点城市列表
+ */
+#define KgetCity [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/city"]
+/**
+ *  获取自提点县列表
+ */
+#define KgetCounty [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/county"]
+/**
+ * 获取自提点列表
+ */
+#define KgetRSC [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC"]
 /**--------------------
  RSC相关
  --------------------*/

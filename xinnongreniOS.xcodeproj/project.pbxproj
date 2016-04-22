@@ -520,6 +520,20 @@
 		9C293EB91CA1292F00D9C7F6 /* XNRSubOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C293EB81CA1292F00D9C7F6 /* XNRSubOrderCell.m */; };
 		9C392DE71CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C392DE61CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m */; };
 		9C392DF11CA9420300AD0F27 /* myAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C392DF01CA9420300AD0F27 /* myAlertView.m */; };
+		9C3F9B3A1CBF645F00E44BA8 /* XNRMakeSureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B391CBF645F00E44BA8 /* XNRMakeSureView.m */; };
+		9C3F9B3D1CBF7ACA00E44BA8 /* XNRMakeSureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B3C1CBF7ACA00E44BA8 /* XNRMakeSureCell.m */; };
+		9C3F9B401CBF927700E44BA8 /* XNRCarryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B3F1CBF927700E44BA8 /* XNRCarryVC.m */; };
+		9C3F9B431CBFA43F00E44BA8 /* XNRDeliveryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B421CBFA43F00E44BA8 /* XNRDeliveryCell.m */; };
+		9C3F9B461CC4A27D00E44BA8 /* XNRDeliveryBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B451CC4A27D00E44BA8 /* XNRDeliveryBtn.m */; };
+		9C3F9B491CC4C60200E44BA8 /* XNRSelWebSiteVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B481CC4C60200E44BA8 /* XNRSelWebSiteVC.m */; };
+		9C3F9B4C1CC4D2F800E44BA8 /* XNRSelWebSiteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B4B1CC4D2F800E44BA8 /* XNRSelWebSiteCell.m */; };
+		9C3F9B4F1CC4DF9400E44BA8 /* XNRRSCModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B4E1CC4DF9400E44BA8 /* XNRRSCModel.m */; };
+		9C3F9B521CC4E02700E44BA8 /* XNRRSCDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B511CC4E02700E44BA8 /* XNRRSCDetailModel.m */; };
+		9C3F9B551CC4E09900E44BA8 /* XNRCompanyAddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B541CC4E09900E44BA8 /* XNRCompanyAddressModel.m */; };
+		9C3F9B581CC4F3E400E44BA8 /* XNRCityDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B571CC4F3E400E44BA8 /* XNRCityDetailModel.m */; };
+		9C3F9B5E1CC7207400E44BA8 /* XNRSelContactVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B5D1CC7207400E44BA8 /* XNRSelContactVC.m */; };
+		9C3F9B611CC7305700E44BA8 /* XNRConsigneeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B601CC7305700E44BA8 /* XNRConsigneeModel.m */; };
+		9C3F9B641CC7426C00E44BA8 /* XNRConsigneesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B631CC7426C00E44BA8 /* XNRConsigneesCell.m */; };
 		9C4FCB451C8FFDFD00C5B427 /* XNBrandsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */; };
 		9C63D88C1C9FD9AA004AFE0F /* XNRCheckOrderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C63D88B1C9FD9AA004AFE0F /* XNRCheckOrderVC.m */; };
 		9C63D88F1C9FDE12004AFE0F /* XNROrderInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C63D88E1C9FDE12004AFE0F /* XNROrderInfoCell.m */; };
@@ -530,8 +544,11 @@
 		9CC0CE5E1C855A5C008D5228 /* XNRPayType_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE5D1C855A5C008D5228 /* XNRPayType_VC.m */; };
 		9CC0CE6A1C87FF3C008D5228 /* XNRSelPayOrder_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE681C87FF3C008D5228 /* XNRSelPayOrder_VC.m */; };
 		9CC0CE6E1C8811EE008D5228 /* XNRAddOrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE6D1C8811EE008D5228 /* XNRAddOrderModel.m */; };
+		9CC8DE5C1CC7713500277CF3 /* XNRCityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8DE5B1CC7713500277CF3 /* XNRCityCell.m */; };
+		9CC8DE5F1CCA086900277CF3 /* XNROffLine_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8DE5E1CCA086900277CF3 /* XNROffLine_VC.m */; };
 		9CF687A41CBDF353005F1A5F /* XNRDeliveryTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687A31CBDF353005F1A5F /* XNRDeliveryTypeModel.m */; };
 		9CF687AA1CBE0FE1005F1A5F /* XNRRSCInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687A91CBE0FE1005F1A5F /* XNRRSCInfoModel.m */; };
+		9CF687AD1CBE3C56005F1A5F /* XNROfflinePayTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687AC1CBE3C56005F1A5F /* XNROfflinePayTypeModel.m */; };
 		9CF8AA2F1CACFF830058D8B9 /* XNRBookUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AA2E1CACFF830058D8B9 /* XNRBookUser.m */; };
 		9CF8AA321CAD07CB0058D8B9 /* XNRUser_Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AA311CAD07CB0058D8B9 /* XNRUser_Cell.m */; };
 		9CF8AA351CAD321D0058D8B9 /* XNRAddLatentUserVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AA341CAD321D0058D8B9 /* XNRAddLatentUserVC.m */; };
@@ -1529,6 +1546,34 @@
 		9C392DE61CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		9C392DEF1CA9420300AD0F27 /* myAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myAlertView.h; sourceTree = "<group>"; };
 		9C392DF01CA9420300AD0F27 /* myAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = myAlertView.m; sourceTree = "<group>"; };
+		9C3F9B381CBF645F00E44BA8 /* XNRMakeSureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMakeSureView.h; sourceTree = "<group>"; };
+		9C3F9B391CBF645F00E44BA8 /* XNRMakeSureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMakeSureView.m; sourceTree = "<group>"; };
+		9C3F9B3B1CBF7ACA00E44BA8 /* XNRMakeSureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMakeSureCell.h; sourceTree = "<group>"; };
+		9C3F9B3C1CBF7ACA00E44BA8 /* XNRMakeSureCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMakeSureCell.m; sourceTree = "<group>"; };
+		9C3F9B3E1CBF927700E44BA8 /* XNRCarryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCarryVC.h; sourceTree = "<group>"; };
+		9C3F9B3F1CBF927700E44BA8 /* XNRCarryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCarryVC.m; sourceTree = "<group>"; };
+		9C3F9B411CBFA43F00E44BA8 /* XNRDeliveryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRDeliveryCell.h; sourceTree = "<group>"; };
+		9C3F9B421CBFA43F00E44BA8 /* XNRDeliveryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRDeliveryCell.m; sourceTree = "<group>"; };
+		9C3F9B441CC4A27D00E44BA8 /* XNRDeliveryBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRDeliveryBtn.h; sourceTree = "<group>"; };
+		9C3F9B451CC4A27D00E44BA8 /* XNRDeliveryBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRDeliveryBtn.m; sourceTree = "<group>"; };
+		9C3F9B471CC4C60200E44BA8 /* XNRSelWebSiteVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSelWebSiteVC.h; sourceTree = "<group>"; };
+		9C3F9B481CC4C60200E44BA8 /* XNRSelWebSiteVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSelWebSiteVC.m; sourceTree = "<group>"; };
+		9C3F9B4A1CC4D2F800E44BA8 /* XNRSelWebSiteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSelWebSiteCell.h; sourceTree = "<group>"; };
+		9C3F9B4B1CC4D2F800E44BA8 /* XNRSelWebSiteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSelWebSiteCell.m; sourceTree = "<group>"; };
+		9C3F9B4D1CC4DF9400E44BA8 /* XNRRSCModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRSCModel.h; sourceTree = "<group>"; };
+		9C3F9B4E1CC4DF9400E44BA8 /* XNRRSCModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRSCModel.m; sourceTree = "<group>"; };
+		9C3F9B501CC4E02700E44BA8 /* XNRRSCDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRSCDetailModel.h; sourceTree = "<group>"; };
+		9C3F9B511CC4E02700E44BA8 /* XNRRSCDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRSCDetailModel.m; sourceTree = "<group>"; };
+		9C3F9B531CC4E09900E44BA8 /* XNRCompanyAddressModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCompanyAddressModel.h; sourceTree = "<group>"; };
+		9C3F9B541CC4E09900E44BA8 /* XNRCompanyAddressModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCompanyAddressModel.m; sourceTree = "<group>"; };
+		9C3F9B561CC4F3E400E44BA8 /* XNRCityDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCityDetailModel.h; sourceTree = "<group>"; };
+		9C3F9B571CC4F3E400E44BA8 /* XNRCityDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCityDetailModel.m; sourceTree = "<group>"; };
+		9C3F9B5C1CC7207400E44BA8 /* XNRSelContactVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSelContactVC.h; sourceTree = "<group>"; };
+		9C3F9B5D1CC7207400E44BA8 /* XNRSelContactVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSelContactVC.m; sourceTree = "<group>"; };
+		9C3F9B5F1CC7305700E44BA8 /* XNRConsigneeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRConsigneeModel.h; sourceTree = "<group>"; };
+		9C3F9B601CC7305700E44BA8 /* XNRConsigneeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRConsigneeModel.m; sourceTree = "<group>"; };
+		9C3F9B621CC7426C00E44BA8 /* XNRConsigneesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRConsigneesCell.h; sourceTree = "<group>"; };
+		9C3F9B631CC7426C00E44BA8 /* XNRConsigneesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRConsigneesCell.m; sourceTree = "<group>"; };
 		9C4FCB431C8FFDFD00C5B427 /* XNBrandsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNBrandsModel.h; sourceTree = "<group>"; };
 		9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNBrandsModel.m; sourceTree = "<group>"; };
 		9C63D88A1C9FD9AA004AFE0F /* XNRCheckOrderVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCheckOrderVC.h; sourceTree = "<group>"; };
@@ -1549,10 +1594,16 @@
 		9CC0CE681C87FF3C008D5228 /* XNRSelPayOrder_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSelPayOrder_VC.m; sourceTree = "<group>"; };
 		9CC0CE6C1C8811EE008D5228 /* XNRAddOrderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRAddOrderModel.h; sourceTree = "<group>"; };
 		9CC0CE6D1C8811EE008D5228 /* XNRAddOrderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRAddOrderModel.m; sourceTree = "<group>"; };
+		9CC8DE5A1CC7713400277CF3 /* XNRCityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCityCell.h; sourceTree = "<group>"; };
+		9CC8DE5B1CC7713500277CF3 /* XNRCityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCityCell.m; sourceTree = "<group>"; };
+		9CC8DE5D1CCA086900277CF3 /* XNROffLine_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNROffLine_VC.h; sourceTree = "<group>"; };
+		9CC8DE5E1CCA086900277CF3 /* XNROffLine_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNROffLine_VC.m; sourceTree = "<group>"; };
 		9CF687A21CBDF353005F1A5F /* XNRDeliveryTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRDeliveryTypeModel.h; sourceTree = "<group>"; };
 		9CF687A31CBDF353005F1A5F /* XNRDeliveryTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRDeliveryTypeModel.m; sourceTree = "<group>"; };
 		9CF687A81CBE0FE1005F1A5F /* XNRRSCInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRSCInfoModel.h; sourceTree = "<group>"; };
 		9CF687A91CBE0FE1005F1A5F /* XNRRSCInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRSCInfoModel.m; sourceTree = "<group>"; };
+		9CF687AB1CBE3C56005F1A5F /* XNROfflinePayTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNROfflinePayTypeModel.h; sourceTree = "<group>"; };
+		9CF687AC1CBE3C56005F1A5F /* XNROfflinePayTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNROfflinePayTypeModel.m; sourceTree = "<group>"; };
 		9CF8AA2D1CACFF830058D8B9 /* XNRBookUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRBookUser.h; sourceTree = "<group>"; };
 		9CF8AA2E1CACFF830058D8B9 /* XNRBookUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRBookUser.m; sourceTree = "<group>"; };
 		9CF8AA301CAD07CB0058D8B9 /* XNRUser_Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRUser_Cell.h; sourceTree = "<group>"; };
@@ -2024,6 +2075,8 @@
 				9C392DF01CA9420300AD0F27 /* myAlertView.m */,
 				9C6BCE991CAE36C100463096 /* XNRBtn.h */,
 				9C6BCE9A1CAE36C100463096 /* XNRBtn.m */,
+				9C3F9B441CC4A27D00E44BA8 /* XNRDeliveryBtn.h */,
+				9C3F9B451CC4A27D00E44BA8 /* XNRDeliveryBtn.m */,
 				9CF8AA301CAD07CB0058D8B9 /* XNRUser_Cell.h */,
 				9CF8AA311CAD07CB0058D8B9 /* XNRUser_Cell.m */,
 				9CF8AA3A1CAE1FA60058D8B9 /* XNRSelPro_Cell.h */,
@@ -2040,6 +2093,14 @@
 				844AFE451B143D0E00EE29C8 /* XNRMyscore_Cell.m */,
 				84FE64381B1805B400F0C67C /* XNRServeView.h */,
 				84FE64391B1805B400F0C67C /* XNRServeView.m */,
+				9C3F9B3E1CBF927700E44BA8 /* XNRCarryVC.h */,
+				9C3F9B3F1CBF927700E44BA8 /* XNRCarryVC.m */,
+				9C3F9B411CBFA43F00E44BA8 /* XNRDeliveryCell.h */,
+				9C3F9B421CBFA43F00E44BA8 /* XNRDeliveryCell.m */,
+				9C3F9B381CBF645F00E44BA8 /* XNRMakeSureView.h */,
+				9C3F9B391CBF645F00E44BA8 /* XNRMakeSureView.m */,
+				9C3F9B3B1CBF7ACA00E44BA8 /* XNRMakeSureCell.h */,
+				9C3F9B3C1CBF7ACA00E44BA8 /* XNRMakeSureCell.m */,
 				84FE642C1B18054B00F0C67C /* XNRPayView.h */,
 				84FE642D1B18054B00F0C67C /* XNRPayView.m */,
 				84FE642F1B18056200F0C67C /* XNRSendView.h */,
@@ -2301,10 +2362,16 @@
 				844AFE8B1B14771D00EE29C8 /* XNRProductInfo_VC.m */,
 				84AAA5881B4391ED005AA154 /* XNROrderInfo_VC.h */,
 				84AAA5891B4391ED005AA154 /* XNROrderInfo_VC.m */,
+				9C3F9B471CC4C60200E44BA8 /* XNRSelWebSiteVC.h */,
+				9C3F9B481CC4C60200E44BA8 /* XNRSelWebSiteVC.m */,
+				9C3F9B5C1CC7207400E44BA8 /* XNRSelContactVC.h */,
+				9C3F9B5D1CC7207400E44BA8 /* XNRSelContactVC.m */,
 				9CC0CE5C1C855A5C008D5228 /* XNRPayType_VC.h */,
 				9CC0CE5D1C855A5C008D5228 /* XNRPayType_VC.m */,
 				9CC0CE671C87FF3C008D5228 /* XNRSelPayOrder_VC.h */,
 				9CC0CE681C87FF3C008D5228 /* XNRSelPayOrder_VC.m */,
+				9CC8DE5D1CCA086900277CF3 /* XNROffLine_VC.h */,
+				9CC8DE5E1CCA086900277CF3 /* XNROffLine_VC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2312,10 +2379,22 @@
 		1FE1D6641B12F1A800F0D158 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9C3F9B5F1CC7305700E44BA8 /* XNRConsigneeModel.h */,
+				9C3F9B601CC7305700E44BA8 /* XNRConsigneeModel.m */,
+				9C3F9B561CC4F3E400E44BA8 /* XNRCityDetailModel.h */,
+				9C3F9B571CC4F3E400E44BA8 /* XNRCityDetailModel.m */,
+				9C3F9B4D1CC4DF9400E44BA8 /* XNRRSCModel.h */,
+				9C3F9B4E1CC4DF9400E44BA8 /* XNRRSCModel.m */,
+				9C3F9B501CC4E02700E44BA8 /* XNRRSCDetailModel.h */,
+				9C3F9B511CC4E02700E44BA8 /* XNRRSCDetailModel.m */,
+				9C3F9B531CC4E09900E44BA8 /* XNRCompanyAddressModel.h */,
+				9C3F9B541CC4E09900E44BA8 /* XNRCompanyAddressModel.m */,
 				49F414F91C3CA71A001A28CA /* XNRShopCarSectionModel.h */,
 				49F414FA1C3CA71A001A28CA /* XNRShopCarSectionModel.m */,
 				9CF687A21CBDF353005F1A5F /* XNRDeliveryTypeModel.h */,
 				9CF687A31CBDF353005F1A5F /* XNRDeliveryTypeModel.m */,
+				9CF687AB1CBE3C56005F1A5F /* XNROfflinePayTypeModel.h */,
+				9CF687AC1CBE3C56005F1A5F /* XNROfflinePayTypeModel.m */,
 				9CF687A81CBE0FE1005F1A5F /* XNRRSCInfoModel.h */,
 				9CF687A91CBE0FE1005F1A5F /* XNRRSCInfoModel.m */,
 				53445EB01B148712009F79E5 /* XNRShoppingCartModel.h */,
@@ -2341,6 +2420,8 @@
 		1FE1D6651B12F1A800F0D158 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				9C3F9B621CC7426C00E44BA8 /* XNRConsigneesCell.h */,
+				9C3F9B631CC7426C00E44BA8 /* XNRConsigneesCell.m */,
 				53445EAD1B14866A009F79E5 /* XNRShoppingCartTableViewCell.h */,
 				53445EAE1B14866A009F79E5 /* XNRShoppingCartTableViewCell.m */,
 				4976FC361BEA47C50002E8F8 /* XNRShopcarView.h */,
@@ -2349,6 +2430,10 @@
 				49F7121B1C3F6B6400FC7707 /* XNRSubmitOrderCell.m */,
 				497662611C5AE32300FB041D /* XNRToolBar.h */,
 				497662621C5AE32300FB041D /* XNRToolBar.m */,
+				9C3F9B4A1CC4D2F800E44BA8 /* XNRSelWebSiteCell.h */,
+				9C3F9B4B1CC4D2F800E44BA8 /* XNRSelWebSiteCell.m */,
+				9CC8DE5A1CC7713400277CF3 /* XNRCityCell.h */,
+				9CC8DE5B1CC7713500277CF3 /* XNRCityCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -3846,10 +3931,12 @@
 				9C293EB91CA1292F00D9C7F6 /* XNRSubOrderCell.m in Sources */,
 				49E896001BEDC2BB00B3671E /* UIImage+MultiFormat.m in Sources */,
 				849B6E4E1B56650C001C5BF8 /* TAAnimatedDotView.m in Sources */,
+				9C3F9B3A1CBF645F00E44BA8 /* XNRMakeSureView.m in Sources */,
 				9CC0CE6E1C8811EE008D5228 /* XNRAddOrderModel.m in Sources */,
 				84FE644F1B183DD300F0C67C /* XNRMyOrderServe_Cell.m in Sources */,
 				8446C2A61B1D6D19005CA932 /* POPPropertyAnimation.mm in Sources */,
 				49F7A57A1C58469400A1FA45 /* MJRefreshAutoGifFooter.m in Sources */,
+				9CC8DE5F1CCA086900277CF3 /* XNROffLine_VC.m in Sources */,
 				498AB0221BF8E1AD003827E3 /* XNRMyRepresent_cell.m in Sources */,
 				8446C2A01B1D6D19005CA932 /* POPCGUtils.mm in Sources */,
 				490FF4031CBFA26A003CB09C /* XNRNetWorkTool.m in Sources */,
@@ -3882,6 +3969,7 @@
 				9CF8AC0C1C981DB300F27563 /* XNRHomeSelectBrandView.m in Sources */,
 				49F7A57D1C58469400A1FA45 /* MJRefreshBackGifFooter.m in Sources */,
 				49E896021BEDC2BB00B3671E /* UIImageView+HighlightedWebCache.m in Sources */,
+				9CC8DE5C1CC7713500277CF3 /* XNRCityCell.m in Sources */,
 				49EC526B1BEBBF4500AA8898 /* KeychainItemWrapper.m in Sources */,
 				8446C2A11B1D6D19005CA932 /* POPCustomAnimation.mm in Sources */,
 				53FE38B01B188F2A00AEDC66 /* ZSCLabel.m in Sources */,
@@ -3899,6 +3987,7 @@
 				849B6E4C1B56650C001C5BF8 /* NSData+SDDataCache.m in Sources */,
 				1FE1D60C1B12EE2600F0D158 /* MJIvar.m in Sources */,
 				49F0A03C1C52410300A6CFCF /* UILabel+showMessage.m in Sources */,
+				9C3F9B491CC4C60200E44BA8 /* XNRSelWebSiteVC.m in Sources */,
 				1FE1D64B1B12EE3200F0D158 /* AFSecurityPolicy.m in Sources */,
 				49E895F71BEDC2BB00B3671E /* SDImageCache.m in Sources */,
 				84FE643A1B1805B400F0C67C /* XNRServeView.m in Sources */,
@@ -3917,6 +4006,7 @@
 				49CD5E351C0814EC004235C4 /* XNRSpecialCell.m in Sources */,
 				491610EF1C8C422200F1E243 /* MWPhoto.m in Sources */,
 				9C06A4291CA145CE00B0DED9 /* XNRPayInfoTableViewCell.m in Sources */,
+				9C3F9B551CC4E09900E44BA8 /* XNRCompanyAddressModel.m in Sources */,
 				49F0714B1C547EBC006187B2 /* BMProgressView.m in Sources */,
 				9C0620BE1CB66079009A82A2 /* XNRAddressModel.m in Sources */,
 				844AFE461B143D0E00EE29C8 /* XNRMyscore_Cell.m in Sources */,
@@ -3956,6 +4046,7 @@
 				8446C2A41B1D6D19005CA932 /* POPLayerExtras.mm in Sources */,
 				84CDC9A81B3E9F4400F59064 /* KSHttpRequest.m in Sources */,
 				49EFE00C1C4CF1E800218C43 /* UILabel+create.m in Sources */,
+				9C3F9B581CC4F3E400E44BA8 /* XNRCityDetailModel.m in Sources */,
 				9C293EB61CA128FD00D9C7F6 /* XRNSubOrdersModel.m in Sources */,
 				4976FC221BE9A2AA0002E8F8 /* base64.m in Sources */,
 				491610F41C8C422200F1E243 /* UIImage+MWPhotoBrowser.m in Sources */,
@@ -3964,6 +4055,7 @@
 				8446C2A31B1D6D19005CA932 /* POPGeometry.mm in Sources */,
 				493AEF231C1DF5260088003A /* XNRAddressPickerView.m in Sources */,
 				491610EC1C8C422200F1E243 /* MWCaptionView.m in Sources */,
+				9C3F9B641CC7426C00E44BA8 /* XNRConsigneesCell.m in Sources */,
 				491F37251C7EA1D00072D8B9 /* XNRAddtionsModel.m in Sources */,
 				491610CA1C8C422200F1E243 /* DALabeledCircularProgressView.m in Sources */,
 				491281231CC9D1EB009E67C4 /* XNRRscAllOrderView.m in Sources */,
@@ -3983,6 +4075,7 @@
 				49EC52631BEBBA5E00AA8898 /* UIColor+BSExt.m in Sources */,
 				1FE1D6551B12EE3200F0D158 /* UIProgressView+AFNetworking.m in Sources */,
 				49F99EEB1C155D130000556A /* XNRProductInfo_cell.m in Sources */,
+				9C3F9B461CC4A27D00E44BA8 /* XNRDeliveryBtn.m in Sources */,
 				49F6B19A1C2A6EE100DCF8CF /* MJPhotoBrowser.m in Sources */,
 				491610FB1C8C454300F1E243 /* MBProgressHUD+Add.m in Sources */,
 				4915EBA21CAA4F9800A728BB /* XNRPropertyEmptyView.m in Sources */,
@@ -4006,6 +4099,7 @@
 				49E895F81BEDC2BB00B3671E /* SDWebImageCompat.m in Sources */,
 				491610FD1C8C454300F1E243 /* MBProgressHUD.m in Sources */,
 				9CC0CE6A1C87FF3C008D5228 /* XNRSelPayOrder_VC.m in Sources */,
+				9C3F9B401CBF927700E44BA8 /* XNRCarryVC.m in Sources */,
 				49F6B0E21C295C0000DCF8CF /* XNRNoSelectView.m in Sources */,
 				5383E1851B4E080B0058FE3F /* XNROrderInfoModel.m in Sources */,
 				4917DBBE1C1BC23000CE1588 /* XNRTypeView.m in Sources */,
@@ -4043,6 +4137,7 @@
 				491610ED1C8C422200F1E243 /* MWGridCell.m in Sources */,
 				490FF4091CBFA68B003CB09C /* XNRBugTagsTool.m in Sources */,
 				8469F6261B3D4C2700085699 /* FMDatabase.m in Sources */,
+				9C3F9B4F1CC4DF9400E44BA8 /* XNRRSCModel.m in Sources */,
 				1FE1D6501B12EE3200F0D158 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				49EE99601C4793020064692B /* XNRCustomerOrderController.m in Sources */,
 				53C7C4941B180F6800E441BC /* XNRAddressManageTableViewCell.m in Sources */,
@@ -4050,6 +4145,7 @@
 				4912810E1CC8DCA6009E67C4 /* XNRMyStoreOrderController.m in Sources */,
 				53C7C48E1B180DB900E441BC /* XNRAddressManageViewController.m in Sources */,
 				53C7C4911B180F3F00E441BC /* XNRAddressManageModel.m in Sources */,
+				9CF687AD1CBE3C56005F1A5F /* XNROfflinePayTypeModel.m in Sources */,
 				8446C2981B1D6D19005CA932 /* POPAnimatableProperty.mm in Sources */,
 				49EF87EE1C4B15D0008C62AE /* XNROrderEmptyView.m in Sources */,
 				1FE1D6541B12EE3200F0D158 /* UIImageView+AFNetworking.m in Sources */,
@@ -4077,11 +4173,13 @@
 				844AFE431B141CAF00EE29C8 /* XNRMyaccount_VC.m in Sources */,
 				9C392DE71CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m in Sources */,
 				491610F01C8C422200F1E243 /* MWPhotoBrowser.m in Sources */,
+				9C3F9B3D1CBF7ACA00E44BA8 /* XNRMakeSureCell.m in Sources */,
 				491755301CC5DC65001A2E2E /* NSString+File.m in Sources */,
 				1FE1D6121B12EE2600F0D158 /* NSObject+MJKeyValue.m in Sources */,
 				53031B891B299736004B4B07 /* CommonTool.m in Sources */,
 				539CDB971B438B9800AB9B65 /* XNRMyOrderModel.m in Sources */,
 				498AB0251BF97FED003827E3 /* XNRUserInfoModel.m in Sources */,
+				9C3F9B611CC7305700E44BA8 /* XNRConsigneeModel.m in Sources */,
 				53010F941B1DAD3E00017740 /* CoreTFKeyBoardToolBarView.m in Sources */,
 				53445EAF1B14866A009F79E5 /* XNRShoppingCartTableViewCell.m in Sources */,
 				49EC52611BEBBA5E00AA8898 /* NSString+BSExt.m in Sources */,
@@ -4093,9 +4191,11 @@
 				9CC0CE5E1C855A5C008D5228 /* XNRPayType_VC.m in Sources */,
 				49EC525A1BEBBA5E00AA8898 /* BSHelper.m in Sources */,
 				1FE1D64F1B12EE3200F0D158 /* AFURLSessionManager.m in Sources */,
+				9C3F9B4C1CC4D2F800E44BA8 /* XNRSelWebSiteCell.m in Sources */,
 				491281261CC9D20D009E67C4 /* XNRRscWaitPayView.m in Sources */,
 				53445EB21B148712009F79E5 /* XNRShoppingCartModel.m in Sources */,
 				8446C2A51B1D6D19005CA932 /* POPMath.mm in Sources */,
+				9C3F9B431CBFA43F00E44BA8 /* XNRDeliveryCell.m in Sources */,
 				49CD5E3E1C0BEC4E004235C4 /* XNRMessageCell.m in Sources */,
 				84A143361B4149FD00A78D36 /* NJKWebViewProgress.m in Sources */,
 				4917DBBB1C1BB84E00CE1588 /* XNRTypeModel.m in Sources */,
@@ -4118,6 +4218,7 @@
 				4976FC281BE9A2AA0002E8F8 /* RSADataSigner.m in Sources */,
 				4950CDFB1C045A65006200AD /* XNRChatController.m in Sources */,
 				49E164861C12F0F00063E6EC /* XNRWebViewController.m in Sources */,
+				9C3F9B521CC4E02700E44BA8 /* XNRRSCDetailModel.m in Sources */,
 				8446C2A21B1D6D19005CA932 /* POPDecayAnimation.mm in Sources */,
 				4936F61D1C05CE7A0023183B /* XNRFerSelect.m in Sources */,
 				8446C29D1B1D6D19005CA932 /* POPAnimationTracer.mm in Sources */,
@@ -4135,6 +4236,7 @@
 				4916112B1C8D189400F1E243 /* IQTextView.m in Sources */,
 				4921F11E1CA1F644007C06B4 /* XNRMyAllOrderFrame.m in Sources */,
 				49EC52641BEBBA5E00AA8898 /* UIDevice+BSExt.m in Sources */,
+				9C3F9B5E1CC7207400E44BA8 /* XNRSelContactVC.m in Sources */,
 				4936F6201C05DA860023183B /* XNRCarSelect.m in Sources */,
 				49ADEE1E1C536CE700525AA8 /* XNRNewFeatureViewController.m in Sources */,
 				49F7A5871C58469400A1FA45 /* UIView+MJExtension.m in Sources */,
@@ -4260,6 +4362,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				SYMROOT = build;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
@@ -4299,6 +4402,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				SYMROOT = build;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
@@ -4329,7 +4433,7 @@
 					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4384,7 +4488,7 @@
 					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
