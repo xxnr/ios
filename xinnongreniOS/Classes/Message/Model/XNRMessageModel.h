@@ -22,6 +22,12 @@
 
 @property (nonatomic, copy) NSString *ID;
 
+@property (nonatomic, copy) NSString *shareurl;
+
+@property (nonatomic, copy) NSString *newsabstract;
+
+
+
 
 
 @end

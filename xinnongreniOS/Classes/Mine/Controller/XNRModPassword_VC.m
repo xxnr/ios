@@ -135,7 +135,9 @@
 - (void)createFinishButton
 {
     self.finishButton = [MyControl createButtonWithFrame:CGRectMake(PX_TO_PT(32),  CGRectGetMaxY(_makeSurePasswordBg.frame)+PX_TO_PT(88), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88)) ImageName:nil Target:self Action:@selector(finishClick:) Title:nil];
-    self.finishButton.backgroundColor = R_G_B_16(0x00b38a);
+    [self.finishButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
+    [self.finishButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateNormal];
+
     [self.finishButton setTitle:@"完成" forState:UIControlStateNormal];
     [self.finishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.finishButton.layer.masksToBounds = YES;

@@ -101,7 +101,7 @@ static int loginCount = 0;
          
          success(resultObj);
          
-         if ([[resultObj objectForKey:@"code"] intValue]==1401) {
+         if ([[resultObj objectForKey:@"code"] intValue] == 1401) {
              [UILabel showMessage:resultObj[@"message"]];
              UserInfo *infos = [[UserInfo alloc]init];
              infos.loginState = NO;
@@ -127,6 +127,7 @@ static int loginCount = 0;
     }];
     
 }
+
 /**
  *  上传图片（支持多张上传和单张上传）
  *

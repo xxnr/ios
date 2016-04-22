@@ -164,7 +164,6 @@
     
     [self setupHeadView];
 
-//    [self createBottomView];
 }
 
 -(void)createHeadView
@@ -188,24 +187,26 @@
         noLabel.textColor = [UIColor whiteColor];
         self.noLabel = noLabel;
         [self.contentView addSubview:noLabel];
-    }
-    // 1.添加
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(700)-PX_TO_PT(60), ScreenWidth, PX_TO_PT(60))];
-    bgView.backgroundColor = [UIColor lightGrayColor];
-    [self.contentView addSubview:bgView];
-    
+        
+        // 1.添加
+        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(700)-PX_TO_PT(60), ScreenWidth, PX_TO_PT(60))];
+        bgView.backgroundColor = [UIColor lightGrayColor];
+        [self.contentView addSubview:bgView];
+        
         UIPageControl *pageControl = [[UIPageControl alloc] init];
         pageControl.numberOfPages = _model.pictures.count;
         pageControl.centerX = ScreenWidth/2;
         pageControl.centerY = PX_TO_PT(30);
         [bgView addSubview:pageControl];
-    
+        
         // 2.设置圆点的颜色
         pageControl.currentPageIndicatorTintColor = R_G_B_16(0x3dd5b2); // 当前页的小圆点颜色
         pageControl.layer.borderWidth = 1.0;
         pageControl.layer.borderColor = [UIColor whiteColor].CGColor;
         pageControl.pageIndicatorTintColor = [UIColor whiteColor]; // 非当前页的小圆点颜色
         self.pageControl = pageControl;
+
+    }
 }
 
 -(void)createMidView

@@ -45,7 +45,6 @@
     self.view.userInteractionEnabled = YES;
     
     [self setNavigationbarTitle];
-    [self createTopView];
     self.mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100),ScreenWidth+PX_TO_PT(20),ScreenHeight-64)];
     self.mainScrollView.contentSize=CGSizeMake((ScreenWidth+PX_TO_PT(20))*5, ScreenHeight-64);
     self.mainScrollView.showsHorizontalScrollIndicator = NO;
@@ -58,7 +57,8 @@
     self.mainScrollView.bounces = NO;
     [self.view addSubview:self.mainScrollView];
     [self createMidView];
-    
+    [self createTopView];
+
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushFerVC) name:@"pushFerVC" object:nil];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushCarVC) name:@"pushCarVC" object:nil];
@@ -193,7 +193,7 @@
     {
         UIView *view = arr[i];
         
-        view.frame = CGRectMake((ScreenWidth+10*SCALE)*i, 0, ScreenWidth, ScreenHeight-64);
+        view.frame = CGRectMake((ScreenWidth+PX_TO_PT(20))*i, 0, ScreenWidth, ScreenHeight-64);
         [self.mainScrollView addSubview:view];
     }
     
@@ -203,6 +203,16 @@
     UIView *midBg=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(100))];
     midBg.backgroundColor =[UIColor whiteColor];
     [self.view addSubview:midBg];
+    
+    if (IS_FourInch) {
+        _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(94), ScreenWidth/5.0, PX_TO_PT(6))];
+        
+    }else{
+        _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4))];
+        
+    }
+    _selectLine.backgroundColor=R_G_B_16(0x00b38a);
+    [midBg addSubview:_selectLine];
     
     NSArray *arr1 = @[@"全部",@"待付款",@"待发货",@"待收货",@"已完成"];
     CGFloat x = 0*SCALE;
@@ -226,25 +236,40 @@
         tempTitleLabel.tag = kLabelTag+i;
         [midBg addSubview:tempTitleLabel];
         
-        if (i==0) {
-            [self buttonClick:button];
+        if (_isForm0rderBtn) {
+            if (i==0) {
+                [self buttonClick:button];
+            }
+        }else{
+            if (_type == XNRPayViewtype) {
+                if (i == 1) {
+                    [self buttonClick:button];
+                    
+                }
+            }else if (_type == XNRSendViewType){
+                if (i == 2) {
+                    [self buttonClick:button];
+                    
+                }
+                
+                
+            }else if (_type == XNRReciveViewType){
+                if (i == 3) {
+                    [self buttonClick:button];
+                }
+                
+            }else{
+                if (i == 4) {
+                    [self buttonClick:button];
+                }
+            }
         }
     }
-    if (IS_FourInch) {
-        _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(94), ScreenWidth/5.0, PX_TO_PT(6))];
-
-    }else{
-        _selectLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4))];
-
-    }
-    _selectLine.backgroundColor=R_G_B_16(0x00b38a);
-    [midBg addSubview:_selectLine];
     
     UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(99), ScreenWidth, PX_TO_PT(1))];
     bottomView.backgroundColor = R_G_B_16(0xc7c7c7);
     [midBg addSubview:bottomView];
-    
-    
+
 }
 #pragma mark - 按钮的循环点击
 -(void)buttonClick:(UIButton*)button{
@@ -281,7 +306,6 @@
         _tempLabel.textColor = [UIColor blackColor];
         label.textColor = R_G_B_16(0x00b38a);
         _tempLabel = label;
-        
     }
     
     if(button.tag==KbtnTag+2){

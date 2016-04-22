@@ -146,8 +146,6 @@
 /**--------------------
       购物车
  --------------------*/
-
-
 /**
  *  获取购物车
  */
@@ -295,9 +293,63 @@
 #define KDynamic [NSString stringWithFormat:@"%@/%@",HOST,@"dynamic/alipay/nofity.asp"]
 
 
-
 /**
  *  获取支付的最小额度
  */
 #define KgetMinPayPrice [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/getMinPayPrice/"]
+
+
+/**--------------------
+ RSC相关
+ --------------------*/
+/**
+ *  填写RSC相关信息
+ */
+#define KRscInfoFill [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/info/fill"]
+/**
+ *  获取RSC相关 get
+ */
+#define KRscInfoGet [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/info/get"]
+/**
+ *  获取自提点省份列表  get
+ */
+#define KRscProvince [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/province"]
+/**
+ *  获取自提点城市列表 get
+ */
+#define KRscCity [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/city"]
+/**
+ *  获取自提点县列表 get
+ */
+#define KRscCounty [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/county"]
+/**
+ *  获取乡镇列表  get
+ */
+#define KRscTown [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/town"]
+/**
+ *  网店审核线下付款
+ */
+#define KRscConfirmOfflinePay [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/confirmOfflinePay"]
+/**
+ *  获取分配到RSC的订单  get
+ */
+#define KRscOrders [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/orders"]
+/**
+ *  网点发货
+ */
+#define KRscDelivering [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/order/deliverStatus/delivering"]
+/**
+ *  获取自提点列表  get
+ */
+#define KRsc [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC"]
+/**
+ *  网点自提
+ */
+#define KRscSelfDelivery [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/order/selfDelivery"]
+/**
+ *  获取订单详情   get
+ */
+#define KRscOrderDetail [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/orderDetail"]
+
+
 #endif
