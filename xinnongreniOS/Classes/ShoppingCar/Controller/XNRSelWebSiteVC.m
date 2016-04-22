@@ -501,7 +501,12 @@
         }
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        XNRBtn *iconBtn = [[XNRBtn alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(89))];
+        
+        XNRRSCModel *RSCmodel = [self.dataArr objectAtIndex:indexPath.row];
+        XNRRSCDetailModel *model = [XNRRSCDetailModel objectWithKeyValues:RSCmodel.RSCInfo];
+        cell.model = model;
+        
+        XNRBtn *iconBtn = [[XNRBtn alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, cell.height)];
         [iconBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
         [iconBtn setImage:[UIImage imageNamed:@"address_right"] forState:UIControlStateSelected];
         [iconBtn addTarget:self action:@selector(iconClick:) forControlEvents:UIControlEventTouchDown];
@@ -513,11 +518,6 @@
             }
         [cell addSubview:iconBtn];
         [_iconArr addObject:iconBtn];
-        
-        XNRRSCModel *RSCmodel = [self.dataArr objectAtIndex:indexPath.row];
-        XNRRSCDetailModel *model = [XNRRSCDetailModel objectWithKeyValues:RSCmodel.RSCInfo];
-        cell.model = model;
-        
         return cell;
     }
     else
@@ -549,8 +549,9 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRCityDetailModel *model = [_currentCityArr objectAtIndex:indexPath.row];
     if (tableView.tag == TableViewTag+1) {
+        
+        XNRCityDetailModel *model = [_currentCityArr objectAtIndex:indexPath.row];
         self.coverView.hidden = YES;
         
         if (_currentBtn.tag == Tag) {
