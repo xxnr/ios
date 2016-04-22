@@ -118,75 +118,75 @@
  
     if(nil == self.PayView){ // 待付款
                 
-                self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
-                __weak __typeof(&*self)weakSelf=self;
-                //单笔结算
-                [self.PayView setPayBlock:^(NSString *orderID,NSString *money){
-                    XNRPayType_VC*vc=[[XNRPayType_VC alloc]init];
-                    vc.hidesBottomBarWhenPushed=YES;
-                    vc.orderID = orderID;
-                    vc.payMoney = money;
-                    [weakSelf.navigationController pushViewController:vc animated:YES];
-                    
-                }];
+        self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
+        __weak __typeof(&*self)weakSelf=self;
+        //单笔结算
+        [self.PayView setPayBlock:^(NSString *orderID,NSString *money){
+            XNRPayType_VC*vc=[[XNRPayType_VC alloc]init];
+            vc.hidesBottomBarWhenPushed=YES;
+            vc.orderID = orderID;
+            vc.payMoney = money;
+            [weakSelf.navigationController pushViewController:vc animated:YES];
+            
+        }];
+        
+        // 查看订单
+        [self.PayView setCheckOrderBlock:^(NSString *orderID) {
+            XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc] init];
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.orderID=orderID;
+            vc.myOrderType = @"待付款";
+            vc.isRoot = YES ;
+            [weakSelf.navigationController pushViewController:vc animated:YES];
+            
+        }];
+    }
+    
+        if(nil == self.SendView){ // 代发货
+            // 查看订单
+            self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
+            __weak __typeof(&*self)weakSelf=self;
+            [self.SendView setCheckOrderBlock:^(NSString *orderID) {
+                XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
+                vc.hidesBottomBarWhenPushed=YES;
+                vc.orderID= orderID;
+                vc.isRoot = YES ;
+                vc.myOrderType = @"待发货";
+                [weakSelf.navigationController pushViewController:vc animated:YES];
                 
-                // 查看订单
-                [self.PayView setCheckOrderBlock:^(NSString *orderID) {
-                    XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc] init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    vc.orderID=orderID;
-                    vc.myOrderType = @"待付款";
-                    vc.isRoot = YES ;
-                    [weakSelf.navigationController pushViewController:vc animated:YES];
-                    
-                }];
-            }
+            }];
+        }
             
-            if(nil == self.SendView){ // 代发货
-                // 查看订单
-                self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
-                __weak __typeof(&*self)weakSelf=self;
-                [self.SendView setCheckOrderBlock:^(NSString *orderID) {
-                    XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
-                    vc.hidesBottomBarWhenPushed=YES;
-                    vc.orderID= orderID;
-                    vc.isRoot = YES ;
-                    vc.myOrderType = @"待发货";
-                    [weakSelf.navigationController pushViewController:vc animated:YES];
-                    
-                }];
-            }
-            
-            if(nil==self.ReciveView){ // 已发货
-                self.ReciveView=[[XNRReciveView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"recive"];
-                __weak __typeof(&*self)weakSelf=self;
-                //查看订单
-                [self.ReciveView setCheckOrderBlock:^(NSString *orderID) {
-                    XNRCheckOrderVC *vc=[[XNRCheckOrderVC alloc]init];
-                    vc.hidesBottomBarWhenPushed=YES;
-                    vc.isRoot = YES ;
-                    vc.orderID=orderID;
-                    vc.myOrderType = @"待收货";
-                    [weakSelf.navigationController pushViewController:vc animated:YES];
-                    
-                }];
-            }
-            
-            if(nil==self.CommentView){ // 已完成
+        if(nil==self.ReciveView){ // 已发货
+            self.ReciveView=[[XNRReciveView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"recive"];
+            __weak __typeof(&*self)weakSelf=self;
+            //查看订单
+            [self.ReciveView setCheckOrderBlock:^(NSString *orderID) {
+                XNRCheckOrderVC *vc=[[XNRCheckOrderVC alloc]init];
+                vc.hidesBottomBarWhenPushed=YES;
+                vc.isRoot = YES ;
+                vc.orderID=orderID;
+                vc.myOrderType = @"待收货";
+                [weakSelf.navigationController pushViewController:vc animated:YES];
                 
-                self.CommentView =[[XNRCommentView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"comment"];
-                __weak __typeof(&*self)weakSelf=self;
-                // 查看订单
-                [self.CommentView setCheckOrderBlock:^(NSString *orderID) {
-                    XNRCheckOrderVC *vc=[[XNRCheckOrderVC alloc]init];
-                    vc.hidesBottomBarWhenPushed=YES;
-                    vc.isRoot = YES ;
-                    vc.orderID=orderID;
-                    vc.myOrderType = @"已完成";
-                    [weakSelf.navigationController pushViewController:vc animated:YES];
-                    
-                }];
-            }
+            }];
+        }
+            
+    if(nil==self.CommentView){ // 已完成
+        
+        self.CommentView =[[XNRCommentView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"comment"];
+        __weak __typeof(&*self)weakSelf=self;
+        // 查看订单
+        [self.CommentView setCheckOrderBlock:^(NSString *orderID) {
+            XNRCheckOrderVC *vc=[[XNRCheckOrderVC alloc]init];
+            vc.hidesBottomBarWhenPushed=YES;
+            vc.isRoot = YES ;
+            vc.orderID=orderID;
+            vc.myOrderType = @"已完成";
+            [weakSelf.navigationController pushViewController:vc animated:YES];
+            
+        }];
+    }
     // 滚动视图上添加5个表格视图
     NSArray*arr=@[self.ServeView,self.PayView,self.SendView,self.ReciveView,self.CommentView];
     for (int i=0; i<arr.count; i++)
