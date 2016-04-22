@@ -16,6 +16,7 @@
 #import "XNRProductInfo_VC.h"      // 商品信息
 #import "XNRCheckOrderVC.h"       // 查看订单
 #import "XNRMyOrder_VC.h"          // 我的订单
+#import "XNRMyStoreOrderController.h"
 #import "SJAvatarBrowser.h"       // 浏览头像
 #import "UIImageView+WebCache.h"
 #import "XNRUserInfoModel.h"
@@ -69,6 +70,8 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    self.view.backgroundColor = R_G_B_16(0xffffff);
+    [_userArray removeAllObjects];
     XNRNavigationController *nav = (XNRNavigationController *)self.navigationController;
     [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"icon_navbg"] forBarMetrics:UIBarMetricsDefault];
     
@@ -125,27 +128,28 @@
         if (![KSHttpRequest isNULL:town]) {
             model.town = town[@"name"];
         }
+        if (IS_Login) {
+            // 创建TabelView
+            [self createMainTableView];
+            [self createLoginTopView];
+            [self createMiddleView];
+            
+        }
         // 设置视图的数据
         [self setupDatas:model];
-        
-        }
-        
+    }
+    
     } failure:^(NSError *error) {
         
         [UILabel showMessage:@"网络请求失败"];
             
         }];
-        [self createLoginTopView];
-        [self createMiddleView];
-
-        
-        }else{
+    }else{
+        // 创建TabelView
+        [self createMainTableView];
         [self createNotLoginTopView];
         [self createMiddleView];
-
-    
     }
-
 }
 
 -(void)setupDatas:(XNRUserInfoModel *)model
@@ -219,8 +223,6 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // 创建TabelView
-    [self createMainTableView];
     
     [self setNavigationbarTitle];
     
@@ -228,7 +230,6 @@
     self.verifiedTypes = [NSMutableArray array];
     
     [self setupGroup];
-   
 }
 
 -(void)setupGroup
@@ -307,14 +308,21 @@
         item.operation();
     }
 }
-
-
 -(void)createMainTableView{
     
-    UIView *topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(546))];
-    topBgView.backgroundColor = [UIColor whiteColor];
-    self.topBgView = topBgView;
-    [self.view addSubview:topBgView];
+    XNRUserInfoModel *infoMdoel = [_userArray firstObject];
+    UIView *topBgView;
+    if ([infoMdoel.isRSC integerValue] == 1 && [infoMdoel.userType integerValue] == 5) {
+        topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(652))];
+        topBgView.backgroundColor = [UIColor whiteColor];
+        self.topBgView = topBgView;
+        [self.view addSubview:topBgView];
+    }else{
+        topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(546))];
+        topBgView.backgroundColor = [UIColor whiteColor];
+        self.topBgView = topBgView;
+        [self.view addSubview:topBgView];
+    }
     
     UITableView *mainTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
     mainTableView.delegate = self;
@@ -322,8 +330,6 @@
     mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     mainTableView.tableHeaderView = topBgView;
     [self.view addSubview:mainTableView];
-
-    
 }
 
 -(void)createLoginTopView
@@ -333,7 +339,6 @@
     bgLoginView.userInteractionEnabled  = YES;
     self.bgLoginView = bgLoginView;
     [self.topBgView addSubview:bgLoginView];
-    
     
     //头像
     UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(100), PX_TO_PT(150), PX_TO_PT(150))];
@@ -438,18 +443,6 @@
 
 }
 
--(void)orderBtnClick
-{
-    if (IS_Login == YES) {
-        // 我的订单
-        XNRMyOrder_VC *orderVC=[[XNRMyOrder_VC alloc]init];
-        orderVC.isForm0rderBtn = YES;
-        orderVC.hidesBottomBarWhenPushed=YES;
-        [self.navigationController pushViewController:orderVC animated:YES];
-    }else{
-        [[CommonTool sharedInstance]openLogin:self];
-    }
-}
 
 -(void)loginBtnClick
 {
@@ -469,13 +462,56 @@
 #pragma mark--创建底部视图
 -(void)createMiddleView{
     
-    // 我的订单
-    UIButton *orderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    XNRUserInfoModel *infoModel = [_userArray firstObject];
+    UIButton *myStoreBtn;
+    UIButton *orderBtn;
+    if ([infoModel.isRSC integerValue] == 1 && [infoModel.userType integerValue] == 5) {
+        // 我的网点
+        myStoreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        myStoreBtn.frame = CGRectMake(0, PX_TO_PT(320), ScreenWidth, PX_TO_PT(96));
+        myStoreBtn.backgroundColor = [UIColor whiteColor];
+        [myStoreBtn addTarget:self action:@selector(myStoreBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        [self.topBgView addSubview:myStoreBtn];
+        
+        // 我的订单
+        orderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        orderBtn.frame = CGRectMake(0, PX_TO_PT(416), ScreenWidth, PX_TO_PT(96));
+        orderBtn.backgroundColor = [UIColor whiteColor];
+        [orderBtn addTarget:self action:@selector(orderBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        self.orderBtn = orderBtn;
+        [self.topBgView addSubview:orderBtn];
+    }else{
+        orderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         orderBtn.frame = CGRectMake(0, PX_TO_PT(320), ScreenWidth, PX_TO_PT(96));
-    orderBtn.backgroundColor = [UIColor whiteColor];
-    [orderBtn addTarget:self action:@selector(orderBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    self.orderBtn = orderBtn;
-    [self.topBgView addSubview:orderBtn];
+        orderBtn.backgroundColor = [UIColor whiteColor];
+        [orderBtn addTarget:self action:@selector(orderBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        self.orderBtn = orderBtn;
+        [self.topBgView addSubview:orderBtn];
+    }
+    
+    // 图标
+    UIImageView *storeImgView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(18), PX_TO_PT(60), PX_TO_PT(60))];
+    [storeImgView setImage:[UIImage imageNamed:@"branch_icon"]];
+    [myStoreBtn addSubview:storeImgView];
+    
+    // 主题
+    UILabel *storeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(112), PX_TO_PT(18), ScreenWidth-PX_TO_PT(112), PX_TO_PT(60))];
+    storeTitleLabel.text = @"我的网点";
+    storeTitleLabel.textColor = R_G_B_16(0x323232);
+    storeTitleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    [myStoreBtn addSubview:storeTitleLabel];
+    
+    // 箭头
+    UIButton *storeArrowBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    storeArrowBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(50), PX_TO_PT(32), PX_TO_PT(18), PX_TO_PT(32));
+    [storeArrowBtn setImage:[UIImage imageNamed:@"arrow"] forState:UIControlStateNormal];
+    [myStoreBtn addSubview:storeArrowBtn];
+    
+    CALayer *storeLineLayer = [[CALayer alloc] init];
+    storeLineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, PX_TO_PT(1));
+    storeLineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
+    [myStoreBtn.layer addSublayer:storeLineLayer];
+
     
     // 图标
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(18), PX_TO_PT(60), PX_TO_PT(60))];
@@ -504,7 +540,7 @@
     CALayer *lineLayer = [[CALayer alloc] init];
     lineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, PX_TO_PT(1));
     lineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
-    [self.orderBtn.layer addSublayer:lineLayer];
+    [orderBtn.layer addSublayer:lineLayer];
 
     
     
@@ -549,6 +585,32 @@
 
     
 }
+
+-(void)orderBtnClick
+{
+    if (IS_Login == YES) {
+        // 我的订单
+        XNRMyOrder_VC *orderVC = [[XNRMyOrder_VC alloc]init];
+        orderVC.isForm0rderBtn = YES;
+        orderVC.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:orderVC animated:YES];
+    }else{
+        [[CommonTool sharedInstance]openLogin:self];
+    }
+}
+
+-(void)myStoreBtnClick
+{
+    if (IS_Login == YES) {
+        // 我的网点
+        XNRMyStoreOrderController *orderVC = [[XNRMyStoreOrderController alloc]init];
+        orderVC.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:orderVC animated:YES];
+    }else{
+        [[CommonTool sharedInstance]openLogin:self];
+    }
+}
+
 
 -(void)orderStateBtnClick:(UIButton *)button
 {

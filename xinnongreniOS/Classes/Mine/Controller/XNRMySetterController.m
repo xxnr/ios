@@ -64,9 +64,9 @@
         [UMSocialData defaultData].extConfig.wechatSessionData.title = @"新新农人";
         [[UMSocialDataService defaultDataService] postSNSWithTypes:@[UMShareToWechatSession] content:contentString image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response) {
             if (response.responseCode == UMSResponseCodeSuccess) {
-                [UILabel showMessage:@"分享成功"];
+                [UILabel showShareMessage:@"分享成功"];
             }else{
-                [UILabel showMessage:@"分享失败"];
+                [UILabel showShareMessage:@"分享失败"];
             }
             [self.shareView cancel];
         }];
@@ -78,9 +78,9 @@
 
         [[UMSocialDataService defaultDataService] postSNSWithTypes:@[UMShareToWechatTimeline] content:contentString image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response) {
             if (response.responseCode == UMSResponseCodeSuccess) {
-                [UILabel showMessage:@"分享成功"];
+                [UILabel showShareMessage:@"分享成功"];
             }else{
-                [UILabel showMessage:@"分享失败"];
+                [UILabel showShareMessage:@"分享失败"];
             }
             [self.shareView cancel];
         }];
@@ -91,9 +91,9 @@
 
         [[UMSocialDataService defaultDataService] postSNSWithTypes:@[UMShareToQQ] content:contentString image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response) {
             if (response.responseCode == UMSResponseCodeSuccess) {
-                [UILabel showMessage:@"分享成功"];
+                [UILabel showShareMessage:@"分享成功"];
             }else{
-                [UILabel showMessage:@"分享失败"];
+                [UILabel showShareMessage:@"分享失败"];
             }
             [self.shareView cancel];
         }];
@@ -104,9 +104,9 @@
 
         [[UMSocialDataService defaultDataService] postSNSWithTypes:@[UMShareToQzone] content:contentString image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response) {
             if (response.responseCode == UMSResponseCodeSuccess) {
-                [UILabel showMessage:@"分享成功"];
+                [UILabel showShareMessage:@"分享成功"];
             }else{
-                [UILabel showMessage:@"分享失败"];
+                [UILabel showShareMessage:@"分享失败"];
             }
             [self.shareView cancel];
         }];

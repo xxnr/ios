@@ -46,7 +46,6 @@
     if (_model.newsabstract == nil || [_model.newsabstract isEqualToString:@""]) {
         contentString = @"分享自@新新农人";
     }
-    
     if (type == wechatbtn_type) {
         [UMSocialData defaultData].extConfig.wechatSessionData.url = _model.shareurl;
         [UMSocialData defaultData].extConfig.wechatSessionData.title = _model.title;
@@ -64,9 +63,9 @@
 
          [[UMSocialDataService defaultDataService] postSNSWithTypes:@[UMShareToWechatTimeline] content:_model.newsabstract image:shareImage location:nil urlResource:nil  presentedController:self completion:^(UMSocialResponseEntity *response) {
              if (response.responseCode == UMSResponseCodeSuccess) {
-                 [UILabel showMessage:@"分享成功"];
+                 [UILabel showShareMessage:@"分享成功"];
              }else{
-                 [UILabel showMessage:@"分享失败"];
+                 [UILabel showShareMessage:@"分享失败"];
              }
              [self.shareView cancel];
 
@@ -79,9 +78,9 @@
 
          [[UMSocialDataService defaultDataService]  postSNSWithTypes:@[UMShareToQQ] content:_model.newsabstract image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response){
              if (response.responseCode == UMSResponseCodeSuccess) {
-                 [UILabel showMessage:@"分享成功"];
+                 [UILabel showShareMessage:@"分享成功"];
              }else{
-                 [UILabel showMessage:@"分享失败"];
+                 [UILabel showShareMessage:@"分享失败"];
              }
              [self.shareView cancel];
 
@@ -92,15 +91,16 @@
          [UMSocialData defaultData].extConfig.qzoneData.title = _model.title;
          [[UMSocialDataService defaultDataService]  postSNSWithTypes:@[UMShareToQzone] content:_model.newsabstract image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response){
              if (response.responseCode == UMSResponseCodeSuccess) {
-                 [UILabel showMessage:@"分享成功"];
+                 [UILabel showShareMessage:@"分享成功"];
              }else{
-                 [UILabel showMessage:@"分享失败"];
+                 [UILabel showShareMessage:@"分享失败"];
              }
              [self.shareView cancel];
 
          }];
     }
 }
+
 
 -(void)viewDidLoad
 {

@@ -98,7 +98,7 @@
 
 -(void)getRSCData
 {
-    [KSHttpRequest get:KRscInfoGet parameters:nil success:^(id result) {
+    [KSHttpRequest get:KRscInfoGet parameters:@{@"token":[DataCenter account].token} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"RSCInfo"];
@@ -120,7 +120,13 @@
                 self.phoneNumTF.text = dict[@"phone"];
             }
             if (![KSHttpRequest isNULL:companyAddress[@"details"]]) {
-                self.detailAddressTF.text = companyAddress[@"details"];
+                [self.detailAddressTF removeFromSuperview];
+                UILabel *detailAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200), PX_TO_PT(20)+PX_TO_PT(88)*6, ScreenWidth-PX_TO_PT(200), PX_TO_PT(88))];
+                detailAddressLabel.textColor = R_G_B_16(0x646464);
+                detailAddressLabel.numberOfLines = 0;
+                detailAddressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+                detailAddressLabel.text = companyAddress[@"details"];
+                [self.view addSubview:detailAddressLabel];
             }
             if (![KSHttpRequest isNULL:province]) {
                 if (![KSHttpRequest isNULL:county]) {
@@ -137,6 +143,14 @@
                 self.streetLabel.textColor = R_G_B_16(0x646464);
 
             }
+        }else if ([result[@"code"] integerValue] == 1401){
+            [UILabel showMessage:result[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            XNRLoginViewController *loginVC = [[XNRLoginViewController alloc] init];
+            loginVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:loginVC animated:YES];
         }
         
     } failure:^(NSError *error) {

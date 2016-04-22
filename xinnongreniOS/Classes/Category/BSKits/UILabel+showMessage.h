@@ -11,5 +11,10 @@
 @interface UILabel (showMessage)
 
 +(void)showMessage:(NSString *)message;
+/**
+ *  友盟分享提示
+ */
++(void)showShareMessage:(NSString *)message;
+
 
 @end
