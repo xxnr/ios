@@ -55,23 +55,13 @@
     self.mainScrollView.pagingEnabled = YES;
     self.mainScrollView.delegate = self;
     self.mainScrollView.backgroundColor =R_G_B_16(0xf4f4f4);
-    
-////    
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushFerVC) name:@"pushFerVC" object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushCarVC) name:@"pushCarVC" object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(seePayInfoNot:) name:@"seePayInfo" object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(revisePayType:) name:@"revisePayType" object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(carry:) name:@"carry" object:nil];
-    
 
     //取消反弹效果
     self.mainScrollView.bounces = NO;
     [self.view addSubview:self.mainScrollView];
     [self createMidView];
+    [self createTopView];
+
 }
 -(void)carry:(NSNotification *)notification
 {
