@@ -257,7 +257,7 @@
 -(void)selectedAttributesTOCreateParams:(NSMutableArray *)attributesArray andInfoModel:(XNRProductInfo_model *)model
 {
     // 3.生成请求参数
-    NSDictionary *params = @{@"product":_id,@"attributes":attributesArray,@"user-agent":@"IOS-v2.0"};
+    NSDictionary *params = @{@"product":[NSString stringWithFormat:@"%@",_id],@"attributes":attributesArray,@"user-agent":@"IOS-v2.0"};
     NSLog(@"【请求参数:】%@",params);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -362,8 +362,7 @@
                 }else{
                     self.priceLabel.text = [NSString stringWithFormat:@"¥ %@ - %@",minPrice,maxPrice];
                 }
-                
-                
+    
                 if (_deposit != nil) {
                     if ([_deposit floatValue] == 0.00) {
                         _totalPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
@@ -467,7 +466,10 @@
         
         //加入购物车
         UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(2), ScreenWidth/2, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
-        addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
+//        addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
+        [addBuyCarBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
+        [addBuyCarBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
+        addBuyCarBtn.adjustsImageWhenHighlighted = NO;
         [addBuyCarBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         addBuyCarBtn.titleLabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
         self.addBuyCarBtn = addBuyCarBtn;
@@ -510,7 +512,9 @@
         
         // 确定
         UIButton *admireBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(admireBtnClick) Title:@"确定"];
-        admireBtn.backgroundColor = R_G_B_16(0xfe9b00);
+//        admireBtn.backgroundColor = R_G_B_16(0xfe9b00);
+        [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
+        [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
         [admireBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         admireBtn.titleLabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
         [bgView addSubview:admireBtn];
@@ -944,23 +948,26 @@
                 NSDictionary *price = datas[@"price"];
                 NSDictionary *marketPrice = datas[@"market_price"];
                 // 市场价
-                if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
-                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",[marketPrice[@"min"] floatValue]];
-                    if ([_marketPrice rangeOfString:@".00"].length == 3) {
-                        _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
+                if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]]) {
+                    if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
+                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",[marketPrice[@"min"] floatValue]];
+                        if ([_marketPrice rangeOfString:@".00"].length == 3) {
+                            _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
+                        }
+                        
+                    }else{
+                        NSString *minPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"min"] floatValue]];
+                        NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] floatValue]];
+                        if ([minPrice rangeOfString:@".00"].length == 3) {
+                            minPrice = [minPrice substringToIndex:minPrice.length-3];
+                        }
+                        if ([maxPrice rangeOfString:@".00"].length == 3) {
+                            maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
+                        }
+                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %@ - %@",minPrice,maxPrice];
+                        
                     }
-                    
-                }else{
-                    NSString *minPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"min"] floatValue]];
-                    NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] floatValue]];
-                    if ([minPrice rangeOfString:@".00"].length == 3) {
-                        minPrice = [minPrice substringToIndex:minPrice.length-3];
-                    }
-                    if ([maxPrice rangeOfString:@".00"].length == 3) {
-                        maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
-                    }
-                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %@ - %@",minPrice,maxPrice];
-                    
+
                 }
 
                 // 价格区间改变

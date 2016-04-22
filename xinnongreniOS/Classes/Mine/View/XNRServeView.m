@@ -340,7 +340,8 @@
         
         
             UIButton *sectionFour = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
-            sectionFour.backgroundColor = R_G_B_16(0xfe9b00);
+            [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
+            [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
             [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
             sectionFour.layer.cornerRadius = 5.0;
             sectionFour.layer.masksToBounds = YES;

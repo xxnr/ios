@@ -139,6 +139,7 @@
     }else if(type == RightBtnType){
         [self.typeView hide];
         self.userTypeLabel.text = [NSString stringWithFormat:@"%@",self.typeName];
+        self.userTypeLabel.textColor = R_G_B_16(0x646464);
         
     }
 }
@@ -202,6 +203,7 @@
     if (str.length > 0) {
         
         self.userTypeLabel.text = str;
+        userTypeLabel.textColor = R_G_B_16(0x646464);
         CGSize size = [self.userTypeLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(ScreenWidth - CGRectGetMaxX(self.titleLabel.frame)-PX_TO_PT(60), MAXFLOAT)];
         self.userTypeLabel.numberOfLines = 0;
         self.userTypeLabel.frame = CGRectMake(0,PX_TO_PT(38), size.width,size.height);
@@ -240,7 +242,7 @@
     UITextField *nameTf = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), PX_TO_PT(34), ScreenWidth, PX_TO_PT(36))];
     nameTf.textAlignment = NSTextAlignmentLeft;
     nameTf.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"请填写客户的真实姓名" attributes:@{NSForegroundColorAttributeName:R_G_B_16(0x909090)}];
-    nameTf.textColor = R_G_B_16(0x323232);
+    nameTf.textColor = R_G_B_16(0x646464);
     nameTf.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     nameTf.delegate = self;
     self.nameTf = nameTf;
@@ -258,7 +260,7 @@
     phone.textAlignment = NSTextAlignmentLeft;
     phone.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"请填写客户联系方式" attributes:@{NSForegroundColorAttributeName:R_G_B_16(0x909090)}];
 
-    phone.textColor = R_G_B_16(0x323232);
+    phone.textColor = R_G_B_16(0x646464);
     phone.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     phone.delegate = self;
     //设置键盘类型
@@ -408,6 +410,7 @@
             }else{
                 weakSelf.LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
             }
+            self.LocalAddressLabel.textColor = R_G_B_16(0x646464);
             weakSelf.provinceID = province_id;
             weakSelf.cityID  = city_id;
             weakSelf.countyID = county_id;
@@ -435,11 +438,12 @@
             self.townManagerView.com = ^(NSString *townName,NSString *townId,NSString *town_id){
                 weakSelf.streetLabel.text = [NSString stringWithFormat:@"%@",townName];
                 weakSelf.townID = town_id;
+                self.streetLabel.textColor = R_G_B_16(0x646464);
+
                 
             };
         }
     }
-    
 
     if (button.tag == 1002) {
         [self.addressManagerView hide];
@@ -448,7 +452,6 @@
         selProVC.selPro = self.interestedProArr;
         selProVC.selProId = self.interestedProIdArr;
         [self.navigationController pushViewController:selProVC animated:YES];
-        
     }
     
     return YES;
@@ -648,8 +651,6 @@
         [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
         
         [manager POST:KGetAdd parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//                        NSLog(@"---------返回数据:---------%@",str);
             id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
             NSDictionary *resultDic;

@@ -23,6 +23,7 @@
 #import "XNRMyOrder_VC.h"
 #import "XNRRSCInfoModel.h"
 #import "MJExtension.h"
+#import "UILabel+ZSC.h"
 
 @interface XNRCheckOrderVC ()<UITableViewDataSource,UITableViewDelegate>{
     
@@ -120,11 +121,12 @@
     
     UIButton *sectionFour = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(10), PX_TO_PT(132), PX_TO_PT(60))];
     sectionFour.backgroundColor = R_G_B_16(0xfe9b00);
+    [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
+    [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
     [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
     sectionFour.layer.cornerRadius = 5.0;
     sectionFour.layer.masksToBounds = YES;
     sectionFour.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-    //    sectionFour.tag = section + 1000;
     [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:sectionFour];
     
@@ -244,8 +246,10 @@
             headView.backgroundColor = [UIColor clearColor];
             
             UIView *infoView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(78))];
-            infoView.backgroundColor = [UIColor whiteColor];
 
+
+            infoView.backgroundColor = [UIColor whiteColor];
+            
             UILabel *infoLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(27), PX_TO_PT(130), PX_TO_PT(28))];
             infoLabel.text = @"支付信息";
             infoLabel.textColor = R_G_B_16(0x323232);
@@ -274,7 +278,7 @@
         toplineView.backgroundColor = R_G_B_16(0xc7c7c7);
         UIView *bottomlineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(108), ScreenWidth, PX_TO_PT(1))];
         bottomlineView.backgroundColor = R_G_B_16(0xc7c7c7);
-
+        
         [section1View addSubview:listLabel];
         [section1View addSubview:toplineView];
         [section1View addSubview:bottomlineView];

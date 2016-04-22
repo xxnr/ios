@@ -18,7 +18,12 @@
 #import "XNRSpecialViewController.h"
 #import "XNRCarSelect.h"
 #import "XNRHomeSelectBrandView.h"
-#define kStoreAppId  @"1021223448"  // （appid数字串）
+#import "AppDelegate.h"
+#import "XNRRemaindUserUpdataTool.h"
+#import "XNRUMengPushTool.h"
+
+
+
 @interface XNRHomeController ()<UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,UICollectionViewDelegate,XNRHomeCollectionHeaderViewAddBtnDelegate,XNRFerSelectAddBtnDelegate>
 {
     NSMutableArray *_huafeiArr; //化肥数据
@@ -47,40 +52,16 @@
     [self getFerData];
     // 设置返回到顶部按钮
     [self createbackBtn];
-    // 提示更新
-    [self remaindUserUpData];
+    // 提示用户更新
+    [XNRRemaindUserUpdataTool remaindUserUpData];
+    
+    // 调用友盟的方法
+    NSDictionary *launchOptions = [AppDelegate shareAppDelegate].launchOptions;
+    [XNRUMengPushTool umengTrack:launchOptions];
     
     //接收登录界面传递的页面刷新通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dealPageRefresh) name:@"PageRefresh" object:nil];
-}
-
--(void)remaindUserUpData{
     
-    // 获得当前软件的版本号
-    NSString *versionKey = @"CFBundleVersion";
-    NSString *currentVersion = [NSBundle mainBundle].infoDictionary[versionKey];
-    // 提示更新
-    [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion} success:^(id result) {
-        if ([result[@"code"] integerValue] == 1000) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:result[@"message"]delegate:self cancelButtonTitle:@"取消"otherButtonTitles:@"更新",nil];
-            [alert show];
-            
-        }
-        
-    } failure:^(NSError *error) {
-        
-    }];
-}
-
-- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if(buttonIndex==1)
-    {
-        // 此处加入应用在app store的地址，方便用户去更新，一种实现方式如下：
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://itunes.apple.com/cn/app/xin-xin-nong-ren-hu-lian-wang/id%@?l=en&mt=8", kStoreAppId]];
-        [[UIApplication sharedApplication] openURL:url];
-    }
 }
 
 
@@ -94,7 +75,6 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark - 滑动到顶部按钮
 -(void)createbackBtn
@@ -305,7 +285,6 @@
                 specialCar_VC.hidesBottomBarWhenPushed = YES;
                 specialCar_VC.tempTitle = @"汽车";
                 specialCar_VC.classId = @"6C7D8F66";
-//                ferView.classId = @"531680A5";
 
                 for (int i = 0; i<_huafeiArr.count; i++) {
                     specialCar_VC.model = _huafeiArr[i];
@@ -484,7 +463,6 @@
             }
         }
         [self getCarData];
-//        [self.homeCollectionView.mj_header endRefreshing];
         
         } failure:^(NSError *error) {
     }];

@@ -384,7 +384,9 @@
     saveBtn.layer.cornerRadius = 5.0;
     saveBtn.layer.masksToBounds = YES;
     [saveBtn setTitle:@"保存" forState:UIControlStateNormal];
-    saveBtn.backgroundColor = R_G_B_16(0x00b38a);
+    [saveBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
+    [saveBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateNormal];
+
     [saveBtn setTintColor:[UIColor whiteColor]];
     [saveBtn addTarget:self action:@selector(saveBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:saveBtn];

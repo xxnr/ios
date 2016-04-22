@@ -174,6 +174,9 @@
     saveAddressBtn.layer.cornerRadius = 5.0;
     saveAddressBtn.layer.masksToBounds = YES;
     saveAddressBtn.backgroundColor = R_G_B_16(0x00b38a);
+    [saveAddressBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
+    [saveAddressBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateNormal];
+
     [saveAddressBtn setTitle:@"保存" forState:UIControlStateNormal];
     [saveAddressBtn setTintColor:R_G_B_16(0xffffff)];
     [saveAddressBtn addTarget:self action:@selector(saveAddressBtnClick) forControlEvents:UIControlEventTouchUpInside];

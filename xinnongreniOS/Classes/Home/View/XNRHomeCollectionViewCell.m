@@ -57,7 +57,6 @@
 {
     UILabel *goodNameLabel = [[UILabel alloc]init];
     goodNameLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame)+PX_TO_PT(10), PX_TO_PT(330), PX_TO_PT(80));
-//    goodNameLabel.backgroundColor = [UIColor redColor];
     goodNameLabel.textColor = R_G_B_16(0x323232);
     goodNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     goodNameLabel.numberOfLines = 0;
@@ -103,13 +102,9 @@
         [self.picImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
     }}];
 
-    
-    //商品名
-//    CGSize maxSize = CGSizeMake(PX_TO_PT(330), MAXFLOAT);
-//    CGSize nameSize = [self.model.goodsName sizeWithFont_BSExt:self.goodNameLabel.font maxSize:maxSize];
-//    self.goodNameLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20),nameSize.width, nameSize.height);
-    
     self.goodNameLabel.text = self.model.goodsName;
+    [self.goodNameLabel verticalUpAlignmentWithText:self.model.goodsName maxHeight:PX_TO_PT(80)];
+
     
     //现价
     if (self.model.unitPrice.floatValue>1) {

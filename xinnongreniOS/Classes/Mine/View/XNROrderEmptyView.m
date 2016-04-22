@@ -55,6 +55,9 @@
     [buyFerBtn setTitle:@"去买化肥" forState:UIControlStateNormal];
     buyFerBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [buyFerBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
+    [buyFerBtn setTitleColor:R_G_B_16(0xfafafa) forState:UIControlStateHighlighted];
+    [buyFerBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fafafa"]] forState:UIControlStateNormal];
+    [buyFerBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateHighlighted];
     [buyFerBtn addTarget:self action:@selector(buyClick:) forControlEvents:UIControlEventTouchUpInside];
     self.buyFerBtn = buyFerBtn;
     [self addSubview:buyFerBtn];
@@ -67,7 +70,10 @@
     [buyCarBtn setTitle:@"去买汽车" forState:UIControlStateNormal];
     buyCarBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [buyCarBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
-    [buyCarBtn addTarget:self action:@selector(buyClick:) forControlEvents:UIControlEventTouchDown];
+    [buyCarBtn setTitleColor:R_G_B_16(0xfafafa) forState:UIControlStateHighlighted];
+    [buyCarBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fafafa"]] forState:UIControlStateNormal];
+    [buyCarBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateHighlighted];
+    [buyCarBtn addTarget:self action:@selector(buyClick:) forControlEvents:UIControlEventTouchUpInside];
     self.buyCarBtn = buyCarBtn;
     [self addSubview:buyCarBtn];
     

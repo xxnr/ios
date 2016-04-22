@@ -87,8 +87,7 @@
     
     UIButton *leftBtn = [MyControl createButtonWithFrame:CGRectMake(CGRectGetMaxX(numberLabel.frame) + PX_TO_PT(20), PX_TO_PT(26), PX_TO_PT(48),PX_TO_PT(48)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
     [leftBtn setImage:[UIImage imageNamed:@"icon_minus"] forState:UIControlStateNormal];
-    [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateSelected];
-    [leftBtn setImage:[UIImage imageNamed:@"icon_minus_selected2"] forState:UIControlStateHighlighted];
+    [leftBtn setImage:[UIImage imageNamed:@"discount_default1"] forState:UIControlStateHighlighted];
     [leftBtn setHighlighted:NO];
     leftBtn.tag = kLeftBtn;
     self.leftBtn = leftBtn;
@@ -120,8 +119,8 @@
     
     
     [rightBtn setImage:[UIImage imageNamed:@"icon_plus"] forState:UIControlStateNormal];
-    [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateSelected];
-    [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateHighlighted];
+//    [rightBtn setImage:[UIImage imageNamed:@"icon_plus_selected"] forState:UIControlStateSelected];
+    [rightBtn setImage:[UIImage imageNamed:@"discount_default2"] forState:UIControlStateHighlighted];
     [rightBtn setHighlighted:NO];
     rightBtn.tag = kRightBtn;
     self.rightBtn = rightBtn;

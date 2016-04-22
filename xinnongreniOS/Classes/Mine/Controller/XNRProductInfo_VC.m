@@ -407,21 +407,6 @@
     [self.view addSubview:tableView];
 }
 
-// 结束拖动
-//-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-//{
-//    XNRProductInfo_frame *frameModel = [_infoModelArray lastObject];
-//    
-//    if (self.tableView.y > frameModel.viewHeight) {
-//        self.tableView.pagingEnabled = YES;
-//        
-//    }else{
-//        self.tableView.contentOffset = CGPointMake(0, frameModel.viewHeight-(ScreenHeight-64-PX_TO_PT(80)));
-//        
-//    }
-//}
-
-
 #pragma mark-获取网络数据
 -(void)getData {
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
@@ -558,7 +543,9 @@
     
     //加入购物车
      UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(2), ScreenWidth/2, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
-    addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
+//    addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
+    [addBuyCarBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
+    [addBuyCarBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
     [addBuyCarBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     addBuyCarBtn.titleLabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     self.addBuyCarBtn = addBuyCarBtn;
