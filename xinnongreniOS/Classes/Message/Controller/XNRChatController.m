@@ -189,13 +189,12 @@
         XNRMessageModel *model = _messageArr[indexPath.row];
         cell.model = model;
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 #pragma mark -- tableView点击事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     XNRWebViewController *webViewController = [[XNRWebViewController alloc] init];
     XNRMessageModel *model = _messageArr[indexPath.row];
     webViewController.model = model;

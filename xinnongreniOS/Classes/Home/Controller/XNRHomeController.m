@@ -15,11 +15,14 @@
 #import "XNRProductInfo_VC.h"
 #import "XNRLoginViewController.h"
 #import "XNRCyclePicModel.h"
-#import "XNRCyclePicViewController.h"  //轮播图链接跳转
-#import "XNRFerViewController.h"
+#import "XNRSpecialViewController.h"
 #import "XNRCarSelect.h"
 #import "XNRHomeSelectBrandView.h"
-#define kStoreAppId  @"1021223448"  // （appid数字串）
+#import "AppDelegate.h"
+#import "XNRRemaindUserUpdataTool.h"
+#import "XNRUMengPushTool.h"
+
+
 
 @interface XNRHomeController ()<UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,UICollectionViewDelegate,XNRHomeCollectionHeaderViewAddBtnDelegate,XNRFerSelectAddBtnDelegate>
 {
@@ -49,37 +52,16 @@
     [self getFerData];
     // 设置返回到顶部按钮
     [self createbackBtn];
+    // 提示用户更新
+    [XNRRemaindUserUpdataTool remaindUserUpData];
+    
+    // 调用友盟的方法
+    NSDictionary *launchOptions = [AppDelegate shareAppDelegate].launchOptions;
+    [XNRUMengPushTool umengTrack:launchOptions];
     
     //接收登录界面传递的页面刷新通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dealPageRefresh) name:@"PageRefresh" object:nil];
     
-    // 获得当前软件的版本号
-    NSString *versionKey = @"CFBundleVersion";
-    NSString *currentVersion = [NSBundle mainBundle].infoDictionary[versionKey];
-    // 提示更新
-    [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion} success:^(id result) {
-        if ([result[@"code"] integerValue] == 1000) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:result[@"message"]delegate:self cancelButtonTitle:@"取消"otherButtonTitles:@"更新",nil];
-            [alert show];
-            
-        }
-        
-        } failure:^(NSError *error) {
-        
-    }];
-
-
-}
-
-- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if(buttonIndex==1)
-    {
-        // 此处加入应用在app store的地址，方便用户去更新，一种实现方式如下：
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://itunes.apple.com/cn/app/xin-xin-nong-ren-hu-lian-wang/id%@?l=en&mt=8", kStoreAppId]];
-        [[UIApplication sharedApplication] openURL:url];
-    }
 }
 
 
@@ -93,7 +75,6 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark - 滑动到顶部按钮
 -(void)createbackBtn
@@ -153,7 +134,7 @@
     }
     //非登录提示登录
     else{
-        [[CommonTool sharedInstance]openLogin:weakSelf];
+        [[CommonTool sharedInstance] openLogin:weakSelf];
     }
 }
 
@@ -187,7 +168,7 @@
         }
         
     } failure:^(NSError *error) {
-        LogRed(@"%@",error);
+        NSLog(@"%@",error);
         [UILabel showMessage:@"签到失败"];
         [BMProgressView LoadViewDisappear:self.view];
 
@@ -299,18 +280,17 @@
         if (indexPath.section == 0) {
             XNRHomeCollectionHeaderView  *headView = (XNRHomeCollectionHeaderView *)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifierFirst" forIndexPath:indexPath];
             headView.com = ^(){
-                XNRFerViewController *ferView = [[XNRFerViewController alloc] init];
-                ferView.type = eXNRCarType;
-                ferView.hidesBottomBarWhenPushed = YES;
-                ferView.tempTitle = @"汽车";
-                ferView.classId = @"6C7D8F66";
-//                ferView.classId = @"531680A5";
+                XNRSpecialViewController *specialCar_VC = [[XNRSpecialViewController alloc] init];
+                specialCar_VC.type = eXNRCarType;
+                specialCar_VC.hidesBottomBarWhenPushed = YES;
+                specialCar_VC.tempTitle = @"汽车";
+                specialCar_VC.classId = @"6C7D8F66";
 
                 for (int i = 0; i<_huafeiArr.count; i++) {
-                    ferView.model = _huafeiArr[i];
+                    specialCar_VC.model = _huafeiArr[i];
                 }
 
-                [self.navigationController pushViewController:ferView animated:YES];
+                [self.navigationController pushViewController:specialCar_VC animated:YES];
             };
             headView.delegate = self;
             if (_cyclePicArr.count != 0) {
@@ -327,16 +307,16 @@
             
             
             headView.con = ^(){
-                XNRFerViewController *ferView = [[XNRFerViewController alloc] init];
-                ferView.type = eXNRFerType;
-                ferView.hidesBottomBarWhenPushed = YES;
-                ferView.tempTitle = @"化肥";
-                ferView.classId = @"531680A5";
+                 XNRSpecialViewController *specialFer_VC = [[XNRSpecialViewController alloc] init];
+                specialFer_VC.type = eXNRFerType;
+                specialFer_VC.hidesBottomBarWhenPushed = YES;
+                specialFer_VC.tempTitle = @"化肥";
+                specialFer_VC.classId = @"531680A5";
                 for (int i = 0; i<_carArr.count; i++) {
-                ferView.model = _carArr[i];
+                specialFer_VC.model = _carArr[i];
                 }
 
-                [self.navigationController pushViewController:ferView animated:YES];
+                [self.navigationController pushViewController:specialFer_VC animated:YES];
  
             
             };
@@ -445,25 +425,25 @@
     if (!button) {
     } else {
         if (button.tag == 1000) {
-            XNRFerViewController *ferView = [[XNRFerViewController alloc] init];
-            ferView.type = eXNRFerType;
-            ferView.classId = @"531680A5";
-            ferView.tempTitle = @"化肥";
+            XNRSpecialViewController *specialFer_VC = [[XNRSpecialViewController alloc] init];
+            specialFer_VC.type = eXNRFerType;
+            specialFer_VC.classId = @"531680A5";
+            specialFer_VC.tempTitle = @"化肥";
             for (int i = 0; i<_huafeiArr.count; i++) {
-            ferView.model = _huafeiArr[i];
+            specialFer_VC.model = _huafeiArr[i];
             }
-            ferView.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:ferView animated:YES];
+            specialFer_VC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:specialFer_VC animated:YES];
         }else{
-            XNRFerViewController *ferView = [[XNRFerViewController alloc] init];
-            ferView.type = eXNRCarType;
-            ferView.tempTitle = @"汽车";
-            ferView.classId = @"6C7D8F66";
+            XNRSpecialViewController *specialCar_VC = [[XNRSpecialViewController alloc] init];
+            specialCar_VC.type = eXNRCarType;
+            specialCar_VC.tempTitle = @"汽车";
+            specialCar_VC.classId = @"6C7D8F66";
             for (int i = 0; i<_carArr.count; i++) {
-                ferView.model = _carArr[i];
+                specialCar_VC.model = _carArr[i];
             }
-            ferView.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:ferView animated:YES];
+            specialCar_VC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:specialCar_VC animated:YES];
         }
     }
 }
@@ -483,7 +463,6 @@
             }
         }
         [self getCarData];
-//        [self.homeCollectionView.mj_header endRefreshing];
         
         } failure:^(NSError *error) {
     }];

@@ -76,11 +76,6 @@
     _model = model;
     
     [self.imgView sd_setImageWithURL:[NSURL URLWithString:model.image] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-     
-        if ([model.title isEqualToString: @"aaa"]) {
-            NSLog(@"");
-            NSLog(@"");
-        }
     if (model.image == nil || [model.image isEqualToString:@""]) {
         [self.imgView setImage:[UIImage imageNamed:@"icon_placehold"]];
     }else{

@@ -21,6 +21,7 @@
     float *siglePrice;
     BOOL sort;
     int _keyBoardHeight;
+    NSString *_count;
 }
 @property (nonatomic,strong) XNRShoppingCartModel *model;
 @property (nonatomic ,weak) UIButton *selectedBtn;
@@ -386,7 +387,8 @@
         
         if (IS_Login) {
             self.numTextField.text = @"0";
-            [self requestShoppingCarURL];
+//            [self requestShoppingCarURL];
+            [self requestShoppingCarInputNumberURL];
         }
     }
 }
@@ -493,7 +495,9 @@
 
     if (IS_Login) {
         //单次申请购物车接口
-        [self requestShoppingCarURL];
+//        [self requestShoppingCarURL];
+        [self requestShoppingCarInputNumberURL];
+
     }else{
         DatabaseManager *manager = [DatabaseManager sharedInstance];
         self.model.timeStamp = [CommonTool timeSp];
@@ -516,17 +520,19 @@
         button.selected = NO;
     });
     
-    if (button.tag == kLeftBtn){
+    if (button.tag == kLeftBtn){ // 加
         self.model.num = [NSString stringWithFormat:@"%d",self.model.num.intValue+1];
-
-        }else if (button.tag == kRightBtn) {
+        _count = @"1";
+        }else if (button.tag == kRightBtn) { // 减
         self.model.num = [NSString stringWithFormat:@"%d",self.model.num.intValue-1];
+        _count = @"-1";
+
         if (self.model.num.intValue<1) {
             self.model.num = @"1";
             [UILabel showMessage:@"数量不能再减少了"];
         }
     }
-    if ([self.model.num isEqualToString:@"9999"]) {
+    if ([self.model.num integerValue] >= 9999) {
         self.rightBtn.enabled = NO;
     }else{
         self.rightBtn.enabled = YES;
@@ -537,8 +543,8 @@
     
     
     if (IS_Login) {
-        //单次申请购物车接口
         [self requestShoppingCarURL];
+
     }else{
         DatabaseManager *manager = [DatabaseManager sharedInstance];
         self.model.timeStamp = [CommonTool timeSp];
@@ -712,6 +718,13 @@
         }else{
             self.numTextField.text = [NSString stringWithFormat:@"%@",model.num];
         }
+        
+        if ([_model.num integerValue] >= 9999) {
+            self.rightBtn.enabled = NO;
+        }else{
+            self.rightBtn.enabled = YES;
+        }
+
     }
     
 }
@@ -720,7 +733,7 @@
 #pragma mark - 请求单个商品总数提交
 - (void)requestShoppingCarURL
 {
-    [KSHttpRequest post:KchangeShopCarNum parameters:@{@"SKUId":self.model._id,@"quantity":self.numTextField.text,@"userId":[DataCenter account].userid,@"additions":_model.additions,@"update_by_add":@"ture",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KchangeShopCarNum parameters:@{@"SKUId":self.model._id,@"quantity":_count,@"userId":[DataCenter account].userid,@"additions":_model.additions,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         NSLog(@"=====%@",self.numTextField.text);
         NSLog(@"%@",result);
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshNum" object:self];
@@ -728,6 +741,18 @@
         NSLog(@"%@",error);
     }];
 }
+
+- (void)requestShoppingCarInputNumberURL
+{
+    [KSHttpRequest post:KchangeShopCarNum parameters:@{@"SKUId":self.model._id,@"quantity":self.model.num,@"userId":[DataCenter account].userid,@"additions":_model.additions,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        NSLog(@"=====%@",self.numTextField.text);
+        NSLog(@"%@",result);
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshNum" object:self];
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+
 
 - (void)awakeFromNib {
     

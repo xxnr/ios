@@ -140,18 +140,6 @@
     }
     return self;
 }
-//-(void)topView
-//{
-//    UIButton *but = [[UIButton alloc]initWithFrame:CGRectMake(0, 64, ScreenWidth, 44)];
-//    [but addTarget:self action:@selector(topClicked:) forControlEvents:UIControlEventTouchDown];
-//    [self addSubview:but];
-//}
-//-(void)topClicked:(UIButton *)sender
-//{
-//    if (self.com) {
-//        self.com()
-//    }
-//}
 -(void)getCategorys
 {
     [_categorys removeAllObjects];
@@ -173,13 +161,9 @@
                 
                 _currentTx = [NSMutableDictionary dictionaryWithDictionary:[XNRSelectItemArrModel defaultModel].XNRSelectItemDict];
                 
-//                _resArr = [mutArr objectAtIndex:0];
-//                _gxArr = [mutArr objectAtIndex:1];
-//                _txArr = [mutArr objectAtIndex:2];
                 _resArr = [NSMutableArray arrayWithArray:[mutArr objectAtIndex:0]];
                 _gxArr = [NSMutableArray arrayWithArray:[mutArr objectAtIndex:1]];
                 _txArr = [NSMutableArray arrayWithArray:[mutArr objectAtIndex:2]];
-//                [self.collectionView reloadData];
             }
 
                 [self getDataWith:_param];
@@ -248,10 +232,7 @@
                             }
                             
                         }
-//                        self.kinds[0] =arr[0][@"_id"][@"name"];
-//                        [self.kinds addObject:arr[0][@"_id"][@"name"]];
                         [self.kinds setObject:arr[0][@"_id"][@"name"] atIndexedSubscript:0];
-                        //                        [self.gxArr setArray:arr[0][@"values"]];
                         
                         
                         //把各数组添加到self.selecteItemArr 数组中
@@ -397,12 +378,7 @@
 
                             
                         }
-//                        self.kinds[0] =arr[0][@"_id"][@"name"];
                         [self.kinds setObject:arr[0][@"_id"][@"name"] atIndexedSubscript:0];
-
-//                        [self.kinds addObject:arr[0][@"_id"][@"name"]];
-//                        [self.gxArr setArray:arr[0][@"values"]];
-                        
                         
                         //把品牌 车型 价格各数组添加到self.selecteItemArr 数组中
                         for (int i = 0; i < 4; i++) {
@@ -511,13 +487,10 @@
 
 - (void)createView {
     
-//    XNRCollectionViewFlowLayout *collectionViewLayout = [[XNRCollectionViewFlowLayout alloc]init];
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
 
-//    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(coll_cell_margin, 0, self.bounds.size.width-coll_cell_margin*2, PX_TO_PT(1002)) collectionViewLayout:collectionViewLayout];
-
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height - PX_TO_PT(120)-PX_TO_PT(89)) collectionViewLayout:collectionViewLayout];
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height - PX_TO_PT(120)-PX_TO_PT(89)) collectionViewLayout:collectionViewLayout];
     
     collectionView.delegate = self;
     collectionView.dataSource = self;
@@ -530,8 +503,6 @@
 
     [self addSubview:self.collectionView];
     
-    //TODO:加btn
-//    CGFloat w = (self.bounds.size.width-3*coll_cell_margin)/2;
     
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.collectionView.frame), ScreenWidth, PX_TO_PT(120))];
     view.backgroundColor = [UIColor whiteColor];
@@ -559,8 +530,6 @@
     UIButton *admireBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     admireBtn.frame = CGRectMake(CGRectGetMaxX(self.resetBtn.frame) + PX_TO_PT(39), PX_TO_PT(29),PX_TO_PT(383) , PX_TO_PT(61));
     admireBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-//    admireBtn.layer.borderColor = R_G_B_16(0x00b38a).CGColor;
-//    admireBtn.layer.borderWidth = 1.0;
     admireBtn.layer.cornerRadius = 5.0;
     admireBtn.layer.masksToBounds = YES;
     [admireBtn setTitle:@"确定" forState:UIControlStateNormal];
@@ -590,8 +559,6 @@
             item.isSelected = NO;
         }
         }
-        
-//        [[XNRSelectItemArrModel defaultModel] cancel];
         
         [self.collectionView reloadData];
         
@@ -631,13 +598,6 @@
     if (self.selecteItemArr.count > 0) {
         XNRHomeSelectedBrandItem *itemData = [self.selecteItemArr[indexPath.section] objectAtIndex:indexPath.item];
 
-        
-//        if (_isfirst == NO) {
-//            if ([_getSel containsObject:indexPath]) {
-//                itemData.isSelected = YES;
-//            }
-//        }
-        
         XNRHomeSelectedCellectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
         [cell updateCellStateAndDataWith:itemData];
         return cell;
@@ -704,12 +664,6 @@
                 }
                 [self.selecteItemArr setObject:self.txArr atIndexedSubscript:2];
                 [self.currentTx setObject:txs forKey:selectedItem.titleParam];
-                //                XNRHomeSelectedBrandItem *itemData = [[XNRHomeSelectedBrandItem alloc]init];
-                //                NSMutableArray *sectionDataArr = [NSMutableArray array];
-                //                for (int i=0; i < self.txArr.count; i++) {
-                //                    [itemData exchangeResModelToItemWith:[self.txArr objectAtIndex:i] andIndexPath:[NSIndexPath indexPathForItem:i+1 inSection:2]];
-                //                    [sectionDataArr addObject:itemData];
-                //                }
                 [self.collectionView reloadData];
                 _ItemDisEnabled = NO;
                 
@@ -723,9 +677,6 @@
     else if (indexPath.section == 0 && selectedItem.isSelected == NO)
     {
         NSArray *arr = [self.currentTx valueForKey:selectedItem.titleParam];
-//        for (int i=0; i<arr.count; i++) {
-//            [self.txArr removeObject:arr[i]];
-//        }
         NSMutableArray *removeArr = [[NSMutableArray alloc]init];
         for (XNRHomeSelectedBrandItem *txItem in self.txArr) {
             for (XNRHomeSelectedBrandItem *item in arr) {
@@ -743,11 +694,6 @@
     [self.collectionView reloadData];
 
 }
-//取消选择了某个cell
-//- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-//    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-//    [cell setBackgroundColor:[UIColor redColor]];
-//}
 
 
 //UICollectionViewDelegateFlowLayout
@@ -755,7 +701,6 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat cellW = (self.bounds.size.width-4*coll_cell_margin)/3;
     currentSize = CGSizeMake(cellW-1,cellW / 3);
-//    currentSize = CGSizeMake(PX_TO_PT(207), PX_TO_PT(61));
     return currentSize;
 }
 //定义每个Section 的 margin
@@ -789,10 +734,6 @@
             if (self.kinds[1]) {
                 headerView.selectTitleLabel.text = self.kinds[1];
             }
-//            else
-//            {
-//                headerView.hidden = YES;
-//            }
         }
         else if (indexPath.section == 3)
         {
@@ -804,7 +745,6 @@
     return reusableview;
 }////返回头headerView的大小
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
-//    NSArray *arr = self.selecteItemArr[2];
     NSArray *arr = self.txArr;
     if (section == 2 && arr.count == 0) {
         return CGSizeMake(ScreenWidth, 0);

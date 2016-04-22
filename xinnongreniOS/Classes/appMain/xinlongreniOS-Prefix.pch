@@ -35,10 +35,14 @@
 #import "MJRefresh.h"
 
 
-//#import "IQKeyboardManager.h"
-
 #define sharpAppDelegate [UIApplication sharedApplication].delegate
 #define UM_APPKEY @"5667cfe867e58ebc630024d7"  //友盟appkey
+#define wechatAppId @"wx46173e821f28d05a"
+#define wechatAppSecret @"919a7e2cb7e1483393797f15bf53dcb9"
+#define APPURL @"http://www.xinxinnongren.com/shareApp.html"
+#define QQAppId @"1104752635"
+#define QQAppSecret @"giwjla40jiDQNuzI"
+
 #define XCODE_COLORS_ESCAPE @"\033["
 
 #define XCODE_COLORS_RESET_FG  XCODE_COLORS_ESCAPE @"fg;" // Clear any foreground color
@@ -68,8 +72,6 @@
 #define HOST @"http://101.200.194.203"
 
 #endif
-
-
 
 //#define HOST @"http://101.200.194.203/"
 #define IMAGEHOST @"http://101.200.194.203"

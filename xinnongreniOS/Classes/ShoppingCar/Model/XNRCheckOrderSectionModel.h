@@ -50,4 +50,10 @@
 
 @property (nonatomic, strong)NSMutableArray *subOrders;
 
+@property (nonatomic,strong)NSMutableDictionary *RSCInfo;
+
+@property (nonatomic,strong)NSString *deliveryTypenum;
+@property (nonatomic,strong)NSString *deliveryTypeName;
+
+
 @end

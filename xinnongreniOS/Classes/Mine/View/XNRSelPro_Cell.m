@@ -22,22 +22,8 @@
     }
     return self;
 }
-//-(void)setAccessoryView:(UIView *)accessoryView
-//{
-//    accessoryView.frame = CGRectMake(0, 0, PX_TO_PT(40), PX_TO_PT(40));
-//    UIButton *icon = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(31), PX_TO_PT(24), PX_TO_PT(40), PX_TO_PT(40))];
-//    [icon setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
-//    [icon setImage:[UIImage imageNamed:@"address_right"] forState:UIControlStateSelected];
-//    [accessoryView addSubview:icon];
-//    [self.contentView addSubview:accessoryView];
-//}
 -(void)creatCell
 {
-//    UIImageView *icon = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(31), PX_TO_PT(24), PX_TO_PT(40), PX_TO_PT(40))];
-//    icon.image = [UIImage imageNamed:@"address_circle"];
-//    self.icon = icon;
-//    [self.contentView addSubview:icon];
-
     
     UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(102), PX_TO_PT(24), ScreenWidth, PX_TO_PT(40))];
     nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];

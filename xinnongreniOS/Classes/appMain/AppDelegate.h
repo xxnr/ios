@@ -15,7 +15,10 @@
 
 @property (nonatomic, strong) XNRTabBarController *tabBarController;
 
+@property (nonatomic, strong) NSDictionary *launchOptions;
+
 + (AppDelegate *)shareAppDelegate;
+
 - (UIViewController *)getTopViewController;
 
 @end

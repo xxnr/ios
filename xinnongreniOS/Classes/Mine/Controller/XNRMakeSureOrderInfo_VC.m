@@ -251,13 +251,14 @@
 -(void)createBottom{
     
     //确认订单按钮
-    UIButton*makeSure=[MyControl createButtonWithFrame:CGRectMake(10, ScreenHeight-64-40*SCALE-10, ScreenWidth-20, 40*SCALE) ImageName:nil Target:self Action:@selector(makeSure) Title:@"去支付"];
+    UIButton*makeSure=[MyControl createButtonWithFrame:CGRectMake(10, ScreenHeight-64-40*SCALE-10, ScreenWidth-20, 40*SCALE) ImageName:nil Target:self Action:@selector(makeSure:) Title:@"去支付"];
     
     makeSure.backgroundColor=R_G_B_16(0x11c422);
+    [makeSure setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#11c422"]] forState:UIControlStateNormal];
+    [makeSure setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
     [makeSure setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     makeSure.titleLabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     makeSure.clipsToBounds=YES;
-    [makeSure setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     makeSure.layer.cornerRadius=8;
     [self.view addSubview:makeSure];
     

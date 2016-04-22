@@ -78,7 +78,6 @@
 
         
     XNRFerSelect *ferView = [[XNRFerSelect alloc] initWithFrame:CGRectMake(0, PX_TO_PT(450), ScreenWidth, PX_TO_PT(90))];
-//    ferView.backgroundColor = [UIColor redColor];
     [self addSubview:ferView];
     self.ferView = ferView;
 }

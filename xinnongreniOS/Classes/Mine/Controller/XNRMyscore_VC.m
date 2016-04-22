@@ -76,7 +76,6 @@
         
         [self.tableview reloadData];
     } failure:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:@"网络请求错误"];
         //刷新列表
         [self.tableview reloadData];
     }];

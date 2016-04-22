@@ -101,6 +101,7 @@
         if (self.loginFromProductInfo) {
             [self.navigationController popViewControllerAnimated:YES];
         }else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"notSelectedAttributes" object:nil];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }
@@ -134,8 +135,11 @@
     usernameTextField.borderStyle = UITextBorderStyleNone;
     usernameTextField.alpha = 1;
     usernameTextField.placeholder = @"请输入您的手机号";
-    if (self.loginName.length > 0) {
-        usernameTextField.text = self.loginName;
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *userName = [ user objectForKey:@"userName"];
+
+    if (userName) {
+        usernameTextField.text = userName;
     }
     usernameTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     usernameTextField.delegate = self;
@@ -177,18 +181,17 @@
     [self.midView addSubview:passwordTextField];
 }
 
- #pragma mark-QCheckBoxDelegate
+ #pragma mark - QCheckBoxDelegate
 - (void)didSelectedCheckBox:(QCheckBox *)checkbox checked:(BOOL)checked{
     
     if(checked==NO){
         NSLog(@"选中");
-        isRemmeber=YES;
+        isRemmeber = YES;
         [USER setBool:isRemmeber forKey:@"isRemmeber"];
         [USER synchronize];
         
-        if([USER boolForKey:@"Login"]==NO){
+        if([USER boolForKey:@"Login"] == NO){
             NSLog(@"第一次进入");
-      
             return;
             
         }
@@ -237,7 +240,8 @@
 - (void)createLoginBtn
 {
     UIButton *loginBtn = [MyControl createButtonWithFrame:CGRectMake(PX_TO_PT(32),CGRectGetMaxY(self.midView.frame) + PX_TO_PT(95), ScreenWidth-PX_TO_PT(64), PX_TO_PT(96)) ImageName:nil Target:self Action:@selector(loginClick:) Title:nil];
-    loginBtn.backgroundColor = R_G_B_16(0x00b38a);
+    [loginBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
+    [loginBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateNormal];
     loginBtn.layer.masksToBounds = YES;
     loginBtn.layer.cornerRadius = 5;
     [loginBtn setTitle:@"确认登录" forState:UIControlStateNormal];
@@ -367,6 +371,8 @@
             }
             info.cartId = datasDic[@"cartId"];
             
+            info.name = datasDic[@"name"];
+            info.type = datasDic[@"userTypeInName"];
             [DataCenter saveAccount:info];
             
              //上传购物车数据
@@ -392,14 +398,14 @@
             }else{
                 [self.navigationController popToRootViewControllerAnimated:YES];
             }
-
-        
+            NSString *userName = self.usernameTextField.text;
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            [user setObject:userName forKey:@"userName"];
+            
         }else{
             
             [UILabel showMessage:result[@"message"]];
             [BMProgressView LoadViewDisappear:self.view];
-
-            
         }
     } failure:^(NSError *error) {
         
@@ -452,7 +458,7 @@
 }
 
 #pragma mark - 正则表达式判断手机号格式
-- (BOOL) validateMobile:(NSString *)mobile
+- (BOOL)validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
     NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";

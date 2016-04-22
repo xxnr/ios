@@ -15,7 +15,13 @@
 -(void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
 }
-
+-(NSMutableDictionary *)RSCInfo
+{
+    if (!_RSCInfo) {
+        _RSCInfo = [NSMutableDictionary dictionary];
+    }
+    return _RSCInfo;
+}
 - (NSMutableArray *)goodsList {
     if (!_goodsList) {
         _goodsList = [NSMutableArray array];

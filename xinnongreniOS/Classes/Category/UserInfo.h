@@ -85,6 +85,8 @@
 
 @property (nonatomic, copy) NSString *type;
 @property (nonatomic, copy) NSString *typeName;
+@property (nonatomic, copy) NSString *typeNum;
+
 /**
  *  姓名
  */

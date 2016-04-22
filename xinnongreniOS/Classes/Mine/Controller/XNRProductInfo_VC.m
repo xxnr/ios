@@ -27,7 +27,7 @@
 
 #define KbtnTag 1000
 #define KlabelTag 2000
-@interface XNRProductInfo_VC ()<UITextFieldDelegate,UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource,XNRProductInfo_cellDelegate,XNRToolBarBtnDelegate,UIScrollViewDelegate>{
+@interface XNRProductInfo_VC ()<UITextFieldDelegate,UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource,XNRProductInfo_cellDelegate,XNRToolBarBtnDelegate,UIScrollViewDelegate,MWPhotoBrowserDelegate>{
     CGRect oldTableRect;
     CGFloat preY;
     NSMutableArray *_goodsArray;
@@ -66,9 +66,19 @@
 
 @property (nonatomic ,weak) XNRPropertyView *propertyView;
 
+@property (nonatomic, strong) NSMutableArray *picBrowserList;
+
+
 @end
 
 @implementation XNRProductInfo_VC
+
+- (NSMutableArray *)picBrowserList {
+    if (!_picBrowserList) {
+        _picBrowserList = [NSMutableArray array];
+    }
+    return _picBrowserList;
+}
 
 -(BMProgressView *)progressView{
     if (!_progressView) {
@@ -397,21 +407,6 @@
     [self.view addSubview:tableView];
 }
 
-// 结束拖动
-//-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-//{
-//    XNRProductInfo_frame *frameModel = [_infoModelArray lastObject];
-//    
-//    if (self.tableView.y > frameModel.viewHeight) {
-//        self.tableView.pagingEnabled = YES;
-//        
-//    }else{
-//        self.tableView.contentOffset = CGPointMake(0, frameModel.viewHeight-(ScreenHeight-64-PX_TO_PT(80)));
-//        
-//    }
-//}
-
-
 #pragma mark-获取网络数据
 -(void)getData {
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
@@ -548,7 +543,9 @@
     
     //加入购物车
      UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(2), ScreenWidth/2, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
-    addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
+//    addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
+    [addBuyCarBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
+    [addBuyCarBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
     [addBuyCarBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     addBuyCarBtn.titleLabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     self.addBuyCarBtn = addBuyCarBtn;
@@ -565,14 +562,14 @@
 {
     NSLog(@"-==++++++===%@",self.propertyView);
 
-    [self.propertyView show:XNRFirstType];
+    [self.propertyView show:XNRBuyType];
     
 }
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
     NSLog(@"-==------===%@",self.propertyView);
-    [self.propertyView show:XNRSecondType];
+    [self.propertyView show:XNRAddCartType];
     
 }
 #pragma 加减数量
@@ -646,8 +643,34 @@
     login.hidesBottomBarWhenPushed = YES;
     [weakSelf.navigationController pushViewController:login animated:YES];
     };
+    // 图片浏览器的跳转
+    cell.photoBrowsercom = ^(NSInteger page){
+        
+        [self pushToPhotoBrowser:page andFrameModel:frame];
+    };
     cell.delegate = self;
     return cell;
+}
+
+-(void)pushToPhotoBrowser:(NSInteger)page andFrameModel:(XNRProductInfo_frame *)frame
+{
+    // 创建浏览器对象
+    [self.picBrowserList removeAllObjects];
+    NSInteger count = frame.infoModel.pictures.count;
+    
+    for (int i = 0; i<count; i++) {
+        XNRProductPhotoModel *photoModel = frame.infoModel.pictures[i];
+        MWPhoto *photo=[MWPhoto photoWithURL:[NSURL URLWithString:[HOST stringByAppendingString:photoModel.originalUrl]]];
+        [self.picBrowserList addObject:photo];
+    }
+    
+    MWPhotoBrowser *photoBrowser=[[MWPhotoBrowser alloc] initWithDelegate:self];
+    photoBrowser.displayActionButton=NO;
+    photoBrowser.alwaysShowControls=NO;
+    [photoBrowser setCurrentPhotoIndex:page];
+    
+    [self.navigationController pushViewController:photoBrowser animated:YES];
+
 }
 
 - (void)setNavigationbarTitle{
@@ -718,6 +741,17 @@
     }];
 
 }
+#pragma mark - MWPhotoBrowser的代理
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
+    return [_picBrowserList count];
+}
+- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index{
+    return _picBrowserList[index];
+}
+- (NSString *)photoBrowser:(MWPhotoBrowser *)photoBrowser titleForPhotoAtIndex:(NSUInteger)index{
+    return [NSString stringWithFormat:@"%ld/%ld",(long)index+1,(long)[_picBrowserList count]];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

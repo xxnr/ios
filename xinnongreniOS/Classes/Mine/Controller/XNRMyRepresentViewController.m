@@ -28,7 +28,8 @@
 {
     NSMutableArray *_dataArr;
     int currentPage;
-    int currentPage2;
+    int registerCurrentPage;
+    UITableView *currentTableView;
 }
 
 @property (nonatomic, weak) UIButton *leftBtn;
@@ -67,18 +68,16 @@
 @property (nonatomic,weak) UIView *BookView;
 @property (nonatomic,weak) UITableView *tableView2;
 @property (nonatomic,strong)NSMutableArray *userArr;
-@property (nonatomic,weak)UILabel *bookTop1Label;
-@property (nonatomic,weak)UILabel *bookTop2Label;
+@property (nonatomic,weak)UILabel *bookTopTotalLabel;
+@property (nonatomic,weak)UILabel *bookTopRemainLabel;
 @property (nonatomic,weak) UIView *coverView;
 @property (nonatomic,weak)UIView *bgview;
 @property (nonatomic,weak) UIButton *addbtn;
-@property (nonatomic,weak) UIButton *addbtn2;
 @property (nonatomic,weak)UIView *circleView;
 @property (nonatomic,assign)BOOL isadd;
 @property (nonatomic,assign)BOOL isfirst;
 @property (nonatomic,assign)BOOL isFirstTableView;
 @end
-BOOL firstOrTcd;
 
 @implementation XNRMyRepresentViewController
 -(void)viewWillAppear:(BOOL)animated
@@ -86,42 +85,48 @@ BOOL firstOrTcd;
     [super viewWillAppear:YES];
     if (_isadd) {
         [self creatBookView];
+        [self.userArr removeAllObjects];
+        registerCurrentPage = 1;
         [self bookViewGetData];
+        currentTableView = self.tableView2;
     }
+    else
+    {
+        [_dataArr removeAllObjects];
+        currentPage = 1;
+//        [self getCustomerData];
+        currentTableView = self.tableView;
+
+    }
+    [self setupCustomerRefresh];
 
 }
+
 -(void)viewDidDisappear:(BOOL)animated
 {
     if (_isadd) {
         [self.thirdView removeFromSuperview];
     }
 }
-//+(void)firstTab
-//{
-//    firstOrTcd = YES;
-//}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    [self getCustomerData];
-    currentPage2 = 1;
+    registerCurrentPage = 1;
     self.isfirst = YES;
     _userArr = [NSMutableArray array];
     _dataArr = [[NSMutableArray alloc] init];
+    
     self.view.backgroundColor = R_G_B_16(0xfafafa);
     [self setNavigationbarTitle];
     [self setBottomButton];
     [self createTableView];
-    [self setupCustomerRefresh:_tableView];
-    
-//    if (firstOrTcd) {
-//        [self setupCustomerRefresh:_tableView2];
-//    }
-//    firstOrTcd = NO;
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRedPoint) name:@"removeRedPoint" object:nil];
 }
 
 -(void)removeRedPoint
 {
+    currentPage = 1;
     [self getCustomerData];
     
 }
@@ -132,15 +137,8 @@ BOOL firstOrTcd;
 }
 #pragma mark - 刷新
 
--(void)setupCustomerRefresh:(UITableView *)tableview{
+-(void)setupCustomerRefresh{
     
-    if (tableview.tag == tbTag) {
-        self.isFirstTableView = YES;
-    }
-    else
-    {
-        self.isFirstTableView = NO;
-    }
     MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
     
     NSMutableArray *idleImage = [NSMutableArray array];
@@ -182,7 +180,7 @@ BOOL firstOrTcd;
     
     header.stateLabel.hidden = YES;
 
-    tableview.mj_header = header;
+    currentTableView.mj_header = header;
 
 //    [self.tableView.mj_header beginRefreshing];
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
@@ -197,33 +195,33 @@ BOOL firstOrTcd;
     
     // 设置尾部
     
-    tableview.mj_footer = footer;
+    currentTableView.mj_footer = footer;
 
 }
 
 -(void)headRefresh{
     
-    if (self.isFirstTableView) {
+    if (currentTableView.tag == tbTag) {
         currentPage = 1;
         [_dataArr removeAllObjects];
         [self getCustomerData];
     }
     else
     {
-        currentPage2 = 1;
+        registerCurrentPage = 1;
         [_userArr removeAllObjects];
         [self bookViewGetData];
     }
 }
 
 -(void)footRefresh{
-    if (self.isFirstTableView) {
-        currentPage ++;
+    if (currentTableView.tag == tbTag) {
+        currentPage++;
         [self getCustomerData];
     }
     else
     {
-        currentPage2++;
+        registerCurrentPage++;
         [self bookViewGetData];
     }
 }
@@ -312,6 +310,7 @@ BOOL firstOrTcd;
     _bookBtn.tag = btnTag + 2;
     _bookBtn.hidden = YES;
     [self.view addSubview:_bookBtn];
+    
     [self bottomBtnClicked:_leftBtn];
     
     UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, PX_TO_PT(1), btnH)];
@@ -338,12 +337,17 @@ BOOL firstOrTcd;
     self.selectedBtn = sender;
 
     if (sender.tag == btnTag) {
+        
+        [_dataArr removeAllObjects];
+        self.isadd = NO;
+        currentPage = 1;
+        [self getCustomerData];
+        currentTableView = self.tableView;
 
         self.isFirstTableView = YES;
         [self.topView removeFromSuperview];
         _tableView.hidden = NO;
         
-        [self getCustomerData];
         
         [self.thirdView removeFromSuperview];
         [self.mrv removeFromSuperview];
@@ -352,6 +356,7 @@ BOOL firstOrTcd;
         [self createCustomerLabel];
     } else if(sender.tag == btnTag + 1){
         self.isFirstTableView = NO;
+        self.isadd = NO;
         _tableView.hidden = sender.selected;
         self.topView.hidden = sender.selected;
         [self.firstView removeFromSuperview];
@@ -396,7 +401,17 @@ BOOL firstOrTcd;
             }else{
                
                 [UILabel showMessage:result[@"message"]];
-            
+                UserInfo *infos = [[UserInfo alloc]init];
+                infos.loginState = NO;
+                [DataCenter saveAccount:infos];
+                //发送刷新通知
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+                
+                XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+                
+                vc.hidesBottomBarWhenPushed = YES;
+                //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+                [self.navigationController pushViewController:vc animated:YES];
             }
         } failure:^(NSError *error) {
             
@@ -417,11 +432,19 @@ BOOL firstOrTcd;
         [self.myRepView removeFromSuperview];
         
         
+        [self.userArr removeAllObjects];
+        registerCurrentPage = 1;
         [self creatBookView];
         [self bookViewGetData];
-//        [self setupCustomerRefresh:_tableView2];
+        
+        currentTableView = self.tableView2;
+
+//        [self setupCustomerRefresh];
 
     }
+    
+    [self setupCustomerRefresh];
+
 }
 -(void)creatBookView
 {
@@ -445,13 +468,13 @@ BOOL firstOrTcd;
     UILabel *top1Label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(29), ScreenWidth/2, PX_TO_PT(32))];
     top1Label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     top1Label.textColor =R_G_B_16(0x646464);
-    self.bookTop1Label = top1Label;
+    self.bookTopTotalLabel = top1Label;
     [BooktopView addSubview:top1Label];
     
     UILabel *top2Label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), CGRectGetMaxY(top1Label.frame) + PX_TO_PT(18), ScreenWidth/2, PX_TO_PT(33))];
     top2Label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     top2Label.textColor = R_G_B_16(0x646464);
-    self.bookTop2Label = top2Label;
+    self.bookTopRemainLabel = top2Label;
     [BooktopView addSubview:top2Label];
     
     if (IS_IPHONE4 || IS_IPHONE5) {
@@ -536,12 +559,12 @@ BOOL firstOrTcd;
 
 -(void)bookViewGetData
 {
-
-    [KSHttpRequest get:KGetQuery parameters:/*@{@"page":[NSString stringWithFormat:@"%d",currentPage2]}*/nil success:^(id result) {
+    
+    [KSHttpRequest get:KGetQuery parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",registerCurrentPage],@"max":@11} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             
-            _userArr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];
-            
+            NSMutableArray *arr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];
+            [_userArr addObjectsFromArray:arr];
             if(_userArr.count == 0){
             
                 BOOL isadd = [[NSUserDefaults standardUserDefaults]boolForKey:@"key"];
@@ -549,9 +572,9 @@ BOOL firstOrTcd;
                 self.thirdView.hidden = YES;
                 self.bgview.hidden = NO;
                 self.circleView.hidden = NO;
-                    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(40), ScreenWidth, ScreenHeight-PX_TO_PT(40))];
-                    UIColor *color = [UIColor blackColor];
-                    view.backgroundColor = [color colorWithAlphaComponent:0.6];
+                UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(40), ScreenWidth, ScreenHeight-PX_TO_PT(40))];
+                UIColor *color = [UIColor blackColor];
+                view.backgroundColor = [color colorWithAlphaComponent:0.6];
                 
                 UIImageView *iamgeview = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, ScreenWidth, view.height)];
                 UIView *coverView = [[UIView alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(80)-PX_TO_PT(26),PX_TO_PT(29), PX_TO_PT(80), PX_TO_PT(80))];
@@ -674,22 +697,22 @@ BOOL firstOrTcd;
                 
                 self.addbtn.enabled = YES;
             }
-            self.bookTop1Label.text = [NSString stringWithFormat:@"共登记%@名客户",result[@"count"]];
-            self.bookTop2Label.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
+            self.bookTopTotalLabel.text = [NSString stringWithFormat:@"共登记%@名客户",result[@"count"]];
+            self.bookTopRemainLabel.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
 
             NSInteger i = [result[@"count"] integerValue]/10;
             NSInteger j = [result[@"countLeftToday"] integerValue]/10;
             
-            if (self.bookTop1Label) {
+            if (self.bookTopTotalLabel) {
                 
                 if (IS_IPHONE4 || IS_IPHONE5) {
-                    [self setDifFont:self.bookTop1Label andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
-                    [self setDifFont:self.bookTop2Label andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+                    [self setDifFont:self.bookTopTotalLabel andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+                    [self setDifFont:self.bookTopRemainLabel andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
                 }
                 else
                 {
-                    [self setDifFont:self.bookTop1Label andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
-                    [self setDifFont:self.bookTop2Label andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+                    [self setDifFont:self.bookTopTotalLabel andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+                    [self setDifFont:self.bookTopRemainLabel andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
                 }
             }
             [self.tableView2 reloadData];
@@ -708,14 +731,26 @@ BOOL firstOrTcd;
             
 
         }
+        else
+        {
+            [UILabel showMessage:result[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            //发送刷新通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+            
+            XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+            
+            vc.hidesBottomBarWhenPushed = YES;
+//            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     } failure:^(NSError *error) {
         [self.tableView2.mj_header endRefreshing];
-        
         [self.tableView2.mj_footer endRefreshing];
 
     }];
-    
-
 }
 -(void)coverClick:(UIButton *)sender
 {
@@ -795,7 +830,7 @@ BOOL firstOrTcd;
 }
 -(void)getCustomerData
 {
-    [_dataArr removeAllObjects];
+//    [_dataArr removeAllObjects];
     [KSHttpRequest post:KUserGetInvitee parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *arr = result[@"invitee"];
@@ -1088,6 +1123,7 @@ BOOL firstOrTcd;
     {
         XNRDetailUserVC *detailUser = [[XNRDetailUserVC alloc]init];
         detailUser.hidesBottomBarWhenPushed = YES;
+        self.isadd = YES;
         XNRBookUser *user = _userArr[indexPath.row];
         detailUser._id = user._id;
         [self.navigationController pushViewController:detailUser animated:YES];

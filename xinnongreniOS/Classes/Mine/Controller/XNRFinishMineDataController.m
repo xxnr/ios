@@ -233,7 +233,13 @@
     if ([KSHttpRequest isBlankString:[DataCenter account].province]) {
         LocalAddressLabel.text = @"选择所在的省市区";
     }else{
-        LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].county];
+        if ([DataCenter account].county == nil || [[DataCenter account].county isEqualToString:@""]) {
+             LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@",[DataCenter account].province,[DataCenter account].city];
+        }else{
+        
+         LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].county];
+        }
+       
     }
     self.LocalAddressLabel = LocalAddressLabel;
     [LocalAddressBtn addSubview:LocalAddressLabel];
@@ -370,7 +376,7 @@
     _tempBtn = button;
     
     if (button.tag == sexBtn + 1) {
-        self.sex = @"flase";
+        self.sex = @"false";
         
     }else if (button.tag == sexBtn + 2){
         self.sex = @"ture";

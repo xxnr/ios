@@ -40,6 +40,7 @@
 @property (nonatomic ,copy) NSString *sex;
 
 @property (nonatomic ,copy) NSString *userType;
+@property (nonatomic ,copy) NSString *userTypeInName;
 
 @property (nonatomic ,copy) NSString *province;
 @property (nonatomic ,copy) NSString *city;
@@ -47,6 +48,15 @@
 @property (nonatomic ,copy) NSString *town;
 
 @property (nonatomic ,copy) NSString *townID;
+/**
+ *  正在审核为县级经销商
+ */
+@property (nonatomic ,copy) NSString *RSCInfoVerifing;
+/**
+ *  是否认证为县级经销商
+ */
+@property (nonatomic ,copy) NSString *isRSC;
+
 
 
 @end

@@ -111,7 +111,7 @@
     //设置键盘类型
     verifyNumTextField.returnKeyType = UIReturnKeyDone;
     verifyNumTextField.keyboardType=UIKeyboardTypeNumberPad;
-    verifyNumTextField.clearButtonMode = UITextFieldViewModeAlways;
+//    verifyNumTextField.clearButtonMode = UITextFieldViewModeAlways;
     verifyNumTextField.textAlignment = NSTextAlignmentLeft;
     self.verifyNumTextField = verifyNumTextField;
     [self.midView  addSubview:verifyNumTextField];
@@ -288,7 +288,7 @@
     [self.getVerifyButton setTitle:[NSString stringWithFormat:@"(%d)秒后重试",_timeCount] forState:UIControlStateNormal];
    
     _timeCount=_timeCount-1;
-    if(_timeCount== -2){
+    if(_timeCount== -1){
         _timer.fireDate=[NSDate distantFuture]; //暂停定时器
         self.getVerifyButton.enabled = YES;
         self.getVerifyButton.backgroundColor = R_G_B_16(0x00b38a);
@@ -312,7 +312,8 @@
 {
     UIButton *registerButton = [MyControl createButtonWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.midView.frame) + PX_TO_PT(120), ScreenWidth-PX_TO_PT(64), PX_TO_PT(96)) ImageName:nil Target:self Action:@selector(btnClick:) Title:nil];
     registerButton.tag = kRegisterBtn;
-    registerButton.backgroundColor = R_G_B_16(0x00b38a);
+    [registerButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
+    [registerButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateNormal];
     [registerButton setTitle:@"立即注册" forState:UIControlStateNormal];
     [registerButton setTitleColor:R_G_B_16(0xfbfffe) forState:UIControlStateNormal];
     registerButton.layer.masksToBounds = YES;
@@ -421,31 +422,9 @@
         NSDictionary *datasDic = result[@"datas"];
         if([result[@"code"] isEqualToString:@"1000"]){
             
-//            [[NSUserDefaults standardUserDefaults]setValue:self.phoneNumTextField.text forKey:@"userPhone"];
-            //                    NSString *str = [[NSUserDefaults standardUserDefaults]valueForKey:@"userPhone"];
-
-            
-//            UserInfo *info = [DataCenter account];
-//            info.loginName = datasDic[@"loginName"];
-//            info.nickname=datasDic[@"nickname"];
-//            info.no=datasDic[@"no"];
-//            info.phone=datasDic[@"phone"];
-//            info.userType=datasDic[@"userType"];
-//            info.userid=datasDic[@"userid"];
-//            info.token = result[@"token"];
-//            info.loginState = YES;
-//            info.password = _newpasswordTextField.text;
-//            [DataCenter saveAccount:info];
-//            // 直接跳转完善资料页面
-//            XNRFinishMineDataController *fmdc = [[XNRFinishMineDataController alloc] init];
-//            fmdc.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:fmdc animated:YES];
-
-//            [self.navigationController popViewControllerAnimated:YES];
-            
-            XNRLoginViewController *loginVC = [[XNRLoginViewController alloc]init];
-            loginVC.loginName = datasDic[@"loginName"];
-            [self.navigationController pushViewController:loginVC animated:YES];
+        XNRLoginViewController *loginVC = [[XNRLoginViewController alloc]init];
+        loginVC.loginName = datasDic[@"loginName"];
+        [self.navigationController pushViewController:loginVC animated:YES];
             
         }else{
             

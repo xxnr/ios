@@ -19,7 +19,11 @@
 #import "XRNSubOrdersModel.h"
 #import "XNRSeePayInfoVC.h"
 #import "XNROrderInfoModel.h"
+#import "XNROffLine_VC.h"
+#import "XNRMyOrder_VC.h"
+#import "XNRRSCInfoModel.h"
 #import "MJExtension.h"
+#import "UILabel+ZSC.h"
 
 @interface XNRCheckOrderVC ()<UITableViewDataSource,UITableViewDelegate>{
     
@@ -36,6 +40,7 @@
 @property (nonatomic ,weak) UILabel *addressLabel;
 @property (nonatomic,strong) NSString *value;
 @property (nonatomic,assign)CGFloat cellHeight;
+@property (nonatomic,strong)XNRRSCInfoModel *RSCInfoModel;
 @end
 
 @implementation XNRCheckOrderVC
@@ -70,6 +75,45 @@
     [self.navigationController pushViewController:infoVC animated:YES];
     
 }
+-(void)creatBottomTwo
+{
+    UIView *bottomView = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight - PX_TO_PT(88)- 64, ScreenWidth, PX_TO_PT(88))];
+    bottomView.backgroundColor = [UIColor whiteColor];
+    
+    UIButton *seePayInfoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(190)-PX_TO_PT(31), PX_TO_PT(10), PX_TO_PT(190), PX_TO_PT(60))];
+    seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
+    [seePayInfoBtn setTitle:@"查看付款信息" forState:UIControlStateNormal];
+    seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
+    seePayInfoBtn.layer.cornerRadius = 10.0;
+    seePayInfoBtn.layer.masksToBounds = YES;
+    seePayInfoBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    [seePayInfoBtn addTarget:self action:@selector(seePayInfoBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomView addSubview:seePayInfoBtn];
+    
+    
+    UIButton *reviseBtn = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMinX(seePayInfoBtn.frame)-PX_TO_PT(31)-PX_TO_PT(190), PX_TO_PT(10), PX_TO_PT(190), PX_TO_PT(60))];
+    reviseBtn.backgroundColor = [UIColor whiteColor];
+    [reviseBtn setTitle:@"修改付款方式" forState:UIControlStateNormal];
+    [reviseBtn setTitleColor:R_G_B_16(0xFE9B00) forState:UIControlStateNormal];
+    reviseBtn.layer.cornerRadius = 10.0;
+    reviseBtn.layer.borderColor = [R_G_B_16(0xFE9B00) CGColor];
+    reviseBtn.layer.borderWidth = PX_TO_PT(2);
+    reviseBtn.layer.masksToBounds = YES;
+    reviseBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    [reviseBtn addTarget:self action:@selector(reviseBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomView addSubview:reviseBtn];
+    
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, PX_TO_PT(1))];
+    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    
+    [bottomView addSubview:line1];
+    [bottomView addSubview:line2];
+    [self.view addSubview:bottomView];
+
+}
 -(void)creatBottom
 {
     UIView *bottomView = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight - PX_TO_PT(88)- 64, ScreenWidth, PX_TO_PT(88))];
@@ -77,11 +121,12 @@
     
     UIButton *sectionFour = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(10), PX_TO_PT(132), PX_TO_PT(60))];
     sectionFour.backgroundColor = R_G_B_16(0xfe9b00);
+    [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
+    [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
     [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
     sectionFour.layer.cornerRadius = 5.0;
     sectionFour.layer.masksToBounds = YES;
     sectionFour.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-    //    sectionFour.tag = section + 1000;
     [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:sectionFour];
     
@@ -114,7 +159,9 @@
             sectionModel.paySubOrderType = datasDic[@"rows"][@"paySubOrderType"];
             NSDictionary *payment = datasDic[@"rows"][@"payment"];
             sectionModel.price = payment[@"price"];
-            
+            sectionModel.deliveryTypeName =datasDic[@"rows"][@"deliveryType"][@"value"];
+            sectionModel.deliveryTypenum =datasDic[@"rows"][@"deliveryType"][@"type"];
+
             NSDictionary *order = datasDic[@"rows"][@"order"];
             sectionModel.totalPrice = order[@"totalPrice"];
             sectionModel.deposit = order[@"deposit"];
@@ -123,6 +170,10 @@
             NSDictionary *orderStatus = order[@"orderStatus"];
             sectionModel.type = orderStatus[@"type"];
             
+            sectionModel.RSCInfo =datasDic[@"rows"][@"RSCInfo"];
+            if (sectionModel.RSCInfo) {
+                self.RSCInfoModel = [XNRRSCInfoModel objectWithKeyValues:sectionModel.RSCInfo];
+            }
             sectionModel.value = orderStatus[@"value"];
             self.value = sectionModel.value;
             
@@ -132,6 +183,12 @@
                 [self creatBottom];
                 
             }
+            else if([self.value isEqualToString: @"付款待审核"]) {
+                    self.tableview.frame =CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth,ScreenHeight- CGRectGetMaxY(self.headView.frame) -PX_TO_PT(88) - 64);
+                    // 底部视图
+                    [self creatBottomTwo];
+                    
+                }
 
             sectionModel.subOrders = (NSMutableArray *)[XRNSubOrdersModel objectArrayWithKeyValuesArray:datasDic[@"rows"][@"subOrders"]];
             
@@ -155,7 +212,11 @@
             
         }
         
+
         [_tableview reloadData];
+        
+        [self gettableHeadView];
+
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
         
@@ -173,6 +234,7 @@
     self.tableview.backgroundColor=[UIColor clearColor];
     self.tableview.separatorStyle=UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableview];
+    
 }
 #pragma mark - 在段头添加任意视图
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -180,94 +242,13 @@
     if (section == 0) {
         
         if (_dataArray.count > 0) {
-            XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
+            UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(98))];
+            headView.backgroundColor = [UIColor clearColor];
             
-            UIView *headView=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(346))];
-            headView.backgroundColor=R_G_B_16(0xf4f4f4);
-            self.headView = headView;
-            
-            UIView *orderView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(128))];
-            orderView.backgroundColor=[UIColor whiteColor];
-            [self.headView addSubview:orderView];
-            // 订单号
-            UILabel *orderLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(28), PX_TO_PT(28), ScreenWidth, PX_TO_PT(28))];
-            orderLabel.textColor = R_G_B_16(0x323232);
-            orderLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-            orderLabel.text = [NSString stringWithFormat:@"订单号：%@",sectionModel.id];
-            self.orderLabel = orderLabel;
-            [orderView addSubview:orderLabel];
-            
-            // 交易状态
-            UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(28), CGRectGetMaxY(orderLabel.frame) + PX_TO_PT(16), ScreenWidth, PX_TO_PT(28))];
-            payTypeLabel.textColor = R_G_B_16(0x323232);
-            payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-            payTypeLabel.text = [NSString stringWithFormat:@"订单状态：%@",sectionModel.value];
-            NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:payTypeLabel.text];
-            NSDictionary *dict=@{
-        
-                                       NSForegroundColorAttributeName:R_G_B_16(0xFE9B00),
-    
-        
-                                       };
-        
-            [AttributedStringDeposit addAttributes:dict range:NSMakeRange(5,AttributedStringDeposit.length-5)];
-        
-            [payTypeLabel setAttributedText:AttributedStringDeposit];
-            self.payTypeLabel = payTypeLabel;
-            
-            [orderView addSubview:payTypeLabel];
-            
-            for (int i = 0; i<2; i++) {
-                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(128)*i, ScreenWidth, PX_TO_PT(1))];
-                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-                [orderView addSubview:lineView];
-            }
-            
-            UIView *addressView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(orderView.frame) + PX_TO_PT(24), ScreenWidth, PX_TO_PT(180))];
-            addressView.backgroundColor = R_G_B_16(0xfffaf0);
-            [self.headView addSubview:addressView];
-            
-            UIImageView *topImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(6))];
-            [topImageView setImage:[UIImage imageNamed:@"orderInfo_address_bacground"]];
-            [addressView addSubview:topImageView];
-            
-            UIImageView *bottomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(171), ScreenWidth, PX_TO_PT(7))];
-            [bottomImageView setImage:[UIImage imageNamed:@"orderInfo_down"]];
-            [addressView addSubview:bottomImageView];
-            
-            UILabel *nameLabel = [[UILabel alloc] init];
-            nameLabel.textColor = R_G_B_16(0x323232);
-            nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-            nameLabel.text = sectionModel.recipientName;
-            CGSize size = [nameLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]}];
-            nameLabel.frame = CGRectMake(PX_TO_PT(78), PX_TO_PT(43), size.width, size.height);
-            self.nameLabel = nameLabel;
-            [addressView addSubview:nameLabel];
-            
-            UILabel *phoneNum = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nameLabel.frame)+PX_TO_PT(42), PX_TO_PT(43), ScreenWidth/2, PX_TO_PT(32))];
-            phoneNum.textColor = R_G_B_16(0x323232);
-            phoneNum.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-            phoneNum.text = sectionModel.recipientPhone;
-            
-            self.phoneNum = phoneNum;
-            [addressView addSubview:phoneNum];
-            
-            UIImageView *addressImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(31), PX_TO_PT(93), PX_TO_PT(27), PX_TO_PT(36))];
-            [addressImage setImage:[UIImage imageNamed:@"orderInfo_address_picture"]];
-            [addressView addSubview:addressImage];
-            
-            UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(addressImage.frame) + PX_TO_PT(20), PX_TO_PT(100), ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), PX_TO_PT(32))];
-            addressLabel.textColor = R_G_B_16(0x646464);
-            addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-            addressLabel.text = sectionModel.address;
-            addressLabel.adjustsFontSizeToFitWidth = YES;
-            //        addressLabel.backgroundColor = [UIColor redColor];
-            self.addressLabel = addressLabel;
-            [addressView addSubview:addressLabel];
-            
-            UIView *infoView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(addressView.frame) + PX_TO_PT(20), ScreenWidth, PX_TO_PT(78))];
+            UIView *infoView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(78))];
+
+
             infoView.backgroundColor = [UIColor whiteColor];
-            [self.headView addSubview:infoView];
             
             UILabel *infoLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(27), PX_TO_PT(130), PX_TO_PT(28))];
             infoLabel.text = @"支付信息";
@@ -278,17 +259,30 @@
             UIView *line3 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
             line3.backgroundColor = R_G_B_16(0xc7c7c7);
             [infoView addSubview:line3];
+            
+            [headView addSubview:infoView];
             return headView;
             
         }
     }
     else if (section == 1)
     {
-        UIView *section1View = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(89))];
-        UILabel *listLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(30), 0, ScreenWidth - PX_TO_PT(30), PX_TO_PT(89))];
+        UIView *section1View = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(109))];
+        UILabel *listLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(20), ScreenWidth - PX_TO_PT(30), PX_TO_PT(89))];
         listLabel.backgroundColor = R_G_B_16(0xF0F0F0);
         listLabel.text = @"商品清单";
+        listLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+        listLabel.textColor = R_G_B_16(0x323232);
+        
+        UIView *toplineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
+        toplineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *bottomlineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(108), ScreenWidth, PX_TO_PT(1))];
+        bottomlineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        
         [section1View addSubview:listLabel];
+        [section1View addSubview:toplineView];
+        [section1View addSubview:bottomlineView];
+        
         return section1View;
     }
     return nil;
@@ -335,10 +329,6 @@
             [bottomView addSubview:line1];
             [bottomView addSubview:line2];
             
-//            UIView *emptyView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(32))];
-//            emptyView.backgroundColor = R_G_B_16(0xf0f0f0);
-//            [bottomView addSubview:emptyView];
-            
                 return bottomView;
                 
 //            }
@@ -346,56 +336,225 @@
     }
     else if (section == 0)
     {
-        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(20))];
-        view.backgroundColor = [UIColor clearColor];
 
         UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
         line1.backgroundColor = R_G_B_16(0xc7c7c7);
-        UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(19), ScreenWidth, PX_TO_PT(1))];
-        line2.backgroundColor = R_G_B_16(0xc7c7c7);
-        
-        [view addSubview:line1];
-        [view addSubview:line2];
-        return view;
+        return line1;
     }
     
     return nil;
     
 }
 
+//修改付款方式
+-(void)reviseBtnClick:(UIButton *)sender
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+
+    XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
+    XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
+    vc.orderID = sectionModel.id;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+//查看付款信息
+-(void)seePayInfoBtnClick:(UIButton *)sender
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+
+    XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
+    XNROffLine_VC *vc=[[XNROffLine_VC alloc]init];
+    vc.hidesBottomBarWhenPushed=YES;
+    vc.orderID = sectionModel.id;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+
+}
+
+//去付款
 -(void)sectionFourClick:(UIButton *)sender{
     
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 
-    //    XNRCheckOrderSectionModel *sectionModel = _dataArray[sender.tag - 1000];
     XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
-    //    if (sectionModel.deposit && [sectionModel.deposit floatValue]>0) {
     XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     vc.orderID = sectionModel.id;
     vc.payMoney = sectionModel.deposit;
     [self.navigationController pushViewController:vc animated:YES];
     
-    //    }else{
-    //        XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
-    //        vc.hidesBottomBarWhenPushed = YES;
-    //        vc.orderID = sectionModel.id;
-    ////        vc.money = sectionModel.totalPrice;
-    //        [self.navigationController pushViewController:vc animated:YES];
-    //    }
 }
 
+-(void)gettableHeadView
+{
+    XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
+    
+    UIView *headView=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(346))];
+//    headView.backgroundColor=R_G_B_16(0xf4f4f4);
+    self.headView = headView;
+    
+    UIView *orderView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(128))];
+    orderView.backgroundColor=[UIColor whiteColor];
+    [self.headView addSubview:orderView];
+    // 订单号
+    UILabel *orderLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(28), PX_TO_PT(28), ScreenWidth, PX_TO_PT(28))];
+    orderLabel.textColor = R_G_B_16(0x323232);
+    orderLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    orderLabel.text = [NSString stringWithFormat:@"订单号：%@",sectionModel.id];
+    self.orderLabel = orderLabel;
+    [orderView addSubview:orderLabel];
+    
+    // 交易状态
+    UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(28), CGRectGetMaxY(orderLabel.frame) + PX_TO_PT(16), ScreenWidth, PX_TO_PT(28))];
+    payTypeLabel.textColor = R_G_B_16(0x323232);
+    payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    payTypeLabel.text = [NSString stringWithFormat:@"订单状态：%@",sectionModel.value];
+    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:payTypeLabel.text];
+    NSDictionary *dict=@{
+                         
+                         NSForegroundColorAttributeName:R_G_B_16(0xFE9B00),
+                         
+                         
+                         };
+    
+    [AttributedStringDeposit addAttributes:dict range:NSMakeRange(5,AttributedStringDeposit.length-5)];
+    
+    [payTypeLabel setAttributedText:AttributedStringDeposit];
+    self.payTypeLabel = payTypeLabel;
+    
+    [orderView addSubview:payTypeLabel];
+    
+    for (int i = 0; i<2; i++) {
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(128)*i, ScreenWidth, PX_TO_PT(1))];
+        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        [orderView addSubview:lineView];
+    }
+    
+    UIView *deliveryTypeView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(orderView.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(82))];
+    deliveryTypeView.backgroundColor = [UIColor whiteColor];
+    [self.headView addSubview:deliveryTypeView];
+    
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(2))];
+    line.backgroundColor = R_G_B_16(0xc7c7c7);
+    [deliveryTypeView addSubview:line];
+    
+    UILabel *typeLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(26), PX_TO_PT(140), PX_TO_PT(35))];
+    typeLabel.text = @"配送方式";
+    typeLabel.textColor = R_G_B_16(0x323232);
+    typeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    [deliveryTypeView addSubview:typeLabel];
+    
+    UILabel *deliveryInfoLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(115), PX_TO_PT(28), PX_TO_PT(115), PX_TO_PT(30))];
+    deliveryInfoLabel.textAlignment = UITextAlignmentRight;
+    deliveryInfoLabel.text = sectionModel.deliveryTypeName;
+    deliveryInfoLabel.textColor = R_G_B_16(0x646464);
+    deliveryInfoLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    [deliveryTypeView addSubview:deliveryInfoLabel];
+    
+    
+    UIImageView *typeImage = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMinX(deliveryInfoLabel.frame)-PX_TO_PT(35), PX_TO_PT(26), PX_TO_PT(35), PX_TO_PT(33))];
+    if ([sectionModel.deliveryTypenum integerValue] == 1) {
+        typeImage.image = [UIImage imageNamed:@"since"];
+    }
+    else
+    {
+        typeImage.image = [UIImage imageNamed:@"delivery"];
+    }
+    [deliveryTypeView addSubview:typeImage];
+    
+    
+    UIView *addressView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(deliveryTypeView.frame), ScreenWidth, PX_TO_PT(180))];
+    addressView.backgroundColor = R_G_B_16(0xfffaf0);
+    
+    
+    UIImageView *topImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(6))];
+    [topImageView setImage:[UIImage imageNamed:@"orderInfo_address_bacground"]];
+    [addressView addSubview:topImageView];
+    
+    UIImageView *bottomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(171), ScreenWidth, PX_TO_PT(7))];
+    [bottomImageView setImage:[UIImage imageNamed:@"orderInfo_down"]];
+    
+    // 地址图标
+    UIImageView *addressImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(31), PX_TO_PT(23), PX_TO_PT(27), PX_TO_PT(36))];
+    [addressImageView setImage:[UIImage imageNamed:@"address"]];
+    [addressView addSubview:addressImageView];
+    
+    UIView *addressLine = [[UIView alloc]init];
+    if ([sectionModel.deliveryTypenum integerValue] == 1) {
+        UILabel *companyLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(addressImageView.frame)+PX_TO_PT(29), PX_TO_PT(24), PX_TO_PT(500), PX_TO_PT(30))];
+        companyLabel.textColor = R_G_B_16(0x323232);
+        companyLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        companyLabel.text = self.RSCInfoModel.companyName;
+        [addressView addSubview:companyLabel];
+        
+        
+        CGSize size = [self.RSCInfoModel.RSCAddress sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(24)] constrainedToSize:CGSizeMake(PX_TO_PT(500), MAXFLOAT)];
+        UILabel *addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(addressImageView.frame)+PX_TO_PT(29), CGRectGetMaxY(companyLabel.frame)+PX_TO_PT(15), PX_TO_PT(500),size.height)];
+        addressLabel.numberOfLines = 0;
+        addressLabel.text = self.RSCInfoModel.RSCAddress;
+        addressLabel.textColor = R_G_B_16(0x646464);
+        addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+        [addressView addSubview:addressLabel];
+        
+        UILabel *phoneLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(addressImageView.frame)+PX_TO_PT(29), CGRectGetMaxY(addressLabel.frame)+PX_TO_PT(15), ScreenWidth,PX_TO_PT(25))];
+        phoneLabel.text = self.RSCInfoModel.RSCPhone;
+        phoneLabel.textColor = R_G_B_16(0x646464);
+        phoneLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+        [addressView addSubview:phoneLabel];
+        addressLine.frame = CGRectMake(PX_TO_PT(31), CGRectGetMaxY(phoneLabel.frame)+PX_TO_PT(18), PX_TO_PT(689), PX_TO_PT(2));
+
+    }
+    else
+    {
+        CGSize size = [sectionModel.address sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(24)] constrainedToSize:CGSizeMake(PX_TO_PT(500), MAXFLOAT)];
+        UILabel *addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(addressImageView.frame)+PX_TO_PT(29), PX_TO_PT(30), PX_TO_PT(500),size.height)];
+        addressLabel.numberOfLines = 0;
+        addressLabel.text = sectionModel.address;
+        addressLabel.textColor = R_G_B_16(0x323232);
+        addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        [addressView addSubview:addressLabel];
+        addressLine.frame = CGRectMake(PX_TO_PT(31), CGRectGetMaxY(addressLabel.frame)+PX_TO_PT(18), PX_TO_PT(689), PX_TO_PT(2));
+
+    }
+
+    addressLine.backgroundColor = R_G_B_16(0xE2E2E2);
+    [addressView addSubview:addressLine];
+    
+    // 联系人图标
+    UIImageView *contactImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(addressLine.frame)+PX_TO_PT(23), PX_TO_PT(32), PX_TO_PT(32))];
+    [contactImageView setImage:[UIImage imageNamed:@"call-contact-0"]];
+    [addressView addSubview:contactImageView];
+    
+    UILabel *contactLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(contactImageView.frame)+PX_TO_PT(29),CGRectGetMaxY(addressLine.frame)+ PX_TO_PT(27), PX_TO_PT(500), PX_TO_PT(30))];
+    contactLabel.textColor = R_G_B_16(0x323232);
+    contactLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    contactLabel.text = [NSString stringWithFormat:@"%@ %@",sectionModel.recipientName,sectionModel.recipientPhone];
+    [addressView addSubview:contactLabel];
+    
+    bottomImageView.frame = CGRectMake(0, CGRectGetMaxY(contactLabel.frame)+PX_TO_PT(26), ScreenWidth, PX_TO_PT(7));
+    [addressView addSubview:bottomImageView];
+    
+    addressView.frame=CGRectMake(0, CGRectGetMaxY(deliveryTypeView.frame), ScreenWidth, CGRectGetMaxY(bottomImageView.frame));
+    [self.headView addSubview:addressView];
+    
+    headView.frame = CGRectMake(0, PX_TO_PT(20), ScreenWidth, CGRectGetMaxY(addressView.frame));
+    
+    self.tableview.tableHeaderView = headView;
+    
+}
 
 #pragma mark - tableView代理方法
 //段头高度
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return PX_TO_PT(450);
+//        return self.headView.frame.size.height;
+        return PX_TO_PT(98);
     }
     else if (section == 1)
     {
-        return  PX_TO_PT(89);
+        return  PX_TO_PT(109);
     }
     else
     {
@@ -412,7 +571,7 @@
     }
     else if(section == 0)
     {
-        return PX_TO_PT(20);
+        return PX_TO_PT(1);
     }
     else
     {
@@ -618,9 +777,14 @@
     if (self.isRoot) {
         [self.navigationController popViewControllerAnimated:YES];
         
-    }else
+    }
+    else
     {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+        XNRMyOrder_VC *orderVC=[[XNRMyOrder_VC alloc]init];
+        orderVC.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:orderVC animated:NO];
+
         
     }
 }

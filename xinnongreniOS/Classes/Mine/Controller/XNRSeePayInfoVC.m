@@ -218,7 +218,6 @@
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
     
-    
 }
 
 -(void)backClick{

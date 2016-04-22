@@ -21,6 +21,7 @@
 {
     return CGRectMake(PX_TO_PT(31), PX_TO_PT(25), PX_TO_PT(37), PX_TO_PT(37));
 }
+
 //-(UIImage *)imageForState:(UIControlState)state
 //{
 //    if (state == UIControlStateSelected) {

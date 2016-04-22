@@ -89,6 +89,7 @@
                 if (self.com) {
                     self.com(self.nickNameTF.text);
                 }
+                
                 [self.navigationController popViewControllerAnimated:YES];
             }else{
                
@@ -107,7 +108,8 @@
 #pragma mark -- textField代理
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    self.finishBtn.backgroundColor = R_G_B_16(0x00b38a);
+    [self.finishBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
+    [self.finishBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateNormal];
     
      NSString * mstr = [textField.text stringByReplacingCharactersInRange:range withString:string];
     if (mstr.length>12) {

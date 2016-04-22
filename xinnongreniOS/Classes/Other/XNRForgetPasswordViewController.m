@@ -111,7 +111,7 @@
     //设置键盘类型
     verifyNumTextField.returnKeyType = UIReturnKeyDone;
     verifyNumTextField.keyboardType=UIKeyboardTypeNumberPad;
-    verifyNumTextField.clearButtonMode = UITextFieldViewModeAlways;
+//    verifyNumTextField.clearButtonMode = UITextFieldViewModeAlways;
     verifyNumTextField.textAlignment = NSTextAlignmentLeft;
     self.verifyNumTextField = verifyNumTextField;
     [self.midView  addSubview:verifyNumTextField];
@@ -241,7 +241,7 @@
     
     [self.getVerifyButton setTitle:[NSString stringWithFormat:@"%ds后重新获取",_timeCount] forState:UIControlStateNormal];
     _timeCount=_timeCount-1;
-    if(_timeCount== -2){
+    if(_timeCount== -1){
         _timer.fireDate=[NSDate distantFuture]; //暂停定时器
         self.getVerifyButton.enabled = YES;
         self.getVerifyButton.backgroundColor = R_G_B_16(0x00b38a);
@@ -384,10 +384,7 @@
             
             [UILabel showMessage:result[@"message"]];
             
-            
         }
-        
-        
     } failure:^(NSError *error) {
         
         
