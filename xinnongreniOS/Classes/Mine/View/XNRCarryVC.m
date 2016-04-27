@@ -33,7 +33,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setNavigationbarTitle];
-//    [self getDeliveryCode];
+    [self getDeliveryCode];
 
 }
 #pragma mark -- UItableView的数据源和代理方法

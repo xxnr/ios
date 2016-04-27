@@ -191,7 +191,7 @@
     XNRPayInfoModel *model = [[XNRPayInfoModel alloc]init];
     [model setValuesForKeysWithDictionary:self.model.payments[indexPath.row]];
     
-    if (model.payType == 1 || model.payType == 2) {
+    if (model.payType == 1 || model.payType == 2 || model.payType == 3) {
         return PX_TO_PT(223);
     }
     else

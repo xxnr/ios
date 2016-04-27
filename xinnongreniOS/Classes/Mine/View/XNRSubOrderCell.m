@@ -187,6 +187,12 @@ static BOOL isPay = NO;
         {
             _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：银联支付"];
         }
+        
+        else if(model.payType == 3)
+        {
+            _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：线下支付"];
+        }
+
         else
         {
             _payTypeLabel.frame = CGRectMake(0, 0, 0, 0);

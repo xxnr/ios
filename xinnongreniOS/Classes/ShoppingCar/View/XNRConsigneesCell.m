@@ -27,7 +27,9 @@
     [self.phoneLabel removeFromSuperview];
     [self.line removeFromSuperview];
     
-    UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(100), PX_TO_PT(36), PX_TO_PT(110), PX_TO_PT(34))];
+    CGSize size = [model.consigneeName sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(ScreenWidth, PX_TO_PT(34))];
+    
+    UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(100), PX_TO_PT(36), size.width, PX_TO_PT(34))];
     nameLabel.text = model.consigneeName;
     nameLabel.textColor = R_G_B_16(0x646464);
     nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];

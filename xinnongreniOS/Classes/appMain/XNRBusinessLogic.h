@@ -390,5 +390,9 @@
  */
 #define KRscOrderDetail [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/orderDetail"]
 
+/**
+ *  确认收货
+ */
+#define KconfirmSKUReceived [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/order/confirmSKUReceived"]
 
 #endif
