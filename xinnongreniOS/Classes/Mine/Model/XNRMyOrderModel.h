@@ -10,6 +10,11 @@
 
 @interface XNRMyOrderModel : NSObject
 /**
+ *  SKU _id ref
+ */
+@property (nonatomic,copy) NSString *ref;
+
+/**
  *  订单ID
  */
 @property (nonatomic,copy) NSString *orderId;

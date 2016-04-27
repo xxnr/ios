@@ -544,6 +544,7 @@
 		9CC0CE5E1C855A5C008D5228 /* XNRPayType_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE5D1C855A5C008D5228 /* XNRPayType_VC.m */; };
 		9CC0CE6A1C87FF3C008D5228 /* XNRSelPayOrder_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE681C87FF3C008D5228 /* XNRSelPayOrder_VC.m */; };
 		9CC0CE6E1C8811EE008D5228 /* XNRAddOrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC0CE6D1C8811EE008D5228 /* XNRAddOrderModel.m */; };
+		9CC3E52B1CCE07510016F379 /* XNRSelWebBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC3E52A1CCE07510016F379 /* XNRSelWebBtn.m */; };
 		9CC8DE5C1CC7713500277CF3 /* XNRCityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8DE5B1CC7713500277CF3 /* XNRCityCell.m */; };
 		9CC8DE5F1CCA086900277CF3 /* XNROffLine_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8DE5E1CCA086900277CF3 /* XNROffLine_VC.m */; };
 		9CF687A41CBDF353005F1A5F /* XNRDeliveryTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687A31CBDF353005F1A5F /* XNRDeliveryTypeModel.m */; };
@@ -924,7 +925,7 @@
 		496BB4171CC49F55007F034F /* qqspace@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qqspace@2x.png"; sourceTree = "<group>"; };
 		496BB4181CC49F55007F034F /* recommended--@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "recommended--@2x.png"; sourceTree = "<group>"; };
 		496BB4191CC49F55007F034F /* repeat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repeat@2x.png"; sourceTree = "<group>"; };
-		496BB41A1CC49F55007F034F /* wechat-circle-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wechat-circle-@2x.png"; sourceTree = "<group>"; };
+		496BB41A1CC49F55007F034F /* wechat-circle-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wechat-circle-@2x.png"; path = "../../设置界面切图/@2x/wechat-circle-@2x.png"; sourceTree = "<group>"; };
 		496BB41B1CC49F55007F034F /* wechat-friends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wechat-friends@2x.png"; sourceTree = "<group>"; };
 		496BB41C1CC49F55007F034F /* xxnr-wz@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xxnr-wz@2x.png"; sourceTree = "<group>"; };
 		496BB41E1CC49F55007F034F /* about@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about@3x.png"; sourceTree = "<group>"; };
@@ -1594,6 +1595,8 @@
 		9CC0CE681C87FF3C008D5228 /* XNRSelPayOrder_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSelPayOrder_VC.m; sourceTree = "<group>"; };
 		9CC0CE6C1C8811EE008D5228 /* XNRAddOrderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRAddOrderModel.h; sourceTree = "<group>"; };
 		9CC0CE6D1C8811EE008D5228 /* XNRAddOrderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRAddOrderModel.m; sourceTree = "<group>"; };
+		9CC3E5291CCE07510016F379 /* XNRSelWebBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSelWebBtn.h; sourceTree = "<group>"; };
+		9CC3E52A1CCE07510016F379 /* XNRSelWebBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSelWebBtn.m; sourceTree = "<group>"; };
 		9CC8DE5A1CC7713400277CF3 /* XNRCityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCityCell.h; sourceTree = "<group>"; };
 		9CC8DE5B1CC7713500277CF3 /* XNRCityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCityCell.m; sourceTree = "<group>"; };
 		9CC8DE5D1CCA086900277CF3 /* XNROffLine_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNROffLine_VC.h; sourceTree = "<group>"; };
@@ -2075,6 +2078,8 @@
 				9C392DF01CA9420300AD0F27 /* myAlertView.m */,
 				9C6BCE991CAE36C100463096 /* XNRBtn.h */,
 				9C6BCE9A1CAE36C100463096 /* XNRBtn.m */,
+				9CC3E5291CCE07510016F379 /* XNRSelWebBtn.h */,
+				9CC3E52A1CCE07510016F379 /* XNRSelWebBtn.m */,
 				9C3F9B441CC4A27D00E44BA8 /* XNRDeliveryBtn.h */,
 				9C3F9B451CC4A27D00E44BA8 /* XNRDeliveryBtn.m */,
 				9CF8AA301CAD07CB0058D8B9 /* XNRUser_Cell.h */,
@@ -2791,7 +2796,6 @@
 				496BB4171CC49F55007F034F /* qqspace@2x.png */,
 				496BB4181CC49F55007F034F /* recommended--@2x.png */,
 				496BB4191CC49F55007F034F /* repeat@2x.png */,
-				496BB41A1CC49F55007F034F /* wechat-circle-@2x.png */,
 				496BB41B1CC49F55007F034F /* wechat-friends@2x.png */,
 				496BB41C1CC49F55007F034F /* xxnr-wz@2x.png */,
 			);
@@ -2953,6 +2957,7 @@
 				491280C91CC8A30C009E67C4 /* qqlightgray@2x.png */,
 				491280CA1CC8A30C009E67C4 /* qqspacel@2x.png */,
 				491280CB1CC8A30C009E67C4 /* wechat-circle-l@2x.png */,
+				496BB41A1CC49F55007F034F /* wechat-circle-@2x.png */,
 				491280CC1CC8A30C009E67C4 /* wechat-friendsl@2x.png */,
 				499551CD1CC09CED00F3B1F9 /* QQ@2x.png */,
 				499551CE1CC09CED00F3B1F9 /* qqspace@2x.png */,
@@ -4094,6 +4099,7 @@
 				49F7A5861C58469400A1FA45 /* UIScrollView+MJRefresh.m in Sources */,
 				49EFDFBD1C4C104800218C43 /* XNRCheckOrderSectionModel.m in Sources */,
 				1F16AF531B259F67002C1E73 /* YMHProtoclViewController.m in Sources */,
+				9CC3E52B1CCE07510016F379 /* XNRSelWebBtn.m in Sources */,
 				9C6BCEA41CAE8F0C00463096 /* XNRBuyIntentionModel.m in Sources */,
 				84BCD2491B46B7B100C2CF7E /* XNRCheckOrderModel.m in Sources */,
 				49E895F81BEDC2BB00B3671E /* SDWebImageCompat.m in Sources */,

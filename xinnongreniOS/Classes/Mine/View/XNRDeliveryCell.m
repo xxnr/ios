@@ -57,9 +57,10 @@
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.titleLabel = titleLabel;
     
-    UILabel *detailLabel = [[UILabel alloc]init];
+    UILabel *detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.titleLabel.frame)+PX_TO_PT(16), PX_TO_PT(653), PX_TO_PT(32))];
     detailLabel.textColor = R_G_B_16(0x909090);
-    detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    self.detailLabel.numberOfLines = 0;
     self.detailLabel = detailLabel;
     
     UILabel *numLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(titleLabel.frame)+PX_TO_PT(22), PX_TO_PT(23), ScreenWidth - CGRectGetMaxX(titleLabel.frame)-PX_TO_PT(22)-PX_TO_PT(23), PX_TO_PT(32))];
@@ -86,10 +87,14 @@
     for (NSDictionary *dic in model.additions) {
         [str appendString:[NSString stringWithFormat:@"%@;",dic[@"name"]]];
     }
-    CGSize size = [str sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(PX_TO_PT(653), MAXFLOAT) lineBreakMode:UILineBreakModeWordWrap];
-    self.detailLabel.frame = CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.titleLabel.frame)+PX_TO_PT(16), size.width, size.height);
-    self.detailLabel.text = str;
+    //    self.detailLabel.text = str;
+
+    CGSize size = [str sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(PX_TO_PT(653), MAXFLOAT)];
+    
+    self.detailLabel.frame = CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.titleLabel.frame)+PX_TO_PT(16), PX_TO_PT(653), size.height);
     self.detailLabel.numberOfLines = 0;
+    self.detailLabel.text = str;
+
     [self.contentView addSubview:self.detailLabel];
     
     self.numLabel.text = [NSString stringWithFormat:@"*%@",model.count];

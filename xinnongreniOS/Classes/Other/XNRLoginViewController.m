@@ -20,6 +20,8 @@
 #import "AppDelegate.h"
 #import "XNRFinishMineDataController.h"
 #import "XNRAddtionsModel.h"
+#import "UMessage.h"
+
 @interface XNRLoginViewController ()<UITextFieldDelegate,QCheckBoxDelegate>{
     
     BOOL isRemmeber;
@@ -346,6 +348,7 @@
     [KSHttpRequest post:encode parameters:@{@"account":self.usernameTextField.text,@"password":encryptPassword,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000){
+            
             [BMProgressView LoadViewDisappear:self.view];
             //本地归档保存用户账户信息
             NSDictionary *datasDic = result[@"datas"];
@@ -401,6 +404,13 @@
             NSString *userName = self.usernameTextField.text;
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setObject:userName forKey:@"userName"];
+            
+            
+            [UMessage setAlias:@"xxnr" type:kUMessageAliasTypeSina response:^(id responseObject, NSError *error) {
+                NSLog(@"友盟消息推送 error: %@" ,error);
+            }];
+            
+
             
         }else{
             

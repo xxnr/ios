@@ -87,7 +87,7 @@
 
     
     // 启动bugtags
-//    [XNRBugTagsTool openBugTags];
+    [XNRBugTagsTool openBugTags];
     
     return YES;
 }

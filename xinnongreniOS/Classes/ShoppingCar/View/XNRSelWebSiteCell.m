@@ -58,17 +58,17 @@
     
     UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(86), PX_TO_PT(24), PX_TO_PT(603), PX_TO_PT(35))];
     nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-    nameLabel.tintColor = R_G_B_16(0x323232);
+    nameLabel.textColor = R_G_B_16(0x323232);
     self.nameLabel = nameLabel;
     
     UILabel *addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(86),CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(15), PX_TO_PT(603), PX_TO_PT(40))];
     addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    addressLabel.tintColor = R_G_B_16(0x646464);
+    addressLabel.textColor = R_G_B_16(0x646464);
     self.addressLabel = addressLabel;
     
     UILabel *phoneLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(86), CGRectGetMaxY(addressLabel.frame)+ PX_TO_PT(15), PX_TO_PT(603), PX_TO_PT(40))];
     phoneLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    phoneLabel.tintColor = R_G_B_16(0x646464);
+    phoneLabel.textColor = R_G_B_16(0x646464);
     self.phoneLabel = phoneLabel;
     
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(phoneLabel.frame)+PX_TO_PT(15), ScreenWidth, PX_TO_PT(1))];
@@ -76,7 +76,7 @@
     self.line = line;
     
     
-    self.nameLabel.text = model.name;
+    self.nameLabel.text = model.companyName;
     
     XNRCompanyAddressModel *addressModel = [XNRCompanyAddressModel objectWithKeyValues:model.companyAddress];
     

@@ -9,7 +9,7 @@
 #import "XNRSelWebSiteVC.h"
 #import "XNRSelWebSiteCell.h"
 #import "XNRCityCell.h"
-#import "XNRBtn.h"
+#import "XNRSelWebBtn.h"
 #import "XNRRSCModel.h"
 #import "XNRRSCDetailModel.h"
 #import "XNRCompanyAddressModel.h"
@@ -90,13 +90,13 @@
 //    }
 //    return  _selProArr;
 //}
--(NSMutableArray *)dataArr
-{
-    if (!_dataArr) {
-        _dataArr = [NSMutableArray array];
-    }
-    return _dataArr;
-}
+//-(NSMutableArray *)dataArr
+//{
+//    if (!_dataArr) {
+//        _dataArr = [NSMutableArray array];
+//    }
+//    return _dataArr;
+//}
 
 -(void)getData
 {
@@ -104,7 +104,10 @@
     [KSHttpRequest get:KgetRSC parameters:@{@"products":self.proId,@"province":self.proviceId?self.proviceId:@"",@"city":self.cityId?self.cityId:@"",@"county":self.areaId?self.areaId:@"",@"page":[NSNumber numberWithInt:currentPage],@"max":@10} success:^(id result)
      {
         if ([result[@"code"]integerValue] == 1000) {
-            _dataArr = (NSMutableArray *)[XNRRSCModel objectArrayWithKeyValuesArray:result[@"RSCs"]];
+            
+            NSMutableArray *arr = (NSMutableArray *)[XNRRSCModel objectArrayWithKeyValuesArray:result[@"RSCs"]];
+            [_dataArr addObjectsFromArray:arr];
+            
             if (_dataArr.count == 0) {
                 [UILabel showMessage:result[@"message"]];
             }
@@ -201,7 +204,8 @@
     [super viewDidLoad];
 
     [self setNav];
-
+    _dataArr = [NSMutableArray array];
+    
     [self getData];
     [self createTop];
     
@@ -300,6 +304,7 @@
     
     UIView *rollView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(86), ScreenWidth/3, PX_TO_PT(2))];
     self.rollView = rollView;
+    rollView.hidden = YES;
     rollView.backgroundColor = R_G_B_16(0xFF4E00);
     [self.view addSubview:rollView];
     
@@ -371,9 +376,11 @@
 }
 -(void)btnClick:(UIButton *)sender
 {
-    [UIView animateWithDuration:0.2f animations:^{
-        self.rollView.frame = CGRectMake((sender.tag - Tag)*ScreenWidth/3, PX_TO_PT(86), ScreenWidth/3, PX_TO_PT(2));
-    }];
+    [self.dataArr removeAllObjects];
+    
+    self.rollView.frame = CGRectMake((sender.tag - Tag)*ScreenWidth/3, PX_TO_PT(86), ScreenWidth/3, PX_TO_PT(2));
+    self.rollView.hidden = NO;
+    
     self.coverView.hidden = NO;
 
     [UIView animateWithDuration:0.1f animations:^{
@@ -381,6 +388,7 @@
     }];
     if (sender.selected == YES) {
         self.coverView.hidden = YES;
+        self.rollView.hidden = YES;
         [UIView animateWithDuration:0.1f animations:^{
             self.tableView2.frame = CGRectMake(0, -self.tableView2.height, self.tableView2.width, self.tableView2.height);
         }];
@@ -448,6 +456,7 @@
             [self.currentCityArr setArray:self.cityList];
             [self.tableView2 reloadData];
         }
+        
         else
         {
             [UILabel showMessage:result[@"message"]];
@@ -506,9 +515,11 @@
         XNRRSCDetailModel *model = [XNRRSCDetailModel objectWithKeyValues:RSCmodel.RSCInfo];
         cell.model = model;
         
-        XNRBtn *iconBtn = [[XNRBtn alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, cell.height)];
+        UIImage *image = [UIImage imageNamed:@"address_circle"];
+        XNRSelWebBtn *iconBtn = [[XNRSelWebBtn alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, cell.height)];
         [iconBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
         [iconBtn setImage:[UIImage imageNamed:@"address_right"] forState:UIControlStateSelected];
+//        iconBtn.imageEdgeInsets = UIEdgeInsetsMake(-(cell.height - image.size.height)/2, 0, (cell.height - image.size.height)/2, 0);
         [iconBtn addTarget:self action:@selector(iconClick:) forControlEvents:UIControlEventTouchDown];
         iconBtn.tag = indexPath.row;
         
@@ -553,7 +564,8 @@
         
         XNRCityDetailModel *model = [_currentCityArr objectAtIndex:indexPath.row];
         self.coverView.hidden = YES;
-        
+        self.rollView.hidden = YES;
+
         if (_currentBtn.tag == Tag) {
             
             [_proviceBtn setTitle:model.name forState:UIControlStateSelected | UIControlStateNormal];

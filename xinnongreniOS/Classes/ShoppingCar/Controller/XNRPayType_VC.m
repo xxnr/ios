@@ -448,7 +448,7 @@
     UIImage *iamge1 = [UIImage imageNamed:@"支付宝logo-0"];
     UIImage *image2 = [UIImage imageNamed:@"银联logo"];
     //    UIImage *image3 = [UIImage imageNamed:@"全民付logo-0"];
-    UIImage *image3 = [UIImage imageNamed:@"银行扁平化"];
+    UIImage *image3 = [UIImage imageNamed:@"offline_payment_icon1"];
     NSArray *imagesarr = [NSArray arrayWithObjects:iamge1,image2,image3,nil];
     
     self.currentSelBtn = [[UIButton alloc]init];

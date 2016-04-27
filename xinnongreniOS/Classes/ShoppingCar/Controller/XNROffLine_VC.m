@@ -85,9 +85,9 @@
     [self.view addSubview:_midView];
     NSArray *titleNameArr = @[@"服务网点",@"网点名称",@"地址",@"电话"];
     NSArray *detailArr = @[@" ",self.model.companyName,self.model.RSCAddress,self.model.RSCPhone];
-    CGFloat maxY = PX_TO_PT(30);
+    CGFloat maxY = PX_TO_PT(0);
     for (int i=0; i<4; i++) {
-        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), maxY, PX_TO_PT(130), PX_TO_PT(30))];
+        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), maxY+PX_TO_PT(29), PX_TO_PT(130), PX_TO_PT(30))];
         titleLabel.text = titleNameArr[i];
         titleLabel.textColor = R_G_B_16(0x646464);
         titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
@@ -95,7 +95,7 @@
         NSString *str = detailArr[i];
         CGSize size = [str sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(PX_TO_PT(500), MAXFLOAT)];
         
-        UILabel *DetailLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(titleLabel.frame)+PX_TO_PT(29), maxY, PX_TO_PT(500), size.height)];
+        UILabel *DetailLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(titleLabel.frame)+PX_TO_PT(29), maxY+PX_TO_PT(29), PX_TO_PT(500), size.height)];
         DetailLabel.text = str;
         DetailLabel.textColor = R_G_B_16(0x323232);
         DetailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];

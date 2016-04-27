@@ -61,6 +61,15 @@
     [self.view addSubview:self.mainScrollView];
     [self createMidView];
     [self createTopView];
+}
+-(void)login
+{
+    UserInfo *infos = [[UserInfo alloc]init];
+    infos.loginState = NO;
+    [DataCenter saveAccount:infos];
+    XNRLoginViewController *loginVC = [[XNRLoginViewController alloc] init];
+    loginVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:loginVC animated:YES];
 
 }
 -(void)carry:(NSNotification *)notification
@@ -107,7 +116,7 @@
 -(void)createMidView{
     
     if(nil==self.ServeView){ // 全部
-        self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
+        self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
     
         [self.mainScrollView addSubview:self.ServeView];
         __weak __typeof(&*self)weakSelf=self;
@@ -215,6 +224,13 @@
     }
     
 }
+-(void)notificationRefresh
+{
+    self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
+    self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
+    self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
+    self.CommentView =[[XNRCommentView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"comment"];
+}
 #pragma mark-创建顶部视图
 -(void)createTopView {
     UIView *midBg=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(100))];
@@ -291,6 +307,18 @@
 #pragma mark - 按钮的循环点击
 -(void)buttonClick:(UIButton*)button{
     
+    if (_type == XNRPayViewtype) {
+        self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
+        
+    }else if (_type == XNRSendViewType){
+        self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
+        
+    }else if (_type == XNRReciveViewType){
+        self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
+    }else{
+        self.CommentView =[[XNRCommentView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"comment"];
+    }
+        
     static int index = KbtnTag;
     
     UILabel *label = (UILabel *)[self.view viewWithTag:button.tag+1000];
@@ -481,6 +509,9 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(carry:) name:@"carry" object:nil];
 
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(login) name:@"login" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(notificationRefresh) name:@"refresh" object:nil];
 }
 -(void)viewDidDisappear:(BOOL)animated
 {
