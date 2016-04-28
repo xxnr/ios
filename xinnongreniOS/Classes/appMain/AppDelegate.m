@@ -21,7 +21,7 @@
 #import "UMSocial.h"
 #import "UMSocialWechatHandler.h"
 #import "UMSocialQQHandler.h"
-
+#import "XNRCheckOrderVC.h"
 
 @interface AppDelegate ()<UITabBarControllerDelegate>
 
@@ -36,6 +36,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    [UMessage startWithAppkey:UM_APPKEY launchOptions:launchOptions];
+
     self.launchOptions = launchOptions;
     // 键盘的管理
     IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
@@ -85,7 +87,24 @@
     
     [UMSocialQQHandler setQQWithAppId:QQAppId appKey:QQAppSecret url:APPURL];
 
+    [UMessage setLogEnabled:YES];
     
+    //友盟注册通知
+    //-- Set Notification
+    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
+    {
+        // iOS 8 Notifications
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        
+        [application registerForRemoteNotifications];
+    }
+    else
+    {
+        // iOS < 8 Notifications
+        [application registerForRemoteNotificationTypes:
+         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
+    }
+
     // 启动bugtags
     [XNRBugTagsTool openBugTags];
     
@@ -127,22 +146,54 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     [UMessage registerDeviceToken:deviceToken];
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-{
-    [UMessage didReceiveRemoteNotification:userInfo];
     
 }
 
 -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     NSString *error_str = [NSString stringWithFormat: @"%@", error];
-    NSLog(@"Failed to get token, error:%@", error_str);
+    NSLog(@"---------------------Failed to get token, error:%@", error_str);
     
 }
 
 
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    [UMessage didReceiveRemoteNotification:userInfo];
+    
+    NSLog(@"%@",userInfo);
+    
+    NSDictionary *infodic = [userInfo objectForKey:@"data"];
+
+    
+    XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
+    vc.hidesBottomBarWhenPushed=YES;
+    vc.orderID = userInfo[@""];
+    vc.isRoot = YES ;
+    [_tabBarController.navigationController pushViewController:vc animated:YES];
+    
+
+    
+//    //前台
+//    if (application.applicationState == UIApplicationStateActive)
+//    {
+    
+//    }
+//    else //后台
+//    {
+//        NSDictionary *infodic = [userInfo objectForKey:@"data"];
+//        
+//        XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
+//        vc.hidesBottomBarWhenPushed=YES;
+//        vc.orderID = userInfo[@""];
+//        vc.isRoot = YES ;
+//        [_tabBarController.navigationController pushViewController:vc animated:YES];
+//
+//    }
+//
+    
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     
     
