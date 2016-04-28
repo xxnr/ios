@@ -577,7 +577,7 @@
             [DataCenter saveAccount:infos];
             
             
-            [UMessage removeAlias:@"xxnr" type:kUMessageAliasTypeSina response:^(id responseObject, NSError *error) {
+            [UMessage removeAlias:[DataCenter account].userid type:kUMessageAliasTypeWeiXin response:^(id responseObject, NSError *error) {
                 
                 NSLog(@"友盟消息推送 error: %@" ,error);
 

@@ -406,7 +406,7 @@
             [user setObject:userName forKey:@"userName"];
             
             
-            [UMessage setAlias:@"xxnr" type:kUMessageAliasTypeSina response:^(id responseObject, NSError *error) {
+            [UMessage setAlias:[DataCenter account].userid type:kUMessageAliasTypexxnr response:^(id responseObject, NSError *error) {
                 NSLog(@"友盟消息推送 error: %@" ,error);
             }];
             

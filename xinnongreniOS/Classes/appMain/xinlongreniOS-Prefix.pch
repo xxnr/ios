@@ -34,7 +34,7 @@
 #import "BMAlertView.h"
 #import "MJRefresh.h"
 
-
+#define kUMessageAliasTypexxnr @"xxnr"
 #define sharpAppDelegate [UIApplication sharedApplication].delegate
 #define UM_APPKEY @"5667cfe867e58ebc630024d7"  //友盟appkey
 #define wechatAppId @"wx46173e821f28d05a"
