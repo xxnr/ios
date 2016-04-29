@@ -35,10 +35,7 @@
 #import "MJRefresh.h"
 
 #define kUMessageAliasTypexxnr @"xxnr"
-<<<<<<< HEAD
 
-=======
->>>>>>> master
 #define sharpAppDelegate [UIApplication sharedApplication].delegate
 #define UM_APPKEY @"5667cfe867e58ebc630024d7"  //友盟appkey
 

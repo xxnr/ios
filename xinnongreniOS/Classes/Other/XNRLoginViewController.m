@@ -406,8 +406,6 @@
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setObject:userName forKey:@"userName"];
             
-<<<<<<< HEAD
-=======
             
             [UMessage setAlias:[DataCenter account].userid type:kUMessageAliasTypexxnr response:^(id responseObject, NSError *error) {
                 
@@ -415,21 +413,12 @@
 
             }];
             
-
-            
->>>>>>> master
         }else{
             
             [UILabel showMessage:result[@"message"]];
             [BMProgressView LoadViewDisappear:self.view];
         }
         
-        [UMessage setAlias:[DataCenter account].userid type:kUMessageAliasTypexxnr response:^(id responseObject, NSError *error) {
-            
-            NSLog(@"%--------------------%@",responseObject);
-            
-            NSLog(@"友盟消息推送 error: %@" ,error);
-        }];
         
     } failure:^(NSError *error) {
         
