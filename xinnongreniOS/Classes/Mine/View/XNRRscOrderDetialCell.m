@@ -1,36 +1,37 @@
 //
-//  XNRRscConfirmDeliverCell.m
+//  XNRRscOrderDetialCell.m
 //  xinnongreniOS
 //
-//  Created by xxnr on 16/4/27.
+//  Created by 杨宁 on 16/4/29.
 //  Copyright © 2016年 qxhiOS. All rights reserved.
 //
 
-#import "XNRRscConfirmDeliverCell.h"
-#import "XNRRscDeliverFrameModel.h"
+#import "XNRRscOrderDetialCell.h"
 #import "XNRRscOrderModel.h"
-@interface XNRRscConfirmDeliverCell()
+#import "XNRRscOrderDetialFrameModel.h"
+#import "UIImageView+WebCache.h"
+
+@interface XNRRscOrderDetialCell()
+
+@property (nonatomic, weak) UIImageView *goodsImageView;
 @property (nonatomic, strong) XNRRscSkusModel *model;
-@property (nonatomic, weak) UIButton *selectedBtn;
 @property (nonatomic, weak) UILabel *goodsNameLabel;
 @property (nonatomic, weak) UILabel *goodsNumberLabel;
 @property (nonatomic, weak) UILabel *attributesLabel;
 @property (nonatomic, weak) UILabel *addtionsLabel;
 
 @property (nonatomic, weak) UIView *lineView;
-
-
 @end
 
-@implementation XNRRscConfirmDeliverCell
+@implementation XNRRscOrderDetialCell
 
 #pragma mark - 初始化
 + (instancetype)cellWithTableView:(UITableView *)tableView
 {
     static NSString *ID = @"RscCell";
-    XNRRscConfirmDeliverCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    XNRRscOrderDetialCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (cell == nil) {
-        cell = [[XNRRscConfirmDeliverCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+        cell = [[XNRRscOrderDetialCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return cell;
@@ -41,22 +42,23 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self createView];
-
+        
     }
     return self;
 }
 
 -(void)createView
 {
-    UIButton *selectedBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [selectedBtn setImage:[UIImage imageNamed:@"arrow-circle"] forState:UIControlStateNormal];
-    [selectedBtn setImage:[UIImage imageNamed:@"arrow_the_circle"] forState:UIControlStateSelected];
-    self.selectedBtn = selectedBtn;
-    [self.contentView addSubview:selectedBtn];
+    UIImageView *imageView = [[UIImageView alloc] init];
+    imageView.layer.borderWidth = PX_TO_PT(1);
+    imageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    self.goodsImageView = imageView;
+    [self.contentView addSubview:imageView];
     
     UILabel *goodsNameLabel = [[UILabel alloc] init];
     goodsNameLabel.textColor = R_G_B_16(0x323232);
     goodsNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    goodsNameLabel.numberOfLines = 0;
     self.goodsNameLabel = goodsNameLabel;
     [self.contentView addSubview:goodsNameLabel];
     
@@ -75,8 +77,8 @@
     [self.contentView addSubview:attributesLabel];
     
     UILabel *addtionsLabel = [[UILabel alloc] init];
-    addtionsLabel.textColor = R_G_B_16(0x909090);
-    addtionsLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    addtionsLabel.textColor = R_G_B_16(0x323232);
+    addtionsLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     addtionsLabel.numberOfLines = 0;
     self.addtionsLabel = addtionsLabel;
     [self.contentView addSubview:addtionsLabel];
@@ -85,11 +87,11 @@
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     self.lineView = lineView;
     [self.contentView addSubview:lineView];
-
+    
+    
 }
 
-
--(void)setFrameModel:(XNRRscDeliverFrameModel *)frameModel
+-(void)setFrameModel:(XNRRscOrderDetialFrameModel *)frameModel
 {
     _frameModel = frameModel;
     // 1.设置数据
@@ -97,12 +99,11 @@
     
     // 2.设置frame
     [self setupFrame];
-
-
 }
+
 -(void)setupFrame
 {
-    self.selectedBtn.frame = self.frameModel.imageViewF;
+    self.goodsImageView.frame = self.frameModel.imageViewF;
     self.goodsNameLabel.frame = self.frameModel.goodsNameLabelF;
     self.goodsNumberLabel.frame = self.frameModel.goodsNumberLabelF;
     self.attributesLabel.frame = self.frameModel.attributesLabelF;
@@ -114,7 +115,15 @@
 {
     XNRRscSkusModel *model = self.frameModel.model;
     _model = model;
-    self.selectedBtn.selected = model.isSelected;
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,model.thumbnail];
+    //图片
+    [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+        if (urlStr == nil || [urlStr isEqualToString:@""]) {
+            [self.goodsImageView setImage:[UIImage imageNamed:@"icon_placehold"]];
+        }else{
+            [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+        }}];
     self.goodsNameLabel.text = model.name;
     self.goodsNumberLabel.text = [NSString stringWithFormat:@"x %@",model.count];
     
@@ -136,6 +145,7 @@
     }
     // 附加选项
     self.addtionsLabel.text = [NSString stringWithFormat:@"附加项目:%@",addtionStr];
-
 }
+
+
 @end
