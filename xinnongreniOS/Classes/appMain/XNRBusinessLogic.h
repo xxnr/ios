@@ -338,6 +338,10 @@
  * 获取自提点列表
  */
 #define KgetRSC [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC"]
+/**
+ * 获取线下支付类型
+ */
+#define KgetOfflinePayType [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/getOfflinePayType"]
 /**--------------------
  RSC相关
  --------------------*/
