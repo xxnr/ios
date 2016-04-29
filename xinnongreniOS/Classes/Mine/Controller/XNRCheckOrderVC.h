@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "XNRMyOrderSectionModel.h"
 @interface XNRCheckOrderVC : UIViewController
 /**
  *  我的订单类型
@@ -17,6 +17,6 @@
 @property (nonatomic,assign) BOOL isRoot;
 @property(nonatomic,copy) NSString*orderID;
 @property(nonatomic,copy) NSString*orderNO;
-
+@property(nonatomic,strong) XNRMyOrderSectionModel *model;
 
 @end
