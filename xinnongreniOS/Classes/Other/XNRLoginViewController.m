@@ -361,6 +361,7 @@
             UserInfo *info = [DataCenter account];
             [info setValuesForKeysWithDictionary:datasDic];
             info.loginState = YES;
+            info.userid = datasDic[@"userid"];
             info.password = self.passwordTextField.text;
             info.token = result[@"token"];
             info.photo = datasDic[@"photo"];
@@ -412,20 +413,19 @@
 
             }];
             
-
-            
         }else{
             
             [UILabel showMessage:result[@"message"]];
             [BMProgressView LoadViewDisappear:self.view];
         }
+        
+        
     } failure:^(NSError *error) {
         
         [UILabel showMessage:@"登录失败"];
         [BMProgressView LoadViewDisappear:self.view];
 
     }];
-
 
 }
 

@@ -21,7 +21,7 @@
 #import "UMSocial.h"
 #import "UMSocialWechatHandler.h"
 #import "UMSocialQQHandler.h"
-
+#import "XNRCheckOrderVC.h"
 
 @interface AppDelegate ()<UITabBarControllerDelegate>
 
@@ -36,6 +36,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    [UMessage startWithAppkey:UM_APPKEY launchOptions:launchOptions];
+
     self.launchOptions = launchOptions;
     // 键盘的管理
     IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
@@ -85,7 +87,25 @@
     
     [UMSocialQQHandler setQQWithAppId:QQAppId appKey:QQAppSecret url:APPURL];
 
+    [UMessage setLogEnabled:YES];
     
+    //友盟注册通知
+    //-- Set Notification
+    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
+    {
+        // iOS 8 Notifications
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        
+        [application registerForRemoteNotifications];
+    }
+    else
+    {
+        // iOS < 8 Notifications
+        [application registerForRemoteNotificationTypes:
+         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
+    }
+    
+
     // 启动bugtags
     [XNRBugTagsTool openBugTags];
     
@@ -146,22 +166,51 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     [UMessage registerDeviceToken:deviceToken];
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-{
-    [UMessage didReceiveRemoteNotification:userInfo];
     
 }
 
 -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     NSString *error_str = [NSString stringWithFormat: @"%@", error];
-    NSLog(@"Failed to get token, error:%@", error_str);
+    NSLog(@"---------------------Failed to get token, error:%@", error_str);
     
 }
 
 
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    [UMessage didReceiveRemoteNotification:userInfo];
+    
+    NSLog(@"%@",userInfo);
+    
+    NSString *alert = [userInfo objectForKey:@"page"];
+    NSString *orderId = [userInfo objectForKey:@"orderId"];
+    
+//    if (application.applicationState == UIApplicationStateActive) { // 此时app在前台运行
+    if ([alert isEqualToString:@""]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"openOrderIDController" object:orderId];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"openWebSiteController" object:orderId];
+    }
+
+//    } else { // 后台运行时
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"PushNoti" object:alert];
+//    }
+    
+
+    
+    XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
+    vc.hidesBottomBarWhenPushed=YES;
+    vc.orderID = userInfo[@""];
+    [_tabBarController.navigationController pushViewController:vc animated:YES];
+    
+    [application setApplicationIconBadgeNumber:0];
+
+    
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     
     
