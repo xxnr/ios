@@ -33,13 +33,18 @@
 #import "MJExtension.h"
 #import "BMAlertView.h"
 #import "MJRefresh.h"
-#import "CoreTFManagerVC.h"
 
-
-//#import "IQKeyboardManager.h"
+#define kUMessageAliasTypexxnr @"xxnr"
 
 #define sharpAppDelegate [UIApplication sharedApplication].delegate
 #define UM_APPKEY @"5667cfe867e58ebc630024d7"  //友盟appkey
+
+#define wechatAppId @"wx46173e821f28d05a"
+#define wechatAppSecret @"919a7e2cb7e1483393797f15bf53dcb9"
+#define APPURL @"http://www.xinxinnongren.com/shareApp.html"
+#define QQAppId @"1104752635"
+#define QQAppSecret @"giwjla40jiDQNuzI"
+
 #define XCODE_COLORS_ESCAPE @"\033["
 
 #define XCODE_COLORS_RESET_FG  XCODE_COLORS_ESCAPE @"fg;" // Clear any foreground color
@@ -66,17 +71,24 @@
 
 #else
 
-#define HOST @"http://101.200.194.203"//@"http://192.168.0.66"//
+#define HOST @"http://101.200.194.203"
 
 #endif
-
-
 
 //#define HOST @"http://101.200.194.203/"
 #define IMAGEHOST @"http://101.200.194.203"
 
-//设置字体和大小
-#define XNRFont(s) [UIFont fontWithName:@"Arial" size:s+2]
+//设置字的大小
+#define XNRFont12 [UIFont systemFontOfSize:PX_TO_PT(24)]
+#define XNRFont13 [UIFont systemFontOfSize:PX_TO_PT(26)]
+#define XNRFont14 [UIFont systemFontOfSize:PX_TO_PT(28)]
+#define XNRFont15 [UIFont systemFontOfSize:PX_TO_PT(30)]
+#define XNRFont16 [UIFont systemFontOfSize:PX_TO_PT(32)]
+#define XNRFont17 [UIFont systemFontOfSize:PX_TO_PT(34)]
+#define XNRFont18 [UIFont systemFontOfSize:PX_TO_PT(36)]
+#define XNRFont19 [UIFont systemFontOfSize:PX_TO_PT(38)]
+#define XNRFont20 [UIFont systemFontOfSize:PX_TO_PT(40)]
+
 
 
 //是否登录
@@ -95,7 +107,7 @@ alpha:1.0]
 #define RandomColor [UIColor colorWithRed:arc4random_uniform(256)/255.0 green:arc4random_uniform(256)/255.0 blue:arc4random_uniform(256)/255.0 alpha:1]
 
 //是否为4inch
-#define IS_IPHONE4 ([UIScreen mainScreen].bounds.size.height == 480)
+#define IS_FourInch ([UIScreen mainScreen].bounds.size.height == 568.0)
 
 #define PATH_OF_DOCUMENT    [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]
 #define USER [NSUserDefaults standardUserDefaults]

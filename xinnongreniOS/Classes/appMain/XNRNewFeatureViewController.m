@@ -43,9 +43,9 @@
         // 创建UIImageView
         UIImageView *imageView = [[UIImageView alloc] init];
         NSString *name = [NSString stringWithFormat:@"new_feature_%d", i + 1];
-        if (IS_IPHONE4) { // 4inch  需要手动去加载4inch对应的-568h图片
-            name = [name stringByAppendingString:@"-568h"];
-        }
+//        if (IS_FourInch) { // 4inch  需要手动去加载4inch对应的-568h图片
+//            name = [name stringByAppendingString:@"-568h"];
+//        }
         imageView.image = [UIImage imageNamed:name];
         [scrollView addSubview:imageView];
         
@@ -110,7 +110,7 @@
     // 4.设置文字
     [startButton setTitle:@"立即体验" forState:UIControlStateNormal];
     [startButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    startButton.titleLabel.font = [UIFont systemFontOfSize:18];
+    startButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [startButton addTarget:self action:@selector(start) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -164,12 +164,13 @@
  */
 - (void)start
 {
-    // 显示主控制器（HMTabBarController）
+    // 显示主控制器（XNRTabBarController）
     XNRTabBarController *vc = [[XNRTabBarController alloc] init];
-    
     // 切换控制器
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     window.rootViewController = vc;
+    
+    
     // push : [self.navigationController pushViewController:vc animated:NO];
     // modal : [self presentViewController:vc animated:NO completion:nil];
     // window.rootViewController : window.rootViewController = vc;

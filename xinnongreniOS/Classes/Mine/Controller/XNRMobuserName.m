@@ -38,7 +38,7 @@
     userNameTF.borderStyle = UITextBorderStyleNone;
     userNameTF.backgroundColor = R_G_B_16(0xffffff);
     userNameTF.placeholder = @"请输入您的真实姓名";
-    userNameTF.font = XNRFont(18);
+    userNameTF.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     userNameTF.clearButtonMode = UITextFieldViewModeWhileEditing;
     userNameTF.textAlignment = NSTextAlignmentLeft;
     userNameTF.delegate = self;
@@ -55,7 +55,7 @@
     
     UILabel *warnLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.bgView.frame)+PX_TO_PT(24), ScreenWidth, PX_TO_PT(20))];
     warnLabel.text = @"限6个汉字或12个英文字符";
-    warnLabel.font = XNRFont(10);
+    warnLabel.font = [UIFont systemFontOfSize:PX_TO_PT(20)];
     warnLabel.textColor = R_G_B_16(0x323232);
     self.warnLabel = warnLabel;
     [self.view addSubview:warnLabel];
@@ -85,11 +85,7 @@
     }else{
         [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"userName":self.userNameTF.text,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
-                //更新成功保存本地
-                UserInfo *info = [DataCenter account];
-                info.name = self.userNameTF.text;
-                [DataCenter saveAccount:info];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
+                self.com(self.userNameTF.text);
                 [self.navigationController popViewControllerAnimated:YES];
             }else{
                 
@@ -104,43 +100,14 @@
     }
     
 }
-//- (void)textFieldDidChange:(UITextField *)textField {
-//    NSString *toBeString = textField.text;
-//    NSArray *currentar = [UITextInputMode activeInputModes];
-//    UITextInputMode *current = [currentar firstObject];
-//    
-//    //下面的方法是iOS7被废弃的，注释
-//    //    NSString *lang = [[UITextInputMode currentInputMode] PRimaryLanguage]; // 键盘输入模式
-//    
-//    if ([current.primaryLanguage isEqualToString:@"zh-Hans"]) { // 简体中文输入，包括简体拼音，健体五笔，简体手写
-//        UITextRange *selectedRange = [textField markedTextRange];
-//        //获取高亮部分
-//        UITextPosition *position = [textField positionFromPosition:selectedRange.start offset:0];
-//        // 没有高亮选择的字，则对已输入的文字进行字数统计和限制
-//        if (!position) {
-//            if (toBeString.length > 6) {
-//                textField.text = [toBeString substringToIndex:6];
-//            }
-//        }
-//        // 有高亮选择的字符串，则暂不对文字进行统计和限制
-//        else{
-//            
-//        }
-//    }
-//    // 中文输入法以外的直接对其统计限制即可，不考虑其他语种情况
-//    else{
-//        if (toBeString.length > 12) {
-//            textField.text = [toBeString substringToIndex:12];
-//        }
-//    }
-//    NSLog(@"%@",textField.text);
-//}
 
 #pragma mark -- textField代理
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    self.finishBtn.backgroundColor = R_G_B_16(0x00b38a);
+    [self.finishBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
+    [self.finishBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateNormal];
+
     NSString * mstr = [textField.text stringByReplacingCharactersInRange:range withString:string];
     CGSize textSize = [mstr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0]}];
     
@@ -157,26 +124,6 @@
     self.finishBtn.backgroundColor = R_G_B_16(0xe0e0e0);
     return YES;
 }
-//- (void)textFieldDidEndEditing:(UITextField *)textField {
-//    if (textField.text.length>12) {
-//        textField.text = [textField.text substringToIndex:12];
-//    }
-//    
-//    NSLog(@"-=-===%@",textField.text);
-//    [UILabel showMessage:@"不能超过12个字符"];
-//}
-
-
-//-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-//{
-//    self.finishBtn.backgroundColor = R_G_B_16(0x00b38a);
-//    NSMutableString *mstr = [[NSMutableString alloc] initWithString:textField.text];
-//    [mstr insertString:string atIndex:range.location];
-//    if (mstr.length>12) {
-//        return NO;
-//    }
-//    return YES;
-//}
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
 
@@ -191,7 +138,7 @@
 -(void)createNav{
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:24];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"修改姓名";

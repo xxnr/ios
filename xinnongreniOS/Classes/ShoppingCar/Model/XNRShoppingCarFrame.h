@@ -41,6 +41,11 @@
 
 @property (nonatomic ,assign ,readonly) CGRect onlineLabelF;
 
+
+@property (nonatomic ,assign ,readonly) CGRect textTopLineF;
+@property (nonatomic ,assign ,readonly) CGRect textbottomLineF;
+
+
 // cell的高度
 @property (nonatomic, assign) CGFloat cellHeight;
 

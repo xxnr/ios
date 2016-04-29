@@ -7,7 +7,6 @@
 //
 
 #import "XNRForgetPasswordViewController.h"
-#import "CoreTFManagerVC.h"
 #import "KSHttpRequest.h"
 #import "XNRLoginViewController.h"
 #import "RSA.h"
@@ -85,7 +84,7 @@
     phoneNumTextField.borderStyle = UITextBorderStyleNone;
     phoneNumTextField.placeholder = @"请输入您的手机号";
     phoneNumTextField.alpha = 1;
-    phoneNumTextField.font = XNRFont(14);
+    phoneNumTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     phoneNumTextField.delegate = self;
     //设置键盘类型
     phoneNumTextField.returnKeyType = UIReturnKeyDone;
@@ -107,12 +106,12 @@
     UITextField *verifyNumTextField = [[UITextField alloc]initWithFrame:CGRectMake(PX_TO_PT(96), PX_TO_PT(154), ScreenWidth-PX_TO_PT(160), PX_TO_PT(52))];
     verifyNumTextField.borderStyle = UITextBorderStyleNone;
     verifyNumTextField.placeholder = @"请输入短信验证码";
-    verifyNumTextField.font = XNRFont(14);
+    verifyNumTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     verifyNumTextField.delegate = self;
     //设置键盘类型
     verifyNumTextField.returnKeyType = UIReturnKeyDone;
     verifyNumTextField.keyboardType=UIKeyboardTypeNumberPad;
-    verifyNumTextField.clearButtonMode = UITextFieldViewModeAlways;
+//    verifyNumTextField.clearButtonMode = UITextFieldViewModeAlways;
     verifyNumTextField.textAlignment = NSTextAlignmentLeft;
     self.verifyNumTextField = verifyNumTextField;
     [self.midView  addSubview:verifyNumTextField];
@@ -125,7 +124,7 @@
     getVerifyButton.backgroundColor = R_G_B_16(0x00b38a);
     [getVerifyButton setTitle:@"免费获取验证码" forState:UIControlStateNormal];
     [getVerifyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    getVerifyButton.titleLabel.font = XNRFont(10);
+    getVerifyButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(20)];
     getVerifyButton.layer.masksToBounds = YES;
     getVerifyButton.layer.cornerRadius = 5;
     self.getVerifyButton = getVerifyButton;
@@ -242,7 +241,7 @@
     
     [self.getVerifyButton setTitle:[NSString stringWithFormat:@"%ds后重新获取",_timeCount] forState:UIControlStateNormal];
     _timeCount=_timeCount-1;
-    if(_timeCount== -2){
+    if(_timeCount== -1){
         _timer.fireDate=[NSDate distantFuture]; //暂停定时器
         self.getVerifyButton.enabled = YES;
         self.getVerifyButton.backgroundColor = R_G_B_16(0x00b38a);
@@ -264,7 +263,7 @@
     newpasswordTextField.borderStyle = UITextBorderStyleNone;
     newpasswordTextField.secureTextEntry=YES;
     newpasswordTextField.placeholder = @"请设置您的密码";
-    newpasswordTextField.font = XNRFont(14);
+    newpasswordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     newpasswordTextField.delegate = self;
     //设置键盘类型
     newpasswordTextField.keyboardType=UIKeyboardTypeDefault;
@@ -289,7 +288,7 @@
     againPasswordTextField.borderStyle = UITextBorderStyleNone;
     againPasswordTextField.secureTextEntry=YES;
     againPasswordTextField.placeholder = @"请输入您的确认密码";
-    againPasswordTextField.font = XNRFont(14);
+    againPasswordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     againPasswordTextField.delegate = self;
     //设置键盘类型
     againPasswordTextField.keyboardType=UIKeyboardTypeDefault;
@@ -318,7 +317,7 @@
     [finishButton setTitleColor:R_G_B_16(0xfbfffe) forState:UIControlStateNormal];
     finishButton.layer.masksToBounds = YES;
     finishButton.layer.cornerRadius = 5;
-    finishButton.titleLabel.font = XNRFont(18);
+    finishButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.finishButton = finishButton;
     [self.mainView addSubview:finishButton];
 }
@@ -385,10 +384,7 @@
             
             [UILabel showMessage:result[@"message"]];
             
-            
         }
-        
-        
     } failure:^(NSError *error) {
         
         
@@ -478,9 +474,6 @@
         [_timer invalidate];
         _timer = nil;
     }
-//    XNRTabBarController *tab = (XNRTabBarController *)self.tabBarController;
-//    tab.selectedIndex = 0;
-//    [UIApplication sharedApplication].keyWindow.rootViewController = tab;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -488,23 +481,11 @@
 -(void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
-    
-    [CoreTFManagerVC installManagerForVC:self scrollView:nil tfModels:^NSArray *{
-        
-        TFModel *tfm1=[TFModel modelWithTextFiled:self.phoneNumTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm2=[TFModel modelWithTextFiled:self.verifyNumTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm3=[TFModel modelWithTextFiled:self.newpasswordTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm4=[TFModel modelWithTextFiled:self.againPasswordTextField inputView:nil name:@"" insetBottom:0];
-        return @[tfm1,tfm2,tfm3,tfm4];
-        
-    }];
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
-    
-    [CoreTFManagerVC uninstallManagerForVC:self];
 }
 
 //消失时回收键盘

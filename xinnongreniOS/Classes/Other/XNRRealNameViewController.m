@@ -7,7 +7,6 @@
 //
 
 #import "XNRRealNameViewController.h"
-#import "CoreTFManagerVC.h"
 #import "PECropViewController.h"
 
 //科目类型
@@ -41,20 +40,12 @@ typedef enum{
     
     [super viewDidAppear:animated];
     
-    [CoreTFManagerVC installManagerForVC:self scrollView:nil tfModels:^NSArray *{
-        
-        TFModel *tfm1=[TFModel modelWithTextFiled:self.nameTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm2=[TFModel modelWithTextFiled:self.IdCardTextField inputView:nil name:@"" insetBottom:0];
-        return @[tfm1,tfm2];
-        
-    }];
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
     
-    [CoreTFManagerVC uninstallManagerForVC:self];
 }
 
 - (void)viewDidLoad {
@@ -97,7 +88,7 @@ typedef enum{
     self.nameTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 0, _nameBg.frame.size.width-10, _nameBg.frame.size.height)];
     self.nameTextField.borderStyle = UITextBorderStyleNone;
     self.nameTextField.placeholder = @"请输入您的姓名";
-    self.nameTextField.font = XNRFont(18);
+    self.nameTextField.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.nameTextField.delegate = self;
     //设置键盘类型
     self.nameTextField.keyboardType=UIKeyboardTypeDefault;
@@ -122,7 +113,7 @@ typedef enum{
     self.IdCardTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 0, _IdCardBg.frame.size.width-10, _IdCardBg.frame.size.height)];
     self.IdCardTextField.borderStyle = UIKeyboardTypeDefault;
     self.IdCardTextField.placeholder = @"请输入您的身份证号";
-    self.IdCardTextField.font = XNRFont(18);
+    self.IdCardTextField.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.IdCardTextField.delegate = self;
     //设置键盘类型
     self.IdCardTextField.keyboardType=UIKeyboardTypeDefault;
@@ -137,7 +128,7 @@ typedef enum{
     self.midTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, _IdCardBg.frame.origin.y+_IdCardBg.frame.size.height, 200, 30)];
     self.midTitleLabel.textColor = R_G_B_16(0xbebebe);
     self.midTitleLabel.text = @"上传证件照";
-    self.midTitleLabel.font = XNRFont(16);
+    self.midTitleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [self.mainScrollView addSubview:self.midTitleLabel];
 }
 
@@ -151,7 +142,7 @@ typedef enum{
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(20, 0, 200, _IdCardFrontBg.frame.size.height)];
     label.textColor = R_G_B_16(0xbebebe);
     label.text = @"身份证正面";
-    label.font = XNRFont(18);
+    label.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [_IdCardFrontBg addSubview:label];
     
     UIImageView *imageView = [MyControl createImageViewWithFrame:CGRectMake(ScreenWidth-20-10, (45-18)/2.0, 10, 18) ImageName:@"nextArrow"];
@@ -183,7 +174,7 @@ typedef enum{
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(20, 0, 200, _IdCardBackBg.frame.size.height)];
     label.textColor = R_G_B_16(0xbebebe);
     label.text = @"身份证反面";
-    label.font = XNRFont(18);
+    label.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [_IdCardBackBg addSubview:label];
     
     UIImageView *imageView = [MyControl createImageViewWithFrame:CGRectMake(ScreenWidth-20-10, (45-18)/2.0, 10, 18) ImageName:@"nextArrow"];
@@ -214,7 +205,7 @@ typedef enum{
     [self.finishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.finishButton.layer.masksToBounds = YES;
     self.finishButton.layer.cornerRadius = 5;
-    self.finishButton.titleLabel.font = XNRFont(18);
+    self.finishButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [self.mainScrollView addSubview:self.finishButton];
 }
 

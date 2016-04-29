@@ -122,9 +122,12 @@
  *  SKU的属性
  */
 @property (nonatomic, copy) NSString *_id;
+@property (nonatomic,copy)NSString *product;
 @property (nonatomic, strong) NSMutableArray *additions;
 @property (nonatomic, strong) NSMutableArray *attributes;
 @property (nonatomic, copy) NSString *online;
+
+@property (nonatomic,copy)NSString *product_id;
 
 
 @end

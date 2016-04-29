@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface XNRMyRepresentViewController : UIViewController
-
+@property (nonatomic,assign)BOOL isBroker;
++(void)SetisBroker:(BOOL)isbroker;
 @end

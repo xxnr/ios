@@ -59,14 +59,14 @@
     CGFloat titleLabelH = PX_TO_PT(80);
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleLabelX,titleLabelY,titleLabelW,titleLabelH)];
-    titleLabel.font = [UIFont systemFontOfSize:14];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     titleLabel.tintColor = R_G_B_16(0xc5c5c5);
     titleLabel.numberOfLines = 0;
     self.titleLabel = titleLabel;
     [self addSubview:titleLabel];
     
     UILabel *datecreatedLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleLabelX,CGRectGetMaxY(self.titleLabel.frame) + marginLabel,titleLabelW,PX_TO_PT(20))];
-    datecreatedLabel.font = [UIFont systemFontOfSize:12];
+    datecreatedLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     datecreatedLabel.tintColor = R_G_B_16(0x646464);
     self.datecreatedLabel = datecreatedLabel;
     [self addSubview:datecreatedLabel];
@@ -74,7 +74,17 @@
 }
 -(void)setModel:(XNRMessageModel *)model{
     _model = model;
-    [self.imgView sd_setImageWithURL:[NSURL URLWithString:model.image] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    
+    [self.imgView sd_setImageWithURL:[NSURL URLWithString:model.image] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+    if (model.image == nil || [model.image isEqualToString:@""]) {
+        [self.imgView setImage:[UIImage imageNamed:@"icon_placehold"]];
+    }else{
+        [self.imgView sd_setImageWithURL:[NSURL URLWithString:model.image] placeholderImage:[UIImage imageNamed:@"icon_loading-wrong"]];
+    }
+
+        
+    }];
+    
     self.titleLabel.text = model.title;
     
     NSString *netDateString = [NSString stringWithFormat:@"%@",model.datecreated];

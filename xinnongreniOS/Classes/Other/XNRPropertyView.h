@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 typedef enum : NSUInteger {
-    XNRFirstType,
-    XNRSecondType,
+    XNRBuyType,
+    XNRAddCartType,
     XNRisFormType,
 } XNRPropertyViewType ;
 

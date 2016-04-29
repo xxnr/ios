@@ -12,7 +12,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self == [super initWithFrame:frame]) {
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
-        titleLabel.font = [UIFont systemFontOfSize:16.0];
+        titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         titleLabel.textColor = R_G_B_16(0x646464);
         titleLabel.backgroundColor = [UIColor clearColor];
         self.selectTitleLabel = titleLabel;

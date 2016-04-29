@@ -140,7 +140,13 @@
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datas = result[@"datas"];
             
-            self.nameLabel.text = [NSString stringWithFormat:@"姓名：%@",datas[@"name"]];
+            if (![KSHttpRequest isNULL:datas[@"name"]]) {
+                self.nameLabel.text = [NSString stringWithFormat:@"姓名：%@",datas[@"name"]];
+            }
+            else
+            {
+                self.nameLabel.text = @"该好友未填姓名";
+            }
             self.phoneNum.text = [NSString stringWithFormat:@"手机号：%@",datas[@"account"]];
             self.totalLabel.text = [NSString stringWithFormat:@"%@",datas[@"total"]];
             
@@ -198,7 +204,7 @@
         
         UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(30), ScreenWidth, PX_TO_PT(28))];
         timeLabel.textColor = R_G_B_16(0x323232);
-        timeLabel.font = [UIFont systemFontOfSize:14];
+        timeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         NSString *netDateString = [NSString stringWithFormat:@"%@",sectionModel.dateCreated];
         NSArray *dateArr = [netDateString componentsSeparatedByString:@"T"];
         NSDateFormatter *dataFormatter = [[NSDateFormatter alloc] init];
@@ -210,7 +216,7 @@
         
         UILabel *orderTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(88))];
         orderTypeLabel.textColor = R_G_B_16(0xfe9b00);
-        orderTypeLabel.font = [UIFont systemFontOfSize:16];
+        orderTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         orderTypeLabel.textAlignment = NSTextAlignmentRight;
         [headView addSubview:orderTypeLabel];
         // 订单状态 0:已关闭 1:待支付  2:待发货 3:已发货 4: 已完成
@@ -252,13 +258,13 @@
             
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(23), ScreenWidth/2, PX_TO_PT(32))];
     nameLabel.textColor = R_G_B_16(0x323232);
-    nameLabel.font = [UIFont systemFontOfSize:16];
+    nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.nameLabel = nameLabel;
     [headView addSubview:nameLabel];
             
     UILabel *phoneNum = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(30), ScreenWidth, PX_TO_PT(32))];
     phoneNum.textColor = R_G_B_16(0x323232);
-    phoneNum.font = [UIFont systemFontOfSize:16];
+    phoneNum.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.phoneNum = phoneNum;
     [headView addSubview:phoneNum];
             
@@ -273,7 +279,7 @@
             
     UILabel *orderNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(56), ScreenWidth/2-PX_TO_PT(130), PX_TO_PT(28))];
     orderNumLabel.textColor = R_G_B_16(0x323232);
-    orderNumLabel.font = [UIFont systemFontOfSize:14];
+    orderNumLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     orderNumLabel.textAlignment = NSTextAlignmentRight;
     orderNumLabel.text = @"订单数：";
     [headView addSubview:orderNumLabel];

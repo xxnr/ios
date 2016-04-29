@@ -13,26 +13,32 @@
 #import "XNRPayType_VC.h"
 #import "XNRShoppingCarController.h"
 @interface XNRSelPayOrder_VC ()
-@property (weak, nonatomic) IBOutlet UIView *topView;
-@property (weak, nonatomic) IBOutlet UILabel *orderIDLabel1;
-@property (weak, nonatomic) IBOutlet UILabel *orderIDLabel2;
-@property (weak, nonatomic) IBOutlet UILabel *payType1;
-@property (weak, nonatomic) IBOutlet UILabel *payType2;
-@property (weak, nonatomic) IBOutlet UILabel *holdPayLabel1;
-@property (weak, nonatomic) IBOutlet UILabel *holdPayLabel2;
-@property (weak, nonatomic) IBOutlet UILabel *totalMoneyLabel1;
-@property (weak, nonatomic) IBOutlet UILabel *totalMoneyLabel2;
-@property (weak, nonatomic) IBOutlet UILabel *orderDetailLabel1;
-@property (weak, nonatomic) IBOutlet UILabel *orderDetailLabel2;
-@property (weak, nonatomic) IBOutlet UIButton *payButton1;
-@property (weak, nonatomic) IBOutlet UIButton *payButton2;
+@property (weak, nonatomic) UIView *topView;
+@property (weak, nonatomic) UIView *midView;
+@property (weak, nonatomic) UIView *bottomView;
+@property (weak, nonatomic) UILabel *orderIDLabelSep;
+@property (weak, nonatomic) UILabel *orderIDLabelFull;
+@property (weak, nonatomic) UILabel *payTypeSep;
+@property (weak, nonatomic) UILabel *payTypeFull;
+@property (weak, nonatomic) UILabel *holdPayLabelSep;
+@property (weak, nonatomic) UILabel *holdPayLabelFull;
+@property (weak, nonatomic) UILabel *totalMoneyLabelSep;
+@property (weak, nonatomic) UILabel *totalMoneyLabelFull;
+@property (weak, nonatomic) UILabel *orderDetailLabelSep;
+@property (weak, nonatomic) UILabel *orderDetailLabelFull;
+@property (weak, nonatomic) UIButton *payButtonSep;
+@property (weak, nonatomic) UIButton *payButtonFull;
+@property (weak, nonatomic) UIView *bgViewSep;
 
+@property (weak, nonatomic) UIView *bgViewFull;
+@property (weak, nonatomic) UIView *line1;
+@property (weak, nonatomic) UIView *line2;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
 @property (nonatomic ,strong) NSString *paySubOrderType;//本次付款的字订单类型
 
-@property (nonatomic, strong) NSMutableString *str1;
-@property (nonatomic, strong) NSMutableString *str2;
+@property (nonatomic, strong) NSMutableString *strSep;
+@property (nonatomic, strong) NSMutableString *strFull;
 @end
 
 
@@ -43,20 +49,156 @@
 
 
     [self setNav];
+    [self createMidView];
     [self setTop];
     [self setButton];
     [self getData1];
     [self getData2];
-    self.str1 = [NSMutableString string];
-    self.str2 = [NSMutableString string];
-    self.payType1.textAlignment = UITextAlignmentRight;
-    self.payType2.textAlignment = UITextAlignmentRight;
+    self.strSep = [NSMutableString string];
+    self.strFull = [NSMutableString string];
 
-    self.orderDetailLabel1.layer.cornerRadius = 10;
-    self.orderDetailLabel2.layer.cornerRadius = 10;
-    self.orderDetailLabel1.layer.masksToBounds = YES;
-    self.orderDetailLabel2.layer.masksToBounds = YES;
     // Do any additional setup after loading the view from its nib.
+}
+-(void)createMidView
+{
+    self.view.backgroundColor = R_G_B_16(0xf9f9f9);
+    UIView *topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(126))];
+    self.topView = topView;
+    [self.view addSubview:topView];
+    
+    UIView *midView = [[UIView alloc]initWithFrame: CGRectMake(0, CGRectGetMaxY(self.topView.frame) + PX_TO_PT(14), ScreenWidth, PX_TO_PT(410))];
+    midView.backgroundColor = [UIColor whiteColor];
+    self.midView = midView;
+    [self.view addSubview:midView];
+    
+    UIView *bottomView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.midView.frame) + PX_TO_PT(20), ScreenWidth, PX_TO_PT(410))];
+    bottomView.backgroundColor = [UIColor whiteColor];
+    self.bottomView = bottomView;
+    [self.view addSubview:bottomView];
+
+    UIView *bgViewSep = [[UIView alloc]initWithFrame: CGRectMake(0,0, ScreenWidth, PX_TO_PT(80))];
+    bgViewSep.backgroundColor = R_G_B_16(0xF0F0F0);
+    [self.midView addSubview:bgViewSep];
+    
+    
+    UILabel *orderIDLabelSep = [[UILabel alloc]initWithFrame: CGRectMake(PX_TO_PT(31), PX_TO_PT(24), ScreenWidth, PX_TO_PT(35))];
+    orderIDLabelSep.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    orderIDLabelSep.textColor = R_G_B_16(0x323232);
+    self.orderIDLabelSep = orderIDLabelSep;
+    [bgViewSep addSubview:orderIDLabelSep];
+    
+    UILabel *payTypeSep = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(24), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(27))];
+    payTypeSep.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    payTypeSep.textColor = R_G_B_16(0x646464);
+    self.payTypeSep = payTypeSep;
+    [self.midView addSubview:payTypeSep];
+    
+    UILabel *holdPayLabelSep = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(bgViewSep.frame)+PX_TO_PT(28), ScreenWidth, PX_TO_PT(30))];
+    holdPayLabelSep.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    holdPayLabelSep.textColor = R_G_B_16(0x323232);
+    self.holdPayLabelSep = holdPayLabelSep;
+    [self.midView addSubview:holdPayLabelSep];
+    
+    
+    UILabel *totalMoneyLabelSep = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(self.holdPayLabelSep.frame) + PX_TO_PT(24), ScreenWidth, PX_TO_PT(30))];
+    totalMoneyLabelSep.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    totalMoneyLabelSep.textColor = R_G_B_16(0x323232);
+    self.totalMoneyLabelSep = totalMoneyLabelSep;
+    [self.midView addSubview:totalMoneyLabelSep];
+    
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(self.totalMoneyLabelSep.frame) + PX_TO_PT(27), ScreenWidth - PX_TO_PT(62), PX_TO_PT(2))];
+    line1.backgroundColor = R_G_B_16(0xC7C7C7);
+    [self.midView addSubview:line1];
+    
+    UIView *detailView0 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31),CGRectGetMaxY(line1.frame) + PX_TO_PT(12), ScreenWidth - PX_TO_PT(62), PX_TO_PT(80))];
+    detailView0.backgroundColor = R_G_B_16(0xF8F8F8);
+    [self.midView addSubview:detailView0];
+    
+    UILabel *orderdetail0 = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(26), detailView0.width - PX_TO_PT(60), PX_TO_PT(28))];
+    orderdetail0.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    orderdetail0.textColor = R_G_B_16(0x646464);
+    self.orderDetailLabelSep = orderdetail0;
+    [detailView0 addSubview:orderdetail0];
+
+    UIButton *payButtonSep = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(133)-PX_TO_PT(32), CGRectGetMaxY(detailView0.frame) + PX_TO_PT(19), PX_TO_PT(133), PX_TO_PT(60))];
+    [payButtonSep setTitle:@"去支付" forState:UIControlStateNormal];
+    payButtonSep.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    payButtonSep.backgroundColor = R_G_B_16(0xFE9B00);
+    [payButtonSep setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [payButtonSep addTarget:self action:@selector(pay1Btn:) forControlEvents:UIControlEventTouchDown];
+    self.payButtonSep = payButtonSep;
+    [self.midView addSubview:payButtonSep];
+    
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.payButtonSep.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
+    line2.backgroundColor = R_G_B_16(0xC7C7C7);
+    [self.midView addSubview:line2];
+    
+    UIView *bgViewFull = [[UIView alloc]initWithFrame: CGRectMake(0,0, ScreenWidth, PX_TO_PT(80))];
+    bgViewFull.backgroundColor = R_G_B_16(0xF0F0F0);
+    [self.bottomView addSubview:bgViewFull];
+    
+    
+    UILabel *orderIDLabelFull = [[UILabel alloc]initWithFrame: CGRectMake(PX_TO_PT(31), PX_TO_PT(24), ScreenWidth, PX_TO_PT(35))];
+    orderIDLabelFull.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    orderIDLabelFull.textColor = R_G_B_16(0x323232);
+    self.orderIDLabelFull = orderIDLabelFull;
+    [bgViewFull addSubview:orderIDLabelFull];
+    
+    UILabel *payTypeFull = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(24), ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(27))];
+    payTypeFull.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    payTypeFull.textColor = R_G_B_16(0x646464);
+
+    self.payTypeFull = payTypeFull;
+    [self.bottomView addSubview:payTypeFull];
+    
+    UILabel *holdPayLabelFull = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(bgViewFull.frame)+PX_TO_PT(28), ScreenWidth, PX_TO_PT(30))];
+    holdPayLabelFull.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    holdPayLabelFull.textColor = R_G_B_16(0x323232);
+    self.holdPayLabelFull = holdPayLabelFull;
+    [self.bottomView addSubview:holdPayLabelFull];
+    
+    
+    UILabel *totalMoneyLabelFull = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(self.holdPayLabelFull.frame) + PX_TO_PT(24), ScreenWidth, PX_TO_PT(30))];
+    totalMoneyLabelFull.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    totalMoneyLabelFull.textColor = R_G_B_16(0x323232);
+    self.totalMoneyLabelFull = totalMoneyLabelFull;
+    [self.bottomView addSubview:totalMoneyLabelFull];
+    
+    UIView *line3 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(self.totalMoneyLabelFull.frame) + PX_TO_PT(26), ScreenWidth - PX_TO_PT(62), PX_TO_PT(2))];
+    line3.backgroundColor = R_G_B_16(0xC7C7C7);
+    [self.bottomView addSubview:line3];
+    
+    UIView *detailView = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31),CGRectGetMaxY(line3.frame) + PX_TO_PT(12), ScreenWidth - PX_TO_PT(62), PX_TO_PT(80))];
+    detailView.backgroundColor = R_G_B_16(0xF8F8F8);
+    [self.bottomView addSubview:detailView];
+    
+    UILabel *orderdetail = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(26), detailView.width - PX_TO_PT(60), PX_TO_PT(28))];
+    orderdetail.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    orderdetail.textColor = R_G_B_16(0x646464);
+    self.orderDetailLabelFull = orderdetail;
+    [detailView addSubview:orderdetail];
+    
+    UIButton *payButtonFull = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(133) - PX_TO_PT(32), CGRectGetMaxY(detailView.frame) + PX_TO_PT(19), PX_TO_PT(133), PX_TO_PT(60))];
+    [payButtonFull setTitle:@"去支付" forState:UIControlStateNormal];
+    payButtonFull.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    payButtonFull.backgroundColor = R_G_B_16(0xFE9B00);
+    [payButtonFull setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [payButtonFull addTarget:self action:@selector(pay2Btn:) forControlEvents:UIControlEventTouchDown];
+    self.payButtonFull = payButtonFull;
+    [self.bottomView addSubview:payButtonFull];
+    
+    UIView *line4 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.payButtonFull.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
+    line4.backgroundColor = R_G_B_16(0xC7C7C7);
+    [self.bottomView addSubview:line4];
+
+    detailView0.layer.cornerRadius = 10;
+    detailView.layer.cornerRadius = 10;
+    detailView.layer.masksToBounds = YES;
+    detailView0.layer.masksToBounds = YES;
+    self.payTypeSep.textAlignment = UITextAlignmentRight;
+    self.payTypeFull.textAlignment = UITextAlignmentRight;
+
+
 }
 -(NSMutableArray *)dataArray
 {
@@ -68,12 +210,11 @@
 //设置圆角button
 -(void)setButton
 {
-    self.payButton1.layer.cornerRadius = 5;
-    self.payButton2.layer.cornerRadius = 5;
+    self.payButtonSep.layer.cornerRadius = 5;
+    self.payButtonFull.layer.cornerRadius = 5;
 }
 -(void)setTop
 {
-    self.topView.frame = CGRectMake(0, 0, ScreenWidth,62);
     UIImageView *bgImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"矩形背景1"]];
     
     bgImageView.frame = self.topView.frame;
@@ -93,10 +234,6 @@
     
 }
 
--(void)setMiddle
-{
-
-}
 #pragma mark - 设置导航
 - (void)setNav
 {
@@ -125,25 +262,25 @@
 
 }
 
-- (IBAction)pay1Btn:(UIButton *)sender {
+- (void)pay1Btn:(UIButton *)sender {
     XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
-    vc.orderID = self.addOrderModel1.orderID;
-    vc.paymentId = self.addOrderModel1.paymentId;
-    vc.payMoney = [NSString stringWithFormat:@"%.2f",self.addOrderModel1.money.floatValue];
+    vc.orderID = self.addOrderModelSep.orderID;
+    vc.paymentId = self.addOrderModelSep.paymentId;
+    vc.payMoney = [NSString stringWithFormat:@"%.2f",self.addOrderModelSep.money.doubleValue];
 //    vc.recieveName = self.recipientNameLabel.text;
 //    vc.recievePhone = self.recipientPhoneLabel.text;
 //    vc.recieveAddress = _addressDetail.text;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (IBAction)pay2Btn:(UIButton *)sender {
+- (void)pay2Btn:(UIButton *)sender {
     
     XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
-    vc.orderID = self.addOrderModel2.orderID;
-    vc.paymentId = self.addOrderModel2.paymentId;
-    vc.payMoney = [NSString stringWithFormat:@"%.2f",self.addOrderModel2.money.floatValue];
+    vc.orderID = self.addOrderModelFull.orderID;
+    vc.paymentId = self.addOrderModelFull.paymentId;
+    vc.payMoney = [NSString stringWithFormat:@"%.2f",self.addOrderModelFull.money.doubleValue];
     //    vc.recieveName = self.recipientNameLabel.text;
     //    vc.recievePhone = self.recipientPhoneLabel.text;
     //    vc.recieveAddress = _addressDetail.text;
@@ -151,7 +288,7 @@
 }
 -(void)getData1
 {
-    [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.addOrderModel1.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.addOrderModelSep.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             
             
@@ -193,35 +330,45 @@
 
 -(void)setOrder1:(NSString *)paySubOrderType andHoldMoney:(NSString *)holdMoney andTotalMoney:(NSString *)totalMoney andOrderGoodList:(NSMutableArray *)orderGoodList
 {
-    self.orderIDLabel1.text = self.addOrderModel1.orderID;
+    self.orderIDLabelSep.text = [NSString stringWithFormat:@"订单号：%@",self.addOrderModelSep.orderID];
     if ([paySubOrderType isEqualToString:@"deposit"]) {
-        self.payType1.text = @"阶段一：订金";
+        self.payTypeSep.text = @"阶段一：订金";
     }
     else if ([paySubOrderType isEqualToString:@"balance"])
     {
-        self.payType1.text = @"阶段二：尾款";
+        self.payTypeSep.text = @"阶段二：尾款";
     }
     else if ([paySubOrderType isEqualToString:@"full"])
     {
-        self.payType1.text = @"订单总额";
+        self.payTypeSep.text = @"订单总额";
     }
-    self.holdPayLabel1.text = [NSString stringWithFormat:@"%.2f元",holdMoney.floatValue];
-    self.totalMoneyLabel1.text = [NSString stringWithFormat:@"%.2f元",totalMoney.floatValue];
+    self.holdPayLabelSep.text = [NSString stringWithFormat:@"待付金额：%.2f元",holdMoney.doubleValue];
+    self.totalMoneyLabelSep.text = [NSString stringWithFormat:@"订单总额：%.2f元",totalMoney.doubleValue];
+    [self setDifFont:self.holdPayLabelSep];
+    [self setDifFont:self.totalMoneyLabelSep];
+    
     for ( int i = 0; i < orderGoodList.count; i++) {
         XNRCheckOrderModel *orderModer = orderGoodList[i];
-        [self.str1 appendString:[NSString stringWithFormat:@"%@－%@件",orderModer.productName,orderModer.count]];
-        if ((i+1) < orderGoodList.count) {
-            [self.str1 appendString:@","];
+        if (orderModer.productName) {
+            [self.strSep appendString:[NSString stringWithFormat:@"%@－%@件",orderModer.productName,orderModer.count]];
         }
-        NSString *str = [NSString stringWithFormat:@"  %@",self.str1];
-        self.orderDetailLabel1.text = str;
+        else
+        {
+            [self.strSep appendString:[NSString stringWithFormat:@"%@－%@件",orderModer.goodsName,orderModer.goodsCount]];
+
+        }
+        if ((i+1) < orderGoodList.count) {
+            [self.strSep appendString:@","];
+        }
+        NSString *str = [NSString stringWithFormat:@"%@",self.strSep];
+        self.orderDetailLabelSep.text = str;
 
     }
 }
 
 -(void)getData2
 {
-    [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.addOrderModel2.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.addOrderModelFull.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             
             
@@ -263,29 +410,56 @@
 
 -(void)setOrder2:(NSString *)paySubOrderType andHoldMoney:(NSString *)holdMoney andTotalMoney:(NSString *)totalMoney andOrderGoodList:(NSMutableArray *)orderGoodList
 {
-    self.orderIDLabel2.text = self.addOrderModel2.orderID;
+    self.orderIDLabelFull.text = [NSString stringWithFormat:@"订单号：%@",self.addOrderModelFull.orderID];
+
     if ([paySubOrderType isEqualToString:@"deposit"]) {
-        self.payType2.text = @"分阶段：订金";
+        self.payTypeFull.text = @"分阶段：订金";
     }
     else if ([paySubOrderType isEqualToString:@"full"])
     {
-        self.payType2.text = @"订单总额";
+        self.payTypeFull.text = @"订单总额";
     }
-    self.holdPayLabel2.text = [NSString stringWithFormat:@"%.2f元",holdMoney.floatValue];
-    self.totalMoneyLabel2.text = [NSString stringWithFormat:@"%.2f元",totalMoney.floatValue];
+    self.holdPayLabelFull.text = [NSString stringWithFormat:@"待付金额：%.2f元",holdMoney.doubleValue];
+    self.totalMoneyLabelFull.text = [NSString stringWithFormat:@"订单总额：%.2f元",totalMoney.doubleValue];
+    
+
+    [self setDifFont:self.holdPayLabelFull];
+    [self setDifFont:self.totalMoneyLabelFull];
+    
     for ( int i = 0; i < orderGoodList.count; i++) {
         XNRCheckOrderModel *orderModer = orderGoodList[i];
-        [self.str2 appendString:[NSString stringWithFormat:@"%@－%@件",orderModer.productName,orderModer.count]];
-        if ((i+1) < orderGoodList.count) {
-            [self.str2 appendString:@","];
+        if (orderModer.productName) {
+            [self.strFull appendString:[NSString stringWithFormat:@"%@－%@件",orderModer.productName,orderModer.count]];
         }
-        NSString *str = [NSString stringWithFormat:@"  %@",self.str2];
-        self.orderDetailLabel2.text = str;
-        self.orderDetailLabel2.layer.cornerRadius = 10;
+        else
+        {
+            [self.strFull appendString:[NSString stringWithFormat:@"%@－%@件",orderModer.goodsName,orderModer.goodsCount]];
+        }
 
-//        self.orderDetailLabel2.text = self.str2;
+        if ((i+1) < orderGoodList.count) {
+            [self.strFull appendString:@","];
+        }
+        NSString *str = [NSString stringWithFormat:@"%@",self.strFull];
+        self.orderDetailLabelFull.text = str;
+        self.orderDetailLabelFull.layer.cornerRadius = 10;
+
+//        self.orderDetailLabelFull.text = self.strFull;
         
     }
+}
+-(void)setDifFont:(UILabel *)label
+{
+    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:label.text];
+    NSDictionary *dict=@{
+                         
+                         NSForegroundColorAttributeName:R_G_B_16(0xFF4E00),
+                         NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)],
+                         };
+    
+    [AttributedStringDeposit addAttributes:dict range:NSMakeRange(5,AttributedStringDeposit.length-5)];
+    
+    [label setAttributedText:AttributedStringDeposit];
+    
 }
 
 - (void)didReceiveMemoryWarning {

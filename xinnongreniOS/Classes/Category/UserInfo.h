@@ -63,8 +63,6 @@
 @property (nonatomic ,copy) NSString *townID;
 
 
-
-
 //附加属性
 /**
  *  登录密码
@@ -87,6 +85,8 @@
 
 @property (nonatomic, copy) NSString *type;
 @property (nonatomic, copy) NSString *typeName;
+@property (nonatomic, copy) NSString *typeNum;
+
 /**
  *  姓名
  */
@@ -96,5 +96,9 @@
 @property (nonatomic ,copy) NSString *sexName;
 
 @property (nonatomic ,copy) NSString *cartId;
+
+@property (nonatomic ,copy) NSString *currentVersion;
+
+
 
 @end

@@ -117,7 +117,7 @@
                 [city setValuesForKeysWithDictionary:Cdict];
                 [_cityArr addObject:city];
                 if (i==0) {
-                    [self getCountyDataWith:city.ID];
+                    [self getCountyDataWith:city._id];
                 }
                 i++;
             }
@@ -198,11 +198,11 @@
         XNRProviceModel *province = _provinceArr[selelctIndex];
         [_cityArr removeAllObjects];
         [_countyArr removeAllObjects];
-        [self getCityDataWith:province.ID];
+        [self getCityDataWith:province._id];
         [self.pickerView reloadAllComponents];
         self.provinceLabel.text = provinceName;
         provinceName = province.name;
-        provinceId = province.ID;
+        provinceId = province._id;
         
     }
     NSString *cityName;
@@ -215,9 +215,9 @@
         XNRCityModel *city = _cityArr[selectIndex];
         cityName = city.name;
         self.cityLabel.text = cityName;
-        cityId = city.ID;
+        cityId = city._id;
         // 获取对应的县
-        [self getCountyDataWith:city.ID];
+        [self getCountyDataWith:city._id];
         [self.pickerView reloadComponent:2];
     }
     NSString *countyName;
@@ -228,7 +228,7 @@
             XNRCountyModel *county = _countyArr[selectIndex];
             countyName = county.name;
             self.countyLabel.text = countyName;
-            countyId = county.ID;
+            countyId = county._id;
             [self.pickerView reloadAllComponents];
         }
         

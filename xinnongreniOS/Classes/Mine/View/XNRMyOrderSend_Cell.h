@@ -13,7 +13,6 @@
 
 
 @property (nonatomic,copy)void(^checkOrderBlock)(NSString*orderID,NSString*orderNO);
-- (void)setCellDataWithShoppingCartModel:(XNRMyOrderModel*)info;
 
 @property (nonatomic,strong) XNRMyAllOrderFrame *orderFrame;
 

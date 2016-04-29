@@ -54,6 +54,11 @@
     [self getData];
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - 地址管理
 - (void)createAddressManageTableView
 {
@@ -135,12 +140,19 @@
     addAddressVC.titleLabel = @"添加收货地址";
     addAddressVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:addAddressVC animated:YES];
-
 }
 
 - (void)backClick:(UIButton *)btn
 {
-//     [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshMyAccount" object:nil];
+    if (_dataArr.count>0) {
+        XNRAddressManageModel *model = _dataArr[0];
+        model.selected = YES;
+        self.addressChoseBlock(model);
+        [self.addressManageTableView reloadData];
+    }else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"initNOAddressView" object:nil];
+    }
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

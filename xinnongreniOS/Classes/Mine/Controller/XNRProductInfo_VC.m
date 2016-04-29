@@ -9,7 +9,6 @@
 #import "CWStarRateView.h"
 #import "XNRShoppingCartModel.h"
 #import "UIImageView+WebCache.h"
-#import "CoreTFManagerVC.h"
 #import "XNRTabBarController.h"
 #import "XNROrderInfo_VC.h"
 #import "XNRProductInfo_model.h"
@@ -20,17 +19,26 @@
 #import "XNRToolBar.h"
 #import "XNRPropertyView.h"
 #import "XNRProductInfo_frame.h"
+#import "MWPhotoBrowser.h"
 #define kLeftBtn  3000
 #define kRightBtn 4000
 #define HEIGHT 100
-@interface XNRProductInfo_VC ()<UITextFieldDelegate,UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource,XNRProductInfo_cellDelegate,XNRToolBarBtnDelegate>{
+
+
+#define KbtnTag 1000
+#define KlabelTag 2000
+@interface XNRProductInfo_VC ()<UITextFieldDelegate,UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource,XNRProductInfo_cellDelegate,XNRToolBarBtnDelegate,UIScrollViewDelegate,MWPhotoBrowserDelegate>{
     CGRect oldTableRect;
     CGFloat preY;
     NSMutableArray *_goodsArray;
     NSString *_Price;
     NSString *_marketPrice;
+    NSMutableArray *_infoModelArray;
+
 }
-@property(nonatomic,weak) UITableView *tableView;
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property(nonatomic,strong) UITableView *tableView;
+@property(nonatomic,strong) UIWebView *webView;
 @property(nonatomic,weak) UIImageView *headView;
 @property(nonatomic,weak) UITextField *numTextField;
 
@@ -38,6 +46,9 @@
 @property(nonatomic,weak) UIButton*addBuyCarBtn; // 加入购物车
 @property(nonatomic,weak) UIButton *rightBtn;
 @property(nonatomic,weak) UIButton *leftBtn;
+
+@property(nonatomic,weak) UIButton *button;
+
 
 @property (nonatomic,weak) UIView *midView;
 @property (nonatomic,weak) UIView *selectLine;
@@ -54,9 +65,20 @@
 @property (nonatomic ,strong) NSMutableArray *additions;
 
 @property (nonatomic ,weak) XNRPropertyView *propertyView;
+
+@property (nonatomic, strong) NSMutableArray *picBrowserList;
+
+
 @end
 
 @implementation XNRProductInfo_VC
+
+- (NSMutableArray *)picBrowserList {
+    if (!_picBrowserList) {
+        _picBrowserList = [NSMutableArray array];
+    }
+    return _picBrowserList;
+}
 
 -(BMProgressView *)progressView{
     if (!_progressView) {
@@ -67,13 +89,11 @@
     return _progressView;
 }
 
-
 -(XNRPropertyView *)propertyView{
     
     [self.tableView reloadData];
     XNRPropertyView *propertyView = [XNRPropertyView sharedInstanceWithModel:self.model];
     if (!_propertyView) {
-        NSLog(@"self.model%@",self.model);
         __weak __typeof(self)weakSelf = self;
         // 传回来的属性
         propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice){
@@ -98,6 +118,7 @@
         propertyView.loginBlock = ^(){
             
             XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
+            login.loginFromProductInfo = YES;
             login.hidesBottomBarWhenPushed = YES;
             [weakSelf.navigationController pushViewController:login animated:YES];
             
@@ -125,26 +146,21 @@
 -(void)viewWillDisappear:(BOOL)animated{
     
     [_numTextField resignFirstResponder];
-    [[XNRPropertyView sharedInstanceWithModel:self.model] changeSelfToIdentify];
+    
+    if (self.navigationController.childViewControllers.count-1 > [self.navigationController.childViewControllers indexOfObject:self]) {
+        
+    } else {
+        [[XNRPropertyView sharedInstanceWithModel:self.model] changeSelfToIdentify];
+    }
 }
 -(void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
-    
-    [CoreTFManagerVC installManagerForVC:self scrollView:nil tfModels:^NSArray *{
-        
-        TFModel *tfm1=[TFModel modelWithTextFiled:self.numTextField inputView:nil name:@"" insetBottom:0];
-        
-        return @[tfm1];
-        
-    }];
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
-    
-    [CoreTFManagerVC uninstallManagerForVC:self];
 }
 
 - (void)viewDidLoad {
@@ -153,6 +169,7 @@
     // 获取网络数据
     [self getData];
     _goodsArray  = [NSMutableArray array];
+    
     // 导航栏
     [self setNavigationbarTitle];
     // 注册消息通知
@@ -161,6 +178,65 @@
     // 键盘即将隐藏, 就会发出UIKeyboardWillHideNotification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
+    [self.view addSubview:self.scrollView];
+    [self.scrollView addSubview:self.tableView];
+    [self.scrollView addSubview:self.webView];
+    
+    
+    // 设置UITableView的上拉加载
+    MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    footer.refreshingTitleHidden = YES;
+    footer.automaticallyHidden = YES;
+    self.tableView.mj_footer = footer;
+    
+    
+    //设置UIWebView 有下拉操作
+    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    header.lastUpdatedTimeLabel.hidden = YES;
+    [header setTitle:@"下拉，返回商品简介" forState:MJRefreshStateIdle];
+    [header setTitle:@"释放，返回商品简介" forState:MJRefreshStatePulling];
+    [header setTitle:@"返回中 ..." forState:MJRefreshStateRefreshing];
+    self.webView.scrollView.mj_header = header;
+    
+    [self createWebView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notSelectedAttributes) name:@"notSelectedAttributes" object:nil];
+    
+    NSLog(@"navigation===%@",self.navigationController);
+    
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+-(void)notSelectedAttributes
+{
+    [[XNRPropertyView sharedInstanceWithModel:self.model] changeSelfToIdentify];
+
+}
+
+
+
+-(void)loadMoreData{
+    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionLayoutSubviews animations:^{
+        self.scrollView.contentOffset = CGPointMake(0, ScreenHeight);
+    } completion:^(BOOL finished) {
+        //结束加载
+        [self.tableView.mj_footer endRefreshing];
+    }];
+
+}
+-(void)loadNewData{
+    //下拉执行对应的操作
+    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionLayoutSubviews animations:^{
+        self.scrollView.contentOffset = CGPointMake(0, 0);
+    } completion:^(BOOL finished) {
+        //结束加载
+        [self.webView.scrollView.mj_header endRefreshing];
+    }];
 }
 
 -(void)keyboardWillHide:(NSNotification *)note
@@ -170,31 +246,171 @@
     }
 
 }
+#pragma mark - 懒加载视图
+-(UIScrollView *)scrollView
+{
+    if (_scrollView == nil)
+    {
+        _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+        _scrollView.contentSize = CGSizeMake(ScreenWidth, ScreenHeight * 2);
+        //设置分页效果
+        _scrollView.pagingEnabled = YES;
+        //禁用滚动
+        _scrollView.scrollEnabled = NO;
+    }
+    return _scrollView;
+}
+
+-(UITableView *)tableView
+{
+    if (_tableView == nil)
+    {
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStylePlain];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        UIView * view = [[UIView alloc] init];
+        [_tableView setTableFooterView:view];
+    }
+    return _tableView;
+}
+
+-(UIWebView *)webView
+{
+    if (_webView == nil)
+    {
+        _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, ScreenHeight+PX_TO_PT(80), ScreenWidth, ScreenHeight-PX_TO_PT(160)-64)];
+        _webView.backgroundColor = R_G_B_16(0xf2f2f2);
+    }
+    return _webView;
+}
+
+
+-(void)createWebView
+{
+    UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenHeight, ScreenWidth, PX_TO_PT(80))];
+    midView.backgroundColor = R_G_B_16(0xf2f2f2);
+    self.midView = midView;
+    [self.scrollView addSubview:midView];
+    
+    
+    NSArray *array = @[@"商品描述",@"详细参数",@"服务说明"];
+    CGFloat X = 0;
+    CGFloat Y = 0;
+    CGFloat W = ScreenWidth/3.0;
+    CGFloat H = PX_TO_PT(80);
+    
+    for (int i = 0; i<array.count; i++) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.frame = CGRectMake(X+i*W, Y, W, H);
+        button.tag = KbtnTag+i;
+        [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        self.button = button;
+        [midView addSubview:button];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(W*i, 0, W, H)];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+        label.textColor = R_G_B_16(0x646464);
+        label.text = array[i];
+        label.tag = KlabelTag + i;
+        [midView addSubview:label];
+        
+        if (i == 0) {
+            button.selected =YES;
+            self.tempBtn = button;
+            
+            label.textColor = R_G_B_16(0x00b38a);
+            self.tempLabel = label;
+        }
+    }
+    
+    UIView *selectLine = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(35), PX_TO_PT(77), PX_TO_PT(180), PX_TO_PT(3))];
+    selectLine.backgroundColor = R_G_B_16(0x00b38a);
+    self.selectLine = selectLine;
+    [midView addSubview:selectLine];
+    
+    for (int i = 1; i<3; i++) {
+        UIView *dividedLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3*i, PX_TO_PT(20), PX_TO_PT(1), PX_TO_PT(40))];
+        dividedLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        [midView addSubview:dividedLine];
+        
+    }
+}
+
+-(void)buttonClick:(UIButton *)button
+{
+    XNRProductInfo_frame *frameModel = [_goodsArray lastObject];
+    static int index = 1000;
+    UILabel *titleLabel = (UILabel *)[self.view viewWithTag:button.tag + KbtnTag];
+    [UIView animateWithDuration:.3 animations:^{
+        self.selectLine.frame = CGRectMake((button.tag - KbtnTag)*ScreenWidth/3 + PX_TO_PT(35), PX_TO_PT(77), PX_TO_PT(180), PX_TO_PT(3));
+        
+    }];
+    index = (int)button.tag;
+    if (button.tag == KbtnTag) {
+        self.tempBtn.selected = NO;
+        button.selected = YES;
+        self.tempBtn = button;
+        
+        
+        self.tempLabel.textColor = R_G_B_16(0x646464);
+        titleLabel.textColor = R_G_B_16(0x00b38a);
+        self.tempLabel = titleLabel;
+        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_body_url]];
+        [self.webView loadRequest:request];
+        [BMProgressView LoadViewDisappear:self.view];
+        
+    }else if (button.tag == KbtnTag + 1)
+    {
+        self.tempBtn.selected = NO;
+        button.selected = YES;
+        self.tempBtn = button;
+        
+        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_standard_url]];
+        [self.webView loadRequest:request];
+        [BMProgressView LoadViewDisappear:self.view];
+        
+        self.tempLabel.textColor = R_G_B_16(0x646464);
+        titleLabel.textColor = R_G_B_16(0x00b38a);
+        self.tempLabel = titleLabel;
+    }else{
+        self.tempBtn.selected = NO;
+        button.selected = YES;
+        self.tempBtn = button;
+        
+        
+        self.tempLabel.textColor = R_G_B_16(0x646464);
+        titleLabel.textColor = R_G_B_16(0x00b38a);
+        self.tempLabel = titleLabel;
+        
+        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_support_url]];
+        [self.webView loadRequest:request];
+        [BMProgressView LoadViewDisappear:self.view];
+        
+    }
+}
+
+
 
 -(void)createTableView:(NSMutableArray *)infoModelArray{
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
+    _infoModelArray = infoModelArray;
+    XNRProductInfo_frame *frame = [infoModelArray lastObject];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, frame.viewHeight)];
     tableView.delegate = self;
     tableView.dataSource = self;
-    tableView.pagingEnabled = YES;
-    XNRProductInfo_frame *frame = [infoModelArray lastObject];
-    tableView.contentSize = CGSizeMake(ScreenWidth, (frame.viewHeight)*2);
+    
     
     self.tableView = tableView;
     [self.view addSubview:tableView];
 }
 
--(void)XNRProductInfo_cellScroll
-{
-    CGPoint point = self.tableView.contentOffset;
-    [UIView animateWithDuration:0.5 animations:^{
-        self.tableView.contentOffset = CGPointMake(point.x, 0);
-    }];
-}
 #pragma mark-获取网络数据
 -(void)getData {
-    
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
-    [KSHttpRequest post:KHomeGetAppProductDetails parameters:@{@"productId":self.model.goodsId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KHomeGetAppProductDetails parameters:@{@"productId":_model.goodsId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         [BMProgressView LoadViewDisappear:self.view];
         if ([result[@"code"] integerValue] == 1000) {
@@ -205,9 +421,15 @@
             model.max = dic[@"SKUPrice"][@"max"];
             
             model.marketMin = dic[@"SKUMarketPrice"][@"min"];
+            
             model.marketMax = dic[@"SKUMarketPrice"][@"max"];
 
             model._id = dic[@"_id"];
+            
+            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:dic[@"app_body_url"]]];
+            [self.webView loadRequest:request];
+            
+            model.online = dic[@"online"];
             
             [model setValuesForKeysWithDictionary:dic];
             
@@ -218,18 +440,19 @@
             frame.infoModel = model;
             
             [_goodsArray addObject:frame];
-            [self createTableView:_goodsArray];
+           
+//            [self createTableView:_goodsArray];
             // 判断一下从主页还是从购物车进入的详情页（加载不同的视图）
-            if (_isFrom) {
-                if ([_model.online integerValue] == 0) {
+//            if (_isFrom) {
+                if ([model.online integerValue] == 0) {
                     [self createonlineView];
                 }else{
                     [self createBottomView];
 
                 }
-            }else{
-                [self createBottomView];
-            }
+//            }else{
+//                [self createBottomView];
+//            }
 
             if ([dic[@"presale"] integerValue] == 1) {
                 
@@ -281,11 +504,8 @@
     expectLabel.text = @"商品已下架";
     expectLabel.textAlignment = NSTextAlignmentCenter;
     expectLabel.textColor = R_G_B_16(0x909090);
-    expectLabel.font = [UIFont systemFontOfSize:18];
+    expectLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [bgView addSubview:expectLabel];
-
-    
-
 }
 
 #pragma mark-底部视图
@@ -301,7 +521,7 @@
     expectLabel.text = @"敬请期待";
     expectLabel.textAlignment = NSTextAlignmentCenter;
     expectLabel.textColor = R_G_B_16(0x909090);
-    expectLabel.font = [UIFont systemFontOfSize:18];
+    expectLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [bgExpectView addSubview:expectLabel];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
@@ -317,15 +537,17 @@
     UIButton *buyBtn = [MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth/2, PX_TO_PT(80)) ImageName:nil Target:self Action:@selector(buyBtnClick) Title:@"立即购买"];
     buyBtn.backgroundColor = [UIColor whiteColor];
     [buyBtn setTitleColor:R_G_B_16(0xfe9b00) forState:UIControlStateNormal];
-    buyBtn.titleLabel.font = XNRFont(16);
+    buyBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.buyBtn = buyBtn;
     [bgView addSubview:buyBtn];
     
     //加入购物车
      UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(2), ScreenWidth/2, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
-    addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
+//    addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
+    [addBuyCarBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
+    [addBuyCarBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
     [addBuyCarBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    addBuyCarBtn.titleLabel.font=XNRFont(16);
+    addBuyCarBtn.titleLabel.font=[UIFont systemFontOfSize:PX_TO_PT(32)];
     self.addBuyCarBtn = addBuyCarBtn;
     [bgView addSubview:addBuyCarBtn];
     
@@ -340,15 +562,15 @@
 {
     NSLog(@"-==++++++===%@",self.propertyView);
 
-    [self.propertyView show:XNRFirstType];
+    [self.propertyView show:XNRBuyType];
     
 }
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
     NSLog(@"-==------===%@",self.propertyView);
-
-    [self.propertyView show:XNRSecondType];
+    [self.propertyView show:XNRAddCartType];
+    
 }
 #pragma 加减数量
 -(void)btnClick:(UIButton*)button{
@@ -385,9 +607,8 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XNRProductInfo_frame *frame = _goodsArray[indexPath.row];
-    return frame.viewHeight*2;
-    
- }
+    return frame.viewHeight;
+}
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XNRProductInfo_cell *cell = [XNRProductInfo_cell cellWithTableView:tableView];
@@ -400,9 +621,9 @@
     cell.marketPrice = _marketPrice;
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    // 传值
     XNRProductInfo_frame *frame = _goodsArray[indexPath.row];
     cell.infoFrame = frame;
-//    [cell upDataWithModel:_goodsArray[indexPath.row]];
     // 提交订单页面的跳转
     __weak __typeof(self)weakSelf = self;
 
@@ -418,11 +639,38 @@
     // 登录页面的跳转
     cell.logincom = ^(){
     XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
+    login.loginFromProductInfo = YES;
     login.hidesBottomBarWhenPushed = YES;
     [weakSelf.navigationController pushViewController:login animated:YES];
     };
+    // 图片浏览器的跳转
+    cell.photoBrowsercom = ^(NSInteger page){
+        
+        [self pushToPhotoBrowser:page andFrameModel:frame];
+    };
     cell.delegate = self;
     return cell;
+}
+
+-(void)pushToPhotoBrowser:(NSInteger)page andFrameModel:(XNRProductInfo_frame *)frame
+{
+    // 创建浏览器对象
+    [self.picBrowserList removeAllObjects];
+    NSInteger count = frame.infoModel.pictures.count;
+    
+    for (int i = 0; i<count; i++) {
+        XNRProductPhotoModel *photoModel = frame.infoModel.pictures[i];
+        MWPhoto *photo=[MWPhoto photoWithURL:[NSURL URLWithString:[HOST stringByAppendingString:photoModel.originalUrl]]];
+        [self.picBrowserList addObject:photo];
+    }
+    
+    MWPhotoBrowser *photoBrowser=[[MWPhotoBrowser alloc] initWithDelegate:self];
+    photoBrowser.displayActionButton=NO;
+    photoBrowser.alwaysShowControls=NO;
+    [photoBrowser setCurrentPhotoIndex:page];
+    
+    [self.navigationController pushViewController:photoBrowser animated:YES];
+
 }
 
 - (void)setNavigationbarTitle{
@@ -493,20 +741,21 @@
     }];
 
 }
+#pragma mark - MWPhotoBrowser的代理
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
+    return [_picBrowserList count];
+}
+- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index{
+    return _picBrowserList[index];
+}
+- (NSString *)photoBrowser:(MWPhotoBrowser *)photoBrowser titleForPhotoAtIndex:(NSUInteger)index{
+    return [NSString stringWithFormat:@"%ld/%ld",(long)index+1,(long)[_picBrowserList count]];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

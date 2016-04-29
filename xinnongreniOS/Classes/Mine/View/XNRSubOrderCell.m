@@ -74,8 +74,8 @@ static BOOL isPay = NO;
     [self.contentView addSubview:_alreadyPayMoneyLabel];
     
     //查看详情
-    UIButton *infoButton = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(0), PX_TO_PT(141), ScreenWidth - PX_TO_PT(30), PX_TO_PT(27))];
-    infoButton.titleLabel.textAlignment = UITextAlignmentRight;
+    UIButton *infoButton = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(590), PX_TO_PT(141), ScreenWidth - PX_TO_PT(613), PX_TO_PT(27))];
+
     [infoButton setTitle:@"查看详情" forState:UIControlStateNormal];
     [infoButton setTitleColor:R_G_B_16(0x909090) forState:UIControlStateNormal];
 
@@ -148,7 +148,7 @@ static BOOL isPay = NO;
     }
 
     //应付款金额
-    _shouldPayMoneyLabel.text = [NSString stringWithFormat:@"应支付金额：¥%.2f",[model.price floatValue]];
+    _shouldPayMoneyLabel.text = [NSString stringWithFormat:@"应支付金额：¥%.2f",[model.price doubleValue]];
     
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:_shouldPayMoneyLabel.text];
     NSDictionary *dict=@{
@@ -162,7 +162,7 @@ static BOOL isPay = NO;
 
 
     //已付款金额
-    _alreadyPayMoneyLabel.text = [NSString stringWithFormat:@"已支付金额：¥%.2f",[model.paidPrice floatValue]];
+    _alreadyPayMoneyLabel.text = [NSString stringWithFormat:@"已支付金额：¥%.2f",[model.paidPrice doubleValue]];
     
     NSMutableAttributedString *AttributedStringDeposit1 = [[NSMutableAttributedString alloc]initWithString:_alreadyPayMoneyLabel.text];
     NSDictionary *dict1=@{
@@ -175,6 +175,9 @@ static BOOL isPay = NO;
     [_alreadyPayMoneyLabel setAttributedText:AttributedStringDeposit1];
 
     //付款方式
+    if ([model.id isEqualToString:@"f5aa22bb51"]) {
+        NSLog(@"%d",model.payType);
+    }
     if (model.payType) {
         if (model.payType == 1)
         {
@@ -184,6 +187,12 @@ static BOOL isPay = NO;
         {
             _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：银联支付"];
         }
+        
+        else if(model.payType == 3)
+        {
+            _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：线下支付"];
+        }
+
         else
         {
             _payTypeLabel.frame = CGRectMake(0, 0, 0, 0);

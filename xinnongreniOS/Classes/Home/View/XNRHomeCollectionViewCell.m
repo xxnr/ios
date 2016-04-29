@@ -56,10 +56,9 @@
 - (void)createGoodNameLabel
 {
     UILabel *goodNameLabel = [[UILabel alloc]init];
-    goodNameLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame)+PX_TO_PT(10), PX_TO_PT(330), PX_TO_PT(70));
-//    goodNameLabel.backgroundColor = [UIColor redColor];
+    goodNameLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame)+PX_TO_PT(10), PX_TO_PT(330), PX_TO_PT(80));
     goodNameLabel.textColor = R_G_B_16(0x323232);
-    goodNameLabel.font = [UIFont systemFontOfSize:14];
+    goodNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     goodNameLabel.numberOfLines = 0;
     self.goodNameLabel = goodNameLabel;
     [self.contentView addSubview:self.goodNameLabel];
@@ -70,7 +69,7 @@
 {
     UILabel *presentPriceLabel = [[UILabel alloc]init];
     presentPriceLabel.textColor = R_G_B_16(0xff4e00);
-    presentPriceLabel.font = [UIFont  systemFontOfSize:18];
+    presentPriceLabel.font = [UIFont  systemFontOfSize:PX_TO_PT(36)];
     presentPriceLabel.textAlignment = NSTextAlignmentLeft;
     self.presentPriceLabel = presentPriceLabel;
     [self.contentView addSubview:self.presentPriceLabel];
@@ -95,15 +94,17 @@
 - (void)setSubViews
 {
     //图片
-    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-    
-    //商品名
-//    CGSize maxSize = CGSizeMake(PX_TO_PT(330), MAXFLOAT);
-//    CGSize nameSize = [self.model.goodsName sizeWithFont_BSExt:self.goodNameLabel.font maxSize:maxSize];
-//    self.goodNameLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20),nameSize.width, nameSize.height);
-    
+    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+
+    if (self.model.imgUrl == nil || [self.model.imgUrl isEqualToString:@""]) {
+        [self.picImageView setImage:[UIImage imageNamed:@"icon_placehold"]];
+    }else{
+        [self.picImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    }}];
+
     self.goodNameLabel.text = self.model.goodsName;
-    
+    [self.goodNameLabel verticalUpAlignmentWithText:self.model.goodsName maxHeight:PX_TO_PT(80)];
+
     
     //现价
     if (self.model.unitPrice.floatValue>1) {
@@ -111,13 +112,16 @@
     }else{
         self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.floatValue];
     }
+    if ([self.presentPriceLabel.text rangeOfString:@".00"].length == 3) {
+        self.presentPriceLabel.text = [self.presentPriceLabel.text substringToIndex:self.presentPriceLabel.text.length-3];
+    }
     if ([self.model.presale integerValue] == 1) {
         self.presentPriceLabel.text = @"即将上线";
         self.presentPriceLabel.textColor = R_G_B_16(0xc7c7c7);
     }else{
         self.presentPriceLabel.textColor = R_G_B_16(0xff4e00);
     }
-    CGSize priceSize = [self.presentPriceLabel.text sizeWithAttributes:@{NSFontAttributeName:XNRFont(18)}];
+    CGSize priceSize = [self.presentPriceLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(36)]}];
     self.presentPriceLabel.frame = CGRectMake(0, CGRectGetMaxY(self.picImageView.frame)+PX_TO_PT(90), priceSize.width, priceSize.height);
 }
 @end

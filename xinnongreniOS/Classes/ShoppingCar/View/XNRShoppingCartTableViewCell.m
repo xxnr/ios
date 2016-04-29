@@ -8,7 +8,6 @@
 
 #import "XNRShoppingCartTableViewCell.h"
 #import "UIImageView+WebCache.h"
-#import "CoreTFManagerVC.h"
 #import "XNRToolBar.h"
 #import "XNRSKUAttributesModel.h"
 #import "XNRShoppingCarFrame.h"
@@ -22,6 +21,7 @@
     float *siglePrice;
     BOOL sort;
     int _keyBoardHeight;
+    NSString *_count;
 }
 @property (nonatomic,strong) XNRShoppingCartModel *model;
 @property (nonatomic ,weak) UIButton *selectedBtn;
@@ -65,7 +65,7 @@
 @property (nonatomic ,weak) UIView *textbottomLine;
 
 @property (nonatomic, weak) UIButton *pushBtn;
-
+@property (nonatomic, weak) UIButton *cancelBtn;
 
 @property (nonatomic, copy) void(^com)(NSIndexPath *indexPath);
 @end
@@ -76,13 +76,82 @@
     if (self) {
         self.com = com;
         self.contentView.userInteractionEnabled = YES;
-        self.backgroundColor = [UIColor clearColor];
+        self.contentView.backgroundColor = [UIColor clearColor];
         [self createUI];
         
         // 注册消息通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
+        // 接受编辑，删除按钮的通知
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(normalBtnPresent) name:@"normalBtnPresent" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelBtnPresent) name:@"cancelBtnPresent" object:nil];
     }
     return self;
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
+-(void)cancelBtnPresent{
+    if ([self.model.online integerValue] == 0) {// 下架 （点击编辑）
+        self.goodNameLabel.frame = CGRectMake(CGRectGetMaxX(self.picImageView.frame)+PX_TO_PT(20), PX_TO_PT(40), ScreenWidth-CGRectGetMaxX(self.picImageView.frame)-PX_TO_PT(20)-PX_TO_PT(150), PX_TO_PT(80));
+        [self createCancelBtn];
+    }
+    
+}
+-(void)normalBtnPresent{
+    if ([self.model.online integerValue] == 0) {// 下架 （点击完成）
+        self.goodNameLabel.frame = self.shoppingCarFrame.goodNameLabelF;
+        [self.cancelBtn removeFromSuperview];
+//        self.cancelBtn.hidden = YES;
+    }
+}
+
+
+-(void)cancelBtnClick{
+//    NSMutableArray *cancelArray = [NSMutableArray array];
+    BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确认要删除该商品吗?" chooseBtns:@[@"取消",@"确定"]];
+    
+    alertView.chooseBlock = ^void(UIButton *btn){
+        
+        if (btn.tag == 11) {
+            if ([self.model.online integerValue] == 0) {
+                if (!IS_Login) {
+                    DatabaseManager *manager = [DatabaseManager sharedInstance];
+                    [manager deleteShoppingCarWithModel:_model];
+                    
+                }else{
+                    NSDictionary *params1 = @{@"userId":[DataCenter account].userid,@"SKUId":_model._id,@"quantity":@"0",@"additions":_model.additions,@"user-agent":@"IOS-v2.0"};
+                    [KSHttpRequest post:KchangeShopCarNum parameters:params1 success:^(id result) {
+                        if ([result[@"code"] integerValue] == 1000) {
+                            [UILabel showMessage:@"删除成功"];
+                            [self.cancelBtn removeFromSuperview];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+                         }
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                    
+                    
+                }
+                
+            }
+
+            
+        
+        }
+    };
+    [alertView BMAlertShow];
+}
+
+-(void)createCancelBtn{
+    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelBtn.frame = CGRectMake(CGRectGetMaxX(self.goodNameLabel.frame)+PX_TO_PT(80), PX_TO_PT(40), PX_TO_PT(60), PX_TO_PT(60));
+    [cancelBtn setImage:[UIImage imageNamed:@"address_delete"] forState:UIControlStateNormal];
+    [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    self.cancelBtn = cancelBtn;
+    [self.contentView addSubview:cancelBtn];
 }
 
 -(void)textFieldChanged:(NSNotification*)noti {
@@ -145,7 +214,7 @@
     UILabel *presentPriceLabel = [[UILabel alloc]init];
     presentPriceLabel.textColor = R_G_B_16(0x323232);
     presentPriceLabel.textAlignment = NSTextAlignmentRight;
-    presentPriceLabel.font = [UIFont systemFontOfSize:16];
+    presentPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.presentPriceLabel = presentPriceLabel;
     [self.contentView addSubview:self.presentPriceLabel];
     
@@ -167,7 +236,7 @@
 }
 
 -(void)pushBtnClick{
-    self.pushBlock();
+    self.pushBlock(self.indexPath);
 }
 
 -(void)createDepositView{
@@ -175,7 +244,7 @@
     UILabel *sectionOneLabel = [[UILabel alloc] init];
     sectionOneLabel.text = @"阶段一: 订金";
     sectionOneLabel.textColor = R_G_B_16(0x323232);
-    sectionOneLabel.font = [UIFont systemFontOfSize:14];
+    sectionOneLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     sectionOneLabel.textAlignment = NSTextAlignmentLeft;
     self.sectionOneLabel = sectionOneLabel;
     [self.contentView addSubview:sectionOneLabel];
@@ -183,21 +252,21 @@
     UILabel *sectionTwoLabel = [[UILabel alloc] init];
     sectionTwoLabel.text = @"阶段二: 尾款";
     sectionTwoLabel.textColor = R_G_B_16(0x323232);
-    sectionTwoLabel.font = [UIFont systemFontOfSize:14];
+    sectionTwoLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     sectionTwoLabel.textAlignment = NSTextAlignmentLeft;
     self.sectionTwoLabel = sectionTwoLabel;
     [self.contentView addSubview:sectionTwoLabel];
         
     UILabel *subscriptionLabel = [[UILabel alloc] init];
     subscriptionLabel.textColor = R_G_B_16(0xff4e00);
-    subscriptionLabel.font = [UIFont systemFontOfSize:16];
+    subscriptionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     subscriptionLabel.textAlignment = NSTextAlignmentRight;
     self.subscriptionLabel = subscriptionLabel;
     [self.contentView addSubview:subscriptionLabel];
         
     UILabel *remainLabel = [[UILabel alloc] init];
     remainLabel.textColor = R_G_B_16(0x323232);
-    remainLabel.font = [UIFont systemFontOfSize:16];
+    remainLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     remainLabel.textAlignment = NSTextAlignmentRight;
     self.remainLabel = remainLabel;
     [self.contentView addSubview:remainLabel];
@@ -285,7 +354,7 @@
     UILabel *presentPriceLabel = [[UILabel alloc]init];
     presentPriceLabel.textColor = R_G_B_16(0x323232);
     presentPriceLabel.textAlignment = NSTextAlignmentRight;
-    presentPriceLabel.font = [UIFont systemFontOfSize:16];
+    presentPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.presentPriceLabel = presentPriceLabel;
     [self.contentView addSubview:self.presentPriceLabel];
 }
@@ -303,7 +372,7 @@
     UILabel *addtionPriceLabel = [[UILabel alloc]init];
     addtionPriceLabel.textColor = R_G_B_16(0x323232);
     addtionPriceLabel.textAlignment = NSTextAlignmentRight;
-    addtionPriceLabel.font = [UIFont systemFontOfSize:16];
+    addtionPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.addtionPriceLabel = addtionPriceLabel;
     [self.contentView addSubview:self.addtionPriceLabel];
 }
@@ -318,7 +387,8 @@
         
         if (IS_Login) {
             self.numTextField.text = @"0";
-            [self requestShoppingCarURL];
+//            [self requestShoppingCarURL];
+            [self requestShoppingCarInputNumberURL];
         }
     }
 }
@@ -375,6 +445,13 @@
     bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
     self.textbottomLine = bottomLine;
     [self.contentView addSubview:bottomLine];
+    
+    UILabel *numLabel = [[UILabel alloc] init];
+    numLabel.textColor = R_G_B_16(0x909090);
+    numLabel.textAlignment = NSTextAlignmentCenter;
+    self.numLabel = numLabel;
+    [self.contentView addSubview:numLabel];
+
 }
 
 -(void)XNRToolBarBtnClick
@@ -415,11 +492,12 @@
     self.changeBottomBlock();
     //刷新数据
     [self setupData];
-    
-    
+
     if (IS_Login) {
         //单次申请购物车接口
-        [self requestShoppingCarURL];
+//        [self requestShoppingCarURL];
+        [self requestShoppingCarInputNumberURL];
+
     }else{
         DatabaseManager *manager = [DatabaseManager sharedInstance];
         self.model.timeStamp = [CommonTool timeSp];
@@ -442,17 +520,19 @@
         button.selected = NO;
     });
     
-    if (button.tag == kLeftBtn){
+    if (button.tag == kLeftBtn){ // 加
         self.model.num = [NSString stringWithFormat:@"%d",self.model.num.intValue+1];
-
-        }else if (button.tag == kRightBtn) {
+        _count = @"1";
+        }else if (button.tag == kRightBtn) { // 减
         self.model.num = [NSString stringWithFormat:@"%d",self.model.num.intValue-1];
+        _count = @"-1";
+
         if (self.model.num.intValue<1) {
             self.model.num = @"1";
             [UILabel showMessage:@"数量不能再减少了"];
         }
     }
-    if ([self.model.num isEqualToString:@"9999"]) {
+    if ([self.model.num integerValue] >= 9999) {
         self.rightBtn.enabled = NO;
     }else{
         self.rightBtn.enabled = YES;
@@ -463,8 +543,8 @@
     
     
     if (IS_Login) {
-        //单次申请购物车接口
         [self requestShoppingCarURL];
+
     }else{
         DatabaseManager *manager = [DatabaseManager sharedInstance];
         self.model.timeStamp = [CommonTool timeSp];
@@ -482,10 +562,7 @@
     
     // 2.设置frame
     [self setupFrame];
-    
-
 }
-
 
 -(void)setupFrame{
     
@@ -516,19 +593,19 @@
     self.sectionTwoLabel.frame = self.shoppingCarFrame.sectionTwoLabelF;
     self.remainLabel.frame = self.shoppingCarFrame.finalPaymentLabelF;
     
-    self.textTopLine.frame = CGRectMake(CGRectGetMaxX(self.leftBtn.frame), CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(20), PX_TO_PT(84), PX_TO_PT(1));
-
-    self.textbottomLine.frame  =  CGRectMake(CGRectGetMaxX(self.leftBtn.frame),  CGRectGetMaxY(self.picImageView.frame) + PX_TO_PT(67), PX_TO_PT(84), PX_TO_PT(1));
+    self.textTopLine.frame = self.shoppingCarFrame.textTopLineF;
+    
+    self.textbottomLine.frame = self.shoppingCarFrame.textbottomLineF;
     
     self.pushBtn.frame = self.shoppingCarFrame.pushBtnF;
     
     self.numLabel.frame = self.shoppingCarFrame.onlineLabelF;
 
 }
-
 #pragma mark - 设置现在的数据
 - (void)setupData
 {
+    self.cancelBtn.hidden = YES;
     XNRShoppingCartModel *model = self.shoppingCarFrame.shoppingCarModel;
     _model = model;
     if (model.selectState) {
@@ -540,7 +617,15 @@
 
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",HOST,model.imgUrl];
     //图片
-    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+    if (urlStr == nil || [urlStr isEqualToString:@""]) {
+        [self.picImageView setImage:[UIImage imageNamed:@"icon_placehold"]];
+    }else{
+        [self.picImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+    }}];
+
+
     NSLog(@"-----------%@",model.additions);
     //商品名
     self.goodNameLabel.text = model.productName;
@@ -552,7 +637,6 @@
     }
     self.introduceLabel.text = displayStr;
     
-    
     // 附加选项
     NSMutableString *addtionStr = [[NSMutableString alloc] initWithString:@""];
     NSString *price;
@@ -560,7 +644,7 @@
     for (NSDictionary *subDic in model.additions) {
         [addtionStr appendString:[NSString stringWithFormat:@"%@;",[subDic objectForKey:@"name"]]];
         price = [NSString stringWithFormat:@"%@",[subDic objectForKey:@"price"]];
-        totalPrice = totalPrice + [price floatValue];
+        totalPrice = totalPrice + [price doubleValue];
     }
     // 附加选项
     self.addtionsLabel.text = [NSString stringWithFormat:@"附加项目:%@",addtionStr];
@@ -569,25 +653,26 @@
     self.addtionPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",totalPrice];
     
     //现价
-    self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.price.floatValue];
+    self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.price.doubleValue];
 
     // 订金
-    self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",model.deposit.floatValue *[_model.num floatValue]];
-    
+
+    self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",model.deposit.doubleValue *[_model.num integerValue]];
     // 尾款
-    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",(model.price.floatValue + totalPrice - model.deposit.floatValue)*[model.num floatValue]];
+    self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",(model.price.doubleValue + totalPrice - model.deposit.doubleValue)*[model.num integerValue]];
     
-    if (_model.num == 0) {
-        self.numTextField.text = @"1";
-    }else{
-        self.numTextField.text = [NSString stringWithFormat:@"%@",model.num];
-    }
+//    if (_model.num == 0) {
+//        self.numTextField.text = @"1";
+//    }else{
+//        self.numTextField.text = [NSString stringWithFormat:@"%@",model.num];
+//    }
     
     // 下架
     if ([model.online integerValue] == 0) {
         self.selectedBtn.hidden = YES;
         self.offLineLabel.hidden = NO;
-        
+        self.cancelBtn.hidden = NO;
+
         self.backgroundColor = R_G_B_16(0xf0f0f0);
         self.goodNameLabel.textColor = R_G_B_16(0x909090);
         self.presentPriceLabel.textColor = R_G_B_16(0x909090);
@@ -595,6 +680,8 @@
         self.sectionTwoLabel.textColor = R_G_B_16(0x909090);
         self.subscriptionLabel.textColor = R_G_B_16(0x909090);
         self.remainLabel.textColor = R_G_B_16(0x909090);
+        self.addtionsLabel.textColor = R_G_B_16(0x909090);
+        self.addtionPriceLabel.textColor = R_G_B_16(0x909090);
         
         self.leftBtn.hidden = YES;
         self.numTextField.hidden = YES;
@@ -602,20 +689,13 @@
         self.textTopLine.hidden = YES;
         self.textbottomLine.hidden = YES;
         
-        if (!_numLabel) {
-            UILabel *numLabel = [[UILabel alloc] init];
-            numLabel.textColor = R_G_B_16(0x909090);
-            numLabel.text = [NSString stringWithFormat:@"x %@",model.num];
-            self.numLabel = numLabel;
-            [self.contentView addSubview:numLabel];
-
-        }
-        
+        self.numLabel.text = [NSString stringWithFormat:@"x %@",model.num];
 
     }else{
         self.backgroundColor = [UIColor whiteColor];
         self.selectedBtn.hidden = NO;
         self.offLineLabel.hidden = YES;
+        self.cancelBtn.hidden = YES;
         
         self.leftBtn.hidden = NO;
         self.numTextField.hidden = NO;
@@ -630,7 +710,20 @@
         self.sectionTwoLabel.textColor = R_G_B_16(0x323232);
         self.subscriptionLabel.textColor = R_G_B_16(0xff4e00);
         self.remainLabel.textColor = R_G_B_16(0x323232);
-
+        self.addtionsLabel.textColor = R_G_B_16(0x323232);
+        self.addtionPriceLabel.textColor = R_G_B_16(0x323232);
+        
+        if (_model.num == 0) {
+            self.numTextField.text = @"1";
+        }else{
+            self.numTextField.text = [NSString stringWithFormat:@"%@",model.num];
+        }
+        
+        if ([_model.num integerValue] >= 9999) {
+            self.rightBtn.enabled = NO;
+        }else{
+            self.rightBtn.enabled = YES;
+        }
 
     }
     
@@ -640,7 +733,7 @@
 #pragma mark - 请求单个商品总数提交
 - (void)requestShoppingCarURL
 {
-    [KSHttpRequest post:KchangeShopCarNum parameters:@{@"SKUId":self.model._id,@"quantity":self.numTextField.text,@"userId":[DataCenter account].userid,@"additions":_model.additions,@"update_by_add":@"ture",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KchangeShopCarNum parameters:@{@"SKUId":self.model._id,@"quantity":_count,@"userId":[DataCenter account].userid,@"additions":_model.additions,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         NSLog(@"=====%@",self.numTextField.text);
         NSLog(@"%@",result);
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshNum" object:self];
@@ -648,6 +741,18 @@
         NSLog(@"%@",error);
     }];
 }
+
+- (void)requestShoppingCarInputNumberURL
+{
+    [KSHttpRequest post:KchangeShopCarNum parameters:@{@"SKUId":self.model._id,@"quantity":self.model.num,@"userId":[DataCenter account].userid,@"additions":_model.additions,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        NSLog(@"=====%@",self.numTextField.text);
+        NSLog(@"%@",result);
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshNum" object:self];
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+
 
 - (void)awakeFromNib {
     

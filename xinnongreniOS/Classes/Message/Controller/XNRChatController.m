@@ -33,6 +33,7 @@
 - (void)viewDidLoad {
     self.view.backgroundColor = [UIColor whiteColor];
     [super viewDidLoad];
+    currentPage = 1;
     [self setNav];
     [self setupTableView];
     [self createbackBtn];
@@ -121,7 +122,7 @@
 -(void)setNav{
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:24];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
     titleLabel.textColor = R_G_B_16(0xfbffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"新农资讯";
@@ -188,13 +189,12 @@
         XNRMessageModel *model = _messageArr[indexPath.row];
         cell.model = model;
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 #pragma mark -- tableView点击事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     XNRWebViewController *webViewController = [[XNRWebViewController alloc] init];
     XNRMessageModel *model = _messageArr[indexPath.row];
     webViewController.model = model;

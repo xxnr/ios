@@ -10,6 +10,11 @@
 
 @interface XNRMyOrderModel : NSObject
 /**
+ *  SKU _id ref
+ */
+@property (nonatomic,copy) NSString *ref;
+
+/**
  *  订单ID
  */
 @property (nonatomic,copy) NSString *orderId;
@@ -28,7 +33,9 @@
 /**
  *  商品名称
  */
+@property (copy,nonatomic) NSString *productName;
 @property (copy,nonatomic) NSString *name;
+
 /**
  *  待付金额
  */
@@ -46,5 +53,7 @@
 
 @property (nonatomic ,strong) NSMutableArray *attributes;
 
+@property (nonatomic,assign) int deliverStatus;
+//@property (nonatomic,strong)NSMutableArray *subOrders;
 
 @end

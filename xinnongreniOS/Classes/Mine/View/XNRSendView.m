@@ -13,6 +13,7 @@
 #import "XNROrderEmptyView.h"
 #import "XNRMyAllOrderFrame.h"
 #import "XNRMyOrderServe_Cell.h"
+#define MAX_PAGE_SIZE 20
 
 @interface XNRSendView()<XNROrderEmptyViewBtnDelegate>
 @property (nonatomic ,weak)XNROrderEmptyView *orderEmptyView;
@@ -23,11 +24,22 @@
 {
     if (!_orderEmptyView) {
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
+        orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
         orderEmptyView.delegate = self;
         [self addSubview:orderEmptyView];
     }
     return _orderEmptyView;
     
+}
+
+#pragma mark - 图片为空的代理方法
+-(void)XNROrderEmptyView:(XNROrderEmptyViewbuySort)type
+{
+    if (type == XNROrderEmptyView_buyFer) {
+        
+    }else if(type == XNROrderEmptyView_buyCar){
+        
+    }
 }
 
 
@@ -139,13 +151,13 @@
     
     MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
     
+    footer.refreshingTitleHidden = YES;
+//    footer.automaticallyHidden = YES;
+
     // 设置刷新图片
     
     [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
     
-    
-    
-    footer.refreshingTitleHidden = YES;
     
     // 设置尾部
     
@@ -186,7 +198,7 @@
 - (void)getData
 {
 //    typeValue说明：1为待支付（代付款）：2为商品准备中（待发货），3已发货（待收货），4已收货（待评价）
-    [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"typeValue":@"2",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"typeValue":@"2",@"user-agent":@"IOS-v2.0"} success:^(id result) {
        
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datasDic = result[@"datas"];
@@ -203,16 +215,29 @@
                 NSDictionary *orderStatus = orders[@"orderStatus"];
                 sectionModel.type = [orderStatus[@"type"] integerValue];
                 sectionModel.value = orderStatus[@"value"];
-                
+                sectionModel.deliveryType = orders[@"deliveryType"][@"type"];
+                sectionModel.deliveryValue =orders[@"deliveryType"][@"value"];
+
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
                 
                 sectionModel.skus = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"SKUs"]];
                 
-                for (XNRMyOrderModel *model in sectionModel.skus) {
-                    XNRMyAllOrderFrame *frameModel = [[XNRMyAllOrderFrame alloc] init];
-                    frameModel.orderModel = model;
+                if (sectionModel.skus.count == 0) {
+                    for (XNRMyOrderModel *model in sectionModel.products) {
+                        XNRMyAllOrderFrame *frameOrder = [[XNRMyAllOrderFrame alloc] init];
+                        frameOrder.orderModel = model;
+                        
+                        [sectionModel.orderFrameArray addObject:frameOrder];
+                    }
                     
-                    [sectionModel.orderFrameArray addObject:frameModel];
+                }else{
+                    for (XNRMyOrderModel *model in sectionModel.skus) {
+                        XNRMyAllOrderFrame *frameOrder = [[XNRMyAllOrderFrame alloc] init];
+                        frameOrder.orderModel = model;
+                        
+                        [sectionModel.orderFrameArray addObject:frameOrder];
+                    }
+                    
                 }
                 
                 
@@ -220,12 +245,12 @@
             }
         }
         
+        //刷新列表
+        [self.tableView reloadData];
+        
         if (_dataArr.count == 0) {
             [self orderEmptyView];
         }
-
-        //刷新列表
-        [self.tableView reloadData];
         
             
 
@@ -283,13 +308,13 @@
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(28), ScreenWidth/2, PX_TO_PT(32))];
         label.text = [NSString stringWithFormat:@"订单号 : %@",sectionModel.orderId];
         label.textColor = R_G_B_16(0x323232);
-        label.font = XNRFont(15);
+        label.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
         UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0,ScreenWidth/2-PX_TO_PT(32) , PX_TO_PT(89))];
         payTypeLabel.textColor = R_G_B_16(0xfe9b00);
-        payTypeLabel.font = [UIFont systemFontOfSize:14];
+        payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         payTypeLabel.textAlignment = NSTextAlignmentRight;
         payTypeLabel.text = sectionModel.value;
         [headView addSubview:payTypeLabel];
@@ -322,11 +347,15 @@
         bottomView.backgroundColor = [UIColor whiteColor];
         [self addSubview:bottomView];
                 
-        
+        UILabel *deliveryLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(31), PX_TO_PT(0), ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
+        deliveryLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        deliveryLabel.text = sectionModel.deliveryValue;
+        [bottomView addSubview:deliveryLabel];
+
         UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth -PX_TO_PT(32), PX_TO_PT(80))];
-        totalPriceLabel.font = [UIFont systemFontOfSize:16];
+        totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         totalPriceLabel.textAlignment = NSTextAlignmentRight;
-        totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.floatValue];
+        totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.doubleValue];
         [bottomView addSubview:totalPriceLabel];
                 
         NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
@@ -428,26 +457,25 @@
 {
     static NSString *cellID = @"cell";
     
-    XNRMyOrderSend_Cell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    XNRMyOrderServe_Cell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell)
     {
         //单元格复用cellID要一致
-        cell = [[XNRMyOrderSend_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
-        
+        cell = [[XNRMyOrderServe_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
     }
         
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-        if (sectionModel.products.count>0) {
+        if (sectionModel.skus.count>0) {
             XNRMyOrderModel *model = sectionModel.skus[indexPath.row];
             cell.attributesArray = model.attributes;
             cell.addtionsArray = model.additions;
-            XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray [indexPath.row];
-            cell.orderFrame = frameModel;
 
         }
+        XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray [indexPath.row];
+        cell.orderFrame = frameModel;
     }
     
     

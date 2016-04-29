@@ -39,14 +39,13 @@
     showView.layer.cornerRadius = 5;
     [bcView addSubview:showView];
 
-
     
     UIImageView *loadView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"xxnr_loading"]];
     loadView.center = showView.center;
     bcView.loadView = loadView;
     [bcView addSubview:loadView];
     
-    [NSTimer scheduledTimerWithTimeInterval:0.01 target:bcView selector:@selector(transformAction) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:0.1 target:bcView selector:@selector(transformAction) userInfo:nil repeats:YES];
     return bcView;
 }
 
@@ -75,7 +74,7 @@
         [self addSubview:loadView];
         
         
-       _timer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(transformAction) userInfo:nil repeats:YES];
+       _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(transformAction) userInfo:nil repeats:YES];
     }
     return self;
 }

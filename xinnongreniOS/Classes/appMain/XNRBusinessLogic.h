@@ -52,6 +52,10 @@
  *  获取下线列表
  */
 #define KUserGetInvitee [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/user/getInvitee"]
+
+//获取新农代表
+#define KGetNominatedInviter [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/user/getNominatedInviter"]
+
 /**
  *  用户绑定邀请人
  */
@@ -77,7 +81,20 @@
  *  获取用户类型列表
  */
 #define Kusertypes [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/usertypes"]
+/**
+ *  提示用户更新
+ */
+#define KuserUpData [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/ISOupgrade"]
 
+/**
+ *  用户选择自提方式时获取收货人列表
+ */
+
+#define KqueryConsignees [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/user/queryConsignees"]
+/**
+ *用户选择自提方式时保存收货人
+ */
+#define KsaveConsignees [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/user/saveConsignees"]
 
 /**--------------------
         首页
@@ -137,8 +154,6 @@
 /**--------------------
       购物车
  --------------------*/
-
-
 /**
  *  获取购物车
  */
@@ -209,10 +224,38 @@
  */
 #define KGetAreaTown [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/area/getAreaTown"]
 
+/**
+ *  获取报备用户列表
+ */
+#define KGetQuery [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/potentialCustomer/query"]
+
+/**
+ *  添加用户
+ 
+ */
+#define KGetAdd [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/potentialCustomer/add"]
+/**
+ *  判断手机号是否能添加为潜在客户
+ */
+#define KGetIsAvailable [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/potentialCustomer/isAvailable"]
+
+/**
+ *  获取意向商品列表
+ */
+#define KGetIntentionProducts [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/intentionProducts"]
+
+/**
+ *  获取报备用户详情
+ */
+#define KGetPotentialCustomer [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/potentialCustomer/get"]
 
 /**--------------------
     订单相关
  --------------------*/
+/**
+ *  获取配送方式
+ */
+#define KGetDeliveries [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/cart/getDeliveries"]
 /**
  *  确认订单
  */
@@ -245,6 +288,16 @@
  */
 #define KAlipay [NSString stringWithFormat:@"%@/%@",HOST,@"alipay"]
 /**
+ *  线下支付
+ */
+#define KOfflinepay [NSString stringWithFormat:@"%@/%@",HOST,@"offlinepay"]
+
+/**
+ *   线下支付方式
+ */
+#define KGetOfflinePayType [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/getOfflinePayType"]
+
+/**
  *  支付宝支付成功页面
  */
 #define KAlipaySuccess [NSString stringWithFormat:@"%@/%@",HOST,@"alipay/success"]
@@ -254,9 +307,96 @@
 #define KDynamic [NSString stringWithFormat:@"%@/%@",HOST,@"dynamic/alipay/nofity.asp"]
 
 
-
 /**
  *  获取支付的最小额度
  */
 #define KgetMinPayPrice [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/getMinPayPrice/"]
+
+
+/**
+ *  确认收货
+ */
+#define KconfirmSKUReceived [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/order/confirmSKUReceived"]
+/**
+ *  获取自提码
+ */
+#define KgetDeliveryCode [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/order/getDeliveryCode"]
+
+/**
+ *  获取自提点省份列表
+ */
+#define KgetProvince [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/province"]
+/**
+ *  获取自提点城市列表
+ */
+#define KgetCity [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/city"]
+/**
+ *  获取自提点县列表
+ */
+#define KgetCounty [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/county"]
+/**
+ * 获取自提点列表
+ */
+#define KgetRSC [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC"]
+/**
+ * 获取线下支付类型
+ */
+#define KgetOfflinePayType [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/getOfflinePayType"]
+/**--------------------
+ RSC相关
+ --------------------*/
+/**
+ *  填写RSC相关信息
+ */
+#define KRscInfoFill [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/info/fill"]
+/**
+ *  获取RSC相关 get
+ */
+#define KRscInfoGet [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/info/get"]
+/**
+ *  获取自提点省份列表  get
+ */
+#define KRscProvince [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/province"]
+/**
+ *  获取自提点城市列表 get
+ */
+#define KRscCity [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/city"]
+/**
+ *  获取自提点县列表 get
+ */
+#define KRscCounty [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/county"]
+/**
+ *  获取乡镇列表  get
+ */
+#define KRscTown [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/address/town"]
+/**
+ *  网店审核线下付款
+ */
+#define KRscConfirmOfflinePay [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/confirmOfflinePay"]
+/**
+ *  获取分配到RSC的订单  get
+ */
+#define KRscOrders [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/orders"]
+/**
+ *  网点发货
+ */
+#define KRscDelivering [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/order/deliverStatus/delivering"]
+/**
+ *  获取自提点列表  get
+ */
+#define KRsc [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC"]
+/**
+ *  网点自提
+ */
+#define KRscSelfDelivery [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/order/selfDelivery"]
+/**
+ *  获取订单详情   get
+ */
+#define KRscOrderDetail [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/RSC/orderDetail"]
+
+/**
+ *  确认收货
+ */
+#define KconfirmSKUReceived [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/order/confirmSKUReceived"]
+
 #endif

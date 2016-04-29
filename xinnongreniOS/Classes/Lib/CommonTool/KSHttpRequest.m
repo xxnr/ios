@@ -31,13 +31,13 @@ static int loginCount = 0;
     manager.requestSerializer.timeoutInterval = 30.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     
-//    NSLog(@"=========【get】上传数据：=========%@",[NSString stringWithFormat:@"%@",param]);
+    NSLog(@"=========【get】上传数据：=========%@",[NSString stringWithFormat:@"%@",param]);
     NSString *URL = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
      [manager GET:URL parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         //JSON解析
          NSString *json = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-//         NSLog(@"---------【get】返回数据:---------%@",json);
+         NSLog(@"---------【get】返回数据:---------%@",json);
 
          //直接将JSON传出去
          success(json);
@@ -87,11 +87,11 @@ static int loginCount = 0;
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     
-//    NSLog(@"=========上传数据：=========%@",[NSString stringWithFormat:@"%@",dic]);
+    NSLog(@"=========上传数据：=========%@",[NSString stringWithFormat:@"%@",dic]);
      [manager POST:url parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
          
          NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//         NSLog(@"---------返回数据:---------%@",str);
+         NSLog(@"---------返回数据:---------%@",str);
          id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
          
          NSDictionary *resultDic;
@@ -101,7 +101,8 @@ static int loginCount = 0;
          
          success(resultObj);
          
-         if ([[resultObj objectForKey:@"code"] intValue]==1401) {
+         if ([[resultObj objectForKey:@"code"] intValue] == 1401) {
+             [UILabel showMessage:resultObj[@"message"]];
              UserInfo *infos = [[UserInfo alloc]init];
              infos.loginState = NO;
              [DataCenter saveAccount:infos];
@@ -126,6 +127,7 @@ static int loginCount = 0;
     }];
     
 }
+
 /**
  *  上传图片（支持多张上传和单张上传）
  *

@@ -34,6 +34,8 @@ UIKIT_EXTERN NSString *const kUMessageAliasTypeFacebook;
 //twitter
 UIKIT_EXTERN NSString *const kUMessageAliasTypeTwitter;
 
+//UIKIT_EXTERN NSString *const kUMessageAliasTypexxnr;
+
 
 //error for handle
 extern NSString * const kUMessageErrorDomain;

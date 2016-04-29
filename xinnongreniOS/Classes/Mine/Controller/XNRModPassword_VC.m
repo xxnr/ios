@@ -7,7 +7,6 @@
 //
 
 #import "XNRModPassword_VC.h"
-#import "CoreTFManagerVC.h"
 #import "KSHttpRequest.h"
 #import "DataCenter.h"
 #import "XNRLoginViewController.h"
@@ -69,7 +68,7 @@
     self.makeSurePasswordTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 0, _newPasswordBg.frame.size.width-10, _newPasswordBg.frame.size.height)];
     self.makeSurePasswordTextField.borderStyle = UITextBorderStyleNone;
     self.makeSurePasswordTextField.placeholder = @"确认新密码";
-    self.makeSurePasswordTextField.font = XNRFont(18);
+    self.makeSurePasswordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.makeSurePasswordTextField.delegate = self;
     self.makeSurePasswordTextField.secureTextEntry = YES;
     //设置键盘类型
@@ -96,7 +95,7 @@
     self.newpasswordTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 0, _newPasswordBg.frame.size.width-10, _newPasswordBg.frame.size.height)];
     self.newpasswordTextField.borderStyle = UITextBorderStyleNone;
     self.newpasswordTextField.placeholder = @"请输入旧密码";
-    self.newpasswordTextField.font = XNRFont(18);
+    self.newpasswordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.newpasswordTextField.delegate = self;
     self.newpasswordTextField.secureTextEntry = YES;
     //设置键盘类型
@@ -121,7 +120,7 @@
     self.againPasswordTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 0, _newPasswordBg.frame.size.width-10, _newPasswordBg.frame.size.height)];
     self.againPasswordTextField.borderStyle = UITextBorderStyleNone;
     self.againPasswordTextField.placeholder = @"请输入新密码";
-    self.againPasswordTextField.font = XNRFont(18);
+    self.againPasswordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.againPasswordTextField.secureTextEntry=YES;
     self.againPasswordTextField.delegate = self;
     //设置键盘类型
@@ -136,12 +135,14 @@
 - (void)createFinishButton
 {
     self.finishButton = [MyControl createButtonWithFrame:CGRectMake(PX_TO_PT(32),  CGRectGetMaxY(_makeSurePasswordBg.frame)+PX_TO_PT(88), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88)) ImageName:nil Target:self Action:@selector(finishClick:) Title:nil];
-    self.finishButton.backgroundColor = R_G_B_16(0x00b38a);
+    [self.finishButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
+    [self.finishButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateNormal];
+
     [self.finishButton setTitle:@"完成" forState:UIControlStateNormal];
     [self.finishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.finishButton.layer.masksToBounds = YES;
     self.finishButton.layer.cornerRadius = 5;
-    self.finishButton.titleLabel.font = XNRFont(18);
+    self.finishButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [self.view addSubview:self.finishButton];
 }
 //完成
@@ -270,22 +271,11 @@
     
     [super viewDidAppear:animated];
     
-    [CoreTFManagerVC installManagerForVC:self scrollView:nil tfModels:^NSArray *{
-        
-       
-        TFModel *tfm2=[TFModel modelWithTextFiled:self.makeSurePasswordTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm3=[TFModel modelWithTextFiled:self.newpasswordTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm4=[TFModel modelWithTextFiled:self.againPasswordTextField inputView:nil name:@"" insetBottom:0];
-        return @[tfm2,tfm3,tfm4];
-        
-    }];
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
-    
-    [CoreTFManagerVC uninstallManagerForVC:self];
 }
 
 //消失时回收键盘

@@ -9,7 +9,6 @@
 #import "XNRLoginViewController.h"
 #import "XNRRegisterViewController.h"
 #import "XNRForgetPasswordViewController.h"
-#import "CoreTFManagerVC.h"
 #import "XNRTabBarController.h"
 #import "QCheckBox.h"
 #import "XNRTabBarController.h"
@@ -21,6 +20,8 @@
 #import "AppDelegate.h"
 #import "XNRFinishMineDataController.h"
 #import "XNRAddtionsModel.h"
+#import "UMessage.h"
+
 @interface XNRLoginViewController ()<UITextFieldDelegate,QCheckBoxDelegate>{
     
     BOOL isRemmeber;
@@ -99,8 +100,12 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
         
     }else{
-        [self.navigationController popToRootViewControllerAnimated:YES];
-        
+        if (self.loginFromProductInfo) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"notSelectedAttributes" object:nil];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
     }
     if (self.com) {
         self.com();
@@ -132,7 +137,13 @@
     usernameTextField.borderStyle = UITextBorderStyleNone;
     usernameTextField.alpha = 1;
     usernameTextField.placeholder = @"请输入您的手机号";
-    usernameTextField.font = XNRFont(14);
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *userName = [ user objectForKey:@"userName"];
+
+    if (userName) {
+        usernameTextField.text = userName;
+    }
+    usernameTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     usernameTextField.delegate = self;
     usernameTextField.returnKeyType = UIReturnKeyDone;
     usernameTextField.keyboardType = UIKeyboardTypePhonePad;
@@ -162,7 +173,7 @@
     passwordTextField.borderStyle = UITextBorderStyleNone;
     passwordTextField.alpha = 1;
     passwordTextField.placeholder = @"请输入您的密码";
-    passwordTextField.font = XNRFont(14);
+    passwordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     passwordTextField.delegate = self;
     passwordTextField.secureTextEntry = YES;
     passwordTextField.returnKeyType = UIReturnKeyDone;
@@ -172,18 +183,17 @@
     [self.midView addSubview:passwordTextField];
 }
 
- #pragma mark-QCheckBoxDelegate
+ #pragma mark - QCheckBoxDelegate
 - (void)didSelectedCheckBox:(QCheckBox *)checkbox checked:(BOOL)checked{
     
     if(checked==NO){
         NSLog(@"选中");
-        isRemmeber=YES;
+        isRemmeber = YES;
         [USER setBool:isRemmeber forKey:@"isRemmeber"];
         [USER synchronize];
         
-        if([USER boolForKey:@"Login"]==NO){
+        if([USER boolForKey:@"Login"] == NO){
             NSLog(@"第一次进入");
-      
             return;
             
         }
@@ -213,7 +223,7 @@
     [forgetBtn addTarget:self action:@selector(forgetClick:) forControlEvents:UIControlEventTouchUpInside];
     [forgetBtn setTitle:@"忘记密码?" forState:UIControlStateNormal];
     [forgetBtn setTitleColor:R_G_B_16(0x00ffc3) forState:UIControlStateNormal];
-    forgetBtn.titleLabel.font = XNRFont(16);
+    forgetBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.forgetBtn = forgetBtn;
     [self.mainView addSubview:forgetBtn];
 }
@@ -232,12 +242,13 @@
 - (void)createLoginBtn
 {
     UIButton *loginBtn = [MyControl createButtonWithFrame:CGRectMake(PX_TO_PT(32),CGRectGetMaxY(self.midView.frame) + PX_TO_PT(95), ScreenWidth-PX_TO_PT(64), PX_TO_PT(96)) ImageName:nil Target:self Action:@selector(loginClick:) Title:nil];
-    loginBtn.backgroundColor = R_G_B_16(0x00b38a);
+    [loginBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
+    [loginBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateNormal];
     loginBtn.layer.masksToBounds = YES;
     loginBtn.layer.cornerRadius = 5;
     [loginBtn setTitle:@"确认登录" forState:UIControlStateNormal];
     [loginBtn setTitleColor:R_G_B_16(0xfbfffe) forState:UIControlStateNormal];
-    loginBtn.titleLabel.font = [UIFont systemFontOfSize:18];
+    loginBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.loginBtn = loginBtn;
     [self.mainView addSubview:loginBtn];
 }
@@ -250,7 +261,7 @@
     titleLabel.textColor = R_G_B_16(0xffffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"还没有账号？立即注册";
-    titleLabel.font = [UIFont systemFontOfSize:16];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     NSMutableAttributedString *AttributedString = [[NSMutableAttributedString alloc]initWithString:titleLabel.text];
     NSDictionary*dicStr = @{
                           NSForegroundColorAttributeName:R_G_B_16(0x00ffc3)
@@ -277,6 +288,7 @@
 #pragma mark - 登录
 - (void)loginClick:(UIButton *)button
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"notSelectedAttributes" object:nil];
     if (self.com) {
         self.com();
     }
@@ -336,6 +348,7 @@
     [KSHttpRequest post:encode parameters:@{@"account":self.usernameTextField.text,@"password":encryptPassword,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000){
+            
             [BMProgressView LoadViewDisappear:self.view];
             //本地归档保存用户账户信息
             NSDictionary *datasDic = result[@"datas"];
@@ -348,15 +361,22 @@
             UserInfo *info = [DataCenter account];
             [info setValuesForKeysWithDictionary:datasDic];
             info.loginState = YES;
+            info.userid = datasDic[@"userid"];
             info.password = self.passwordTextField.text;
             info.token = result[@"token"];
             info.photo = datasDic[@"photo"];
             info.province = province[@"name"];
             info.city = city[@"name"];
-            info.county = county[@"name"];
-            info.town = town[@"name"];
+            if (![KSHttpRequest isNULL:county]) {
+                info.county = county[@"name"];
+            }
+            if (![KSHttpRequest isNULL:town]) {
+                info.town = town[@"name"];
+            }
             info.cartId = datasDic[@"cartId"];
             
+            info.name = datasDic[@"name"];
+            info.type = datasDic[@"userTypeInName"];
             [DataCenter saveAccount:info];
             
              //上传购物车数据
@@ -382,22 +402,30 @@
             }else{
                 [self.navigationController popToRootViewControllerAnimated:YES];
             }
+            NSString *userName = self.usernameTextField.text;
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            [user setObject:userName forKey:@"userName"];
+            
+            
+            [UMessage setAlias:[DataCenter account].userid type:kUMessageAliasTypexxnr response:^(id responseObject, NSError *error) {
+                
+                NSLog(@"友盟消息推送 error: %@" ,error);
 
-        
+            }];
+            
         }else{
             
             [UILabel showMessage:result[@"message"]];
             [BMProgressView LoadViewDisappear:self.view];
-
-            
         }
+        
+        
     } failure:^(NSError *error) {
         
         [UILabel showMessage:@"登录失败"];
         [BMProgressView LoadViewDisappear:self.view];
 
     }];
-
 
 }
 
@@ -439,28 +467,10 @@
         
     }];
 
-//    [KSHttpRequest post:KAddToCart parameters:params success:^(id result) {
-//        NSLog(@"%@",result);
-//        
-//        if([result[@"code"] integerValue] == 1000){
-//
-//        }else {
-//            
-//            [UILabel showMessage:result[@"message"]];
-//            [BMProgressView LoadViewDisappear:self.view];
-//
-//        }
-//        
-//    } failure:^(NSError *error) {
-//        
-//        NSLog(@"%@",error);
-//        
-//    }];
-    
 }
 
 #pragma mark - 正则表达式判断手机号格式
-- (BOOL) validateMobile:(NSString *)mobile
+- (BOOL)validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
     NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
@@ -472,19 +482,11 @@
     
     [super viewDidAppear:animated];
     
-    [CoreTFManagerVC installManagerForVC:self scrollView:nil tfModels:^NSArray *{
-        
-        TFModel *tfm1=[TFModel modelWithTextFiled:self.usernameTextField inputView:nil name:@"" insetBottom:0];
-        TFModel *tfm2=[TFModel modelWithTextFiled:self.passwordTextField inputView:nil name:@"" insetBottom:0];
-        return @[tfm1,tfm2];
-        
-    }];
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
-    [CoreTFManagerVC uninstallManagerForVC:self];
     
 }
 

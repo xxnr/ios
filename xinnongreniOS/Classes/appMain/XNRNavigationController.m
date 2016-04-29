@@ -23,9 +23,10 @@
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     navBar.shadowImage = [[UIImage alloc] init];
     navBar.barTintColor = R_G_B_16(0x00b38a);
+
     dic[NSForegroundColorAttributeName] = [UIColor whiteColor];
     
-    dic[NSFontAttributeName] = [UIFont boldSystemFontOfSize:24];
+    dic[NSFontAttributeName] = [UIFont systemFontOfSize:PX_TO_PT(48)];
     [navBar setTitleTextAttributes:dic];
 }
 

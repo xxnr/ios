@@ -14,7 +14,6 @@
 
 /**
  *  签到成功
- *
  *  @param pointNum 积分数
  */
 - (void)createSignSucessImageView:(NSString *)pointNum;
