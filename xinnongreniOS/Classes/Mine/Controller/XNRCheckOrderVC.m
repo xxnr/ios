@@ -192,7 +192,8 @@
             // 订单号
             UILabel *orderLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(28), PX_TO_PT(28), ScreenWidth, PX_TO_PT(28))];
             orderLabel.textColor = R_G_B_16(0x323232);
-            orderLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+//            orderLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+            orderLabel.font = [UIFont fontWithName:@"FZHTJW--GB1-0" size:PX_TO_PT(32)];
             orderLabel.text = [NSString stringWithFormat:@"订单号：%@",sectionModel.id];
             self.orderLabel = orderLabel;
             [orderView addSubview:orderLabel];
@@ -200,7 +201,6 @@
             // 交易状态
             UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(28), CGRectGetMaxY(orderLabel.frame) + PX_TO_PT(16), ScreenWidth, PX_TO_PT(28))];
             payTypeLabel.textColor = R_G_B_16(0x323232);
-            payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             payTypeLabel.text = [NSString stringWithFormat:@"订单状态：%@",sectionModel.value];
             NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:payTypeLabel.text];
             NSDictionary *dict=@{
@@ -211,7 +211,9 @@
                                        };
         
             [AttributedStringDeposit addAttributes:dict range:NSMakeRange(5,AttributedStringDeposit.length-5)];
-        
+//            payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+            orderLabel.font = [UIFont fontWithName:@"FZHTJW--GB1-0" size:PX_TO_PT(32)];
+
             [payTypeLabel setAttributedText:AttributedStringDeposit];
             self.payTypeLabel = payTypeLabel;
             

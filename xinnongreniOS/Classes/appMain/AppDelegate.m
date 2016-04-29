@@ -104,7 +104,6 @@
     // 自有账号登陆
     [MobClick profileSignInWithPUID:@"playerID"];
     
-    
     //友盟推送
     //set AppKey and LaunchOptions
     [UMessage startWithAppkey:UM_APPKEY launchOptions:launchOptions];
