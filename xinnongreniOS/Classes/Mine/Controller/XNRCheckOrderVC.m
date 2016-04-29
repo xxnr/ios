@@ -476,7 +476,7 @@
         [bottomImageView setImage:[UIImage imageNamed:@"orderInfo_down"]];
         [addressView addSubview:bottomImageView];
         
-        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(64), PX_TO_PT(32), ScreenWidth/3, PX_TO_PT(32))];
+        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(64), PX_TO_PT(32), ScreenWidth/3, PX_TO_PT(38))];
         nameLabel.textColor = R_G_B_16(0x323232);
         nameLabel.font = [UIFont systemFontOfSize:16];
         nameLabel.text = sectionModel.recipientName;

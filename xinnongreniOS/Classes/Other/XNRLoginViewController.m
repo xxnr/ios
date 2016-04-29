@@ -407,7 +407,9 @@
             
             
             [UMessage setAlias:[DataCenter account].userid type:kUMessageAliasTypexxnr response:^(id responseObject, NSError *error) {
+                
                 NSLog(@"友盟消息推送 error: %@" ,error);
+
             }];
             
 
