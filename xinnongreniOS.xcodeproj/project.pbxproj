@@ -548,8 +548,11 @@
 		9C3F9B5E1CC7207400E44BA8 /* XNRSelContactVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B5D1CC7207400E44BA8 /* XNRSelContactVC.m */; };
 		9C3F9B611CC7305700E44BA8 /* XNRConsigneeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B601CC7305700E44BA8 /* XNRConsigneeModel.m */; };
 		9C3F9B641CC7426C00E44BA8 /* XNRConsigneesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F9B631CC7426C00E44BA8 /* XNRConsigneesCell.m */; };
+		9C3FAC611CD3007A00915DF8 /* XNRCheckOrderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3FAC601CD3007A00915DF8 /* XNRCheckOrderVC.m */; };
+		9C3FAC641CD354D400915DF8 /* XNRRscOrderDetialFrameModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3FAC631CD354D400915DF8 /* XNRRscOrderDetialFrameModel.m */; };
+		9C3FAC6A1CD3643600915DF8 /* XNRRscOrderDetialCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3FAC691CD3643600915DF8 /* XNRRscOrderDetialCell.m */; };
+		9C3FAC6D1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3FAC6C1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.m */; };
 		9C4FCB451C8FFDFD00C5B427 /* XNBrandsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */; };
-		9C63D88C1C9FD9AA004AFE0F /* XNRCheckOrderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C63D88B1C9FD9AA004AFE0F /* XNRCheckOrderVC.m */; };
 		9C63D88F1C9FDE12004AFE0F /* XNROrderInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C63D88E1C9FDE12004AFE0F /* XNROrderInfoCell.m */; };
 		9C6BCE9B1CAE36C100463096 /* XNRBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BCE9A1CAE36C100463096 /* XNRBtn.m */; };
 		9C6BCE9E1CAE8B0A00463096 /* XNRDetailUserVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BCE9D1CAE8B0A00463096 /* XNRDetailUserVC.m */; };
@@ -1617,10 +1620,16 @@
 		9C3F9B601CC7305700E44BA8 /* XNRConsigneeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRConsigneeModel.m; sourceTree = "<group>"; };
 		9C3F9B621CC7426C00E44BA8 /* XNRConsigneesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRConsigneesCell.h; sourceTree = "<group>"; };
 		9C3F9B631CC7426C00E44BA8 /* XNRConsigneesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRConsigneesCell.m; sourceTree = "<group>"; };
+		9C3FAC601CD3007A00915DF8 /* XNRCheckOrderVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCheckOrderVC.m; sourceTree = "<group>"; };
+		9C3FAC621CD354D400915DF8 /* XNRRscOrderDetialFrameModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRscOrderDetialFrameModel.h; sourceTree = "<group>"; };
+		9C3FAC631CD354D400915DF8 /* XNRRscOrderDetialFrameModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRscOrderDetialFrameModel.m; sourceTree = "<group>"; };
+		9C3FAC681CD3643600915DF8 /* XNRRscOrderDetialCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRscOrderDetialCell.h; sourceTree = "<group>"; };
+		9C3FAC691CD3643600915DF8 /* XNRRscOrderDetialCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRscOrderDetialCell.m; sourceTree = "<group>"; };
+		9C3FAC6B1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRscOrderDetialHeadView.h; sourceTree = "<group>"; };
+		9C3FAC6C1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRscOrderDetialHeadView.m; sourceTree = "<group>"; };
 		9C4FCB431C8FFDFD00C5B427 /* XNBrandsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNBrandsModel.h; sourceTree = "<group>"; };
 		9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNBrandsModel.m; sourceTree = "<group>"; };
 		9C63D88A1C9FD9AA004AFE0F /* XNRCheckOrderVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCheckOrderVC.h; sourceTree = "<group>"; };
-		9C63D88B1C9FD9AA004AFE0F /* XNRCheckOrderVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCheckOrderVC.m; sourceTree = "<group>"; };
 		9C63D88D1C9FDE12004AFE0F /* XNROrderInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNROrderInfoCell.h; sourceTree = "<group>"; };
 		9C63D88E1C9FDE12004AFE0F /* XNROrderInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNROrderInfoCell.m; sourceTree = "<group>"; };
 		9C6BCE991CAE36C100463096 /* XNRBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRBtn.h; sourceTree = "<group>"; };
@@ -2013,7 +2022,7 @@
 				8464E4411B16D582008FD57B /* XNRMyOrder_VC.h */,
 				8464E4421B16D582008FD57B /* XNRMyOrder_VC.m */,
 				9C63D88A1C9FD9AA004AFE0F /* XNRCheckOrderVC.h */,
-				9C63D88B1C9FD9AA004AFE0F /* XNRCheckOrderVC.m */,
+				9C3FAC601CD3007A00915DF8 /* XNRCheckOrderVC.m */,
 				9C06A42D1CA22BC000B0DED9 /* XNRSeePayInfoVC.h */,
 				9C06A42E1CA22BC000B0DED9 /* XNRSeePayInfoVC.m */,
 				844AFE3B1B141C7A00EE29C8 /* XNRMyscore_VC.h */,
@@ -2117,10 +2126,14 @@
 				4912813D1CCDDE1F009E67C4 /* XNRRscSkusFrameModel.m */,
 				491281421CCF7FC5009E67C4 /* XNRRscOrderDetailModel.h */,
 				491281431CCF7FC5009E67C4 /* XNRRscOrderDetailModel.m */,
+				9C3FAC621CD354D400915DF8 /* XNRRscOrderDetialFrameModel.h */,
+				9C3FAC631CD354D400915DF8 /* XNRRscOrderDetialFrameModel.m */,
 				491281451CD05E45009E67C4 /* XNRRscPayTypeModel.h */,
 				491281461CD05E45009E67C4 /* XNRRscPayTypeModel.m */,
 				491281511CD0858B009E67C4 /* XNRRscDeliverFrameModel.h */,
 				491281521CD0858B009E67C4 /* XNRRscDeliverFrameModel.m */,
+				9C3FAC6B1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.h */,
+				9C3FAC6C1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2220,6 +2233,8 @@
 				4912814C1CD0815C009E67C4 /* XNRRscConfirmDeliverCell.m */,
 				491281541CD19F46009E67C4 /* XNRRscCustomerTakeView.h */,
 				491281551CD19F46009E67C4 /* XNRRscCustomerTakeView.m */,
+				9C3FAC681CD3643600915DF8 /* XNRRscOrderDetialCell.h */,
+				9C3FAC691CD3643600915DF8 /* XNRRscOrderDetialCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4072,7 +4087,6 @@
 				1FE1D6691B12F1DE00F0D158 /* XNRShoppingCarController.m in Sources */,
 				1FE1D60D1B12EE2600F0D158 /* MJMember.m in Sources */,
 				844AFE8C1B14771D00EE29C8 /* XNRProductInfo_VC.m in Sources */,
-				9C63D88C1C9FD9AA004AFE0F /* XNRCheckOrderVC.m in Sources */,
 				49F6B19C1C2A6EE100DCF8CF /* MJPhotoProgressView.m in Sources */,
 				84FE64371B18059F00F0C67C /* XNRCommentView.m in Sources */,
 				49E896041BEDC2BB00B3671E /* UIView+WebCacheOperation.m in Sources */,
@@ -4146,6 +4160,7 @@
 				1F15331D1B09D54A00CA374B /* XNRMineController.m in Sources */,
 				491611281C8D189400F1E243 /* IQKeyboardManager.m in Sources */,
 				9C6BCE9B1CAE36C100463096 /* XNRBtn.m in Sources */,
+				9C3FAC641CD354D400915DF8 /* XNRRscOrderDetialFrameModel.m in Sources */,
 				9C392DF11CA9420300AD0F27 /* myAlertView.m in Sources */,
 				49E896011BEDC2BB00B3671E /* UIImage+WebP.m in Sources */,
 				49F414FB1C3CA71A001A28CA /* XNRShopCarSectionModel.m in Sources */,
@@ -4201,6 +4216,7 @@
 				4916112A1C8D189400F1E243 /* IQSegmentedNextPrevious.m in Sources */,
 				53445E941B143B0C009F79E5 /* XNRRegisterViewController.m in Sources */,
 				49E895F91BEDC2BB00B3671E /* SDWebImageDecoder.m in Sources */,
+				9C3FAC611CD3007A00915DF8 /* XNRCheckOrderVC.m in Sources */,
 				53C5B1581B15C75500C67501 /* XNRHomeCollectionHeaderView.m in Sources */,
 				9C6BCEA11CAE8D4400463096 /* XNRCustomer.m in Sources */,
 				1FE1D6111B12EE2600F0D158 /* NSObject+MJCoding.m in Sources */,
@@ -4283,6 +4299,7 @@
 				53445EB21B148712009F79E5 /* XNRShoppingCartModel.m in Sources */,
 				8446C2A51B1D6D19005CA932 /* POPMath.mm in Sources */,
 				9C3F9B431CBFA43F00E44BA8 /* XNRDeliveryCell.m in Sources */,
+				9C3FAC6D1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.m in Sources */,
 				49CD5E3E1C0BEC4E004235C4 /* XNRMessageCell.m in Sources */,
 				84A143361B4149FD00A78D36 /* NJKWebViewProgress.m in Sources */,
 				4917DBBB1C1BB84E00CE1588 /* XNRTypeModel.m in Sources */,
@@ -4356,6 +4373,7 @@
 				53574AD21B267F3100AA00F3 /* MonitorNetworkViewController.m in Sources */,
 				8469F6281B3D4C2700085699 /* FMDatabasePool.m in Sources */,
 				1FE1D64D1B12EE3200F0D158 /* AFURLRequestSerialization.m in Sources */,
+				9C3FAC6A1CD3643600915DF8 /* XNRRscOrderDetialCell.m in Sources */,
 				49EC52661BEBBA5E00AA8898 /* UIImage+BSExt.m in Sources */,
 				493AF2981C27B41D002AEDE7 /* UIView+Frame.m in Sources */,
 				844AFE3D1B141C7A00EE29C8 /* XNRMyscore_VC.m in Sources */,
@@ -4523,7 +4541,6 @@
 					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -4579,7 +4596,6 @@
 					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (

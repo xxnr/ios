@@ -244,94 +244,9 @@
             UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(98))];
             headView.backgroundColor = [UIColor clearColor];
             
-<<<<<<< HEAD
-            UIView *orderView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(128))];
-            orderView.backgroundColor=[UIColor whiteColor];
-            [self.headView addSubview:orderView];
-            // 订单号
-            UILabel *orderLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(28), PX_TO_PT(28), ScreenWidth, PX_TO_PT(28))];
-            orderLabel.textColor = R_G_B_16(0x323232);
-//            orderLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-            orderLabel.font = [UIFont fontWithName:@"FZHTJW--GB1-0" size:PX_TO_PT(32)];
-            orderLabel.text = [NSString stringWithFormat:@"订单号：%@",sectionModel.id];
-            self.orderLabel = orderLabel;
-            [orderView addSubview:orderLabel];
-            
-            // 交易状态
-            UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(28), CGRectGetMaxY(orderLabel.frame) + PX_TO_PT(16), ScreenWidth, PX_TO_PT(28))];
-            payTypeLabel.textColor = R_G_B_16(0x323232);
-            payTypeLabel.text = [NSString stringWithFormat:@"订单状态：%@",sectionModel.value];
-            NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:payTypeLabel.text];
-            NSDictionary *dict=@{
-        
-                                       NSForegroundColorAttributeName:R_G_B_16(0xFE9B00),
-    
-        
-                                       };
-        
-            [AttributedStringDeposit addAttributes:dict range:NSMakeRange(5,AttributedStringDeposit.length-5)];
-//            payTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-            orderLabel.font = [UIFont fontWithName:@"FZHTJW--GB1-0" size:PX_TO_PT(32)];
-
-            [payTypeLabel setAttributedText:AttributedStringDeposit];
-            self.payTypeLabel = payTypeLabel;
-            
-            [orderView addSubview:payTypeLabel];
-            
-            for (int i = 0; i<2; i++) {
-                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(128)*i, ScreenWidth, PX_TO_PT(1))];
-                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-                [orderView addSubview:lineView];
-            }
-            
-            UIView *addressView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(orderView.frame) + PX_TO_PT(24), ScreenWidth, PX_TO_PT(180))];
-            addressView.backgroundColor = R_G_B_16(0xfffaf0);
-            [self.headView addSubview:addressView];
-            
-            UIImageView *topImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(6))];
-            [topImageView setImage:[UIImage imageNamed:@"orderInfo_address_bacground"]];
-            [addressView addSubview:topImageView];
-            
-            UIImageView *bottomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(171), ScreenWidth, PX_TO_PT(7))];
-            [bottomImageView setImage:[UIImage imageNamed:@"orderInfo_down"]];
-            [addressView addSubview:bottomImageView];
-            
-            UILabel *nameLabel = [[UILabel alloc] init];
-            nameLabel.textColor = R_G_B_16(0x323232);
-            nameLabel.font = [UIFont systemFontOfSize:16];
-            nameLabel.text = sectionModel.recipientName;
-            CGSize size = [nameLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16]}];
-            nameLabel.frame = CGRectMake(PX_TO_PT(78), PX_TO_PT(43), size.width, size.height);
-            self.nameLabel = nameLabel;
-            [addressView addSubview:nameLabel];
-            
-            UILabel *phoneNum = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nameLabel.frame)+PX_TO_PT(42), PX_TO_PT(43), ScreenWidth/2, PX_TO_PT(32))];
-            phoneNum.textColor = R_G_B_16(0x323232);
-            phoneNum.font = [UIFont systemFontOfSize:16];
-            phoneNum.text = sectionModel.recipientPhone;
-            
-            self.phoneNum = phoneNum;
-            [addressView addSubview:phoneNum];
-            
-            UIImageView *addressImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(31), PX_TO_PT(93), PX_TO_PT(27), PX_TO_PT(36))];
-            [addressImage setImage:[UIImage imageNamed:@"orderInfo_address_picture"]];
-            [addressView addSubview:addressImage];
-            
-            UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(addressImage.frame) + PX_TO_PT(20), PX_TO_PT(100), ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), PX_TO_PT(32))];
-            addressLabel.textColor = R_G_B_16(0x646464);
-            addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-            addressLabel.text = sectionModel.address;
-            addressLabel.adjustsFontSizeToFitWidth = YES;
-            //        addressLabel.backgroundColor = [UIColor redColor];
-            self.addressLabel = addressLabel;
-            [addressView addSubview:addressLabel];
-            
-            UIView *infoView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(addressView.frame) + PX_TO_PT(20), ScreenWidth, PX_TO_PT(78))];
-=======
             UIView *infoView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(78))];
 
 
->>>>>>> master
             infoView.backgroundColor = [UIColor whiteColor];
             
             UILabel *infoLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(27), PX_TO_PT(130), PX_TO_PT(28))];

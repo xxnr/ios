@@ -83,17 +83,11 @@
     //    友盟分享
     [UMSocialData setAppKey:UM_APPKEY];
     
-<<<<<<< HEAD
-    //友盟推送
-    //set AppKey and LaunchOptions
-    [UMessage startWithAppkey:UM_APPKEY launchOptions:launchOptions];
-=======
     [UMSocialWechatHandler setWXAppId:wechatAppId appSecret:wechatAppSecret url:APPURL];
     
     [UMSocialQQHandler setQQWithAppId:QQAppId appKey:QQAppSecret url:APPURL];
 
     [UMessage setLogEnabled:YES];
->>>>>>> master
     
     //友盟注册通知
     //-- Set Notification
@@ -113,7 +107,7 @@
     
 
     // 启动bugtags
-    [XNRBugTagsTool openBugTags];
+//    [XNRBugTagsTool openBugTags];
     
     [UMessage startWithAppkey:UM_APPKEY launchOptions:launchOptions];
 
