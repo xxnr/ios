@@ -37,7 +37,6 @@
 @property (nonatomic,copy)NSString *orderId;
 @end
 
-
 @implementation XNRMyOrder_VC
 
 - (void)viewDidLoad {
@@ -130,7 +129,6 @@
             [weakSelf.navigationController pushViewController:vc animated:YES];
             
         }];
-        
     }
  
     if(nil == self.PayView){ // 待付款
