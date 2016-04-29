@@ -406,6 +406,18 @@
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setObject:userName forKey:@"userName"];
             
+<<<<<<< HEAD
+=======
+            
+            [UMessage setAlias:[DataCenter account].userid type:kUMessageAliasTypexxnr response:^(id responseObject, NSError *error) {
+                
+                NSLog(@"友盟消息推送 error: %@" ,error);
+
+            }];
+            
+
+            
+>>>>>>> master
         }else{
             
             [UILabel showMessage:result[@"message"]];

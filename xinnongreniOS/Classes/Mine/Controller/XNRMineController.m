@@ -58,6 +58,8 @@
 @property (nonatomic, assign) BOOL isBroker;
 @property (nonatomic, strong) NSMutableArray *userArray;
 
+@property (nonatomic, weak) UIView *orderStateView;
+
 @property (nonatomic, strong) NSMutableArray *groups;
 @end
 
@@ -318,7 +320,7 @@
     XNRUserInfoModel *infoMdoel = [_userArray firstObject];
     UIView *topBgView;
     if ([infoMdoel.isRSC integerValue] == 1 && [infoMdoel.userType integerValue] == 5) {
-        topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(652))];
+        topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(512))];
         topBgView.backgroundColor = [UIColor whiteColor];
         self.topBgView = topBgView;
         [self.view addSubview:topBgView];
@@ -485,6 +487,7 @@
         [orderBtn addTarget:self action:@selector(orderBtnClick) forControlEvents:UIControlEventTouchUpInside];
         self.orderBtn = orderBtn;
         [self.topBgView addSubview:orderBtn];
+        
     }else{
         orderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         orderBtn.frame = CGRectMake(0, PX_TO_PT(320), ScreenWidth, PX_TO_PT(96));
@@ -550,9 +553,16 @@
     
     
     // 我的订单的状态
-    UIView *orderStateView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(orderBtn.frame), ScreenWidth, PX_TO_PT(130))];
-    orderStateView.backgroundColor = [UIColor whiteColor];
-    [self.topBgView addSubview:orderStateView];
+    UIView *orderStateView ;
+    if ([infoModel.isRSC integerValue] == 1 && [infoModel.userType integerValue] == 5) {
+        return;
+    }else{
+        orderStateView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(orderBtn.frame), ScreenWidth, PX_TO_PT(130))];
+        orderStateView.backgroundColor = [UIColor whiteColor];
+        self.orderStateView = orderStateView;
+        [self.topBgView addSubview:orderStateView];
+    }
+
     
     NSArray *orderStateImage = @[@"待付款icon-拷贝",@"代发货icon1-拷贝",@"已发货icon-拷贝",@"已完成icon-拷贝"];
     NSArray *orderStateTitle = @[@"待付款",@"待发货",@"待收货",@"已完成"];
@@ -561,6 +571,7 @@
     CGFloat imageY = PX_TO_PT(16);
     CGFloat imageW = PX_TO_PT(49);
     CGFloat imageH = PX_TO_PT(47);
+    
 
     for (int i = 0; i<orderStateImage.count; i++) {
         UIImageView *orderStateImageView = [[UIImageView alloc] init];
