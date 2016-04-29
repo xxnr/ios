@@ -1,20 +1,19 @@
 //
-//  XNRRscDeliverFrameModel.m
+//  XNRRscOrderDetialFrameModel.m
 //  xinnongreniOS
 //
-//  Created by xxnr on 16/4/27.
+//  Created by 杨宁 on 16/4/29.
 //  Copyright © 2016年 qxhiOS. All rights reserved.
 //
 
-#import "XNRRscDeliverFrameModel.h"
+#import "XNRRscOrderDetialFrameModel.h"
 #import "XNRRscOrderModel.h"
 
-@implementation XNRRscDeliverFrameModel
+@implementation XNRRscOrderDetialFrameModel
 
 -(void)setModel:(XNRRscSkusModel *)model
 {
     _model = model;
-    
     CGFloat imageViewX = PX_TO_PT(30);
     CGFloat imageViewY = PX_TO_PT(30);
     CGFloat imageViewW = PX_TO_PT(180);
@@ -72,7 +71,8 @@
     }
     
     _cellHeight = CGRectGetMaxY(_bottomLineF);
-    
+
 }
+
 
 @end

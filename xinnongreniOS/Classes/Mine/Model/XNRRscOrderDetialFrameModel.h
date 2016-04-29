@@ -1,17 +1,17 @@
 //
-//  XNRRscDeliverFrameModel.h
+//  XNRRscOrderDetialFrameModel.h
 //  xinnongreniOS
 //
-//  Created by xxnr on 16/4/27.
+//  Created by 杨宁 on 16/4/29.
 //  Copyright © 2016年 qxhiOS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 @class XNRRscSkusModel;
 
-@interface XNRRscDeliverFrameModel : NSObject
+@interface XNRRscOrderDetialFrameModel : NSObject
 
-@property (nonatomic ,strong) XNRRscSkusModel *model;
+@property (nonatomic, strong) XNRRscSkusModel *model;
 
 @property (nonatomic ,assign ,readonly) CGRect imageViewF;
 
