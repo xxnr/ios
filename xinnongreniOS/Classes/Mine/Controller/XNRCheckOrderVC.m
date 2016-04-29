@@ -21,6 +21,9 @@
 #import "XNROrderInfoModel.h"
 #import "XNROffLine_VC.h"
 #import "XNRMyOrder_VC.h"
+#import "XNRCarryVC.h"
+#import "XNRMakeSureView.h"
+#import "XNRMyOrderModel.h"
 #import "XNRRSCInfoModel.h"
 #import "MJExtension.h"
 #import "UILabel+ZSC.h"
@@ -75,6 +78,59 @@
     [self.navigationController pushViewController:infoVC animated:YES];
     
 }
+-(void)creatZtBottom
+{
+    UIView *bottomView = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight - PX_TO_PT(88)- 64, ScreenWidth, PX_TO_PT(88))];
+    bottomView.backgroundColor = [UIColor whiteColor];
+    
+    UIButton *seePayInfoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(190)-PX_TO_PT(31), PX_TO_PT(10), PX_TO_PT(120), PX_TO_PT(60))];
+    seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
+    [seePayInfoBtn setTitle:@"待自提" forState:UIControlStateNormal];
+    seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
+    seePayInfoBtn.layer.cornerRadius = 10.0;
+    seePayInfoBtn.layer.masksToBounds = YES;
+    seePayInfoBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    [seePayInfoBtn addTarget:self action:@selector(holdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomView addSubview:seePayInfoBtn];
+    
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, PX_TO_PT(1))];
+    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    
+    [bottomView addSubview:line1];
+    [bottomView addSubview:line2];
+    [self.view addSubview:bottomView];
+    
+}
+-(void)creatPSBottom
+{
+    UIView *bottomView = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight - PX_TO_PT(88)- 64, ScreenWidth, PX_TO_PT(88))];
+    bottomView.backgroundColor = [UIColor whiteColor];
+    
+    UIButton *seePayInfoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(190)-PX_TO_PT(31), PX_TO_PT(10), PX_TO_PT(140), PX_TO_PT(60))];
+    seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
+    [seePayInfoBtn setTitle:@"确认收货" forState:UIControlStateNormal];
+    seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
+    seePayInfoBtn.layer.cornerRadius = 10.0;
+    seePayInfoBtn.layer.masksToBounds = YES;
+    seePayInfoBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    [seePayInfoBtn addTarget:self action:@selector(makeSureBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomView addSubview:seePayInfoBtn];
+    
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, PX_TO_PT(1))];
+    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    
+    [bottomView addSubview:line1];
+    [bottomView addSubview:line2];
+    [self.view addSubview:bottomView];
+    
+}
+
 -(void)creatBottomTwo
 {
     UIView *bottomView = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight - PX_TO_PT(88)- 64, ScreenWidth, PX_TO_PT(88))];
@@ -189,6 +245,20 @@
                     [self creatBottomTwo];
                     
                 }
+            else if([self.value isEqualToString:@"待自提"])
+            {
+                self.tableview.frame =CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth,ScreenHeight- CGRectGetMaxY(self.headView.frame) -PX_TO_PT(88) - 64);
+                // 底部视图
+                [self creatZtBottom];
+
+            }
+            else if([self.value isEqualToString:@"配送中"])
+            {
+                self.tableview.frame =CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth,ScreenHeight- CGRectGetMaxY(self.headView.frame) -PX_TO_PT(88) - 64);
+                // 底部视图
+                [self creatPSBottom];
+                
+            }
 
             sectionModel.subOrders = (NSMutableArray *)[XRNSubOrdersModel objectArrayWithKeyValuesArray:datasDic[@"rows"][@"subOrders"]];
             
@@ -356,7 +426,46 @@
     
     [self.navigationController pushViewController:vc animated:YES];
 }
+-(void)holdBtnClick:(UIButton *)sender
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+//    XNRMyOrderSectionModel
+//    XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
+    XNRCarryVC *vc=[[XNRCarryVC alloc]init];
+    vc.hidesBottomBarWhenPushed=YES;
+    vc.orderId = self.model.orderId;
+    
+    for (int i=0; i<self.model.skus.count; i++) {
+        
+        XNRMyOrderModel *model = self.model.skus[i];
+        if(model.deliverStatus == 4)
+        {
+            [vc.modelArr addObject:model];
+        }
+    }
 
+    [self.navigationController pushViewController:vc animated:YES];
+    
+
+}
+-(void)makeSureBtn:(UIButton *)sender
+{
+//    XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
+    
+//    XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
+
+    XNRMakeSureView *makesureView = [[XNRMakeSureView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    
+    makesureView.orderId = self.model.orderId;
+    makesureView.modelArr = [NSMutableArray array];
+    
+    makesureView.modelArr = self.model.skus;
+    
+    [makesureView createview];
+    
+    [self.view addSubview:makesureView];
+
+}
 //查看付款信息
 -(void)seePayInfoBtnClick:(UIButton *)sender
 {
@@ -804,8 +913,10 @@
 
 -(void)backClick{
     
-//    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"payInfoClick" object:nil];
-
+//    if (self.presentingViewController) {
+//        [self dismissViewControllerAnimated:NO completion:nil];
+//        return;
+//    }
     if (self.isRoot) {
         [self.navigationController popViewControllerAnimated:YES];
         
@@ -816,8 +927,6 @@
         XNRMyOrder_VC *orderVC=[[XNRMyOrder_VC alloc]init];
         orderVC.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:orderVC animated:NO];
-
-        
     }
 }
 

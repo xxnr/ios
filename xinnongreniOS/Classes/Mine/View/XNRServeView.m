@@ -739,7 +739,7 @@
 {
     NSLog(@"被点击了");
     XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-    self.checkOrderBlock(sectionModel.orderId,sectionModel.value);
+    self.checkOrderBlock(sectionModel.orderId,sectionModel.value,sectionModel);
     
 }
 

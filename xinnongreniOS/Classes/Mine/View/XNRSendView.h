@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "XNRMyOrderSectionModel.h"
 @interface XNRSendView : UIView<UITableViewDataSource,UITableViewDelegate>{
     
     NSMutableArray *_dataArr;   //数据
     int _currentPage;            //当前页
 }
 
-@property(nonatomic,copy)void(^checkOrderBlock)(NSString*orderID);//查看订单
+@property(nonatomic,copy)void(^checkOrderBlock)(NSString*orderID,XNRMyOrderSectionModel *model);//查看订单
 @property (nonatomic,strong) UITableView *tableView;//信息列表
 @property (retain,nonatomic) NSString *urlString;
 /**
