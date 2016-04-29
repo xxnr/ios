@@ -104,6 +104,7 @@
         [application registerForRemoteNotificationTypes:
          (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
     }
+    
 
     // 启动bugtags
     [XNRBugTagsTool openBugTags];
@@ -164,34 +165,31 @@
     
     NSLog(@"%@",userInfo);
     
-    NSDictionary *infodic = [userInfo objectForKey:@"data"];
+    NSString *alert = [userInfo objectForKey:@"page"];
+    NSString *orderId = [userInfo objectForKey:@"orderId"];
+    
+//    if (application.applicationState == UIApplicationStateActive) { // 此时app在前台运行
+    if ([alert isEqualToString:@""]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"openOrderIDController" object:orderId];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"openWebSiteController" object:orderId];
+    }
+
+//    } else { // 后台运行时
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"PushNoti" object:alert];
+//    }
+    
 
     
     XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
     vc.orderID = userInfo[@""];
-    vc.isRoot = YES ;
     [_tabBarController.navigationController pushViewController:vc animated:YES];
     
+    [application setApplicationIconBadgeNumber:0];
 
-    
-//    //前台
-//    if (application.applicationState == UIApplicationStateActive)
-//    {
-    
-//    }
-//    else //后台
-//    {
-//        NSDictionary *infodic = [userInfo objectForKey:@"data"];
-//        
-//        XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
-//        vc.hidesBottomBarWhenPushed=YES;
-//        vc.orderID = userInfo[@""];
-//        vc.isRoot = YES ;
-//        [_tabBarController.navigationController pushViewController:vc animated:YES];
-//
-//    }
-//
     
 }
 - (void)applicationWillResignActive:(UIApplication *)application {
