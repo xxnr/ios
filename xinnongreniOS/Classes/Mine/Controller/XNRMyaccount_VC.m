@@ -18,6 +18,8 @@
 #import "XNRTypeModel.h"
 #import "XNRTypeView.h"
 #import "XNRIdentifyServiceStationController.h"
+#import "UMessage.h"
+
 #define KbtnTag 1000
 #define uploadImageTag  2000   //上传头像
 
@@ -538,6 +540,7 @@
     UIActionSheet *actionSheet=[[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"退出当前账号" otherButtonTitles: nil];
         actionSheet.tag = 1000;
         [actionSheet showInView:self.view];
+
 }
 
 #pragma mark-修改密码
@@ -568,14 +571,22 @@
     }
     }else if (actionSheet.tag == 1000){
         if (buttonIndex == 0) {
-            //本地用户信息状态设为非登录
-            UserInfo *infos = [[UserInfo alloc]init];
-            infos.loginState = NO;
-            [DataCenter saveAccount:infos];
-            //发送刷新通知
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            
+            [UMessage removeAlias:[DataCenter account].userid type:kUMessageAliasTypexxnr response:^(id responseObject, NSError *error) {
+                
+                NSLog(@"友盟消息推送 error: %@" ,error);
+               
+                //本地用户信息状态设为非登录
+                UserInfo *infos = [[UserInfo alloc]init];
+                infos.loginState = NO;
+                [DataCenter saveAccount:infos];
+                
+                
+                //发送刷新通知
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+                [self.navigationController popToRootViewControllerAnimated:YES];
 
+            }];
         }
     }
 }

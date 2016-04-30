@@ -80,6 +80,13 @@
 @end
 
 @implementation XNRMyRepresentViewController
+static bool isBroker;
+
++(void)SetisBroker:(BOOL)broker
+{
+    isBroker = broker;
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
@@ -317,7 +324,7 @@
     line2.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.bookBtn addSubview:line2];
 
-    if (self.isBroker) {
+    if (isBroker) {
         _bookBtn.hidden = NO;
         self.leftBtn.frame = CGRectMake(0, btnY, ScreenWidth/3, btnH);
         self.rightBtn.frame = CGRectMake(CGRectGetMaxX(self.leftBtn.frame), btnY, ScreenWidth/3, btnH);
@@ -700,19 +707,34 @@
             self.bookTopTotalLabel.text = [NSString stringWithFormat:@"共登记%@名客户",result[@"count"]];
             self.bookTopRemainLabel.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
 
-            NSInteger i = [result[@"count"] integerValue]/10;
-            NSInteger j = [result[@"countLeftToday"] integerValue]/10;
+            NSInteger i = 1;
+            NSInteger count = [result[@"count"] integerValue];
+            while(count>=10)
+            {
+                count/=10;
+                i++;
+            }
+            
+            NSInteger j = 1;
+            NSInteger countLeftToday = [result[@"countLeftToday"] integerValue];
+            while(countLeftToday>=10)
+            {
+                countLeftToday/=10;
+                j++;
+            }
+//            NSInteger i = [result[@"count"] integerValue]/10;
+//            NSInteger j = [result[@"countLeftToday"] integerValue]/10;
             
             if (self.bookTopTotalLabel) {
                 
                 if (IS_IPHONE4 || IS_IPHONE5) {
-                    [self setDifFont:self.bookTopTotalLabel andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
-                    [self setDifFont:self.bookTopRemainLabel andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+                    [self setDifFont:self.bookTopTotalLabel andPosit:3 andlength:i andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+                    [self setDifFont:self.bookTopRemainLabel andPosit:6 andlength:j andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
                 }
                 else
                 {
-                    [self setDifFont:self.bookTopTotalLabel andPosit:3 andlength:i+1 andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
-                    [self setDifFont:self.bookTopRemainLabel andPosit:6 andlength:j+1 andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+                    [self setDifFont:self.bookTopTotalLabel andPosit:3 andlength:i andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+                    [self setDifFont:self.bookTopRemainLabel andPosit:6 andlength:j andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
                 }
             }
             [self.tableView2 reloadData];
@@ -840,7 +862,12 @@
                 [_dataArr addObject:model];
             }
             self.headLabel.text = [NSString stringWithFormat:@"已邀请%tu位好友",_dataArr.count];
-            
+            NSInteger i = 1;
+            NSInteger count = _dataArr.count;
+            while (count >= 10) {
+                count = count/10;
+                i++;
+            }
             NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:self.headLabel.text];
             
             NSDictionary *priceStr=@{
@@ -849,9 +876,10 @@
                                      NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(40)]
                                      };
             
-            [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,1)];
             
+            [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,i)];
             
+
             
             [_headLabel setAttributedText:AttributedStringPrice];
 

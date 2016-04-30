@@ -29,13 +29,14 @@
     CGSize LabelSize;
     if ([message isKindOfClass:[NSString class]]) {
         
-        LabelSize = [message sizeWithFont_BSExt:[UIFont systemFontOfSize:17] maxSize:CGSizeMake(290, MAXFLOAT)];
+        LabelSize = [message sizeWithFont_BSExt:[UIFont systemFontOfSize:15] maxSize:CGSizeMake(290, MAXFLOAT)];
 
     }
     label.frame = CGRectMake(10, 5, LabelSize.width, LabelSize.height);
     label.text = message;
     label.textColor = [UIColor whiteColor];
     label.textAlignment = 1;
+    label.numberOfLines = 0;
     label.backgroundColor = [UIColor clearColor];
     label.font = [UIFont boldSystemFontOfSize:15];
     [showview addSubview:label];

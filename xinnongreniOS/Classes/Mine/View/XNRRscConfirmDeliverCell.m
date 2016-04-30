@@ -103,11 +103,11 @@
 -(void)setupFrame
 {
     self.selectedBtn.frame = self.frameModel.imageViewF;
-    self.goodsNameLabel.frame = self.frameModel.nameLabelF;
-    self.goodsNumberLabel.frame = self.frameModel.numberLabelF;
-    self.attributesLabel.frame = self.frameModel.attributeLabelF;
-    self.addtionsLabel.frame = self.frameModel.addtionLabelF;
-    self.lineView.frame = self.frameModel.LineF;
+    self.goodsNameLabel.frame = self.frameModel.goodsNameLabelF;
+    self.goodsNumberLabel.frame = self.frameModel.goodsNumberLabelF;
+    self.attributesLabel.frame = self.frameModel.attributesLabelF;
+    self.addtionsLabel.frame = self.frameModel.addtionsLabelF;
+    self.lineView.frame = self.frameModel.bottomLineF;
 }
 
 -(void)setupData

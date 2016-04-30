@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "XNRMyOrderSectionModel.h"
 @interface XNRCommentView : UIView<UITableViewDataSource,UITableViewDelegate>{
     
     NSMutableArray *_dataArr;   //模拟数据
@@ -17,7 +17,7 @@
 @property (nonatomic, copy) void(^commentBlock)();
 @property (nonatomic, copy) void(^payBlock)();//去付款
 @property(nonatomic,copy)void(^allPayBlock)();//全部结算
-@property(nonatomic,copy)void(^checkOrderBlock)(NSString*orderID);//查看订单
+@property(nonatomic,copy)void(^checkOrderBlock)(NSString*orderID,XNRMyOrderSectionModel *model);//查看订单
 
 /**
  *  重写init方法传入数据流所需要的url

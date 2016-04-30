@@ -20,6 +20,8 @@
 #import "AppDelegate.h"
 #import "XNRFinishMineDataController.h"
 #import "XNRAddtionsModel.h"
+#import "UMessage.h"
+
 @interface XNRLoginViewController ()<UITextFieldDelegate,QCheckBoxDelegate>{
     
     BOOL isRemmeber;
@@ -346,6 +348,7 @@
     [KSHttpRequest post:encode parameters:@{@"account":self.usernameTextField.text,@"password":encryptPassword,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000){
+            
             [BMProgressView LoadViewDisappear:self.view];
             //本地归档保存用户账户信息
             NSDictionary *datasDic = result[@"datas"];
@@ -358,6 +361,7 @@
             UserInfo *info = [DataCenter account];
             [info setValuesForKeysWithDictionary:datasDic];
             info.loginState = YES;
+            info.userid = datasDic[@"userid"];
             info.password = self.passwordTextField.text;
             info.token = result[@"token"];
             info.photo = datasDic[@"photo"];
@@ -402,18 +406,26 @@
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setObject:userName forKey:@"userName"];
             
+            
+            [UMessage setAlias:[DataCenter account].userid type:kUMessageAliasTypexxnr response:^(id responseObject, NSError *error) {
+                
+                NSLog(@"友盟消息推送 error: %@" ,error);
+
+            }];
+            
         }else{
             
             [UILabel showMessage:result[@"message"]];
             [BMProgressView LoadViewDisappear:self.view];
         }
+        
+        
     } failure:^(NSError *error) {
         
         [UILabel showMessage:@"登录失败"];
         [BMProgressView LoadViewDisappear:self.view];
 
     }];
-
 
 }
 

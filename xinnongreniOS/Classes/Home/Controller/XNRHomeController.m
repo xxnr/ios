@@ -21,8 +21,7 @@
 #import "AppDelegate.h"
 #import "XNRRemaindUserUpdataTool.h"
 #import "XNRUMengPushTool.h"
-
-
+#import "XNRCheckOrderVC.h"
 
 @interface XNRHomeController ()<UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,UICollectionViewDelegate,XNRHomeCollectionHeaderViewAddBtnDelegate,XNRFerSelectAddBtnDelegate>
 {
@@ -62,8 +61,23 @@
     //接收登录界面传递的页面刷新通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dealPageRefresh) name:@"PageRefresh" object:nil];
     
-}
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openOrderIdController:) name:@"openOrderIDController" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openWebSiteController:) name:@"openWebSiteController" object:nil];
 
+    
+}
+-(void)openOrderIdController:(NSNotification *)notification
+{
+    
+    XNRCheckOrderVC *orderVC = [[XNRCheckOrderVC alloc]init];
+    orderVC.orderID = (NSString *)notification.userInfo;
+    [self.navigationController pushViewController:orderVC animated:orderVC];
+}
+-(void)openWebSiteController:(NSNotification *)notification
+{
+
+}
 
 #pragma mark - 页面刷新
 - (void)dealPageRefresh

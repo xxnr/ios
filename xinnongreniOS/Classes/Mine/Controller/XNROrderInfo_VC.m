@@ -134,6 +134,7 @@
     // 底部视图
     [self createFoot];
     
+//    [self getcontactData];
 //    [self getData];
 
     _deliverBtnArr = [[NSMutableArray alloc] init];
@@ -190,7 +191,17 @@
             
             
             
-        }else{
+        }
+        else if ([resultObj[@"code"] integerValue] == 1401){
+            [UILabel showMessage:resultDic[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            XNRLoginViewController *loginVC = [[XNRLoginViewController alloc] init];
+            loginVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:loginVC animated:YES];
+        }
+        else{
             
             [UILabel showMessage:resultObj[@"message"]];
         }
@@ -228,14 +239,33 @@
          if ([result[@"code"]integerValue] == 1000) {
              _webSiteArr = (NSMutableArray *)[XNRRSCModel objectArrayWithKeyValuesArray:result[@"RSCs"]];
              
+             if (self.RSCContactInfo) {
                  [self createDeliveryView:self.RSCDetailAddress andContact:self.RSCContactInfo];
+                 // 来自购物车页面的话才加载
+                 if (self.isRoot) {// 获得地址信息
+                     [self getAddressData];
+                     _addressArr = [[NSMutableArray alloc] init];
+                 }
+                 
+             }
+             else
+             {
+                 [self getcontactData];
+                 
+             }
+             
          }
+         else if ([result[@"code"] integerValue] == 1401){
+             [UILabel showMessage:result[@"message"]];
+             UserInfo *infos = [[UserInfo alloc]init];
+             infos.loginState = NO;
+             [DataCenter saveAccount:infos];
+             XNRLoginViewController *loginVC = [[XNRLoginViewController alloc] init];
+             loginVC.hidesBottomBarWhenPushed = YES;
+             [self.navigationController pushViewController:loginVC animated:YES];
+         }
+
          
-         // 来自购物车页面的话才加载
-         if (self.isRoot) {// 获得地址信息
-             [self getAddressData];
-             _addressArr = [[NSMutableArray alloc] init];
-         }
 
      } failure:^(NSError *error) {
     }];
@@ -296,8 +326,18 @@
                         }
             
                         [self.tableview reloadData];
-                    }else{
-                        
+                    }
+        else if ([resultObj[@"code"] integerValue] == 1401){
+            [UILabel showMessage:resultDic[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            XNRLoginViewController *loginVC = [[XNRLoginViewController alloc] init];
+            loginVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:loginVC animated:YES];
+        }
+        else{
+    
                         [UILabel showMessage:resultObj[@"message"]];
                     }
         
@@ -328,15 +368,22 @@
                 [_addressArr addObject:model];
                 
             }
-            if (_addressArr.count>0) {
-                [self createAddressView:_addressArr];
-//                [self createHeadView];
+            if (!self.nextAddresModel) {
+                
+                
+                if (_addressArr.count>0) {
+                    [self createAddressView:_addressArr];
+    //                [self createHeadView];
 
+                }
+                else{
+                    [self createHeadView];
+                }
             }
-            else{
-                [self createHeadView];
+            else
+            {
+                [self createAddressModelView:self.nextAddresModel];
             }
-    
         }
         else {
             [UILabel showMessage:result[@"message"]];
@@ -387,10 +434,18 @@
     line.backgroundColor = R_G_B_16(0xe0e0e0);
     [topView addSubview:line];
     
-    
     for (int i=0; i<self.deliveryArr.count; i++) {
         XNRDeliveryTypeModel *model = self.deliveryArr[i];
-
+        if ([model.deliveryName isEqualToString:@"网点自提"] && self.deliveryArr.count > 1) {
+//            [self.deliveryArr replaceObjectAtIndex:0 withObject:model];
+            [self.deliveryArr exchangeObjectAtIndex:0 withObjectAtIndex:1];
+        }
+    }
+    for (int i=0; i<self.deliveryArr.count; i++) {
+        XNRDeliveryTypeModel *model = self.deliveryArr[i];
+        if ([model.deliveryName isEqualToString:@"网点自提"]) {
+            [self.deliveryArr replaceObjectAtIndex:0 withObject:model];
+        }
         XNRDeliveryBtn *deliveryBtn = [[XNRDeliveryBtn alloc]initWithFrame:CGRectMake(PX_TO_PT(31)*(i+1)+PX_TO_PT(169)*i, CGRectGetMaxY(line.frame)+PX_TO_PT(28), PX_TO_PT(169), PX_TO_PT(53))];
         [deliveryBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
         [deliveryBtn setTitle:model.deliveryName forState:UIControlStateNormal];
@@ -400,14 +455,19 @@
         deliveryBtn.layer.borderColor = [R_G_B_16(0xB0B0B0) CGColor];
         deliveryBtn.layer.borderWidth = PX_TO_PT(2);
         deliveryBtn.tag = [model.deliveryType integerValue];
-        if(i == 0)
-        {
-            [self deliveryClick:deliveryBtn];
-        }
+
         [deliveryBtn addTarget:self action:@selector(deliveryClick:) forControlEvents:UIControlEventTouchUpInside];
 //        [self.view addSubview:_headViewSpecial];
         [topView addSubview:deliveryBtn];
-        [_deliverBtnArr addObject:deliveryBtn];
+        
+        if ([model.deliveryName isEqualToString:@"网点自提"]) {
+            [self deliveryClick:deliveryBtn];
+            [_deliverBtnArr insertObject:deliveryBtn atIndex:0];
+        }
+        else
+        {
+            [_deliverBtnArr addObject:deliveryBtn];
+        }
     }
     
     [_headViewSpecial addSubview:topView];
@@ -690,6 +750,47 @@
     [weakSelf.navigationController pushViewController:vc animated:YES];
     
 }
+
+//获取收货人列表信息
+-(void)getcontactData
+{
+    [KSHttpRequest get:KqueryConsignees parameters:@{@"userId":[DataCenter account].userid} success:^(id result) {
+        if ([result[@"code"]integerValue] == 1000) {
+            
+            NSMutableArray *arr = (NSMutableArray *)[XNRConsigneeModel objectArrayWithKeyValuesArray:result[@"datas"][@"rows"]];
+
+            self.consigneeModel = arr[0];
+            self.consigneeName = self.consigneeModel.consigneeName;
+            self.consigneePhone = self.consigneeModel.consigneePhone;
+           
+            self.RSCContactInfo = [NSString stringWithFormat:@"%@ %@",self.consigneeName,self.consigneePhone];
+
+
+            [self createDeliveryView:self.RSCDetailAddress andContact:self.RSCContactInfo];
+
+            // 来自购物车页面的话才加载
+            if (self.isRoot) {// 获得地址信息
+                [self getAddressData];
+                _addressArr = [[NSMutableArray alloc] init];
+            }
+            
+
+        }
+        else if ([result[@"code"] integerValue] == 1401){
+            [UILabel showMessage:result[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            XNRLoginViewController *loginVC = [[XNRLoginViewController alloc] init];
+            loginVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:loginVC animated:YES];
+        }
+
+    } failure:^(NSError *error) {
+    }];
+}
+
+
 //
 #pragma mark - 创建有地址后的视图
 -(void)createAddressView:(NSMutableArray *)addressArray{
@@ -852,6 +953,10 @@
     UIView *addressView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(btn.frame)+PX_TO_PT(27), ScreenWidth, PX_TO_PT(173))];
     self.addressView = addressView;
     
+    UIButton *addressBtnSpecial = [[UIButton alloc] initWithFrame:CGRectMake(0,0, ScreenWidth, PX_TO_PT(166))];
+    [addressBtnSpecial setBackgroundColor:R_G_B_16(0xfffaf0)];
+    [addressBtnSpecial addTarget:self action:@selector(addressManage) forControlEvents:UIControlEventTouchUpInside];
+    [addressView addSubview:addressBtnSpecial];
     
     UIImageView *upImageViewSpecial = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(7))];
     [upImageViewSpecial setImage:[UIImage imageNamed:@"orderInfo_address_bacground"]];
@@ -861,6 +966,10 @@
     [downImageViewSpecial setImage:[UIImage imageNamed:@"orderInfo_down"]];
     [addressView addSubview:downImageViewSpecial];
     
+    //    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(downImageViewSpecial.frame), ScreenWidth, PX_TO_PT(20))];
+    //    view.backgroundColor = R_G_B_16(0xf7f7f7);
+    //    [addressView addSubview:view];
+    //
     _recipientNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), PX_TO_PT(28), PX_TO_PT(200), PX_TO_PT(36))];
     _recipientNameLabel.textColor = R_G_B_16(0x323232);
     _recipientNameLabel.text = model.receiptPeople;
@@ -874,6 +983,7 @@
     
     UIImageView *addressImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(_recipientNameLabel.frame) + PX_TO_PT(32), PX_TO_PT(26), PX_TO_PT(34))];
     [addressImageView setImage:[UIImage imageNamed:@"orderInfo_address_picture"]];
+    
     [addressView addSubview:addressImageView];
     
     
@@ -910,20 +1020,15 @@
     UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
     headLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [addressView addSubview:headLine];
-    
-    UIButton *addressBtnSpecial = [[UIButton alloc] initWithFrame:CGRectMake(0,0, ScreenWidth, PX_TO_PT(159))];
-    [addressBtnSpecial setBackgroundColor:R_G_B_16(0xfffaf0)];
-    [addressBtnSpecial addTarget:self action:@selector(addressManage) forControlEvents:UIControlEventTouchUpInside];
-    [addressView addSubview:addressBtnSpecial];
-
-    self.headViewSpecial.frame = CGRectMake(0, 0, ScreenWidth,  CGRectGetMaxY(addressView.frame));
-    
-    self.tableview.tableHeaderView = _headViewSpecial;
-
-//    [self.view addSubview:_headViewSpecial];
     _addressView.hidden = YES;
+    //    [self.view addSubview:_headViewSpecial];
+    
+    
+    self.headViewSpecial.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(_addressView.frame));
+    self.tableview.tableHeaderView = _headViewSpecial;
+    
     [_headViewSpecial addSubview:addressView];
-
+    
 }
 
 #pragma mark-中部视图
@@ -1120,7 +1225,7 @@
         NSLog(@"%@",model.addressId);
         
         self.headViewNormal.hidden = YES;
-        [self createAddressModelView:model];
+//        [self createAddressModelView:model];
         
 
     }];
@@ -1154,7 +1259,7 @@
     else
     {
         if([self.addressLabel.text isEqualToString:@"添加收货地址"]){
-            [UILabel showMessage:@"收货地址不能为空"];
+            [UILabel showMessage:@"请填写您的收货地址"];
             return;
         }
         

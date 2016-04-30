@@ -13,13 +13,19 @@
 
 @property (nonatomic ,strong) XNRRscSkusModel *model;
 
-@property (nonatomic ,assign) CGRect imageViewF;
-@property (nonatomic ,assign) CGRect nameLabelF;
-@property (nonatomic ,assign) CGRect numberLabelF;
-@property (nonatomic ,assign) CGRect attributeLabelF;
-@property (nonatomic ,assign) CGRect addtionLabelF;
-@property (nonatomic ,assign) CGRect LineF;
+@property (nonatomic ,assign ,readonly) CGRect imageViewF;
 
-@property (nonatomic ,assign) CGFloat cellHeight;
+@property (nonatomic ,assign ,readonly) CGRect goodsNameLabelF;
+
+@property (nonatomic ,assign ,readonly) CGRect goodsNumberLabelF;
+
+@property (nonatomic ,assign ,readonly) CGRect attributesLabelF;
+
+@property (nonatomic ,assign ,readonly) CGRect addtionsLabelF;
+
+@property (nonatomic ,assign ,readonly) CGRect bottomLineF;
+
+@property (nonatomic ,assign ,readonly) CGFloat cellHeight;
+
 
 @end

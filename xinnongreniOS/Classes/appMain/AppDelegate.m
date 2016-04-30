@@ -21,10 +21,13 @@
 #import "UMSocial.h"
 #import "UMSocialWechatHandler.h"
 #import "UMSocialQQHandler.h"
-
+#import "XNRCheckOrderVC.h"
+#import "XNRNavigationController.h"
 
 @interface AppDelegate ()<UITabBarControllerDelegate>
-
+{
+    BOOL _is_Notification;
+}
 @end
 
 @implementation AppDelegate
@@ -36,6 +39,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+//    [UMessage startWithAppkey:UM_APPKEY launchOptions:launchOptions];
+
     self.launchOptions = launchOptions;
     // 键盘的管理
     IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
@@ -85,10 +90,43 @@
     
     [UMSocialQQHandler setQQWithAppId:QQAppId appKey:QQAppSecret url:APPURL];
 
+    [UMessage setLogEnabled:YES];
     
+
+
+    // 启动bugtags
+    [XNRBugTagsTool openBugTags];
+    
+
+    //友盟注册通知
+    //-- Set Notification
+    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
+    {
+        // iOS 8 Notifications
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        
+        [application registerForRemoteNotifications];
+    }
+    else
+    {
+        // iOS < 8 Notifications
+        [application registerForRemoteNotificationTypes:
+         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
+    }
+    [UMessage setLogEnabled:YES];
+
+<<<<<<< HEAD
+=======
     // 启动bugtags
 //    [XNRBugTagsTool openBugTags];
+>>>>>>> xxnr-chung
     
+    // 判断是否是推送进来的
+    NSDictionary* remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (remoteNotification != nil) {
+        _is_Notification = YES;
+    }
+
     return YES;
 }
 
@@ -127,21 +165,92 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     [UMessage registerDeviceToken:deviceToken];
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-{
-    [UMessage didReceiveRemoteNotification:userInfo];
     
 }
 
 -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     NSString *error_str = [NSString stringWithFormat: @"%@", error];
-    NSLog(@"Failed to get token, error:%@", error_str);
+    NSLog(@"---------------------Failed to get token, error:%@", error_str);
     
 }
 
+
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    [UMessage didReceiveRemoteNotification:userInfo];
+    
+    NSLog(@"%@",userInfo);
+    
+    NSString *alert = [userInfo objectForKey:@"page"];
+    NSString *orderId = [userInfo objectForKey:@"orderId"];
+    
+//    if (application.applicationState == UIApplicationStateActive) { // 此时app在前台运行
+//        application.applicationIconBadgeNumber++;
+//
+//    } else { // 后台运行时
+    if (!_is_Notification) {
+            application.applicationIconBadgeNumber++;
+    }
+    else
+    {
+        if ([alert isEqualToString:@"userOrderDetail"]) {
+    
+            XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
+            vc.hidesBottomBarWhenPushed=YES;
+            vc.orderID = orderId;
+            
+            XNRNavigationController *orderNavVC = [[XNRNavigationController alloc]initWithRootViewController:vc];
+            
+
+            
+            UIViewController *currentVC = [self getCurrentVC];
+            
+            while (currentVC.presentedViewController != nil) {
+                currentVC = currentVC.presentedViewController;
+            }
+            
+            [currentVC presentViewController:orderNavVC animated:NO completion:nil];
+            
+            [application setApplicationIconBadgeNumber:0];
+
+        }
+
+    }
+    _is_Notification = NO;
+
+}
+
+//获取当前屏幕显示的viewcontroller
+- (UIViewController *)getCurrentVC
+{
+    UIViewController *result = nil;
+    
+    UIWindow * window = [[UIApplication sharedApplication] keyWindow];
+    if (window.windowLevel != UIWindowLevelNormal)
+    {
+        NSArray *windows = [[UIApplication sharedApplication] windows];
+        for(UIWindow * tmpWin in windows)
+        {
+            if (tmpWin.windowLevel == UIWindowLevelNormal)
+            {
+                window = tmpWin;
+                break;
+            }
+        }
+    }
+    
+    UIView *frontView = [[window subviews] objectAtIndex:0];
+    id nextResponder = [frontView nextResponder];
+    
+    if ([nextResponder isKindOfClass:[UIViewController class]])
+        result = nextResponder;
+    else
+        result = window.rootViewController;
+    
+    return result;
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     
@@ -149,8 +258,7 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    
-    
+    _is_Notification = YES;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -159,7 +267,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)applicatio
 {
-    
+    _is_Notification = NO;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

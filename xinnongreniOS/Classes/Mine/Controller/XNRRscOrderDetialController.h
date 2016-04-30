@@ -10,4 +10,6 @@
 
 @interface XNRRscOrderDetialController : UIViewController
 
+@property (nonatomic, copy) NSString *orderId;
+
 @end

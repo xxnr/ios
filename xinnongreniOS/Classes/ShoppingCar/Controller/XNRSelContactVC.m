@@ -108,7 +108,7 @@
     [super viewDidLoad];
     [self setNav];
     [self createTableView];
-
+    _consigneeArr = [NSMutableArray array];
     [self getData];
     [self setupTotalRefresh];
 }
@@ -117,8 +117,10 @@
 {
     [KSHttpRequest get:KqueryConsignees parameters:@{@"userId":[DataCenter account].userid,@"page":[NSNumber numberWithInt:currentPage],@"max":@10} success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
-            _consigneeArr = (NSMutableArray *)[XNRConsigneeModel objectArrayWithKeyValuesArray:result[@"datas"][@"rows"]];
             
+            NSMutableArray *arr = (NSMutableArray *)[XNRConsigneeModel objectArrayWithKeyValuesArray:result[@"datas"][@"rows"]];
+//            [_consigneeArr arrayByAddingObjectsFromArray:arr];
+            [_consigneeArr addObjectsFromArray:arr];
             [self createTableHeadView];
             [self.tableView reloadData];
 
@@ -177,7 +179,7 @@
 //创建tableView
 -(void)createTableView
 {
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(564), ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(564), ScreenWidth, ScreenHeight-PX_TO_PT(564)-64) style:UITableViewStylePlain];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.delegate = self;
     tableView.dataSource = self;
@@ -247,7 +249,7 @@
     saveBtn.frame = CGRectMake(PX_TO_PT(31), CGRectGetMaxY(writeInfoView.frame) + PX_TO_PT(58), PX_TO_PT(657), PX_TO_PT(89));
     saveBtn.layer.cornerRadius = PX_TO_PT(10);
     saveBtn.layer.masksToBounds = YES;
-    [saveBtn setTitle:@"保存本次收货人" forState:UIControlStateNormal];
+    [saveBtn setTitle:@"确定" forState:UIControlStateNormal];
     saveBtn.backgroundColor = R_G_B_16(0x00B38A);
     [saveBtn setTintColor:[UIColor whiteColor]];
     [saveBtn addTarget:self action:@selector(saveBtnClick) forControlEvents:UIControlEventTouchUpInside];
@@ -340,27 +342,6 @@
 {
     return PX_TO_PT(99);
 }
-//-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-//{
-//    
-//    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(99))];
-//    headView.backgroundColor = R_G_B_16(0xF0F0F0);
-//    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(29), PX_TO_PT(45), PX_TO_PT(41))];
-//    [imageView setImage:[UIImage imageNamed:@"history"]];
-//    
-//    UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame)+PX_TO_PT(24), PX_TO_PT(34), PX_TO_PT(160), PX_TO_PT(32))];
-//    titleLabel.text = @"历史收货人";
-//    titleLabel.textColor = R_G_B_16(0x323232);
-//    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-//    
-//    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
-//    line.backgroundColor = R_G_B_16(0xc7c7c7);
-//    [headView addSubview:imageView];
-//    [headView addSubview:titleLabel];
-//    [headView addSubview:line];
-//
-//    return headView;
-//}
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString static *cellID = @"cell";
@@ -378,7 +359,7 @@
     [iconBtn addTarget:self action:@selector(iconClick:) forControlEvents:UIControlEventTouchDown];
     iconBtn.tag = indexPath.row;
     XNRConsigneeModel *consigneemodel =self.consigneeArr[indexPath.row];
-    if ([consigneemodel.consigneePhone isEqualToString: self.model.consigneePhone]) {
+    if ([consigneemodel.consigneePhone isEqualToString: self.model.consigneePhone] && [consigneemodel.consigneeName isEqualToString:self.model.consigneeName]) {
         iconBtn.selected = YES;
     }
     

@@ -504,24 +504,20 @@
     [[NSNotificationCenter defaultCenter]postNotificationName:@"carry" object:self userInfo:dic];
 }
 
+
 -(void)makeSureClick:(UIButton *)sender{
     
     XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
-    XNRMakeSureView *makesureView = [[XNRMakeSureView alloc]init];
+    XNRMakeSureView *makesureView = [[XNRMakeSureView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     makesureView.orderId = sectionModel.orderId;
-    
-    for (int i=0; i<sectionModel.skus.count; i++) {
-        XNRMyOrderModel *model = sectionModel.skus[i];
-        if(model.deliverStatus == 4)
-        {
-            [makesureView.modelArr addObject:model];
-        }
-    }
+    makesureView.modelArr = [NSMutableArray array];
+    makesureView.modelArr = sectionModel.skus;
     
     [makesureView createview];
     
     [self addSubview:makesureView];
 }
+
 
 #pragma mark - tableView代理方法
 
@@ -585,7 +581,8 @@
 {
     NSLog(@"被点击了");
     XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
-    self.checkOrderBlock(sectionModel.orderId);
+    
+    self.checkOrderBlock(sectionModel.orderId,sectionModel);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

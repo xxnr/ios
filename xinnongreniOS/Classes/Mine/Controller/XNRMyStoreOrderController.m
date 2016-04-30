@@ -12,7 +12,7 @@
 #import "XNRRscWaitIdentifyView.h"
 #import "XNRRscWaitDeliverView.h"
 #import "XNRRscWaitTakeView.h"
-
+#import "XNRRscOrderDetialController.h"
 #define KtitleBtn  1000
 
 @interface XNRMyStoreOrderController()<UIScrollViewDelegate>
@@ -61,6 +61,13 @@
 {
     if (self.RscAllOrderView == nil) {
         self.RscAllOrderView  = [[XNRRscAllOrderView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
+        __weak __typeof(&*self)weakSelf=self;
+        self.RscAllOrderView.com = ^(NSString *orderId){
+            XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
+            orderDetialVC.hidesBottomBarWhenPushed = YES;
+            orderDetialVC.orderId = orderId;
+            [weakSelf.navigationController pushViewController:orderDetialVC animated:YES];
+        };
     }
     if (self.RscWaitPayView == nil) {
         self.RscWaitPayView  = [[XNRRscWaitPayView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];

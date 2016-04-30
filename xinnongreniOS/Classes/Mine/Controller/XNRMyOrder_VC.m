@@ -20,6 +20,7 @@
 #import "XNRSpecialViewController.h"
 #import "XNROffLine_VC.h"
 #import "XNRCarryVC.h"
+#import "XNRTabBarController.h"
 
 #define KbtnTag          1000
 #define kLabelTag        2000
@@ -60,6 +61,15 @@
     [self.view addSubview:self.mainScrollView];
     [self createMidView];
     [self createTopView];
+}
+-(void)login
+{
+    UserInfo *infos = [[UserInfo alloc]init];
+    infos.loginState = NO;
+    [DataCenter saveAccount:infos];
+    XNRLoginViewController *loginVC = [[XNRLoginViewController alloc] init];
+    loginVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:loginVC animated:YES];
 
 }
 -(void)carry:(NSNotification *)notification
@@ -106,7 +116,7 @@
 -(void)createMidView{
     
     if(nil==self.ServeView){ // 全部
-        self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
+        self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
     
         [self.mainScrollView addSubview:self.ServeView];
         __weak __typeof(&*self)weakSelf=self;
@@ -120,10 +130,11 @@
             [weakSelf.navigationController pushViewController:vc animated:YES];
         }];
         // 查看订单
-        [self.ServeView setCheckOrderBlock:^(NSString *orderID,NSString *type) {
+        [self.ServeView setCheckOrderBlock:^(NSString *orderID,NSString *type,XNRMyOrderSectionModel *model) {
             XNRCheckOrderVC *vc=[[XNRCheckOrderVC alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
             vc.orderID = orderID;
+            vc.model = model;
             vc.myOrderType = type;
             vc.isRoot = YES ;
             [weakSelf.navigationController pushViewController:vc animated:YES];
@@ -146,10 +157,11 @@
         }];
         
         // 查看订单
-        [self.PayView setCheckOrderBlock:^(NSString *orderID) {
+        [self.PayView setCheckOrderBlock:^(NSString *orderID,XNRMyOrderSectionModel *model) {
             XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc] init];
             vc.hidesBottomBarWhenPushed = YES;
             vc.orderID=orderID;
+            vc.model = model;
             vc.myOrderType = @"待付款";
             vc.isRoot = YES ;
             [weakSelf.navigationController pushViewController:vc animated:YES];
@@ -161,10 +173,11 @@
             // 查看订单
             self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
             __weak __typeof(&*self)weakSelf=self;
-            [self.SendView setCheckOrderBlock:^(NSString *orderID) {
+            [self.SendView setCheckOrderBlock:^(NSString *orderID,XNRMyOrderSectionModel *model) {
                 XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
                 vc.hidesBottomBarWhenPushed=YES;
                 vc.orderID= orderID;
+                vc.model = model;
                 vc.isRoot = YES ;
                 vc.myOrderType = @"待发货";
                 [weakSelf.navigationController pushViewController:vc animated:YES];
@@ -176,10 +189,11 @@
             self.ReciveView=[[XNRReciveView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"recive"];
             __weak __typeof(&*self)weakSelf=self;
             //查看订单
-            [self.ReciveView setCheckOrderBlock:^(NSString *orderID) {
+            [self.ReciveView setCheckOrderBlock:^(NSString *orderID,XNRMyOrderSectionModel *model) {
                 XNRCheckOrderVC *vc=[[XNRCheckOrderVC alloc]init];
                 vc.hidesBottomBarWhenPushed=YES;
                 vc.isRoot = YES ;
+                vc.model = model;
                 vc.orderID=orderID;
                 vc.myOrderType = @"待收货";
                 [weakSelf.navigationController pushViewController:vc animated:YES];
@@ -192,11 +206,12 @@
         self.CommentView =[[XNRCommentView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"comment"];
         __weak __typeof(&*self)weakSelf=self;
         // 查看订单
-        [self.CommentView setCheckOrderBlock:^(NSString *orderID) {
+        [self.CommentView setCheckOrderBlock:^(NSString *orderID,XNRMyOrderSectionModel *model) {
             XNRCheckOrderVC *vc=[[XNRCheckOrderVC alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
             vc.isRoot = YES ;
             vc.orderID=orderID;
+            vc.model = model;
             vc.myOrderType = @"已完成";
             [weakSelf.navigationController pushViewController:vc animated:YES];
             
@@ -212,6 +227,13 @@
         [self.mainScrollView addSubview:view];
     }
     
+}
+-(void)notificationRefresh
+{
+    self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
+    self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
+    self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
+    self.CommentView =[[XNRCommentView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"comment"];
 }
 #pragma mark-创建顶部视图
 -(void)createTopView {
@@ -289,6 +311,18 @@
 #pragma mark - 按钮的循环点击
 -(void)buttonClick:(UIButton*)button{
     
+    if (_type == XNRPayViewtype) {
+        self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
+        
+    }else if (_type == XNRSendViewType){
+        self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
+        
+    }else if (_type == XNRReciveViewType){
+        self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
+    }else{
+        self.CommentView =[[XNRCommentView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"comment"];
+    }
+        
     static int index = KbtnTag;
     
     UILabel *label = (UILabel *)[self.view viewWithTag:button.tag+1000];
@@ -446,6 +480,8 @@
 
 -(void)backClick{
 
+    UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController ;
+    
     for (UIViewController *vc in self.navigationController.viewControllers) {
         if ([vc isKindOfClass:[XNRMineController class]]) {
             [self.navigationController popToViewController:vc animated:YES];
@@ -453,14 +489,29 @@
         }
     }
     
-    
+    NSInteger count = self.navigationController.viewControllers.count;
+    if (count < 3) {
+        
+        XNRTabBarController *tabVC = [[XNRTabBarController alloc]init];
+        tabVC.selectedIndex = 3;
+        
+        [self.view.window setRootViewController:tabVC];
+        
+        //首页的控制器返回到rootVC
+        
+        [self.navigationController pushViewController:tabVC animated:NO];
+        
+        return;
+    }
+
+
    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     XNRTabBarController *tabVC = (XNRTabBarController *)window.rootViewController;
     tabVC.selectedIndex = 3;
 
+    
     //首页的控制器返回到rootVC
     [self.navigationController popToRootViewControllerAnimated:NO];
-
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -479,6 +530,9 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(carry:) name:@"carry" object:nil];
 
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(login) name:@"login" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(notificationRefresh) name:@"refresh" object:nil];
 }
 -(void)viewDidDisappear:(BOOL)animated
 {
