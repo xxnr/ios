@@ -96,6 +96,7 @@
         //创建订单
         [self createMainTableView];
         [self setupAllViewRefresh];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"serveHeadRefresh" object:nil];
 
     }
     return self;

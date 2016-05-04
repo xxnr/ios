@@ -62,6 +62,7 @@
         [self setupAlreadySendViewRefresh];
         [self createbackBtn];
         [self getData];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"reciveHeadRefresh" object:nil];
     }
     return self;
 }
@@ -72,7 +73,7 @@
 -(void)createbackBtn
 
 {
-    
+    [self.backtoTopBtn removeFromSuperview];
     UIButton *backtoTopBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     
     backtoTopBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(60)-PX_TO_PT(32), ScreenHeight-PX_TO_PT(164), PX_TO_PT(100), PX_TO_PT(100));
@@ -197,7 +198,9 @@
 
 -(void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"reloadOrderList" object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"reloadOrderList" object:nil];
+    
     
 }
 
@@ -207,6 +210,7 @@
     _currentPage = 1;
     [_dataArr removeAllObjects];
     [self getData];
+    [self.tableView reloadData];
 }
 
 -(void)footRefresh{
@@ -301,7 +305,7 @@
 
 #pragma mark--创建
 -(void)createMainTableView{
-    
+    [self.tableView removeFromSuperview];
     
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64) style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = [UIColor clearColor];
