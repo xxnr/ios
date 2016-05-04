@@ -17,6 +17,8 @@
 
 @property (nonatomic ,assign ,readonly) CGRect goodsNameLabelF;
 
+@property (nonatomic ,assign ,readonly) CGRect deliverStateLabelF;
+
 @property (nonatomic ,assign ,readonly) CGRect goodsNumberLabelF;
 
 @property (nonatomic ,assign ,readonly) CGRect attributesLabelF;

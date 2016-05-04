@@ -13,6 +13,7 @@
 #import "XNRRscWaitDeliverView.h"
 #import "XNRRscWaitTakeView.h"
 #import "XNRRscOrderDetialController.h"
+#import "XNRRscSearchController.h"
 #define KtitleBtn  1000
 
 @interface XNRMyStoreOrderController()<UIScrollViewDelegate>
@@ -48,6 +49,19 @@
     self.view.backgroundColor = R_G_B_16(0xffffff);
     [self setNavigationBar];
     [self createView];
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIdentifyTableView) name:@"refreshIdentifyTableView" object:nil];
+
+}
+
+-(void)refreshIdentifyTableView
+{
+    [self.RscWaitIdentifyView.tableView reloadData];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)createView
@@ -71,15 +85,43 @@
     }
     if (self.RscWaitPayView == nil) {
         self.RscWaitPayView  = [[XNRRscWaitPayView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
+        __weak __typeof(&*self)weakSelf=self;
+        self.RscWaitPayView.com = ^(NSString *orderId){
+            XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
+            orderDetialVC.hidesBottomBarWhenPushed = YES;
+            orderDetialVC.orderId = orderId;
+            [weakSelf.navigationController pushViewController:orderDetialVC animated:YES];
+        };
     }
     if (self.RscWaitIdentifyView == nil) {
         self.RscWaitIdentifyView  = [[XNRRscWaitIdentifyView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
+        __weak __typeof(&*self)weakSelf=self;
+        self.RscWaitIdentifyView.com = ^(NSString *orderId){
+            XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
+            orderDetialVC.hidesBottomBarWhenPushed = YES;
+            orderDetialVC.orderId = orderId;
+            [weakSelf.navigationController pushViewController:orderDetialVC animated:YES];
+        };
     }
     if (self.RscWaitDeliverView == nil) {
         self.RscWaitDeliverView  = [[XNRRscWaitDeliverView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
+        __weak __typeof(&*self)weakSelf=self;
+        self.RscWaitDeliverView.com = ^(NSString *orderId){
+            XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
+            orderDetialVC.hidesBottomBarWhenPushed = YES;
+            orderDetialVC.orderId = orderId;
+            [weakSelf.navigationController pushViewController:orderDetialVC animated:YES];
+        };
     }
     if (self.RscWaitTakeView == nil) {
         self.RscWaitTakeView  = [[XNRRscWaitTakeView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
+        __weak __typeof(&*self)weakSelf=self;
+        self.RscWaitTakeView.com = ^(NSString *orderId){
+            XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
+            orderDetialVC.hidesBottomBarWhenPushed = YES;
+            orderDetialVC.orderId = orderId;
+            [weakSelf.navigationController pushViewController:orderDetialVC animated:YES];
+        };
 
     }
    
@@ -256,11 +298,26 @@
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     UIBarButtonItem *leftItem =[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
+    
+    UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    searchBtn.frame = CGRectMake(0, 0, 30, 30);
+    [searchBtn setImage:[UIImage imageNamed:@"search-"] forState:UIControlStateNormal];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:searchBtn];
+    self.navigationItem.rightBarButtonItem = rightItem;
+    [searchBtn addTarget:self action:@selector(searchBtnClick) forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(void)backClick
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)searchBtnClick
+{
+    XNRRscSearchController *searchVC = [[XNRRscSearchController alloc] init];
+    searchVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:searchVC animated:YES];
+    
 }
 
 

@@ -95,7 +95,7 @@
 
 
     // 启动bugtags
-    [XNRBugTagsTool openBugTags];
+//    [XNRBugTagsTool openBugTags];
     
 
     //友盟注册通知
@@ -115,11 +115,8 @@
     }
     [UMessage setLogEnabled:YES];
 
-<<<<<<< HEAD
-=======
     // 启动bugtags
 //    [XNRBugTagsTool openBugTags];
->>>>>>> xxnr-chung
     
     // 判断是否是推送进来的
     NSDictionary* remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];

@@ -10,12 +10,14 @@
 #import "XNRRscOrderModel.h"
 #import "XNRRscOrderDetialFrameModel.h"
 #import "UIImageView+WebCache.h"
+#import "UILabel+ZSC.h"
 
 @interface XNRRscOrderDetialCell()
 
 @property (nonatomic, weak) UIImageView *goodsImageView;
 @property (nonatomic, strong) XNRRscSkusModel *model;
 @property (nonatomic, weak) UILabel *goodsNameLabel;
+@property (nonatomic, weak) UILabel *deliverStateLabel;
 @property (nonatomic, weak) UILabel *goodsNumberLabel;
 @property (nonatomic, weak) UILabel *attributesLabel;
 @property (nonatomic, weak) UILabel *addtionsLabel;
@@ -62,6 +64,15 @@
     self.goodsNameLabel = goodsNameLabel;
     [self.contentView addSubview:goodsNameLabel];
     
+    
+    UILabel *deliverStateLabel = [[UILabel alloc] init];
+    deliverStateLabel.textColor = R_G_B_16(0xfe9b00);
+    deliverStateLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    deliverStateLabel.numberOfLines = 0;
+    deliverStateLabel.textAlignment = NSTextAlignmentRight;
+    self.deliverStateLabel = deliverStateLabel;
+    [self.contentView addSubview:deliverStateLabel];
+    
     UILabel *goodsNumberLabel = [[UILabel alloc] init];
     goodsNumberLabel.textColor = R_G_B_16(0x323232);
     goodsNumberLabel.textAlignment = NSTextAlignmentRight;
@@ -105,6 +116,7 @@
 {
     self.goodsImageView.frame = self.frameModel.imageViewF;
     self.goodsNameLabel.frame = self.frameModel.goodsNameLabelF;
+    self.deliverStateLabel.frame = self.frameModel.deliverStateLabelF;
     self.goodsNumberLabel.frame = self.frameModel.goodsNumberLabelF;
     self.attributesLabel.frame = self.frameModel.attributesLabelF;
     self.addtionsLabel.frame = self.frameModel.addtionsLabelF;
@@ -125,6 +137,18 @@
             [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
         }}];
     self.goodsNameLabel.text = model.name;
+    if ([model.deliverStatus integerValue] == 1) {
+        self.deliverStateLabel.text = @"未发货";
+    }else if ([model.deliverStatus integerValue] == 2){
+        self.deliverStateLabel.text = @"已发货";
+
+    }else if ([model.deliverStatus integerValue] == 4){
+        self.deliverStateLabel.text = @"已到服务站";
+
+    }else{
+        self.deliverStateLabel.text = @"已收货";
+    }
+    [self.deliverStateLabel verticalUpAlignmentWithText:self.deliverStateLabel.text maxHeight:PX_TO_PT(80)];
     self.goodsNumberLabel.text = [NSString stringWithFormat:@"x %@",model.count];
     
     // 属性

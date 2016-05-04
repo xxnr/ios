@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @class XNRRscOrderModel;
+@class XNRRscOrderDetailModel;
 
 typedef enum : NSUInteger {
     isFromDeliverController,
@@ -17,5 +18,7 @@ typedef enum : NSUInteger {
 @interface XNRRscConfirmDeliverView : UIView
 
 -(void)show:(XNRRscOrderModel *)model andType:(XNRRscConfirmDeliverViewType)type;
+
+-(void)show:(XNRRscOrderDetailModel *)model andDetialType:(XNRRscConfirmDeliverViewType)type;
 
 @end

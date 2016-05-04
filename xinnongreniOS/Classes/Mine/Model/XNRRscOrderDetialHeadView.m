@@ -8,6 +8,7 @@
 
 #import "XNRRscOrderDetialHeadView.h"
 #import "XNRRscOrderDetailModel.h"
+#import "XNRRscOrderModel.h"
 @interface XNRRscOrderDetialHeadView()
 
 @property (nonatomic, weak) UIView *tableHeadView;
@@ -16,7 +17,18 @@
 
 @property (nonatomic, weak) UILabel *orderNumber;
 @property (nonatomic, weak) UILabel *deliverState;
-@property (nonatomic, weak) UIView *orderDate;
+@property (nonatomic, weak) UILabel *orderDate;
+
+@property (nonatomic, weak) UILabel *deliverStyleDetial;
+@property (nonatomic, weak) UILabel *nameLabel;
+@property (nonatomic, weak) UILabel *phoneLabel;
+
+
+@property (nonatomic, weak) UILabel *depisitStateOne;
+@property (nonatomic, weak) UILabel *shouldPayOne;
+@property (nonatomic, weak) UILabel *depisitStateTwo;
+@property (nonatomic, weak) UILabel *shouldPayTwo;
+
 
 
 @property (nonatomic, strong) XNRRscOrderDetailModel *model;
@@ -86,7 +98,7 @@
     [headView addSubview:deliverState];
     
     
-    UILabel *orderDate = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), CGRectGetMaxY(orderNumber.frame), ScreenWidth/2, PX_TO_PT(65))];
+    UILabel *orderDate = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), CGRectGetMaxY(orderNumber.frame), ScreenWidth, PX_TO_PT(65))];
     orderDate.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     orderDate.textColor = R_G_B_16(0x323232);
     self.orderDate = orderDate;
@@ -119,28 +131,31 @@
     deliverStyle.text = @"配送方式";
     [middleView addSubview:deliverStyle];
     
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(230), PX_TO_PT(27), PX_TO_PT(34), PX_TO_PT(31))];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(200), PX_TO_PT(27), PX_TO_PT(34), PX_TO_PT(31))];
     imageView.image = [UIImage imageNamed:@"mention-icon-"];
     [middleView addSubview:imageView];
     
-    UILabel *deliverStyleDetial = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame), 0, PX_TO_PT(200), PX_TO_PT(80))];
+    UILabel *deliverStyleDetial = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame)+PX_TO_PT(20), 0, PX_TO_PT(130), PX_TO_PT(80))];
     deliverStyleDetial.textColor = R_G_B_16(0x646464);
-    deliverStyleDetial.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+    deliverStyleDetial.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    self.deliverStyleDetial = deliverStyleDetial;
     [middleView addSubview:deliverStyleDetial];
     
     UIImageView *imageView1 = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(30),PX_TO_PT(80)+PX_TO_PT(28), PX_TO_PT(32), PX_TO_PT(32))];
     imageView1.image = [UIImage imageNamed:@"call-contact"];
     [middleView addSubview:imageView1];
     
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView1.frame)+PX_TO_PT(20), PX_TO_PT(80), PX_TO_PT(200), PX_TO_PT(80))];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView1.frame)+PX_TO_PT(20), PX_TO_PT(80), PX_TO_PT(150), PX_TO_PT(80))];
     nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     nameLabel.text = @"经销美";
+    self.nameLabel = nameLabel;
     [middleView addSubview:nameLabel];
     
     
     UILabel *phoneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nameLabel.frame), PX_TO_PT(80), PX_TO_PT(200), PX_TO_PT(80))];
     phoneLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     phoneLabel.text = @"13578563456";
+    self.phoneLabel = phoneLabel;
     [middleView addSubview:phoneLabel];
     
     UIView *middleMarginView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(160), ScreenWidth, PX_TO_PT(20))];
@@ -186,21 +201,23 @@
     UILabel *stageOne = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(80), ScreenWidth, PX_TO_PT(65))];
     stageOne.text = @"阶段一：订金";
     stageOne.textColor = R_G_B_16(0x323232);
-    stageOne.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+    stageOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [bottomView addSubview:stageOne];
     
     
     UILabel *depisitStateOne = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(80), ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(65))];
     depisitStateOne.text = @"已付款";
-    depisitStateOne.textColor = R_G_B_16(0x323232);
+    depisitStateOne.textColor = R_G_B_16(0xfe9b00);
     depisitStateOne.textAlignment = NSTextAlignmentRight;
-    depisitStateOne.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+    depisitStateOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    self.depisitStateOne = depisitStateOne;
     [bottomView addSubview:depisitStateOne];
     
     UILabel *shouldPayOne = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(145), ScreenWidth, PX_TO_PT(65))];
     shouldPayOne.text = @"应支付金额：909090";
     shouldPayOne.textColor = R_G_B_16(0x323232);
-    shouldPayOne.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+    shouldPayOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    self.shouldPayOne = shouldPayOne;
     [bottomView addSubview:shouldPayOne];
     
     
@@ -210,23 +227,25 @@
     
     
     UILabel *stageTwo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(210), ScreenWidth, PX_TO_PT(79))];
-    stageTwo.text = @"阶段二：订金";
+    stageTwo.text = @"阶段二：尾款";
     stageTwo.textColor = R_G_B_16(0x323232);
-    stageTwo.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+    stageTwo.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [bottomView addSubview:stageTwo];
     
     
     UILabel *depisitStateTwo = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2,PX_TO_PT(210), ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(65))];
     depisitStateTwo.text = @"已付款";
-    depisitStateTwo.textColor = R_G_B_16(0x323232);
+    depisitStateTwo.textColor = R_G_B_16(0xfe9b00);
     depisitStateTwo.textAlignment = NSTextAlignmentRight;
-    depisitStateTwo.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+    depisitStateTwo.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    self.depisitStateTwo = depisitStateTwo;
     [bottomView addSubview:depisitStateTwo];
     
     UILabel *shouldPayTwo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30),PX_TO_PT(275), ScreenWidth, PX_TO_PT(65))];
     shouldPayTwo.text = @"应支付金额：909090";
     shouldPayTwo.textColor = R_G_B_16(0x323232);
-    shouldPayTwo.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
+    shouldPayTwo.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    self.shouldPayTwo = shouldPayTwo;
     [bottomView addSubview:shouldPayTwo];
     
     UIView *bottomMarginView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(340), ScreenWidth, PX_TO_PT(20))];
@@ -256,9 +275,49 @@
 -(void)updataWithModel:(XNRRscOrderDetailModel *)model
 {
     _model = model;
+    self.orderNumber.text = [NSString stringWithFormat:@"订单号：%@",model.id];
+    NSDictionary *dict = model.orderStatus;
+    self.deliverState.text = dict[@"value"];
     
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
+    dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"Asia/Shanghai"];
+    NSDate *dateFormatted = [dateFormatter dateFromString:model.dateCreated];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSString *locationTimeString=[dateFormatter stringFromDate:dateFormatted];
+    self.orderDate.text = [NSString stringWithFormat:@"下单时间：%@",locationTimeString];
     
+    NSDictionary *subDict = model.deliveryType;
+    self.deliverStyleDetial.text = subDict[@"value"];
+    self.nameLabel.text = model.consigneeName;
+    self.phoneLabel.text = model.consigneePhone;
+    
+    if (_model.subOrders.count==2) {
+        XNRRscSubOrdersModel *modelOne = _model.subOrders[0];
+        self.shouldPayOne.text = [NSString stringWithFormat:@"应支付金额：%@",modelOne.price];
+        if ([modelOne.payStatus integerValue] == 1) {
+            self.depisitStateOne.text = @"未付款";
+        }else {
+            self.depisitStateOne.text = @"已付款";
+        }
+        
+        XNRRscSubOrdersModel *modelTwo = _model.subOrders[1];
+        self.shouldPayTwo.text = [NSString stringWithFormat:@"应支付金额：%@",modelTwo.price];
+        if ([modelTwo.payStatus integerValue] == 1) {
+            self.depisitStateTwo.text = @"未付款";
+        }else {
+            self.depisitStateTwo.text = @"已付款";
+        }
 
+    }else{
+        XNRRscSubOrdersModel *model = _model.subOrders[0];
+        self.shouldPayOne.text = [NSString stringWithFormat:@"应支付金额：%@",model.price];
+        self.depisitStateOne.text = @"已付款";
+        self.shouldPayTwo.text = [NSString stringWithFormat:@"应支付金额：%@",model.price];
+        self.depisitStateTwo.text = @"已付款";
+
+    
+    }    
 }
 
 

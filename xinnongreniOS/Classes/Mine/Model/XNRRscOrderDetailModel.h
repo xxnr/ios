@@ -19,11 +19,16 @@
 
 @property (nonatomic, copy) NSString *price;
 @property (nonatomic, copy) NSString *deposit;
+@property (nonatomic, strong) NSDictionary *deliveryType;
+@property (nonatomic, strong) NSDictionary *orderStatus;
+
 
 @property (nonatomic, copy) NSString *id;
 
 @property (nonatomic ,strong) NSMutableArray *SKUList;
 @property (nonatomic ,strong) NSMutableArray *SKUFrameList;
+@property (nonatomic ,strong) NSMutableArray *SKUsDeliverFrame;
+
 
 @property (nonatomic ,strong) NSMutableArray *subOrders;
 

@@ -70,6 +70,7 @@
 {
     _model = model;
     self.dataLabel.text = _model.dateCreated;
+    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
     dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"Asia/Shanghai"];

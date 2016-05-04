@@ -7,7 +7,6 @@
 //
 
 #import "XNRRscSectionFootView.h"
-#import "XNRRscSectionFootFrameModel.h"
 
 @interface XNRRscSectionFootView()
 
@@ -37,28 +36,16 @@
 }
 
 -(void)crateView:(XNRRscOrderModel *)model{
-    if ([model.type integerValue] == 2) {
+    if ([model.type integerValue] == 2||[model.type integerValue] == 4) {
         [self createHaveButtonView:model];
-    }else if ([model.type integerValue] == 4 || [model.type integerValue] == 6){
-        [self createHaveButtonView:model];
-
-//        for (XNRRscSkusModel *skuModel in model.SKUs) {
-//            if ([skuModel.deliverStatus integerValue] == 4) {
-//                [self createHaveButtonView];
-//            }else{
-//                [self createNoButtonView];
-//            }
-//        }
-    }else if ([model.type integerValue] == 5){
-        [self createHaveButtonView:model];
-//
-//        for (XNRRscSkusModel *skuModel in model.SKUs) {
-//            if ([skuModel.deliverStatus integerValue] == 4) {
-//                [self createHaveButtonView:model];
-//            }else{
-//                [self createNoButtonView];
-//            }
-//        }
+    }else if ([model.type integerValue] == 5 || [model.type integerValue] == 6){
+        for (XNRRscSkusModel *skuModel in model.SKUs) {
+            if ([skuModel.deliverStatus integerValue] == 4) {
+                [self createHaveButtonView:model];
+            }else{
+                [self createNoButtonView];
+            }
+        }
     }else{
         [self createNoButtonView];
     }
@@ -112,13 +99,6 @@
     footButton.layer.cornerRadius = 5.0;
     footButton.layer.masksToBounds = YES;
     footButton.backgroundColor = R_G_B_16(0xfe9b00);
-    if ([model.type integerValue] == 2) {
-        [footButton setTitle:@"审核付款" forState:UIControlStateNormal];
-    }else if ([model.type integerValue] == 4 || [model.type integerValue] == 6){
-        [footButton setTitle:@"开始配送" forState:UIControlStateNormal];
-    }else if ([model.type integerValue] == 5){
-        [footButton setTitle:@"客户自提" forState:UIControlStateNormal];
-    }
     footButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [footButton addTarget:self action:@selector(footButtonClick) forControlEvents:UIControlEventTouchUpInside];
     self.footButton = footButton;
@@ -128,6 +108,7 @@
     CGFloat marginViewY = PX_TO_PT(176);
     CGFloat marginViewW = ScreenWidth;
     CGFloat marginViewH = PX_TO_PT(20);
+    
     UIView *marginView = [[UIView alloc] initWithFrame:CGRectMake(marginViewX, marginViewY, marginViewW, marginViewH)];
     marginView.backgroundColor = R_G_B_16(0xf4f4f4);
     self.marginView = marginView;
@@ -156,6 +137,7 @@
     CGFloat deliverStyleLabelY = PX_TO_PT(0);
     CGFloat deliverStyleLabelW = ScreenWidth/2;
     CGFloat deliverStyleLabelH = PX_TO_PT(88);
+    
     UILabel *deliverStyleLabel = [[UILabel alloc] initWithFrame:CGRectMake(deliverStyleLabelX, deliverStyleLabelY, deliverStyleLabelW, deliverStyleLabelH)];
     deliverStyleLabel.textColor = R_G_B_16(0x323232);
     deliverStyleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
@@ -220,6 +202,25 @@
     [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
     
     [self.totalPriceLabel setAttributedText:AttributedStringPrice];
+    
+    if ([model.type integerValue] == 2) {
+        [self.footButton setTitle:@"审核付款" forState:UIControlStateNormal];
+    }else if ([model.type integerValue] == 4 ){
+        [self.footButton setTitle:@"开始配送" forState:UIControlStateNormal];
+    }else if ([model.type integerValue] == 5){
+        for (XNRRscSkusModel *skuModel in model.SKUs) {
+            if ([skuModel.deliverStatus integerValue] == 4) {
+                [self.footButton setTitle:@"客户自提" forState:UIControlStateNormal];
+            }
+        }
+    }else if ([model.type integerValue] == 6){
+        for (XNRRscSkusModel *skuModel in model.SKUs) {
+            if ([skuModel.deliverStatus integerValue] == 4) {
+                [self.footButton setTitle:@"开始配送" forState:UIControlStateNormal];
+            }
+        }
+    }
+
 
 
 }
