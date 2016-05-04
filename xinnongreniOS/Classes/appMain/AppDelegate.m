@@ -25,7 +25,8 @@
 #import "XNRNavigationController.h"
 #import "XNRMineController.h"
 #import "XNRMyOrder_VC.h"
-
+#import "XNRMyStoreOrderController.h"
+#import "XNRRscOrderDetialController.h"
 @interface AppDelegate ()<UITabBarControllerDelegate>
 {
     BOOL _is_Notification;
@@ -226,6 +227,30 @@
             [myorderVC presentViewController:orderNavVC animated:NO completion:nil];
             
 //            [application setApplicationIconBadgeNumber:0];
+        }
+        else
+        {
+            XNRTabBarController *tabVC = [[XNRTabBarController alloc] init];
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            window.rootViewController = tabVC;
+            
+            XNRMineController *mineVC = (XNRMineController *)tabVC.viewControllers[3];
+            tabVC.selectedIndex = 3;
+            
+            XNRMyStoreOrderController *myorderVC = [[XNRMyStoreOrderController alloc]init];
+
+            XNRNavigationController *myorderNavVC = [[XNRNavigationController alloc]initWithRootViewController:myorderVC];
+            
+            [mineVC presentViewController:myorderNavVC animated:NO completion:nil];
+            
+            XNRRscOrderDetialController*vc=[[XNRRscOrderDetialController alloc]init];
+            vc.hidesBottomBarWhenPushed=YES;
+            vc.orderId = orderId;
+            
+            XNRNavigationController *orderNavVC = [[XNRNavigationController alloc]initWithRootViewController:vc];
+            
+            [myorderVC presentViewController:orderNavVC animated:NO completion:nil];
+
         }
 
     }
