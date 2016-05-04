@@ -13,6 +13,7 @@
 #import "XNRRscOrderModel.h"
 #import "XNRRscSkusFrameModel.h"
 #import "XNRRscConfirmDeliverView.h"
+#import "XNRRscFootFrameModel.h"
 #define MAX_PAGE_SIZE 10
 
 @interface XNRRscWaitTakeView()<UITableViewDelegate,UITableViewDataSource>
@@ -153,6 +154,10 @@
                     [sectionModel.SKUsFrame addObject:frameModel];
                 }
                 [_dataArray addObject:sectionModel];
+                
+                XNRRscFootFrameModel *footModel = [[XNRRscFootFrameModel alloc] init];
+                footModel.model = sectionModel;
+                [_dataFrameArray addObject:footModel];
             }
             [self.tableView reloadData];
         }
@@ -229,44 +234,13 @@
 // 段尾高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    XNRRscOrderModel *sectionModel = _dataArray[section];
-    
-    if ([sectionModel.type integerValue] == 2) {
+    if (_dataFrameArray.count>0) {
+        XNRRscFootFrameModel *frameModel = _dataFrameArray[section];
+        return frameModel.footViewHeight;
         
-        return PX_TO_PT(196);
-        
-    }else if ([sectionModel.type integerValue] == 4){
-        
-        for (XNRRscSkusModel *model in sectionModel.SKUs) {
-            if ([model.deliverStatus integerValue] == 4) {
-                return PX_TO_PT(196);
-            }else{
-                return PX_TO_PT(108);
-            }
-        }
-        
-    }else if ([sectionModel.type integerValue] == 5){
-        return PX_TO_PT(196);
-
-//        for (XNRRscSkusModel *model in sectionModel.SKUs) {
-//            if ([model.deliverStatus integerValue] == 4) {
-//                return PX_TO_PT(196);
-//            }else{
-//                return PX_TO_PT(108);
-//            }
-//        }
-
-        
-    }else if ([sectionModel.type integerValue] == 6){
-        for (XNRRscSkusModel *model in sectionModel.SKUs) {
-            if ([model.deliverStatus integerValue] == 4) {
-                return PX_TO_PT(196);
-            }else{
-                return PX_TO_PT(108);
-            }
-        }
+    }else{
+        return 0;
     }
-    return PX_TO_PT(108);
     
 }
 
@@ -302,6 +276,10 @@
 //cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
+    if (self.com) {
+        self.com(sectionModel._id);
+    }
     
 }
 

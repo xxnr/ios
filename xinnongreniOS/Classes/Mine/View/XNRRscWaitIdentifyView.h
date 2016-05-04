@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+typedef void(^XNRRscWaitIdentifyViewBlock)(NSString *orderId);
 
 @interface XNRRscWaitIdentifyView : UIView
+
+@property (nonatomic, weak) UITableView *tableView;
+
+@property (nonatomic, copy) XNRRscWaitIdentifyViewBlock com;
 
 @end

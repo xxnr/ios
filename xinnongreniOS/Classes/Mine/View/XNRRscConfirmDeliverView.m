@@ -11,7 +11,7 @@
 #import "XNRRscConfirmDeliverCell.h"
 #import "XNRRscDeliverFrameModel.h"
 #import "XNRRscCustomerTakeView.h"
-
+#import "XNRRscOrderDetailModel.h"
 @interface XNRRscConfirmDeliverView()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, weak) UIView *coverView;
@@ -21,6 +21,8 @@
 @property (nonatomic, weak) UITableView *tableView;
 
 @property (nonatomic, strong) XNRRscOrderModel *model;
+
+@property (nonatomic, strong) XNRRscOrderDetailModel *detailModel;
 
 @property (nonatomic, weak) UIButton *admireBtn;
 
@@ -189,11 +191,14 @@
 
 -(void)show:(XNRRscOrderModel *)model andType:(XNRRscConfirmDeliverViewType)type
 {
+    [model.SKUsDeliverFrame removeAllObjects];
     [self changeState:type];
     
     for (XNRRscSkusModel *skuModel in model.SKUs) {
         XNRRscDeliverFrameModel *frameModel = [[XNRRscDeliverFrameModel alloc] init];
-        frameModel.model = skuModel;
+        if ([skuModel.deliverStatus integerValue] == 4) {
+            frameModel.model = skuModel;
+        }
         [model.SKUsDeliverFrame addObject:frameModel];
     }
     _model = model;
@@ -216,7 +221,6 @@
         [self.admireBtn setTitle:@"下一步" forState:UIControlStateNormal];
         self.stateLabel.text = @"客户自提-选择商品";
     }
-
 }
 
 -(void)cancel
@@ -233,8 +237,7 @@
 //设置行数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _model.SKUs.count;
-    
+     return _model.SKUsDeliverFrame.count;
 }
 
 //行高

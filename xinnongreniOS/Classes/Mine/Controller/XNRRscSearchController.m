@@ -1,145 +1,107 @@
 //
-//  XNRRscWaitIdentifyView.m
+//  XNRRscSearchController.m
 //  xinnongreniOS
 //
-//  Created by xxnr on 16/4/22.
+//  Created by xxnr on 16/5/3.
 //  Copyright © 2016年 qxhiOS. All rights reserved.
 //
 
-#import "XNRRscWaitIdentifyView.h"
+#import "XNRRscSearchController.h"
+#import "XNRSearchBar.h"
 #import "XNRRscSectionHeadView.h"
 #import "XNRRscSectionFootView.h"
 #import "XNRRscMyOrderStateCell.h"
 #import "XNRRscOrderModel.h"
 #import "XNRRscSkusFrameModel.h"
 #import "XNRRscIdentifyPayView.h"
+#import "XNRRscConfirmDeliverView.h"
 #import "XNRRscOrderDetailModel.h"
 #import "XNRRscFootFrameModel.h"
-#define MAX_PAGE_SIZE 10
+#import "XNRRscOrderDetialController.h"
+@interface XNRRscSearchController()<UITableViewDelegate,UITableViewDataSource>
 
-@interface XNRRscWaitIdentifyView()<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic, weak) XNRSearchBar *searchBar;
+
+@property (nonatomic, weak) UITableView *tableView;
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
 @property (nonatomic, strong) NSMutableArray *dataFrameArray;
 
+@property (nonatomic, assign) int currentPage;
+
 @property (nonatomic, weak) XNRRscIdentifyPayView *identifyPayView;
 
-@property (nonatomic, assign) int currentPage;
+@property (nonatomic, weak) XNRRscConfirmDeliverView *deliverView;
 
 @end
 
-@implementation XNRRscWaitIdentifyView
+@implementation XNRRscSearchController
 
 -(XNRRscIdentifyPayView *)identifyPayView
 {
     if (!_identifyPayView) {
         XNRRscIdentifyPayView *identifyPayView = [[XNRRscIdentifyPayView alloc] init];
         self.identifyPayView = identifyPayView;
-        [self addSubview:identifyPayView];
+        [self.view addSubview:identifyPayView];
     }
     return _identifyPayView;
 }
 
-
--(instancetype)initWithFrame:(CGRect)frame
+-(XNRRscConfirmDeliverView *)deliverView
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        _currentPage = 1;
-        _dataArray = [NSMutableArray array];
-        _dataFrameArray = [NSMutableArray array];
-        [self getData];
-        [self createView];
-        [self setupAllViewRefresh];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIdentifyTableView) name:@"refreshIdentifyTableView" object:nil];
-        
+    if (!_deliverView) {
+        XNRRscConfirmDeliverView *deliverView = [[XNRRscConfirmDeliverView alloc] init];
+        self.deliverView = deliverView;
+        [self.view addSubview:deliverView];
     }
-    return self;
+    return _deliverView;
 }
 
--(void)refreshIdentifyTableView
+
+-(void)viewDidLoad
 {
-    [self.tableView reloadData];
+    [super viewDidLoad];
+    self.view.backgroundColor = R_G_B_16(0xfafafa);
+    self.navigationItem.hidesBackButton = YES;
+    XNRSearchBar *searchBar = [XNRSearchBar searchBar];
+    searchBar.width = ScreenWidth-PX_TO_PT(60);
+    searchBar.height = PX_TO_PT(60);
+//    [searchBar becomeFirstResponder];
+    self.searchBar = searchBar;
+    self.navigationItem.titleView = searchBar;
+    
+    [self setNavigationBar];
+    
+    _dataArray = [NSMutableArray array];
+    _dataFrameArray = [NSMutableArray array];
+    [self createView];
+
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardHide:)
+                                                 name:UIKeyboardDidHideNotification
+                                               object:nil];
+
 }
 
--(void)dealloc
+-(void)createView
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-
-#pragma mark - 刷新
--(void)setupAllViewRefresh{
-    
-    
-    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
-    NSMutableArray *idleImage = [NSMutableArray array];
-    
-    for (int i = 1; i<21; i++) {
-        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
-        
-        [idleImage addObject:image];
-    }
-    NSMutableArray *RefreshImage = [NSMutableArray array];
-    
-    for (int i = 10; i<21; i++) {
-        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
-        
-        [RefreshImage addObject:image];
-        
-    }
-    
-    [header setImages:idleImage forState:MJRefreshStateIdle];
-    
-    [header setImages:RefreshImage forState:MJRefreshStatePulling];
-    
-    [header setImages:RefreshImage forState:MJRefreshStateRefreshing];
-    // 隐藏时
-    header.lastUpdatedTimeLabel.hidden = YES;
-    // 隐藏状态
-    header.stateLabel.hidden = YES;
-    
-    self.tableView.mj_header = header;
-    
-    
-    
-    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
-    MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
-    
-    
-    //    footer.automaticallyHidden = YES;
-    
-    // 设置刷新图片
-    [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
-    footer.refreshingTitleHidden = YES;
-    
-    
-    // 设置尾部
-    self.tableView.mj_footer = footer;
-    
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"reloadOrderList" object:nil];
-    
-}
--(void)headRefresh{
-    _currentPage = 1;
-    [_dataArray removeAllObjects];
-    [self getData];
-    
-    
-}
--(void)footRefresh{
-    _currentPage ++;
-    [self getData];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)style:UITableViewStyleGrouped];
+    tableView.backgroundColor = [UIColor clearColor];
+    tableView.showsVerticalScrollIndicator = YES;
+    tableView.delegate = self;
+    tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight);
+    tableView.dataSource = self;
+    tableView.separatorStyle =UITableViewCellSeparatorStyleNone;
+    self.tableView = tableView;
+    [self.view addSubview:tableView];
     
 }
 
-
--(void)getData
+-(void)keyboardHide:(NSNotification *)notif
 {
-    NSDictionary *params = @{@"type":@"2",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE]};
-    [KSHttpRequest get:KRscOrders parameters:params success:^(id result) {
+    [KSHttpRequest get:KRscOrders parameters:@{@"search":self.searchBar.text} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *ordersArray = result[@"orders"];
             for (NSDictionary *dict in ordersArray) {
@@ -157,7 +119,7 @@
                 
                 sectionModel.price = dict[@"price"];
                 sectionModel.pendingApprove = dict[@"pendingApprove"];
-                
+                sectionModel.deliverStatus = dict[@"deliverStatus"];
                 sectionModel.SKUs = (NSMutableArray *)[XNRRscSkusModel objectArrayWithKeyValuesArray:dict[@"SKUs"]];
                 sectionModel.subOrders = (NSMutableArray *)[XNRRscSubOrdersModel objectArrayWithKeyValuesArray:dict[@"subOrders"]];
                 
@@ -171,37 +133,16 @@
                 XNRRscFootFrameModel *footModel = [[XNRRscFootFrameModel alloc] init];
                 footModel.model = sectionModel;
                 [_dataFrameArray addObject:footModel];
-
             }
             [self.tableView reloadData];
+
+            
         }
-        
-        //  如果到达最后一页 就消除footer
-        NSInteger page = [result[@"pageCount"] integerValue];
-        self.tableView.mj_footer.hidden = page == _currentPage;
-        
-        [self.tableView.mj_header endRefreshing];
-        [self.tableView.mj_footer endRefreshing];
-        
-        [self.tableView reloadData];
         
     } failure:^(NSError *error) {
         
     }];
-}
 
--(void)createView
-{
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(120)) style:UITableViewStyleGrouped];
-    tableView.backgroundColor = [UIColor clearColor];
-    tableView.showsVerticalScrollIndicator = YES;
-    tableView.delegate = self;
-    tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight);
-    tableView.dataSource = self;
-    tableView.separatorStyle =UITableViewCellSeparatorStyleNone;
-    self.tableView = tableView;
-    [self addSubview:tableView];
-    
 }
 
 #pragma mark - 在断头添加任意视图
@@ -211,7 +152,7 @@
         XNRRscSectionHeadView *sectionHeadView = [[XNRRscSectionHeadView alloc] init];
         XNRRscOrderModel *sectionModel = _dataArray[section];
         [sectionHeadView upDataHeadViewWithModel:sectionModel];
-        [self addSubview:sectionHeadView];
+        [self.view addSubview:sectionHeadView];
         return sectionHeadView;
     }else{
         return nil;
@@ -223,11 +164,18 @@
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (_dataArray.count>0) {
-        XNRRscSectionFootView *sectionFootView = [[XNRRscSectionFootView alloc] init];
         XNRRscOrderModel *sectionModel = _dataArray[section];
+        XNRRscSectionFootView *sectionFootView = [[XNRRscSectionFootView alloc] init];
         [sectionFootView upDataHeadViewWithModel:sectionModel];
+        [self.view addSubview:sectionFootView];
         sectionFootView.com = ^{
-            [self getdetailData:sectionModel];
+            if ([sectionModel.type integerValue] == 2) {
+                [self getdetailData:sectionModel];
+            }else if ([sectionModel.type integerValue] == 4||[sectionModel.type integerValue] == 6){
+                [self.deliverView show:sectionModel andType:isFromDeliverController];
+            }else if([sectionModel.type integerValue] == 5){
+                [self.deliverView show:sectionModel andType:isFromTakeController];
+            }
         };
         return sectionFootView;
     }else{
@@ -238,7 +186,6 @@
 -(void)getdetailData:(XNRRscOrderModel *)model
 {
     [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model._id} success:^(id result) {
-        
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *orderDict = result[@"order"];
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];
@@ -248,7 +195,7 @@
             detailModel.id = payment[@"id"];
             [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
         }
-
+        
     } failure:^(NSError *error) {
         
     }];
@@ -293,7 +240,7 @@
     }
 }
 
-//行高
+// 行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_dataArray.count>0) {
@@ -303,16 +250,18 @@
     }else{
         return 0;
     }
+    
 }
 
-//cell点击方法
+// cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
-    if (self.com) {
-        self.com(sectionModel._id);
-    }
-    
+    XNRRscOrderDetialController *detailVC = [[XNRRscOrderDetialController  alloc] init];
+    detailVC.hidesBottomBarWhenPushed = YES;
+    detailVC.orderId = sectionModel._id;
+    [self.navigationController pushViewController:detailVC animated:YES];
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -325,7 +274,22 @@
     }
     
     return cell;
-    
+}
+
+
+-(void)setNavigationBar{
+    UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    searchBtn.frame = CGRectMake(0, 0, 40, 40);
+    [searchBtn setTitle:@"取消" forState:UIControlStateNormal];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:searchBtn];
+    self.navigationItem.rightBarButtonItem = rightItem;
+    [searchBtn addTarget:self action:@selector(searchBtnClick) forControlEvents:UIControlEventTouchUpInside];
+}
+
+-(void)searchBtnClick
+{
+    [self.navigationController popViewControllerAnimated:YES];
+
 }
 
 @end

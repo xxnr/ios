@@ -144,11 +144,12 @@
         [payTypeBtn setTitle:model.name forState:UIControlStateNormal];
         payTypeBtn.tag = KpayTypeBtn + i;
         [payTypeBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
-        payTypeBtn.layer.borderWidth = PX_TO_PT(1);
+//        payTypeBtn.layer.borderWidth = PX_TO_PT(1);
         payTypeBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-        payTypeBtn.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
-        [payTypeBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#c7c7c7"]] forState:UIControlStateNormal];
-        [payTypeBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateSelected];
+//        payTypeBtn.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+        
+        [payTypeBtn setBackgroundImage:[UIImage imageNamed:@"button_check"] forState:UIControlStateNormal];
+        [payTypeBtn setBackgroundImage:[UIImage imageNamed:@"button_img"] forState:UIControlStateSelected];
         [payTypeBtn addTarget:self action:@selector(payTypeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         self.payTypeBtn = payTypeBtn;
         [self.identifyView addSubview:payTypeBtn];
