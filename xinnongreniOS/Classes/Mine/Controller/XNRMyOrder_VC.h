@@ -21,5 +21,4 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign) XNROrderType type;
 
 @property (nonatomic, assign) BOOL isForm0rderBtn;
-
 @end

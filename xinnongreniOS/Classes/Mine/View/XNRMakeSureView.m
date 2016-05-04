@@ -126,10 +126,10 @@
 //确认收货
 -(void)makeSure:(UIButton *)sender
 {
-//    if (self.selProArr.count == 0) {
-//        [UILabel showMessage:@"请选择确认收货的商品"];
-//        return;
-//    }
+    if (self.selProArr.count == 0) {
+        [UILabel showMessage:@"请选择确认收货的商品"];
+        return;
+    }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];//申明请求的数据是json类型
@@ -174,6 +174,9 @@
                 [self removeFromSuperview];
 
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"refresh" object:self];
+                if ([_iscome isEqualToString:@"XNROrderVC"]) {
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"orderVCRefresh" object:self];
+                }
             }];
             //
             

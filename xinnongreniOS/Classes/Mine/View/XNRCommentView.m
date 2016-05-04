@@ -49,6 +49,7 @@
     if (self) {
         _currentPage = 1;
         _dataArr = [[NSMutableArray alloc]init];
+        
         //获取数据
         [self getData];
         //创建订单

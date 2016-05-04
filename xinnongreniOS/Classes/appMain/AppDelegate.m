@@ -23,6 +23,8 @@
 #import "UMSocialQQHandler.h"
 #import "XNRCheckOrderVC.h"
 #import "XNRNavigationController.h"
+#import "XNRMineController.h"
+#import "XNRMyOrder_VC.h"
 
 @interface AppDelegate ()<UITabBarControllerDelegate>
 {
@@ -103,7 +105,7 @@
     if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
     {
         // iOS 8 Notifications
-        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIRemoteNotificationTypeNone | UIUserNotificationTypeBadge) categories:nil]];
         
         [application registerForRemoteNotifications];
     }
@@ -111,16 +113,10 @@
     {
         // iOS < 8 Notifications
         [application registerForRemoteNotificationTypes:
-         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
+         (UIRemoteNotificationTypeBadge |   UIRemoteNotificationTypeNone | UIRemoteNotificationTypeSound)];
     }
     [UMessage setLogEnabled:YES];
 
-<<<<<<< HEAD
-=======
-    // 启动bugtags
-//    [XNRBugTagsTool openBugTags];
->>>>>>> xxnr-chung
-    
     // 判断是否是推送进来的
     NSDictionary* remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotification != nil) {
@@ -179,42 +175,57 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
+    //关闭友盟默认提示框
+    [UMessage setAutoAlert:NO];
+
     [UMessage didReceiveRemoteNotification:userInfo];
     
-    NSLog(@"%@",userInfo);
     
     NSString *alert = [userInfo objectForKey:@"page"];
     NSString *orderId = [userInfo objectForKey:@"orderId"];
-    
-//    if (application.applicationState == UIApplicationStateActive) { // 此时app在前台运行
-//        application.applicationIconBadgeNumber++;
-//
-//    } else { // 后台运行时
+    NSString *title = [userInfo objectForKey:@"title"];
+    NSString *text = [userInfo objectForKey:@"text"];
+    //前台状态下
     if (!_is_Notification) {
-            application.applicationIconBadgeNumber++;
+//            application.applicationIconBadgeNumber++;
+//        UILocalNotification *localNotifiction = [[UILocalNotification alloc]init];
+//        localNotifiction.userInfo = userInfo;
+//        localNotifiction.soundName = UILocalNotificationDefaultSoundName;
+//        localNotifiction.alertBody = @"hahah";
+//        localNotifiction.fireDate = [NSDate date];
+//        [[UIApplication sharedApplication] scheduleLocalNotification:localNotifiction];
+
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:title message:text delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
     }
+    //后台状态下
     else
     {
         if ([alert isEqualToString:@"userOrderDetail"]) {
     
+            //新建主控制器，然后modal出我的订单，订单详情控制器
+            XNRTabBarController *tabVC = [[XNRTabBarController alloc] init];
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            window.rootViewController = tabVC;
+            
+            XNRMineController *mineVC = (XNRMineController *)tabVC.viewControllers[3];
+            tabVC.selectedIndex = 3;
+
+            XNRMyOrder_VC *myorderVC = [[XNRMyOrder_VC alloc]init];
+            myorderVC.type = XNRReciveViewType;
+            XNRNavigationController *myorderNavVC = [[XNRNavigationController alloc]initWithRootViewController:myorderVC];
+
+            [mineVC presentViewController:myorderNavVC animated:NO completion:nil];
+            
             XNRCheckOrderVC*vc=[[XNRCheckOrderVC alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
             vc.orderID = orderId;
             
             XNRNavigationController *orderNavVC = [[XNRNavigationController alloc]initWithRootViewController:vc];
-            
 
+            [myorderVC presentViewController:orderNavVC animated:NO completion:nil];
             
-            UIViewController *currentVC = [self getCurrentVC];
-            
-            while (currentVC.presentedViewController != nil) {
-                currentVC = currentVC.presentedViewController;
-            }
-            
-            [currentVC presentViewController:orderNavVC animated:NO completion:nil];
-            
-            [application setApplicationIconBadgeNumber:0];
-
+//            [application setApplicationIconBadgeNumber:0];
         }
 
     }
@@ -222,38 +233,7 @@
 
 }
 
-//获取当前屏幕显示的viewcontroller
-- (UIViewController *)getCurrentVC
-{
-    UIViewController *result = nil;
-    
-    UIWindow * window = [[UIApplication sharedApplication] keyWindow];
-    if (window.windowLevel != UIWindowLevelNormal)
-    {
-        NSArray *windows = [[UIApplication sharedApplication] windows];
-        for(UIWindow * tmpWin in windows)
-        {
-            if (tmpWin.windowLevel == UIWindowLevelNormal)
-            {
-                window = tmpWin;
-                break;
-            }
-        }
-    }
-    
-    UIView *frontView = [[window subviews] objectAtIndex:0];
-    id nextResponder = [frontView nextResponder];
-    
-    if ([nextResponder isKindOfClass:[UIViewController class]])
-        result = nextResponder;
-    else
-        result = window.rootViewController;
-    
-    return result;
-}
-
 - (void)applicationWillResignActive:(UIApplication *)application {
-    
     
 }
 

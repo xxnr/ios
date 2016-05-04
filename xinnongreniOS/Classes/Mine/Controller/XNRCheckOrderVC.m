@@ -22,6 +22,7 @@
 #import "XNROffLine_VC.h"
 #import "XNRMyOrder_VC.h"
 #import "XNRCarryVC.h"
+#import "XNRNavigationController.h"
 #import "XNRMakeSureView.h"
 #import "XNRMyOrderModel.h"
 #import "XNRRSCInfoModel.h"
@@ -42,6 +43,8 @@
 @property (nonatomic ,weak) UILabel *phoneNum;
 @property (nonatomic ,weak) UILabel *addressLabel;
 @property (nonatomic,strong) NSString *value;
+@property (nonatomic,assign)BOOL isHoldBtm;
+@property (nonatomic,assign)BOOL ismakeSureBtm;
 @property (nonatomic,assign)CGFloat cellHeight;
 @property (nonatomic,strong)XNRRSCInfoModel *RSCInfoModel;
 @end
@@ -64,8 +67,15 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector: @selector(tongzhi:) name:@"payInfoClick" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getHeight:) name:@"height" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshView) name:@"orderVCRefresh" object:nil];
 }
-
+-(void)refreshView
+{
+    [_bottomView removeFromSuperview];
+    
+    [self getData];
+    
+}
 -(void)getHeight:(NSNotification *)notification
 {
     self.cellHeight = [notification.userInfo[@"key"] floatValue];
@@ -83,7 +93,7 @@
     UIView *bottomView = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight - PX_TO_PT(88)- 64, ScreenWidth, PX_TO_PT(88))];
     bottomView.backgroundColor = [UIColor whiteColor];
     
-    UIButton *seePayInfoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(190)-PX_TO_PT(31), PX_TO_PT(10), PX_TO_PT(120), PX_TO_PT(60))];
+    UIButton *seePayInfoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(120)-PX_TO_PT(31), PX_TO_PT(10), PX_TO_PT(120), PX_TO_PT(60))];
     seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
     [seePayInfoBtn setTitle:@"待自提" forState:UIControlStateNormal];
     seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
@@ -101,7 +111,8 @@
     
     [bottomView addSubview:line1];
     [bottomView addSubview:line2];
-    [self.view addSubview:bottomView];
+    self.bottomView = bottomView;
+    [self.view addSubview:_bottomView];
     
 }
 -(void)creatPSBottom
@@ -109,7 +120,7 @@
     UIView *bottomView = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight - PX_TO_PT(88)- 64, ScreenWidth, PX_TO_PT(88))];
     bottomView.backgroundColor = [UIColor whiteColor];
     
-    UIButton *seePayInfoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(190)-PX_TO_PT(31), PX_TO_PT(10), PX_TO_PT(140), PX_TO_PT(60))];
+    UIButton *seePayInfoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(140)-PX_TO_PT(31), PX_TO_PT(10), PX_TO_PT(140), PX_TO_PT(60))];
     seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
     [seePayInfoBtn setTitle:@"确认收货" forState:UIControlStateNormal];
     seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
@@ -127,7 +138,8 @@
     
     [bottomView addSubview:line1];
     [bottomView addSubview:line2];
-    [self.view addSubview:bottomView];
+    _bottomView = bottomView;
+    [self.view addSubview:_bottomView];
     
 }
 
@@ -167,7 +179,8 @@
     
     [bottomView addSubview:line1];
     [bottomView addSubview:line2];
-    [self.view addSubview:bottomView];
+    _bottomView = bottomView;
+    [self.view addSubview:_bottomView];
 
 }
 -(void)creatBottom
@@ -194,12 +207,14 @@
 
     [bottomView addSubview:line1];
     [bottomView addSubview:line2];
-    [self.view addSubview:bottomView];
+    _bottomView = bottomView;
+    [self.view addSubview:_bottomView];
     
 }
 
 - (void)getData
 {
+    [_dataArray removeAllObjects];
     [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             //            NSLog(@"%@",result[@"rows"][@"SKUList"]);
@@ -217,7 +232,19 @@
             sectionModel.price = payment[@"price"];
             sectionModel.deliveryTypeName =datasDic[@"rows"][@"deliveryType"][@"value"];
             sectionModel.deliveryTypenum =datasDic[@"rows"][@"deliveryType"][@"type"];
-
+            
+            NSArray *skuList = [NSArray array];
+            skuList = datasDic[@"rows"][@"SKUList"];
+            for (int i=0; i<skuList.count; i++) {
+                NSLog(@"%@",datasDic[@"rows"][@"SKUList"][i][@"deliverStatus"]);
+                NSString *status =datasDic[@"rows"][@"SKUList"][i][@"deliverStatus"];
+                if ([status integerValue] == 4) {
+                    _isHoldBtm = YES;
+                }
+                if ([status integerValue] == 2) {
+                    _ismakeSureBtm = YES;
+                }
+            }
             NSDictionary *order = datasDic[@"rows"][@"order"];
             sectionModel.totalPrice = order[@"totalPrice"];
             sectionModel.deposit = order[@"deposit"];
@@ -245,14 +272,14 @@
                     [self creatBottomTwo];
                     
                 }
-            else if([self.value isEqualToString:@"待自提"])
+            else if([self.value isEqualToString:@"待自提"] && _isHoldBtm)
             {
                 self.tableview.frame =CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth,ScreenHeight- CGRectGetMaxY(self.headView.frame) -PX_TO_PT(88) - 64);
                 // 底部视图
                 [self creatZtBottom];
 
             }
-            else if([self.value isEqualToString:@"配送中"])
+            else if([self.value isEqualToString:@"配送中"] && _ismakeSureBtm)
             {
                 self.tableview.frame =CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth,ScreenHeight- CGRectGetMaxY(self.headView.frame) -PX_TO_PT(88) - 64);
                 // 底部视图
@@ -429,8 +456,6 @@
 -(void)holdBtnClick:(UIButton *)sender
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
-//    XNRMyOrderSectionModel
-//    XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
     XNRCarryVC *vc=[[XNRCarryVC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
     vc.orderId = self.model.orderId;
@@ -444,16 +469,12 @@
         }
     }
 
-    [self.navigationController pushViewController:vc animated:YES];
+    [self.navigationController pushViewController:vc animated:NO];
     
 
 }
 -(void)makeSureBtn:(UIButton *)sender
 {
-//    XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
-    
-//    XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
-
     XNRMakeSureView *makesureView = [[XNRMakeSureView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     
     makesureView.orderId = self.model.orderId;
@@ -643,8 +664,8 @@
         [addressView addSubview:companyLabel];
         
         
-        CGSize size = [self.RSCInfoModel.RSCAddress sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(24)] constrainedToSize:CGSizeMake(PX_TO_PT(500), MAXFLOAT)];
-        UILabel *addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(addressImageView.frame)+PX_TO_PT(29), CGRectGetMaxY(companyLabel.frame)+PX_TO_PT(15), PX_TO_PT(500),size.height)];
+        CGSize size = [self.RSCInfoModel.RSCAddress sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(24)] constrainedToSize:CGSizeMake(ScreenWidth-PX_TO_PT(119), MAXFLOAT)];
+        UILabel *addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(addressImageView.frame)+PX_TO_PT(29), CGRectGetMaxY(companyLabel.frame)+PX_TO_PT(15),ScreenWidth-PX_TO_PT(119),size.height)];
         addressLabel.numberOfLines = 0;
         addressLabel.text = self.RSCInfoModel.RSCAddress;
         addressLabel.textColor = R_G_B_16(0x646464);
@@ -913,10 +934,10 @@
 
 -(void)backClick{
     
-//    if (self.presentingViewController) {
-//        [self dismissViewControllerAnimated:NO completion:nil];
-//        return;
-//    }
+    if ([self.presentingViewController isKindOfClass:[XNRNavigationController class]]) {
+        [self dismissViewControllerAnimated:NO completion:nil];
+        return;
+    }
     if (self.isRoot) {
         [self.navigationController popViewControllerAnimated:YES];
         
@@ -928,6 +949,7 @@
         orderVC.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:orderVC animated:NO];
     }
+    
 }
 
 -(void)dealloc

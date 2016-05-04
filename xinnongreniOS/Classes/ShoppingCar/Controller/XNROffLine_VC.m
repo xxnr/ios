@@ -223,7 +223,7 @@
         UILabel *payTypedetailLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32),  PX_TO_PT(90)*(i+1)+PX_TO_PT(30), ScreenWidth, PX_TO_PT(30))];
         XNROfflinePayTypeModel *model = self.PayTypeArr[i];
         payTypedetailLabel.text = model.name;
-        payTypedetailLabel.textColor = R_G_B_16(0x646464);
+        payTypedetailLabel.textColor = R_G_B_16(0x323232);
         payTypedetailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         [bottomView addSubview:payTypedetailLabel];
     }

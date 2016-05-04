@@ -320,10 +320,6 @@
     line.backgroundColor = R_G_B_16(0xc7c7c7);
     [bottomView addSubview:line];
     
-    UIView *lineTwo = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(10), ScreenWidth, PX_TO_PT(2))];
-    lineTwo.backgroundColor = R_G_B_16(0xc7c7c7);
-    [bottomView addSubview:lineTwo];
-    
     UIButton *sureBtn = [[UIButton alloc]initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(161))/2, (PX_TO_PT(99)-PX_TO_PT(52))/2, PX_TO_PT(161), PX_TO_PT(52))];
     sureBtn.backgroundColor = R_G_B_16(0xFE9B00);
     [sureBtn setTitle:@"确定" forState:UIControlStateNormal];

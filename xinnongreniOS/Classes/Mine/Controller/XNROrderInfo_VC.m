@@ -424,7 +424,7 @@
     topView.backgroundColor = [UIColor whiteColor];
     
     UILabel *getGoodsAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(26), ScreenWidth, PX_TO_PT(34))];
-    getGoodsAddressLabel.text = @"配送收货";
+    getGoodsAddressLabel.text = @"配送方式";
     getGoodsAddressLabel.textColor = R_G_B_16(0x323232);
     getGoodsAddressLabel.textAlignment = NSTextAlignmentLeft;
     getGoodsAddressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
@@ -589,9 +589,10 @@
     self.RSCAddressLabel = addressLabel;
     if (addressDetail) {
         addressLabel.text = addressDetail;
+        addressLabel.textColor = R_G_B_16(0x323232);
     }
     else
-    {
+    {   addressLabel.textColor = R_G_B_16(0x646464);
         addressLabel.text =@"订单中商品将配送至服务站，请选择自提网点";
     }
     CGSize size = [addressLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(PX_TO_PT(600), MAXFLOAT)];
@@ -600,7 +601,7 @@
     addressBtn.frame = CGRectMake(0, 0, ScreenWidth, size.height+PX_TO_PT(56));
     addressLabel.textAlignment = NSTextAlignmentLeft;
     addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    addressLabel.textColor = R_G_B_16(0x323232);
+//    addressLabel.textColor = R_G_B_16(0x323232);
     [addressBtn addSubview:addressLabel];
     
     // 地址图标
@@ -608,7 +609,7 @@
     [addressImageView setImage:[UIImage imageNamed:@"location"]];
     [addressBtn addSubview:addressImageView];
     
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31),addressBtn.height-PX_TO_PT(2), PX_TO_PT(689), PX_TO_PT(2))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31),addressBtn.height-PX_TO_PT(2), ScreenWidth - PX_TO_PT(31), PX_TO_PT(2))];
     line.backgroundColor = R_G_B_16(0xe7e7e7);
     [addressBtn addSubview:line];
     
@@ -616,10 +617,12 @@
     UILabel *contactLabel = [MyControl createLabelWithFrame:CGRectMake(PX_TO_PT(83), PX_TO_PT(28), PX_TO_PT(600), PX_TO_PT(30)) Font:PX_TO_PT(28) Text:nil];
     self.RSCContactLabel = contactLabel;
     if (contact) {
+        contactLabel.textColor = R_G_B_16(0x323232);
         contactLabel.text = contact;
     }
     else
     {
+        contactLabel.textColor = R_G_B_16(0x646464);
         contactLabel.text = @"请填写收货人信息";
     }
     CGSize contactLabelSize = [contactLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(PX_TO_PT(600), MAXFLOAT)];
@@ -629,7 +632,6 @@
     contactBtn.frame = CGRectMake(0, CGRectGetMaxY(addressBtn.frame), ScreenWidth, contactLabelSize.height+PX_TO_PT(56));
     contactLabel.textAlignment = NSTextAlignmentLeft;
     contactLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    contactLabel.textColor = R_G_B_16(0x323232);
     [contactBtn addSubview:contactLabel];
     
     // 联系人图标
