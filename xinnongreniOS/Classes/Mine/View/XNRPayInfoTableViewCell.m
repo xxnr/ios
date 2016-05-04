@@ -116,6 +116,11 @@
         {
             _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：线下支付"];
         }
+        else if(model.payType == 4)
+        {
+            _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：线下POS机"];
+        }
+
         else
         {
             _payTypeLabel.frame = CGRectMake(0, 0, 0, 0);

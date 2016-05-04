@@ -118,12 +118,6 @@
     }
     [UMessage setLogEnabled:YES];
 
-<<<<<<< HEAD
-    // 启动bugtags
-//    [XNRBugTagsTool openBugTags];
-    
-=======
->>>>>>> ynn_ios
     // 判断是否是推送进来的
     NSDictionary* remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotification != nil) {

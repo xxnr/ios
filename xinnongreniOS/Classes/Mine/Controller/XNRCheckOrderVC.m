@@ -95,7 +95,7 @@
     
     UIButton *seePayInfoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(120)-PX_TO_PT(31), PX_TO_PT(10), PX_TO_PT(120), PX_TO_PT(60))];
     seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
-    [seePayInfoBtn setTitle:@"待自提" forState:UIControlStateNormal];
+    [seePayInfoBtn setTitle:@"去自提" forState:UIControlStateNormal];
     seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
     seePayInfoBtn.layer.cornerRadius = 10.0;
     seePayInfoBtn.layer.masksToBounds = YES;
@@ -835,7 +835,7 @@
         else if (indexPath.section == 0)
         {
             XRNSubOrdersModel *subOrderModel = sectionModel.subOrders[indexPath.row];
-            if (subOrderModel.payType == 1 || subOrderModel.payType == 2 || subOrderModel.payType == 3) {
+            if (subOrderModel.payType == 1 || subOrderModel.payType == 2 || subOrderModel.payType == 3|| subOrderModel.payType == 4) {
                 return PX_TO_PT(240);
             }
             else

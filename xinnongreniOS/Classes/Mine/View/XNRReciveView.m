@@ -467,7 +467,7 @@
             
             UIButton *holdNeckBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
             holdNeckBtn.backgroundColor = R_G_B_16(0xfe9b00);
-            [holdNeckBtn setTitle:@"待自提" forState:UIControlStateNormal];
+            [holdNeckBtn setTitle:@"去自提" forState:UIControlStateNormal];
             holdNeckBtn.layer.cornerRadius = 5.0;
             holdNeckBtn.layer.masksToBounds = YES;
             holdNeckBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];

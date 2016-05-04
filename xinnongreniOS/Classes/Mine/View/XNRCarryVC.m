@@ -99,11 +99,26 @@
     [self.topView addSubview:title];
     
     UILabel *carryLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(title.frame)+PX_TO_PT(26), ScreenWidth, PX_TO_PT(32))];
-    carryLabel.textColor = R_G_B_16(0xFF4E00);
-    carryLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-    carryLabel.text = self.carryNum;
-    [self.topView addSubview:carryLabel];
+    carryLabel.textColor = R_G_B_16(0x646464);
+    carryLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    carryLabel.text = [NSString stringWithFormat:@"自提码：%@",self.carryNum];
+    
+    NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:carryLabel.text];
+    NSDictionary *priceStr=@{
+                             
+                             NSForegroundColorAttributeName:R_G_B_16(0xFF4E00),
+                             NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(36)]
+                             };
+    
+    [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(4,AttributedStringPrice.length-4)];
+    
+    [carryLabel setAttributedText:AttributedStringPrice];
 
+    [self.topView addSubview:carryLabel];
+    
+    
+  
+    
     
 //    UILabel *headLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.topView.frame)+PX_TO_PT(18), ScreenWidth, PX_TO_PT(30))];
 //    headLabel.text = @"服务网点";

@@ -107,6 +107,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setNav];
+    currentPage = 1;
     [self createTableView];
     _consigneeArr = [NSMutableArray array];
     [self getData];
@@ -115,7 +116,7 @@
 //获取收货人列表信息
 -(void)getData
 {
-    [KSHttpRequest get:KqueryConsignees parameters:@{@"userId":[DataCenter account].userid,@"page":[NSNumber numberWithInt:currentPage],@"max":@10} success:^(id result) {
+    [KSHttpRequest get:KqueryConsignees parameters:@{@"userId":[DataCenter account].userid,@"page":[NSNumber numberWithInt:currentPage],@"max":@20} success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             
             NSMutableArray *arr = (NSMutableArray *)[XNRConsigneeModel objectArrayWithKeyValuesArray:result[@"datas"][@"rows"]];

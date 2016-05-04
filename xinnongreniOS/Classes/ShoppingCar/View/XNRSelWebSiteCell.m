@@ -61,12 +61,12 @@
     nameLabel.textColor = R_G_B_16(0x323232);
     self.nameLabel = nameLabel;
     
-    UILabel *addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(86),CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(15), PX_TO_PT(603), PX_TO_PT(40))];
+    UILabel *addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(86),CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(10), PX_TO_PT(603), PX_TO_PT(40))];
     addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     addressLabel.textColor = R_G_B_16(0x646464);
     self.addressLabel = addressLabel;
     
-    UILabel *phoneLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(86), CGRectGetMaxY(addressLabel.frame)+ PX_TO_PT(15), PX_TO_PT(603), PX_TO_PT(40))];
+    UILabel *phoneLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(86), CGRectGetMaxY(addressLabel.frame)+ PX_TO_PT(10), PX_TO_PT(603), PX_TO_PT(40))];
     phoneLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     phoneLabel.textColor = R_G_B_16(0x646464);
     self.phoneLabel = phoneLabel;
@@ -102,12 +102,12 @@
     [str appendString:addressModel.details];
  
     CGSize size = [str sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(PX_TO_PT(603), MAXFLOAT)];
-    self.addressLabel.frame = CGRectMake(PX_TO_PT(86),CGRectGetMaxY(_nameLabel.frame) + PX_TO_PT(15), size.width, size.height);
+    self.addressLabel.frame = CGRectMake(PX_TO_PT(86),CGRectGetMaxY(_nameLabel.frame) + PX_TO_PT(10), size.width, size.height);
     self.addressLabel.text = str;
     self.addressLabel.numberOfLines = 0;
     
     self.phoneLabel.text = [NSString stringWithFormat:@"电话：%@",model.phone];
-    self.phoneLabel.frame = CGRectMake(PX_TO_PT(86), CGRectGetMaxY(_addressLabel.frame)+ PX_TO_PT(15), PX_TO_PT(603), PX_TO_PT(40));
+    self.phoneLabel.frame = CGRectMake(PX_TO_PT(86), CGRectGetMaxY(_addressLabel.frame)+ PX_TO_PT(10), PX_TO_PT(603), PX_TO_PT(40));
     
     self.line.frame = CGRectMake(0, CGRectGetMaxY(_phoneLabel.frame)+PX_TO_PT(15), ScreenWidth, PX_TO_PT(1));
     
