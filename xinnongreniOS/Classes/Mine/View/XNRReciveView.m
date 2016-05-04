@@ -23,6 +23,8 @@
 
 @property (nonatomic, weak)XNROrderEmptyView *orderEmptyView;
 @property (nonatomic, weak) UIButton *backtoTopBtn;
+@property (nonatomic,assign)BOOL isHoldOwn;
+@property (nonatomic,assign)BOOL isMakesureOwn;
 @end
 @implementation XNRReciveView
 
@@ -356,12 +358,25 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
+    _isHoldOwn = NO;
+    _isMakesureOwn = NO;
     UIView *bottomView = [[UIView alloc] init];
     XNRMyOrderSectionModel *sectionModel = _dataArr[section];
     
+    for (int i=0; i<sectionModel.skus.count; i++) {
+        XNRMyOrderModel *model = sectionModel.skus[i];
+        if(model.deliverStatus == 4)
+        {
+            _isHoldOwn = YES;
+        }
+        if (model.deliverStatus == 2) {
+            _isMakesureOwn = YES;
+        }
+    }
+    
     if (_dataArr.count>0) {
         
-        if (sectionModel.type == 4) {
+        if (sectionModel.type == 4 && _isMakesureOwn) {
             bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
             bottomView.backgroundColor = [UIColor whiteColor];
             [self addSubview:bottomView];
@@ -419,7 +434,7 @@
             return bottomView;
 
         }
-        else if (sectionModel.type == 5)
+        else if (sectionModel.type == 5 && _isHoldOwn)
         {
             bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
             bottomView.backgroundColor = [UIColor whiteColor];
@@ -511,8 +526,15 @@
     XNRMakeSureView *makesureView = [[XNRMakeSureView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     makesureView.orderId = sectionModel.orderId;
     makesureView.modelArr = [NSMutableArray array];
-    makesureView.modelArr = sectionModel.skus;
     
+    for (int i=0; i<sectionModel.skus.count; i++) {
+        XNRMyOrderModel *model = sectionModel.skus[i];
+        if(model.deliverStatus == 2)
+        {
+            [makesureView.modelArr addObject:model];
+        }
+    }
+
     [makesureView createview];
     
     [self addSubview:makesureView];
@@ -531,12 +553,31 @@
 // 断尾高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    _isHoldOwn = NO;
+    _isMakesureOwn = NO;
+    XNRMyOrderSectionModel *sectionModel = _dataArr[section];
+    
+    for (int i=0; i<sectionModel.skus.count; i++) {
+        XNRMyOrderModel *model = sectionModel.skus[i];
+        if(model.deliverStatus == 4)
+        {
+            _isHoldOwn = YES;
+        }
+        if (model.deliverStatus == 2) {
+            _isMakesureOwn = YES;
+        }
+    }
+    
     if (_dataArr.count>0) {
-        return PX_TO_PT(180);
-    }else{
+        if ((sectionModel.type == 4 && _isMakesureOwn) ||(sectionModel.type == 5 && _isHoldOwn) ) {
+            return PX_TO_PT(180);
+        }
+    }
+    else{
         return 0;
     }
     
+    return 0;
     
 }
 

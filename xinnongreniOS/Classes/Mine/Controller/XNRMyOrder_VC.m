@@ -234,6 +234,7 @@
     self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
     self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
     self.CommentView =[[XNRCommentView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"comment"];
+
 }
 #pragma mark-创建顶部视图
 -(void)createTopView {
@@ -310,15 +311,15 @@
 }
 #pragma mark - 按钮的循环点击
 -(void)buttonClick:(UIButton*)button{
-    
+
     if (_type == XNRPayViewtype) {
-        self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
+        self.PayView =[[XNRPayView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
         
     }else if (_type == XNRSendViewType){
-        self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
+        self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
         
     }else if (_type == XNRReciveViewType){
-        self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
+        self.ReciveView=[[XNRReciveView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
     }else{
         self.CommentView =[[XNRCommentView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"comment"];
     }
@@ -480,6 +481,11 @@
 
 -(void)backClick{
 
+    if (self.presentingViewController) {
+        [self dismissViewControllerAnimated:NO completion:nil];
+        return;
+    }
+
     UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController ;
     
     for (UIViewController *vc in self.navigationController.viewControllers) {
@@ -489,20 +495,20 @@
         }
     }
     
-    NSInteger count = self.navigationController.viewControllers.count;
-    if (count < 3) {
-        
-        XNRTabBarController *tabVC = [[XNRTabBarController alloc]init];
-        tabVC.selectedIndex = 3;
-        
-        [self.view.window setRootViewController:tabVC];
-        
-        //首页的控制器返回到rootVC
-        
-        [self.navigationController pushViewController:tabVC animated:NO];
-        
-        return;
-    }
+//    NSInteger count = self.navigationController.viewControllers.count;
+//    if (count < 3) {
+//        
+//        XNRTabBarController *tabVC = [[XNRTabBarController alloc]init];
+//        tabVC.selectedIndex = 3;
+//        
+//        [self.view.window setRootViewController:tabVC];
+//        
+//        //首页的控制器返回到rootVC
+//        
+//        [self.navigationController pushViewController:tabVC animated:NO];
+//        
+//        return;
+//    }
 
 
    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
