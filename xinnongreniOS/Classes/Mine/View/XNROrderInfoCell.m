@@ -106,7 +106,7 @@
     statusLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     statusLabel.textColor = R_G_B_16(0xFE9B00);
     if ([addtionsModel.deliverStatus integerValue] == 1) {
-        statusLabel.text = @"待发货";
+        statusLabel.text = @"未发货";
     }
     else if ([addtionsModel.deliverStatus integerValue] == 2){
         statusLabel.text = @"配送中";

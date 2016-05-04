@@ -145,6 +145,8 @@
 
 -(void)initNOAddressView
 {
+    self.nextAddresModel = nil;
+
     [_headViewNormal removeFromSuperview];
     [_addressView removeFromSuperview];
     [self createHeadView];    

@@ -56,7 +56,11 @@
         [self createMainTableView];
         
         [self setupAlreadyFinishViewRefresh];
+        
         [self createbackBtn];
+        
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"commentHeadRefresh" object:nil];
+
         
     }
     return self;

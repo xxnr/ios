@@ -33,11 +33,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setNavigationbarTitle];
+    
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStyleGrouped];
+    
+    tableView.backgroundColor = R_G_B_16(0xf9f9f9);
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    self.tableView = tableView;
+//    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:(CGRectMake(0, 0, 0, 0))];
+    self.tableView.tableHeaderView=[[UIView alloc] initWithFrame:(CGRectMake(0,20,82,0.5))];
+
+    [self.view addSubview:tableView];
+    
     [self getDeliveryCode];
 
 }
 #pragma mark -- UItableView的数据源和代理方法
-
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.modelArr.count;
@@ -266,15 +277,15 @@
                 [self createEmptyCenter];
             }
             
-            UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) style:UITableViewStyleGrouped];
-            
-            tableView.backgroundColor = R_G_B_16(0xf9f9f9);
-            
-            tableView.delegate = self;
-            tableView.dataSource = self;
-            self.tableView = tableView;
-            
-            [self.view addSubview:tableView];
+//            UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStyleGrouped];
+//            
+//            tableView.backgroundColor = R_G_B_16(0xf9f9f9);
+//            
+//            tableView.delegate = self;
+//            tableView.dataSource = self;
+//            self.tableView = tableView;
+//            
+//            [self.view addSubview:tableView];
 
             [self.tableView reloadData];
         }

@@ -67,6 +67,8 @@
         
         [self setupStayPayViewRefresh];
         
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"payHeadRefresh" object:nil];
+
     }
     
     return self;

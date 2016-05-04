@@ -18,10 +18,11 @@
 @property(nonatomic,copy)void(^checkOrderBlock)(NSString*orderID,XNRMyOrderSectionModel *model);//查看订单
 @property (nonatomic,strong) UITableView *tableView;//信息列表
 @property (retain,nonatomic) NSString *urlString;
-
+@property (nonatomic,strong)NSMutableArray *dataArr;
 /**
  *  重写init方法传入数据流所需要的url
  *
  */
 -(id)initWithFrame:(CGRect)frame UrlString:(NSString *)urlString;
+-(void)headRefresh;
 @end

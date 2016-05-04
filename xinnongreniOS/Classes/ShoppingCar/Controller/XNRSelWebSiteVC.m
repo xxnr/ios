@@ -28,6 +28,7 @@
 @property (nonatomic,weak)UIButton *cityBtn;
 @property (nonatomic,weak) UIButton *areaBtn;
 @property (nonatomic,weak) UIButton *currentBtn;
+@property (nonatomic,weak) XNRSelWebBtn *iconBtn;
 @property (nonatomic,weak)UIView *coverView;
 @property (nonatomic,weak)UIView *rollView;
 @property (nonatomic,strong)NSString *proviceId;
@@ -76,13 +77,13 @@
     }
     return _areaList;
 }
--(NSMutableArray *)iconArr
-{
-    if (!_iconArr) {
-        _iconArr = [NSMutableArray array];
-    }
-    return _iconArr;
-}
+//-(NSMutableArray *)iconArr
+//{
+//    if (!_iconArr) {
+//        _iconArr = [NSMutableArray array];
+//    }
+//    return _iconArr;
+//}
 //-(NSMutableArray *)selProArr
 //{
 //    if (!_selProArr) {
@@ -122,7 +123,6 @@
             NSInteger page = [result[@"datas"][@"page"] integerValue];
             self.tableView.mj_footer.hidden = pages==page;
             
-            [self.tableView reloadData];
             [self.tableView.mj_header endRefreshing];
             [self.tableView.mj_footer endRefreshing];
             [BMProgressView LoadViewDisappear:self.view];
@@ -205,7 +205,7 @@
 
     [self setNav];
     _dataArr = [NSMutableArray array];
-    
+    _iconArr = [NSMutableArray array];
     [self getData];
     [self createTop];
     
@@ -498,6 +498,7 @@
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     if (tableView.tag == TableViewTag) {
         NSString static *cellID = @"cell";
         XNRSelWebSiteCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
@@ -513,14 +514,14 @@
         
         UIImage *image = [UIImage imageNamed:@"address_circle"];
         XNRSelWebBtn *iconBtn = [[XNRSelWebBtn alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, cell.height)];
+
         [iconBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
         [iconBtn setImage:[UIImage imageNamed:@"address_right"] forState:UIControlStateSelected];
 //        iconBtn.imageEdgeInsets = UIEdgeInsetsMake(-(cell.height - image.size.height)/2, 0, (cell.height - image.size.height)/2, 0);
         [iconBtn addTarget:self action:@selector(iconClick:) forControlEvents:UIControlEventTouchDown];
         iconBtn.tag = indexPath.row;
         
-        
-            if (self.currentModel == self.dataArr[iconBtn.tag]) {
+        if (self.currentModel == self.dataArr[iconBtn.tag]) {
                 iconBtn.selected = YES;
             }
         [cell addSubview:iconBtn];
@@ -627,6 +628,8 @@
     }
     sender.selected = YES;
     _currentModel = self.dataArr[sender.tag];
+    
+    [_iconArr removeAllObjects];
     [self.tableView reloadData];
 }
 

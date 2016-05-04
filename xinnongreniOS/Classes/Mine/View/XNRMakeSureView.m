@@ -119,9 +119,14 @@
     self.bottomView = bottom;
     bottom.backgroundColor = [UIColor whiteColor];
     UIButton *okBtn = [[UIButton alloc]initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(190))/2, PX_TO_PT(24), PX_TO_PT(190), PX_TO_PT(52))];
+<<<<<<< HEAD
     self.makeSureBtn = okBtn;
 //    okBtn.backgroundColor = R_G_B_16(0xFE9B00);
     okBtn.backgroundColor = R_G_B_16(0xe0e0e0);
+=======
+    okBtn.backgroundColor = R_G_B_16(0xFE9B00);
+    okBtn.layer.cornerRadius = PX_TO_PT(8);
+>>>>>>> ynn_ios
     [okBtn setTitle:@"确定" forState:UIControlStateNormal];
     okBtn.layer.cornerRadius = PX_TO_PT(8);
     [okBtn addTarget:self action:@selector(makeSure:) forControlEvents:UIControlEventTouchUpInside];
@@ -178,10 +183,17 @@
                 [self.coverView removeFromSuperview];
                 [self removeFromSuperview];
 
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"refresh" object:self];
                 if ([_iscome isEqualToString:@"XNROrderVC"]) {
                     [[NSNotificationCenter defaultCenter]postNotificationName:@"orderVCRefresh" object:self];
                 }
+
+
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
+
             }];
             //
             
