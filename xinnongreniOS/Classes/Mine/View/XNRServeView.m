@@ -105,7 +105,6 @@
 #pragma mark - 刷新
 -(void)setupAllViewRefresh{
     
-    
     MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
     NSMutableArray *idleImage = [NSMutableArray array];
     

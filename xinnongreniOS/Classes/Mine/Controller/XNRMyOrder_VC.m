@@ -486,21 +486,6 @@
             return;
         }
     }
-    
-//    NSInteger count = self.navigationController.viewControllers.count;
-//    if (count < 3) {
-//        
-//        XNRTabBarController *tabVC = [[XNRTabBarController alloc]init];
-//        tabVC.selectedIndex = 3;
-//        
-//        [self.view.window setRootViewController:tabVC];
-//        
-//        //首页的控制器返回到rootVC
-//        
-//        [self.navigationController pushViewController:tabVC animated:NO];
-//        
-//        return;
-//    }
 
 
    UIWindow *window = [[UIApplication sharedApplication] keyWindow];

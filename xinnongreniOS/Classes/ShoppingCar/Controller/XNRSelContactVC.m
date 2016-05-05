@@ -107,11 +107,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setNav];
-<<<<<<< HEAD
     currentPage = 1;
-=======
     [self createTableHeadView];
->>>>>>> ynn_ios
     [self createTableView];
     _consigneeArr = [NSMutableArray array];
     [self getData];
