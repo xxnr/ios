@@ -30,6 +30,9 @@
 
 @property (nonatomic, weak) XNRRscCustomerTakeView *takeView;
 
+@property (nonatomic, assign) NSInteger totalCount;
+
+
 
 @end
 
@@ -86,8 +89,8 @@
     if ([self.admireBtn.titleLabel.text isEqualToString:@"下一步"]) {
         if (self.admireBtn.selected == YES) {
             [self.takeView show:_model];
-            self.deliverView.hidden = YES;
-            self.coverView.hidden = YES;
+            [self.deliverView removeFromSuperview];
+            [self.coverView removeFromSuperview];
         }else{
             [UILabel showMessage:@"您还没有选择商品哦"];
         }
@@ -118,10 +121,13 @@
                     resultDic = (NSDictionary *)resultObj;
                 }
                 if ([resultObj[@"code"] integerValue] == 1000) {
-                    [UILabel showMessage:resultObj[@"message"]];
+                    [self cancel];
+                    [self setWarnViewTitle:@"配送成功"];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
                     
                 }else{
-                    [UILabel showMessage:resultObj[@"message"]];
+                    [self cancel];
+                    [self setWarnViewTitle:@"请稍后再试"];
                 }
                 
                 
@@ -136,6 +142,36 @@
 
 }
 
+-(UIView *)setWarnViewTitle:(NSString *)titleLabel{
+    
+    UIView *coverView = [[UIView alloc] initWithFrame:AppKeyWindow.bounds];
+    coverView.backgroundColor = [UIColor blackColor];
+    coverView.alpha = 0.6;
+    [AppKeyWindow addSubview:coverView];
+    
+    UIView *warnView = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(180), PX_TO_PT(450), PX_TO_PT(390), PX_TO_PT(280))];
+    warnView.layer.cornerRadius = PX_TO_PT(20);
+    warnView.backgroundColor = [UIColor blackColor];
+    [AppKeyWindow addSubview:warnView];
+
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(119), PX_TO_PT(51), PX_TO_PT(121), PX_TO_PT(121))];
+    imageView.image = [UIImage imageNamed:@"success"];
+    [warnView addSubview:imageView];
+    
+    UILabel *successLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(129), CGRectGetMaxY(imageView.frame)+PX_TO_PT(30), PX_TO_PT(140), PX_TO_PT(30))];
+    successLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    successLabel.text = titleLabel;
+    successLabel.textColor = [UIColor whiteColor];
+    [warnView addSubview:successLabel];
+    
+    [UIView animateWithDuration:2.0 animations:^{
+        warnView.alpha = 0;
+        coverView.alpha = 0;
+    } completion:^(BOOL finished) {
+//        [coverView removeFromSuperview];
+    }];
+    return coverView;
+}
 
 -(void)createTableView
 {
@@ -191,6 +227,15 @@
 
 -(void)show:(XNRRscOrderModel *)model andType:(XNRRscConfirmDeliverViewType)type
 {
+    if (_coverView == nil &&_deliverView == nil) {
+        for (XNRRscSkusModel *skuModel in model.SKUs) {
+            skuModel.isSelected = NO;
+        }
+        _totalCount = 0;
+        [self createView];
+        [self createTableView];
+        [self createBottomView];
+    }
     [model.SKUsDeliverFrame removeAllObjects];
     [self changeState:type];
     
@@ -228,7 +273,9 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.deliverView.frame = CGRectMake(0, ScreenHeight, ScreenWidth, 0);
     } completion:^(BOOL finished) {
-        self.coverView.hidden = YES;
+        [self.deliverView removeFromSuperview];
+        [self.coverView removeFromSuperview];
+//        self.coverView.hidden = YES;
     }];
 }
 
@@ -256,18 +303,20 @@
     }else{
         model.isSelected = YES;
     }
-    
+//    _totalCount = 0;
     if (model.isSelected) {
         self.admireBtn.selected = YES;
-        if ([self.admireBtn.titleLabel.text isEqualToString:@"确定"]) {
-            [self.admireBtn setTitle:[NSString stringWithFormat:@"确定(%@)",model.count] forState:UIControlStateNormal];
-        }
+            _totalCount = _totalCount + model.count.integerValue;
+            [self.admireBtn setTitle:[NSString stringWithFormat:@"确定(%ld)",(long)_totalCount] forState:UIControlStateSelected];
     }else{
-        self.admireBtn.selected = NO;
-        if ([self.admireBtn.titleLabel.text isEqualToString:[NSString stringWithFormat:@"确定(%@)",model.count]]) {
-            [self.admireBtn setTitle:@"确定" forState:UIControlStateNormal];
+        _totalCount = _totalCount - model.count.integerValue;
+        if (_totalCount == 0) {
+            self.admireBtn.selected = NO;
+            [self.admireBtn setTitle:@"确定"forState:UIControlStateNormal];
+        }else{
+            self.admireBtn.selected = YES;
+        [self.admireBtn setTitle:[NSString stringWithFormat:@"确定(%ld)",(long)_totalCount] forState:UIControlStateSelected];
         }
-
     }
 
     [self.tableView reloadData];

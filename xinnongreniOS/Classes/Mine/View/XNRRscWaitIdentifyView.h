@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef void(^XNRRscWaitIdentifyViewBlock)(NSString *orderId);
+@class XNRRscOrderModel;
+typedef void(^XNRRscWaitIdentifyViewBlock)(XNRRscOrderModel *model);
 
 @interface XNRRscWaitIdentifyView : UIView
 

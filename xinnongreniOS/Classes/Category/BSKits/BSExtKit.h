@@ -30,6 +30,7 @@
 #import "BSDatabaseOperation.h"
 #import "UILabel+showMessage.h"
 #import "UIView+Frame.h"
+#import "UIView+BSExt.h"
 
 #if ! __has_feature(objc_arc)
 #else

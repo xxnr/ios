@@ -8,17 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "XNRRscOrderModel.h"
-@class XNRRscSectionFootFrameModel;
+
+@class XNRRscFootFrameModel;
 
 typedef void(^XNRRscSectionFootViewBlock)();
 
 @interface XNRRscSectionFootView : UIView
 
--(void)upDataHeadViewWithModel:(XNRRscOrderModel *)model;
+-(void)upDataFootViewWithModel:(XNRRscFootFrameModel *)frameModel;
 
 @property (nonatomic, copy) XNRRscSectionFootViewBlock com;
 
-@property (nonatomic, strong) XNRRscSectionFootFrameModel *frameModel;
+//@property (nonatomic, strong) XNRRscSectionFootFrameModel *frameModel;
 
 
 @end

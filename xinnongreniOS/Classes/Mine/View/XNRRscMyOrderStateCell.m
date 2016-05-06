@@ -58,6 +58,7 @@
     goodsNameLabel.textColor = R_G_B_16(0x323232);
     goodsNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     goodsNameLabel.numberOfLines = 0;
+//    goodsNameLabel.backgroundColor = [UIColor yellowColor];
     self.goodsNameLabel = goodsNameLabel;
     [self.contentView addSubview:goodsNameLabel];
     

@@ -52,9 +52,15 @@
         [self getData];
         [self createView];
         [self setupAllViewRefresh];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTakeTableView) name:@"refreshTableView" object:nil];
         
     }
     return self;
+}
+
+-(void)refreshTakeTableView
+{
+    [self headRefresh];
 }
 
 #pragma mark - 刷新
@@ -111,6 +117,7 @@
 }
 -(void)headRefresh{
     _currentPage = 1;
+    [_dataFrameArray removeAllObjects];
     [_dataArray removeAllObjects];
     [self getData];
     
@@ -125,7 +132,7 @@
 
 -(void)getData
 {
-    NSDictionary *params = @{@"type":@"4",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE]};
+    NSDictionary *params = @{@"type":@"4",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"token":[DataCenter account].token};
     [KSHttpRequest get:KRscOrders parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *ordersArray = result[@"orders"];
@@ -169,7 +176,7 @@
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         
-        
+        [self.tableView reloadData];
         
     } failure:^(NSError *error) {
         
@@ -211,7 +218,8 @@
     if (_dataArray.count>0) {
         XNRRscSectionFootView *sectionFootView = [[XNRRscSectionFootView alloc] init];
         XNRRscOrderModel *sectionModel = _dataArray[section];
-        [sectionFootView upDataHeadViewWithModel:sectionModel];
+        XNRRscFootFrameModel*footFrameModel = _dataFrameArray[section];
+        [sectionFootView upDataFootViewWithModel:footFrameModel];
         sectionFootView.com = ^{
             [self.deliverView show:sectionModel andType:isFromTakeController];
         };
@@ -278,7 +286,7 @@
 {
     XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
     if (self.com) {
-        self.com(sectionModel._id);
+        self.com(sectionModel);
     }
     
 }

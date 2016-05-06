@@ -63,4 +63,36 @@
     
     return nil;
 }
+
+-(UIView *)setWarnViewTitle:(NSString *)titleLabel{
+    
+    UIView *coverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    coverView.backgroundColor = [UIColor blackColor];
+    coverView.alpha = 0.3;
+    
+    UIView *warnView = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(180), PX_TO_PT(450), PX_TO_PT(360), PX_TO_PT(280))];
+    warnView.layer.cornerRadius = PX_TO_PT(20);
+    warnView.backgroundColor = [UIColor blackColor];
+    
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(119), PX_TO_PT(51), PX_TO_PT(121), PX_TO_PT(121))];
+    imageView.image = [UIImage imageNamed:@"success"];
+    [warnView addSubview:imageView];
+    
+    UILabel *successLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(129), CGRectGetMaxY(imageView.frame)+PX_TO_PT(30), PX_TO_PT(120), PX_TO_PT(30))];
+    successLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    successLabel.text = titleLabel;
+    successLabel.textColor = [UIColor whiteColor];
+    [warnView addSubview:successLabel];
+    
+    [coverView addSubview:warnView];
+    
+    [UIView animateWithDuration:1.5f animations:^{
+        warnView.alpha = 0;
+        
+    }];
+    return coverView;
+}
+
+
+
 @end

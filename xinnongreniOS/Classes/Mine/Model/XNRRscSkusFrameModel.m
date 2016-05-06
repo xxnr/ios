@@ -31,7 +31,7 @@
     CGFloat goodsNumberLabelX = ScreenWidth/2;
     CGFloat goodsNumberLabelY = PX_TO_PT(40);
     CGFloat goodsNumberLabelW = ScreenWidth/2-PX_TO_PT(30);
-    CGFloat goodsNumberLabelH = PX_TO_PT(26);
+    CGFloat goodsNumberLabelH = PX_TO_PT(36);
     _goodsNumberLabelF  =CGRectMake(goodsNumberLabelX, goodsNumberLabelY, goodsNumberLabelW, goodsNumberLabelH);
    
     CGFloat attributesLabelX = CGRectGetMaxX(_imageViewF)+PX_TO_PT(20);
@@ -48,11 +48,20 @@
     
    
     if (self.model.additions.count == 0) {
-        CGFloat bottomLineX = 0;
-        CGFloat bottomLineY = CGRectGetMaxY(_imageViewF)+PX_TO_PT(30);
-        CGFloat bottomLineW = ScreenWidth;
-        CGFloat bottomLineH = PX_TO_PT(1);
-        _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
+        if (CGRectGetMaxY(_attributesLabelF)>CGRectGetMaxY(_imageViewF)) {
+            CGFloat bottomLineX = 0;
+            CGFloat bottomLineY = CGRectGetMaxY(_attributesLabelF)+PX_TO_PT(30);
+            CGFloat bottomLineW = ScreenWidth;
+            CGFloat bottomLineH = PX_TO_PT(1);
+            _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
+        }else{
+            CGFloat bottomLineX = 0;
+            CGFloat bottomLineY = CGRectGetMaxY(_imageViewF)+PX_TO_PT(30);
+            CGFloat bottomLineW = ScreenWidth;
+            CGFloat bottomLineH = PX_TO_PT(1);
+            _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
+        }
+
     }else{
         if (CGRectGetMaxY(_attributesLabelF)>CGRectGetMaxY(_imageViewF)) {
             NSMutableString *addtionsStr = [[NSMutableString alloc] initWithString:@"附加项目:"];

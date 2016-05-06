@@ -66,9 +66,15 @@
         [self getData];
         [self createView];
         [self setupAllViewRefresh];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAllTableView) name:@"refreshTableView" object:nil];
 
     }
     return self;
+}
+
+-(void)refreshAllTableView
+{
+    [self headRefresh];
 }
 
 #pragma mark - 刷新
@@ -125,6 +131,7 @@
 }
 -(void)headRefresh{
     _currentPage = 1;
+    [_dataFrameArray removeAllObjects];
     [_dataArray removeAllObjects];
     [self getData];
     
@@ -139,7 +146,7 @@
 
 -(void)getData
 {
-    NSDictionary *params = @{@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE]};
+    NSDictionary *params = @{@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"token":[DataCenter account].token};
     [KSHttpRequest get:KRscOrders parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *ordersArray = result[@"orders"];
@@ -225,7 +232,8 @@
     if (_dataArray.count>0) {
         XNRRscOrderModel *sectionModel = _dataArray[section];
         XNRRscSectionFootView *sectionFootView = [[XNRRscSectionFootView alloc] init];
-        [sectionFootView upDataHeadViewWithModel:sectionModel];
+        XNRRscFootFrameModel*footFrameModel = _dataFrameArray[section];
+        [sectionFootView upDataFootViewWithModel:footFrameModel];
         [self addSubview:sectionFootView];
         sectionFootView.com = ^{
             if ([sectionModel.type integerValue] == 2) {
@@ -244,7 +252,7 @@
 
 -(void)getdetailData:(XNRRscOrderModel *)model
 {
-    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model._id} success:^(id result) {
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model._id,@"token":[DataCenter account].token} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *orderDict = result[@"order"];
@@ -261,7 +269,6 @@
     }];
     
 }
-
 
 #pragma mark - tableView代理方法
 
@@ -319,9 +326,8 @@
 {
     XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
     if (self.com) {
-        self.com(sectionModel._id);
+        self.com(sectionModel);
     }
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

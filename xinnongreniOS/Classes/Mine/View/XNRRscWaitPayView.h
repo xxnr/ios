@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef void(^XNRRscWaitPayViewBlock)(NSString *orderId);
+@class XNRRscOrderModel;
+typedef void(^XNRRscWaitPayViewBlock)(XNRRscOrderModel *model);
 
 @interface XNRRscWaitPayView : UIView
 @property (nonatomic, copy) XNRRscWaitPayViewBlock com;

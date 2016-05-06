@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef void(^XNRRscAllOrderViewBlock)(NSString *orderId);
+@class XNRRscOrderModel;
+typedef void(^XNRRscAllOrderViewBlock)(XNRRscOrderModel *model);
 
 @interface XNRRscSearchController : UIViewController
 

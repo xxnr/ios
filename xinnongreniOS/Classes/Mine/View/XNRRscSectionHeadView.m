@@ -39,13 +39,13 @@
     headView.backgroundColor = R_G_B_16(0xffffff);
     [self addSubview:headView];
     
-    UILabel *dataLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), 0, ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(88))];
+    UILabel *dataLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), 0, ScreenWidth/2-PX_TO_PT(100), PX_TO_PT(88))];
     dataLabel.textColor = R_G_B_16(0x323232);
     dataLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.dataLabel = dataLabel;
     [headView addSubview:dataLabel];
     
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(dataLabel.frame)+PX_TO_PT(20), 0, PX_TO_PT(110), PX_TO_PT(88))];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(dataLabel.frame), 0, PX_TO_PT(110), PX_TO_PT(88))];
     nameLabel.textColor = R_G_B_16(0x323232);
     nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.nameLabel = nameLabel;

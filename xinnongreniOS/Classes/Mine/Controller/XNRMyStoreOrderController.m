@@ -14,6 +14,7 @@
 #import "XNRRscWaitTakeView.h"
 #import "XNRRscOrderDetialController.h"
 #import "XNRRscSearchController.h"
+#import "XNRRscOrderModel.h"
 #define KtitleBtn  1000
 
 @interface XNRMyStoreOrderController()<UIScrollViewDelegate>
@@ -50,18 +51,6 @@
     [self setNavigationBar];
     [self createView];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIdentifyTableView) name:@"refreshIdentifyTableView" object:nil];
-
-}
-
--(void)refreshIdentifyTableView
-{
-    [self.RscWaitIdentifyView.tableView reloadData];
-}
-
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)createView
@@ -69,6 +58,7 @@
     [self createHeadView];
     [self createScrollView];
     [self createOrderStateView];
+    
 }
 
 -(void)createOrderStateView
@@ -76,50 +66,50 @@
     if (self.RscAllOrderView == nil) {
         self.RscAllOrderView  = [[XNRRscAllOrderView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscAllOrderView.com = ^(NSString *orderId){
+        self.RscAllOrderView.com = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
-            orderDetialVC.orderId = orderId;
+            orderDetialVC.orderModel = model;
             [weakSelf.navigationController pushViewController:orderDetialVC animated:YES];
         };
     }
     if (self.RscWaitPayView == nil) {
         self.RscWaitPayView  = [[XNRRscWaitPayView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitPayView.com = ^(NSString *orderId){
+        self.RscWaitPayView.com = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
-            orderDetialVC.orderId = orderId;
+            orderDetialVC.orderModel = model;
             [weakSelf.navigationController pushViewController:orderDetialVC animated:YES];
         };
     }
     if (self.RscWaitIdentifyView == nil) {
         self.RscWaitIdentifyView  = [[XNRRscWaitIdentifyView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitIdentifyView.com = ^(NSString *orderId){
+        self.RscWaitIdentifyView.com = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
-            orderDetialVC.orderId = orderId;
+            orderDetialVC.orderModel = model;
             [weakSelf.navigationController pushViewController:orderDetialVC animated:YES];
         };
     }
     if (self.RscWaitDeliverView == nil) {
         self.RscWaitDeliverView  = [[XNRRscWaitDeliverView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitDeliverView.com = ^(NSString *orderId){
+        self.RscWaitDeliverView.com = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
-            orderDetialVC.orderId = orderId;
+            orderDetialVC.orderModel = model;
             [weakSelf.navigationController pushViewController:orderDetialVC animated:YES];
         };
     }
     if (self.RscWaitTakeView == nil) {
         self.RscWaitTakeView  = [[XNRRscWaitTakeView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitTakeView.com = ^(NSString *orderId){
+        self.RscWaitTakeView.com = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
-            orderDetialVC.orderId = orderId;
+            orderDetialVC.orderModel = model;
             [weakSelf.navigationController pushViewController:orderDetialVC animated:YES];
         };
 
@@ -138,7 +128,7 @@
 
 -(void)createScrollView
 {
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(120),ScreenWidth+PX_TO_PT(20),ScreenHeight-64)];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100),ScreenWidth+PX_TO_PT(20),ScreenHeight-64)];
     scrollView.contentSize=CGSizeMake((ScreenWidth+PX_TO_PT(20))*5, ScreenHeight-64);
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
@@ -156,7 +146,7 @@
 -(void)createHeadView{
     
     CGFloat headX = 0;
-    CGFloat headY = PX_TO_PT(20);
+    CGFloat headY = PX_TO_PT(0);
     CGFloat headW = ScreenWidth;
     CGFloat headH = PX_TO_PT(100);
     
@@ -196,8 +186,6 @@
     self.selectedLineView = selectedLineView;
     [headView addSubview:selectedLineView];
 
-
-
 }
 
 -(void)titleBtnClick:(UIButton *)button
@@ -210,11 +198,19 @@
         self.selectedLineView.frame=CGRectMake((button.tag - KtitleBtn)*ScreenWidth/5.0,  PX_TO_PT(95), ScreenWidth/5.0, PX_TO_PT(5));
         }];
      [self.scrollView setContentOffset:CGPointMake((ScreenWidth+PX_TO_PT(20))*(button.tag-KtitleBtn),0) animated:NO];
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     if (button.tag == KtitleBtn) {
        
     }else if (button.tag == KtitleBtn +1){
+        self.RscWaitPayView  = [[XNRRscWaitPayView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
+        __weak __typeof(&*self)weakSelf=self;
+        self.RscWaitPayView.com = ^(XNRRscOrderModel *model){
+            XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
+            orderDetialVC.hidesBottomBarWhenPushed = YES;
+            orderDetialVC.orderModel = model;
+            [weakSelf.navigationController pushViewController:orderDetialVC animated:YES];
+        };
        
-    
     }else if (button.tag == KtitleBtn +2){
 
         
@@ -224,7 +220,10 @@
     }else{
         
     }
-    
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            [BMProgressView LoadViewDisappear:self.view];
+        });
 }
 
 #pragma mark - scrollView左右滑动
@@ -233,14 +232,13 @@
     CGFloat offset = self.scrollView.contentOffset.x/(ScreenWidth+PX_TO_PT(20));
     
     static int tag = 0;
-    
+
     if(0 <= offset&&offset < 0.5){
         tag=0;
         UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
         _tempBtn.selected = NO;
         button.selected = YES;
         _tempBtn = button;
-        
     }else if (0.5<=offset&&offset<1.5){
         tag=1;
         UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
@@ -268,7 +266,6 @@
         button.selected = YES;
         _tempBtn = button;
     }
-    
     
     [UIView animateWithDuration:.3 animations:^{
         if (IS_FourInch) {
