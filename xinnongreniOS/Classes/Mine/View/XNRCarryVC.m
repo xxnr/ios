@@ -251,6 +251,17 @@
         if ([result[@"code"]integerValue] == 1000) {
             self.carryNum = result[@"deliveryCode"];
         }
+        
+        else if ([result[@"code"] integerValue] == 1401){
+            [UILabel showMessage:result[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            XNRLoginViewController *loginVC = [[XNRLoginViewController alloc] init];
+            loginVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:loginVC animated:YES];
+        }
+
         else
         {
             [UILabel showMessage:result[@"message"]];
@@ -277,16 +288,6 @@
                 [self createEmptyCenter];
             }
             
-//            UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStyleGrouped];
-//            
-//            tableView.backgroundColor = R_G_B_16(0xf9f9f9);
-//            
-//            tableView.delegate = self;
-//            tableView.dataSource = self;
-//            self.tableView = tableView;
-//            
-//            [self.view addSubview:tableView];
-
             [self.tableView reloadData];
         }
         
