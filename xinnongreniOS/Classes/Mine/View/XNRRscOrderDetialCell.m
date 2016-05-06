@@ -64,7 +64,6 @@
     self.goodsNameLabel = goodsNameLabel;
     [self.contentView addSubview:goodsNameLabel];
     
-    
     UILabel *deliverStateLabel = [[UILabel alloc] init];
     deliverStateLabel.textColor = R_G_B_16(0xfe9b00);
     deliverStateLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
@@ -136,11 +135,11 @@
         }else{
             [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
         }}];
-    self.goodsNameLabel.text = model.name;
+    self.goodsNameLabel.text = model.productName;
     if ([model.deliverStatus integerValue] == 1) {
         self.deliverStateLabel.text = @"未发货";
     }else if ([model.deliverStatus integerValue] == 2){
-        self.deliverStateLabel.text = @"已发货";
+        self.deliverStateLabel.text = @"配送中";
 
     }else if ([model.deliverStatus integerValue] == 4){
         self.deliverStateLabel.text = @"已到服务站";

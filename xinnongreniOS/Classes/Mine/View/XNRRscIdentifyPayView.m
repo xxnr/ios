@@ -195,19 +195,53 @@
 
 -(void)admireBtnClick
 {
-    NSDictionary *params = @{@"paymentId":_paymentId,@"price":_price,@"offlinePayType":_type};
+    NSDictionary *params = @{@"paymentId":_paymentId,@"price":_price,@"offlinePayType":_type,@"token":[DataCenter account].token};
     NSLog(@"ppppppp%@",params);
     [KSHttpRequest get:KRscConfirmOfflinePay parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             [self cancel];
+            [self setWarnViewTitle:@"审核成功"];
             // 刷新tableView
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshIdentifyTableView" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        }else{
+            [self cancel];
+            [self setWarnViewTitle:@"请稍后再试"];
         }
         
     } failure:^(NSError *error) {
         
     }];
+}
+
+-(UIView *)setWarnViewTitle:(NSString *)titleLabel{
     
+    UIView *coverView = [[UIView alloc] initWithFrame:AppKeyWindow.bounds];
+    coverView.backgroundColor = [UIColor blackColor];
+    coverView.alpha = 0.6;
+    [AppKeyWindow addSubview:coverView];
+    
+    UIView *warnView = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(180), PX_TO_PT(450), PX_TO_PT(390), PX_TO_PT(280))];
+    warnView.layer.cornerRadius = PX_TO_PT(20);
+    warnView.backgroundColor = [UIColor blackColor];
+    [AppKeyWindow addSubview:warnView];
+    
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(119), PX_TO_PT(51), PX_TO_PT(121), PX_TO_PT(121))];
+    imageView.image = [UIImage imageNamed:@"success"];
+    [warnView addSubview:imageView];
+    
+    UILabel *successLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(129), CGRectGetMaxY(imageView.frame)+PX_TO_PT(30), PX_TO_PT(140), PX_TO_PT(30))];
+    successLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    successLabel.text = titleLabel;
+    successLabel.textColor = [UIColor whiteColor];
+    [warnView addSubview:successLabel];
+    
+    [UIView animateWithDuration:2.0 animations:^{
+        warnView.alpha = 0;
+        coverView.alpha = 0;
+    } completion:^(BOOL finished) {
+        //        [coverView removeFromSuperview];
+    }];
+    return coverView;
 }
 
 -(void)cancelBtnClick
@@ -217,6 +251,11 @@
 
 -(void)show:(NSString *)name andPrice:(NSString *)price andPaymentId:(NSString *)paymentId
 {
+    if (_coverView == nil && _identifyView == nil) {
+        _payTypeArray = [NSMutableArray array];
+        [self getOfflinePayTypeData];
+        [self createView];
+    }
     _paymentId = paymentId;
     _price = price;
     self.nameLabel.text = name;
@@ -233,7 +272,9 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.identifyView.frame = CGRectMake(0, ScreenHeight, ScreenWidth, 0);
     } completion:^(BOOL finished) {
-        self.coverView.hidden = YES;
+//        self.coverView.hidden = YES;
+        [self.coverView removeFromSuperview];
+        [self.identifyView removeFromSuperview];
     }];
     
 }

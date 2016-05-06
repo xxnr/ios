@@ -26,12 +26,11 @@
 
 @property (nonatomic, weak) UITableView *tableView;
 
-@property (nonatomic, weak) UIView *footView;
-
 @property (nonatomic, weak) XNRRscIdentifyPayView *identifyPayView;
 
 @property (nonatomic, weak) XNRRscConfirmDeliverView *deliverView;
 
+@property (nonatomic, weak) UIButton *footButton;
 
 @end
 
@@ -62,7 +61,7 @@
 {
     [super viewDidLoad];
     _dataArray = [NSMutableArray array];
-    _dataFrameArray = [NSMutableArray array];
+//    _dataFrameArray = [NSMutableArray array];
     [self setNavigationBar];
     self.view.backgroundColor = R_G_B_16(0xf4f4f4);
     [self createView];
@@ -74,26 +73,25 @@
     XNRRscOrderDetialHeadView *headView =  [[XNRRscOrderDetialHeadView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(798))];
     self.headView = headView;
     [self.view addSubview:headView];
-        
+    
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStyleGrouped];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.backgroundColor = R_G_B_16(0xf4f4f4);
-    tableView.tableHeaderView = headView;
     self.tableView = tableView;
     [self.view addSubview:tableView];
 }
 
 -(void)getOrderDetialData
 {
-    
-    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":self.orderId} success:^(id result) {
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":_orderModel._id,@"token":[DataCenter account].token} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"order"];
             XNRRscOrderDetailModel *model = [[XNRRscOrderDetailModel alloc] init];
             model.SKUList = (NSMutableArray *)[XNRRscSkusModel objectArrayWithKeyValuesArray:dict[@"SKUList"]];
             model.consigneeName = dict[@"consigneeName"];
             model.consigneePhone = dict[@"consigneePhone"];
+            model.consigneeAddress = dict[@"consigneeAddress"];
             model.dateCreated = dict[@"dateCreated"];
             model.deposit = dict[@"deposit"];
             model.id = dict[@"id"];
@@ -110,20 +108,72 @@
 
             [_dataArray addObject:model];
             
-            XNRRscDetialFootFrameModel *frameModel = [[XNRRscDetialFootFrameModel alloc] init];
-            frameModel.model = model;
-            [_dataFrameArray addObject:frameModel];
+            [self.headView updataWithModel:model];
+            
+            if ([dict[@"deliveryType"][@"type"] integerValue] == 2) {
+                self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(898));
+            }else{
+                self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(798));
+            }
+            self.tableView.tableHeaderView = self.headView;
 
             
-            [self.headView updataWithModel:model];
+            if ([dict[@"orderStatus"][@"type"] integerValue] == 2 ||[dict[@"orderStatus"][@"type"] integerValue] == 4) {
+                [self createFootView:model];
+                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(80));
 
+            }else if ([dict[@"orderStatus"][@"type"] integerValue] == 5 || [dict[@"orderStatus"][@"type"] integerValue] == 6){
+                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
+                for (XNRRscSkusModel *skuModel in model.SKUList ) {
+                    if ([skuModel.deliverStatus integerValue] == 4) {
+                        [self createFootView:model];
+                        self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(80));
+                    }
+                }
+            }else{
+                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
+            }
         }
-
+    
         [self.tableView reloadData];
     } failure:^(NSError *error) {
         
     }];
+}
+
+-(void)createFootView:(XNRRscOrderDetailModel *)model
+{
+    NSDictionary *dict = model.orderStatus;
+    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenHeight -64- PX_TO_PT(80), ScreenWidth,PX_TO_PT(80))];
+    footView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:footView];
     
+    UIButton *footButton = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(170), PX_TO_PT(10), PX_TO_PT(140), PX_TO_PT(60))];
+    footButton.layer.cornerRadius = 5.0;
+    footButton.layer.masksToBounds = YES;
+    footButton.backgroundColor = R_G_B_16(0xfe9b00);
+    footButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    [footButton addTarget:self action:@selector(footButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    self.footButton = footButton;
+    [footView addSubview:footButton];
+    
+    if ([dict[@"type"] integerValue] == 2) {
+        [self.footButton setTitle:@"审核付款" forState:UIControlStateNormal];
+    }else if ([dict[@"type"] integerValue] == 4){
+        [self.footButton setTitle:@"开始配送" forState:UIControlStateNormal];
+    }else if ([dict[@"type"] integerValue] == 5){
+        for (XNRRscSkusModel *skuModel in model.SKUList) {
+            if ([skuModel.deliverStatus integerValue] == 4) {
+                [self.footButton setTitle:@"客户自提" forState:UIControlStateNormal];
+            }
+        }
+    }else if ([dict[@"type"] integerValue] == 6){
+        for (XNRRscSkusModel *skuModel in model.SKUList) {
+            if ([skuModel.deliverStatus integerValue] == 4) {
+                [self.footButton setTitle:@"开始配送" forState:UIControlStateNormal];
+            }
+        }
+    }
 
 }
 
@@ -131,202 +181,55 @@
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     XNRRscOrderDetailModel *detailModel = _dataArray[section];
-    UIView *footView;
-    NSDictionary *dict = detailModel.orderStatus;
-        if ([dict[@"type"] integerValue] == 2 || [dict[@"type"] integerValue] == 4) {
-            footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(160))];
-            footView.backgroundColor = R_G_B_16(0xffffff);
-            self.footView = footView;
-            [self.view addSubview:footView];
-            
-            UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(30), PX_TO_PT(80))];
-            totalPriceLabel.textAlignment = NSTextAlignmentRight;
-            totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-            totalPriceLabel.text = [NSString stringWithFormat:@"合计：%@",detailModel.totalPrice];
-            [footView addSubview:totalPriceLabel];
-            
-            NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
-            NSDictionary *priceStr=@{
-                                     
-                                     NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-                                     NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]
-                                     
-                                     };
-            
-            [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
-            
-            [totalPriceLabel setAttributedText:AttributedStringPrice];
+    UIView *sectionFootView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80))];
+    sectionFootView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:sectionFootView];
+    
+    UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(30), PX_TO_PT(80))];
+    totalPriceLabel.textAlignment = NSTextAlignmentRight;
+    totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    totalPriceLabel.text = [NSString stringWithFormat:@"合计：¥ %@",detailModel.totalPrice];
+    [sectionFootView addSubview:totalPriceLabel];
+    
+    NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
+    NSDictionary *priceStr=@{
+                             NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
+                             NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]
+                             
+                             };
+    
+    [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
+    
+    [totalPriceLabel setAttributedText:AttributedStringPrice];
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(1))];
+    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [sectionFootView addSubview:lineView];
 
-            
-            UIButton *footButton = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(170), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
-            footButton.layer.cornerRadius = 5.0;
-            footButton.layer.masksToBounds = YES;
-            footButton.backgroundColor = R_G_B_16(0xfe9b00);
-            if ([dict[@"type"] integerValue] == 2) {
-                [footButton setTitle:@"审核付款" forState:UIControlStateNormal];
-            }else if ([dict[@"type"] integerValue] == 4){
-                [footButton setTitle:@"开始配送" forState:UIControlStateNormal];
-            }else if ([dict[@"type"] integerValue] == 5){
-                for (XNRRscSkusModel *skuModel in detailModel.SKUList) {
-                    if ([skuModel.deliverStatus integerValue] == 4) {
-                        [footButton setTitle:@"客户自提" forState:UIControlStateNormal];
-                    }
-                }
-            }else if ([dict[@"type"] integerValue] == 6){
-                for (XNRRscSkusModel *skuModel in detailModel.SKUList) {
-                    if ([skuModel.deliverStatus integerValue] == 4) {
-                        [footButton setTitle:@"开始配送" forState:UIControlStateNormal];
-                    }
-                }
-            }
-
-            footButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-            [footButton addTarget:self action:@selector(footButtonClick) forControlEvents:UIControlEventTouchUpInside];
-            [footView addSubview:footButton];
-            
-            for (int i = 0; i<2; i++) {
-                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*(i+1), ScreenWidth, PX_TO_PT(1))];
-                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-                [footView addSubview:lineView];
-            }
-
-        }else if ([dict[@"type"] integerValue] == 5 || [dict[@"type"] integerValue] == 6){
-        for (XNRRscSkusModel *skuModel in detailModel.SKUList) {
-            if ([skuModel.deliverStatus integerValue] == 4) {
-                footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(160))];
-                footView.backgroundColor = R_G_B_16(0xffffff);
-                self.footView = footView;
-                [self.view addSubview:footView];
-                
-                UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(30), PX_TO_PT(80))];
-                totalPriceLabel.textAlignment = NSTextAlignmentRight;
-                totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-                totalPriceLabel.text = [NSString stringWithFormat:@"合计：%@",detailModel.totalPrice];
-                [footView addSubview:totalPriceLabel];
-                
-                NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
-                NSDictionary *priceStr=@{
-                                         
-                                         NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-                                         NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]
-                                         
-                                         };
-                
-                [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
-                
-                [totalPriceLabel setAttributedText:AttributedStringPrice];
-
-                
-                UIButton *footButton = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(170), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
-                footButton.layer.cornerRadius = 5.0;
-                footButton.layer.masksToBounds = YES;
-                footButton.backgroundColor = R_G_B_16(0xfe9b00);
-                if ([dict[@"type"] integerValue] == 2) {
-                    [footButton setTitle:@"审核付款" forState:UIControlStateNormal];
-                }else if ([dict[@"type"] integerValue] == 4){
-                    [footButton setTitle:@"开始配送" forState:UIControlStateNormal];
-                }else if ([dict[@"type"] integerValue] == 5){
-                    for (XNRRscSkusModel *skuModel in detailModel.SKUList) {
-                        if ([skuModel.deliverStatus integerValue] == 4) {
-                            [footButton setTitle:@"客户自提" forState:UIControlStateNormal];
-                        }
-                    }
-                }else if ([dict[@"type"] integerValue] == 6){
-                    for (XNRRscSkusModel *skuModel in detailModel.SKUList) {
-                        if ([skuModel.deliverStatus integerValue] == 4) {
-                            [footButton setTitle:@"开始配送" forState:UIControlStateNormal];
-                        }
-                    }
-                }
-                footButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-                [footButton addTarget:self action:@selector(footButtonClick) forControlEvents:UIControlEventTouchUpInside];
-                [footView addSubview:footButton];
-                for (int i = 0; i<2; i++) {
-                    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*(i+1), ScreenWidth, PX_TO_PT(1))];
-                    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-                    [footView addSubview:lineView];
-                }
-                
-            }else{
-                footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(160))];
-                footView.backgroundColor = [UIColor whiteColor];
-                self.footView = footView;
-                [self.view addSubview:footView];
-                
-                UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(30), PX_TO_PT(80))];
-                totalPriceLabel.textAlignment = NSTextAlignmentRight;
-                totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-                totalPriceLabel.text = [NSString stringWithFormat:@"合计：%@",detailModel.totalPrice];
-                [footView addSubview:totalPriceLabel];
-                
-                NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
-                NSDictionary *priceStr=@{
-                                         
-                                         NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-                                         NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]
-                                         
-                                         };
-                
-                [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
-                
-                [totalPriceLabel setAttributedText:AttributedStringPrice];
-
-                
-                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(1))];
-                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-                [footView addSubview:lineView];
-
-            }
-        }
-
-            
-        }else{
-            footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(160))];
-            footView.backgroundColor = [UIColor whiteColor];
-            self.footView = footView;
-            [self.view addSubview:footView];
-            
-            UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(30), PX_TO_PT(80))];
-            totalPriceLabel.textAlignment = NSTextAlignmentRight;
-            totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-            totalPriceLabel.text = [NSString stringWithFormat:@"合计：%@",detailModel.totalPrice];
-            [footView addSubview:totalPriceLabel];
-            
-            NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
-            NSDictionary *priceStr=@{
-                                     
-                                     NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
-                                     NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]
-                                     
-                                     };
-            
-            [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
-            
-            [totalPriceLabel setAttributedText:AttributedStringPrice];
-
-            
-            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(1))];
-            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-            [footView addSubview:lineView];
-
-        }
-        return footView;
+    return sectionFootView;
   }
+
 
 -(void)footButtonClick
 {
+    for (XNRRscSkusModel *skuModel in _orderModel.SKUs) {
+        skuModel.isSelected = NO;
+    }
     for (XNRRscOrderDetailModel *detailModel in _dataArray) {
         NSDictionary *dict = detailModel.orderStatus;
         if ([dict[@"type"] integerValue] == 2) {
             [self getdetailData:detailModel];
+        }else if ([dict[@"type"] integerValue] == 4||[dict[@"type"] integerValue] == 6){
+            [self.deliverView show:_orderModel andType:isFromDeliverController];
+        }else if([dict[@"type"] integerValue] == 5){
+            [self.deliverView show:_orderModel andType:isFromTakeController];
         }
     }
-    
 }
 
 -(void)getdetailData:(XNRRscOrderDetailModel *)model
 {
-    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model.id} success:^(id result) {
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model.id,@"token":[DataCenter account].token} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *orderDict = result[@"order"];
@@ -349,12 +252,7 @@
 // 段尾高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (_dataFrameArray.count>0) {
-        XNRRscDetialFootFrameModel *frameModel = _dataFrameArray[section];
-        return frameModel.footViewHeight;
-    }else{
-        return 0;
-    }
+      return PX_TO_PT(80);
 }
 // 设置段数
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

@@ -54,8 +54,20 @@
         [self createView];
         [self setupAllViewRefresh];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshDeliverTableView) name:@"refreshTableView" object:nil];
+        
     }
     return self;
+}
+
+-(void)refreshDeliverTableView
+{
+    [self headRefresh];
+
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - 刷新
@@ -113,6 +125,7 @@
 -(void)headRefresh{
     _currentPage = 1;
     [_dataArray removeAllObjects];
+    [_dataFrameArray removeAllObjects];
     [self getData];
     
     
@@ -125,7 +138,7 @@
 
 -(void)getData
 {
-    NSDictionary *params = @{@"type":@"3",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE]};
+    NSDictionary *params = @{@"type":@"3",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"token":[DataCenter account].token};
     [KSHttpRequest get:KRscOrders parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *ordersArray = result[@"orders"];
@@ -170,8 +183,8 @@
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         
-        
-        
+        [self.tableView reloadData];
+
     } failure:^(NSError *error) {
         
     }];
@@ -179,7 +192,6 @@
 
 -(void)createView
 {
-    
     
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(120)) style:UITableViewStyleGrouped];
     tableView.backgroundColor = [UIColor clearColor];
@@ -214,7 +226,9 @@
     if (_dataArray.count>0) {
         XNRRscSectionFootView *sectionFootView = [[XNRRscSectionFootView alloc] init];
         XNRRscOrderModel *sectionModel = _dataArray[section];
-        [sectionFootView upDataHeadViewWithModel:sectionModel];
+        XNRRscFootFrameModel*footFrameModel = _dataFrameArray[section];
+
+        [sectionFootView upDataFootViewWithModel:footFrameModel];
         sectionFootView.com = ^{
             [self.deliverView show:sectionModel andType:isFromDeliverController];
         };
@@ -241,7 +255,6 @@
     }else{
         return 0;
     }
-
 }
 
 //设置段数
@@ -279,7 +292,7 @@
 {
     XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
     if (self.com) {
-        self.com(sectionModel._id);
+        self.com(sectionModel);
     }
     
 }
@@ -292,9 +305,8 @@
         XNRRscSkusFrameModel *skuModel = sectionModel.SKUsFrame[indexPath.row];
         cell.frameModel = skuModel;
     }
-    
+
     return cell;
-    
 }
 
 

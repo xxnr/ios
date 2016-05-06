@@ -278,6 +278,11 @@
     return group.items.count;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return PX_TO_PT(88);
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XNRMainCell *cell = [XNRMainCell cellWithTableView:tableView];
@@ -550,8 +555,6 @@
     lineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
     [orderBtn.layer addSublayer:lineLayer];
 
-    
-    
     // 我的订单的状态
     UIView *orderStateView ;
     if ([infoModel.isRSC integerValue] == 1 && [infoModel.userType integerValue] == 5) {
@@ -562,8 +565,6 @@
         self.orderStateView = orderStateView;
         [self.topBgView addSubview:orderStateView];
     }
-
-    
     NSArray *orderStateImage = @[@"待付款icon-拷贝",@"代发货icon1-拷贝",@"已发货icon-拷贝",@"已完成icon-拷贝"];
     NSArray *orderStateTitle = @[@"待付款",@"待发货",@"待收货",@"已完成"];
     

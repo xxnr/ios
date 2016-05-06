@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class XNRRscOrderModel;
+
 @interface XNRRscOrderDetialController : UIViewController
 
 @property (nonatomic, copy) NSString *orderId;
+
+@property (nonatomic, strong) XNRRscOrderModel *orderModel;
 
 @end

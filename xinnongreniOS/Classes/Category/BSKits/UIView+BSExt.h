@@ -53,6 +53,16 @@
  *	@return	返回第一响应者，没有返回nil
  */
 - (UIView *)currentFirstResponderView_Ext;
+/**
+ *  <#Description#>
+ *
+ *  @param title 这是警告视图
+ *
+ *  @return 需要传递的文字
+ */
+
+//-(UIView *)setWarnViewTitle:(NSString *)titleLabel;
+
 
 
 @end

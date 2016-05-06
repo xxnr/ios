@@ -498,7 +498,6 @@
     [arrow3 setImage:[UIImage imageNamed:@"arrow-1"]];
     [bottomBtn addSubview:arrow3];
 
-    
     UIButton *pwdBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [pwdBtn setImage:[UIImage imageNamed:@"my_password"] forState:UIControlStateNormal];
     pwdBtn.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(14), PX_TO_PT(45), PX_TO_PT(45));

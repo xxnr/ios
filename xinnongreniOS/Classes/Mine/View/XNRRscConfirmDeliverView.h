@@ -19,6 +19,4 @@ typedef enum : NSUInteger {
 
 -(void)show:(XNRRscOrderModel *)model andType:(XNRRscConfirmDeliverViewType)type;
 
--(void)show:(XNRRscOrderDetailModel *)model andDetialType:(XNRRscConfirmDeliverViewType)type;
-
 @end

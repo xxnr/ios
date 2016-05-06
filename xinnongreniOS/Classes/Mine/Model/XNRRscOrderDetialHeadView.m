@@ -42,54 +42,117 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self createView];
         
     }
     return self;
 }
 
--(void)createView
+-(void)createView:(XNRRscOrderDetailModel *)model
 {
     UIView *tableHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(798))];
     tableHeadView.backgroundColor = R_G_B_16(0xf4f4f4);
     self.tableHeadView = tableHeadView;
     [self addSubview:tableHeadView];
     
-    [self createTableHeadView];
+    [self createTableHeadView:model];
 
 
 }
 
--(void)createTableHeadView
+-(void)createTableHeadView:(XNRRscOrderDetailModel *)model
 {
     
     
     [self createHeadView];
     
-    [self createMiddleView];
+    NSDictionary *subDict = model.deliveryType;
+    if ([subDict[@"type"] integerValue] == 2) {    //配送到户
+        
+        UIView *middleView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth, PX_TO_PT(280))];
+        middleView.backgroundColor = R_G_B_16(0xfffaf0);
+        self.middleView = middleView;
+        [self.tableHeadView addSubview:middleView];
+        
+        UIView *deliverStyleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80))];
+        deliverStyleView.backgroundColor = R_G_B_16(0xffffff);
+        [middleView addSubview:deliverStyleView];
+        
+        UILabel *deliverStyle = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), 0, ScreenWidth/2, PX_TO_PT(80))];
+        deliverStyle.textColor = R_G_B_16(0x323232);
+        deliverStyle.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+        deliverStyle.text = @"配送方式";
+        [deliverStyleView addSubview:deliverStyle];
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(200), PX_TO_PT(27), PX_TO_PT(34), PX_TO_PT(31))];
+        imageView.image = [UIImage imageNamed:@"mention-icon-"];
+        [middleView addSubview:imageView];
+        
+        UILabel *deliverStyleDetial = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame)+PX_TO_PT(20), 0, PX_TO_PT(130), PX_TO_PT(80))];
+        deliverStyleDetial.textColor = R_G_B_16(0x646464);
+        deliverStyleDetial.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        self.deliverStyleDetial = deliverStyleDetial;
+        [middleView addSubview:deliverStyleDetial];
+
+
+        UIImageView *topImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(6))];
+        [topImageView setImage:[UIImage imageNamed:@"orderInfo_address_bacground"]];
+        [middleView addSubview:topImageView];
+        
+        UIImageView *bottomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(251), ScreenWidth, PX_TO_PT(7))];
+        [bottomImageView setImage:[UIImage imageNamed:@"orderInfo_down"]];
+        [middleView addSubview:bottomImageView];
+        
+        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(64), PX_TO_PT(112), ScreenWidth/3, PX_TO_PT(38))];
+        nameLabel.textColor = R_G_B_16(0x323232);
+        nameLabel.font = [UIFont systemFontOfSize:16];
+        nameLabel.text = model.consigneeName;
+        self.nameLabel = nameLabel;
+        [middleView addSubview:nameLabel];
+        
+        UILabel *phoneNum = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nameLabel.frame), PX_TO_PT(112), ScreenWidth/2, PX_TO_PT(32))];
+        phoneNum.textColor = R_G_B_16(0x323232);
+        phoneNum.font = [UIFont systemFontOfSize:16];
+        phoneNum.text = model.consigneePhone;
+        [middleView addSubview:phoneNum];
+        
+        UIImageView *addressImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(32), PX_TO_PT(26), PX_TO_PT(35))];
+        [addressImage setImage:[UIImage imageNamed:@"orderInfo_address_picture"]];
+        [middleView addSubview:addressImage];
+        
+        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(addressImage.frame) + PX_TO_PT(20), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(32), ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), PX_TO_PT(32))];
+        addressLabel.textColor = R_G_B_16(0xc7c7c7);
+        addressLabel.font = [UIFont systemFontOfSize:16];
+        addressLabel.adjustsFontSizeToFitWidth = YES;
+        addressLabel.text = model.consigneeAddress;
+        [middleView addSubview:addressLabel];
+        
+        UIView *middleMarginView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(260), ScreenWidth, PX_TO_PT(20))];
+        middleMarginView.backgroundColor = R_G_B_16(0xf4f4f4);
+        [middleView addSubview:middleMarginView];
+
+
+    }else{  // 网点自提
+        [self createMiddleView];
+    }
+
     
     [self createBottomView];
     
     
 }
 -(void)createHeadView{
-    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(170))];
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(150))];
     headView.backgroundColor = R_G_B_16(0xffffff);
     self.headView = headView;
     [self.tableHeadView addSubview:headView];
     
-    UIView *headMarginView =[[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(20))];
-    headMarginView.backgroundColor = R_G_B_16(0xf4f4f4);
-    [headView addSubview:headMarginView];
-    
-    UILabel *orderNumber = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(20), ScreenWidth/2, PX_TO_PT(65))];
+    UILabel *orderNumber = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(0), ScreenWidth/2, PX_TO_PT(65))];
     orderNumber.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-    orderNumber.text = @"订单号：123345667678";
     orderNumber.textColor = R_G_B_16(0x323232);
     self.orderNumber = orderNumber;
     [headView addSubview:orderNumber];
     
-    UILabel *deliverState = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(20), ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(65))];
+    UILabel *deliverState = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(0), ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(65))];
     deliverState.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     deliverState.textAlignment = NSTextAlignmentRight;
     deliverState.textColor = R_G_B_16(0xfe9b00);
@@ -104,15 +167,15 @@
     self.orderDate = orderDate;
     [headView addSubview:orderDate];
     
-    UIView *bottomMarginView =[[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(150), ScreenWidth, PX_TO_PT(20))];
+    UIView *bottomMarginView =[[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(130), ScreenWidth, PX_TO_PT(20))];
     bottomMarginView.backgroundColor = R_G_B_16(0xf4f4f4);
     [headView addSubview:bottomMarginView];
     
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth, PX_TO_PT(1))];
     topLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [headView addSubview:topLine];
     
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(150), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(130), ScreenWidth, PX_TO_PT(1))];
     bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [headView addSubview:bottomLine];
     
@@ -147,14 +210,12 @@
     
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView1.frame)+PX_TO_PT(20), PX_TO_PT(80), PX_TO_PT(150), PX_TO_PT(80))];
     nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    nameLabel.text = @"经销美";
     self.nameLabel = nameLabel;
     [middleView addSubview:nameLabel];
     
     
     UILabel *phoneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nameLabel.frame), PX_TO_PT(80), PX_TO_PT(200), PX_TO_PT(80))];
     phoneLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    phoneLabel.text = @"13578563456";
     self.phoneLabel = phoneLabel;
     [middleView addSubview:phoneLabel];
     
@@ -214,7 +275,6 @@
     [bottomView addSubview:depisitStateOne];
     
     UILabel *shouldPayOne = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(145), ScreenWidth, PX_TO_PT(65))];
-    shouldPayOne.text = @"应支付金额：909090";
     shouldPayOne.textColor = R_G_B_16(0x323232);
     shouldPayOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.shouldPayOne = shouldPayOne;
@@ -242,7 +302,6 @@
     [bottomView addSubview:depisitStateTwo];
     
     UILabel *shouldPayTwo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30),PX_TO_PT(275), ScreenWidth, PX_TO_PT(65))];
-    shouldPayTwo.text = @"应支付金额：909090";
     shouldPayTwo.textColor = R_G_B_16(0x323232);
     shouldPayTwo.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.shouldPayTwo = shouldPayTwo;
@@ -275,6 +334,8 @@
 -(void)updataWithModel:(XNRRscOrderDetailModel *)model
 {
     _model = model;
+    [self createView:model];
+
     self.orderNumber.text = [NSString stringWithFormat:@"订单号：%@",model.id];
     NSDictionary *dict = model.orderStatus;
     self.deliverState.text = dict[@"value"];

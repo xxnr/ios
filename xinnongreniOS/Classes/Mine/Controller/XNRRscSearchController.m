@@ -101,6 +101,7 @@
 
 -(void)keyboardHide:(NSNotification *)notif
 {
+    [_dataArray removeAllObjects];
     [KSHttpRequest get:KRscOrders parameters:@{@"search":self.searchBar.text} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *ordersArray = result[@"orders"];
@@ -166,7 +167,7 @@
     if (_dataArray.count>0) {
         XNRRscOrderModel *sectionModel = _dataArray[section];
         XNRRscSectionFootView *sectionFootView = [[XNRRscSectionFootView alloc] init];
-        [sectionFootView upDataHeadViewWithModel:sectionModel];
+//        [sectionFootView upDataHeadViewWithModel:sectionModel];
         [self.view addSubview:sectionFootView];
         sectionFootView.com = ^{
             if ([sectionModel.type integerValue] == 2) {
@@ -185,7 +186,7 @@
 
 -(void)getdetailData:(XNRRscOrderModel *)model
 {
-    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model._id} success:^(id result) {
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model._id,@"token":[DataCenter account].token} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *orderDict = result[@"order"];
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];

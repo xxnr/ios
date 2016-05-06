@@ -71,8 +71,6 @@
         _priceLabelF = CGRectMake(priceLabelX, priceLabelY, priceLabelW, priceLabelH);
     }
     
-    
-    
     // 附加选项
     if (self.orderModel.additions.count == 0){
         _addtionLabelF = CGRectMake(0, 0, 0, 0);

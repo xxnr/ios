@@ -114,7 +114,7 @@
 
 -(void)getData
 {
-    NSDictionary *params = @{@"type":@"1",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE]};
+    NSDictionary *params = @{@"type":@"1",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"token":[DataCenter account].token};
     [KSHttpRequest get:KRscOrders parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *ordersArray = result[@"orders"];
@@ -198,7 +198,8 @@
     if (_dataArray.count>0) {
         XNRRscSectionFootView *sectionFootView = [[XNRRscSectionFootView alloc] init];
         XNRRscOrderModel *sectionModel = _dataArray[section];
-        [sectionFootView upDataHeadViewWithModel:sectionModel];
+        XNRRscFootFrameModel*footFrameModel = _dataFrameArray[section];
+        [sectionFootView upDataFootViewWithModel:footFrameModel];
         return sectionFootView;
     }else{
         return nil;
@@ -260,9 +261,8 @@
 {
     XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
     if (self.com) {
-        self.com(sectionModel._id);
+        self.com(sectionModel);
     }
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

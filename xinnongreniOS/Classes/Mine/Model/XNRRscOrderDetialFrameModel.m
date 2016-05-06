@@ -22,14 +22,14 @@
     
     CGFloat goodsNameLabelX = CGRectGetMaxX(_imageViewF)+PX_TO_PT(20);
     CGFloat goodsNameLabelY = PX_TO_PT(40);
-    CGFloat goodsNameLabelW = ScreenWidth - goodsNameLabelX-PX_TO_PT(150);
+    CGFloat goodsNameLabelW = ScreenWidth - goodsNameLabelX-PX_TO_PT(170);
     CGFloat goodsNameLabelH = PX_TO_PT(80);
     _goodsNameLabelF  =CGRectMake(goodsNameLabelX, goodsNameLabelY, goodsNameLabelW, goodsNameLabelH);
     
     CGFloat deliverStateLabelX = ScreenWidth/2;
     CGFloat deliverStateLabelY = PX_TO_PT(40);
     CGFloat deliverStateLabelW = ScreenWidth/2-PX_TO_PT(30);
-    CGFloat deliverStateLabelH = PX_TO_PT(80);
+    CGFloat deliverStateLabelH = PX_TO_PT(40);
     _deliverStateLabelF  =CGRectMake(deliverStateLabelX, deliverStateLabelY, deliverStateLabelW, deliverStateLabelH);
     
     
@@ -51,11 +51,19 @@
     _attributesLabelF = (CGRect){{attributesLabelX, attributesLabelY}, attributesLabelSize};
     
     if (self.model.additions.count == 0) {
-        CGFloat bottomLineX = 0;
-        CGFloat bottomLineY = CGRectGetMaxY(_imageViewF)+PX_TO_PT(30);
-        CGFloat bottomLineW = ScreenWidth;
-        CGFloat bottomLineH = PX_TO_PT(1);
-        _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
+        if (CGRectGetMaxY(_attributesLabelF)>CGRectGetMaxY(_imageViewF)) {
+            CGFloat bottomLineX = 0;
+            CGFloat bottomLineY = CGRectGetMaxY(_attributesLabelF)+PX_TO_PT(30);
+            CGFloat bottomLineW = ScreenWidth;
+            CGFloat bottomLineH = PX_TO_PT(1);
+            _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
+        }else{
+            CGFloat bottomLineX = 0;
+            CGFloat bottomLineY = CGRectGetMaxY(_imageViewF)+PX_TO_PT(30);
+            CGFloat bottomLineW = ScreenWidth;
+            CGFloat bottomLineH = PX_TO_PT(1);
+            _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
+        }
     }else{
         if (CGRectGetMaxY(_attributesLabelF)>CGRectGetMaxY(_imageViewF)) {
             NSMutableString *addtionsStr = [[NSMutableString alloc] initWithString:@"附加项目:"];
