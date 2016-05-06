@@ -145,6 +145,8 @@
 
 -(void)initNOAddressView
 {
+    self.nextAddresModel = nil;
+
     [_headViewNormal removeFromSuperview];
     [_addressView removeFromSuperview];
     [self createHeadView];    
@@ -424,7 +426,7 @@
     topView.backgroundColor = [UIColor whiteColor];
     
     UILabel *getGoodsAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(26), ScreenWidth, PX_TO_PT(34))];
-    getGoodsAddressLabel.text = @"配送收货";
+    getGoodsAddressLabel.text = @"配送方式";
     getGoodsAddressLabel.textColor = R_G_B_16(0x323232);
     getGoodsAddressLabel.textAlignment = NSTextAlignmentLeft;
     getGoodsAddressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
@@ -589,9 +591,10 @@
     self.RSCAddressLabel = addressLabel;
     if (addressDetail) {
         addressLabel.text = addressDetail;
+        addressLabel.textColor = R_G_B_16(0x323232);
     }
     else
-    {
+    {   addressLabel.textColor = R_G_B_16(0x646464);
         addressLabel.text =@"订单中商品将配送至服务站，请选择自提网点";
     }
     CGSize size = [addressLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(PX_TO_PT(600), MAXFLOAT)];
@@ -600,7 +603,7 @@
     addressBtn.frame = CGRectMake(0, 0, ScreenWidth, size.height+PX_TO_PT(56));
     addressLabel.textAlignment = NSTextAlignmentLeft;
     addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    addressLabel.textColor = R_G_B_16(0x323232);
+//    addressLabel.textColor = R_G_B_16(0x323232);
     [addressBtn addSubview:addressLabel];
     
     // 地址图标
@@ -608,7 +611,7 @@
     [addressImageView setImage:[UIImage imageNamed:@"location"]];
     [addressBtn addSubview:addressImageView];
     
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31),addressBtn.height-PX_TO_PT(2), PX_TO_PT(689), PX_TO_PT(2))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31),addressBtn.height-PX_TO_PT(2), ScreenWidth - PX_TO_PT(31), PX_TO_PT(2))];
     line.backgroundColor = R_G_B_16(0xe7e7e7);
     [addressBtn addSubview:line];
     
@@ -616,10 +619,12 @@
     UILabel *contactLabel = [MyControl createLabelWithFrame:CGRectMake(PX_TO_PT(83), PX_TO_PT(28), PX_TO_PT(600), PX_TO_PT(30)) Font:PX_TO_PT(28) Text:nil];
     self.RSCContactLabel = contactLabel;
     if (contact) {
+        contactLabel.textColor = R_G_B_16(0x323232);
         contactLabel.text = contact;
     }
     else
     {
+        contactLabel.textColor = R_G_B_16(0x646464);
         contactLabel.text = @"请填写收货人信息";
     }
     CGSize contactLabelSize = [contactLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(PX_TO_PT(600), MAXFLOAT)];
@@ -629,7 +634,6 @@
     contactBtn.frame = CGRectMake(0, CGRectGetMaxY(addressBtn.frame), ScreenWidth, contactLabelSize.height+PX_TO_PT(56));
     contactLabel.textAlignment = NSTextAlignmentLeft;
     contactLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    contactLabel.textColor = R_G_B_16(0x323232);
     [contactBtn addSubview:contactLabel];
     
     // 联系人图标
@@ -799,19 +803,7 @@
     XNRAddressManageModel *model = addressArray[0];
     model.selected = YES;
     self.nextAddresModel = model;
-    // headViewSpecial
-//    UIView *headViewSpecial = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(280))];
-//    headViewSpecial.backgroundColor = [UIColor whiteColor];
-////    self.headViewSpecial = headViewSpecial;
-//    [self.headViewSpecial addSubview:headViewSpecial];
-//
-//    UILabel *getGoodsAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), 0, ScreenWidth, PX_TO_PT(80))];
-//    getGoodsAddressLabel.text = @"配送收货";
-//    getGoodsAddressLabel.textColor = R_G_B_16(0x323232);
-//    getGoodsAddressLabel.textAlignment = NSTextAlignmentLeft;
-//    getGoodsAddressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-//    [headViewSpecial addSubview:getGoodsAddressLabel];
-    
+
     UIButton *btn = self.deliverBtnArr[0];
     UIView *addressView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(btn.frame)+PX_TO_PT(27), ScreenWidth, PX_TO_PT(173))];
     self.addressView = addressView;
@@ -829,10 +821,6 @@
     [downImageViewSpecial setImage:[UIImage imageNamed:@"orderInfo_down"]];
     [addressView addSubview:downImageViewSpecial];
     
-//    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(downImageViewSpecial.frame), ScreenWidth, PX_TO_PT(20))];
-//    view.backgroundColor = R_G_B_16(0xf7f7f7);
-//    [addressView addSubview:view];
-//    
     _recipientNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), PX_TO_PT(28), PX_TO_PT(200), PX_TO_PT(36))];
     _recipientNameLabel.textColor = R_G_B_16(0x323232);
     _recipientNameLabel.text = model.receiptPeople;
@@ -851,6 +839,7 @@
     
     
     _addressDetail = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), CGRectGetMaxY(_recipientNameLabel.frame) +PX_TO_PT(32), ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), PX_TO_PT(34))];
+    _addressDetail.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     _addressDetail.textColor = R_G_B_16(0xc7c7c7);
     [addressView addSubview:_addressDetail];
 
@@ -873,6 +862,13 @@
         }
         
     }
+    _addressDetail.numberOfLines = 0;
+    
+    CGSize size = [_addressDetail.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake( ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), MAXFLOAT)];
+    _addressDetail.frame = CGRectMake(PX_TO_PT(90), CGRectGetMaxY(_recipientNameLabel.frame) +PX_TO_PT(32), ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), size.height);
+    downImageViewSpecial.frame = CGRectMake(0, CGRectGetMaxY(_addressDetail.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(7));
+    addressBtnSpecial.frame = CGRectMake(0,0, ScreenWidth, CGRectGetMaxY(downImageViewSpecial.frame)-CGRectGetMaxY(upImageViewSpecial.frame));
+    _addressView.frame = CGRectMake(0, CGRectGetMaxY(btn.frame)+PX_TO_PT(27), ScreenWidth, CGRectGetMaxY(downImageViewSpecial.frame));
 
     // 箭头
     UIImageView *arrowImageView=[[UIImageView  alloc] init];
@@ -937,7 +933,6 @@
     self.headViewSpecial.frame = CGRectMake(0, 0, ScreenWidth,  CGRectGetMaxY(_headViewNormal.frame));
     self.tableview.tableHeaderView = _headViewSpecial;
 
-//    [self.view addSubview:_headViewSpecial];
     _headViewNormal.hidden = YES;
     [_headViewSpecial addSubview:headViewNormal];
 
@@ -966,10 +961,7 @@
     [downImageViewSpecial setImage:[UIImage imageNamed:@"orderInfo_down"]];
     [addressView addSubview:downImageViewSpecial];
     
-    //    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(downImageViewSpecial.frame), ScreenWidth, PX_TO_PT(20))];
-    //    view.backgroundColor = R_G_B_16(0xf7f7f7);
-    //    [addressView addSubview:view];
-    //
+
     _recipientNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), PX_TO_PT(28), PX_TO_PT(200), PX_TO_PT(36))];
     _recipientNameLabel.textColor = R_G_B_16(0x323232);
     _recipientNameLabel.text = model.receiptPeople;
@@ -988,6 +980,7 @@
     
     
     _addressDetail = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), CGRectGetMaxY(_recipientNameLabel.frame) +PX_TO_PT(32), ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), PX_TO_PT(34))];
+    _addressDetail.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     _addressDetail.textColor = R_G_B_16(0xc7c7c7);
     [addressView addSubview:_addressDetail];
     
@@ -1011,6 +1004,15 @@
         
     }
     
+    _addressDetail.numberOfLines = 0;
+    
+    CGSize size = [_addressDetail.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake( ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), MAXFLOAT)];
+    _addressDetail.frame = CGRectMake(PX_TO_PT(90), CGRectGetMaxY(_recipientNameLabel.frame) +PX_TO_PT(32), ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), size.height);
+    downImageViewSpecial.frame = CGRectMake(0, CGRectGetMaxY(_addressDetail.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(7));
+    addressBtnSpecial.frame = CGRectMake(0,0, ScreenWidth, CGRectGetMaxY(downImageViewSpecial.frame)-CGRectGetMaxY(upImageViewSpecial.frame));
+    _addressView.frame = CGRectMake(0, CGRectGetMaxY(btn.frame)+PX_TO_PT(27), ScreenWidth, CGRectGetMaxY(downImageViewSpecial.frame));
+
+    
     // 箭头
     UIImageView *arrowImageView=[[UIImageView  alloc] init];
     arrowImageView.frame=CGRectMake(ScreenWidth-PX_TO_PT(32)-PX_TO_PT(24),PX_TO_PT(83) , PX_TO_PT(24), PX_TO_PT(42));
@@ -1033,7 +1035,7 @@
 
 #pragma mark-中部视图
 -(void)createMid{
-    UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth,ScreenHeight-64-PX_TO_PT(89) ) style:UITableViewStyleGrouped];
+    UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64-PX_TO_PT(89) ) style:UITableViewStylePlain];
     tableview.backgroundColor=[UIColor clearColor];
     tableview.showsHorizontalScrollIndicator=NO;
     tableview.showsVerticalScrollIndicator=NO;
@@ -1127,33 +1129,12 @@
     }
 }
 
-// 在断尾添加任意视图
--(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    
-    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(20))];
-    footView.backgroundColor = [UIColor blackColor];
-    footView.backgroundColor =  R_G_B_16(0xf4f4f4);
-    [self.view addSubview:footView];
-    return  footView;
-
-}
 //段头高度
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return PX_TO_PT(89);
 
 }
-
-//段尾高度
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    if (section == _dataArr.count-1) {
-        return 0.0;
-    }
-    return 10.0;
-}
-
 
 //设置段数
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -1173,7 +1154,6 @@
     if (_dataArr.count > 0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[section];
         return sectionModel.SKUList.count;
-        return 1;
     } else {
         return 0;
     }

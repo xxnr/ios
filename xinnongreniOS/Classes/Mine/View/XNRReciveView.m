@@ -23,6 +23,8 @@
 
 @property (nonatomic, weak)XNROrderEmptyView *orderEmptyView;
 @property (nonatomic, weak) UIButton *backtoTopBtn;
+@property (nonatomic,assign)BOOL isHoldOwn;
+@property (nonatomic,assign)BOOL isMakesureOwn;
 @end
 @implementation XNRReciveView
 
@@ -60,6 +62,7 @@
         [self setupAlreadySendViewRefresh];
         [self createbackBtn];
         [self getData];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"reciveHeadRefresh" object:nil];
     }
     return self;
 }
@@ -70,7 +73,7 @@
 -(void)createbackBtn
 
 {
-    
+    [self.backtoTopBtn removeFromSuperview];
     UIButton *backtoTopBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     
     backtoTopBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(60)-PX_TO_PT(32), ScreenHeight-PX_TO_PT(164), PX_TO_PT(100), PX_TO_PT(100));
@@ -195,7 +198,9 @@
 
 -(void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"reloadOrderList" object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"reloadOrderList" object:nil];
+    
     
 }
 
@@ -205,6 +210,7 @@
     _currentPage = 1;
     [_dataArr removeAllObjects];
     [self getData];
+    [self.tableView reloadData];
 }
 
 -(void)footRefresh{
@@ -299,7 +305,7 @@
 
 #pragma mark--创建
 -(void)createMainTableView{
-    
+    [self.tableView removeFromSuperview];
     
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64) style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = [UIColor clearColor];
@@ -356,12 +362,25 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
+    _isHoldOwn = NO;
+    _isMakesureOwn = NO;
     UIView *bottomView = [[UIView alloc] init];
     XNRMyOrderSectionModel *sectionModel = _dataArr[section];
     
+    for (int i=0; i<sectionModel.skus.count; i++) {
+        XNRMyOrderModel *model = sectionModel.skus[i];
+        if(model.deliverStatus == 4)
+        {
+            _isHoldOwn = YES;
+        }
+        if (model.deliverStatus == 2) {
+            _isMakesureOwn = YES;
+        }
+    }
+    
     if (_dataArr.count>0) {
         
-        if (sectionModel.type == 4) {
+        if (sectionModel.type == 4 && _isMakesureOwn) {
             bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
             bottomView.backgroundColor = [UIColor whiteColor];
             [self addSubview:bottomView];
@@ -419,7 +438,7 @@
             return bottomView;
 
         }
-        else if (sectionModel.type == 5)
+        else if (sectionModel.type == 5 && _isHoldOwn)
         {
             bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
             bottomView.backgroundColor = [UIColor whiteColor];
@@ -452,7 +471,7 @@
             
             UIButton *holdNeckBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
             holdNeckBtn.backgroundColor = R_G_B_16(0xfe9b00);
-            [holdNeckBtn setTitle:@"待自提" forState:UIControlStateNormal];
+            [holdNeckBtn setTitle:@"去自提" forState:UIControlStateNormal];
             holdNeckBtn.layer.cornerRadius = 5.0;
             holdNeckBtn.layer.masksToBounds = YES;
             holdNeckBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
@@ -511,8 +530,15 @@
     XNRMakeSureView *makesureView = [[XNRMakeSureView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     makesureView.orderId = sectionModel.orderId;
     makesureView.modelArr = [NSMutableArray array];
-    makesureView.modelArr = sectionModel.skus;
     
+    for (int i=0; i<sectionModel.skus.count; i++) {
+        XNRMyOrderModel *model = sectionModel.skus[i];
+        if(model.deliverStatus == 2)
+        {
+            [makesureView.modelArr addObject:model];
+        }
+    }
+
     [makesureView createview];
     
     [self addSubview:makesureView];
@@ -531,12 +557,31 @@
 // 断尾高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    _isHoldOwn = NO;
+    _isMakesureOwn = NO;
+    XNRMyOrderSectionModel *sectionModel = _dataArr[section];
+    
+    for (int i=0; i<sectionModel.skus.count; i++) {
+        XNRMyOrderModel *model = sectionModel.skus[i];
+        if(model.deliverStatus == 4)
+        {
+            _isHoldOwn = YES;
+        }
+        if (model.deliverStatus == 2) {
+            _isMakesureOwn = YES;
+        }
+    }
+    
     if (_dataArr.count>0) {
-        return PX_TO_PT(180);
-    }else{
+        if ((sectionModel.type == 4 && _isMakesureOwn) ||(sectionModel.type == 5 && _isHoldOwn) ) {
+            return PX_TO_PT(180);
+        }
+    }
+    else{
         return 0;
     }
     
+    return 0;
     
 }
 

@@ -28,7 +28,8 @@
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
 @property (nonatomic ,weak) UIButton *backtoTopBtn;
 @property (nonatomic,strong)XNRMyOrderSectionModel *currentModel;
-
+@property (nonatomic,assign)BOOL isMakesureOwn;
+@property (nonatomic,assign)BOOL isHoldOwn;
 
 @end
 @implementation XNRServeView
@@ -95,6 +96,7 @@
         //创建订单
         [self createMainTableView];
         [self setupAllViewRefresh];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"serveHeadRefresh" object:nil];
 
     }
     return self;
@@ -102,7 +104,6 @@
 
 #pragma mark - 刷新
 -(void)setupAllViewRefresh{
-    
     
     MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
     NSMutableArray *idleImage = [NSMutableArray array];
@@ -303,11 +304,29 @@
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (_dataArr.count>0) {
+        
         UIView *bottomView = [[UIView alloc] init];
         XNRMyOrderSectionModel *sectionModel = _dataArr[section];
         self.currentModel = sectionModel;
+        
+        _isHoldOwn = NO;
+        _isMakesureOwn = NO;
+        
+        for (int i=0; i<sectionModel.skus.count; i++) {
+            XNRMyOrderModel *model = sectionModel.skus[i];
+            if(model.deliverStatus == 4)
+            {
+                _isHoldOwn = YES;
+            }
+            if (model.deliverStatus == 2) {
+                _isMakesureOwn = YES;
+            }
+        }
+        
+
+   
         if (sectionModel.type ==  1 || sectionModel.type == 2) {
-                
+            
             bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
             bottomView.backgroundColor = [UIColor whiteColor];
             [self addSubview:bottomView];
@@ -439,7 +458,7 @@
             return bottomView;
 
         }
-        else if(sectionModel.type == 4)
+        else if(sectionModel.type == 4 && _isMakesureOwn)
         {
             bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
             bottomView.backgroundColor = [UIColor whiteColor];
@@ -498,7 +517,7 @@
             return bottomView;
 
         }
-        else if(sectionModel.type == 5)
+        else if(sectionModel.type == 5 && _isHoldOwn)
         {
             bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
             bottomView.backgroundColor = [UIColor whiteColor];
@@ -531,7 +550,7 @@
             
             UIButton *holdNeckBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
             holdNeckBtn.backgroundColor = R_G_B_16(0xfe9b00);
-            [holdNeckBtn setTitle:@"待自提" forState:UIControlStateNormal];
+            [holdNeckBtn setTitle:@"去自提" forState:UIControlStateNormal];
             holdNeckBtn.layer.cornerRadius = 5.0;
             holdNeckBtn.layer.masksToBounds = YES;
             holdNeckBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
@@ -626,10 +645,18 @@
     
     XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
     XNRMakeSureView *makesureView = [[XNRMakeSureView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    
     makesureView.orderId = sectionModel.orderId;
     makesureView.modelArr = [NSMutableArray array];
-    makesureView.modelArr = sectionModel.skus;
     
+    for (int i=0; i<sectionModel.skus.count; i++) {
+        XNRMyOrderModel *model = sectionModel.skus[i];
+        if(model.deliverStatus == 2)
+        {
+            [makesureView.modelArr addObject:model];
+        }
+    }
+
     [makesureView createview];
     
     [self addSubview:makesureView];
@@ -687,8 +714,24 @@
 {
     
     if (_dataArr.count>0) {
+        
+        _isHoldOwn = NO;
+        _isMakesureOwn = NO;
         XNRMyOrderSectionModel *sectionModel = _dataArr[section];
-        if (sectionModel.type ==  1 || sectionModel.type == 2 ||sectionModel.type == 4 || sectionModel.type == 5|| sectionModel.type == 7) {
+        
+        for (int i=0; i<sectionModel.skus.count; i++) {
+            XNRMyOrderModel *model = sectionModel.skus[i];
+            if(model.deliverStatus == 4)
+            {
+                _isHoldOwn = YES;
+            }
+            if (model.deliverStatus == 2) {
+                _isMakesureOwn = YES;
+            }
+        }
+        
+        
+        if (sectionModel.type ==  1 || sectionModel.type == 2 ||(sectionModel.type == 4 && _isMakesureOwn) || (sectionModel.type == 5 && _isHoldOwn)|| sectionModel.type == 7) {
             return PX_TO_PT(180);
         }else{
             return PX_TO_PT(100);

@@ -228,13 +228,6 @@
     }
     
 }
--(void)notificationRefresh
-{
-    self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
-    self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
-    self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
-    self.CommentView =[[XNRCommentView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"comment"];
-}
 #pragma mark-创建顶部视图
 -(void)createTopView {
     UIView *midBg=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(100))];
@@ -310,19 +303,19 @@
 }
 #pragma mark - 按钮的循环点击
 -(void)buttonClick:(UIButton*)button{
-    
-    if (_type == XNRPayViewtype) {
-        self.ServeView =[[XNRServeView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"serve"];
-        
-    }else if (_type == XNRSendViewType){
-        self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
-        
-    }else if (_type == XNRReciveViewType){
-        self.SendView=[[XNRSendView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"send"];
-    }else{
-        self.CommentView =[[XNRCommentView alloc]initWithFrame:CGRectMake( 0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"comment"];
+
+    if (button.tag == 1000) {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
+    }else if (button.tag == 1001){
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
+    }else if (button.tag == 1002){
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
+    }else if (button.tag == 1003){
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
+    }else if (button.tag == 1004) {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
     }
-        
+    
     static int index = KbtnTag;
     
     UILabel *label = (UILabel *)[self.view viewWithTag:button.tag+1000];
@@ -480,6 +473,11 @@
 
 -(void)backClick{
 
+    if (self.presentingViewController) {
+        [self dismissViewControllerAnimated:NO completion:nil];
+        return;
+    }
+
     UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController ;
     
     for (UIViewController *vc in self.navigationController.viewControllers) {
@@ -487,21 +485,6 @@
             [self.navigationController popToViewController:vc animated:YES];
             return;
         }
-    }
-    
-    NSInteger count = self.navigationController.viewControllers.count;
-    if (count < 3) {
-        
-        XNRTabBarController *tabVC = [[XNRTabBarController alloc]init];
-        tabVC.selectedIndex = 3;
-        
-        [self.view.window setRootViewController:tabVC];
-        
-        //首页的控制器返回到rootVC
-        
-        [self.navigationController pushViewController:tabVC animated:NO];
-        
-        return;
     }
 
 
@@ -532,7 +515,6 @@
 
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(login) name:@"login" object:nil];
     
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(notificationRefresh) name:@"refresh" object:nil];
 }
 -(void)viewDidDisappear:(BOOL)animated
 {

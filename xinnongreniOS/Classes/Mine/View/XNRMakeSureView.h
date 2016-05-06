@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "XNRMyOrderSectionModel.h"
 @interface XNRMakeSureView : UIView
+@property (nonatomic,strong)NSString *iscome;
 @property (nonatomic,strong)NSMutableArray *modelArr;
 @property (nonatomic,strong)NSString *orderId;
 -(void)createview;

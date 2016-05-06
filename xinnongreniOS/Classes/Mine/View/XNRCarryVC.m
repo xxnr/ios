@@ -33,11 +33,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setNavigationbarTitle];
+    
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStyleGrouped];
+    
+    tableView.backgroundColor = R_G_B_16(0xf9f9f9);
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    self.tableView = tableView;
+//    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:(CGRectMake(0, 0, 0, 0))];
+    self.tableView.tableHeaderView=[[UIView alloc] initWithFrame:(CGRectMake(0,20,82,0.5))];
+
+    [self.view addSubview:tableView];
+    
     [self getDeliveryCode];
 
 }
 #pragma mark -- UItableView的数据源和代理方法
-
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.modelArr.count;
@@ -99,11 +110,26 @@
     [self.topView addSubview:title];
     
     UILabel *carryLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(title.frame)+PX_TO_PT(26), ScreenWidth, PX_TO_PT(32))];
-    carryLabel.textColor = R_G_B_16(0xFF4E00);
-    carryLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-    carryLabel.text = self.carryNum;
-    [self.topView addSubview:carryLabel];
+    carryLabel.textColor = R_G_B_16(0x646464);
+    carryLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    carryLabel.text = [NSString stringWithFormat:@"自提码：%@",self.carryNum];
+    
+    NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:carryLabel.text];
+    NSDictionary *priceStr=@{
+                             
+                             NSForegroundColorAttributeName:R_G_B_16(0xFF4E00),
+                             NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(36)]
+                             };
+    
+    [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(4,AttributedStringPrice.length-4)];
+    
+    [carryLabel setAttributedText:AttributedStringPrice];
 
+    [self.topView addSubview:carryLabel];
+    
+    
+  
+    
     
 //    UILabel *headLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.topView.frame)+PX_TO_PT(18), ScreenWidth, PX_TO_PT(30))];
 //    headLabel.text = @"服务网点";
@@ -251,15 +277,15 @@
                 [self createEmptyCenter];
             }
             
-            UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) style:UITableViewStyleGrouped];
-            
-            tableView.backgroundColor = R_G_B_16(0xf9f9f9);
-            
-            tableView.delegate = self;
-            tableView.dataSource = self;
-            self.tableView = tableView;
-            
-            [self.view addSubview:tableView];
+//            UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStyleGrouped];
+//            
+//            tableView.backgroundColor = R_G_B_16(0xf9f9f9);
+//            
+//            tableView.delegate = self;
+//            tableView.dataSource = self;
+//            self.tableView = tableView;
+//            
+//            [self.view addSubview:tableView];
 
             [self.tableView reloadData];
         }

@@ -57,6 +57,8 @@
         
         [self createbackBtn];
  
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"sendHeadRefresh" object:nil];
+
     }
     return self;
 }

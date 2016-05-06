@@ -107,6 +107,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setNav];
+    currentPage = 1;
+    [self createTableHeadView];
     [self createTableView];
     _consigneeArr = [NSMutableArray array];
     [self getData];
@@ -115,14 +117,18 @@
 //获取收货人列表信息
 -(void)getData
 {
-    [KSHttpRequest get:KqueryConsignees parameters:@{@"userId":[DataCenter account].userid,@"page":[NSNumber numberWithInt:currentPage],@"max":@10} success:^(id result) {
+    [KSHttpRequest get:KqueryConsignees parameters:@{@"userId":[DataCenter account].userid,@"page":[NSNumber numberWithInt:currentPage],@"max":@20} success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             
             NSMutableArray *arr = (NSMutableArray *)[XNRConsigneeModel objectArrayWithKeyValuesArray:result[@"datas"][@"rows"]];
 //            [_consigneeArr arrayByAddingObjectsFromArray:arr];
             [_consigneeArr addObjectsFromArray:arr];
-            [self createTableHeadView];
             [self.tableView reloadData];
+
+            if (_consigneeArr.count == 0) {
+                _nameTf.text = [DataCenter account].name;
+                _phoneTf.text = [DataCenter account].phone;
+            }
 
             //如果到达最后一页 就消除footer
             
@@ -199,7 +205,7 @@
     UIView *writeInfoView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(23), ScreenWidth, PX_TO_PT(198))];
     
     UILabel *title1Label = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(31), PX_TO_PT(100), PX_TO_PT(37))];
-    title1Label.textColor = R_G_B_16(0x646464);
+    title1Label.textColor = R_G_B_16(0x323232);
     title1Label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     title1Label.text = @"收货人";
     [writeInfoView addSubview:title1Label];
@@ -207,7 +213,7 @@
     // 姓名
     UITextField *nameTf = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(title1Label.frame)+PX_TO_PT(32), PX_TO_PT(31), ScreenWidth, PX_TO_PT(37))];
 //    nameTf.textAlignment = NSTextAlignmentLeft;
-    nameTf.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"请填写客户的真实姓名" attributes:@{NSForegroundColorAttributeName:R_G_B_16(0x909090)}];
+    nameTf.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"请填写收货人的真实姓名" attributes:@{NSForegroundColorAttributeName:R_G_B_16(0x909090)}];
     nameTf.textColor = R_G_B_16(0x323232);
     nameTf.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     nameTf.delegate = self;
@@ -223,7 +229,7 @@
     
     UITextField *phone = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(title1Label.frame)+PX_TO_PT(32),CGRectGetMaxY(nameTf.frame)+PX_TO_PT(62), ScreenWidth, PX_TO_PT(37))];
 //    phone.textAlignment = NSTextAlignmentLeft;
-    phone.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"请填写客户联系方式" attributes:@{NSForegroundColorAttributeName:R_G_B_16(0x909090)}];
+    phone.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"请填写联系方式" attributes:@{NSForegroundColorAttributeName:R_G_B_16(0x909090)}];
     
     phone.textColor = R_G_B_16(0x323232);
     phone.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
@@ -255,10 +261,6 @@
     [saveBtn addTarget:self action:@selector(saveBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [headView addSubview:saveBtn];
     
-    if (_consigneeArr.count == 0) {
-        _nameTf.text = [DataCenter account].name;
-        _phoneTf.text = [DataCenter account].phone;
-    }
     
     UIView *contactView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(465), ScreenWidth, PX_TO_PT(99))];
     contactView.backgroundColor = R_G_B_16(0xF0F0F0);

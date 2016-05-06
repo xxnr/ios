@@ -18,7 +18,9 @@
 @property (nonatomic,weak)UIView *tatologyView;
 @property (nonatomic,weak)UIView *auditView;
 @property (nonatomic,weak)UIView *dispatchView;
+@property (nonatomic,weak)UIButton *makeSureBtn;
 @property (nonatomic,strong)NSMutableArray *selProArr;
+@property (nonatomic,assign)NSInteger count;
 @end
 
 @implementation XNRMakeSureView
@@ -117,8 +119,12 @@
     self.bottomView = bottom;
     bottom.backgroundColor = [UIColor whiteColor];
     UIButton *okBtn = [[UIButton alloc]initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(190))/2, PX_TO_PT(24), PX_TO_PT(190), PX_TO_PT(52))];
-    okBtn.backgroundColor = R_G_B_16(0xFE9B00);
+    self.makeSureBtn = okBtn;
+//    okBtn.backgroundColor = R_G_B_16(0xFE9B00);
+    okBtn.backgroundColor = R_G_B_16(0xe0e0e0);
+
     [okBtn setTitle:@"确定" forState:UIControlStateNormal];
+    okBtn.layer.cornerRadius = PX_TO_PT(8);
     [okBtn addTarget:self action:@selector(makeSure:) forControlEvents:UIControlEventTouchUpInside];
     [bottom addSubview:okBtn];
     [self.coverView addSubview:bottom];
@@ -126,10 +132,10 @@
 //确认收货
 -(void)makeSure:(UIButton *)sender
 {
-//    if (self.selProArr.count == 0) {
-//        [UILabel showMessage:@"请选择确认收货的商品"];
-//        return;
-//    }
+    if (self.selProArr.count == 0) {
+        [UILabel showMessage:@"请选择确认收货的商品"];
+        return;
+    }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];//申明请求的数据是json类型
@@ -173,7 +179,17 @@
                 [self.coverView removeFromSuperview];
                 [self removeFromSuperview];
 
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"refresh" object:self];
+                if ([_iscome isEqualToString:@"XNROrderVC"]) {
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"orderVCRefresh" object:self];
+                }
+
+
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
+
             }];
             //
             
@@ -272,7 +288,7 @@
     [headView addSubview:titleLabel];
     
     UIButton *closeBtn = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(28) - PX_TO_PT(32), PX_TO_PT(29), PX_TO_PT(32), PX_TO_PT(32))];
-    [closeBtn setImage:[UIImage imageNamed:@"close_x"] forState:UIControlStateNormal];
+    [closeBtn setImage:[UIImage imageNamed:@"shutdown"] forState:UIControlStateNormal];
     [closeBtn addTarget:self action:@selector(closeView:) forControlEvents:UIControlEventTouchUpInside];
     [headView addSubview:closeBtn];
 
@@ -306,7 +322,7 @@
 
     XNRSelWebBtn *iconBtn = [[XNRSelWebBtn alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, cell.height)];
     [iconBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
-    [iconBtn setImage:[UIImage imageNamed:@"address_right"] forState:UIControlStateSelected];
+    [iconBtn setImage:[UIImage imageNamed:@"checkthe"] forState:UIControlStateSelected];
     [iconBtn addTarget:self action:@selector(iconClick:) forControlEvents:UIControlEventTouchUpInside];
     iconBtn.tag = indexPath.row;
     XNRMyOrderModel *ordermodel = self.modelArr[iconBtn.tag];
@@ -324,15 +340,27 @@
 -(void)iconClick:(UIButton *)sender
 {
     XNRMyOrderModel *model = self.modelArr[sender.tag];
-    
+   
+
     if (sender.selected == NO) {
         sender.selected = YES;
+        _count += [model.count integerValue];
         [self.selProArr addObject:model.ref];
     }
     else
     {
+        _count -= [model.count integerValue];
         sender.selected = NO;
         [self.selProArr removeObject:model.ref];
+    }
+    [self.bottomView removeFromSuperview];
+    [self createBottomView];
+    if (_count == 0) {
+        [self.makeSureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    }
+    else{
+        self.makeSureBtn.backgroundColor = R_G_B_16(0xFE9B00);
+        [self.makeSureBtn setTitle:[NSString stringWithFormat:@"确定(%ld)",_count] forState:UIControlStateNormal];
     }
 }
 

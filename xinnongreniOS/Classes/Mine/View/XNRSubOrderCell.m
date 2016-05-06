@@ -78,6 +78,7 @@ static BOOL isPay = NO;
 
     [infoButton setTitle:@"查看详情" forState:UIControlStateNormal];
     [infoButton setTitleColor:R_G_B_16(0x909090) forState:UIControlStateNormal];
+    [infoButton addTarget:self action:@selector(infoButtonClick:) forControlEvents:UIControlEventTouchDown];
 
     infoButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.infoButton = infoButton;
@@ -192,6 +193,10 @@ static BOOL isPay = NO;
         {
             _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：线下支付"];
         }
+        else if(model.payType == 4)
+        {
+            _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：线下POS机"];
+        }
 
         else
         {
@@ -207,7 +212,6 @@ static BOOL isPay = NO;
     if (model.payments) {
         if (model.payments.count > 0) {
             self.infoButton.hidden = NO;
-            [self.infoButton addTarget:self action:@selector(infoButtonClick:) forControlEvents:UIControlEventTouchDown];
         }
         else
         {

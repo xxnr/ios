@@ -500,7 +500,7 @@
                     line.backgroundColor = R_G_B_16(0xc7c7c7);
                     [self.phoneView addSubview:line];
                     
-                    UIImageView *icon = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(191), PX_TO_PT(119), PX_TO_PT(30), PX_TO_PT(30))];
+                    UIImageView *icon = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), PX_TO_PT(119), PX_TO_PT(30), PX_TO_PT(30))];
                     icon.image = [UIImage imageNamed:@"reg-prinpt"];
                     icon.contentMode = UIViewContentModeScaleAspectFit;
                     self.icon = icon;
@@ -533,14 +533,7 @@
     }
     
    else if (textField == self.nameTf) {
-        //                NSString * mstr = [textField.text stringByReplacingCharactersInRange:range withString:string];
-        //                CGSize textSize = [mstr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0]}];
-        //
-        //                if (textSize.width>PX_TO_PT(210)&&![string isEqualToString:@""]) {
-        //                    [textField resignFirstResponder];
-        //                    mstr = [mstr substringWithRange:NSMakeRange(0, 6)];
-        //                    [UILabel showMessage:[NSString stringWithFormat:@"不能超过%d个汉字",(int)mstr.length]];
-        
+
         int strlength = 0;
         char* p = (char*)[textField.text cStringUsingEncoding:NSUnicodeStringEncoding];
         for (int i=0 ; i<[textField.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
@@ -556,7 +549,7 @@
        
        self.nameLength = strlength;
 
-        if (strlength > 11) {
+        if (strlength > 12) {
             [UILabel showMessage:[NSString stringWithFormat:@"您的输入超过限制"]];
         }
    }
@@ -619,7 +612,7 @@
     [UILabel showMessage:@"请修改填写的手机号"];
                      
     }
-    else if(self.nameLength>11)
+    else if(self.nameLength>12)
     {
         [UILabel showMessage:@"您输入的姓名超过限制"];
     }
