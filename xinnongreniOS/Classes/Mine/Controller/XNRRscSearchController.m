@@ -101,48 +101,51 @@
 
 -(void)keyboardHide:(NSNotification *)notif
 {
-    [_dataArray removeAllObjects];
-    [KSHttpRequest get:KRscOrders parameters:@{@"search":self.searchBar.text} success:^(id result) {
-        if ([result[@"code"] integerValue] == 1000) {
-            NSArray *ordersArray = result[@"orders"];
-            for (NSDictionary *dict in ordersArray) {
-                XNRRscOrderModel *sectionModel = [[XNRRscOrderModel alloc] init];
-                sectionModel.dateCreated = dict[@"dateCreated"];
-                sectionModel._id = dict[@"id"];
-                sectionModel.consigneeName = dict[@"consigneeName"];
-                sectionModel.consigneePhone = dict[@"consigneePhone"];
-                NSDictionary *deliveryType = dict[@"deliveryType"];
-                sectionModel.deliveryType = deliveryType[@"type"];
-                sectionModel.deliverValue = deliveryType[@"value"];
-                NSDictionary *type = dict[@"type"];
-                sectionModel.type = type[@"type"];
-                sectionModel.value = type[@"value"];
-                
-                sectionModel.price = dict[@"price"];
-                sectionModel.pendingApprove = dict[@"pendingApprove"];
-                sectionModel.deliverStatus = dict[@"deliverStatus"];
-                sectionModel.SKUs = (NSMutableArray *)[XNRRscSkusModel objectArrayWithKeyValuesArray:dict[@"SKUs"]];
-                sectionModel.subOrders = (NSMutableArray *)[XNRRscSubOrdersModel objectArrayWithKeyValuesArray:dict[@"subOrders"]];
-                
-                for (XNRRscSkusModel *skuModel in sectionModel.SKUs) {
-                    XNRRscSkusFrameModel *frameModel = [[XNRRscSkusFrameModel alloc] init];
-                    frameModel.model = skuModel;
-                    [sectionModel.SKUsFrame addObject:frameModel];
+    if (self.searchBar.text.length>0) {
+        [_dataArray removeAllObjects];
+        [KSHttpRequest get:KRscOrders parameters:@{@"search":self.searchBar.text} success:^(id result) {
+            if ([result[@"code"] integerValue] == 1000) {
+                NSArray *ordersArray = result[@"orders"];
+                for (NSDictionary *dict in ordersArray) {
+                    XNRRscOrderModel *sectionModel = [[XNRRscOrderModel alloc] init];
+                    sectionModel.dateCreated = dict[@"dateCreated"];
+                    sectionModel._id = dict[@"id"];
+                    sectionModel.consigneeName = dict[@"consigneeName"];
+                    sectionModel.consigneePhone = dict[@"consigneePhone"];
+                    NSDictionary *deliveryType = dict[@"deliveryType"];
+                    sectionModel.deliveryType = deliveryType[@"type"];
+                    sectionModel.deliverValue = deliveryType[@"value"];
+                    NSDictionary *type = dict[@"type"];
+                    sectionModel.type = type[@"type"];
+                    sectionModel.value = type[@"value"];
+                    
+                    sectionModel.price = dict[@"price"];
+                    sectionModel.pendingApprove = dict[@"pendingApprove"];
+                    sectionModel.deliverStatus = dict[@"deliverStatus"];
+                    sectionModel.SKUs = (NSMutableArray *)[XNRRscSkusModel objectArrayWithKeyValuesArray:dict[@"SKUs"]];
+                    sectionModel.subOrders = (NSMutableArray *)[XNRRscSubOrdersModel objectArrayWithKeyValuesArray:dict[@"subOrders"]];
+                    
+                    for (XNRRscSkusModel *skuModel in sectionModel.SKUs) {
+                        XNRRscSkusFrameModel *frameModel = [[XNRRscSkusFrameModel alloc] init];
+                        frameModel.model = skuModel;
+                        [sectionModel.SKUsFrame addObject:frameModel];
+                    }
+                    [_dataArray addObject:sectionModel];
+                    
+                    XNRRscFootFrameModel *footModel = [[XNRRscFootFrameModel alloc] init];
+                    footModel.model = sectionModel;
+                    [_dataFrameArray addObject:footModel];
                 }
-                [_dataArray addObject:sectionModel];
+                [self.tableView reloadData];
                 
-                XNRRscFootFrameModel *footModel = [[XNRRscFootFrameModel alloc] init];
-                footModel.model = sectionModel;
-                [_dataFrameArray addObject:footModel];
+                
             }
-            [self.tableView reloadData];
-
             
-        }
-        
-    } failure:^(NSError *error) {
-        
-    }];
+        } failure:^(NSError *error) {
+            
+        }];
+
+    }
 
 }
 
@@ -167,7 +170,8 @@
     if (_dataArray.count>0) {
         XNRRscOrderModel *sectionModel = _dataArray[section];
         XNRRscSectionFootView *sectionFootView = [[XNRRscSectionFootView alloc] init];
-//        [sectionFootView upDataHeadViewWithModel:sectionModel];
+        XNRRscFootFrameModel*footFrameModel = _dataFrameArray[section];
+        [sectionFootView upDataFootViewWithModel:footFrameModel];
         [self.view addSubview:sectionFootView];
         sectionFootView.com = ^{
             if ([sectionModel.type integerValue] == 2) {
@@ -260,7 +264,7 @@
     XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
     XNRRscOrderDetialController *detailVC = [[XNRRscOrderDetialController  alloc] init];
     detailVC.hidesBottomBarWhenPushed = YES;
-    detailVC.orderId = sectionModel._id;
+    detailVC.orderModel = sectionModel;
     [self.navigationController pushViewController:detailVC animated:YES];
 
 }
