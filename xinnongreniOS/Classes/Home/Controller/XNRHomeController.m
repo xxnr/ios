@@ -65,7 +65,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openOrderIdController:) name:@"openOrderIDController" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openWebSiteController:) name:@"openWebSiteController" object:nil];
 
-    
 }
 -(void)openOrderIdController:(NSNotification *)notification
 {

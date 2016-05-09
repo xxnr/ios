@@ -105,7 +105,6 @@
 
                 }else{
                     [UILabel showMessage:@"自提码错误，请重新输入"];
-//                    [self setWarnViewTitle:@"请稍后再试"];
                 }
                 
                 
@@ -176,6 +175,30 @@
     [self.takeView addSubview:deliverNumberTF];
 }
 
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    CGFloat offset = self.takeView.frame.size.height - (textField.frame.origin.y  + textField.frame.size.height +216+PX_TO_PT(100));
+    NSLog(@"====%f",offset);
+    if (offset<=0) {
+        [UIView animateWithDuration:0.3 animations:^{
+            CGRect frame = self.takeView.frame;
+            frame.origin.y = PX_TO_PT(300);
+            self.takeView.frame = frame;
+        }];
+    }
+    return YES;
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect frame = self.takeView.frame;
+        frame.origin.y = ScreenHeight-PX_TO_PT(882);
+        self.takeView.frame = frame;
+    }];
+    return  YES;
+}
+
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     self.deliverNumberTF.layer.borderColor = R_G_B_16(0xfe9b00).CGColor;
@@ -183,6 +206,8 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
+//    self.deliverNumberTF.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+
     if (self.deliverNumberTF.text.length == 7) {
         self.admireBtn.selected = YES;
     }else{
@@ -196,6 +221,7 @@
         return NO; // return NO to not change text
     return YES;
 }
+
 
 
 -(void)createView

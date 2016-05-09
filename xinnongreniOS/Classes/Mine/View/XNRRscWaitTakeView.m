@@ -63,6 +63,10 @@
     [self headRefresh];
 }
 
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - 刷新
 -(void)setupAllViewRefresh{
     
@@ -284,11 +288,12 @@
 //cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
-    if (self.com) {
-        self.com(sectionModel);
+    if (_dataArray.count>0) {
+        XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
+        if (self.com) {
+            self.com(sectionModel);
+        }
     }
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -299,9 +304,7 @@
         XNRRscSkusFrameModel *skuModel = sectionModel.SKUsFrame[indexPath.row];
         cell.frameModel = skuModel;
     }
-    
     return cell;
-    
 }
 
 

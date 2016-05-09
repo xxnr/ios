@@ -14,8 +14,6 @@
 {
     [self createNavigationBar];
     [self createView];
-
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -26,11 +24,9 @@
 
 -(void)createView
 {
-    
     UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     bgImageView.image = [UIImage imageNamed:@"bj_img"];
     [self.view addSubview:bgImageView];
-    
     
     UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(153), PX_TO_PT(153))];
     logoImageView.centerX = ScreenWidth/2;
@@ -52,17 +48,12 @@
     versionLabel.text = @"V2.1.5";
     [bgImageView addSubview:versionLabel];
     
-    
-    
-    
     UILabel *companyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, ScreenHeight-64-PX_TO_PT(100), ScreenWidth, PX_TO_PT(24))];
     companyLabel.textColor = R_G_B_16(0xffffff);
     companyLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     companyLabel.textAlignment = NSTextAlignmentCenter;
     companyLabel.text = @"北京新新农人网络科技有限公司 版权所有";
     [bgImageView addSubview:companyLabel];
-
-
 }
 
 -(void)createNavigationBar{
@@ -76,10 +67,13 @@
     self.navigationItem.titleView = titleLabel;
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
+    [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
+
+//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+//    backButton.backgroundColor = [UIColor redColor];
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
-    [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     UIBarButtonItem *leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
     

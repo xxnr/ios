@@ -59,9 +59,6 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
     
     self.navigationItem.leftBarButtonItem=leftItem;
     
-    
-    
-    
     UIButton*right=[UIButton buttonWithType:UIButtonTypeCustom];
     right.frame=CGRectMake(0, 0, 50, 30);
     [right setTitle:@"完成" forState:UIControlStateNormal];
