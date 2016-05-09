@@ -203,10 +203,11 @@
             [self setWarnViewTitle:@"审核成功"];
             // 刷新tableView
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
-        }else{
-            [self cancel];
-            [self setWarnViewTitle:@"请稍后再试"];
         }
+//        else{
+//            [self cancel];
+//            [self setWarnViewTitle:@"请稍后再试"];
+//        }
         
     } failure:^(NSError *error) {
         

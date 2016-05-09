@@ -43,8 +43,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self createView];
-        
+        [self createView];        
     }
     return self;
 }

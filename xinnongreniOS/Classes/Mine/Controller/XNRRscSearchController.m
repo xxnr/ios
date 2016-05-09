@@ -18,7 +18,9 @@
 #import "XNRRscOrderDetailModel.h"
 #import "XNRRscFootFrameModel.h"
 #import "XNRRscOrderDetialController.h"
-@interface XNRRscSearchController()<UITableViewDelegate,UITableViewDataSource>
+#define MAX_PAGE_SIZE 20
+
+@interface XNRRscSearchController()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
 @property (nonatomic, weak) XNRSearchBar *searchBar;
 
@@ -67,23 +69,84 @@
     XNRSearchBar *searchBar = [XNRSearchBar searchBar];
     searchBar.width = ScreenWidth-PX_TO_PT(60);
     searchBar.height = PX_TO_PT(60);
-//    [searchBar becomeFirstResponder];
+    searchBar.returnKeyType = UIReturnKeySearch;
+    [searchBar becomeFirstResponder];
+    searchBar.delegate = self;
     self.searchBar = searchBar;
     self.navigationItem.titleView = searchBar;
     
     [self setNavigationBar];
-    
+    _currentPage = 1;
     _dataArray = [NSMutableArray array];
     _dataFrameArray = [NSMutableArray array];
     [self createView];
-
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardHide:)
-                                                 name:UIKeyboardDidHideNotification
-                                               object:nil];
-
+    [self setupAllViewRefresh];
 }
+
+#pragma mark - 刷新
+-(void)setupAllViewRefresh{
+    
+    
+    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
+    NSMutableArray *idleImage = [NSMutableArray array];
+    
+    for (int i = 1; i<21; i++) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
+        [idleImage addObject:image];
+    }
+    NSMutableArray *RefreshImage = [NSMutableArray array];
+    
+    for (int i = 10; i<21; i++) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
+        [RefreshImage addObject:image];
+        
+    }
+    
+    [header setImages:idleImage forState:MJRefreshStateIdle];
+    
+    [header setImages:RefreshImage forState:MJRefreshStatePulling];
+    
+    [header setImages:RefreshImage forState:MJRefreshStateRefreshing];
+    // 隐藏时
+    header.lastUpdatedTimeLabel.hidden = YES;
+    // 隐藏状态
+    header.stateLabel.hidden = YES;
+    
+    self.tableView.mj_header = header;
+    
+    
+    
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
+    MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
+    
+    
+    //    footer.automaticallyHidden = YES;
+    
+    // 设置刷新图片
+    [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
+    footer.refreshingTitleHidden = YES;
+    
+    
+    // 设置尾部
+    self.tableView.mj_footer = footer;
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"reloadOrderList" object:nil];
+    
+}
+-(void)headRefresh{
+    _currentPage = 1;
+    [_dataFrameArray removeAllObjects];
+    [_dataArray removeAllObjects];
+    [self getData];
+    
+}
+-(void)footRefresh{
+    _currentPage ++;
+    [self getData];
+}
+
 
 -(void)createView
 {
@@ -99,11 +162,17 @@
     
 }
 
--(void)keyboardHide:(NSNotification *)notif
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    [self getData];
+    return YES;
+}
+
+-(void)getData
 {
     if (self.searchBar.text.length>0) {
-        [_dataArray removeAllObjects];
-        [KSHttpRequest get:KRscOrders parameters:@{@"search":self.searchBar.text} success:^(id result) {
+        [KSHttpRequest get:KRscOrders parameters:@{@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"search":self.searchBar.text,@"token":[DataCenter account].token} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 NSArray *ordersArray = result[@"orders"];
                 for (NSDictionary *dict in ordersArray) {
@@ -118,7 +187,6 @@
                     NSDictionary *type = dict[@"type"];
                     sectionModel.type = type[@"type"];
                     sectionModel.value = type[@"value"];
-                    
                     sectionModel.price = dict[@"price"];
                     sectionModel.pendingApprove = dict[@"pendingApprove"];
                     sectionModel.deliverStatus = dict[@"deliverStatus"];
@@ -137,15 +205,20 @@
                     [_dataFrameArray addObject:footModel];
                 }
                 [self.tableView reloadData];
-                
-                
             }
+            //  如果到达最后一页 就消除footer
+            NSInteger page = [result[@"pageCount"] integerValue];
+            self.tableView.mj_footer.hidden = page == _currentPage;
+            
+            [self.tableView.mj_header endRefreshing];
+            [self.tableView.mj_footer endRefreshing];
             
         } failure:^(NSError *error) {
             
         }];
-
+        
     }
+
 
 }
 
@@ -281,7 +354,6 @@
     return cell;
 }
 
-
 -(void)setNavigationBar{
     UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     searchBtn.frame = CGRectMake(0, 0, 40, 40);
@@ -293,8 +365,10 @@
 
 -(void)searchBtnClick
 {
+    [self.searchBar resignFirstResponder];
     [self.navigationController popViewControllerAnimated:YES];
 
 }
+
 
 @end

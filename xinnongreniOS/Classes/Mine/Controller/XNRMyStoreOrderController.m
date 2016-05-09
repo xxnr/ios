@@ -200,24 +200,19 @@
      [self.scrollView setContentOffset:CGPointMake((ScreenWidth+PX_TO_PT(20))*(button.tag-KtitleBtn),0) animated:NO];
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     if (button.tag == KtitleBtn) {
-       
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        
     }else if (button.tag == KtitleBtn +1){
-        self.RscWaitPayView  = [[XNRRscWaitPayView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
-        __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitPayView.com = ^(XNRRscOrderModel *model){
-            XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
-            orderDetialVC.hidesBottomBarWhenPushed = YES;
-            orderDetialVC.orderModel = model;
-            [weakSelf.navigationController pushViewController:orderDetialVC animated:YES];
-        };
-       
-    }else if (button.tag == KtitleBtn +2){
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
 
-        
+    }else if (button.tag == KtitleBtn +2){
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+
     }else if (button.tag == KtitleBtn +3){
-       
-        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+
     }else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
         
     }
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
@@ -289,8 +284,9 @@
     self.navigationItem.titleView = titleLabel;
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame = CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame = CGRectMake(0, 0, 30, 44);
+    [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
+    //    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     UIBarButtonItem *leftItem =[[UIBarButtonItem alloc]initWithCustomView:backButton];

@@ -49,20 +49,41 @@
 
 -(void)createView:(XNRRscOrderDetailModel *)model
 {
-    UIView *tableHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(798))];
-    tableHeadView.backgroundColor = R_G_B_16(0xf4f4f4);
-    self.tableHeadView = tableHeadView;
-    [self addSubview:tableHeadView];
+    NSDictionary *subDict = model.deliveryType;
+    if ([subDict[@"type"] integerValue] == 2) {    //配送到户
+        if (model.subOrders.count==2) {            // 分次支付
+            UIView *tableHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(878))];
+            tableHeadView.backgroundColor = R_G_B_16(0xf4f4f4);
+            self.tableHeadView = tableHeadView;
+            [self addSubview:tableHeadView];
+        }else{
+            UIView *tableHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(748))];
+            tableHeadView.backgroundColor = R_G_B_16(0xf4f4f4);
+            self.tableHeadView = tableHeadView;
+            [self addSubview:tableHeadView];
+        }
+
+    }else{
+        if (model.subOrders.count==2) {
+            UIView *tableHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(778))];
+            tableHeadView.backgroundColor = R_G_B_16(0xf4f4f4);
+            self.tableHeadView = tableHeadView;
+            [self addSubview:tableHeadView];
+
+        }else{
+            UIView *tableHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(648))];
+            tableHeadView.backgroundColor = R_G_B_16(0xf4f4f4);
+            self.tableHeadView = tableHeadView;
+            [self addSubview:tableHeadView];
+        }
+    }
+   
     
     [self createTableHeadView:model];
-
-
 }
 
 -(void)createTableHeadView:(XNRRscOrderDetailModel *)model
 {
-    
-    
     [self createHeadView];
     
     NSDictionary *subDict = model.deliveryType;
@@ -84,7 +105,7 @@
         [deliverStyleView addSubview:deliverStyle];
         
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(200), PX_TO_PT(27), PX_TO_PT(34), PX_TO_PT(31))];
-        imageView.image = [UIImage imageNamed:@"mention-icon-"];
+        imageView.image = [UIImage imageNamed:@"delivery"];
         [middleView addSubview:imageView];
         
         UILabel *deliverStyleDetial = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame)+PX_TO_PT(20), 0, PX_TO_PT(130), PX_TO_PT(80))];
@@ -122,13 +143,17 @@
         UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(addressImage.frame) + PX_TO_PT(20), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(32), ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), PX_TO_PT(32))];
         addressLabel.textColor = R_G_B_16(0xc7c7c7);
         addressLabel.font = [UIFont systemFontOfSize:16];
-        addressLabel.adjustsFontSizeToFitWidth = YES;
+//        addressLabel.adjustsFontSizeToFitWidth = YES;
         addressLabel.text = model.consigneeAddress;
         [middleView addSubview:addressLabel];
         
         UIView *middleMarginView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(260), ScreenWidth, PX_TO_PT(20))];
         middleMarginView.backgroundColor = R_G_B_16(0xf4f4f4);
         [middleView addSubview:middleMarginView];
+        
+        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth, PX_TO_PT(1))];
+        topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        [middleView addSubview:topLine];
 
 
     }else{  // 网点自提
@@ -136,7 +161,7 @@
     }
 
     
-    [self createBottomView];
+    [self createBottomView:model];
     
     
 }
@@ -237,98 +262,164 @@
     [middleView addSubview:bottomLine];
 }
 
--(void)createBottomView
+-(void)createBottomView:(XNRRscOrderDetailModel *)model
 {
-    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.middleView.frame), ScreenWidth, PX_TO_PT(448))];
-    bottomView.backgroundColor = R_G_B_16(0xffffff);
-    [self.tableHeadView addSubview:bottomView];
+    if (model.subOrders.count==2) {
+        UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.middleView.frame), ScreenWidth, PX_TO_PT(448))];
+        bottomView.backgroundColor = R_G_B_16(0xffffff);
+        [self.tableHeadView addSubview:bottomView];
+        
+        UILabel *payInfo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), 0, ScreenWidth, PX_TO_PT(80))];
+        payInfo.textColor = R_G_B_16(0x323232);
+        payInfo.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+        payInfo.text = @"支付信息";
+        [bottomView addSubview:payInfo];
+        
+        
+        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        [bottomView addSubview:topLine];
+        
+        UIView *topLine1 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80),ScreenWidth, PX_TO_PT(1))];
+        topLine1.backgroundColor = R_G_B_16(0xc7c7c7);
+        [bottomView addSubview:topLine1];
+        
+        
+        UILabel *stageOne = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(80), ScreenWidth, PX_TO_PT(65))];
+        stageOne.text = @"阶段一：订金";
+        stageOne.textColor = R_G_B_16(0x323232);
+        stageOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        [bottomView addSubview:stageOne];
+        
+        
+        UILabel *depisitStateOne = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(80), ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(65))];
+        depisitStateOne.textColor = R_G_B_16(0x646464);
+        depisitStateOne.textAlignment = NSTextAlignmentRight;
+        depisitStateOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        self.depisitStateOne = depisitStateOne;
+        [bottomView addSubview:depisitStateOne];
+        
+        UILabel *shouldPayOne = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(145), ScreenWidth, PX_TO_PT(65))];
+        shouldPayOne.textColor = R_G_B_16(0x323232);
+        shouldPayOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        self.shouldPayOne = shouldPayOne;
+        [bottomView addSubview:shouldPayOne];
+        
+        
+        UIView *topLine2 = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(210),ScreenWidth-PX_TO_PT(60), PX_TO_PT(1))];
+        topLine2.backgroundColor = R_G_B_16(0xc7c7c7);
+        [bottomView addSubview:topLine2];
+        
+        
+        UILabel *stageTwo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(210), ScreenWidth, PX_TO_PT(79))];
+        stageTwo.text = @"阶段二：尾款";
+        stageTwo.textColor = R_G_B_16(0x323232);
+        stageTwo.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        [bottomView addSubview:stageTwo];
+        
+        
+        UILabel *depisitStateTwo = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2,PX_TO_PT(210), ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(65))];
+        depisitStateTwo.textColor = R_G_B_16(0x646464);
+        depisitStateTwo.textAlignment = NSTextAlignmentRight;
+        depisitStateTwo.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        self.depisitStateTwo = depisitStateTwo;
+        [bottomView addSubview:depisitStateTwo];
+        
+        UILabel *shouldPayTwo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30),PX_TO_PT(275), ScreenWidth, PX_TO_PT(65))];
+        shouldPayTwo.textColor = R_G_B_16(0x323232);
+        shouldPayTwo.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        self.shouldPayTwo = shouldPayTwo;
+        [bottomView addSubview:shouldPayTwo];
+        
+        UIView *bottomMarginView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(340), ScreenWidth, PX_TO_PT(20))];
+        bottomMarginView.backgroundColor = R_G_B_16(0xf4f4f4);
+        [bottomView addSubview:bottomMarginView];
+        
+        
+        UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(340), ScreenWidth, PX_TO_PT(1))];
+        bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        [bottomView addSubview:bottomLine];
+        
+        UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(bottomMarginView.frame), ScreenWidth, PX_TO_PT(88))];
+        sectionView.backgroundColor = R_G_B_16(0xf0f0f0);
+        [bottomView addSubview:sectionView];
+        
+        UILabel *sectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), 0, ScreenWidth, PX_TO_PT(88))];
+        sectionLabel.text = @"商品清单";
+        sectionLabel.textColor = R_G_B_16(0x323232);
+        sectionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+        [sectionView addSubview:sectionLabel];
+        
+        UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        [sectionView addSubview:sectionLine];
     
-    UILabel *payInfo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), 0, ScreenWidth, PX_TO_PT(80))];
-    payInfo.textColor = R_G_B_16(0x323232);
-    payInfo.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-    payInfo.text = @"支付信息";
-    [bottomView addSubview:payInfo];
+    }else{
+        UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.middleView.frame), ScreenWidth, PX_TO_PT(318))];
+        bottomView.backgroundColor = R_G_B_16(0xffffff);
+        [self.tableHeadView addSubview:bottomView];
+        
+        UILabel *payInfo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), 0, ScreenWidth, PX_TO_PT(80))];
+        payInfo.textColor = R_G_B_16(0x323232);
+        payInfo.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+        payInfo.text = @"支付信息";
+        [bottomView addSubview:payInfo];
+        
+        
+        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        [bottomView addSubview:topLine];
+        
+        UIView *topLine1 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80),ScreenWidth, PX_TO_PT(1))];
+        topLine1.backgroundColor = R_G_B_16(0xc7c7c7);
+        [bottomView addSubview:topLine1];
+        
+        
+        UILabel *stageOne = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(80), ScreenWidth, PX_TO_PT(65))];
+        stageOne.text = @"订金总额";
+        stageOne.textColor = R_G_B_16(0x323232);
+        stageOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        [bottomView addSubview:stageOne];
+        
+        
+        UILabel *depisitStateOne = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(80), ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(65))];
+        depisitStateOne.textColor = R_G_B_16(0x646464);
+        depisitStateOne.textAlignment = NSTextAlignmentRight;
+        depisitStateOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        self.depisitStateOne = depisitStateOne;
+        [bottomView addSubview:depisitStateOne];
+        
+        UILabel *shouldPayOne = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(145), ScreenWidth, PX_TO_PT(65))];
+        shouldPayOne.textColor = R_G_B_16(0x323232);
+        shouldPayOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        self.shouldPayOne = shouldPayOne;
+        [bottomView addSubview:shouldPayOne];
+        
+        UIView *bottomMarginView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(210), ScreenWidth, PX_TO_PT(20))];
+        bottomMarginView.backgroundColor = R_G_B_16(0xf4f4f4);
+        [bottomView addSubview:bottomMarginView];
+        
+        UIView *topLine2 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(210),ScreenWidth, PX_TO_PT(1))];
+        topLine2.backgroundColor = R_G_B_16(0xc7c7c7);
+        [bottomView addSubview:topLine2];
+
+        
+        UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(bottomMarginView.frame), ScreenWidth, PX_TO_PT(88))];
+        sectionView.backgroundColor = R_G_B_16(0xf0f0f0);
+        [bottomView addSubview:sectionView];
+        
+        UILabel *sectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), 0, ScreenWidth, PX_TO_PT(88))];
+        sectionLabel.text = @"商品清单";
+        sectionLabel.textColor = R_G_B_16(0x323232);
+        sectionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+        [sectionView addSubview:sectionLabel];
+        
+        UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        [sectionView addSubview:sectionLine];
     
-    
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
-    [bottomView addSubview:topLine];
-    
-    UIView *topLine1 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80),ScreenWidth, PX_TO_PT(1))];
-    topLine1.backgroundColor = R_G_B_16(0xc7c7c7);
-    [bottomView addSubview:topLine1];
-    
-    
-    UILabel *stageOne = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(80), ScreenWidth, PX_TO_PT(65))];
-    stageOne.text = @"阶段一：订金";
-    stageOne.textColor = R_G_B_16(0x323232);
-    stageOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    [bottomView addSubview:stageOne];
-    
-    
-    UILabel *depisitStateOne = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(80), ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(65))];
-    depisitStateOne.text = @"已付款";
-    depisitStateOne.textColor = R_G_B_16(0xfe9b00);
-    depisitStateOne.textAlignment = NSTextAlignmentRight;
-    depisitStateOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    self.depisitStateOne = depisitStateOne;
-    [bottomView addSubview:depisitStateOne];
-    
-    UILabel *shouldPayOne = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(145), ScreenWidth, PX_TO_PT(65))];
-    shouldPayOne.textColor = R_G_B_16(0x323232);
-    shouldPayOne.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    self.shouldPayOne = shouldPayOne;
-    [bottomView addSubview:shouldPayOne];
-    
-    
-    UIView *topLine2 = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(210),ScreenWidth-PX_TO_PT(60), PX_TO_PT(1))];
-    topLine2.backgroundColor = R_G_B_16(0xc7c7c7);
-    [bottomView addSubview:topLine2];
-    
-    
-    UILabel *stageTwo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(210), ScreenWidth, PX_TO_PT(79))];
-    stageTwo.text = @"阶段二：尾款";
-    stageTwo.textColor = R_G_B_16(0x323232);
-    stageTwo.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    [bottomView addSubview:stageTwo];
-    
-    
-    UILabel *depisitStateTwo = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2,PX_TO_PT(210), ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(65))];
-    depisitStateTwo.text = @"已付款";
-    depisitStateTwo.textColor = R_G_B_16(0xfe9b00);
-    depisitStateTwo.textAlignment = NSTextAlignmentRight;
-    depisitStateTwo.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    self.depisitStateTwo = depisitStateTwo;
-    [bottomView addSubview:depisitStateTwo];
-    
-    UILabel *shouldPayTwo = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30),PX_TO_PT(275), ScreenWidth, PX_TO_PT(65))];
-    shouldPayTwo.textColor = R_G_B_16(0x323232);
-    shouldPayTwo.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    self.shouldPayTwo = shouldPayTwo;
-    [bottomView addSubview:shouldPayTwo];
-    
-    UIView *bottomMarginView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(340), ScreenWidth, PX_TO_PT(20))];
-    bottomMarginView.backgroundColor = R_G_B_16(0xf4f4f4);
-    [bottomView addSubview:bottomMarginView];
-    
-    
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(340), ScreenWidth, PX_TO_PT(1))];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
-    [bottomView addSubview:bottomLine];
-    
-    UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(bottomMarginView.frame), ScreenWidth, PX_TO_PT(88))];
-    sectionView.backgroundColor = R_G_B_16(0xf0f0f0);
-    [bottomView addSubview:sectionView];
-    
-    UILabel *sectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), 0, ScreenWidth, PX_TO_PT(88))];
-    sectionLabel.text = @"商品清单";
-    sectionLabel.textColor = R_G_B_16(0x323232);
-    sectionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-    [sectionView addSubview:sectionLabel];
-    
-    UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-    sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
-    [sectionView addSubview:sectionLine];
+    }
+
     
 }
 -(void)updataWithModel:(XNRRscOrderDetailModel *)model
@@ -355,28 +446,34 @@
     
     if (_model.subOrders.count==2) {
         XNRRscSubOrdersModel *modelOne = _model.subOrders[0];
-        self.shouldPayOne.text = [NSString stringWithFormat:@"应支付金额：%@",modelOne.price];
+        self.shouldPayOne.text = [NSString stringWithFormat:@"应支付金额：%@元",modelOne.price];
         if ([modelOne.payStatus integerValue] == 1) {
             self.depisitStateOne.text = @"未付款";
+            self.depisitStateOne.textColor = R_G_B_16(0xfe9b00);
+
         }else {
             self.depisitStateOne.text = @"已付款";
         }
         
         XNRRscSubOrdersModel *modelTwo = _model.subOrders[1];
-        self.shouldPayTwo.text = [NSString stringWithFormat:@"应支付金额：%@",modelTwo.price];
+        self.shouldPayTwo.text = [NSString stringWithFormat:@"应支付金额：%@元",modelTwo.price];
         if ([modelTwo.payStatus integerValue] == 1) {
             self.depisitStateTwo.text = @"未付款";
+            self.depisitStateTwo.textColor = R_G_B_16(0xfe9b00);
+
         }else {
             self.depisitStateTwo.text = @"已付款";
         }
 
     }else{
         XNRRscSubOrdersModel *model = _model.subOrders[0];
-        self.shouldPayOne.text = [NSString stringWithFormat:@"应支付金额：%@",model.price];
-        self.depisitStateOne.text = @"已付款";
-        self.shouldPayTwo.text = [NSString stringWithFormat:@"应支付金额：%@",model.price];
-        self.depisitStateTwo.text = @"已付款";
-
+        self.shouldPayOne.text = [NSString stringWithFormat:@"应支付金额：%@元",model.price];
+        if ([model.payStatus integerValue] == 1) {
+            self.depisitStateOne.text = @"未付款";
+            self.depisitStateOne.textColor = R_G_B_16(0xfe9b00);
+        }else {
+            self.depisitStateOne.text = @"已付款";
+        }
     
     }    
 }

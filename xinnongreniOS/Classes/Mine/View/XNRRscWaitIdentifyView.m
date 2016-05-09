@@ -310,9 +310,11 @@
 //cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
-    if (self.com) {
-        self.com(sectionModel);
+    if (_dataArray.count>0) {
+        XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
+        if (self.com) {
+            self.com(sectionModel);
+        }
     }
 }
 

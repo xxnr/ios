@@ -324,7 +324,8 @@
     
     XNRUserInfoModel *infoMdoel = [_userArray firstObject];
     UIView *topBgView;
-    if ([infoMdoel.isRSC integerValue] == 1 && [infoMdoel.userType integerValue] == 5) {
+//     && [infoMdoel.userType integerValue] == 5
+    if ([infoMdoel.isRSC integerValue] == 1) {
         topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(512))];
         topBgView.backgroundColor = [UIColor whiteColor];
         self.topBgView = topBgView;
@@ -452,16 +453,13 @@
     [registBtn addTarget: self action:@selector(registBtnClick) forControlEvents:UIControlEventTouchUpInside];
     self.registBtn = registBtn;
     [bgNotLoginView addSubview:registBtn];
-
 }
-
 
 -(void)loginBtnClick
 {
     XNRLoginViewController *loginView = [[XNRLoginViewController alloc] init];
     loginView.hidesBottomBarWhenPushed  = YES;
     [self.navigationController pushViewController:loginView animated:YES];
-    
 }
 
 -(void)registBtnClick
@@ -469,15 +467,14 @@
     XNRRegisterViewController *registerView = [[XNRRegisterViewController  alloc] init];
     registerView.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:registerView animated:YES];
-
 }
 #pragma mark--创建底部视图
 -(void)createMiddleView{
-    
     XNRUserInfoModel *infoModel = [_userArray firstObject];
     UIButton *myStoreBtn;
     UIButton *orderBtn;
-    if ([infoModel.isRSC integerValue] == 1 && [infoModel.userType integerValue] == 5) {
+//    && [infoModel.userType integerValue] == 5
+    if ([infoModel.isRSC integerValue] == 1) {
         // 我的网点
         myStoreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         myStoreBtn.frame = CGRectMake(0, PX_TO_PT(320), ScreenWidth, PX_TO_PT(96));
@@ -501,7 +498,6 @@
         self.orderBtn = orderBtn;
         [self.topBgView addSubview:orderBtn];
     }
-    
     // 图标
     UIImageView *storeImgView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(18), PX_TO_PT(60), PX_TO_PT(60))];
     [storeImgView setImage:[UIImage imageNamed:@"branch_icon"]];
@@ -525,7 +521,6 @@
     storeLineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
     [myStoreBtn.layer addSublayer:storeLineLayer];
 
-    
     // 图标
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(18), PX_TO_PT(60), PX_TO_PT(60))];
     [imgView setImage:[UIImage imageNamed:@"icon_order"]];
@@ -557,7 +552,8 @@
 
     // 我的订单的状态
     UIView *orderStateView ;
-    if ([infoModel.isRSC integerValue] == 1 && [infoModel.userType integerValue] == 5) {
+//    && [infoModel.userType integerValue] == 5
+    if ([infoModel.isRSC integerValue] == 1) {
         return;
     }else{
         orderStateView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(orderBtn.frame), ScreenWidth, PX_TO_PT(130))];
@@ -573,7 +569,6 @@
     CGFloat imageW = PX_TO_PT(49);
     CGFloat imageH = PX_TO_PT(47);
     
-
     for (int i = 0; i<orderStateImage.count; i++) {
         UIImageView *orderStateImageView = [[UIImageView alloc] init];
         orderStateImageView.frame = CGRectMake(((ScreenWidth-PX_TO_PT(64))/4)*i+margin+PX_TO_PT(32),imageY, imageW, imageH);
@@ -704,7 +699,6 @@
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
-    
 }
 
 - (void)setNavigationbarTitle{
@@ -716,7 +710,6 @@
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"我的新农人";
     self.navigationItem.titleView = titleLabel;
-    
 }
 
 - (void)didReceiveMemoryWarning {

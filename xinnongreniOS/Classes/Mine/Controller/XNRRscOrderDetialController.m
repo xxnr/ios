@@ -32,6 +32,8 @@
 
 @property (nonatomic, weak) UIButton *footButton;
 
+@property (nonatomic, weak) UIView *footView;
+
 @end
 
 @implementation XNRRscOrderDetialController
@@ -66,11 +68,26 @@
     self.view.backgroundColor = R_G_B_16(0xf4f4f4);
     [self createView];
     [self getOrderDetialData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshDetialTableView) name:@"refreshTableView" object:nil];
+}
+
+-(void)refreshDetialTableView
+{
+    [_dataArray removeAllObjects];
+    [self getOrderDetialData];
+    [self.footView removeFromSuperview];
+//    [self.tableView reloadData];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)createView
 {
-    XNRRscOrderDetialHeadView *headView =  [[XNRRscOrderDetialHeadView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(798))];
+    XNRRscOrderDetialHeadView *headView =  [[XNRRscOrderDetialHeadView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(778))];
     self.headView = headView;
     [self.view addSubview:headView];
     
@@ -111,9 +128,17 @@
             [self.headView updataWithModel:model];
             
             if ([dict[@"deliveryType"][@"type"] integerValue] == 2) {
-                self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(898));
+                if (model.subOrders.count == 2) {
+                    self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(878));
+                }else{
+                    self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(748));
+                }
             }else{
-                self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(798));
+                if (model.subOrders.count == 2) {
+                    self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(778));
+                }else{
+                    self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(648));
+                }
             }
             self.tableView.tableHeaderView = self.headView;
 
@@ -146,6 +171,7 @@
     NSDictionary *dict = model.orderStatus;
     UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenHeight -64- PX_TO_PT(80), ScreenWidth,PX_TO_PT(80))];
     footView.backgroundColor = [UIColor whiteColor];
+    self.footView = footView;
     [self.view addSubview:footView];
     
     UIButton *footButton = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(170), PX_TO_PT(10), PX_TO_PT(140), PX_TO_PT(60))];
@@ -244,10 +270,7 @@
     } failure:^(NSError *error) {
         
     }];
-    
 }
-
-
 #pragma mark - tableView代理方法
 // 段尾高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -308,7 +331,7 @@
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     UIBarButtonItem *leftItem =[[UIBarButtonItem alloc]initWithCustomView:backButton];
-    self.navigationItem.leftBarButtonItem=leftItem;
+    self.navigationItem.leftBarButtonItem = leftItem;
 }
 
 -(void)backClick

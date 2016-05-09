@@ -42,8 +42,20 @@
         [self createView];
         [self setupAllViewRefresh];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPayTableView) name:@"refreshTableView" object:nil];
+
+        
     }
     return self;
+}
+
+-(void)refreshPayTableView
+{
+    [self headRefresh];
+}
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - 刷新
@@ -79,8 +91,6 @@
     
     self.tableView.mj_header = header;
     
-    
-    
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
     MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
     
@@ -108,7 +118,6 @@
 -(void)footRefresh{
     _currentPage ++;
     [self getData];
-    
 }
 
 
@@ -197,7 +206,7 @@
 {
     if (_dataArray.count>0) {
         XNRRscSectionFootView *sectionFootView = [[XNRRscSectionFootView alloc] init];
-        XNRRscOrderModel *sectionModel = _dataArray[section];
+//        XNRRscOrderModel *sectionModel = _dataArray[section];
         XNRRscFootFrameModel*footFrameModel = _dataFrameArray[section];
         [sectionFootView upDataFootViewWithModel:footFrameModel];
         return sectionFootView;
@@ -259,9 +268,11 @@
 //cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
-    if (self.com) {
-        self.com(sectionModel);
+    if (_dataArray.count>0) {
+        XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
+        if (self.com) {
+            self.com(sectionModel);
+        }
     }
 }
 
@@ -273,9 +284,7 @@
         XNRRscSkusFrameModel *skuModel = sectionModel.SKUsFrame[indexPath.row];
         cell.frameModel = skuModel;
     }
-    
     return cell;
-    
 }
 
 @end
