@@ -170,14 +170,10 @@
     [KSHttpRequest post:KsaveConsignees parameters:dic success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             
-            self.setRSCContactChoseBlock(self.currentModel);
-            [self.navigationController popViewControllerAnimated:YES];
-            
-        }
-        else
-        {
-            [UILabel showMessage:result[@"message"]];
-        }
+            }
+        self.setRSCContactChoseBlock(self.currentModel);
+        [self.navigationController popViewControllerAnimated:YES];
+        
     } failure:^(NSError *error) {
         
     }];

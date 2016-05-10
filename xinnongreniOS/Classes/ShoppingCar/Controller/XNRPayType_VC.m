@@ -132,24 +132,12 @@
     //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(librate) name:@"succss_Push" object:nil];
 }
 
-//-(void)librate
-//{
-//    [[NSNotificationCenter defaultCenter] removeObserver:self ];
-////    [[NSNotificationCenter defaultCenter]removeObserver:self forKeyPath:@"alipayResult"];
-////    [[NSNotificationCenter defaultCenter]removeObserver:self forKeyPath:@"succss_Push"];
-//}
+
+
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
 }
-#pragma mark-支付成功回调
-//-(void)orderSuccessDeal {
-//
-//    XNROrderSuccessViewController *vc=[[XNROrderSuccessViewController alloc]init];
-//    vc.hidesBottomBarWhenPushed=YES;
-//    [self.navigationController pushViewController:vc animated:YES];
-//
-//}
 -(void)getMinPayPrice
 {
     [KSHttpRequest post:KgetMinPayPrice parameters:@{@"token":[DataCenter account].token,@"orderId":self.orderID} success:^(id result) {
@@ -559,6 +547,11 @@
         self.realityBtn.hidden = YES;
         self.sepMoneyView.hidden = NO;
         self.fullMoney.hidden = YES;
+        if (_currentSelBtn.tag == kSelectedBtn+2) {
+            
+            [self selectedBtnClick:_selectedBtnOne];
+        }
+
         [UIView animateWithDuration:0.2 animations:^{
             selLine.x = ScreenWidth/2+2;
             self.showMoney.frame = CGRectMake(0, PX_TO_PT(390), ScreenWidth, PX_TO_PT(143));

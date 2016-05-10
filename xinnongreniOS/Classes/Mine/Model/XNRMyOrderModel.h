@@ -53,7 +53,7 @@
 
 @property (nonatomic ,strong) NSMutableArray *attributes;
 
-@property (nonatomic,assign) int deliverStatus;
+@property (nonatomic,assign) NSInteger deliverStatus;
 //@property (nonatomic,strong)NSMutableArray *subOrders;
 
 @end

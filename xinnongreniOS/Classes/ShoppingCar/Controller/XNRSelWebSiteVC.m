@@ -187,7 +187,7 @@
     currentPage = 1;
     [_dataArr removeAllObjects];
     [self getData];
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
     
     
 }
@@ -195,7 +195,7 @@
     
     currentPage ++;
     [self getData];
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
 
     
 }
@@ -206,6 +206,7 @@
     [self setNav];
     _dataArr = [NSMutableArray array];
     _iconArr = [NSMutableArray array];
+    
     [self getData];
     [self createTop];
     
@@ -221,7 +222,7 @@
     proviceBtn.frame = CGRectMake(0,0, ScreenWidth/3, PX_TO_PT(89));
     proviceBtn.tag =Tag;
     [proviceBtn setTitle:@"河南" forState:UIControlStateNormal];
-    proviceBtn.titleLabel.font = [UIFont systemFontOfSize:(18)];
+    proviceBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     proviceBtn.backgroundColor = [UIColor whiteColor];
     [proviceBtn setTitleColor:R_G_B_16(0xff4e00) forState:UIControlStateSelected];
     [proviceBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
@@ -231,7 +232,6 @@
     [proviceBtn setImage:[UIImage imageNamed:@"top--arrow"] forState:UIControlStateSelected];
 
     proviceBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-    CGSize size = [proviceBtn.titleLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(18)] constrainedToSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
     
     [proviceBtn setImageEdgeInsets:UIEdgeInsetsMake(0, PX_TO_PT(180), 0, 0)];
 
@@ -251,7 +251,7 @@
     cityBtn.backgroundColor = [UIColor whiteColor];
 
     cityBtn.adjustsImageWhenHighlighted = NO;
-    cityBtn.titleLabel.font = [UIFont systemFontOfSize:(18)];
+    cityBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [cityBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
     [cityBtn setTitleColor:R_G_B_16(0xff4e00) forState:UIControlStateSelected];
     cityBtn.adjustsImageWhenHighlighted = NO;
@@ -260,7 +260,6 @@
     [cityBtn setImage:[UIImage imageNamed:@"bottom-arrow"] forState:UIControlStateNormal];
     [cityBtn setImage:[UIImage imageNamed:@"top--arrow"] forState:UIControlStateSelected];
 
-    CGSize citySize = [cityBtn.titleLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(18)] constrainedToSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
    
     [cityBtn setImageEdgeInsets:UIEdgeInsetsMake(0, PX_TO_PT(180), 0, 0)];
 
@@ -278,14 +277,13 @@
     [areaBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
     [areaBtn setTitleColor:R_G_B_16(0xC7C7C7) forState:UIControlStateDisabled];
     cityBtn.adjustsImageWhenHighlighted = NO;
-    areaBtn.titleLabel.font = [UIFont systemFontOfSize:(18)];
+    areaBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [areaBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
     [areaBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [areaBtn setImage:[UIImage imageNamed:@"bottom-arrow"] forState:UIControlStateNormal];
     [areaBtn setImage:[UIImage imageNamed:@"top--arrow"] forState:UIControlStateSelected];
-    CGSize areaSize = [areaBtn.titleLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(18)] constrainedToSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
+
     [areaBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, image.size.width+PX_TO_PT(30))];
-//    [areaBtn setImageEdgeInsets:UIEdgeInsetsMake(0, areaSize.width+image.size.width+PX_TO_PT(20), 0, -areaSize.width-image.size.width-PX_TO_PT(20))];
     [areaBtn setImageEdgeInsets:UIEdgeInsetsMake(0, PX_TO_PT(180), 0, 0)];
     
     areaBtn.enabled = NO;
@@ -323,6 +321,7 @@
     UIButton *sureBtn = [[UIButton alloc]initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(161))/2, (PX_TO_PT(99)-PX_TO_PT(52))/2, PX_TO_PT(161), PX_TO_PT(52))];
     sureBtn.backgroundColor = R_G_B_16(0xFE9B00);
     [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    sureBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     sureBtn.layer.cornerRadius = PX_TO_PT(10);
     [sureBtn addTarget:self action:@selector(sureBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:sureBtn];
@@ -491,10 +490,11 @@
     if (tableView.tag == TableViewTag) {
         return _dataArr.count;
     }
-    else
+    else if(tableView.tag == TableViewTag+1)
     {
         return _currentCityArr.count;
     }
+    return 0;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -508,27 +508,35 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        //删除cell的所有子视图
+        while ([cell.contentView.subviews lastObject] != nil)
+        {
+            [(UIView*)[cell.contentView.subviews lastObject] removeFromSuperview];
+        }
+//        for (XNRSelWebBtn *btn in cell.contentView.subviews) {
+//            [btn removeFromSuperview];
+//        }
+    
         XNRRSCModel *RSCmodel = [self.dataArr objectAtIndex:indexPath.row];
         XNRRSCDetailModel *model = [XNRRSCDetailModel objectWithKeyValues:RSCmodel.RSCInfo];
         cell.model = model;
         
-        UIImage *image = [UIImage imageNamed:@"address_circle"];
         XNRSelWebBtn *iconBtn = [[XNRSelWebBtn alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, cell.height)];
 
         [iconBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
         [iconBtn setImage:[UIImage imageNamed:@"address_right"] forState:UIControlStateSelected];
-//        iconBtn.imageEdgeInsets = UIEdgeInsetsMake(-(cell.height - image.size.height)/2, 0, (cell.height - image.size.height)/2, 0);
+
         [iconBtn addTarget:self action:@selector(iconClick:) forControlEvents:UIControlEventTouchDown];
         iconBtn.tag = indexPath.row;
         
         if (self.currentModel == self.dataArr[iconBtn.tag]) {
                 iconBtn.selected = YES;
             }
-        [cell addSubview:iconBtn];
+        [cell.contentView addSubview:iconBtn];
         [_iconArr addObject:iconBtn];
         return cell;
     }
-    else
+    else if(tableView.tag == TableViewTag+1)
     {
         NSString static *cellID = @"cell";
         XNRCityCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
@@ -553,6 +561,7 @@
 
         return cell;
     }
+    return nil;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
