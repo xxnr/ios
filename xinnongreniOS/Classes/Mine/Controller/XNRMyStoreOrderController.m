@@ -193,12 +193,12 @@
     self.tempBtn.selected = NO;
     button.selected = YES;
     self.tempBtn = button;
-    
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+   
     [UIView animateWithDuration:.3 animations:^{
         self.selectedLineView.frame=CGRectMake((button.tag - KtitleBtn)*ScreenWidth/5.0,  PX_TO_PT(95), ScreenWidth/5.0, PX_TO_PT(5));
         }];
      [self.scrollView setContentOffset:CGPointMake((ScreenWidth+PX_TO_PT(20))*(button.tag-KtitleBtn),0) animated:NO];
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     if (button.tag == KtitleBtn) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
         
@@ -213,12 +213,11 @@
 
     }else{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
-        
     }
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-            [BMProgressView LoadViewDisappear:self.view];
-        });
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [BMProgressView LoadViewDisappear:self.view];
+    });
 }
 
 #pragma mark - scrollView左右滑动

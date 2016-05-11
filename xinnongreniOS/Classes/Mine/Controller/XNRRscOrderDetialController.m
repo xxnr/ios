@@ -101,7 +101,7 @@
 
 -(void)getOrderDetialData
 {
-    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":_orderModel._id,@"token":[DataCenter account].token} success:^(id result) {
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":_orderModel._id} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"order"];
             XNRRscOrderDetailModel *model = [[XNRRscOrderDetailModel alloc] init];
@@ -255,7 +255,7 @@
 
 -(void)getdetailData:(XNRRscOrderDetailModel *)model
 {
-    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model.id,@"token":[DataCenter account].token} success:^(id result) {
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model.id} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *orderDict = result[@"order"];

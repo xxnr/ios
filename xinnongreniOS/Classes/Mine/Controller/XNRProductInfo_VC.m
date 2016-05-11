@@ -397,7 +397,6 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     
-    
     self.tableView = tableView;
     [self.view addSubview:tableView];
 }
@@ -602,6 +601,7 @@
     cell.marketPrice = _marketPrice;
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     // 传值
     XNRProductInfo_frame *frame = _goodsArray[indexPath.row];
     cell.infoFrame = frame;

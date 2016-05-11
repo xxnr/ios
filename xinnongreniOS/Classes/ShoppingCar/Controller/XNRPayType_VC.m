@@ -152,7 +152,7 @@
 //}
 -(void)getMinPayPrice
 {
-    [KSHttpRequest post:KgetMinPayPrice parameters:@{@"token":[DataCenter account].token,@"orderId":self.orderID} success:^(id result) {
+    [KSHttpRequest post:KgetMinPayPrice parameters:@{@"orderId":self.orderID} success:^(id result) {
         if ([result[@"code"] doubleValue] == 1000) {
             
             if (result[@"payprice"] != nil) {

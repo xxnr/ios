@@ -639,7 +639,7 @@
         
 //        self.currentCategory = _categorys[0];
         //  获取特有属性
-        [KSHttpRequest get:KAttibutes parameters:@{@"category":self.currentCategory,@"brand":selectedItem.brandsId} success:^(id result) {
+        [KSHttpRequest get:KAttibutes parameters:@{@"category":self.currentCategory,@"brand":selectedItem.brandsId,@"token":[DataCenter account].token} success:^(id result) {
             NSMutableArray *txs = [NSMutableArray array];
             if ([result[@"code"] integerValue] == 1000) {
                 NSArray *arr = result[@"attributes"];

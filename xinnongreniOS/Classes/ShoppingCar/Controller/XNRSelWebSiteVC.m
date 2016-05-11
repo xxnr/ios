@@ -421,7 +421,7 @@
     [self.provinceList removeAllObjects];
     [self.currentCityArr removeAllObjects];
 
-    [KSHttpRequest get:KgetProvince parameters:@{@"token":[DataCenter account].token,@"userId":[DataCenter account].userid,@"products":self.proId} success:^(id result) {
+    [KSHttpRequest get:KgetProvince parameters:@{@"userId":[DataCenter account].userid,@"products":self.proId} success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             self.provinceList = (NSMutableArray *)[XNRCityDetailModel objectArrayWithKeyValuesArray:result[@"provinceList"]];
             
@@ -441,7 +441,7 @@
 {
     [self.cityList removeAllObjects];
     [self.currentCityArr removeAllObjects];
-    [KSHttpRequest get:KgetCity parameters:@{@"token":[DataCenter account].token,@"userId":[DataCenter account].userid,@"products":self.proId,@"province":self.proviceId?self.proviceId:@"5649bd6c8eba3c20360afa0a"} success:^(id result) {
+    [KSHttpRequest get:KgetCity parameters:@{@"userId":[DataCenter account].userid,@"products":self.proId,@"province":self.proviceId?self.proviceId:@"5649bd6c8eba3c20360afa0a"} success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             self.cityList = (NSMutableArray *)[XNRCityDetailModel objectArrayWithKeyValuesArray:result[@"cityList"]];
             XNRCityDetailModel *model = [[XNRCityDetailModel alloc]init];
@@ -466,7 +466,7 @@
     [self.areaList removeAllObjects];
     [self.currentCityArr removeAllObjects];
 
-    [KSHttpRequest get:KgetCounty parameters:@{@"token":[DataCenter account].token,@"userId":[DataCenter account].userid,@"products":self.proId,@"province":self.proviceId?self.proviceId:@"5649bd6c8eba3c20360afa0a",@"city":self.cityId} success:^(id result) {
+    [KSHttpRequest get:KgetCounty parameters:@{@"userId":[DataCenter account].userid,@"products":self.proId,@"province":self.proviceId?self.proviceId:@"5649bd6c8eba3c20360afa0a",@"city":self.cityId} success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             self.areaList = (NSMutableArray *)[XNRCityDetailModel objectArrayWithKeyValuesArray:result[@"countyList"]];
 

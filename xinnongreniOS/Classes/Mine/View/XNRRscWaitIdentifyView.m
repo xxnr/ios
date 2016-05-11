@@ -15,6 +15,7 @@
 #import "XNRRscIdentifyPayView.h"
 #import "XNRRscOrderDetailModel.h"
 #import "XNRRscFootFrameModel.h"
+#import "XNRRscNoOrderView.h"
 #define MAX_PAGE_SIZE 10
 
 @interface XNRRscWaitIdentifyView()<UITableViewDelegate,UITableViewDataSource>
@@ -27,9 +28,24 @@
 
 @property (nonatomic, assign) int currentPage;
 
+@property (nonatomic, weak) UIView *orderView;
+
+@property (nonatomic, weak) XNRRscNoOrderView *noOrderView;
+
 @end
 
 @implementation XNRRscWaitIdentifyView
+
+-(XNRRscNoOrderView *)noOrderView
+{
+    if (!_noOrderView) {
+        XNRRscNoOrderView *noOrderView = [[XNRRscNoOrderView  alloc] init];
+        self.noOrderView = noOrderView;
+        [self addSubview:noOrderView];
+    }
+    return _noOrderView;
+    
+}
 
 -(XNRRscIdentifyPayView *)identifyPayView
 {
@@ -120,26 +136,25 @@
     self.tableView.mj_footer = footer;
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"reloadOrderList" object:nil];
-    
+  
 }
+
 -(void)headRefresh{
     _currentPage = 1;
     [_dataFrameArray removeAllObjects];
     [_dataArray removeAllObjects];
     [self getData];
-    
-    
 }
+
 -(void)footRefresh{
     _currentPage ++;
     [self getData];
-    
 }
 
 
 -(void)getData
 {
-    NSDictionary *params = @{@"type":@"2",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"token":[DataCenter account].token};
+    NSDictionary *params = @{@"type":@"2",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE]};
     [KSHttpRequest get:KRscOrders parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *ordersArray = result[@"orders"];
@@ -177,6 +192,10 @@
             [self.tableView reloadData];
         }
         
+        if (_dataArray.count == 0) {
+            [self noOrderView];
+        }
+        
         //  如果到达最后一页 就消除footer
         NSInteger page = [result[@"pageCount"] integerValue];
         self.tableView.mj_footer.hidden = page == _currentPage;
@@ -185,6 +204,7 @@
         [self.tableView.mj_footer endRefreshing];
         
         [self.tableView reloadData];
+        
         
     } failure:^(NSError *error) {
         
@@ -217,7 +237,6 @@
     }else{
         return nil;
     }
-    
 }
 
 #pragma mark - 在断尾添加任意视图
@@ -239,7 +258,7 @@
 
 -(void)getdetailData:(XNRRscOrderModel *)model
 {
-    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model._id,@"token":[DataCenter account].token} success:^(id result) {
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model._id} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *orderDict = result[@"order"];

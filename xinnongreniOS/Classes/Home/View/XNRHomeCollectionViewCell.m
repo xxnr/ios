@@ -107,12 +107,14 @@
 
     
     //现价
-    if (self.model.unitPrice.floatValue>1) {
-        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.f",self.model.unitPrice.floatValue];
-    }else{
+    NSString *str = [NSString stringWithFormat:@"%@",self.model.unitPrice];
+    if ([str rangeOfString:@"."].location != NSNotFound) {
         self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.floatValue];
+    }else{
+        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.f",self.model.unitPrice.floatValue];
     }
-    if ([self.presentPriceLabel.text rangeOfString:@".00"].length == 3) {
+    
+     if ([self.presentPriceLabel.text rangeOfString:@".00"].length == 3) {
         self.presentPriceLabel.text = [self.presentPriceLabel.text substringToIndex:self.presentPriceLabel.text.length-3];
     }
     if ([self.model.presale integerValue] == 1) {

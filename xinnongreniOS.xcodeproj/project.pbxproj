@@ -174,6 +174,8 @@
 		4916112E1C8D189400F1E243 /* IQToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4916111D1C8D189400F1E243 /* IQToolbar.m */; };
 		4916112F1C8D189400F1E243 /* IQUIView+IQKeyboardToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4916111F1C8D189400F1E243 /* IQUIView+IQKeyboardToolbar.m */; };
 		491611301C8D189400F1E243 /* IQKeyboardManager.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 491611221C8D189400F1E243 /* IQKeyboardManager.bundle */; };
+		4916FCAA1CE19D40007378E2 /* XNRManagerTakeAddressController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4916FCA91CE19D40007378E2 /* XNRManagerTakeAddressController.m */; };
+		4916FCAD1CE1AD5F007378E2 /* XNRManagerAddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4916FCAC1CE1AD5F007378E2 /* XNRManagerAddressCell.m */; };
 		491755301CC5DC65001A2E2E /* NSString+File.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917552F1CC5DC65001A2E2E /* NSString+File.m */; };
 		4917DBBB1C1BB84E00CE1588 /* XNRTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917DBBA1C1BB84E00CE1588 /* XNRTypeModel.m */; };
 		4917DBBE1C1BC23000CE1588 /* XNRTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917DBBD1C1BC23000CE1588 /* XNRTypeView.m */; };
@@ -233,6 +235,7 @@
 		496713851CD97D1900782C12 /* button_img@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 496713831CD97D1900782C12 /* button_img@3x.png */; };
 		496713881CD97D3800782C12 /* button_check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 496713861CD97D3800782C12 /* button_check@2x.png */; };
 		496713891CD97D3800782C12 /* button_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 496713871CD97D3800782C12 /* button_img@2x.png */; };
+		4967138C1CE0975800782C12 /* XNRRscNoOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4967138B1CE0975700782C12 /* XNRRscNoOrderView.m */; };
 		496BB40E1CC49E22007F034F /* XNRMySetterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 496BB40D1CC49E21007F034F /* XNRMySetterController.m */; };
 		496BB42A1CC49F55007F034F /* about@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 496BB4111CC49F55007F034F /* about@2x.png */; };
 		496BB42B1CC49F55007F034F /* bin-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 496BB4121CC49F55007F034F /* bin-@2x.png */; };
@@ -875,6 +878,10 @@
 		4916111F1C8D189400F1E243 /* IQUIView+IQKeyboardToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IQUIView+IQKeyboardToolbar.m"; sourceTree = "<group>"; };
 		491611201C8D189400F1E243 /* KeyboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardManager.h; sourceTree = "<group>"; };
 		491611221C8D189400F1E243 /* IQKeyboardManager.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = IQKeyboardManager.bundle; sourceTree = "<group>"; };
+		4916FCA81CE19D40007378E2 /* XNRManagerTakeAddressController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRManagerTakeAddressController.h; sourceTree = "<group>"; };
+		4916FCA91CE19D40007378E2 /* XNRManagerTakeAddressController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRManagerTakeAddressController.m; sourceTree = "<group>"; };
+		4916FCAB1CE1AD5F007378E2 /* XNRManagerAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRManagerAddressCell.h; sourceTree = "<group>"; };
+		4916FCAC1CE1AD5F007378E2 /* XNRManagerAddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRManagerAddressCell.m; sourceTree = "<group>"; };
 		4917552E1CC5DC65001A2E2E /* NSString+File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+File.h"; sourceTree = "<group>"; };
 		4917552F1CC5DC65001A2E2E /* NSString+File.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+File.m"; sourceTree = "<group>"; };
 		4917DBB91C1BB84E00CE1588 /* XNRTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRTypeModel.h; sourceTree = "<group>"; };
@@ -976,6 +983,8 @@
 		496713831CD97D1900782C12 /* button_img@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button_img@3x.png"; path = "../01@2x/button_img@3x.png"; sourceTree = "<group>"; };
 		496713861CD97D3800782C12 /* button_check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_check@2x.png"; sourceTree = "<group>"; };
 		496713871CD97D3800782C12 /* button_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_img@2x.png"; sourceTree = "<group>"; };
+		4967138A1CE0975700782C12 /* XNRRscNoOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRscNoOrderView.h; sourceTree = "<group>"; };
+		4967138B1CE0975700782C12 /* XNRRscNoOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRscNoOrderView.m; sourceTree = "<group>"; };
 		496BB40C1CC49E21007F034F /* XNRMySetterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMySetterController.h; sourceTree = "<group>"; };
 		496BB40D1CC49E21007F034F /* XNRMySetterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMySetterController.m; sourceTree = "<group>"; };
 		496BB4111CC49F55007F034F /* about@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about@2x.png"; sourceTree = "<group>"; };
@@ -2070,6 +2079,10 @@
 				4912815B1CD2F28A009E67C4 /* XNRRscOrderDetialController.m */,
 				496713791CD81F9300782C12 /* XNRRscSearchController.h */,
 				4967137A1CD81F9300782C12 /* XNRRscSearchController.m */,
+				4916FCA81CE19D40007378E2 /* XNRManagerTakeAddressController.h */,
+				4916FCA91CE19D40007378E2 /* XNRManagerTakeAddressController.m */,
+				4916FCAB1CE1AD5F007378E2 /* XNRManagerAddressCell.h */,
+				4916FCAC1CE1AD5F007378E2 /* XNRManagerAddressCell.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2256,6 +2269,8 @@
 				9C3FAC691CD3643600915DF8 /* XNRRscOrderDetialCell.m */,
 				9C3FAC6B1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.h */,
 				9C3FAC6C1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.m */,
+				4967138A1CE0975700782C12 /* XNRRscNoOrderView.h */,
+				4967138B1CE0975700782C12 /* XNRRscNoOrderView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4140,6 +4155,7 @@
 				49F6B19D1C2A6EE100DCF8CF /* MJPhotoToolbar.m in Sources */,
 				849B6E501B56650C001C5BF8 /* TAPageControl.m in Sources */,
 				491281291CC9D227009E67C4 /* XNRRscWaitIdentifyView.m in Sources */,
+				4916FCAA1CE19D40007378E2 /* XNRManagerTakeAddressController.m in Sources */,
 				49EC525D1BEBBA5E00AA8898 /* NSData+BSExt.m in Sources */,
 				9C0620C41CB6650B009A82A2 /* XNRAddressDetail.m in Sources */,
 				496713811CD89E7600782C12 /* XNRRscDetialFootFrameModel.m in Sources */,
@@ -4238,6 +4254,7 @@
 				49F7A5851C58469400A1FA45 /* UIScrollView+MJExtension.m in Sources */,
 				84FE64401B183CEA00F0C67C /* XNRMyOrderSend_Cell.m in Sources */,
 				49CD5E3B1C0BE7F1004235C4 /* XNRMessageModel.m in Sources */,
+				4967138C1CE0975800782C12 /* XNRRscNoOrderView.m in Sources */,
 				4976FC291BE9A2AA0002E8F8 /* RSADataVerifier.m in Sources */,
 				53031B8A1B299736004B4B07 /* Photo.m in Sources */,
 				491281381CCDB3C2009E67C4 /* XNRRscSectionFootView.m in Sources */,
@@ -4329,6 +4346,7 @@
 				1FE1D64F1B12EE3200F0D158 /* AFURLSessionManager.m in Sources */,
 				9C3F9B4C1CC4D2F800E44BA8 /* XNRSelWebSiteCell.m in Sources */,
 				491281261CC9D20D009E67C4 /* XNRRscWaitPayView.m in Sources */,
+				4916FCAD1CE1AD5F007378E2 /* XNRManagerAddressCell.m in Sources */,
 				53445EB21B148712009F79E5 /* XNRShoppingCartModel.m in Sources */,
 				8446C2A51B1D6D19005CA932 /* POPMath.mm in Sources */,
 				9C3F9B431CBFA43F00E44BA8 /* XNRDeliveryCell.m in Sources */,

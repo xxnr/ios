@@ -31,15 +31,7 @@
     [self createBtn];
 }
 
-//-(void)getData
-//{
-//    [KSHttpRequest get:KAlipaySuccess parameters:nil success:^(id result) {
-//        
-//        NSLog(@"%@",result);
-//    } failure:^(NSError *error) {
-//        
-//    }];
-//}
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:YES];
