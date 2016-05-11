@@ -36,7 +36,11 @@
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    [manager POST:urlString parameters:param constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:param];
+    [dic setObject:[DataCenter account].token?[DataCenter account].token:@"" forKey:@"token"];
+    [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
+
+    [manager POST:urlString parameters:dic constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
         [formData appendPartWithFileData:image_data name:file fileName:@"icon.png" mimeType:@"image/jpeg"];
         

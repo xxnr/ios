@@ -560,7 +560,7 @@
     NSMutableArray *tempMarr = [[NSMutableArray alloc]init];
     for (int i=0; i<allGoodArr.count; i++) {
         XNRShoppingCartModel *model = allGoodArr[i];
-        NSDictionary *params = @{@"_id":model._id,@"count":model.num?model.num:@"1",@"additions":model.additions};
+        NSDictionary *params = @{@"_id":model._id,@"count":model.num?model.num:@"1",@"additions":model.additions,@"token":[DataCenter account].token?[DataCenter account].token:@""};
         [tempMarr addObject:params];
     }
     [_dataArr removeAllObjects];

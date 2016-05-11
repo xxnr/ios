@@ -195,7 +195,7 @@
 
 -(void)admireBtnClick
 {
-    NSDictionary *params = @{@"paymentId":_paymentId,@"price":_price,@"offlinePayType":_type,@"token":[DataCenter account].token};
+    NSDictionary *params = @{@"paymentId":_paymentId,@"price":_price,@"offlinePayType":_type};
     NSLog(@"ppppppp%@",params);
     [KSHttpRequest get:KRscConfirmOfflinePay parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {

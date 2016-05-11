@@ -191,6 +191,7 @@
     }
     self.nameLabel.text = [NSString stringWithFormat:@"%@",_model.receiptPeople];
     self.phoneLabel.text = [NSString stringWithFormat:@"%@",_model.receiptPhone];
+    
     if ([_model.type integerValue] == 1) {
         self.defaultLabel.hidden = NO;
     }else{

@@ -36,6 +36,9 @@
 
 @property (nonatomic, weak) XNRRscConfirmDeliverView *deliverView;
 
+@property (nonatomic, weak) UIView *orderView;
+
+
 @end
 
 @implementation XNRRscSearchController
@@ -165,6 +168,7 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
+    [_dataArray removeAllObjects];
     [self getData];
     return YES;
 }
@@ -172,7 +176,7 @@
 -(void)getData
 {
     if (self.searchBar.text.length>0) {
-        [KSHttpRequest get:KRscOrders parameters:@{@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"search":self.searchBar.text,@"token":[DataCenter account].token} success:^(id result) {
+        [KSHttpRequest get:KRscOrders parameters:@{@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"search":self.searchBar.text} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 NSArray *ordersArray = result[@"orders"];
                 for (NSDictionary *dict in ordersArray) {
@@ -213,6 +217,12 @@
             [self.tableView.mj_header endRefreshing];
             [self.tableView.mj_footer endRefreshing];
             
+            if (_dataArray.count == 0) {
+                [self noSearchOrder];
+            }else{
+                [self.orderView removeFromSuperview];
+            }
+            
         } failure:^(NSError *error) {
             
         }];
@@ -220,6 +230,27 @@
     }
 
 
+}
+
+-(void)noSearchOrder
+{
+    
+    UIView *orderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    orderView.backgroundColor = [UIColor whiteColor];
+    self.orderView = orderView;
+    [self.view addSubview:orderView];
+    
+    UIImageView *orderImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(148), PX_TO_PT(200))];
+    orderImageView.center = CGPointMake(ScreenWidth/2, ScreenHeight/3);
+    orderImageView.image = [UIImage imageNamed:@"the-order_icon"];
+    [orderView addSubview:orderImageView];
+    
+    UILabel *orderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(orderImageView.frame) + PX_TO_PT(60), ScreenWidth, PX_TO_PT(36))];
+    orderLabel.text = @"未查找到符合条件的订单";
+    orderLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    orderLabel.textAlignment = NSTextAlignmentCenter;
+    orderLabel.textColor = R_G_B_16(0x909090);
+    [orderView addSubview:orderLabel];
 }
 
 #pragma mark - 在断头添加任意视图
@@ -263,7 +294,7 @@
 
 -(void)getdetailData:(XNRRscOrderModel *)model
 {
-    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model._id,@"token":[DataCenter account].token} success:^(id result) {
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model._id} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *orderDict = result[@"order"];
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];

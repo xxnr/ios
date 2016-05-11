@@ -633,6 +633,7 @@
         
         [dic setObject:addressDic forKey:@"address"];
         [dic setObject:self.interestedProIdArr forKey:@"buyIntentions"];
+        [dic setObject:[DataCenter account].token?[DataCenter account].token:@"" forKey:@"token"];
         [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
         
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

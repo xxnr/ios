@@ -257,7 +257,7 @@
 -(void)selectedAttributesTOCreateParams:(NSMutableArray *)attributesArray andInfoModel:(XNRProductInfo_model *)model
 {
     // 3.生成请求参数
-    NSDictionary *params = @{@"product":[NSString stringWithFormat:@"%@",_id],@"attributes":attributesArray,@"user-agent":@"IOS-v2.0"};
+    NSDictionary *params = @{@"product":[NSString stringWithFormat:@"%@",_id],@"attributes":attributesArray,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     NSLog(@"【请求参数:】%@",params);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -551,9 +551,8 @@
             _state = YES;
             [self synchShoppingCarDataWithoutToast];
             NSMutableArray *SKUs = [NSMutableArray array];
-            NSDictionary *param = @{@"_id":self.shopcarModel._id?self.shopcarModel._id:@"",@"count":_numText?_numText:@"1",@"additions":self.shopcarModel.additions,@"product":self.shopcarModel.product?self.shopcarModel.product:@""};
+            NSDictionary *param = @{@"_id":self.shopcarModel._id?self.shopcarModel._id:@"",@"count":_numText?_numText:@"1",@"additions":self.shopcarModel.additions,@"product":self.shopcarModel.product?self.shopcarModel.product:@"",@"token":[DataCenter account].token?[DataCenter account].token:@""};
             [SKUs addObject:param];
-            NSLog(@"854990===%@-=-=-=",SKUs);
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             manager.responseSerializer = [AFHTTPResponseSerializer serializer];
             manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -672,13 +671,11 @@
         
         if (addtionModel.isSelected) {
             [addtionArray addObject:addtionModel.ref];
-            NSLog(@"0-=9=90%@",addtionArray);
         }
     }
     NSDictionary *params;
     if (self.shopcarModel._id) {
-        params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
-        NSLog(@"())__)%@",params);
+        params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"update_by_add":@"true",@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     }
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -740,7 +737,7 @@
     }
     NSDictionary *params;
     if (self.shopcarModel._id) {
-        params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
+        params = @{@"SKUId":self.shopcarModel._id?self.shopcarModel._id:@"",@"quantity":_numText?_numText:@"1",@"additions":addtionArray,@"update_by_add":@"true",@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
         
         NSLog(@"())__)%@",params);
     }
@@ -924,7 +921,7 @@
             }
         }
         // 3.生成请求参数
-        NSDictionary *params = @{@"product":[NSString stringWithFormat:@"%@",_id],@"attributes":attributesArray,@"user-agent":@"IOS-v2.0"};
+        NSDictionary *params = @{@"product":[NSString stringWithFormat:@"%@",_id],@"attributes":attributesArray,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
         NSLog(@"【请求参数:】%@",params);
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer];

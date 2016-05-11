@@ -78,7 +78,7 @@
                     [refArray addObject:model.ref];
                 }
             }
-            NSDictionary *params = @{@"orderId":_model._id,@"code":self.deliverNumberTF.text,@"SKURefs":refArray};
+            NSDictionary *params = @{@"orderId":_model._id,@"code":self.deliverNumberTF.text,@"SKURefs":refArray,@"token":[DataCenter account].token?[DataCenter account].token:@""};
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             manager.responseSerializer = [AFHTTPResponseSerializer serializer];
             manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型

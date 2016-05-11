@@ -244,7 +244,7 @@
         NSDictionary *addressDict = @{@"provinceId":[DataCenter account].provinceID?[DataCenter account].provinceID:@"",@"cityId":[DataCenter account].cityID?[DataCenter account].cityID:@"",@"countyId":[DataCenter account].countyID?[DataCenter account].countyID:@"",@"townId":[DataCenter account].townID?[DataCenter account].townID:@""};
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
-        [dic setObject:[DataCenter account].token forKey:@"token"];
+        [dic setObject:[DataCenter account].token?[DataCenter account].token:@"" forKey:@"token"];
         [dic setObject:[DataCenter account].userid forKey:@"userId"];
         [dic setObject:addressDict forKey:@"address"];
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
