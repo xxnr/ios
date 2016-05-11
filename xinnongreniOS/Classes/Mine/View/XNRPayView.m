@@ -346,7 +346,7 @@
             [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
             [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
             sectionFour.tag = section + 1000;
-            sectionFour.layer.cornerRadius = 5.0;
+            sectionFour.layer.cornerRadius = PX_TO_PT(10);
             sectionFour.layer.masksToBounds = YES;
             sectionFour.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchDown];
@@ -399,7 +399,7 @@
             seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
             [seePayInfoBtn setTitle:@"查看付款信息" forState:UIControlStateNormal];
             seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
-            seePayInfoBtn.layer.cornerRadius = 10.0;
+            seePayInfoBtn.layer.cornerRadius = PX_TO_PT(10);
             seePayInfoBtn.tag = section + 1000;
             seePayInfoBtn.layer.masksToBounds = YES;
             seePayInfoBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
@@ -411,7 +411,7 @@
             reviseBtn.backgroundColor = [UIColor whiteColor];
             [reviseBtn setTitle:@"修改付款方式" forState:UIControlStateNormal];
             [reviseBtn setTitleColor:R_G_B_16(0xFE9B00) forState:UIControlStateNormal];
-            reviseBtn.layer.cornerRadius = 10.0;
+            reviseBtn.layer.cornerRadius = PX_TO_PT(10);
             reviseBtn.layer.borderColor = [R_G_B_16(0xFE9B00) CGColor];
             reviseBtn.layer.borderWidth = PX_TO_PT(2);
             reviseBtn.layer.masksToBounds = YES;

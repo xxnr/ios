@@ -109,7 +109,7 @@
     self.phoneLabel.text = [NSString stringWithFormat:@"电话：%@",model.phone];
     self.phoneLabel.frame = CGRectMake(PX_TO_PT(86), CGRectGetMaxY(_addressLabel.frame)+ PX_TO_PT(10), PX_TO_PT(603), PX_TO_PT(40));
     
-    self.line.frame = CGRectMake(0, CGRectGetMaxY(_phoneLabel.frame)+PX_TO_PT(15), ScreenWidth, PX_TO_PT(1));
+    self.line.frame = CGRectMake(0, CGRectGetMaxY(_phoneLabel.frame)+PX_TO_PT(13), ScreenWidth, PX_TO_PT(1.2));
     
     [self.contentView addSubview:_nameLabel];
     [self.contentView addSubview:_addressLabel];

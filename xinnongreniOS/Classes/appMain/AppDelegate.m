@@ -98,24 +98,24 @@
 
 
     // 启动bugtags
-//    [XNRBugTagsTool openBugTags];
+    [XNRBugTagsTool openBugTags];
     
 
-    //友盟注册通知
-    //-- Set Notification
-    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
-    {
-        // iOS 8 Notifications
-        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIRemoteNotificationTypeNone | UIUserNotificationTypeBadge) categories:nil]];
-        
-        [application registerForRemoteNotifications];
-    }
-    else
-    {
-        // iOS < 8 Notifications
-        [application registerForRemoteNotificationTypes:
-         (UIRemoteNotificationTypeBadge |   UIRemoteNotificationTypeNone | UIRemoteNotificationTypeSound)];
-    }
+//    //友盟注册通知
+//    //-- Set Notification
+//    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
+//    {
+//        // iOS 8 Notifications
+//        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIRemoteNotificationTypeNone | UIUserNotificationTypeBadge) categories:nil]];
+//        
+//        [application registerForRemoteNotifications];
+//    }
+//    else
+//    {
+//        // iOS < 8 Notifications
+//        [application registerForRemoteNotificationTypes:
+//         (UIRemoteNotificationTypeBadge |   UIRemoteNotificationTypeNone | UIRemoteNotificationTypeSound)];
+//    }
     [UMessage setLogEnabled:YES];
 
     // 判断是否是推送进来的
@@ -188,13 +188,6 @@
     NSString *text = [userInfo objectForKey:@"text"];
     //前台状态下
     if (!_is_Notification) {
-//            application.applicationIconBadgeNumber++;
-//        UILocalNotification *localNotifiction = [[UILocalNotification alloc]init];
-//        localNotifiction.userInfo = userInfo;
-//        localNotifiction.soundName = UILocalNotificationDefaultSoundName;
-//        localNotifiction.alertBody = @"hahah";
-//        localNotifiction.fireDate = [NSDate date];
-//        [[UIApplication sharedApplication] scheduleLocalNotification:localNotifiction];
 
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:title message:text delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [alert show];

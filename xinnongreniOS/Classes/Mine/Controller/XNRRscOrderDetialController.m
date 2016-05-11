@@ -101,7 +101,11 @@
 
 -(void)getOrderDetialData
 {
+<<<<<<< HEAD
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":_orderModel._id?_orderModel._id:_orderId,@"token":[DataCenter account].token} success:^(id result) {
+=======
     [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":_orderModel._id} success:^(id result) {
+>>>>>>> xxnr-chung
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"order"];
             XNRRscOrderDetailModel *model = [[XNRRscOrderDetailModel alloc] init];

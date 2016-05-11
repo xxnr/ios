@@ -629,7 +629,7 @@
     }
     CGSize contactLabelSize = [contactLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(PX_TO_PT(600), MAXFLOAT)];
     contactLabel.numberOfLines = 0;
-    contactLabel.frame = CGRectMake(PX_TO_PT(83), PX_TO_PT(28), contactLabelSize.width, contactLabelSize.height);
+    contactLabel.frame = CGRectMake(PX_TO_PT(83), PX_TO_PT(27), contactLabelSize.width, contactLabelSize.height);
     
     contactBtn.frame = CGRectMake(0, CGRectGetMaxY(addressBtn.frame), ScreenWidth, contactLabelSize.height+PX_TO_PT(56));
     contactLabel.textAlignment = NSTextAlignmentLeft;
@@ -1304,7 +1304,7 @@
         }else if ([resultObj[@"code"] integerValue] == 1001) {
             [UILabel showMessage:resultObj[@"message"]];
         }
-        else{
+        else if ([resultObj[@"code"] integerValue] == 1401){
                 [UILabel showMessage:resultObj[@"message"]];
                 UserInfo *infos = [[UserInfo alloc]init];
                 infos.loginState = NO;

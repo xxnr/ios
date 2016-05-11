@@ -210,7 +210,6 @@
     _currentPage = 1;
     [_dataArr removeAllObjects];
     [self getData];
-    [self.tableView reloadData];
 }
 
 -(void)footRefresh{
@@ -413,7 +412,7 @@
             UIButton *makeSureBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
             makeSureBtn.backgroundColor = R_G_B_16(0xfe9b00);
             [makeSureBtn setTitle:@"确认收货" forState:UIControlStateNormal];
-            makeSureBtn.layer.cornerRadius = 5.0;
+            makeSureBtn.layer.cornerRadius = PX_TO_PT(10);
             makeSureBtn.layer.masksToBounds = YES;
             makeSureBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             makeSureBtn.tag = section + 1000;
@@ -472,7 +471,7 @@
             UIButton *holdNeckBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
             holdNeckBtn.backgroundColor = R_G_B_16(0xfe9b00);
             [holdNeckBtn setTitle:@"去自提" forState:UIControlStateNormal];
-            holdNeckBtn.layer.cornerRadius = 5.0;
+            holdNeckBtn.layer.cornerRadius = PX_TO_PT(10);
             holdNeckBtn.layer.masksToBounds = YES;
             holdNeckBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             holdNeckBtn.tag = section + 1000;

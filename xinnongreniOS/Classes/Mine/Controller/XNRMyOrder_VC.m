@@ -329,7 +329,7 @@
 
         }
            }];
-    [self.mainScrollView setContentOffset:CGPointMake((ScreenWidth+10*SCALE)*(button.tag-KbtnTag),0) animated:NO];
+    [self.mainScrollView setContentOffset:CGPointMake((ScreenWidth+PX_TO_PT(20))*(button.tag-KbtnTag),0) animated:NO];
     
     index = (int)button.tag;
     
@@ -373,83 +373,83 @@
 }
 
 #pragma mark - scrollView左右滑动
--(void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    CGFloat offset = self.mainScrollView.contentOffset.x/(ScreenWidth+PX_TO_PT(20));
-    
-      static int tag = 0;
-
-    if(0 <= offset&&offset < 0.5){
-        tag=0;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
-        _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x00b38a);
-        _tempLabel = label;
-        
-    }else if (0.5<=offset&&offset<1.5){
-        tag=1;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
-        _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x00b38a);
-        _tempLabel = label;
-        
-    }else if (1.5<=offset&&offset<2.5){
-        tag=2;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
-        _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x00b38a);
-        _tempLabel = label;
-
-    }else if (2.5<=offset&&offset<3.5){
-        tag=3;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
-        _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x00b38a);
-        _tempLabel = label;
-
-    }else{
-        tag=4;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
-        _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x00b38a);
-        _tempLabel = label;
-    }
-    
-    
-    [UIView animateWithDuration:.3 animations:^{
-        if (IS_FourInch) {
-             self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(94), ScreenWidth/5.0, PX_TO_PT(6));
-        }else{
-             self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
-        }
-       
-    }];
-}
+//-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    
+//    CGFloat offset = self.mainScrollView.contentOffset.x/(ScreenWidth+PX_TO_PT(20));
+//    
+//      static int tag = 0;
+//
+//    if(0 <= offset&&offset < 0.5){
+//        tag=0;
+//        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
+//        _tempBtn.selected = NO;
+//        button.selected = YES;
+//        _tempBtn = button;
+//        
+//        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
+//        _tempLabel.textColor = [UIColor blackColor];
+//        label.textColor = R_G_B_16(0x00b38a);
+//        _tempLabel = label;
+//        
+//    }else if (0.5<=offset&&offset<1.5){
+//        tag=1;
+//        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
+//        _tempBtn.selected = NO;
+//        button.selected = YES;
+//        _tempBtn = button;
+//        
+//        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
+//        _tempLabel.textColor = [UIColor blackColor];
+//        label.textColor = R_G_B_16(0x00b38a);
+//        _tempLabel = label;
+//        
+//    }else if (1.5<=offset&&offset<2.5){
+//        tag=2;
+//        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
+//        _tempBtn.selected = NO;
+//        button.selected = YES;
+//        _tempBtn = button;
+//        
+//        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
+//        _tempLabel.textColor = [UIColor blackColor];
+//        label.textColor = R_G_B_16(0x00b38a);
+//        _tempLabel = label;
+//
+//    }else if (2.5<=offset&&offset<3.5){
+//        tag=3;
+//        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
+//        _tempBtn.selected = NO;
+//        button.selected = YES;
+//        _tempBtn = button;
+//        
+//        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
+//        _tempLabel.textColor = [UIColor blackColor];
+//        label.textColor = R_G_B_16(0x00b38a);
+//        _tempLabel = label;
+//
+//    }else{
+//        tag=4;
+//        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
+//        _tempBtn.selected = NO;
+//        button.selected = YES;
+//        _tempBtn = button;
+//        
+//        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
+//        _tempLabel.textColor = [UIColor blackColor];
+//        label.textColor = R_G_B_16(0x00b38a);
+//        _tempLabel = label;
+//    }
+//    
+//    
+//    [UIView animateWithDuration:.3 animations:^{
+//        if (IS_FourInch) {
+//             self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(94), ScreenWidth/5.0, PX_TO_PT(6));
+//        }else{
+//             self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
+//        }
+//       
+//    }];
+//}
 
 - (void)setNavigationbarTitle{
     

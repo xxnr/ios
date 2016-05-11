@@ -13,7 +13,7 @@
 @interface XNRMakeSureView()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,weak)UITableView *tableView;
 @property (nonatomic,weak)UIView *bottomView;
-@property (nonatomic,weak)UIView *coverView;
+@property (nonatomic,weak)UIButton *coverView;
 @property (nonatomic,weak)UIView *makeSureView;
 @property (nonatomic,weak)UIView *tatologyView;
 @property (nonatomic,weak)UIView *auditView;
@@ -86,10 +86,11 @@
 }
 -(void)createview
 {    
-    UIView *coverView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, ScreenWidth, ScreenHeight-PX_TO_PT(40))];
+    UIButton *coverView = [[UIButton alloc]initWithFrame:CGRectMake(0, 20, ScreenWidth, ScreenHeight-PX_TO_PT(40))];
     UIColor *color = [UIColor blackColor];
     coverView.backgroundColor = [color colorWithAlphaComponent:0.6];
     self.coverView = coverView;
+    [coverView addTarget:self action:@selector(coverClick) forControlEvents:UIControlEventTouchUpInside];
     
     UIWindow *window = [[UIApplication sharedApplication].delegate window];
     [window addSubview:coverView];
@@ -100,7 +101,8 @@
 
 -(void)coverClick
 {
-//    [self removeFromSuperview];
+    [self.coverView removeFromSuperview];
+    [self removeFromSuperview];
 
 }
 -(void)createTableView
