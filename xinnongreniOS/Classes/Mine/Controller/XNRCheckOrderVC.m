@@ -460,6 +460,7 @@
     
     [self.navigationController pushViewController:vc animated:YES];
 }
+
 -(void)holdBtnClick:(UIButton *)sender
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
@@ -467,28 +468,17 @@
     vc.hidesBottomBarWhenPushed=YES;
     _carryVC = vc;
     
-//    if (self.model.orderId) {
-//        _carryVC.orderId = self.model.orderId;
-//        for (int i=0; i<self.model.skus.count; i++) {
-//            
-//            XNRMyOrderModel *model = self.model.skus[i];
-//            if(model.deliverStatus == 4)
-//            {
-//                [_carryVC.modelArr addObject:model];
-//            }
-//        }
-//        
-//        [self.navigationController pushViewController:_carryVC animated:NO];
-//
-//    }
-//    else
-//    {
-//        _carryVC.orderId = self.orderID;
+    if (self.model.orderId) {
         _carryVC.orderId = self.model.orderId;
+    }
+    else
+    {
+        _carryVC.orderId = self.orderID;
+    }
         [self getOrderDetail];
-//    }
     
 }
+
 -(void)getOrderDetail
 {
     [self.proArr removeAllObjects];
