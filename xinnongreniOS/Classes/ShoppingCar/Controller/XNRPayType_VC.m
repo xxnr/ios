@@ -200,6 +200,10 @@
             sectionModel.value = orderStatus[@"value"];
             sectionModel.orderGoodsList = (NSMutableArray *)[XNRCheckOrderModel objectArrayWithKeyValuesArray:datasDic[@"rows"][@"orderGoodsList"]];
             
+            if (sectionModel.totalPrice) {
+                
+            }
+            
             [self setTop:sectionModel.price andFullMoney:sectionModel.totalPrice];
             [self setFullMoneyView];
             
