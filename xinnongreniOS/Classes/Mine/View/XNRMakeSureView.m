@@ -65,7 +65,6 @@
     
     [manager POST:KconfirmSKUReceived parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;

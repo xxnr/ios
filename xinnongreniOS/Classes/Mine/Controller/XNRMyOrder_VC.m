@@ -477,8 +477,6 @@
         [self dismissViewControllerAnimated:NO completion:nil];
         return;
     }
-
-    UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController ;
     
     for (UIViewController *vc in self.navigationController.viewControllers) {
         if ([vc isKindOfClass:[XNRMineController class]]) {

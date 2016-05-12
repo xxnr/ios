@@ -636,7 +636,7 @@
     [deliveryTypeView addSubview:typeLabel];
     
     UILabel *deliveryInfoLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(115), PX_TO_PT(28), PX_TO_PT(115), PX_TO_PT(30))];
-    deliveryInfoLabel.textAlignment = UITextAlignmentRight;
+    deliveryInfoLabel.textAlignment = NSTextAlignmentRight;
     deliveryInfoLabel.text = sectionModel.deliveryTypeName;
     deliveryInfoLabel.textColor = R_G_B_16(0x646464);
     deliveryInfoLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];

@@ -35,7 +35,7 @@
     
     UILabel *registerLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(111), PX_TO_PT(25), PX_TO_PT(111), PX_TO_PT(42))];
     registerLabel.text = @"已注册";
-    registerLabel.textAlignment = UITextAlignmentCenter;
+    registerLabel.textAlignment = NSTextAlignmentCenter;
     registerLabel.textColor = R_G_B_16(0x00B38A);
     registerLabel.backgroundColor = [UIColor whiteColor];
     registerLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];

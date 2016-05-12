@@ -110,7 +110,7 @@
     
     //付款状态
     UILabel *statusLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(0), PX_TO_PT(84), ScreenWidth - PX_TO_PT(33), PX_TO_PT(26))];
-    statusLabel.textAlignment = UITextAlignmentRight;
+    statusLabel.textAlignment = NSTextAlignmentRight;
     statusLabel.textColor = R_G_B_16(0xFE9B00);
     
     //付款状态

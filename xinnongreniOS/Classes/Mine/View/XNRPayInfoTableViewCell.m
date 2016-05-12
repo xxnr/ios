@@ -69,7 +69,7 @@
     
     //支付完成
     UILabel *successPay = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(26), ScreenWidth - PX_TO_PT(66), PX_TO_PT(28))];
-    successPay.textAlignment = UITextAlignmentRight;
+    successPay.textAlignment = NSTextAlignmentRight;
     successPay.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     successPay.text = @"支付成功";
     [self.contentView addSubview:successPay];

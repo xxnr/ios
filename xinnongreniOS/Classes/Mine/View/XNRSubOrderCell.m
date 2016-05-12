@@ -51,7 +51,7 @@ static BOOL isPay = NO;
     
     //付款状态
     UILabel *statusLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(0), PX_TO_PT(18), ScreenWidth - PX_TO_PT(30), PX_TO_PT(26))];
-    statusLabel.textAlignment = UITextAlignmentRight;
+    statusLabel.textAlignment = NSTextAlignmentRight;
     statusLabel.textColor = R_G_B_16(0x323232);
     statusLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.statusLabel = statusLabel;
