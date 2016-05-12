@@ -728,6 +728,7 @@
             [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"userPhoto":result[@"imageUrl"],@"user-agent":@"IOS-v2.0"} success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
                     [UILabel showMessage:@"头像上传成功"];
+                    [BMProgressView LoadViewDisappear:self.view];
                     [_icon setImage:croppedImage forState:UIControlStateNormal];
                 }else{
                     [UILabel showMessage:result[@"message"]];

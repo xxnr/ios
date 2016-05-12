@@ -195,8 +195,8 @@
     detailView.layer.cornerRadius = 10;
     detailView.layer.masksToBounds = YES;
     detailView0.layer.masksToBounds = YES;
-    self.payTypeSep.textAlignment = UITextAlignmentRight;
-    self.payTypeFull.textAlignment = UITextAlignmentRight;
+    self.payTypeSep.textAlignment = NSTextAlignmentRight;
+    self.payTypeFull.textAlignment = NSTextAlignmentRight;
 
 
 }

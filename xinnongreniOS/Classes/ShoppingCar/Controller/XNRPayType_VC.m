@@ -122,9 +122,8 @@
     
     self.sepMoney = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(252), PX_TO_PT(35), PX_TO_PT(226), PX_TO_PT(35))];
     self.sepMoney.textColor = R_G_B_16(0xFF4E00);
-    self.sepMoney.textAlignment = UITextAlignmentCenter;
+    self.sepMoney.textAlignment = NSTextAlignmentCenter;
     self.sepMoney.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-    
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(dealAlipayResult:) name:@"alipayResult" object:nil];
     
@@ -283,7 +282,7 @@
     }
     
     ordertotal.font = [UIFont systemFontOfSize:PX_TO_PT(29)];
-    ordertotal.textAlignment = UITextAlignmentRight;
+    ordertotal.textAlignment = NSTextAlignmentRight;
     NSLog(@"%@",self.paySubOrderType);
     
     [self.view addSubview:ordertotal];
@@ -649,7 +648,7 @@
     
     UILabel *str = [[UILabel alloc]initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(23))];
     str.backgroundColor = [UIColor whiteColor];
-    str.textAlignment = UITextAlignmentCenter;
+    str.textAlignment = NSTextAlignmentCenter;
     str.text = [NSString stringWithFormat:@"+-可调节金额，幅度500元；最低调至%@元，不足按实际金额支付",self.minPrice];
     str.font = [UIFont systemFontOfSize:PX_TO_PT(20)];
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:str.text];
@@ -877,7 +876,7 @@
     if (_isInWhiteList && !self.isFull)  {
         if ([self.myTextField.text doubleValue] == 0.00) {
             UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入金额" delegate:nil
-                                                     cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            cancelButtonTitle:@"确定" otherButtonTitles: nil];
             [alertView show];
             return;
         }

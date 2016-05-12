@@ -16,7 +16,7 @@
         self.layer.cornerRadius = PX_TO_PT(6);
         self.layer.masksToBounds = YES;
         self.imageView.contentMode = UIViewContentModeCenter;
-        self.titleLabel.textAlignment = UITextAlignmentCenter;
+        self.titleLabel.textAlignment = NSTextAlignmentCenter;
     }
     return self;
 }

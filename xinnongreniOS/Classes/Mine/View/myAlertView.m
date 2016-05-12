@@ -36,7 +36,7 @@
         label1.text = headtitile;
         label1.textColor = R_G_B_16(0x323232);
         label1.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-        label1.textAlignment = UITextAlignmentCenter;
+        label1.textAlignment = NSTextAlignmentCenter;
         [bgview addSubview:label1];
         
         UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(148), PX_TO_PT(141), PX_TO_PT(100), PX_TO_PT(30))];

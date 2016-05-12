@@ -37,7 +37,7 @@
     self.detailLabel = detailLabel;
     
     UILabel *numLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(titleLabel.frame)+PX_TO_PT(22), PX_TO_PT(23), ScreenWidth - CGRectGetMaxX(titleLabel.frame)-PX_TO_PT(22)-PX_TO_PT(23), PX_TO_PT(32))];
-    numLabel.textAlignment = UITextAlignmentRight;
+    numLabel.textAlignment = NSTextAlignmentRight;
     numLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.numLabel = numLabel;
     
@@ -64,7 +64,7 @@
     self.detailLabel = detailLabel;
     
     UILabel *numLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(titleLabel.frame)+PX_TO_PT(22), PX_TO_PT(23), ScreenWidth - CGRectGetMaxX(titleLabel.frame)-PX_TO_PT(22)-PX_TO_PT(23), PX_TO_PT(32))];
-    numLabel.textAlignment = UITextAlignmentRight;
+    numLabel.textAlignment = NSTextAlignmentRight;
     numLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     self.numLabel = numLabel;
     

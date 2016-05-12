@@ -102,7 +102,7 @@
     [topView addSubview:brandNameLabel];
     
     UILabel *statusLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(brandNameLabel.frame)+PX_TO_PT(10), PX_TO_PT(44), ScreenWidth - PX_TO_PT(32)-CGRectGetMaxX(brandNameLabel.frame)-PX_TO_PT(10), PX_TO_PT(28))];
-    statusLabel.textAlignment = UITextAlignmentRight;
+    statusLabel.textAlignment = NSTextAlignmentRight;
     statusLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     statusLabel.textColor = R_G_B_16(0xFE9B00);
     if ([addtionsModel.deliverStatus integerValue] == 1) {

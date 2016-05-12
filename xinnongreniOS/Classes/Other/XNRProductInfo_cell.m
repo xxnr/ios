@@ -206,6 +206,10 @@
         pageControl.pageIndicatorTintColor = [UIColor whiteColor]; // 非当前页的小圆点颜色
         self.pageControl = pageControl;
 
+    }else{
+        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(700), ScreenWidth, PX_TO_PT(1))];
+        bgView.backgroundColor = R_G_B_16(0xc7c7c7);
+    [self.contentView addSubview:bgView];
     }
 }
 
