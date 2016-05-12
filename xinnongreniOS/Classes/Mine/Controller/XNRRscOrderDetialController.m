@@ -101,7 +101,6 @@
 
 -(void)getOrderDetialData
 {
-
     [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":_orderModel._id} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"order"];

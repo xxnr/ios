@@ -37,11 +37,11 @@
 -(void)createView
 {
     UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(20), ScreenWidth-PX_TO_PT(60), PX_TO_PT(260))];
+    bgView.backgroundColor = [UIColor whiteColor];
     bgView.layer.borderWidth = PX_TO_PT(1);
     bgView.layer.cornerRadius = 5.0;
     bgView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     bgView.layer.masksToBounds = YES;
-    bgView.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:bgView];
     
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(20), PX_TO_PT(20), ScreenWidth, PX_TO_PT(32))];
@@ -101,10 +101,9 @@
     self.deleteBtn = deleteBtn;
     [bgView addSubview:deleteBtn];
     
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(bgView.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(20))];
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(bgView.frame), ScreenWidth, PX_TO_PT(20))];
     footerView.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:footerView];
-
 }
 
 -(void)editorBtnClick:(UIButton *)button

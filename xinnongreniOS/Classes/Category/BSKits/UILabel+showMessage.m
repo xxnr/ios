@@ -29,10 +29,10 @@
     CGSize LabelSize;
     if ([message isKindOfClass:[NSString class]]) {
         
-        LabelSize = [message sizeWithFont_BSExt:[UIFont systemFontOfSize:15] maxSize:CGSizeMake(ScreenWidth-PX_TO_PT(60), MAXFLOAT)];
+        LabelSize = [message sizeWithFont_BSExt:[UIFont systemFontOfSize:15] maxSize:CGSizeMake(ScreenWidth-PX_TO_PT(40), MAXFLOAT)];
 
     }
-    label.frame = CGRectMake(10, 5, LabelSize.width, LabelSize.height);
+    label.frame = CGRectMake(PX_TO_PT(20), PX_TO_PT(10), LabelSize.width, LabelSize.height);
     label.text = message;
     label.textColor = [UIColor whiteColor];
     label.textAlignment = 1;
