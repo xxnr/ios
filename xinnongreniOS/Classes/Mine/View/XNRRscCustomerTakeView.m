@@ -101,7 +101,7 @@
                     
                 }else if([resultObj[@"code"] integerValue] == 1429){
                     [self cancel];
-                    [UILabel showMessage:@"您输入错误次数较多，请1分钟后再操作"];
+                    [UILabel showMessage:@"您输入错误次数较多，请一分钟后再试"];
 
                 }else{
                     [UILabel showMessage:@"自提码错误，请重新输入"];

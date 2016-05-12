@@ -222,7 +222,7 @@
 
 -(void)createView
 {
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(120)) style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(100)) style:UITableViewStyleGrouped];
     tableView.backgroundColor = [UIColor clearColor];
     tableView.showsVerticalScrollIndicator = YES;
     tableView.delegate = self;
