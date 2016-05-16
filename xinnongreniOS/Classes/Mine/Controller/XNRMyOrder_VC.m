@@ -70,7 +70,6 @@
     XNRLoginViewController *loginVC = [[XNRLoginViewController alloc] init];
     loginVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:loginVC animated:YES];
-
 }
 -(void)carry:(NSNotification *)notification
 {
