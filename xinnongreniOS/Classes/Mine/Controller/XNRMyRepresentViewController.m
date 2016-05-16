@@ -853,7 +853,7 @@ static bool isBroker;
 -(void)getCustomerData
 {
 //    [_dataArr removeAllObjects];
-    [KSHttpRequest post:KUserGetInvitee parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KUserGetInvitee parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",currentPage],@"max":@20,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *arr = result[@"invitee"];
             for (NSDictionary *dict in arr) {
@@ -861,9 +861,9 @@ static bool isBroker;
                 [model setValuesForKeysWithDictionary:dict];
                 [_dataArr addObject:model];
             }
-            self.headLabel.text = [NSString stringWithFormat:@"已邀请%tu位好友",_dataArr.count];
+            self.headLabel.text = [NSString stringWithFormat:@"已邀请%@位好友",result[@"total"]];
             NSInteger i = 1;
-            NSInteger count = _dataArr.count;
+            NSInteger count = [result[@"total"] integerValue];
             while (count >= 10) {
                 count = count/10;
                 i++;
@@ -887,7 +887,7 @@ static bool isBroker;
             [UILabel showMessage:result[@"message"]];
         }
         
-        if (_dataArr.count > 0) {
+        if ([result[@"total"] integerValue] > 0) {
             [self.myRepTopView removeFromSuperview];
             [self.topView removeFromSuperview];
         }else{
@@ -898,9 +898,9 @@ static bool isBroker;
         
         //  如果到达最后一页 就消除footer
         
-        NSInteger pages = [result[@"datas"][@"pages"] integerValue];
+        NSInteger pages = [result[@"pages"] integerValue];
         
-        NSInteger page = [result[@"datas"][@"page"] integerValue];
+        NSInteger page = [result[@"page"] integerValue];
         
         self.tableView.mj_footer.hidden = pages == page;
         

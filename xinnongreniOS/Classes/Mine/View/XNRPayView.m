@@ -501,7 +501,7 @@
     XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
     XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
     vc.orderID = sectionModel.orderId;
-    
+
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:vc,@"payType", nil];
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"revisePayType" object:self userInfo:dic];

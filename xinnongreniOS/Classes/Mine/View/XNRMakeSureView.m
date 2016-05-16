@@ -86,7 +86,7 @@
 }
 -(void)createview
 {    
-    UIButton *coverView = [[UIButton alloc]initWithFrame:CGRectMake(0, 20, ScreenWidth, ScreenHeight-PX_TO_PT(40))];
+    UIButton *coverView = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     UIColor *color = [UIColor blackColor];
     coverView.backgroundColor = [color colorWithAlphaComponent:0.6];
     self.coverView = coverView;

@@ -763,13 +763,16 @@
             
             NSMutableArray *arr = (NSMutableArray *)[XNRConsigneeModel objectArrayWithKeyValuesArray:result[@"datas"][@"rows"]];
 
-            self.consigneeModel = arr[0];
-            self.consigneeName = self.consigneeModel.consigneeName;
-            self.consigneePhone = self.consigneeModel.consigneePhone;
-           
-            self.RSCContactInfo = [NSString stringWithFormat:@"%@ %@",self.consigneeName,self.consigneePhone];
+            if (arr.count > 0) {
+                self.consigneeModel = arr[0];
+                self.consigneeName = self.consigneeModel.consigneeName;
+                self.consigneePhone = self.consigneeModel.consigneePhone;
+                
+                self.RSCContactInfo = [NSString stringWithFormat:@"%@ %@",self.consigneeName,self.consigneePhone];
+                
 
-
+            }
+     
             [self createDeliveryView:self.RSCDetailAddress andContact:self.RSCContactInfo];
 
             // 来自购物车页面的话才加载

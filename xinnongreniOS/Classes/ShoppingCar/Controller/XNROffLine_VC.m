@@ -12,6 +12,7 @@
 #import "XNRMyOrder_VC.h"
 #import "XNRRSCInfoModel.h"
 #import "XNROfflinePayTypeModel.h"
+#import "XNRProductInfo_VC.h"
 @interface XNROffLine_VC ()
 @property (nonatomic,weak)UIView *topView;
 @property (nonatomic,weak)UIView *midView;
@@ -285,6 +286,13 @@
             return;
         }
     }
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[XNRProductInfo_VC class]]) {
+            [self.navigationController popToViewController:vc animated:YES];
+            return;
+        }
+    }
+
     [self.navigationController popToRootViewControllerAnimated:YES];
     
 
