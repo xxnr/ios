@@ -20,6 +20,7 @@
 #import "XNRPropertyView.h"
 #import "XNRProductInfo_frame.h"
 #import "MWPhotoBrowser.h"
+#import "XNRProductInfo_VC.h"
 #define kLeftBtn  3000
 #define kRightBtn 4000
 #define HEIGHT 100

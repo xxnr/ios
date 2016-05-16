@@ -562,6 +562,7 @@
 		9C3FAC641CD354D400915DF8 /* XNRRscOrderDetialFrameModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3FAC631CD354D400915DF8 /* XNRRscOrderDetialFrameModel.m */; };
 		9C3FAC6A1CD3643600915DF8 /* XNRRscOrderDetialCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3FAC691CD3643600915DF8 /* XNRRscOrderDetialCell.m */; };
 		9C3FAC6D1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3FAC6C1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.m */; };
+		9C4B2EBA1CE98FBB00A9ACD6 /* XNRoffthestocksVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4B2EB91CE98FBB00A9ACD6 /* XNRoffthestocksVC.m */; };
 		9C4FCB451C8FFDFD00C5B427 /* XNBrandsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */; };
 		9C63D88F1C9FDE12004AFE0F /* XNROrderInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C63D88E1C9FDE12004AFE0F /* XNROrderInfoCell.m */; };
 		9C6BCE9B1CAE36C100463096 /* XNRBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BCE9A1CAE36C100463096 /* XNRBtn.m */; };
@@ -1653,6 +1654,8 @@
 		9C3FAC691CD3643600915DF8 /* XNRRscOrderDetialCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRscOrderDetialCell.m; sourceTree = "<group>"; };
 		9C3FAC6B1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XNRRscOrderDetialHeadView.h; path = ../Model/XNRRscOrderDetialHeadView.h; sourceTree = "<group>"; };
 		9C3FAC6C1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XNRRscOrderDetialHeadView.m; path = ../Model/XNRRscOrderDetialHeadView.m; sourceTree = "<group>"; };
+		9C4B2EB81CE98FBB00A9ACD6 /* XNRoffthestocksVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRoffthestocksVC.h; sourceTree = "<group>"; };
+		9C4B2EB91CE98FBB00A9ACD6 /* XNRoffthestocksVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRoffthestocksVC.m; sourceTree = "<group>"; };
 		9C4FCB431C8FFDFD00C5B427 /* XNBrandsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNBrandsModel.h; sourceTree = "<group>"; };
 		9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNBrandsModel.m; sourceTree = "<group>"; };
 		9C63D88A1C9FD9AA004AFE0F /* XNRCheckOrderVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCheckOrderVC.h; sourceTree = "<group>"; };
@@ -3476,6 +3479,8 @@
 				4915EBA11CAA4F9800A728BB /* XNRPropertyEmptyView.m */,
 				491AF0541C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.h */,
 				491AF0551C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.m */,
+				9C4B2EB81CE98FBB00A9ACD6 /* XNRoffthestocksVC.h */,
+				9C4B2EB91CE98FBB00A9ACD6 /* XNRoffthestocksVC.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -4287,6 +4292,7 @@
 				53010F961B1DAD3E00017740 /* TFModel.m in Sources */,
 				493AEF2C1C2138290088003A /* XNRTownPickerView.m in Sources */,
 				491610ED1C8C422200F1E243 /* MWGridCell.m in Sources */,
+				9C4B2EBA1CE98FBB00A9ACD6 /* XNRoffthestocksVC.m in Sources */,
 				490FF4091CBFA68B003CB09C /* XNRBugTagsTool.m in Sources */,
 				8469F6261B3D4C2700085699 /* FMDatabase.m in Sources */,
 				9C3F9B4F1CC4DF9400E44BA8 /* XNRRSCModel.m in Sources */,

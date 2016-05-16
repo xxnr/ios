@@ -8,6 +8,7 @@
 
 #import "XNRPayType_VC.h"
 #import "XNROrderSuccessViewController.h"
+#import "XNRoffthestocksVC.h"
 #import "GBAlipayManager.h"
 #import "XNRTabBarController.h"
 #import "UPPayPlugin.h"
@@ -106,27 +107,9 @@
     _payType = 0;
     self.view.backgroundColor = R_G_B_16(0xFAFAFA);
     self.minPrice = @"3000";
-    
+
     //    [self getMinPayPrice];
     [self getData];
-    
-    [self setNav];
-    [self createTopView];
-    [self createMidView];
-    [self createBottomView];
-    
-    _dataArray = [NSMutableArray array];
-    self.myTextField =[[UITextField alloc]initWithFrame:CGRectMake(PX_TO_PT(252), PX_TO_PT(35), PX_TO_PT(226), PX_TO_PT(40))];
-    self.myTextField.delegate = self;
-    self.myTextField.hidden = YES;
-    
-    self.sepMoney = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(252), PX_TO_PT(35), PX_TO_PT(226), PX_TO_PT(35))];
-    self.sepMoney.textColor = R_G_B_16(0xFF4E00);
-    self.sepMoney.textAlignment = UITextAlignmentCenter;
-    self.sepMoney.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-    
-    
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(dealAlipayResult:) name:@"alipayResult" object:nil];
     
     
     //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(librate) name:@"succss_Push" object:nil];
@@ -165,14 +148,24 @@
 -(void)getData{
     [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
-            
-            //后请求getMinpayPrice
-            [self getMinPayPrice];
-            
             XNRCheckOrderSectionModel *sectionModel = [[XNRCheckOrderSectionModel alloc] init];
             
             NSDictionary *datasDic = result[@"datas"];
-            sectionModel.address = datasDic[@"rows"][@"address"];
+
+            if ([datasDic[@"rows"][@"payStatus"] integerValue] == 2) {
+                XNRoffthestocksVC *vc=[[XNRoffthestocksVC alloc]init];
+                vc.orderID = self.orderID;
+                vc.hidesBottomBarWhenPushed=YES;
+                [self.navigationController pushViewController:vc animated:YES];
+                
+                return ;
+            }
+        
+            self.navigationItem.hidesBackButton = NO;
+            //后请求getMinpayPrice
+            [self getMinPayPrice];
+            
+                sectionModel.address = datasDic[@"rows"][@"address"];
             sectionModel.id = datasDic[@"rows"][@"id"];
             sectionModel.recipientName = datasDic[@"rows"][@"recipientName"];
             sectionModel.recipientPhone = datasDic[@"rows"][@"recipientPhone"];
@@ -182,7 +175,6 @@
             
             self.paySubOrderType = sectionModel.paySubOrderType;
             
-            [self isPaySubOrderType];
             
             NSDictionary *payment = datasDic[@"rows"][@"payment"];
             
@@ -200,15 +192,31 @@
             sectionModel.value = orderStatus[@"value"];
             sectionModel.orderGoodsList = (NSMutableArray *)[XNRCheckOrderModel objectArrayWithKeyValuesArray:datasDic[@"rows"][@"orderGoodsList"]];
             
-            if (sectionModel.totalPrice) {
-                
-            }
-            
-            [self setTop:sectionModel.price andFullMoney:sectionModel.totalPrice];
-            [self setFullMoneyView];
-            
             [_dataArray addObject:sectionModel];
             
+            [self setNav];
+            [self createTopView];
+            [self createMidView];
+            [self createBottomView];
+            
+            _dataArray = [NSMutableArray array];
+            self.myTextField =[[UITextField alloc]initWithFrame:CGRectMake(PX_TO_PT(252), PX_TO_PT(35), PX_TO_PT(226), PX_TO_PT(40))];
+            self.myTextField.delegate = self;
+            self.myTextField.hidden = YES;
+            
+            self.sepMoney = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(252), PX_TO_PT(35), PX_TO_PT(226), PX_TO_PT(35))];
+            self.sepMoney.textColor = R_G_B_16(0xFF4E00);
+            self.sepMoney.textAlignment = NSTextAlignmentCenter;
+            self.sepMoney.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+            
+            
+            [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(dealAlipayResult:) name:@"alipayResult" object:nil];
+            
+            [self isPaySubOrderType];
+
+            [self setTop:sectionModel.price andFullMoney:sectionModel.totalPrice];
+            [self setFullMoneyView];
+
         }
         
     } failure:^(NSError *error) {
@@ -878,24 +886,52 @@
 #pragma  mark - 去支付
 - (void)goPayBtnClick:(UIButton *)button
 {
-    if (_isInWhiteList && !self.isFull)  {
-        if ([self.myTextField.text doubleValue] == 0.00) {
-            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入金额" delegate:nil
-                                                     cancelButtonTitle:@"确定" otherButtonTitles: nil];
-            [alertView show];
-            return;
-        }
-        
-        _Money = self.myTextField.text;
-    }
     
-    if (self.isFull) {
-        _Money = self.holdPrice;
-    }
-    _ispayType = YES;
-    [self setselPayType];
-    NSLog(@"去支付");
-    //
+    [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            
+            
+            NSDictionary *datasDic = result[@"datas"];
+            
+            if ([datasDic[@"rows"][@"payStatus"] integerValue] == 2) {
+                XNRoffthestocksVC *vc=[[XNRoffthestocksVC alloc]init];
+                vc.orderID = self.orderID;
+                vc.hidesBottomBarWhenPushed=YES;
+                [self.navigationController pushViewController:vc animated:YES];
+                return ;
+            }
+
+            if (_isInWhiteList && !self.isFull)  {
+                if ([self.myTextField.text doubleValue] == 0.00) {
+                    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入金额" delegate:nil
+                                                             cancelButtonTitle:@"确定" otherButtonTitles: nil];
+                    [alertView show];
+                    return;
+                }
+                
+                _Money = self.myTextField.text;
+            }
+            
+            if (self.isFull) {
+                _Money = self.holdPrice;
+            }
+            _ispayType = YES;
+            [self setselPayType];
+            NSLog(@"去支付");
+
+        }
+    
+        else
+        {
+            [UILabel showMessage:result[@"message"]];
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+    }];
+
+
+     //
     //    NSLog(@"%ld",[_Money integerValue]);
     
     
@@ -970,7 +1006,7 @@
 - (void)setNav
 {
     self.navigationItem.title = @"支付方式";
-    
+
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
     backButton.frame=CGRectMake(0, 0, 30, 44);
@@ -1003,8 +1039,16 @@
     for (UIViewController *vc  in self.navigationController.viewControllers) {
         if ([vc isKindOfClass:[XNRProductInfo_VC class]]) {
             [self.navigationController popToViewController:vc animated:YES];
+            return;
         }
     }
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

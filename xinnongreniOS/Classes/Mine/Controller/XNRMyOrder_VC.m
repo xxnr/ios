@@ -48,6 +48,7 @@
     
     [self setNavigationbarTitle];
     self.mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100),ScreenWidth+PX_TO_PT(20),ScreenHeight-64)];
+    self.mainScrollView.scrollEnabled = NO;
     self.mainScrollView.contentSize=CGSizeMake((ScreenWidth+PX_TO_PT(20))*5, ScreenHeight-64);
     self.mainScrollView.showsHorizontalScrollIndicator = NO;
     self.mainScrollView.showsVerticalScrollIndicator = NO;
@@ -81,7 +82,8 @@
 -(void)revisePayType:(NSNotification *)notification
 {
     XNRPayType_VC *vc = notification.userInfo[@"payType"];
-    [self.navigationController pushViewController:vc animated:YES];
+    vc.navigationItem.hidesBackButton = YES;
+    [self.navigationController pushViewController:vc animated:NO];
 }
 
 -(void)seePayInfoNot:(NSNotification *)notification
@@ -463,10 +465,12 @@
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0, 30, 44);
+    
     [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
+
     self.navigationItem.leftBarButtonItem=leftItem;
     
 }
@@ -491,7 +495,6 @@
    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     XNRTabBarController *tabVC = (XNRTabBarController *)window.rootViewController;
     tabVC.selectedIndex = 3;
-
     
     //首页的控制器返回到rootVC
     [self.navigationController popToRootViewControllerAnimated:NO];

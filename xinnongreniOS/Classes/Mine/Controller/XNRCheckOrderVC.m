@@ -457,8 +457,9 @@
     XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
     XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
     vc.orderID = sectionModel.id;
-    
-    [self.navigationController pushViewController:vc animated:YES];
+    vc.dueMoney = sectionModel.duePrice;
+    vc.navigationItem.hidesBackButton = YES;
+    [self.navigationController pushViewController:vc animated:NO];
 }
 
 -(void)holdBtnClick:(UIButton *)sender
@@ -889,7 +890,7 @@
         else if (indexPath.section == 0)
         {
             XRNSubOrdersModel *subOrderModel = sectionModel.subOrders[indexPath.row];
-            if (subOrderModel.payType == 1 || subOrderModel.payType == 2 || subOrderModel.payType == 3|| subOrderModel.payType == 4) {
+            if (subOrderModel.payType == 1 || subOrderModel.payType == 2 || subOrderModel.payType == 3|| subOrderModel.payType == 4|| subOrderModel.payType == 5) {
                 return PX_TO_PT(240);
             }
             else
@@ -988,6 +989,12 @@
 
 -(void)backClick{
     
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
+    
     if ([self.presentingViewController isKindOfClass:[XNRNavigationController class]]) {
         [self dismissViewControllerAnimated:NO completion:nil];
         return;
@@ -998,7 +1005,6 @@
     }
     else
     {
-//        [self.navigationController popToRootViewControllerAnimated:YES];
         XNRMyOrder_VC *orderVC=[[XNRMyOrder_VC alloc]init];
         orderVC.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:orderVC animated:NO];
