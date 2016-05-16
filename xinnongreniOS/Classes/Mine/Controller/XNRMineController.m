@@ -396,7 +396,7 @@
     self.badgeImage = BadgeImage;
     [self.bgLoginView addSubview:BadgeImage];
 
-    UIImageView *arrowImg = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(50), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(12), PX_TO_PT(18), PX_TO_PT(32))];
+    UIImageView *arrowImg = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(50), CGRectGetMaxY(self.introduceLabel.frame) + PX_TO_PT(18), PX_TO_PT(18), PX_TO_PT(32))];
     [arrowImg setImage:[UIImage imageNamed:@"icon_arrow_back"]];
     self.arrowImg = arrowImg;
     [self.bgLoginView addSubview:arrowImg];
@@ -680,6 +680,7 @@
         XNRUserInfoModel *Usermodel = [_userArray firstObject];
         vc.model  = Usermodel;
         vc.hidesBottomBarWhenPushed=YES;
+        vc.isfromMineVC = YES;
         [self.navigationController pushViewController:vc animated:YES];
         
     }else{

@@ -164,11 +164,13 @@
     
     UITextField *deliverNumberTF = [[UITextField alloc] init];
     deliverNumberTF.frame = CGRectMake(CGRectGetMaxX(deliverNumberLabel.frame)+PX_TO_PT(20), PX_TO_PT(317), PX_TO_PT(360), PX_TO_PT(60));
-    deliverNumberTF.layer.borderWidth = PX_TO_PT(1);
+    deliverNumberTF.layer.borderWidth = PX_TO_PT(2);
     deliverNumberTF.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     deliverNumberTF.layer.masksToBounds = YES;
     deliverNumberTF.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     deliverNumberTF.keyboardType = UIKeyboardTypeNumberPad;
+    deliverNumberTF.textAlignment = NSTextAlignmentCenter;
+    deliverNumberTF.textColor = R_G_B_16(0xfe9b00);
     deliverNumberTF.alpha = 1.0;
     deliverNumberTF.delegate = self;
     self.deliverNumberTF = deliverNumberTF;

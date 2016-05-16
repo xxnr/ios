@@ -45,7 +45,7 @@
     self.dataLabel = dataLabel;
     [headView addSubview:dataLabel];
     
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(dataLabel.frame), 0, PX_TO_PT(200), PX_TO_PT(88))];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(dataLabel.frame), 0, PX_TO_PT(300), PX_TO_PT(88))];
     nameLabel.textColor = R_G_B_16(0x323232);
     nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     nameLabel.textAlignment = NSTextAlignmentLeft;

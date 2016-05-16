@@ -49,7 +49,11 @@
 -(void)createView
 {
     UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.layer.borderWidth = PX_TO_PT(1);
+    if (IS_FourInch) {
+        imageView.layer.borderWidth = PX_TO_PT(2);
+    }else{
+        imageView.layer.borderWidth = PX_TO_PT(1);
+    }
     imageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     self.goodsImageView = imageView;
     [self.contentView addSubview:imageView];

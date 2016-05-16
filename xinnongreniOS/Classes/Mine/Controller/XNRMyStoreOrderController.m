@@ -195,9 +195,9 @@
     self.tempBtn = button;
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
    
-    [UIView animateWithDuration:.3 animations:^{
-        self.selectedLineView.frame=CGRectMake((button.tag - KtitleBtn)*ScreenWidth/5.0,  PX_TO_PT(95), ScreenWidth/5.0, PX_TO_PT(5));
-        }];
+//    [UIView animateWithDuration:.3 animations:^{
+    self.selectedLineView.frame=CGRectMake((button.tag - KtitleBtn)*ScreenWidth/5.0,  PX_TO_PT(95), ScreenWidth/5.0, PX_TO_PT(5));
+//        }];
      [self.scrollView setContentOffset:CGPointMake((ScreenWidth+PX_TO_PT(20))*(button.tag-KtitleBtn),0) animated:NO];
     if (button.tag == KtitleBtn) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
@@ -214,10 +214,7 @@
     }else{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
     }
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        [BMProgressView LoadViewDisappear:self.view];
-    });
+    [BMProgressView LoadViewDisappear:self.view];
 }
 
 #pragma mark - scrollView左右滑动
@@ -262,12 +259,7 @@
     }
     
     [UIView animateWithDuration:.3 animations:^{
-        if (IS_FourInch) {
-            self.selectedLineView.frame = CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(94), ScreenWidth/5.0, PX_TO_PT(6));
-        }else{
-            self.selectedLineView.frame = CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
-        }
-        
+        self.selectedLineView.frame = CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(95), ScreenWidth/5.0, PX_TO_PT(5));
     }];
 }
 

@@ -250,30 +250,24 @@
     
     NSMutableArray *idleImage = [NSMutableArray array];
     for (int i = 1; i<21; i++) {
-        
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         [idleImage addObject:image];
     }
-    
     NSMutableArray *RefreshImage = [NSMutableArray array];
     for (int i = 10; i<21; i++) {
-        
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         [RefreshImage addObject:image];
     }
-    
     [header setImages:idleImage forState:MJRefreshStateIdle];
     [header setImages:RefreshImage forState:MJRefreshStatePulling];
     [header setImages:RefreshImage forState:MJRefreshStateRefreshing];
     // 隐藏时间
     header.lastUpdatedTimeLabel.hidden = YES;
-    
     // 隐藏状态
     header.stateLabel.hidden = YES;
     self.homeCollectionView.mj_header = header;
 
 }
-
 
 #pragma mark -- collectionView的代理
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
@@ -317,7 +311,6 @@
             return headView;
         }else{
             XNRCarSelect *headView = (XNRCarSelect *)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifierSecond" forIndexPath:indexPath];
-            
             
             headView.con = ^(){
                  XNRSpecialViewController *specialFer_VC = [[XNRSpecialViewController alloc] init];

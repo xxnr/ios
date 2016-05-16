@@ -117,9 +117,10 @@
     self.navigationItem.title = @"资讯详情";
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [backBtn setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
-    backBtn.frame = CGRectMake(0, 0, 80, 40);
-    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backBtn.frame = CGRectMake(0, 0, 30, 44);
+//    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backBtn addTarget:self action:@selector(backBtnClick) forControlEvents:UIControlEventTouchUpInside];
+     [backBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backBtn];
     self.navigationItem.leftBarButtonItem = leftItem;
     

@@ -119,45 +119,50 @@
         [topImageView setImage:[UIImage imageNamed:@"orderInfo_address_bacground"]];
         [middleView addSubview:topImageView];
         
-        UIImageView *bottomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(251), ScreenWidth, PX_TO_PT(7))];
-        [bottomImageView setImage:[UIImage imageNamed:@"orderInfo_down"]];
-        [middleView addSubview:bottomImageView];
         
         UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(64), PX_TO_PT(112), ScreenWidth/3, PX_TO_PT(38))];
         nameLabel.textColor = R_G_B_16(0x323232);
-        nameLabel.font = [UIFont systemFontOfSize:16];
+        nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         nameLabel.text = model.consigneeName;
         self.nameLabel = nameLabel;
         [middleView addSubview:nameLabel];
         
         UILabel *phoneNum = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nameLabel.frame), PX_TO_PT(112), ScreenWidth/2, PX_TO_PT(32))];
         phoneNum.textColor = R_G_B_16(0x323232);
-        phoneNum.font = [UIFont systemFontOfSize:16];
+        phoneNum.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         phoneNum.text = model.consigneePhone;
         [middleView addSubview:phoneNum];
         
-        UIImageView *addressImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(32), PX_TO_PT(26), PX_TO_PT(35))];
+        UIImageView *addressImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(20), PX_TO_PT(26), PX_TO_PT(35))];
         [addressImage setImage:[UIImage imageNamed:@"orderInfo_address_picture"]];
         [middleView addSubview:addressImage];
         
-        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(addressImage.frame) + PX_TO_PT(20), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(32), ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), PX_TO_PT(32))];
+        CGSize size = [model.consigneeAddress sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), MAXFLOAT)];
+        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(addressImage.frame) + PX_TO_PT(20), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(20), ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), size.height)];
         addressLabel.textColor = R_G_B_16(0xc7c7c7);
-        addressLabel.font = [UIFont systemFontOfSize:16];
+        addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
 //        addressLabel.adjustsFontSizeToFitWidth = YES;
+        addressLabel.numberOfLines = 0;
         addressLabel.text = model.consigneeAddress;
         [middleView addSubview:addressLabel];
         
-        UIView *middleMarginView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(260), ScreenWidth, PX_TO_PT(20))];
+        UIImageView *bottomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(addressLabel.frame), ScreenWidth, PX_TO_PT(7))];
+        [bottomImageView setImage:[UIImage imageNamed:@"orderInfo_down"]];
+        [middleView addSubview:bottomImageView];
+        
+        UIView *middleMarginView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(bottomImageView.frame), ScreenWidth, PX_TO_PT(20))];
         middleMarginView.backgroundColor = R_G_B_16(0xf4f4f4);
         [middleView addSubview:middleMarginView];
         
         UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth, PX_TO_PT(1))];
         topLine.backgroundColor = R_G_B_16(0xc7c7c7);
         [middleView addSubview:topLine];
+        
+        middleView.frame = CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth, CGRectGetMaxY(middleMarginView.frame));
 
 
     }else{  // 网点自提
-        [self createMiddleView];
+        [self createMiddleView:model];
     }
 
     
@@ -206,7 +211,7 @@
     
 }
 
--(void)createMiddleView
+-(void)createMiddleView:(XNRRscOrderDetailModel *)model
 {
     UIView *middleView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth, PX_TO_PT(180))];
     middleView.backgroundColor = R_G_B_16(0xffffff);
@@ -233,13 +238,15 @@
     imageView1.image = [UIImage imageNamed:@"call-contact"];
     [middleView addSubview:imageView1];
     
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView1.frame)+PX_TO_PT(20), PX_TO_PT(80), PX_TO_PT(150), PX_TO_PT(80))];
+    
+    CGSize size = [model.consigneeName sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(MAXFLOAT,PX_TO_PT(80))];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView1.frame)+PX_TO_PT(20), PX_TO_PT(80), size.width, PX_TO_PT(80))];
     nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.nameLabel = nameLabel;
     [middleView addSubview:nameLabel];
     
     
-    UILabel *phoneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nameLabel.frame), PX_TO_PT(80), PX_TO_PT(200), PX_TO_PT(80))];
+    UILabel *phoneLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nameLabel.frame)+PX_TO_PT(20), PX_TO_PT(80), PX_TO_PT(200), PX_TO_PT(80))];
     phoneLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.phoneLabel = phoneLabel;
     [middleView addSubview:phoneLabel];

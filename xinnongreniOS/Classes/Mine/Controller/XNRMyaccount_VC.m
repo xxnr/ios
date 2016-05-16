@@ -64,6 +64,11 @@
 @property (nonatomic, weak) UIView *coverView;
 @property (nonatomic, weak) UIView *warnView;
 
+@property (nonatomic, assign) BOOL identifyState;
+
+@property (nonatomic, strong) NSMutableArray *userArray;
+
+
 
 @end
 
@@ -99,6 +104,7 @@
 -(void)refreshIdentifyState
 {
     self.RscLabel.text = @"资料正在审核，请耐心等待";
+    _identifyState = YES;
 
 }
 -(void)dealloc
@@ -494,8 +500,6 @@
         [self.warnView removeFromSuperview];
     } completion:^(BOOL finished) {
     }];
-
-    
 }
 
 
@@ -513,15 +517,30 @@
     RscLabel.textColor = R_G_B_16(0x00b38a);
     RscLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.RscLabel = RscLabel;
-    if ([_model.RSCInfoVerifing integerValue] == 1) {
-        RscLabel.text = @"资料正在审核，请耐心等待";
+    
+    _userArray = [NSMutableArray array];
+    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid} success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            NSDictionary *dict = result[@"datas"];
+            XNRUserInfoModel *model = [[XNRUserInfoModel alloc] init];
+            [model setValuesForKeysWithDictionary:dict];
+            [_userArray addObject:model];
+        }
+        
+        XNRUserInfoModel *infoModel = [_userArray lastObject];
+        if ([infoModel.RSCInfoVerifing integerValue] == 1) {
+            RscLabel.text = @"资料正在审核，请耐心等待";
+        }else{
+            RscLabel.text = @"想成为新新农人的县级网点？去申请认证吧~";
+        }
+        if ([infoModel.isRSC integerValue] == 1) {
+            RscLabel.text = @"查看认证信息";
+        }
+        
+    } failure:^(NSError *error) {
+        
+    }];
 
-    }else{
-        RscLabel.text = @"想成为新新农人的县级网点？去申请认证吧~";
-    }
-    if ([_model.isRSC integerValue] == 1) {
-        RscLabel.text = @"查看认证信息";
-    }
     [RscBtn addSubview:RscLabel];
     
     UIImageView *arrow = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.icon.frame)+PX_TO_PT(10), PX_TO_PT(30), PX_TO_PT(16), PX_TO_PT(28))];
@@ -818,15 +837,18 @@
     titleLabel.text = @"我";
     self.navigationItem.titleView = titleLabel;
     
-    UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 30, 44);
+    self.navigationItem.hidesBackButton = YES;
+    
+    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame = CGRectMake(0, 0, 30, 44);
+//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 0);
+//    backButton.backgroundColor = [UIColor redColor];
     [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
-    UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
-    self.navigationItem.leftBarButtonItem=leftItem;
-    
-    
+    UIBarButtonItem *leftItem=[[UIBarButtonItem alloc] initWithCustomView:backButton];
+    self.navigationItem.leftBarButtonItem = leftItem;
+
 }
 
 -(void)backClick{

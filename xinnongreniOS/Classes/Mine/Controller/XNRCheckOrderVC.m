@@ -467,6 +467,13 @@
     vc.hidesBottomBarWhenPushed=YES;
     _carryVC = vc;
     
+    if (self.model.orderId) {
+        _carryVC.orderId = self.model.orderId;
+    }else{
+        _carryVC.orderId = self.orderID;
+    }
+    [self getOrderDetail];
+    
 //    if (self.model.orderId) {
 //        _carryVC.orderId = self.model.orderId;
 //        for (int i=0; i<self.model.skus.count; i++) {

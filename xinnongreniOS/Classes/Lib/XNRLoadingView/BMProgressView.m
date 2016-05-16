@@ -120,14 +120,18 @@
 
 +(void)LoadViewDisappear:(UIView *)view
 {
-    for (UIView *subView in view.subviews) {
-        if ([subView isKindOfClass:[BMProgressView class]]) {
-            [UIView animateWithDuration:3 animations:^{
-                [subView removeFromSuperview];
-
-            }];
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        for (UIView *subView in view.subviews) {
+            if ([subView isKindOfClass:[BMProgressView class]]) {
+                [UIView animateWithDuration:3 animations:^{
+                    [subView removeFromSuperview];
+                    
+                }];
+            }
         }
-    }}
+    });
+}
 
 -(void)LoadViewDisappear
 {
