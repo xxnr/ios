@@ -133,7 +133,6 @@
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         self.contentView.userInteractionEnabled = YES;
-        
         [self createUI];
     }
     return self;
@@ -161,7 +160,6 @@
 {
     [self createHeadView];
     [self createMidView];
-    
     [self setupHeadView];
 
 }
@@ -347,7 +345,11 @@
     self.depositLabel.frame = self.infoFrame.depositLabelF;
     self.descriptionLabel.frame = self.infoFrame.introduceLabelF;
     self.bgView.frame = self.infoFrame.attributeLabelF;
-    self.scrollLabel.frame = self.infoFrame.drawViewF;
+    if (!([_model.app_body_url isEqualToString:@""] &&[_model.app_support_url isEqualToString:@""] && [_model.app_standard_url isEqualToString:@""]) ) {
+        self.scrollLabel.frame = self.infoFrame.drawViewF;
+    }else{
+        [self.scrollLabel removeFromSuperview];
+    }
     self.midView.frame = self.infoFrame.describtionViewF;
 //    self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.midView.frame), ScreenWidth, ScreenHeight-64-PX_TO_PT(160));
     

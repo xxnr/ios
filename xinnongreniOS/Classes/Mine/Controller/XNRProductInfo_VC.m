@@ -102,7 +102,6 @@
             _Price = price;
             _marketPrice = marketPrice;
             [self.tableView reloadData];
-            
         };
         // 提交订单页面的跳转
         propertyView.com = ^(NSMutableArray *dataArray,CGFloat totalPrice,NSString *totalNum){
@@ -121,8 +120,6 @@
             login.loginFromProductInfo = YES;
             login.hidesBottomBarWhenPushed = YES;
             [weakSelf.navigationController pushViewController:login animated:YES];
-            
-            
         };
         [self.view addSubview:propertyView];
         self.propertyView = propertyView;
@@ -180,7 +177,6 @@
     footer.automaticallyHidden = YES;
     self.tableView.mj_footer = footer;
     
-    
     //设置UIWebView 有下拉操作
     MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     header.lastUpdatedTimeLabel.hidden = YES;
@@ -206,7 +202,6 @@
 -(void)notSelectedAttributes
 {
     [[XNRPropertyView sharedInstanceWithModel:self.model] changeSelfToIdentify];
-
 }
 
 
@@ -349,10 +344,7 @@
         [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_body_url]];
         [self.webView loadRequest:request];
-        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-            [BMProgressView LoadViewDisappear:self.view];
-        });
+        [BMProgressView LoadViewDisappear:self.view];
         
     }else if (button.tag == KbtnTag + 1)
     {
@@ -363,10 +355,8 @@
         [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_standard_url]];
         [self.webView loadRequest:request];
-        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-            [BMProgressView LoadViewDisappear:self.view];
-        });
+        [BMProgressView LoadViewDisappear:self.view];
+        
         self.tempLabel.textColor = R_G_B_16(0x646464);
         titleLabel.textColor = R_G_B_16(0x00b38a);
         self.tempLabel = titleLabel;
@@ -383,10 +373,7 @@
         [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_support_url]];
         [self.webView loadRequest:request];
-        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-            [BMProgressView LoadViewDisappear:self.view];
-        });
+        [BMProgressView LoadViewDisappear:self.view];
     }
 }
 
@@ -396,7 +383,6 @@
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, frame.viewHeight)];
     tableView.delegate = self;
     tableView.dataSource = self;
-    
     self.tableView = tableView;
     [self.view addSubview:tableView];
 }
@@ -404,6 +390,8 @@
 #pragma mark-获取网络数据
 -(void)getData {
     [KSHttpRequest post:KHomeGetAppProductDetails parameters:@{@"productId":_model.goodsId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        [BMProgressView showCoverWithTarget:self.view color: nil isNavigation:YES];
+
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dic =result[@"datas"];
             XNRProductInfo_model *model = [[XNRProductInfo_model alloc] init];
@@ -412,7 +400,6 @@
             model.max = dic[@"SKUPrice"][@"max"];
             
             model.marketMin = dic[@"SKUMarketPrice"][@"min"];
-            
             model.marketMax = dic[@"SKUMarketPrice"][@"max"];
 
             model._id = dic[@"_id"];
@@ -449,11 +436,15 @@
                 self.bgExpectView.hidden = YES;
             }
         }
-
+        XNRProductInfo_frame *frame = [_goodsArray lastObject];
+        if ([frame.infoModel.app_body_url isEqualToString:@""] &&[frame.infoModel.app_standard_url isEqualToString:@""] && [frame.infoModel.app_support_url isEqualToString:@""]) {
+            _tableView.scrollEnabled = NO;
+            }
+        
         [self.tableView reloadData];
-        
+        [BMProgressView LoadViewDisappear:self.view];
     } failure:^(NSError *error) {
-        
+        [BMProgressView LoadViewDisappear:self.view];
     }];
 }
 
@@ -484,7 +475,6 @@
     bgView.backgroundColor=R_G_B_16(0xE2E2E2);
     self.bgView = bgView;
     [self.view addSubview:bgView];
-    
     
     UILabel *expectLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80))];
     expectLabel.text = @"商品已下架";
@@ -665,9 +655,10 @@
     self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
+//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
+     [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = leftItem;

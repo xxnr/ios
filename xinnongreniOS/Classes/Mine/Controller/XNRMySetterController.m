@@ -270,7 +270,7 @@
     self.titleLabel = titleLabel;
     [AppKeyWindow addSubview:titleLabel];
     
-    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(22), PX_TO_PT(22), PX_TO_PT(44), PX_TO_PT(44))];
+    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(10), PX_TO_PT(22), PX_TO_PT(44), PX_TO_PT(44))];
     circleImage.image = [UIImage imageNamed:@"loader-"];
     self.circleImage = circleImage;
     [titleLabel addSubview:circleImage];

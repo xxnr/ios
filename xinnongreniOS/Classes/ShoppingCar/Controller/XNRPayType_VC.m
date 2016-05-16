@@ -199,6 +199,11 @@
             sectionModel.value = orderStatus[@"value"];
             sectionModel.orderGoodsList = (NSMutableArray *)[XNRCheckOrderModel objectArrayWithKeyValuesArray:datasDic[@"rows"][@"orderGoodsList"]];
             
+            
+//            if ([sectionModel.totalPrice isEqual:[NSNull null]]) {
+//                <#statements#>
+//            }
+            
             [self setTop:sectionModel.price andFullMoney:sectionModel.totalPrice];
             [self setFullMoneyView];
             
@@ -375,7 +380,6 @@
             [btn setTitle:@"分次支付" forState:UIControlStateNormal];
             [midView addSubview:btn];
         }
-        
         [btn addTarget:self action:@selector(selPayType:) forControlEvents:UIControlEventTouchDown];
         [midView addSubview:btn];
     }

@@ -101,7 +101,7 @@
 
 -(void)getOrderDetialData
 {
-    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":_orderModel._id} success:^(id result) {
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":_orderModel._id?_orderModel._id:_orderId} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"order"];
             XNRRscOrderDetailModel *model = [[XNRRscOrderDetailModel alloc] init];
@@ -182,6 +182,10 @@
     [footButton addTarget:self action:@selector(footButtonClick) forControlEvents:UIControlEventTouchUpInside];
     self.footButton = footButton;
     [footView addSubview:footButton];
+    
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(2))];
+    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    [footView addSubview:topLine];
     
     if ([dict[@"type"] integerValue] == 2) {
         [self.footButton setTitle:@"审核付款" forState:UIControlStateNormal];
@@ -326,9 +330,10 @@
     self.navigationItem.titleView = titleLabel;
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame = CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame = CGRectMake(0, 0, 30, 44);
+//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
+     [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     UIBarButtonItem *leftItem =[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = leftItem;

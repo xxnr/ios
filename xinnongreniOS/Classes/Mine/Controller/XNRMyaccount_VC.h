@@ -14,5 +14,7 @@
 
 @property (nonatomic, strong) XNRUserInfoModel *model;
 
+@property (nonatomic, assign) BOOL isfromMineVC;
+
 
 @end

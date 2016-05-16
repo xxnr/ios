@@ -169,11 +169,6 @@
         titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         titleLabel.text = titleArray[i];
         [self.view addSubview:titleLabel];
-        
-        
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(1))];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-        [self.view addSubview:lineView];
     }
     
     UITextField *nameTF = [[UITextField alloc] initWithFrame:CGRectMake(PX_TO_PT(200), margin, ScreenWidth-PX_TO_PT(200), PX_TO_PT(88))];
@@ -237,15 +232,43 @@
     
     UITextField *detailAddressTF = [[UITextField alloc] initWithFrame:CGRectMake(PX_TO_PT(200), margin + PX_TO_PT(88)*6, ScreenWidth-PX_TO_PT(200), PX_TO_PT(88))];
     detailAddressTF.placeholder = @"请填写门店的详细地址";
+    detailAddressTF.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     detailAddressTF.textColor = R_G_B_16(0x646464);
     detailAddressTF.delegate = self;
     [detailAddressTF setValue:R_G_B_16(0x909090) forKeyPath:@"_placeholderLabel.textColor"];
     self.detailAddressTF = detailAddressTF;
     [self.view addSubview:detailAddressTF];
+    UIView *lineView;
+    for (int i = 0; i<5; i++) {
+        if (IS_FourInch) {
+            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(3))];
+            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+            [self.view addSubview:lineView];
+        }else{
+            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(2))];
+            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+            [self.view addSubview:lineView];
+        }
+       
+    }
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*7, ScreenWidth, PX_TO_PT(1))];
+    lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*5, ScreenWidth, PX_TO_PT(2))];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.view addSubview:lineView];
+    
+    for (int i = 6; i<8; i++) {
+        if (IS_FourInch) {
+            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(2))];
+            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+            [self.view addSubview:lineView];
+        }else{
+            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(1))];
+            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+            [self.view addSubview:lineView];
+        }
+       
+
+    }
     
     UILabel *warnLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), CGRectGetMaxY(lineView.frame)+margin, ScreenWidth-PX_TO_PT(60), PX_TO_PT(60))];
     warnLabel.textColor = R_G_B_16(0xff9000);
@@ -429,6 +452,7 @@
     [self.phoneNumTF resignFirstResponder];
     [self.detailAddressTF resignFirstResponder];
     if (button.tag == 1000) {
+        self.streetLabel.text = @"选择所在街道或者乡镇";
         [self.townManagerView hide];
         [self.addressManagerView show];
         __weak __typeof(&*self)weakSelf = self;

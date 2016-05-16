@@ -32,7 +32,7 @@
 
 @property (nonatomic, assign) NSInteger totalCount;
 
-
+@property (nonatomic, assign) XNRRscConfirmDeliverViewType type;
 
 @end
 
@@ -79,6 +79,7 @@
     admireBtn.backgroundColor = R_G_B_16(0xfe9b00);
     admireBtn.layer.cornerRadius = 5.0;
     admireBtn.layer.masksToBounds = YES;
+    admireBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [admireBtn addTarget:self action:@selector(admireBtnClick) forControlEvents:UIControlEventTouchUpInside];
     self.admireBtn = admireBtn;
     [bottomView addSubview:admireBtn];
@@ -86,7 +87,7 @@
 
 -(void)admireBtnClick
 {
-    if ([self.admireBtn.titleLabel.text isEqualToString:@"下一步"]) {
+    if (_totalCount>0) {
         if (self.admireBtn.selected == YES) {
             [self.takeView show:_model];
             [self.deliverView removeFromSuperview];
@@ -94,7 +95,6 @@
         }else{
             [UILabel showMessage:@"您还没有选择商品哦"];
         }
-      
     }else{
         if (self.admireBtn.selected == YES) {
             NSMutableArray *refArray = [NSMutableArray array];
@@ -228,6 +228,8 @@
 
 -(void)show:(XNRRscOrderModel *)model andType:(XNRRscConfirmDeliverViewType)type
 {
+    _type = type;
+
     if (_coverView == nil &&_deliverView == nil) {
         for (XNRRscSkusModel *skuModel in model.SKUs) {
             skuModel.isSelected = NO;
@@ -308,7 +310,13 @@
     if (model.isSelected) {
         self.admireBtn.selected = YES;
             _totalCount = _totalCount + model.count.integerValue;
+        if (_type == isFromDeliverController) {
             [self.admireBtn setTitle:[NSString stringWithFormat:@"确定(%ld)",(long)_totalCount] forState:UIControlStateSelected];
+
+        }else{
+            [self.admireBtn setTitle:[NSString stringWithFormat:@"下一步(%ld)",(long)_totalCount] forState:UIControlStateSelected];
+
+        }
     }else{
         _totalCount = _totalCount - model.count.integerValue;
         if (_totalCount == 0) {
@@ -316,7 +324,14 @@
             [self.admireBtn setTitle:@"确定"forState:UIControlStateNormal];
         }else{
             self.admireBtn.selected = YES;
-        [self.admireBtn setTitle:[NSString stringWithFormat:@"确定(%ld)",(long)_totalCount] forState:UIControlStateSelected];
+            if (_type == isFromDeliverController) {
+                [self.admireBtn setTitle:[NSString stringWithFormat:@"确定(%ld)",(long)_totalCount] forState:UIControlStateSelected];
+                
+            }else{
+                [self.admireBtn setTitle:[NSString stringWithFormat:@"下一步(%ld)",(long)_totalCount] forState:UIControlStateSelected];
+                
+            }
+
         }
     }
 
