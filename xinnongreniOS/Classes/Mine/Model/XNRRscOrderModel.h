@@ -32,10 +32,14 @@
 
 @property (nonatomic, strong) NSMutableArray *SKUsDeliverFrame;
 
+
 /** 创建时间 */
 @property (nonatomic, copy) NSString *dateCreated;
 /** 是否待线下支付审核 */
 @property (nonatomic, copy) NSString *pendingApprove;
+
+@property (nonatomic, copy) NSString *deliverStatus;
+
 /** 订单状态 */
 @property (nonatomic, copy) NSString *type;
 
@@ -46,7 +50,7 @@
 @property (nonatomic, copy) NSString *deliverValue;
 
 
-@property (nonatomic, strong) NSMutableDictionary *deliveryType;
+@property (nonatomic, strong) NSDictionary *deliveryType;
 
 @property (nonatomic, strong) NSMutableDictionary *RSCInfo;
 

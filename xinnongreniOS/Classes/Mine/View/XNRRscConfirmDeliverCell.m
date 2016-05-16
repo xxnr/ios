@@ -115,7 +115,7 @@
     XNRRscSkusModel *model = self.frameModel.model;
     _model = model;
     self.selectedBtn.selected = model.isSelected;
-    self.goodsNameLabel.text = model.name;
+    self.goodsNameLabel.text = model.productName;
     self.goodsNumberLabel.text = [NSString stringWithFormat:@"x %@",model.count];
     
     // 属性

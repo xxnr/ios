@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+@class XNRRscOrderModel;
+typedef void(^XNRRscWaitDeliverViewBlock)(XNRRscOrderModel *model);
 
 @interface XNRRscWaitDeliverView : UIView
+
+@property (nonatomic, copy) XNRRscWaitDeliverViewBlock com;
 
 @end

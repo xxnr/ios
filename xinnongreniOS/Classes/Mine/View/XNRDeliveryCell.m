@@ -72,7 +72,7 @@
     line.backgroundColor = R_G_B_16(0xE0E0E0);
     self.line = line;
 
-    self.titleLabel.text = model.name;
+    self.titleLabel.text = model.productName;
     [self.contentView addSubview:self.titleLabel];
     
     NSMutableString *str = [[NSMutableString alloc]init];
@@ -97,7 +97,7 @@
 
     [self.contentView addSubview:self.detailLabel];
     
-    self.numLabel.text = [NSString stringWithFormat:@"*%@",model.count];
+    self.numLabel.text = [NSString stringWithFormat:@"x%@",model.count];
     [self.contentView addSubview:self.numLabel];
     
     self.line.frame = CGRectMake(0, CGRectGetMaxY(self.detailLabel.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(2));

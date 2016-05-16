@@ -87,7 +87,7 @@
             manager.requestSerializer.timeoutInterval = 10.f;
             [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
             
-            [manager POST:KRscDelivering parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [manager POST:KRscSelfDelivery parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
                 
                 NSDictionary *resultDic;
@@ -95,10 +95,16 @@
                     resultDic = (NSDictionary *)resultObj;
                 }
                 if ([resultObj[@"code"] integerValue] == 1000) {
-                    [UILabel showMessage:resultObj[@"message"]];
+                    [self cancel];
+                    [self setWarnViewTitle:@"自提成功"];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
                     
+                }else if([resultObj[@"code"] integerValue] == 1429){
+                    [self cancel];
+                    [UILabel showMessage:@"您输入错误次数较多，请1分钟后再操作"];
+
                 }else{
-                    [UILabel showMessage:resultObj[@"message"]];
+                    [UILabel showMessage:@"自提码错误，请重新输入"];
                 }
                 
                 
@@ -114,6 +120,38 @@
     }
     
 }
+
+-(UIView *)setWarnViewTitle:(NSString *)titleLabel{
+    
+    UIView *coverView = [[UIView alloc] initWithFrame:AppKeyWindow.bounds];
+    coverView.backgroundColor = [UIColor blackColor];
+    coverView.alpha = 0.6;
+    [AppKeyWindow addSubview:coverView];
+    
+    UIView *warnView = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(180), PX_TO_PT(450), PX_TO_PT(390), PX_TO_PT(280))];
+    warnView.layer.cornerRadius = PX_TO_PT(20);
+    warnView.backgroundColor = [UIColor blackColor];
+    [AppKeyWindow addSubview:warnView];
+    
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(PX_TO_PT(119), PX_TO_PT(51), PX_TO_PT(121), PX_TO_PT(121))];
+    imageView.image = [UIImage imageNamed:@"success"];
+    [warnView addSubview:imageView];
+    
+    UILabel *successLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(129), CGRectGetMaxY(imageView.frame)+PX_TO_PT(30), PX_TO_PT(140), PX_TO_PT(30))];
+    successLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    successLabel.text = titleLabel;
+    successLabel.textColor = [UIColor whiteColor];
+    [warnView addSubview:successLabel];
+    
+    [UIView animateWithDuration:2.0 animations:^{
+        warnView.alpha = 0;
+        coverView.alpha = 0;
+    } completion:^(BOOL finished) {
+        //        [coverView removeFromSuperview];
+    }];
+    return coverView;
+}
+
 
 -(void)createMiddleView
 {
@@ -137,6 +175,30 @@
     [self.takeView addSubview:deliverNumberTF];
 }
 
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    CGFloat offset = self.takeView.frame.size.height - (textField.frame.origin.y  + textField.frame.size.height +216+PX_TO_PT(100));
+    NSLog(@"====%f",offset);
+    if (offset<=0) {
+        [UIView animateWithDuration:0.3 animations:^{
+            CGRect frame = self.takeView.frame;
+            frame.origin.y = PX_TO_PT(300);
+            self.takeView.frame = frame;
+        }];
+    }
+    return YES;
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect frame = self.takeView.frame;
+        frame.origin.y = ScreenHeight-PX_TO_PT(882);
+        self.takeView.frame = frame;
+    }];
+    return  YES;
+}
+
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     self.deliverNumberTF.layer.borderColor = R_G_B_16(0xfe9b00).CGColor;
@@ -144,10 +206,22 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (self.deliverNumberTF.text.length>0) {
+//    self.deliverNumberTF.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+
+    if (self.deliverNumberTF.text.length == 7) {
         self.admireBtn.selected = YES;
+    }else{
+        self.admireBtn.selected = NO;
     }
 }
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (range.location >= 7)
+        return NO; // return NO to not change text
+    return YES;
+}
+
 
 
 -(void)createView
@@ -198,6 +272,11 @@
 
 -(void)show:(XNRRscOrderModel *)model
 {
+    if (_coverView == nil && _takeView == nil) {
+        [self createView];
+        [self createMiddleView];
+        [self createBottomView];
+    }
     _model = model;
     self.coverView.hidden = NO;
     [UIView animateWithDuration:0.3 animations:^{
@@ -211,7 +290,9 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.takeView.frame = CGRectMake(0, ScreenHeight, ScreenWidth, 0);
     } completion:^(BOOL finished) {
-        self.coverView.hidden = YES;
+//        self.coverView.hidden = YES;
+        [self.coverView removeFromSuperview];
+        [self.takeView removeFromSuperview];
     }];
     
 }

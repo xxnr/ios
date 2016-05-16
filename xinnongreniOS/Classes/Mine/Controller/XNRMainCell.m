@@ -37,7 +37,7 @@
 {
     if (_imgView == nil) {
         // 图标
-        self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(18), PX_TO_PT(60), PX_TO_PT(60))];
+        self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(14), PX_TO_PT(60), PX_TO_PT(60))];
         [self.bgView addSubview:_imgView];
         
     }
@@ -49,7 +49,7 @@
 {
     if (_titleLabel == nil) {
         // 主题
-        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(112), PX_TO_PT(18), ScreenWidth-PX_TO_PT(112), PX_TO_PT(60))];
+        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(112), PX_TO_PT(14), ScreenWidth-PX_TO_PT(112), PX_TO_PT(60))];
         self.titleLabel.textColor = R_G_B_16(0x323232);
         self.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         [self.bgView addSubview:_titleLabel];
@@ -62,7 +62,7 @@
 {
     if (_detailLabel == nil) {
         // 主题
-        self.detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(18), ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(60))];
+        self.detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14), ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(60))];
         self.detailLabel.textColor = R_G_B_16(0x00b38a);
         self.detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(26)];
         self.detailLabel.textAlignment = NSTextAlignmentRight;

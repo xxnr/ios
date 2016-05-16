@@ -34,4 +34,13 @@
     return _subOrders;
 }
 
+-(NSMutableArray *)SKUsDeliverFrame
+{
+    if (!_SKUsDeliverFrame) {
+        _SKUsDeliverFrame = [NSMutableArray array];
+    }
+    return _SKUsDeliverFrame;
+}
+
+
 @end

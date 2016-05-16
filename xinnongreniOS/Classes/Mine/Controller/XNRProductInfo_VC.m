@@ -20,6 +20,7 @@
 #import "XNRPropertyView.h"
 #import "XNRProductInfo_frame.h"
 #import "MWPhotoBrowser.h"
+#import "XNRProductInfo_VC.h"
 #define kLeftBtn  3000
 #define kRightBtn 4000
 #define HEIGHT 100
@@ -153,15 +154,6 @@
         [[XNRPropertyView sharedInstanceWithModel:self.model] changeSelfToIdentify];
     }
 }
--(void)viewDidAppear:(BOOL)animated{
-    
-    [super viewDidAppear:animated];
-}
-
--(void)viewDidDisappear:(BOOL)animated{
-    
-    [super viewDidDisappear:animated];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -217,7 +209,6 @@
     [[XNRPropertyView sharedInstanceWithModel:self.model] changeSelfToIdentify];
 
 }
-
 
 
 -(void)loadMoreData{
@@ -359,7 +350,10 @@
         [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_body_url]];
         [self.webView loadRequest:request];
-        [BMProgressView LoadViewDisappear:self.view];
+        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            [BMProgressView LoadViewDisappear:self.view];
+        });
         
     }else if (button.tag == KbtnTag + 1)
     {
@@ -370,8 +364,10 @@
         [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_standard_url]];
         [self.webView loadRequest:request];
-        [BMProgressView LoadViewDisappear:self.view];
-        
+        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            [BMProgressView LoadViewDisappear:self.view];
+        });
         self.tempLabel.textColor = R_G_B_16(0x646464);
         titleLabel.textColor = R_G_B_16(0x00b38a);
         self.tempLabel = titleLabel;
@@ -388,12 +384,12 @@
         [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_support_url]];
         [self.webView loadRequest:request];
-        [BMProgressView LoadViewDisappear:self.view];
-        
+        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            [BMProgressView LoadViewDisappear:self.view];
+        });
     }
 }
-
-
 
 -(void)createTableView:(NSMutableArray *)infoModelArray{
     _infoModelArray = infoModelArray;
@@ -409,10 +405,7 @@
 
 #pragma mark-获取网络数据
 -(void)getData {
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [KSHttpRequest post:KHomeGetAppProductDetails parameters:@{@"productId":_model.goodsId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-        
-        [BMProgressView LoadViewDisappear:self.view];
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dic =result[@"datas"];
             XNRProductInfo_model *model = [[XNRProductInfo_model alloc] init];
@@ -441,18 +434,12 @@
             
             [_goodsArray addObject:frame];
            
-//            [self createTableView:_goodsArray];
-            // 判断一下从主页还是从购物车进入的详情页（加载不同的视图）
-//            if (_isFrom) {
                 if ([model.online integerValue] == 0) {
                     [self createonlineView];
                 }else{
                     [self createBottomView];
 
                 }
-//            }else{
-//                [self createBottomView];
-//            }
 
             if ([dic[@"presale"] integerValue] == 1) {
                 
@@ -464,9 +451,10 @@
                 self.bgExpectView.hidden = YES;
             }
         }
+
         [self.tableView reloadData];
+        
     } failure:^(NSError *error) {
-        [BMProgressView LoadViewDisappear:self.view];
         
     }];
 }
@@ -543,7 +531,6 @@
     
     //加入购物车
      UIButton *addBuyCarBtn=[MyControl createButtonWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(2), ScreenWidth/2, PX_TO_PT(81)) ImageName:nil Target:self Action:@selector(addBuyCar) Title:@"加入购物车"];
-//    addBuyCarBtn.backgroundColor = R_G_B_16(0xfe9b00);
     [addBuyCarBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
     [addBuyCarBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
     [addBuyCarBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -560,17 +547,12 @@
 #pragma mark - 立即购买
 -(void)buyBtnClick
 {
-    NSLog(@"-==++++++===%@",self.propertyView);
-
     [self.propertyView show:XNRBuyType];
-    
 }
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
-    NSLog(@"-==------===%@",self.propertyView);
     [self.propertyView show:XNRAddCartType];
-    
 }
 #pragma 加减数量
 -(void)btnClick:(UIButton*)button{

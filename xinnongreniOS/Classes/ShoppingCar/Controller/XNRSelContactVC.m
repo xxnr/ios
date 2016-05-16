@@ -107,6 +107,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setNav];
+    currentPage = 1;
     [self createTableHeadView];
     [self createTableView];
     _consigneeArr = [NSMutableArray array];
@@ -116,7 +117,7 @@
 //获取收货人列表信息
 -(void)getData
 {
-    [KSHttpRequest get:KqueryConsignees parameters:@{@"userId":[DataCenter account].userid,@"page":[NSNumber numberWithInt:currentPage],@"max":@10} success:^(id result) {
+    [KSHttpRequest get:KqueryConsignees parameters:@{@"userId":[DataCenter account].userid,@"page":[NSNumber numberWithInt:currentPage],@"max":@20} success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             
             NSMutableArray *arr = (NSMutableArray *)[XNRConsigneeModel objectArrayWithKeyValuesArray:result[@"datas"][@"rows"]];
@@ -169,14 +170,10 @@
     [KSHttpRequest post:KsaveConsignees parameters:dic success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             
-            self.setRSCContactChoseBlock(self.currentModel);
-            [self.navigationController popViewControllerAnimated:YES];
-            
-        }
-        else
-        {
-            [UILabel showMessage:result[@"message"]];
-        }
+            }
+        self.setRSCContactChoseBlock(self.currentModel);
+        [self.navigationController popViewControllerAnimated:YES];
+        
     } failure:^(NSError *error) {
         
     }];
@@ -432,8 +429,8 @@
     self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
+    [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];

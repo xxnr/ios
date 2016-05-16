@@ -105,7 +105,6 @@
 #pragma mark - 刷新
 -(void)setupAllViewRefresh{
     
-    
     MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
     NSMutableArray *idleImage = [NSMutableArray array];
     
@@ -361,7 +360,7 @@
             [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
             [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
             [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
-            sectionFour.layer.cornerRadius = 5.0;
+            sectionFour.layer.cornerRadius = PX_TO_PT(10);
             sectionFour.layer.masksToBounds = YES;
             sectionFour.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             sectionFour.tag = section + 1000;
@@ -421,7 +420,7 @@
             seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
             [seePayInfoBtn setTitle:@"查看付款信息" forState:UIControlStateNormal];
             seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
-            seePayInfoBtn.layer.cornerRadius = 10.0;
+            seePayInfoBtn.layer.cornerRadius = PX_TO_PT(10);
             seePayInfoBtn.tag = section + 1000;
             seePayInfoBtn.layer.masksToBounds = YES;
             seePayInfoBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
@@ -433,7 +432,7 @@
             reviseBtn.backgroundColor = [UIColor whiteColor];
             [reviseBtn setTitle:@"修改付款方式" forState:UIControlStateNormal];
             [reviseBtn setTitleColor:R_G_B_16(0xFE9B00) forState:UIControlStateNormal];
-            reviseBtn.layer.cornerRadius = 10.0;
+            reviseBtn.layer.cornerRadius = PX_TO_PT(10);
             reviseBtn.layer.borderColor = [R_G_B_16(0xFE9B00) CGColor];
             reviseBtn.layer.borderWidth = PX_TO_PT(2);
             reviseBtn.layer.masksToBounds = YES;
@@ -493,7 +492,7 @@
             UIButton *makeSureBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
             makeSureBtn.backgroundColor = R_G_B_16(0xfe9b00);
             [makeSureBtn setTitle:@"确认收货" forState:UIControlStateNormal];
-            makeSureBtn.layer.cornerRadius = 5.0;
+            makeSureBtn.layer.cornerRadius = PX_TO_PT(10);
             makeSureBtn.layer.masksToBounds = YES;
             makeSureBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             makeSureBtn.tag = section + 1000;
@@ -551,8 +550,8 @@
             
             UIButton *holdNeckBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
             holdNeckBtn.backgroundColor = R_G_B_16(0xfe9b00);
-            [holdNeckBtn setTitle:@"待自提" forState:UIControlStateNormal];
-            holdNeckBtn.layer.cornerRadius = 5.0;
+            [holdNeckBtn setTitle:@"去自提" forState:UIControlStateNormal];
+            holdNeckBtn.layer.cornerRadius = PX_TO_PT(10);
             holdNeckBtn.layer.masksToBounds = YES;
             holdNeckBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             holdNeckBtn.tag = section + 1000;
@@ -686,7 +685,8 @@
     XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
     XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
     vc.orderID = sectionModel.orderId;
-    
+    vc.dueMoney = sectionModel.duePrice;
+
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:vc,@"payType", nil];
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"revisePayType" object:self userInfo:dic];

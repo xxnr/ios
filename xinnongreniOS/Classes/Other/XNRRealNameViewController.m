@@ -257,8 +257,8 @@ typedef enum{
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
+    [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchDown];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];

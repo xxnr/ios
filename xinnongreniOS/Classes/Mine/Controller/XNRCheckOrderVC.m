@@ -47,6 +47,8 @@
 @property (nonatomic,assign)BOOL ismakeSureBtm;
 @property (nonatomic,assign)CGFloat cellHeight;
 @property (nonatomic,strong)XNRRSCInfoModel *RSCInfoModel;
+@property (nonatomic,strong)NSMutableArray *proArr;
+@property (nonatomic,strong)XNRCarryVC *carryVC;
 @end
 
 @implementation XNRCheckOrderVC
@@ -57,6 +59,7 @@
     self.view.backgroundColor = R_G_B_16(0xf4f4f4);
     [self setNavigationbarTitle];
     _dataArray = [[NSMutableArray alloc]init];
+    _proArr = [[NSMutableArray alloc]init];
     //中部视图
     [self createMid];
     
@@ -99,9 +102,9 @@
     
     UIButton *seePayInfoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(120)-PX_TO_PT(31), PX_TO_PT(10), PX_TO_PT(120), PX_TO_PT(60))];
     seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
-    [seePayInfoBtn setTitle:@"待自提" forState:UIControlStateNormal];
+    [seePayInfoBtn setTitle:@"去自提" forState:UIControlStateNormal];
     seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
-    seePayInfoBtn.layer.cornerRadius = 10.0;
+    seePayInfoBtn.layer.cornerRadius = PX_TO_PT(10);
     seePayInfoBtn.layer.masksToBounds = YES;
     seePayInfoBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [seePayInfoBtn addTarget:self action:@selector(holdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -128,7 +131,7 @@
     seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
     [seePayInfoBtn setTitle:@"确认收货" forState:UIControlStateNormal];
     seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
-    seePayInfoBtn.layer.cornerRadius = 10.0;
+    seePayInfoBtn.layer.cornerRadius = PX_TO_PT(10);
     seePayInfoBtn.layer.masksToBounds = YES;
     seePayInfoBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [seePayInfoBtn addTarget:self action:@selector(makeSureBtn:) forControlEvents:UIControlEventTouchUpInside];
@@ -156,7 +159,7 @@
     seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
     [seePayInfoBtn setTitle:@"查看付款信息" forState:UIControlStateNormal];
     seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
-    seePayInfoBtn.layer.cornerRadius = 10.0;
+    seePayInfoBtn.layer.cornerRadius = PX_TO_PT(10);
     seePayInfoBtn.layer.masksToBounds = YES;
     seePayInfoBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [seePayInfoBtn addTarget:self action:@selector(seePayInfoBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -167,7 +170,7 @@
     reviseBtn.backgroundColor = [UIColor whiteColor];
     [reviseBtn setTitle:@"修改付款方式" forState:UIControlStateNormal];
     [reviseBtn setTitleColor:R_G_B_16(0xFE9B00) forState:UIControlStateNormal];
-    reviseBtn.layer.cornerRadius = 10.0;
+    reviseBtn.layer.cornerRadius = PX_TO_PT(10);
     reviseBtn.layer.borderColor = [R_G_B_16(0xFE9B00) CGColor];
     reviseBtn.layer.borderWidth = PX_TO_PT(2);
     reviseBtn.layer.masksToBounds = YES;
@@ -197,7 +200,7 @@
     [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
     [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
     [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
-    sectionFour.layer.cornerRadius = 5.0;
+    sectionFour.layer.cornerRadius = PX_TO_PT(10);
     sectionFour.layer.masksToBounds = YES;
     sectionFour.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -454,27 +457,61 @@
     XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
     XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
     vc.orderID = sectionModel.id;
-    
-    [self.navigationController pushViewController:vc animated:YES];
+    vc.dueMoney = sectionModel.duePrice;
+    vc.navigationItem.hidesBackButton = YES;
+    [self.navigationController pushViewController:vc animated:NO];
 }
+
 -(void)holdBtnClick:(UIButton *)sender
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     XNRCarryVC *vc=[[XNRCarryVC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
-    vc.orderId = self.model.orderId;
+    _carryVC = vc;
     
-    for (int i=0; i<self.model.skus.count; i++) {
-        
-        XNRMyOrderModel *model = self.model.skus[i];
-        if(model.deliverStatus == 4)
-        {
-            [vc.modelArr addObject:model];
-        }
+    if (self.model.orderId) {
+        _carryVC.orderId = self.model.orderId;
     }
-
-    [self.navigationController pushViewController:vc animated:NO];
+    else
+    {
+        _carryVC.orderId = self.orderID;
+    }
+        [self getOrderDetail];
     
+}
+
+-(void)getOrderDetail
+{
+    [self.proArr removeAllObjects];
+    [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            
+            XNRCheckOrderSectionModel *orderModel = [XNRCheckOrderSectionModel objectWithKeyValues:result[@"datas"][@"rows"]];
+            
+            for (int i=0; i<orderModel.SKUList.count; i++) {
+                XNRMyOrderModel *model = [[XNRMyOrderModel alloc]init];
+                XNRCheckOrderModel *checkModel = [XNRCheckOrderModel objectWithKeyValues:orderModel.SKUList[i]];
+                model.orderId = checkModel.goodsId;
+                
+                model.productName = checkModel.productName;
+                model.attributes = checkModel.attributes;
+                model.additions = checkModel.additions;
+                model.count = checkModel.count;
+                model.deliverStatus = [checkModel.deliverStatus integerValue];
+                
+                if(model.deliverStatus == 4)
+                {
+                    [_carryVC.modelArr addObject:model];
+                }
+            }
+            
+            [self.navigationController pushViewController:_carryVC animated:NO];
+        }
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+    }];
 
 }
 -(void)makeSureBtn:(UIButton *)sender
@@ -705,7 +742,7 @@
         [contactImageView setImage:[UIImage imageNamed:@"call-contact-0"]];
         [addressView addSubview:contactImageView];
         
-        UILabel *contactLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(contactImageView.frame)+PX_TO_PT(29),CGRectGetMaxY(addressLine.frame)+ PX_TO_PT(27), PX_TO_PT(500), PX_TO_PT(30))];
+        UILabel *contactLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(contactImageView.frame)+PX_TO_PT(29),CGRectGetMaxY(addressLine.frame)+ PX_TO_PT(27), PX_TO_PT(500), PX_TO_PT(34))];
         contactLabel.textColor = R_G_B_16(0x323232);
         contactLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         contactLabel.text = [NSString stringWithFormat:@"%@ %@",sectionModel.recipientName,sectionModel.recipientPhone];
@@ -853,7 +890,7 @@
         else if (indexPath.section == 0)
         {
             XRNSubOrdersModel *subOrderModel = sectionModel.subOrders[indexPath.row];
-            if (subOrderModel.payType == 1 || subOrderModel.payType == 2 || subOrderModel.payType == 3) {
+            if (subOrderModel.payType == 1 || subOrderModel.payType == 2 || subOrderModel.payType == 3|| subOrderModel.payType == 4|| subOrderModel.payType == 5) {
                 return PX_TO_PT(240);
             }
             else
@@ -940,8 +977,8 @@
     self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
+    [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
@@ -951,6 +988,12 @@
 }
 
 -(void)backClick{
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
     
     if ([self.presentingViewController isKindOfClass:[XNRNavigationController class]]) {
         [self dismissViewControllerAnimated:NO completion:nil];
@@ -962,7 +1005,6 @@
     }
     else
     {
-//        [self.navigationController popToRootViewControllerAnimated:YES];
         XNRMyOrder_VC *orderVC=[[XNRMyOrder_VC alloc]init];
         orderVC.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:orderVC animated:NO];

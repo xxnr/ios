@@ -639,4 +639,11 @@ static UIImage *animatedImageWithAnimatedGIFReleasingImageSource(CGImageSourceRe
     //    return  [UIImage imageWithCGImage:CGImageCreateWithImageInRect(self.CGImage, CGRectMake(x, y, width, height)) scale:0.8 orientation:UIImageOrientationUp];
 }
 
++ (UIImage *)resizedImage:(NSString *)name
+{
+    UIImage *image = [UIImage imageNamed:name];
+    return [image stretchableImageWithLeftCapWidth:image.size.width * 0.5 topCapHeight:image.size.height * 0.5];
+}
+
+
 @end

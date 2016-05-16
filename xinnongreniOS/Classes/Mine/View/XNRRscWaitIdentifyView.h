@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+@class XNRRscOrderModel;
+typedef void(^XNRRscWaitIdentifyViewBlock)(XNRRscOrderModel *model);
 
 @interface XNRRscWaitIdentifyView : UIView
+
+@property (nonatomic, weak) UITableView *tableView;
+
+@property (nonatomic, copy) XNRRscWaitIdentifyViewBlock com;
 
 @end

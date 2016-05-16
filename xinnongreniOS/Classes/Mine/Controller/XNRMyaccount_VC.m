@@ -35,6 +35,8 @@
 @property (nonatomic,weak) UIButton *pwdBtn;
 
 @property (nonatomic ,weak) UIButton *bottomBtn;
+@property (nonatomic ,weak) UIButton *addressManagerBtn;
+
 @property (nonatomic ,weak) UIButton *resignLoginBtn;
 
 
@@ -204,7 +206,7 @@
 }
 #pragma mark--中部视图
 -(void)createMid{
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(240), ScreenWidth, PX_TO_PT(88)*4)];
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(228), ScreenWidth, PX_TO_PT(88)*4)];
     self.bgView = bgView;
     [self.mainScrollView addSubview:bgView];
     
@@ -236,11 +238,11 @@
 
 
         //分割线
-        UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(0,PX_TO_PT(240)+i*PX_TO_PT(88), ScreenWidth, .5)];
+        UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(0,PX_TO_PT(228)+i*PX_TO_PT(88), ScreenWidth, .5)];
         line2.backgroundColor=R_G_B_16(0xc7c7c7);
         [self.mainScrollView addSubview:line2];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(240)+3*PX_TO_PT(88)+PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(228)+3*PX_TO_PT(88)+PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [self.mainScrollView addSubview:lineView];
 }
@@ -368,12 +370,14 @@
             if ([self.typeNum integerValue] == 5) {
                 [self createRscView];
                 self.bottomBtn.frame = CGRectMake(0, CGRectGetMaxY(self.RscBtn.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(88));
-                self.resignLoginBtn.frame = CGRectMake(PX_TO_PT(32),CGRectGetMaxY(self.bottomBtn.frame) + PX_TO_PT(100), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88));
+                self.addressManagerBtn.frame = CGRectMake(0, CGRectGetMaxY(self.bottomBtn.frame), ScreenWidth, PX_TO_PT(88));
+                //  self.resignLoginBtn.frame = CGRectMake(PX_TO_PT(32),CGRectGetMaxY(self.bottomBtn.frame) + PX_TO_PT(100), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88));
 
             }else{
-            self.bottomBtn.frame = CGRectMake(0, CGRectGetMaxY(self.bgView.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(88));
+                self.bottomBtn.frame = CGRectMake(0, CGRectGetMaxY(self.bgView.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(88));
+                self.addressManagerBtn.frame = CGRectMake(0, CGRectGetMaxY(self.bottomBtn.frame), ScreenWidth, PX_TO_PT(88));
                 [self.RscBtn removeFromSuperview];
-                self.resignLoginBtn.frame = CGRectMake(PX_TO_PT(32),CGRectGetMaxY(self.bottomBtn.frame) + PX_TO_PT(100), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88));
+//                self.resignLoginBtn.frame = CGRectMake(PX_TO_PT(32),CGRectGetMaxY(self.bottomBtn.frame) + PX_TO_PT(100), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88));
 
             }
 
@@ -494,11 +498,11 @@
     self.bottomBtn = bottomBtn;
     [self.mainScrollView addSubview:bottomBtn];
     
+    
     UIImageView *arrow3 = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.icon.frame)+PX_TO_PT(10), PX_TO_PT(30), PX_TO_PT(16), PX_TO_PT(28))];
     [arrow3 setImage:[UIImage imageNamed:@"arrow-1"]];
     [bottomBtn addSubview:arrow3];
 
-    
     UIButton *pwdBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [pwdBtn setImage:[UIImage imageNamed:@"my_password"] forState:UIControlStateNormal];
     pwdBtn.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(14), PX_TO_PT(45), PX_TO_PT(45));
@@ -511,19 +515,48 @@
     pwdLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [bottomBtn addSubview:pwdLabel];
     
+    
+    UIButton *addressManagerBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    addressManagerBtn.frame = CGRectMake(0, CGRectGetMaxY(bottomBtn.frame), ScreenWidth, PX_TO_PT(88));
+    addressManagerBtn.backgroundColor = [UIColor whiteColor];
+    [addressManagerBtn addTarget: self action:@selector(addressManagerBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    self.addressManagerBtn = addressManagerBtn;
+    [self.mainScrollView addSubview:addressManagerBtn];
+    
+    
+    UIImageView *arrowAddress = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.icon.frame)+PX_TO_PT(10), PX_TO_PT(30), PX_TO_PT(16), PX_TO_PT(28))];
+    [arrowAddress setImage:[UIImage imageNamed:@"arrow-1"]];
+    [addressManagerBtn addSubview:arrowAddress];
+    
+    UIButton *addressBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addressBtn setImage:[UIImage imageNamed:@"my_password"] forState:UIControlStateNormal];
+    addressBtn.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(14), PX_TO_PT(45), PX_TO_PT(45));
+    //    self.addressBtn = addressBtn;
+    [addressManagerBtn addSubview:addressBtn];
+    
+    UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.nickNameBtn.frame) + margin, PX_TO_PT(14), ScreenWidth/2, PX_TO_PT(60))];
+    addressLabel.text = @"地址管理";
+    addressLabel.textColor = R_G_B_16(0x323232);
+    addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    [addressManagerBtn addSubview:addressLabel];
+
     UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth,PX_TO_PT(1))];
     topLine.backgroundColor=R_G_B_16(0xc7c7c7);
     [bottomBtn addSubview:topLine];
     
-    UIView*bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
+    UIView *middleLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+    middleLine.backgroundColor=R_G_B_16(0xc7c7c7);
+    [bottomBtn addSubview:middleLine];
+    
+    UIView *bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(176), ScreenWidth, PX_TO_PT(1))];
     bottomLine.backgroundColor=R_G_B_16(0xc7c7c7);
     [bottomBtn addSubview:bottomLine];
-    
+
     
     UIButton *resignLoginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     resignLoginBtn.layer.cornerRadius = 5.0;
     resignLoginBtn.layer.masksToBounds = YES;
-    resignLoginBtn.frame = CGRectMake(PX_TO_PT(32),CGRectGetMaxY(bottomBtn.frame) + PX_TO_PT(100), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88));
+    resignLoginBtn.frame = CGRectMake(PX_TO_PT(32),ScreenHeight-64-PX_TO_PT(122), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88));
     [resignLoginBtn setTitle:@"退出登录" forState:UIControlStateNormal];
     [resignLoginBtn setTitleColor:R_G_B_16(0xffffff) forState:UIControlStateNormal];
     [resignLoginBtn setBackgroundColor:R_G_B_16(0x00b38a)];
@@ -533,6 +566,11 @@
     [resignLoginBtn addTarget:self action:@selector(resignLoginBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.mainScrollView addSubview:resignLoginBtn];
    
+}
+
+-(void)addressManagerBtnClick
+{
+
 }
 #pragma mark - 退出当前账号
 -(void)resignLoginBtnClick
@@ -598,7 +636,6 @@
  */
 - (void)cropViewController:(PECropViewController *)controller didFinishCroppingImage:(UIImage *)croppedImage
 {
-//    [SVProgressHUD showWithStatus:@"正在上传请稍后..." maskType:SVProgressHUDMaskTypeBlack];
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [controller dismissViewControllerAnimated:YES completion:NULL];
     NSString *userId = [DataCenter account].userid;
@@ -610,7 +647,6 @@
             [KSHttpRequest post:KUserModify parameters:@{@"userPhoto":result[@"imageUrl"],@"user-agent":@"IOS-v2.0"} success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
                     
-                    [BMProgressView LoadViewDisappear:self.view];
                     [UILabel showMessage:@"头像上传成功"];
                     [_icon setImage:croppedImage forState:UIControlStateNormal];
                 }
@@ -690,8 +726,8 @@
     self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
+    [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];

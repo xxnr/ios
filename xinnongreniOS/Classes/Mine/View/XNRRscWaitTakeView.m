@@ -13,6 +13,7 @@
 #import "XNRRscOrderModel.h"
 #import "XNRRscSkusFrameModel.h"
 #import "XNRRscConfirmDeliverView.h"
+#import "XNRRscFootFrameModel.h"
 #define MAX_PAGE_SIZE 10
 
 @interface XNRRscWaitTakeView()<UITableViewDelegate,UITableViewDataSource>
@@ -51,9 +52,19 @@
         [self getData];
         [self createView];
         [self setupAllViewRefresh];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTakeTableView) name:@"refreshTableView" object:nil];
         
     }
     return self;
+}
+
+-(void)refreshTakeTableView
+{
+    [self headRefresh];
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - 刷新
@@ -110,6 +121,7 @@
 }
 -(void)headRefresh{
     _currentPage = 1;
+    [_dataFrameArray removeAllObjects];
     [_dataArray removeAllObjects];
     [self getData];
     
@@ -124,7 +136,7 @@
 
 -(void)getData
 {
-    NSDictionary *params = @{@"type":@"4",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE]};
+    NSDictionary *params = @{@"type":@"4",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"token":[DataCenter account].token};
     [KSHttpRequest get:KRscOrders parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *ordersArray = result[@"orders"];
@@ -153,6 +165,10 @@
                     [sectionModel.SKUsFrame addObject:frameModel];
                 }
                 [_dataArray addObject:sectionModel];
+                
+                XNRRscFootFrameModel *footModel = [[XNRRscFootFrameModel alloc] init];
+                footModel.model = sectionModel;
+                [_dataFrameArray addObject:footModel];
             }
             [self.tableView reloadData];
         }
@@ -164,7 +180,7 @@
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         
-        
+        [self.tableView reloadData];
         
     } failure:^(NSError *error) {
         
@@ -206,7 +222,8 @@
     if (_dataArray.count>0) {
         XNRRscSectionFootView *sectionFootView = [[XNRRscSectionFootView alloc] init];
         XNRRscOrderModel *sectionModel = _dataArray[section];
-        [sectionFootView upDataHeadViewWithModel:sectionModel];
+        XNRRscFootFrameModel*footFrameModel = _dataFrameArray[section];
+        [sectionFootView upDataFootViewWithModel:footFrameModel];
         sectionFootView.com = ^{
             [self.deliverView show:sectionModel andType:isFromTakeController];
         };
@@ -229,44 +246,13 @@
 // 段尾高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    XNRRscOrderModel *sectionModel = _dataArray[section];
-    
-    if ([sectionModel.type integerValue] == 2) {
+    if (_dataFrameArray.count>0) {
+        XNRRscFootFrameModel *frameModel = _dataFrameArray[section];
+        return frameModel.footViewHeight;
         
-        return PX_TO_PT(196);
-        
-    }else if ([sectionModel.type integerValue] == 4){
-        
-        for (XNRRscSkusModel *model in sectionModel.SKUs) {
-            if ([model.deliverStatus integerValue] == 4) {
-                return PX_TO_PT(196);
-            }else{
-                return PX_TO_PT(108);
-            }
-        }
-        
-    }else if ([sectionModel.type integerValue] == 5){
-        return PX_TO_PT(196);
-
-//        for (XNRRscSkusModel *model in sectionModel.SKUs) {
-//            if ([model.deliverStatus integerValue] == 4) {
-//                return PX_TO_PT(196);
-//            }else{
-//                return PX_TO_PT(108);
-//            }
-//        }
-
-        
-    }else if ([sectionModel.type integerValue] == 6){
-        for (XNRRscSkusModel *model in sectionModel.SKUs) {
-            if ([model.deliverStatus integerValue] == 4) {
-                return PX_TO_PT(196);
-            }else{
-                return PX_TO_PT(108);
-            }
-        }
+    }else{
+        return 0;
     }
-    return PX_TO_PT(108);
     
 }
 
@@ -302,7 +288,12 @@
 //cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    if (_dataArray.count>0) {
+        XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
+        if (self.com) {
+            self.com(sectionModel);
+        }
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -313,9 +304,7 @@
         XNRRscSkusFrameModel *skuModel = sectionModel.SKUsFrame[indexPath.row];
         cell.frameModel = skuModel;
     }
-    
     return cell;
-    
 }
 
 

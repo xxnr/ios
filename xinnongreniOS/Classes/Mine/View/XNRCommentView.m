@@ -217,6 +217,8 @@
                 NSDictionary *orderStatus = orders[@"orderStatus"];
                 sectionModel.type = [orderStatus[@"type"] integerValue];
                 sectionModel.value = orderStatus[@"value"];
+                sectionModel.deliveryType = orders[@"deliveryType"][@"type"];
+                sectionModel.deliveryValue =orders[@"deliveryType"][@"value"];
                 
                 sectionModel.products = (NSMutableArray *)[XNRMyOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
                 
@@ -346,14 +348,29 @@
         bottomView.backgroundColor = [UIColor whiteColor];
         [self addSubview:bottomView];
         
-                
+        UILabel *deliveryLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(31), PX_TO_PT(0), ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
+        deliveryLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+        deliveryLabel.text = sectionModel.deliveryValue;
+        [bottomView addSubview:deliveryLabel];
+  
         UILabel *totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
         totalPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         totalPriceLabel.textAlignment = NSTextAlignmentRight;
-        totalPriceLabel.text = [NSString stringWithFormat:@"总计：￥%.2f",sectionModel.totalPrice.doubleValue];
+        totalPriceLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",sectionModel.totalPrice.doubleValue];
         [bottomView addSubview:totalPriceLabel];
         
+        NSMutableAttributedString *AttributedStringPrice = [[NSMutableAttributedString alloc]initWithString:totalPriceLabel.text];
+        NSDictionary *priceStr=@{
+                                 
+                                 NSForegroundColorAttributeName:R_G_B_16(0xff4e00)
+                                 
+                                 };
         
+        [AttributedStringPrice addAttributes:priceStr range:NSMakeRange(3,AttributedStringPrice.length-3)];
+        
+        [totalPriceLabel setAttributedText:AttributedStringPrice];
+        
+
         UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(20))];
         sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
         [bottomView addSubview:sectionView];

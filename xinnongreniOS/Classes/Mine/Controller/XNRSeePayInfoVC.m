@@ -110,7 +110,7 @@
     
     //付款状态
     UILabel *statusLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(0), PX_TO_PT(84), ScreenWidth - PX_TO_PT(33), PX_TO_PT(26))];
-    statusLabel.textAlignment = UITextAlignmentRight;
+    statusLabel.textAlignment = NSTextAlignmentRight;
     statusLabel.textColor = R_G_B_16(0xFE9B00);
     
     //付款状态
@@ -191,7 +191,7 @@
     XNRPayInfoModel *model = [[XNRPayInfoModel alloc]init];
     [model setValuesForKeysWithDictionary:self.model.payments[indexPath.row]];
     
-    if (model.payType == 1 || model.payType == 2 || model.payType == 3) {
+    if (model.payType == 1 || model.payType == 2 || model.payType == 3|| model.payType == 4|| model.payType == 5) {
         return PX_TO_PT(223);
     }
     else
@@ -211,8 +211,8 @@
     self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
+    [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
