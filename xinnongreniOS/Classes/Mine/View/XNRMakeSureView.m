@@ -61,7 +61,7 @@
         XNRMyOrderModel *model = self.modelArr[i];
         [arr addObject:model.ref];
     }
-    NSDictionary *params = @{@"orderId":self.orderId,@"SKURefs":arr,@"user-agent":@"IOS-v2.0"};
+    NSDictionary *params = @{@"orderId":self.orderId,@"SKURefs":arr,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     
     [manager POST:KconfirmSKUReceived parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -146,9 +146,8 @@
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     
-    NSDictionary *dic = @{@"orderId":self.orderId,@"SKURefs":self.selProArr};
+    NSDictionary *dic = @{@"orderId":self.orderId,@"SKURefs":self.selProArr,@"token":[DataCenter account].token,};
     [manager POST:KconfirmSKUReceived parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;

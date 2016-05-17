@@ -98,7 +98,7 @@
 
 -(void)getRSCData
 {
-    [KSHttpRequest get:KRscInfoGet parameters:@{@"token":[DataCenter account].token} success:^(id result) {
+    [KSHttpRequest get:KRscInfoGet parameters:nil success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"RSCInfo"];
@@ -180,6 +180,7 @@
     nameTF.placeholder = @"请填写真实姓名";
     nameTF.textColor = R_G_B_16(0x646464);
     [nameTF setValue:R_G_B_16(0x909090) forKeyPath:@"_placeholderLabel.textColor"];
+    nameTF.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.nameTF = nameTF;
     nameTF.delegate = self;
     [self.view addSubview:nameTF];
@@ -187,6 +188,7 @@
     UITextField *idCardNumTF = [[UITextField alloc] initWithFrame:CGRectMake(PX_TO_PT(200), margin+PX_TO_PT(88), ScreenWidth-PX_TO_PT(200), PX_TO_PT(88))];
     idCardNumTF.textColor = R_G_B_16(0x646464);
     idCardNumTF.placeholder = @"请填写身份证号";
+    idCardNumTF.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     idCardNumTF.delegate = self;
     [idCardNumTF setValue:R_G_B_16(0x909090) forKeyPath:@"_placeholderLabel.textColor"];
     self.idCardNumTF = idCardNumTF;
@@ -196,6 +198,7 @@
     storeNameTF.textColor = R_G_B_16(0x646464);
     storeNameTF.delegate = self;
     storeNameTF.placeholder = @"请填写您的门店名称";
+    storeNameTF.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [storeNameTF setValue:R_G_B_16(0x909090) forKeyPath:@"_placeholderLabel.textColor"];
     self.storeNameTF = storeNameTF;
     [self.view addSubview:storeNameTF];
@@ -203,6 +206,7 @@
     UITextField *phoneNumTF = [[UITextField alloc] initWithFrame:CGRectMake(PX_TO_PT(200), margin+PX_TO_PT(88)*3, ScreenWidth-PX_TO_PT(200), PX_TO_PT(88))];
     phoneNumTF.textColor = R_G_B_16(0x646464);
     phoneNumTF.placeholder = @"请填写负责人手机号";
+    phoneNumTF.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     phoneNumTF.delegate = self;
     [phoneNumTF setValue:R_G_B_16(0x909090) forKeyPath:@"_placeholderLabel.textColor"];
     self.phoneNumTF = phoneNumTF;
@@ -365,7 +369,7 @@
         }else{
             addressDic = @{@"province":self.provinceID,@"city":self.cityID,@"county":self.countyID,@"town":self.townID,@"details":self.detailAddressTF.text};
         }
-        NSDictionary *params = @{@"name":self.nameTF.text,@"IDNo":self.idCardNumTF.text,@"companyName":self.storeNameTF.text,@"companyAddress":addressDic,@"phone":self.phoneNumTF.text,@"user-agent":@"IOS-v2.0"};
+        NSDictionary *params = @{@"name":self.nameTF.text,@"IDNo":self.idCardNumTF.text,@"companyName":self.storeNameTF.text,@"companyAddress":addressDic,@"phone":self.phoneNumTF.text,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         manager.requestSerializer=[AFJSONRequestSerializer serializer];//申明请求的数据是json类型

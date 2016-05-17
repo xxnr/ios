@@ -397,12 +397,26 @@
     // 商品描述
     self.descriptionLabel.text = [NSString stringWithFormat:@"%@",self.model.Desc];
     
-    
+    NSString *minStr = [NSString stringWithFormat:@"%@",self.model.min];
+    NSString *maxStr = [NSString stringWithFormat:@"%@",self.model.max];
+
     if ([self.model.min doubleValue]== [self.model.max doubleValue]) {
-        self.priceLabel.text = [NSString stringWithFormat:@"￥%@",self.model.min];
+        if ([minStr rangeOfString:@"."].location != NSNotFound) {
+            self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.min.doubleValue];
+        }else{
+            self.priceLabel.text = [NSString stringWithFormat:@"￥%.f",self.model.min.doubleValue];
+        }
 
     }else{
-        self.priceLabel.text = [NSString stringWithFormat:@"￥%@ - %@",self.model.min,self.model.max];
+        if ([minStr rangeOfString:@"."].location != NSNotFound || [maxStr rangeOfString:@"."].location != NSNotFound) {
+              self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f - %.2f",self.model.min.doubleValue,self.model.max.doubleValue];
+        }else{
+              self.priceLabel.text = [NSString stringWithFormat:@"￥%.f - %.f",self.model.min.doubleValue,self.model.max.doubleValue];
+        }
+    }
+    
+    if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
+        self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
     }
     
     if ([_model.online integerValue] != 0 || _model.online == nil) {

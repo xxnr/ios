@@ -147,7 +147,9 @@
     if (_dataArr.count>0) {
         XNRAddressManageModel *model = _dataArr[0];
         model.selected = YES;
-        self.addressChoseBlock(model);
+        if (self.addressChoseBlock) {
+            self.addressChoseBlock(model);
+        }
         [self.addressManageTableView reloadData];
     }else{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"initNOAddressView" object:nil];

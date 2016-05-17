@@ -14,6 +14,8 @@
 #import "XNRRscSkusFrameModel.h"
 #import "XNRRscConfirmDeliverView.h"
 #import "XNRRscFootFrameModel.h"
+#import "XNRRscNoOrderView.h"
+
 #define MAX_PAGE_SIZE 10
 
 @interface XNRRscWaitTakeView()<UITableViewDelegate,UITableViewDataSource>
@@ -28,9 +30,23 @@
 
 @property (nonatomic, weak) XNRRscConfirmDeliverView *deliverView;
 
+@property (nonatomic, weak) XNRRscNoOrderView *noOrderView;
+
+
 @end
 
 @implementation XNRRscWaitTakeView
+
+-(XNRRscNoOrderView *)noOrderView
+{
+    if (!_noOrderView) {
+        XNRRscNoOrderView *noOrderView = [[XNRRscNoOrderView  alloc] init];
+        self.noOrderView = noOrderView;
+        [self addSubview:noOrderView];
+    }
+    return _noOrderView;
+    
+}
 
 -(XNRRscConfirmDeliverView *)deliverView
 {
@@ -136,7 +152,7 @@
 
 -(void)getData
 {
-    NSDictionary *params = @{@"type":@"4",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"token":[DataCenter account].token};
+    NSDictionary *params = @{@"type":@"4",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE]};
     [KSHttpRequest get:KRscOrders parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *ordersArray = result[@"orders"];
@@ -173,6 +189,11 @@
             [self.tableView reloadData];
         }
         
+        if (_dataArray.count == 0) {
+            [self noOrderView];
+        }
+
+        
         //  如果到达最后一页 就消除footer
         NSInteger page = [result[@"pageCount"] integerValue];
         self.tableView.mj_footer.hidden = page == _currentPage;
@@ -189,7 +210,7 @@
 
 -(void)createView
 {
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(120)) style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(100)) style:UITableViewStyleGrouped];
     tableView.backgroundColor = [UIColor clearColor];
     tableView.showsVerticalScrollIndicator = YES;
     tableView.delegate = self;

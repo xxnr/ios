@@ -167,7 +167,7 @@
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     
-    NSDictionary *params = @{@"userId":[DataCenter account].userid,@"SKUs":self.dataArray,@"user-agent":@"IOS-v2.0"};
+    NSDictionary *params = @{@"userId":[DataCenter account].userid,@"SKUs":self.dataArray,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     
     [manager POST:KGetDeliveries parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -236,7 +236,7 @@
 
 -(void)getRSCWebSiteData
 {
-    [KSHttpRequest get:KgetRSC parameters:@{@"products":[self GetProId],@"province":@"",@"city":@"",@"county":@""} success:^(id result)
+    [KSHttpRequest get:KgetRSC parameters:@{@"products":[self GetProId],@"province":@"",@"city":@"",@"county":@"",@"token":[DataCenter account].token} success:^(id result)
      {
          if ([result[@"code"]integerValue] == 1000) {
              _webSiteArr = (NSMutableArray *)[XNRRSCModel objectArrayWithKeyValuesArray:result[@"RSCs"]];
@@ -281,7 +281,7 @@
     [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
-    NSDictionary *params = @{@"SKUs":self.dataArray,@"user-agent":@"IOS-v2.0"};
+    NSDictionary *params = @{@"SKUs":self.dataArray,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
 
     [manager POST:KGetShoppingCartOffline parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [_dataArr removeAllObjects];
@@ -1236,7 +1236,7 @@
             return;
         }
 
-        params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"deliveryType":[NSNumber numberWithInt:_deliveryType],@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"RSCId":self.RSCId?self.RSCId:@"",@"consigneePhone":self.consigneePhone,@"consigneeName":self.consigneeName,@"SKUs":self.dataArray,@"token":[DataCenter account].token,@"payType":@"1",@"user-agent":@"IOS-v2.0"};
+        params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"deliveryType":[NSNumber numberWithInt:_deliveryType],@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"RSCId":self.RSCId?self.RSCId:@"",@"consigneePhone":self.consigneePhone,@"consigneeName":self.consigneeName,@"SKUs":self.dataArray,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"payType":@"1",@"user-agent":@"IOS-v2.0"};
 
     }
     else
@@ -1247,10 +1247,7 @@
         }
         
 
-        params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"SKUs":self.dataArray,@"token":[DataCenter account].token,@"payType":@"1",@"user-agent":@"IOS-v2.0"};
-
-
-//        params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"RSCId":self.RSCId?self.RSCId:@"",@"SKUs":self.dataArray,@"token":[DataCenter account].token,@"payType":@"1",@"user-agent":@"IOS-v2.0"};
+        params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"SKUs":self.dataArray,@"payType":@"1",@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -1260,8 +1257,6 @@
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     [manager POST:KAddOrder parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;

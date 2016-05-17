@@ -78,7 +78,7 @@
                     [refArray addObject:model.ref];
                 }
             }
-            NSDictionary *params = @{@"orderId":_model._id,@"code":self.deliverNumberTF.text,@"SKURefs":refArray};
+            NSDictionary *params = @{@"orderId":_model._id,@"code":self.deliverNumberTF.text,@"SKURefs":refArray,@"token":[DataCenter account].token?[DataCenter account].token:@""};
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             manager.responseSerializer = [AFHTTPResponseSerializer serializer];
             manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -101,7 +101,7 @@
                     
                 }else if([resultObj[@"code"] integerValue] == 1429){
                     [self cancel];
-                    [UILabel showMessage:@"您输入错误次数较多，请1分钟后再操作"];
+                    [UILabel showMessage:@"您输入错误次数较多，请一分钟后再试"];
 
                 }else{
                     [UILabel showMessage:@"自提码错误，请重新输入"];

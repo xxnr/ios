@@ -103,7 +103,7 @@
                     [refArray addObject:model.ref];
                 }
             }
-            NSDictionary *params = @{@"orderId":_model._id,@"SKURefs":refArray};
+            NSDictionary *params = @{@"orderId":_model._id,@"SKURefs":refArray,@"token":[DataCenter account].token?[DataCenter account].token:@""};
             
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -125,11 +125,11 @@
                     [self setWarnViewTitle:@"配送成功"];
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
                     
-                }
-//                else{
-//                    [self cancel];
+                }else{
+                    [self cancel];
+                    [UILabel showMessage:resultObj[@"message"]];
 //                    [self setWarnViewTitle:@"请稍后再试"];
-//                }
+                }
                 
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

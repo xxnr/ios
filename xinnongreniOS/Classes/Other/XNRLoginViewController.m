@@ -439,7 +439,7 @@
     for (NSDictionary *dict in model.additions) {
         [addtionsArray addObject:dict[@"ref"]];
     }
-    NSDictionary *params = @{@"SKUId":model._id?model._id:@"",@"userId":[DataCenter account].userid,@"quantity":model.num,@"additions":addtionsArray,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
+    NSDictionary *params = @{@"SKUId":model._id?model._id:@"",@"userId":[DataCenter account].userid,@"quantity":model.num,@"additions":addtionsArray,@"update_by_add":@"true",@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     NSLog(@"--=0=9%@",params);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -450,8 +450,6 @@
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     
     [manager POST:KAddToCart parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;

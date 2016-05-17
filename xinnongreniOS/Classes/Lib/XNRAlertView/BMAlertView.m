@@ -140,25 +140,28 @@
 -(void)chooseBtnClicked:(UIButton *)btn
 {
     self.chooseBlock(btn);
-    [_cover removeFromSuperview];
+    [UIView animateWithDuration:0.5 animations:^{
+        _cover.alpha = 0;
+    } completion:^(BOOL finished) {
+        [_cover removeFromSuperview];
+    }];
 }
 
 -(void)cancelClicked
 {
     [_cover removeFromSuperview];
+
 }
 
 -(void)BMAlertShow
 {
     BMCover *cover = [BMCover coverShowWithView:self];
     _cover = cover;
-    
     self.center = CGPointMake(BYWindow.width/2, BYWindow.height/2);
-
     [cover addSubview:self];
     
-    
     [BYWindow addSubview:cover];
+
 }
 -(void)BmAlertDisappear
 {

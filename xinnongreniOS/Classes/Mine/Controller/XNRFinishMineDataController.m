@@ -415,7 +415,7 @@
         NSDictionary *addressDict = @{@"provinceId":self.provinceID?self.provinceID:@"",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@""};
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
-        [dic setObject:[DataCenter account].token forKey:@"token"];
+        [dic setObject:[DataCenter account].token?[DataCenter account].token:@"" forKey:@"token"];
         [dic setObject:[DataCenter account].userid forKey:@"userId"];
         [dic setObject:addressDict forKey:@"address"];
         [dic setObject:self.nameTf.text forKey:@"userName"];

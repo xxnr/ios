@@ -137,6 +137,7 @@
     UITextField *recivePersonTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.recivePerson.frame), y, ScreenWidth-w, h)];
     recivePersonTF.placeholder = @"请输入收货人姓名";
     recivePersonTF.textColor = R_G_B_16(0x909090);
+    [recivePersonTF setValue:R_G_B_16(0x909090) forKeyPath:@"_placeholderLabel.textColor"];
     recivePersonTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     recivePersonTF.text = self.model.receiptPeople;
     recivePersonTF.delegate = self;
@@ -154,6 +155,7 @@
     UITextField *phoneNumTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.phoneNum.frame), PX_TO_PT(96)+MARGIN, ScreenWidth-w, h)];
     phoneNumTF.placeholder = @"请输入收货人电话";
     phoneNumTF.textColor = R_G_B_16(0x909090);
+    [phoneNumTF setValue:R_G_B_16(0x909090) forKeyPath:@"_placeholderLabel.textColor"];
     phoneNumTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     phoneNumTF.keyboardType = UIKeyboardTypePhonePad;
     phoneNumTF.text = self.model.receiptPhone;
@@ -184,7 +186,6 @@
             
             addressLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.areaName,_model.cityName,_model.countyName];
         }else{
-            
             UserInfo *info = [DataCenter account];
             info.cityID = self.model.cityId;
             [DataCenter saveAccount:info];
@@ -192,7 +193,6 @@
         }
     }else{
         addressLabel.text = @"请选择地区";
- 
     }
 
     self.addressLabel = addressLabel;
@@ -235,6 +235,7 @@
     UITextField *detailAddressTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.detailAddress.frame), PX_TO_PT(96)*4+MARGIN, ScreenWidth-w, h)];
     detailAddressTF.placeholder = @"不必重复填写省市区信息";
     detailAddressTF.textColor = R_G_B_16(0x909090);
+    [detailAddressTF setValue:R_G_B_16(0x909090) forKeyPath:@"_placeholderLabel.textColor"];
     detailAddressTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     detailAddressTF.text = self.model.address;
     detailAddressTF.delegate = self;
@@ -253,6 +254,7 @@
     UITextField *emailTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.eMail.frame), PX_TO_PT(96)*5+MARGIN, ScreenWidth-w, h)];
     emailTF.placeholder = @"(选填)请输入邮政编码";
     emailTF.textColor = R_G_B_16(0x909090);
+    [emailTF setValue:R_G_B_16(0x909090) forKeyPath:@"_placeholderLabel.textColor"];
     emailTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     emailTF.tag = textFieldTag + 3;
     emailTF.delegate = self;
@@ -286,9 +288,7 @@
 
         }else{
             weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
-
         }
-        
         weakSelf.provinceID = provinceID;
         weakSelf.cityID  = cityId;
         weakSelf.countyID = countyId;

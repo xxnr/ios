@@ -123,7 +123,7 @@
 }
 -(void)getMinPayPrice
 {
-    [KSHttpRequest post:KgetMinPayPrice parameters:@{@"token":[DataCenter account].token,@"orderId":self.orderID} success:^(id result) {
+    [KSHttpRequest post:KgetMinPayPrice parameters:@{@"orderId":self.orderID} success:^(id result) {
         if ([result[@"code"] doubleValue] == 1000) {
             
             if (result[@"payprice"] != nil) {
@@ -156,7 +156,11 @@
                 XNRoffthestocksVC *vc=[[XNRoffthestocksVC alloc]init];
                 vc.orderID = self.orderID;
                 vc.hidesBottomBarWhenPushed=YES;
+<<<<<<< HEAD
+                [self.navigationController pushViewController:vc animated:YES];
+=======
                 [self.navigationController pushViewController:vc animated:NO];
+>>>>>>> ynn_ios
                 
                 return ;
             }
