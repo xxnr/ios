@@ -191,7 +191,6 @@
     XNRMyOrderModel *model = self.orderFrame.orderModel;
     _info = model;
     
-    
     NSLog(@"attributesArray%@",_attributesArray);
     
     // 图片
@@ -252,5 +251,7 @@
     // 尾款
     self.remainPriceLabel.text = [NSString stringWithFormat:@"¥%.2f",(_info.price.doubleValue + totalPrice - _info.deposit.doubleValue) * count];
     
+//    self.remainPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",(self.model.price.doubleValue+totalPrice - self.model.deposit.doubleValue) * [_model.count doubleValue]];
+
 }
 @end

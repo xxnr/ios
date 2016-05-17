@@ -450,7 +450,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellID = @"cell";
-    
     XNRMyOrderServe_Cell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell)
     {
@@ -459,9 +458,13 @@
     }
         
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [cell.addtionsArray removeAllObjects];
+    [cell.attributesArray removeAllObjects];
+
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
+
         if (sectionModel.skus.count>0) {
             XNRMyOrderModel *model = sectionModel.skus[indexPath.row];
             cell.attributesArray = model.attributes;
