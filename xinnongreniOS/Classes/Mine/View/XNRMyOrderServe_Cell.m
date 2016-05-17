@@ -171,11 +171,7 @@
 {
     _orderFrame = orderFrame;
     [self setupData];
-
     [self setupFrame];
-
-    
-    
 }
 
 -(void)setupFrame
@@ -204,7 +200,6 @@
 {
     XNRMyOrderModel *model = self.orderFrame.orderModel;
     _info = model;
-    
     
     NSLog(@"attributesArray%@",_attributesArray);
     
@@ -248,11 +243,6 @@
     // 附加选项价格
     self.addtionPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",totalPrice];
 
-//    if ([self.addtionsLabel.text isEqualToString:@"附加项目:"]) {
-//        self.addtionsLabel.hidden = YES;
-//        self.addtionPriceLabel.hidden = YES;
-//
-//    }
     // 价格
     self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",_info.price.doubleValue];
     

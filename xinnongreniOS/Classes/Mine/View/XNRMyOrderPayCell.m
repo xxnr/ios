@@ -222,8 +222,6 @@
     }else{
         self.goodsNameLabel.text = _info.name;
     }
-
-    
     // 属性
     NSMutableString *displayStr = [[NSMutableString alloc] initWithString:@""];
     for (NSDictionary *subDic in _attributesArray) {

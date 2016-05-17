@@ -592,7 +592,8 @@
         cell = [[XNRMyOrderPayCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
         
     }
-    
+    cell.attributesArray  = [NSMutableArray array];
+    cell.addtionsArray  = [NSMutableArray array];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     cell.attributesArray = [NSMutableArray array];

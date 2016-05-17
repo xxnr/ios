@@ -201,7 +201,6 @@
      [self.scrollView setContentOffset:CGPointMake((ScreenWidth+PX_TO_PT(20))*(button.tag-KtitleBtn),0) animated:NO];
     if (button.tag == KtitleBtn) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
-        
     }else if (button.tag == KtitleBtn +1){
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
 
