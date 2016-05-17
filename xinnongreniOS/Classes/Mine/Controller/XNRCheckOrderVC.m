@@ -459,11 +459,7 @@
     vc.orderID = sectionModel.id;
     vc.dueMoney = sectionModel.duePrice;
     vc.navigationItem.hidesBackButton = YES;
-<<<<<<< HEAD
-    [self.navigationController pushViewController:vc animated:NO];
-=======
     [self.navigationController pushViewController:vc animated:YES];
->>>>>>> ynn_ios
 }
 
 -(void)holdBtnClick:(UIButton *)sender
