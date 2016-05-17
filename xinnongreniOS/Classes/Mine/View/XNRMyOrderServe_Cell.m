@@ -39,6 +39,7 @@
 
 @end
 @implementation XNRMyOrderServe_Cell
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -49,7 +50,20 @@
     }
     return self;
 }
-
+//-(NSMutableArray *)attributesArray
+//{
+//    if (!_attributesArray) {
+//        _attributesArray = [NSMutableArray array];
+//    }
+//    return _attributesArray;
+//}
+//-(NSMutableArray *)addtionsArray
+//{
+//    if (!_addtionsArray) {
+//        _addtionsArray = [NSMutableArray array];
+//    }
+//    return _addtionsArray;
+//}
 - (void)createTopView
 {
 

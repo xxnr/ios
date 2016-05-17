@@ -1020,6 +1020,10 @@
 
 - (void)backClick:(UIButton *)btn
 {
+    if ([self.fromType isEqualToString:@"orderList"]) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
     if ([self.fromType isEqualToString:@"确认订单"]) {
         XNRTabBarController *tab = (XNRTabBarController *)self.tabBarController;
         tab.selectedIndex = 0;
