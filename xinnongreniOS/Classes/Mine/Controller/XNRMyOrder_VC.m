@@ -82,10 +82,6 @@
 {
     XNRPayType_VC *vc = notification.userInfo[@"payType"];
     vc.navigationItem.hidesBackButton = YES;
-<<<<<<< HEAD
-=======
-
->>>>>>> ynn_ios
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -468,10 +464,6 @@
 
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0, 30, 44);
-<<<<<<< HEAD
-=======
-    
->>>>>>> ynn_ios
 
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
