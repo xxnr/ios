@@ -281,6 +281,16 @@
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadOrderList" object:nil];
     
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
+//
+    if ([self.fromType isEqualToString:@"orderList"]) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
     for (UIViewController *vc in self.navigationController.viewControllers) {
         if ([vc isKindOfClass:[XNRMyOrder_VC class]]) {
             [self.navigationController popToViewController:vc animated:YES];

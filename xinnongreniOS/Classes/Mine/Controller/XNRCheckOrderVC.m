@@ -458,6 +458,7 @@
     XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
     vc.orderID = sectionModel.id;
     vc.dueMoney = sectionModel.duePrice;
+    vc.fromType = @"orderList";
     vc.navigationItem.hidesBackButton = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -548,7 +549,7 @@
     XNROffLine_VC *vc=[[XNROffLine_VC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
     vc.orderID = sectionModel.id;
-    
+    vc.fromType = @"orderList";
     [self.navigationController pushViewController:vc animated:YES];
 
 }
@@ -1000,14 +1001,23 @@
         [self dismissViewControllerAnimated:NO completion:nil];
         return;
     }
+
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[XNRMyOrder_VC class]]) {
+            [self.navigationController popToViewController:vc animated:YES];
+            return;
+        }
+    }
+    
     if (self.isRoot) {
         [self.navigationController popViewControllerAnimated:YES];
-        
+        return;
     }
     else
     {
         XNRMyOrder_VC *orderVC=[[XNRMyOrder_VC alloc]init];
         orderVC.hidesBottomBarWhenPushed=YES;
+        
         [self.navigationController pushViewController:orderVC animated:NO];
     }
     
