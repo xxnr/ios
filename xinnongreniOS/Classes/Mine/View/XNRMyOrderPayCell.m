@@ -41,13 +41,26 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        
         [self createTopView];
         [self createBottomView];
-        
     }
     return self;
 }
+
+//-(NSMutableArray *)attributesArray
+//{
+//    if (!_attributesArray) {
+//        _attributesArray = [NSMutableArray array];
+//    }
+//    return _attributesArray;
+//}
+//-(NSMutableArray *)addtionsArray
+//{
+//    if (!_addtionsArray) {
+//        _addtionsArray = [NSMutableArray array];
+//    }
+//    return _addtionsArray;
+//}
 
 - (void)createTopView
 {
@@ -203,7 +216,13 @@
     }}];
 
     // 商品名
-    self.goodsNameLabel.text = _info.productName;
+    if (_info.productName) {
+        self.goodsNameLabel.text = _info.productName;
+        
+    }else{
+        self.goodsNameLabel.text = _info.name;
+    }
+
     
     // 属性
     NSMutableString *displayStr = [[NSMutableString alloc] initWithString:@""];

@@ -12,6 +12,7 @@
 #import "XNRMyOrder_VC.h"
 #import "XNRRSCInfoModel.h"
 #import "XNROfflinePayTypeModel.h"
+#import "XNRProductInfo_VC.h"
 @interface XNROffLine_VC ()
 @property (nonatomic,weak)UIView *topView;
 @property (nonatomic,weak)UIView *midView;
@@ -256,9 +257,10 @@
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
     backButton.frame=CGRectMake(0, 0, 30, 44);
-    [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchDown];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
     
@@ -279,12 +281,29 @@
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadOrderList" object:nil];
     
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
+//
+    if ([self.fromType isEqualToString:@"orderList"]) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
     for (UIViewController *vc in self.navigationController.viewControllers) {
         if ([vc isKindOfClass:[XNRMyOrder_VC class]]) {
             [self.navigationController popToViewController:vc animated:YES];
             return;
         }
     }
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[XNRProductInfo_VC class]]) {
+            [self.navigationController popToViewController:vc animated:YES];
+            return;
+        }
+    }
+
     [self.navigationController popToRootViewControllerAnimated:YES];
     
 

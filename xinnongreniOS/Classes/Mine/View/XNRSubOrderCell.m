@@ -191,12 +191,16 @@ static BOOL isPay = NO;
         
         else if(model.payType == 3)
         {
-            _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：线下支付"];
+            _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：现金"];
         }
         else if(model.payType == 4)
         {
             _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：线下POS机"];
+        }else if(model.payType == 5)
+        {
+            _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：EPOS"];
         }
+
 
         else
         {

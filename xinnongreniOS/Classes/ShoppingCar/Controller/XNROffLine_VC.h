@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface XNROffLine_VC : UIViewController
-
+@property (nonatomic,copy)NSString *fromType;
 @property (nonatomic,copy)NSString *orderID;
 @property (nonatomic,copy)NSString *paymentId;
 @property (nonatomic,copy)NSString *holdPayMoney;

@@ -685,9 +685,11 @@
     XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
     XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
     vc.orderID = sectionModel.orderId;
-    
+    vc.dueMoney = sectionModel.duePrice;
+    vc.fromType = @"orderList";
+
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:vc,@"payType", nil];
-    
+
     [[NSNotificationCenter defaultCenter]postNotificationName:@"revisePayType" object:self userInfo:dic];
 }
 -(void)seePayInfoBtnClick:(UIButton *)sender
@@ -696,10 +698,12 @@
     XNROffLine_VC *vc=[[XNROffLine_VC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
     vc.orderID = sectionModel.orderId;
-    
+    vc.fromType = @"orderList";
+
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:vc,@"checkVC", nil];
 
     [[NSNotificationCenter defaultCenter]postNotificationName:@"seePayInfo" object:self userInfo:dic];
+
 }
 #pragma mark - tableView代理方法
 
@@ -798,6 +802,9 @@
         
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.attributesArray = [NSMutableArray array];
+    cell.addtionsArray = [NSMutableArray array];
+
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
