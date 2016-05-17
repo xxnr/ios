@@ -156,11 +156,7 @@
                 XNRoffthestocksVC *vc=[[XNRoffthestocksVC alloc]init];
                 vc.orderID = self.orderID;
                 vc.hidesBottomBarWhenPushed=YES;
-<<<<<<< HEAD
-                [self.navigationController pushViewController:vc animated:YES];
-=======
                 [self.navigationController pushViewController:vc animated:NO];
->>>>>>> ynn_ios
                 
                 return ;
             }

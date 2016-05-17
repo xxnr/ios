@@ -467,6 +467,9 @@
     }
         
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [cell.attributesArray removeAllObjects];
+    [cell.addtionsArray removeAllObjects];
+    
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
