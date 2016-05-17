@@ -438,7 +438,7 @@
         }
         XNRProductInfo_frame *frame = [_goodsArray lastObject];
         if ([frame.infoModel.app_body_url isEqualToString:@""] &&[frame.infoModel.app_standard_url isEqualToString:@""] && [frame.infoModel.app_support_url isEqualToString:@""]) {
-            _tableView.scrollEnabled = NO;
+                _tableView.scrollEnabled = NO;
             }
         
         [self.tableView reloadData];

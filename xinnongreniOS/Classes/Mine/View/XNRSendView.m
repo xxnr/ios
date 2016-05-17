@@ -465,7 +465,8 @@
         //单元格复用cellID要一致
         cell = [[XNRMyOrderServe_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
     }
-        
+    [cell.attributesArray removeAllObjects];
+    [cell.addtionsArray removeAllObjects];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     //传递数据模型model
     if (_dataArr.count>0) {

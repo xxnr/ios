@@ -203,8 +203,12 @@
     }}];
 
     // 商品名
-    self.goodsNameLabel.text = _info.productName;
-    
+    if (_info.productName) {
+        self.goodsNameLabel.text = _info.productName;
+        
+    }else{
+        self.goodsNameLabel.text = _info.name;
+    }
     // 属性
     NSMutableString *displayStr = [[NSMutableString alloc] initWithString:@""];
     for (NSDictionary *subDic in _attributesArray) {
