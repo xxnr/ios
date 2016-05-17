@@ -591,9 +591,8 @@
         cell = [[XNRMyOrderPayCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
         
     }
-    [cell.attributesArray removeAllObjects];
-    [cell.addtionsArray removeAllObjects];
-    
+    cell.attributesArray  = [NSMutableArray array];
+    cell.addtionsArray  = [NSMutableArray array];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     //传递数据模型model
     if (_dataArr.count>0) {

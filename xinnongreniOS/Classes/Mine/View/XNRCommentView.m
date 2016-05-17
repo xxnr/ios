@@ -464,8 +464,8 @@
         //单元格复用cellID要一致
         cell = [[XNRMyOrderServe_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
     }
-    [cell.attributesArray removeAllObjects];
-    [cell.addtionsArray removeAllObjects];
+    cell.attributesArray  = [NSMutableArray array];
+    cell.addtionsArray  = [NSMutableArray array];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     //传递数据模型model
     if (_dataArr.count>0) {
@@ -477,9 +477,7 @@
         }
         XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
         cell.orderFrame  = frameModel;
-
     }
-    
     return cell;
 }
 
