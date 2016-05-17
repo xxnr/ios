@@ -471,32 +471,7 @@
     _carryVC = vc;
     
     if (self.model.orderId) {
-<<<<<<< HEAD
-        _carryVC.orderId = self.model.orderId;
-    }else{
-        _carryVC.orderId = self.orderID;
-    }
-    [self getOrderDetail];
-    
-//    if (self.model.orderId) {
-//        _carryVC.orderId = self.model.orderId;
-//        for (int i=0; i<self.model.skus.count; i++) {
-//            
-//            XNRMyOrderModel *model = self.model.skus[i];
-//            if(model.deliverStatus == 4)
-//            {
-//                [_carryVC.modelArr addObject:model];
-//            }
-//        }
-//        
-//        [self.navigationController pushViewController:_carryVC animated:NO];
-//
-//    }
-//    else
-//    {
-//        _carryVC.orderId = self.orderID;
-=======
->>>>>>> origin/master
+
         _carryVC.orderId = self.model.orderId;
     }
     else

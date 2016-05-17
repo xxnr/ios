@@ -111,27 +111,6 @@
     //    [self getMinPayPrice];
     [self getData];
     
-<<<<<<< HEAD
-    [self setNav];
-    [self createTopView];
-    [self createMidView];
-    [self createBottomView];
-    
-    _dataArray = [NSMutableArray array];
-    self.myTextField =[[UITextField alloc]initWithFrame:CGRectMake(PX_TO_PT(252), PX_TO_PT(35), PX_TO_PT(226), PX_TO_PT(40))];
-    self.myTextField.delegate = self;
-    self.myTextField.hidden = YES;
-    
-    self.sepMoney = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(252), PX_TO_PT(35), PX_TO_PT(226), PX_TO_PT(35))];
-    self.sepMoney.textColor = R_G_B_16(0xFF4E00);
-    self.sepMoney.textAlignment = NSTextAlignmentCenter;
-    self.sepMoney.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-    
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(dealAlipayResult:) name:@"alipayResult" object:nil];
-    
-=======
->>>>>>> origin/master
-    
     //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(librate) name:@"succss_Push" object:nil];
 }
 
@@ -212,17 +191,7 @@
             sectionModel.value = orderStatus[@"value"];
             sectionModel.orderGoodsList = (NSMutableArray *)[XNRCheckOrderModel objectArrayWithKeyValuesArray:datasDic[@"rows"][@"orderGoodsList"]];
             
-<<<<<<< HEAD
-            
-//            if ([sectionModel.totalPrice isEqual:[NSNull null]]) {
-//                <#statements#>
-//            }
-            
-            [self setTop:sectionModel.price andFullMoney:sectionModel.totalPrice];
-            [self setFullMoneyView];
-            
-=======
->>>>>>> origin/master
+
             [_dataArray addObject:sectionModel];
             
             [self setNav];
@@ -916,14 +885,6 @@
 #pragma  mark - 去支付
 - (void)goPayBtnClick:(UIButton *)button
 {
-<<<<<<< HEAD
-    if (_isInWhiteList && !self.isFull)  {
-        if ([self.myTextField.text doubleValue] == 0.00) {
-            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入金额" delegate:nil
-            cancelButtonTitle:@"确定" otherButtonTitles: nil];
-            [alertView show];
-            return;
-=======
     
     [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
@@ -957,7 +918,6 @@
             [self setselPayType];
             NSLog(@"去支付");
 
->>>>>>> origin/master
         }
     
         else

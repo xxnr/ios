@@ -837,20 +837,6 @@
     titleLabel.text = @"我";
     self.navigationItem.titleView = titleLabel;
     
-<<<<<<< HEAD
-    self.navigationItem.hidesBackButton = YES;
-    
-    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame = CGRectMake(0, 0, 30, 44);
-//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 0);
-//    backButton.backgroundColor = [UIColor redColor];
-    [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
-    [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
-    [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
-    UIBarButtonItem *leftItem=[[UIBarButtonItem alloc] initWithCustomView:backButton];
-    self.navigationItem.leftBarButtonItem = leftItem;
-
-=======
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0, 30, 44);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
@@ -860,8 +846,6 @@
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
     
-    
->>>>>>> origin/master
 }
 
 -(void)backClick{

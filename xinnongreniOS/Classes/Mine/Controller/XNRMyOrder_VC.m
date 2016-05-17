@@ -82,10 +82,6 @@
 {
     XNRPayType_VC *vc = notification.userInfo[@"payType"];
     vc.navigationItem.hidesBackButton = YES;
-<<<<<<< HEAD
-=======
-
->>>>>>> ynn_ios
     [self.navigationController pushViewController:vc animated:YES];
 }
 
