@@ -42,6 +42,8 @@
     backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchDown];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;}
 

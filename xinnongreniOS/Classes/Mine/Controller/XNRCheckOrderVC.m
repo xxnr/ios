@@ -459,7 +459,11 @@
     vc.orderID = sectionModel.id;
     vc.dueMoney = sectionModel.duePrice;
     vc.navigationItem.hidesBackButton = YES;
+<<<<<<< HEAD
     [self.navigationController pushViewController:vc animated:NO];
+=======
+    [self.navigationController pushViewController:vc animated:YES];
+>>>>>>> ynn_ios
 }
 
 -(void)holdBtnClick:(UIButton *)sender
@@ -978,9 +982,10 @@
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0, 30, 44);
-    [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
     
