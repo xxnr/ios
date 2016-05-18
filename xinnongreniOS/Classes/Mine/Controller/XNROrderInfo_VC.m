@@ -763,13 +763,16 @@
             
             NSMutableArray *arr = (NSMutableArray *)[XNRConsigneeModel objectArrayWithKeyValuesArray:result[@"datas"][@"rows"]];
 
-            self.consigneeModel = arr[0];
-            self.consigneeName = self.consigneeModel.consigneeName;
-            self.consigneePhone = self.consigneeModel.consigneePhone;
-           
-            self.RSCContactInfo = [NSString stringWithFormat:@"%@ %@",self.consigneeName,self.consigneePhone];
+            if (arr.count > 0) {
+                self.consigneeModel = arr[0];
+                self.consigneeName = self.consigneeModel.consigneeName;
+                self.consigneePhone = self.consigneeModel.consigneePhone;
+                
+                self.RSCContactInfo = [NSString stringWithFormat:@"%@ %@",self.consigneeName,self.consigneePhone];
+                
 
-
+            }
+     
             [self createDeliveryView:self.RSCDetailAddress andContact:self.RSCContactInfo];
 
             // 来自购物车页面的话才加载
@@ -1373,9 +1376,10 @@
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0, 30, 44);
-    [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
 }

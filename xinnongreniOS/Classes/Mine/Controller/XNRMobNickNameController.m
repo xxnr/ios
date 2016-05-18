@@ -139,7 +139,8 @@
 //    backBtn.backgroundColor = [UIColor redColor];
     [backBtn addTarget: self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backBtn setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
-     [backBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
+    [backBtn setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     self.navigationItem.leftBarButtonItem = leftItem;
 }

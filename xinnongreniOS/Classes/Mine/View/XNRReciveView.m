@@ -361,6 +361,7 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
+    if (_dataArr.count>0) {
     _isHoldOwn = NO;
     _isMakesureOwn = NO;
     UIView *bottomView = [[UIView alloc] init];
@@ -376,8 +377,6 @@
             _isMakesureOwn = YES;
         }
     }
-    
-    if (_dataArr.count>0) {
         
         if (sectionModel.type == 4 && _isMakesureOwn) {
             bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
@@ -643,6 +642,9 @@
     cell.attributesArray  = [NSMutableArray array];
     cell.addtionsArray  = [NSMutableArray array];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.attributesArray = [NSMutableArray array];
+    cell.addtionsArray = [NSMutableArray array];
+
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];

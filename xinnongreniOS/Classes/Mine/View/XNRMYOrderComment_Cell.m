@@ -177,7 +177,13 @@
     }}];
 
     // 商品名
-    self.goodsNameLabel.text = _info.productName;
+    // 商品名
+    if (_info.productName) {
+        self.goodsNameLabel.text = _info.productName;
+        
+    }else{
+        self.goodsNameLabel.text = _info.name;
+    }
     
     // 价格
     self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",_info.price.doubleValue];

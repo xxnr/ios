@@ -41,13 +41,26 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        
         [self createTopView];
         [self createBottomView];
-        
     }
     return self;
 }
+
+//-(NSMutableArray *)attributesArray
+//{
+//    if (!_attributesArray) {
+//        _attributesArray = [NSMutableArray array];
+//    }
+//    return _attributesArray;
+//}
+//-(NSMutableArray *)addtionsArray
+//{
+//    if (!_addtionsArray) {
+//        _addtionsArray = [NSMutableArray array];
+//    }
+//    return _addtionsArray;
+//}
 
 - (void)createTopView
 {

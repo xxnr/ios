@@ -457,9 +457,12 @@
     XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
     XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
     vc.orderID = sectionModel.id;
-    
+    vc.dueMoney = sectionModel.duePrice;
+    vc.fromType = @"orderList";
+    vc.navigationItem.hidesBackButton = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
+
 -(void)holdBtnClick:(UIButton *)sender
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
@@ -468,34 +471,17 @@
     _carryVC = vc;
     
     if (self.model.orderId) {
+
         _carryVC.orderId = self.model.orderId;
-    }else{
+    }
+    else
+    {
         _carryVC.orderId = self.orderID;
     }
-    [self getOrderDetail];
-    
-//    if (self.model.orderId) {
-//        _carryVC.orderId = self.model.orderId;
-//        for (int i=0; i<self.model.skus.count; i++) {
-//            
-//            XNRMyOrderModel *model = self.model.skus[i];
-//            if(model.deliverStatus == 4)
-//            {
-//                [_carryVC.modelArr addObject:model];
-//            }
-//        }
-//        
-//        [self.navigationController pushViewController:_carryVC animated:NO];
-//
-//    }
-//    else
-//    {
-//        _carryVC.orderId = self.orderID;
-        _carryVC.orderId = self.model.orderId;
         [self getOrderDetail];
-//    }
     
 }
+
 -(void)getOrderDetail
 {
     [self.proArr removeAllObjects];
@@ -564,7 +550,7 @@
     XNROffLine_VC *vc=[[XNROffLine_VC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
     vc.orderID = sectionModel.id;
-    
+    vc.fromType = @"orderList";
     [self.navigationController pushViewController:vc animated:YES];
 
 }
@@ -906,7 +892,7 @@
         else if (indexPath.section == 0)
         {
             XRNSubOrdersModel *subOrderModel = sectionModel.subOrders[indexPath.row];
-            if (subOrderModel.payType == 1 || subOrderModel.payType == 2 || subOrderModel.payType == 3|| subOrderModel.payType == 4) {
+            if (subOrderModel.payType == 1 || subOrderModel.payType == 2 || subOrderModel.payType == 3|| subOrderModel.payType == 4|| subOrderModel.payType == 5) {
                 return PX_TO_PT(240);
             }
             else
@@ -994,9 +980,10 @@
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0, 30, 44);
-    [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
     
@@ -1005,19 +992,33 @@
 
 -(void)backClick{
     
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
+    
     if ([self.presentingViewController isKindOfClass:[XNRNavigationController class]]) {
         [self dismissViewControllerAnimated:NO completion:nil];
         return;
     }
+
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[XNRMyOrder_VC class]]) {
+            [self.navigationController popToViewController:vc animated:YES];
+            return;
+        }
+    }
+    
     if (self.isRoot) {
         [self.navigationController popViewControllerAnimated:YES];
-        
+        return;
     }
     else
     {
-//        [self.navigationController popToRootViewControllerAnimated:YES];
         XNRMyOrder_VC *orderVC=[[XNRMyOrder_VC alloc]init];
         orderVC.hidesBottomBarWhenPushed=YES;
+        
         [self.navigationController pushViewController:orderVC animated:NO];
     }
     
