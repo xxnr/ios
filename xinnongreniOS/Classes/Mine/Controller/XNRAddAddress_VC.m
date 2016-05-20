@@ -455,17 +455,7 @@
             }];
 
         }else{// 更新收货地址
-<<<<<<< HEAD
-            NSString *type;
-            if (addressType == 0) {
-                type = self.model.type;
-            }else{
-                type = [NSString stringWithFormat:@"%d",addressType];
-            }
-           NSDictionary *params = @{@"userId":[DataCenter account].userid,@"addressId":self.model.addressId,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:self.model.cityId,@"countyId":self.countyID?self.countyID:self.model.countyId,@"townId":self.townID?self.townID:self.model.townId,@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":type,@"user-agent":@"IOS-v2.0"};
-=======
             NSDictionary *params = @{@"userId":[DataCenter account].userid,@"addressId":self.model.addressId,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:self.model.cityId,@"countyId":self.countyID?self.countyID:self.model.countyId,@"townId":self.townID?self.townID:self.model.townId,@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":addressType,@"user-agent":@"IOS-v2.0"};
->>>>>>> ynn_ios
             
             [KSHttpRequest post:KUpdateUserAddress parameters:params success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {

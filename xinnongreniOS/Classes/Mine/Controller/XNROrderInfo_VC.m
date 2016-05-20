@@ -158,7 +158,6 @@
 }
 
 -(void)getDeliveries{
-    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -172,6 +171,7 @@
     [manager POST:KGetDeliveries parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         [_deliveryArr removeAllObjects];
+
 
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSLog(@"---------返回数据:---------%@",str);
@@ -273,7 +273,6 @@
     }];
 }
 -(void)getData {
-    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型

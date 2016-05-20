@@ -18,6 +18,7 @@
 #import "XNRShoppingCarController.h"
 #import "XNRProductInfo_VC.h"
 #import "XNROffLine_VC.h"
+#import "XNRPropertyView.h"
 #define kPayTypeBtn 1000
 #define kSelectedBtn 2000
 
@@ -111,15 +112,11 @@
     //    [self getMinPayPrice];
     [self getData];
     
-<<<<<<< HEAD
-    //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(librate) name:@"succss_Push" object:nil];
-=======
-    
-//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(librate) name:@"succss_Push" object:nil];
->>>>>>> ynn_ios
 }
 
-
+-(void)viewWillDisappear:(BOOL)animated{
+    [[XNRPropertyView sharedInstanceWithModel:nil] changeSelfToIdentify];
+}
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];

@@ -8,6 +8,7 @@
 
 #import "KSHttpRequest.h"
 #import "AppDelegate.h"
+//#import "XNRPushLoginVC.h"
 @implementation KSHttpRequest
 static int loginCount = 0;
 /**

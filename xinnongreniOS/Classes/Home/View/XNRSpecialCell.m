@@ -177,36 +177,8 @@
         self.priceLabel.textColor = R_G_B_16(0xff4e00);
 //        self.priceLabel.text = [NSString stringWithFormat:@"¥%.2f",model.unitPrice.doubleValue];
 //        if (model.unitPrice.floatValue>1) {
-<<<<<<< HEAD
-//            self.priceLabel.text = [NSString stringWithFormat:@"￥%.f",model.unitPrice.floatValue];
-//        }else{
-//            self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.unitPrice.floatValue];
-//        }
         //现价
         self.priceLabel.text = [NSString stringWithFormat:@"￥%@",self.model.unitPrice];
-
-//        NSString *str = [NSString stringWithFormat:@"%@",self.model.unitPrice];
-//        if ([str rangeOfString:@"."].length == 2) {
-//            self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.doubleValue];
-//        }else if ([str rangeOfString:@"."].length == 1){
-//            self.priceLabel.text = [NSString stringWithFormat:@"￥%.1f",self.model.unitPrice.doubleValue];
-//        }else{
-//            self.priceLabel.text = [NSString stringWithFormat:@"￥%.f",self.model.unitPrice.doubleValue];
-//
-//        }
-//        if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
-//            self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
-//        }
-=======
-//            self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.unitPrice.floatValue];
-//        }else{
-//            self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.unitPrice.floatValue];
-//        }
-        self.priceLabel.text = [NSString stringWithFormat:@"%@",model.unitPrice];
-        if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
-            self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
-        }
->>>>>>> ynn_ios
 
         self.shopcarBtn.hidden = NO;
     }

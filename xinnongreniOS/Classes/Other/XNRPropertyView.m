@@ -397,6 +397,7 @@
                 model.additions = newInfoModel.additions;
             } else {
                 model.additions = [NSMutableArray array];
+                [self.shopcarModel.additions removeAllObjects];
             }
             
             
@@ -552,6 +553,7 @@
             _state = YES;
             [self synchShoppingCarDataWithoutToast];
             NSMutableArray *SKUs = [NSMutableArray array];
+            [SKUs removeAllObjects];
             NSDictionary *param = @{@"_id":self.shopcarModel._id?self.shopcarModel._id:@"",@"count":_numText?_numText:@"1",@"additions":self.shopcarModel.additions,@"product":self.shopcarModel.product?self.shopcarModel.product:@"",@"token":[DataCenter account].token?[DataCenter account].token:@""};
             [SKUs addObject:param];
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -793,6 +795,7 @@
     }
     NSString *addtionStr = @"";
     NSMutableArray *addtionArray = [NSMutableArray array];
+    [addtionArray removeAllObjects];
     for (XNRAddtionsModel *addtionModel in infoModel.additions) {
         
         if (addtionModel.isSelected) {
@@ -803,7 +806,6 @@
     }
     if (attributesArray.count>0) {
         self.valueBlock(attributesArray,addtionArray,self.priceLabel.text,_marketPrice);
-        
     }
     
 }
@@ -917,7 +919,7 @@
                     [attributesArray addObject:param];
                     _recordeSelected ++;
                     NSLog(@"_recordeSelected%tu",_recordeSelected);
-                    
+                    [self.addtionsArray removeAllObjects];
                 }
             }
         }
@@ -1093,6 +1095,7 @@
                     infoModel.additions = newInfoModel.additions;
                 } else {
                     infoModel.additions = [NSMutableArray array];
+                    [self.shopcarModel.additions removeAllObjects];
                 }
                 
                 [self.collectionView reloadData];
@@ -1104,7 +1107,6 @@
             
         }];
     } else { // 选择了 addtion section（附加选项） 分区
-        
         CGFloat currentPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
         CGFloat currentMarketPrice = [[[_marketPrice componentsSeparatedByString:@" "] lastObject] floatValue];
         for (XNRAddtionsModel *addtionCellModel in infoModel.additions) {
@@ -1305,7 +1307,6 @@
     }];
 }
 -(void)show:(XNRPropertyViewType)buyType{
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hhh:) name:@"hhh" object:nil];
     _isForm = nil;
     _type = buyType;

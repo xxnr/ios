@@ -97,7 +97,7 @@
     if (!_propertyView) {
         __weak __typeof(self)weakSelf = self;
         // 传回来的属性
-        propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice){
+            propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice){
             _attributes = attributes;
             _additions = addtions;
             _Price = price;
@@ -105,8 +105,8 @@
             [self.tableView reloadData];
         };
         // 提交订单页面的跳转
+        XNROrderInfo_VC *orderVC = [[XNROrderInfo_VC alloc] init];
         propertyView.com = ^(NSMutableArray *dataArray,CGFloat totalPrice,NSString *totalNum){
-            XNROrderInfo_VC *orderVC = [[XNROrderInfo_VC alloc] init];
             orderVC.dataArray = dataArray;
             orderVC.totalPrice = totalPrice;
             orderVC.totalSelectNum = totalNum.intValue;
