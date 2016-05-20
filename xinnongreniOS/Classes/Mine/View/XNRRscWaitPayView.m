@@ -126,6 +126,7 @@
 -(void)headRefresh{
     _currentPage = 1;
     [_dataArray removeAllObjects];
+    [_dataFrameArray removeAllObjects];
     [self getData];
     
     

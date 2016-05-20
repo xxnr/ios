@@ -47,6 +47,17 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self createMainView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushLoginVC) name:@"pushLoginVC" object:nil];
+}
+
+-(void)pushLoginVC
+{
+    [self.navigationController pushViewController:self animated:YES];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -110,7 +121,7 @@
     }
     if (self.com) {
         self.com();
-    }
+        }
 
 }
 #pragma mark - 创建中部视图(包含用户名和密码)
@@ -359,7 +370,7 @@
             NSDictionary *county = address[@"county"];
             NSDictionary *town = address[@"town"];
 
-            UserInfo *info = [DataCenter account];
+            UserInfo *info = [[UserInfo alloc] init];
             [info setValuesForKeysWithDictionary:datasDic];
             info.loginState = YES;
             info.userid = datasDic[@"userid"];
@@ -388,7 +399,7 @@
                     [self synchShoppingCarDataWith:model];
                 }
                 // 清空购物车列表
-                [dataManager deleteShoppingCar];
+//                [dataManager deleteShoppingCar];
             }
             
             

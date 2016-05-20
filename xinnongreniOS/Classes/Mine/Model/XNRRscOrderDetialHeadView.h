@@ -12,6 +12,8 @@
 
 @interface XNRRscOrderDetialHeadView : UIView
 
+@property (nonatomic, assign) CGFloat headViewHeight;
+
 -(void)updataWithModel:(XNRRscOrderDetailModel *)model;
 
 @end

@@ -52,15 +52,13 @@ static int loginCount = 0;
              UserInfo *infos = [[UserInfo alloc]init];
              infos.loginState = NO;
              [DataCenter saveAccount:infos];
-             //发送刷新通知
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
-             
              XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
              vc.com = ^(){
                  loginCount = 0;
              };
              vc.hidesBottomBarWhenPushed = YES;
              UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+             NSLog(@"currentVc===%@",currentVc);
              if (loginCount<1) {
                  [currentVc.navigationController pushViewController:vc animated:YES];
                  loginCount++;
@@ -120,17 +118,15 @@ static int loginCount = 0;
              UserInfo *infos = [[UserInfo alloc]init];
              infos.loginState = NO;
              [DataCenter saveAccount:infos];
-             //发送刷新通知
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
-             
              XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
              vc.com = ^(){
                  loginCount = 0;
              };
              vc.hidesBottomBarWhenPushed = YES;
              UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+             NSLog(@"currentVc===%@",currentVc);
              if (loginCount<1) {
-                 [currentVc.navigationController pushViewController:vc animated:YES];
+            [currentVc.navigationController pushViewController:vc animated:YES];
                  loginCount++;
              }
          }

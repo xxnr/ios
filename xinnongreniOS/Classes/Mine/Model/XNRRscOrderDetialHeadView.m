@@ -52,12 +52,14 @@
     NSDictionary *subDict = model.deliveryType;
     if ([subDict[@"type"] integerValue] == 2) {    //配送到户
         if (model.subOrders.count==2) {            // 分次支付
-            UIView *tableHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(878))];
+            UIView *tableHeadView = [[UIView alloc] init];
+//                                     WithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(878))];
             tableHeadView.backgroundColor = R_G_B_16(0xf4f4f4);
             self.tableHeadView = tableHeadView;
             [self addSubview:tableHeadView];
         }else{
-            UIView *tableHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(748))];
+            UIView *tableHeadView = [[UIView alloc] init];
+//                                     WithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(748))];
             tableHeadView.backgroundColor = R_G_B_16(0xf4f4f4);
             self.tableHeadView = tableHeadView;
             [self addSubview:tableHeadView];
@@ -360,6 +362,8 @@
         UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
         sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
         [sectionView addSubview:sectionLine];
+        
+        _headViewHeight = CGRectGetMaxY(bottomView.frame);
     
     }else{
         UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.middleView.frame), ScreenWidth, PX_TO_PT(318))];
@@ -424,6 +428,8 @@
         UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
         sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
         [sectionView addSubview:sectionLine];
+        
+        _headViewHeight = CGRectGetMaxY(bottomView.frame);
     
     }
 

@@ -555,6 +555,7 @@
         self.navigationItem.title = @"购物车";
         self.editeBtn.hidden = YES;
         [self.shopCarView show];
+        return;
     }
     // 取出商品的skuid和数量和additions
     NSMutableArray *tempMarr = [[NSMutableArray alloc]init];
@@ -563,7 +564,7 @@
         NSDictionary *params = @{@"_id":model._id,@"count":model.num?model.num:@"1",@"additions":model.additions,@"token":[DataCenter account].token?[DataCenter account].token:@""};
         [tempMarr addObject:params];
     }
-    [_dataArr removeAllObjects];
+//    [_dataArr removeAllObjects];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -886,7 +887,6 @@
         };
     }
     
-    
     if (_dataArr.count > 0) {
         cell.indexPath = indexPath;
         XNRShopCarSectionModel *sectionModle = _dataArr[indexPath.section];
@@ -895,6 +895,10 @@
             //传递数据模型model
             cell.shoppingCarFrame = frame;
         }
+    }else{
+            [self.shopCarView show];
+            self.editeBtn.hidden = YES;
+            self.navigationItem.title = @"购物车";
     }
     return cell;
 }

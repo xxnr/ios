@@ -87,7 +87,7 @@
 
 -(void)admireBtnClick
 {
-    if (_totalCount>0) {
+    if ([self.admireBtn.titleLabel.text rangeOfString:@"下一步"].location != NSNotFound) {
         if (self.admireBtn.selected == YES) {
             [self.takeView show:_model];
             [self.deliverView removeFromSuperview];

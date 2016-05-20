@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "XNRTabBarController.h"
 #import "GBAlipayManager.h"
-#import "XNRNewFeatureViewController.h"
+//#import "XNRNewFeatureViewController.h"
 #import "UMessage.h"
 #import "IQKeyboardManager.h"
 #import <Bugtags/Bugtags.h>
@@ -27,6 +27,7 @@
 #import "XNRMyOrder_VC.h"
 #import "XNRMyStoreOrderController.h"
 #import "XNRRscOrderDetialController.h"
+#import "XNRLoginViewController.h"
 @interface AppDelegate ()<UITabBarControllerDelegate>
 {
     BOOL _is_Notification;
@@ -56,6 +57,7 @@
     [self.window makeKeyAndVisible];
     
     _tabBarController = [[XNRTabBarController alloc]init];
+     _FeatuewController = [[XNRNewFeatureViewController alloc] init];
     _tabBarController.delegate = self;
     
     // 设置窗口的根控制器
@@ -70,7 +72,7 @@
     if ([currentVersion isEqualToString:lastVersion]) {
         self.window.rootViewController = _tabBarController;
     }else{
-        self.window.rootViewController = [[XNRNewFeatureViewController alloc] init];
+        self.window.rootViewController = _FeatuewController;
         // 存储这次试用的版本
         [defaults setObject:currentVersion forKey:versionKey];
         [defaults synchronize];
@@ -155,8 +157,16 @@
 }
 
 - (UIViewController *)getTopViewController {
-    UINavigationController *nav = [_tabBarController selectedViewController];
+    UINavigationController *nav;
+    if (AppKeyWindow.rootViewController == _tabBarController) {
+        nav = [_tabBarController selectedViewController];
+    }else{
+        _tabBarController.selectedIndex = 3;
+        AppKeyWindow.rootViewController = _tabBarController;
+        nav = [_tabBarController selectedViewController];
+    }
     return [nav topViewController];
+    
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken

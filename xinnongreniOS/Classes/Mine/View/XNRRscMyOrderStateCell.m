@@ -129,7 +129,7 @@
         }else{
             [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
         }}];
-    self.goodsNameLabel.text = model.name;
+    self.goodsNameLabel.text = model.productName;
     self.goodsNumberLabel.text = [NSString stringWithFormat:@"x %@",model.count];
     
     // 属性

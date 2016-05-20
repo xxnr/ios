@@ -107,16 +107,18 @@
 
     
     //现价
-    NSString *str = [NSString stringWithFormat:@"%@",self.model.unitPrice];
-    if ([str rangeOfString:@"."].location != NSNotFound) {
-        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.floatValue];
-    }else{
-        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.f",self.model.unitPrice.floatValue];
-    }
+    self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%@",self.model.unitPrice];
+
+//    NSString *str = [NSString stringWithFormat:@"%@",self.model.unitPrice];
+//    if ([str rangeOfString:@"."].location != NSNotFound) {
+//        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.doubleValue];
+//    }else{
+//        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.f",self.model.unitPrice.doubleValue];
+//    }
     
-     if ([self.presentPriceLabel.text rangeOfString:@".00"].length == 3) {
-        self.presentPriceLabel.text = [self.presentPriceLabel.text substringToIndex:self.presentPriceLabel.text.length-3];
-    }
+//     if ([self.presentPriceLabel.text rangeOfString:@".00"].length == 3) {
+//        self.presentPriceLabel.text = [self.presentPriceLabel.text substringToIndex:self.presentPriceLabel.text.length-3];
+//    }
     if ([self.model.presale integerValue] == 1) {
         self.presentPriceLabel.text = @"即将上线";
         self.presentPriceLabel.textColor = R_G_B_16(0xc7c7c7);

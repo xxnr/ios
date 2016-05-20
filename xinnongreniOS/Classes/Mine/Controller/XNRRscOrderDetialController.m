@@ -129,9 +129,9 @@
             
             if ([dict[@"deliveryType"][@"type"] integerValue] == 2) {
                 if (model.subOrders.count == 2) {
-                    self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(878));
+                    self.headView.frame = CGRectMake(0, 0, ScreenWidth, self.headView.headViewHeight);
                 }else{
-                    self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(748));
+                    self.headView.frame = CGRectMake(0, 0, ScreenWidth, self.headView.headViewHeight);
                 }
             }else{
                 if (model.subOrders.count == 2) {
@@ -331,12 +331,9 @@
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame = CGRectMake(0, 0, 30, 44);
-//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
-    [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
-     [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
-
+    [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *leftItem =[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = leftItem;
 }

@@ -132,6 +132,7 @@
     scrollView.contentSize=CGSizeMake((ScreenWidth+PX_TO_PT(20))*5, ScreenHeight-64);
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
+    scrollView.scrollEnabled = NO;
     scrollView.userInteractionEnabled = YES;
     scrollView.pagingEnabled = YES;
     scrollView.delegate = self;
@@ -195,9 +196,9 @@
     self.tempBtn = button;
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
    
-//    [UIView animateWithDuration:.3 animations:^{
+    [UIView animateWithDuration:.3 animations:^{
     self.selectedLineView.frame=CGRectMake((button.tag - KtitleBtn)*ScreenWidth/5.0,  PX_TO_PT(95), ScreenWidth/5.0, PX_TO_PT(5));
-//        }];
+        }];
      [self.scrollView setContentOffset:CGPointMake((ScreenWidth+PX_TO_PT(20))*(button.tag-KtitleBtn),0) animated:NO];
     if (button.tag == KtitleBtn) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
@@ -216,51 +217,51 @@
     [BMProgressView LoadViewDisappear:self.view];
 }
 
-#pragma mark - scrollView左右滑动
--(void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    CGFloat offset = self.scrollView.contentOffset.x/(ScreenWidth+PX_TO_PT(20));
-    
-    static int tag = 0;
-
-    if(0 <= offset&&offset < 0.5){
-        tag=0;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-    }else if (0.5<=offset&&offset<1.5){
-        tag=1;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-    }else if (1.5<=offset&&offset<2.5){
-        tag=2;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-    }else if (2.5<=offset&&offset<3.5){
-        tag=3;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-    }else{
-        tag=4;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-    }
-    
-    [UIView animateWithDuration:.3 animations:^{
-        self.selectedLineView.frame = CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(95), ScreenWidth/5.0, PX_TO_PT(5));
-    }];
-}
+//#pragma mark - scrollView左右滑动
+//-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    
+//    CGFloat offset = self.scrollView.contentOffset.x/(ScreenWidth+PX_TO_PT(20));
+//    
+//    static int tag = 0;
+//
+//    if(0 <= offset&&offset < 0.5){
+//        tag=0;
+//        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
+//        _tempBtn.selected = NO;
+//        button.selected = YES;
+//        _tempBtn = button;
+//    }else if (0.5<=offset&&offset<1.5){
+//        tag=1;
+//        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
+//        _tempBtn.selected = NO;
+//        button.selected = YES;
+//        _tempBtn = button;
+//        
+//    }else if (1.5<=offset&&offset<2.5){
+//        tag=2;
+//        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
+//        _tempBtn.selected = NO;
+//        button.selected = YES;
+//        _tempBtn = button;
+//        
+//    }else if (2.5<=offset&&offset<3.5){
+//        tag=3;
+//        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
+//        _tempBtn.selected = NO;
+//        button.selected = YES;
+//        _tempBtn = button;
+//    }else{
+//        tag=4;
+//        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
+//        _tempBtn.selected = NO;
+//        button.selected = YES;
+//        _tempBtn = button;
+//    }
+//    
+//    [UIView animateWithDuration:.3 animations:^{
+//        self.selectedLineView.frame = CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(95), ScreenWidth/5.0, PX_TO_PT(5));
+//    }];
+//}
 
 
 -(void)setNavigationBar
