@@ -13,7 +13,7 @@
 #define textFieldTag 1000
 @interface XNRAddAddress_VC()<UITextFieldDelegate,XNRAddressPickerViewBtnDelegate,XNRTownPickerViewBtnDelegate>
 {
-    int addressType;
+    NSString *addressType;
 }
 
 @property (nonatomic ,weak) UIView *topBgView;
@@ -109,6 +109,7 @@
 -(void)viewDidLoad{
     self.view.backgroundColor = [UIColor whiteColor];
     [self createNav];
+    addressType = self.model.type;
     [self createTopView];
     [self createMidView];
     [self createBottomView];
@@ -370,10 +371,10 @@
 -(void)mySwitchChange:(UISwitch *)mySwitch{
     
     if (mySwitch.isOn) {
-        addressType = 1;
+        addressType = @"1";
         NSLog(@"开启");
     }else{
-        addressType = 2;
+        addressType = @"2";
         NSLog(@"关闭");
     }
 }
@@ -417,11 +418,11 @@
     }else{
         if ([self.titleLabel isEqualToString:@"添加收货地址"]) {
             
-            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@"",@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",addressType],@"user-agent":@"IOS-v2.0"};
+            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@"",@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%@",addressType],@"user-agent":@"IOS-v2.0"};
             
             [KSHttpRequest post:KSaveUserAddress parameters:params success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
-                    if (addressType == 1) {
+                    if ([addressType isEqualToString:@"1"]) {
                         UserInfo *info = [DataCenter account];
                         NSString *address1 = [NSString stringWithFormat:@"%@%@",self.model.areaName,self.model.cityName];
                         NSString *address2 = [NSString stringWithFormat:@"%@%@%@",self.model.areaName,self.model.cityName,self.model.countyName];
@@ -455,7 +456,7 @@
             }];
 
         }else{// 更新收货地址
-            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"addressId":self.model.addressId,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:self.model.cityId,@"countyId":self.countyID?self.countyID:self.model.countyId,@"townId":self.townID?self.townID:self.model.townId,@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",addressType]?[NSString stringWithFormat:@"%d",addressType]:self.model.type,@"user-agent":@"IOS-v2.0"};
+            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"addressId":self.model.addressId,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:self.model.cityId,@"countyId":self.countyID?self.countyID:self.model.countyId,@"townId":self.townID?self.townID:self.model.townId,@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":addressType,@"user-agent":@"IOS-v2.0"};
             
             [KSHttpRequest post:KUpdateUserAddress parameters:params success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {

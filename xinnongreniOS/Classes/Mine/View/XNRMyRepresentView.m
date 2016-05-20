@@ -41,14 +41,14 @@
     self.iconImageView = iconImageView;
     [self addSubview:iconImageView];
 
-    
-    UILabel  *noRepresentLabel = [[UILabel alloc] init];
-    noRepresentLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-    noRepresentLabel.text = @"您还没有设置新农代表";
-    noRepresentLabel.textAlignment = NSTextAlignmentCenter;
-    noRepresentLabel.textColor = R_G_B_16(0x646464);
-    self.noRepresentLabel = noRepresentLabel;
-    [self addSubview:noRepresentLabel];
+//    
+//    UILabel  *noRepresentLabel = [[UILabel alloc] init];
+//    noRepresentLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+//    noRepresentLabel.text = @"您还没有设置新农代表";
+//    noRepresentLabel.textAlignment = NSTextAlignmentCenter;
+//    noRepresentLabel.textColor = R_G_B_16(0x646464);
+//    self.noRepresentLabel = noRepresentLabel;
+//    [self addSubview:noRepresentLabel];
     
     UITextField *phoneText = [[UITextField alloc] init];
     phoneText.frame = CGRectMake(PX_TO_PT(31), PX_TO_PT(440), PX_TO_PT(469), PX_TO_PT(69));

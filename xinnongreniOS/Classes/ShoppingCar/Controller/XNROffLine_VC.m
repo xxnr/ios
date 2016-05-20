@@ -52,7 +52,7 @@
     [topView addSubview:successLabel];
     
     UILabel *holdMoneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame)+PX_TO_PT(67), CGRectGetMaxY(successLabel.frame)+PX_TO_PT(18), ScreenWidth-CGRectGetMaxX(imageView.frame)-PX_TO_PT(67), PX_TO_PT(32))];
-    holdMoneyLabel.text = [NSString stringWithFormat:@"待支付金额：¥%@",self.holdPayMoney];
+    holdMoneyLabel.text = [NSString stringWithFormat:@"待支付金额：¥%.2f",[self.holdPayMoney floatValue]];
     holdMoneyLabel.textColor = R_G_B_16(0xFF4E00);
     holdMoneyLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:holdMoneyLabel.text];
