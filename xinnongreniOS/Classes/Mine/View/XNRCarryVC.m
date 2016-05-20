@@ -34,14 +34,14 @@
     [super viewDidLoad];
     [self setNavigationbarTitle];
     
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStylePlain];
     
     tableView.backgroundColor = R_G_B_16(0xf9f9f9);
     tableView.delegate = self;
     tableView.dataSource = self;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView = tableView;
-    //    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:(CGRectMake(0, 0, 0, 0))];
-    self.tableView.tableHeaderView=[[UIView alloc] initWithFrame:(CGRectMake(0,20,82,0.5))];
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:(CGRectMake(0, 0, 0, 0))];
     
     [self.view addSubview:tableView];
     
@@ -53,28 +53,11 @@
 {
     return self.modelArr.count;
 }
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return CGRectGetMaxY(self.threeView.frame);
-    
-}
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    
-    [self createCenter];
-    UIView *tbHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(500))];
-    
-    tbHeadView.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(_threeView.frame));
-    self.tbHeadView = tbHeadView;
-    [_tbHeadView addSubview:_topView];
-    [_tbHeadView addSubview:_midView];
-    [_tbHeadView addSubview:_threeView];
-    
-    return _tbHeadView;
-}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+
     return cell.height;
 }
 
@@ -177,12 +160,14 @@
         [threeView addSubview:line];
         
     }
-    tbHeadView.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(threeView.frame));
     
     [_tbHeadView addSubview:_topView];
     [_tbHeadView addSubview:_midView];
     [_tbHeadView addSubview:_threeView];
-    
+
+    tbHeadView.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(threeView.frame));
+    self.tableView.tableHeaderView = _tbHeadView;
+
     //    [self.view addSubview:_tbHeadView];
     
 }

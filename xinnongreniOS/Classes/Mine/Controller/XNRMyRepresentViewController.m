@@ -755,7 +755,7 @@ static bool isBroker;
             
 
         }
-        else
+        else if([result[@"code"] integerValue] == 1401)
         {
             [UILabel showMessage:result[@"message"]];
             UserInfo *infos = [[UserInfo alloc]init];
@@ -769,6 +769,10 @@ static bool isBroker;
             vc.hidesBottomBarWhenPushed = YES;
 //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
             [self.navigationController pushViewController:vc animated:YES];
+        }
+        else
+        {
+            [UILabel showMessage:result[@"message"]];
         }
     } failure:^(NSError *error) {
         [self.tableView2.mj_header endRefreshing];

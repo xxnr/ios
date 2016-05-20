@@ -111,7 +111,12 @@
     //    [self getMinPayPrice];
     [self getData];
     
+<<<<<<< HEAD
     //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(librate) name:@"succss_Push" object:nil];
+=======
+    
+//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(librate) name:@"succss_Push" object:nil];
+>>>>>>> ynn_ios
 }
 
 

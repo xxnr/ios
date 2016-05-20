@@ -51,21 +51,26 @@
 }
 -(void)createBtn
 {
-    UIButton *leftBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(149), PX_TO_PT(399), PX_TO_PT(181), PX_TO_PT(61))];
+    UIButton *leftBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(149), PX_TO_PT(400), PX_TO_PT(181), PX_TO_PT(61))];
     [leftBtn setTitle:@"查看订单" forState:UIControlStateNormal];
     leftBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
-    [leftBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [leftBtn setBackgroundColor:R_G_B_16(0xFDA940)];
+    [leftBtn setTitleColor:R_G_B_16(0x00B38A) forState:UIControlStateNormal];
+    [leftBtn setBackgroundColor:[UIColor whiteColor]];
     leftBtn.layer.cornerRadius = 6;
+    leftBtn.layer.borderWidth = PX_TO_PT(1);
+    leftBtn.layer.borderColor = [R_G_B_16(0x00B38A) CGColor];
     [leftBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:leftBtn];
     
-    UIButton *rightBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(389), PX_TO_PT(399), PX_TO_PT(181), PX_TO_PT(61))];
+    UIButton *rightBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(389), PX_TO_PT(400), PX_TO_PT(181), PX_TO_PT(61))];
     [rightBtn setTitle:@"回到首页" forState:UIControlStateNormal];
     rightBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
-    [rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [rightBtn setBackgroundColor:R_G_B_16(0xFDA940)];
+    [rightBtn setTitleColor:R_G_B_16(0x00B38A) forState:UIControlStateNormal];
+    [rightBtn setBackgroundColor:[UIColor whiteColor]];
     rightBtn.layer.cornerRadius = 6;
+    rightBtn.layer.borderWidth = PX_TO_PT(1);
+    rightBtn.layer.borderColor = [R_G_B_16(0x00B38A) CGColor];
+
     [rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:rightBtn];
     

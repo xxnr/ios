@@ -26,6 +26,7 @@
     int compositorCurPage;
     int filterCurPage;
     BOOL isCancel;
+    BOOL istotal;
 }
 
 @property (nonatomic, weak) XNRferView *ferView;
@@ -332,6 +333,7 @@
     
     _fertype = type;
     if (type == XNRferView_DoTotalType) {// 综合
+        istotal = YES;
         self.currentBtn = 1;
         totalCurPage = 1;
         [self.totalArray removeAllObjects];
@@ -342,6 +344,7 @@
         [self getTotalData];
         
     }else if (type == XNRferView_DoPriceType){ // 价格排序
+        istotal = NO;
         self.currentBtn = 2;
         compositorCurPage = 1;
         [self.compositorArr removeAllObjects];
@@ -360,6 +363,7 @@
         }
         
     }else if(type == XNRferView_DoSelectType){   // 筛选
+
         self.currentBtn = 3;
         filterCurPage = 1;
         [self.filterArr removeAllObjects];
@@ -610,14 +614,27 @@
         [self noselectViewShowAndHidden:_filterArr];
         //        self.tableView.legendFooter.hidden = YES;
         self.tableView.mj_footer.hidden = YES;
-        [self.tableView reloadData];
+//        [self.tableView reloadData];
         
+        if (!istotal) {
+        
+            _fertype = XNRferView_DoPriceType;
+            compositorCurPage = 1;
+            [_compositorArr removeAllObjects];
+            if (isSort) { // 正序
+                NSLog(@"正序");
+                [self getPriceDataWith:@"price-asc"];
+            }else{   // 反序
+                NSLog(@"反序");
+                [self getPriceDataWith:@"price-desc"];
+            }
+        }
         //  如果到达最后一页 就消除footer
         NSInteger pages = [resultDic[@"datas"][@"pages"] integerValue];
         NSInteger page = [resultDic[@"datas"][@"page"] integerValue];
         self.tableView.mj_footer.hidden = pages == page;
         
-        [self.tableView reloadData];
+//        [self.tableView reloadData];
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         
