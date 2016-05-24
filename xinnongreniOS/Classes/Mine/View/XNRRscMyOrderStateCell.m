@@ -10,6 +10,7 @@
 #import "XNRRscSkusFrameModel.h"
 #import "XNRRscOrderModel.h"
 #import "UIImageView+WebCache.h"
+#import "UILabel+ZSC.h"
 
 @interface XNRRscMyOrderStateCell()
 
@@ -110,6 +111,8 @@
 {
     self.goodsImageView.frame = self.frameModel.imageViewF;
     self.goodsNameLabel.frame = self.frameModel.goodsNameLabelF;
+    [self.goodsNameLabel verticalUpAlignmentWithText:self.model.productName maxHeight:PX_TO_PT(80)];
+
     self.goodsNumberLabel.frame = self.frameModel.goodsNumberLabelF;
     self.attributesLabel.frame = self.frameModel.attributesLabelF;
     self.addtionsLabel.frame = self.frameModel.addtionsLabelF;
@@ -130,6 +133,7 @@
             [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
         }}];
     self.goodsNameLabel.text = model.productName;
+    
     self.goodsNumberLabel.text = [NSString stringWithFormat:@"x %@",model.count];
     
     // 属性

@@ -23,7 +23,7 @@
     
     CGFloat goodsNameLabelX = CGRectGetMaxX(_imageViewF)+PX_TO_PT(20);
     CGFloat goodsNameLabelY = PX_TO_PT(40);
-    CGFloat goodsNameLabelW = ScreenWidth - goodsNameLabelX-PX_TO_PT(100);
+    CGFloat goodsNameLabelW = ScreenWidth - goodsNameLabelX-PX_TO_PT(150);
     CGFloat goodsNameLabelH = PX_TO_PT(80);
     _goodsNameLabelF  =CGRectMake(goodsNameLabelX, goodsNameLabelY, goodsNameLabelW, goodsNameLabelH);
     

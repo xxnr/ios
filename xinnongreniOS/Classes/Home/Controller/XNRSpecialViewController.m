@@ -479,7 +479,7 @@
     
     NSDictionary *dic = [NSDictionary dictionary];
     if (self.atts.count != 0) {
-        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.currentBrand?self.currentBrand:@"",@"attributes":self.atts,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",compositorCurPage],@"token":[DataCenter account].token,@"user-agent":@"IOS-v2.0"};
+        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.currentBrand?self.currentBrand:@"",@"attributes":self.atts,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",compositorCurPage],@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     }
     else
     {
@@ -586,7 +586,7 @@
     
     NSDictionary *dic = [NSDictionary dictionary];
     if (arr.count != 0) {
-        dic = @{@"attributes":arr,@"brand":str?str:@"",@"classId":_classId?_classId:@"",@"reservePrice":param4?param4:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",filterCurPage],@"token":[DataCenter account].token,@"user-agent":@"IOS-v2.0"};
+        dic = @{@"attributes":arr,@"brand":str?str:@"",@"classId":_classId?_classId:@"",@"reservePrice":param4?param4:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",filterCurPage],@"user-agent":@"IOS-v2.0"};
     }else{
         dic =@{@"brand":str?str:@"",@"classId":_classId?_classId:@"",@"reservePrice":param4?param4:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",filterCurPage],@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     }

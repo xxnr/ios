@@ -15,6 +15,8 @@
 #import "XNRRscOrderDetialController.h"
 #import "XNRRscSearchController.h"
 #import "XNRRscOrderModel.h"
+#import "XNRNavigationController.h"
+
 #define KtitleBtn  1000
 
 @interface XNRMyStoreOrderController()<UIScrollViewDelegate>
@@ -276,7 +278,6 @@
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame = CGRectMake(0, 0, 30, 44);
-    //    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
@@ -294,6 +295,10 @@
 
 -(void)backClick
 {
+    if ([self.presentingViewController isKindOfClass:[XNRNavigationController class]]) {
+        [self dismissViewControllerAnimated:NO completion:nil];
+        return;
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -302,7 +307,6 @@
     XNRRscSearchController *searchVC = [[XNRRscSearchController alloc] init];
     searchVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:searchVC animated:YES];
-    
 }
 
 

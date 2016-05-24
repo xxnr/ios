@@ -335,8 +335,7 @@
     
     XNRProductInfo_model *model = infoFrame.infoModel;
     _model = model;
-   
-    
+
    // 设置frame
     [self setupFrame];
     // 设置数据
@@ -412,11 +411,11 @@
     // 商品描述
     self.descriptionLabel.text = [NSString stringWithFormat:@"%@",self.model.Desc];
     
-//    NSString *minStr = [NSString stringWithFormat:@"%@",self.model.min];
-//    NSString *maxStr = [NSString stringWithFormat:@"%@",self.model.max];
+    NSString *minStr = [NSString stringWithFormat:@"%@",self.model.min];
+    NSString *maxStr = [NSString stringWithFormat:@"%.2f",[self.model.max doubleValue]];
 
     if ([self.model.min doubleValue]== [self.model.max doubleValue]) {
-        NSString *price = [NSString stringWithFormat:@"￥%@ - %@",self.model.min,self.model.max];
+        NSString *price = [NSString stringWithFormat:@"￥%@ - %@",minStr,maxStr];
 
         // 价格
         CGFloat priceLabelX = PX_TO_PT(30);
@@ -429,14 +428,8 @@
 
         self.priceLabel.text = [NSString stringWithFormat:@"￥%@",self.model.min];
 
-//        if ([minStr rangeOfString:@"."].location != NSNotFound) {
-//            self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.min.doubleValue];
-//        }else{
-//            self.priceLabel.text = [NSString stringWithFormat:@"￥%.f",self.model.min.doubleValue];
-//        }
-
     }else{
-        NSString *price = [NSString stringWithFormat:@"￥%@ - %@",self.model.min,self.model.max];
+        NSString *price = [NSString stringWithFormat:@"￥%@ - %@",maxStr,maxStr];
         // 价格
         CGFloat priceLabelX = PX_TO_PT(30);
         CGFloat priceLabelY = CGRectGetMaxY(self.goodNameLabel.frame)+PX_TO_PT(28);
@@ -445,18 +438,16 @@
         CGSize priceLabelSize = [price sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:priceLabelMaxSize];
         self.priceLabel.frame = (CGRect){{priceLabelX, priceLabelY}, priceLabelSize};
 
-        self.priceLabel.text = [NSString stringWithFormat:@"￥%@ - %@",self.model.min,self.model.max];
+//            if ([minStr rangeOfString:@".00"].length == 3) {
+//                minStr = [minStr substringToIndex:minStr.length-3];
+//            }
+            if ([maxStr rangeOfString:@".00"].length == 3) {
+                maxStr = [maxStr substringToIndex:maxStr.length-3];
+            }
 
-//        if ([minStr rangeOfString:@"."].location != NSNotFound || [maxStr rangeOfString:@"."].location != NSNotFound) {
-//              self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f - %.2f",self.model.min.doubleValue,self.model.max.doubleValue];
-//        }else{
-//              self.priceLabel.text = [NSString stringWithFormat:@"￥%.f - %.f",self.model.min.doubleValue,self.model.max.doubleValue];
-//        }
+        self.priceLabel.text = [NSString stringWithFormat:@"￥%@ - %@",minStr,maxStr];
+
     }
-    
-//    if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
-//        self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
-//    }
     
     
     if ([_model.online integerValue] != 0 || _model.online == nil) {

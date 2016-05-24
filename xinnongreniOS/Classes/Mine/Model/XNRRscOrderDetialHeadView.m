@@ -464,8 +464,10 @@
             self.depisitStateOne.text = @"未付款";
             self.depisitStateOne.textColor = R_G_B_16(0xfe9b00);
 
-        }else {
+        }else if([modelOne.payStatus integerValue] == 2){
             self.depisitStateOne.text = @"已付款";
+        }else{
+            self.depisitStateOne.text = @"部分付款";
         }
         
         XNRRscSubOrdersModel *modelTwo = _model.subOrders[1];
@@ -474,8 +476,10 @@
             self.depisitStateTwo.text = @"未付款";
             self.depisitStateTwo.textColor = R_G_B_16(0xfe9b00);
 
-        }else {
+        }else if([modelTwo.payStatus integerValue] == 2){
             self.depisitStateTwo.text = @"已付款";
+        }else{
+            self.depisitStateTwo.text = @"部分付款";
         }
 
     }else{
@@ -484,10 +488,11 @@
         if ([model.payStatus integerValue] == 1) {
             self.depisitStateOne.text = @"未付款";
             self.depisitStateOne.textColor = R_G_B_16(0xfe9b00);
-        }else {
+        }else if([model.payStatus integerValue] == 2){
             self.depisitStateOne.text = @"已付款";
+        }else{
+            self.depisitStateOne.text = @"部分付款";
         }
-    
     }    
 }
 

@@ -120,7 +120,6 @@
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
 }
 -(void)getMinPayPrice
 {

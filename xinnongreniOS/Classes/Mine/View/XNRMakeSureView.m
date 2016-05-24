@@ -145,7 +145,7 @@
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     
-    NSDictionary *dic = @{@"orderId":self.orderId,@"SKURefs":self.selProArr,@"token":[DataCenter account].token,};
+    NSDictionary *dic = @{@"orderId":self.orderId,@"SKURefs":self.selProArr,@"token":[DataCenter account].token?[DataCenter account].token:@""};
     [manager POST:KconfirmSKUReceived parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         

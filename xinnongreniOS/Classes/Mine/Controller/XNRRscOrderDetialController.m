@@ -15,6 +15,7 @@
 #import "XNRRscDetialFootFrameModel.h"
 #import "XNRRscConfirmDeliverView.h"
 #import "XNRRscIdentifyPayView.h"
+#import "XNRNavigationController.h"
 
 @interface XNRRscOrderDetialController()<UITableViewDelegate,UITableViewDataSource>
 
@@ -340,6 +341,10 @@
 
 -(void)backClick
 {
+    if ([self.presentingViewController isKindOfClass:[XNRNavigationController class]]) {
+        [self dismissViewControllerAnimated:NO completion:nil];
+        return;
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 

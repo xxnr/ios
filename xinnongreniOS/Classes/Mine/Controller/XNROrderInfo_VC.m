@@ -236,7 +236,7 @@
 
 -(void)getRSCWebSiteData
 {
-    [KSHttpRequest get:KgetRSC parameters:@{@"products":[self GetProId],@"province":@"",@"city":@"",@"county":@"",@"token":[DataCenter account].token} success:^(id result)
+    [KSHttpRequest get:KgetRSC parameters:@{@"products":[self GetProId],@"province":@"",@"city":@"",@"county":@""} success:^(id result)
      {
          if ([result[@"code"]integerValue] == 1000) {
              _webSiteArr = (NSMutableArray *)[XNRRSCModel objectArrayWithKeyValuesArray:result[@"RSCs"]];

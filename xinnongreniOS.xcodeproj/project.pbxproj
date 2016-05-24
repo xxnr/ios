@@ -61,6 +61,9 @@
 		490FF4091CBFA68B003CB09C /* XNRBugTagsTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 490FF4081CBFA68B003CB09C /* XNRBugTagsTool.m */; };
 		490FF40C1CBFA9B1003CB09C /* XNRUMengPushTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 490FF40B1CBFA9B1003CB09C /* XNRUMengPushTool.m */; };
 		490FF40F1CBFAA9B003CB09C /* XNRRemaindUserUpdataTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 490FF40E1CBFAA9B003CB09C /* XNRRemaindUserUpdataTool.m */; };
+		4910F8ED1CF43FBE00ABD331 /* dingdani-con@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4910F8EC1CF43FBE00ABD331 /* dingdani-con@2x.png */; };
+		4910F8EF1CF43FCA00ABD331 /* dingdani-con@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4910F8EE1CF43FCA00ABD331 /* dingdani-con@3x.png */; };
+		4910F8F21CF4411200ABD331 /* XNRCustomerOrderEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4910F8F11CF4411200ABD331 /* XNRCustomerOrderEmptyView.m */; };
 		491280CD1CC8A30C009E67C4 /* qqlightgray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 491280C91CC8A30C009E67C4 /* qqlightgray@2x.png */; };
 		491280CE1CC8A30C009E67C4 /* qqspacel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 491280CA1CC8A30C009E67C4 /* qqspacel@2x.png */; };
 		491280CF1CC8A30C009E67C4 /* wechat-circle-l@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 491280CB1CC8A30C009E67C4 /* wechat-circle-l@2x.png */; };
@@ -714,6 +717,10 @@
 		490FF40B1CBFA9B1003CB09C /* XNRUMengPushTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRUMengPushTool.m; sourceTree = "<group>"; };
 		490FF40D1CBFAA9B003CB09C /* XNRRemaindUserUpdataTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRemaindUserUpdataTool.h; sourceTree = "<group>"; };
 		490FF40E1CBFAA9B003CB09C /* XNRRemaindUserUpdataTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRemaindUserUpdataTool.m; sourceTree = "<group>"; };
+		4910F8EC1CF43FBE00ABD331 /* dingdani-con@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dingdani-con@2x.png"; sourceTree = "<group>"; };
+		4910F8EE1CF43FCA00ABD331 /* dingdani-con@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dingdani-con@3x.png"; sourceTree = "<group>"; };
+		4910F8F01CF4411200ABD331 /* XNRCustomerOrderEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCustomerOrderEmptyView.h; sourceTree = "<group>"; };
+		4910F8F11CF4411200ABD331 /* XNRCustomerOrderEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCustomerOrderEmptyView.m; sourceTree = "<group>"; };
 		491280C91CC8A30C009E67C4 /* qqlightgray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qqlightgray@2x.png"; sourceTree = "<group>"; };
 		491280CA1CC8A30C009E67C4 /* qqspacel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qqspacel@2x.png"; sourceTree = "<group>"; };
 		491280CB1CC8A30C009E67C4 /* wechat-circle-l@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wechat-circle-l@2x.png"; sourceTree = "<group>"; };
@@ -3481,6 +3488,8 @@
 				491AF0551C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.m */,
 				9C4B2EB81CE98FBB00A9ACD6 /* XNRoffthestocksVC.h */,
 				9C4B2EB91CE98FBB00A9ACD6 /* XNRoffthestocksVC.m */,
+				4910F8F01CF4411200ABD331 /* XNRCustomerOrderEmptyView.h */,
+				4910F8F11CF4411200ABD331 /* XNRCustomerOrderEmptyView.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -3618,6 +3627,8 @@
 				49F7A58E1C5906C200A1FA45 /* iOS刷新图标 3 */,
 				53EE21071B538EC400BD765E /* 001@3x.png */,
 				53EE21081B538EC400BD765E /* 001@2x.png */,
+				4910F8EC1CF43FBE00ABD331 /* dingdani-con@2x.png */,
+				4910F8EE1CF43FCA00ABD331 /* dingdani-con@3x.png */,
 			);
 			path = guider;
 			sourceTree = "<group>";
@@ -3835,6 +3846,7 @@
 				496713891CD97D3800782C12 /* button_img@2x.png in Resources */,
 				53EE210A1B538EC400BD765E /* 001@2x.png in Resources */,
 				491280D61CC8A329009E67C4 /* qqspacel@3x.png in Resources */,
+				4910F8EF1CF43FCA00ABD331 /* dingdani-con@3x.png in Resources */,
 				C54CFAFD1B2AC30C004D5C54 /* checkbox1_unchecked@2x.png in Resources */,
 				491610E71C8C422200F1E243 /* UIBarButtonItemGrid@2x.png in Resources */,
 				491610E41C8C422200F1E243 /* UIBarButtonItemArrowRight@2x.png in Resources */,
@@ -3990,6 +4002,7 @@
 				496BB4381CC49F55007F034F /* bj_img@3x.png in Resources */,
 				491280FA1CC8C2B9009E67C4 /* mention-icon-@2x.png in Resources */,
 				491281091CC8C2B9009E67C4 /* the-order_icon@3x.png in Resources */,
+				4910F8ED1CF43FBE00ABD331 /* dingdani-con@2x.png in Resources */,
 				491610CB1C8C422200F1E243 /* ImageError.png in Resources */,
 				491280FD1CC8C2B9009E67C4 /* shut-down--@2x.png in Resources */,
 				496BB43F1CC49F55007F034F /* wechat-circle-@3x.png in Resources */,
@@ -4226,6 +4239,7 @@
 				1FE1D6551B12EE3200F0D158 /* UIProgressView+AFNetworking.m in Sources */,
 				49F99EEB1C155D130000556A /* XNRProductInfo_cell.m in Sources */,
 				4912813B1CCDD9EF009E67C4 /* XNRRscMyOrderStateCell.m in Sources */,
+				4910F8F21CF4411200ABD331 /* XNRCustomerOrderEmptyView.m in Sources */,
 				9C3F9B461CC4A27D00E44BA8 /* XNRDeliveryBtn.m in Sources */,
 				49F6B19A1C2A6EE100DCF8CF /* MJPhotoBrowser.m in Sources */,
 				491610FB1C8C454300F1E243 /* MBProgressHUD+Add.m in Sources */,

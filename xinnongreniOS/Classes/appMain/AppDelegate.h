@@ -26,7 +26,7 @@
 
 - (UIViewController *)getTopViewController;
 
-- (UIViewController *)getCurrentVC;
+-(UIViewController *)getCurrentViewController;
 
 
 @end
