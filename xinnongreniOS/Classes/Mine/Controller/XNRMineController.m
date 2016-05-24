@@ -80,7 +80,7 @@
     
     if(IS_Login == YES){
     [_userArray removeAllObjects];
-    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"x-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
     if([result[@"code"] integerValue] == 1000){
             
