@@ -54,10 +54,12 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self getData];
-    [self setNavigationbarTitle];
+    currentPage = 1;
     [self createHeadView];
     [self createTableView];
+
+    [self getData];
+    [self setNavigationbarTitle];
     _dataArray = [[NSMutableArray alloc] init];
     [self setupCustomerOrderRefresh];
 
@@ -443,7 +445,7 @@
     
 }
 -(void)backButtonClick{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"removeRedPoint" object:nil];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"removeRedPoint" object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

@@ -122,7 +122,6 @@
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchDown];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
-
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
 }

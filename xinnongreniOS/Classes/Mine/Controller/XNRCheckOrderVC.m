@@ -507,7 +507,7 @@
                 }
             }
             
-            [self.navigationController pushViewController:_carryVC animated:NO];
+            [self.navigationController pushViewController:_carryVC animated:YES];
         }
         
     } failure:^(NSError *error) {

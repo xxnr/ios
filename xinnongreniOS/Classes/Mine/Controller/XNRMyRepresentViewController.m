@@ -36,6 +36,7 @@
 @property (nonatomic, weak) UIButton *rightBtn;
 @property (nonatomic,weak) UIButton *bookBtn;
 @property (nonatomic, weak) UIButton *selectedBtn; // 临时button
+
 @property (nonatomic, strong) XNRMyRepresentView *mrv;
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -101,7 +102,7 @@ static bool isBroker;
     {
         [_dataArr removeAllObjects];
         currentPage = 1;
-//        [self getCustomerData];
+        [self getCustomerData];
         currentTableView = self.tableView;
 
     }
@@ -128,12 +129,13 @@ static bool isBroker;
     [self setBottomButton];
     [self createTableView];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRedPoint) name:@"removeRedPoint" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRedPoint) name:@"removeRedPoint" object:nil];
 }
 
 -(void)removeRedPoint
 {
     currentPage = 1;
+    [_dataArr removeAllObjects];
     [self getCustomerData];
     
 }
@@ -282,6 +284,7 @@ static bool isBroker;
     leftBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
     [leftBtn addTarget:self action:@selector(bottomBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     leftBtn.tag = btnTag;
+    leftBtn.selected = YES;
     self.leftBtn = leftBtn;
     [self.view addSubview:_leftBtn];
     
@@ -320,8 +323,9 @@ static bool isBroker;
     _bookBtn.hidden = YES;
     [self.view addSubview:_bookBtn];
     
-    [self bottomBtnClicked:_leftBtn];
+//    [self bottomBtnClicked:_leftBtn];
     
+    self.selectedBtn = _leftBtn;
     UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, PX_TO_PT(1), btnH)];
     line2.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.bookBtn addSubview:line2];
@@ -341,6 +345,9 @@ static bool isBroker;
 
 - (void)bottomBtnClicked:(UIButton *)sender {
     
+    if (self.selectedBtn.tag == sender.tag) {
+        return;
+    }
     self.selectedBtn.selected = NO;
     sender.selected = YES;
     self.selectedBtn = sender;
@@ -858,7 +865,6 @@ static bool isBroker;
 }
 -(void)getCustomerData
 {
-//    [_dataArr removeAllObjects];
     [KSHttpRequest post:KUserGetInvitee parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",currentPage],@"max":@20,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *arr = result[@"invitee"];
@@ -899,6 +905,8 @@ static bool isBroker;
         }else{
             [self.headView removeFromSuperview];
             [self.tableView removeFromSuperview];
+            
+            [self createCustomerLabel];
         }
         [self.tableView reloadData];
         
@@ -927,6 +935,8 @@ static bool isBroker;
 }
 
 -(void)createCustomerLabel{
+    [self.topView removeFromSuperview];
+    
     UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(260))];
     
     topView.backgroundColor = R_G_B_16(0xf0f0f0);
