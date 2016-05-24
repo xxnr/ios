@@ -77,7 +77,6 @@
 {
     [_dataArray removeAllObjects];
     [self getOrderDetialData];
-    [self.footView removeFromSuperview];
 //    [self.tableView reloadData];
 }
 
@@ -158,6 +157,8 @@
                 }
             }else{
                 self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
+                    [self.footView removeFromSuperview];
+
             }
         }
     

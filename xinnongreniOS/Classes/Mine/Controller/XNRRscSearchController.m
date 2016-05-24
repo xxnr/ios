@@ -84,7 +84,21 @@
     _dataFrameArray = [NSMutableArray array];
     [self createView];
     [self setupAllViewRefresh];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshDetialTableView) name:@"refreshTableView" object:nil];
+
 }
+
+-(void)refreshDetialTableView
+{
+    [self headRefresh];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 #pragma mark - 刷新
 -(void)setupAllViewRefresh{
