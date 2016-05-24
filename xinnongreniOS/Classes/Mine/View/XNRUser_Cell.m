@@ -53,7 +53,7 @@
 {
     self.registerLabel.hidden = YES;
     self.nameLabel.text = model.name;
-    if ([model.sex integerValue] == 1) {
+    if ([model.sex integerValue] == 0) {
         [self.icon setImage:[UIImage imageNamed:@"boy1-ico"]];
     }
     else

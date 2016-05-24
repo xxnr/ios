@@ -81,11 +81,11 @@
             NSString *sex = @"";
             if (user.sex) {
                 if ([user.sex integerValue] == 0) {
-                    sex = @"女";
+                    sex = @"男";
                 }
                 else
                 {
-                    sex = @"男";
+                    sex = @"女";
                 }
             }
             XNRAddressModel *address = [XNRAddressModel objectWithKeyValues:result[@"potentialCustomer"][@"address"] ];

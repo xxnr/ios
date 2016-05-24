@@ -579,10 +579,10 @@
     _tempBtn = button;
     
     if (button.tag == sexBtn + 1) {
-        self.sex = @"true";
+        self.sex = @"0";
         
     }else if (button.tag == sexBtn + 2){
-        self.sex = @"false";
+        self.sex = @"1";
     }
 }
 
