@@ -351,12 +351,11 @@
 #pragma mark - 中部视图
 
 -(void)createMidView{
-    //    self.midView = [[UIView alloc]init];
     
     UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.topView.frame) + PX_TO_PT(20), ScreenWidth, PX_TO_PT(233))];
     [self.view addSubview:midView];
-    //支付方式
     
+    //支付方式
     UIView *typeView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(69))];
     typeView.backgroundColor = R_G_B_16(0xF0F0F0);
     

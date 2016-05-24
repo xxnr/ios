@@ -15,8 +15,6 @@
 @interface XNRoffthestocksVC ()
 
 @property (nonatomic,strong) UILabel *titleLabel;
-//@property (nonatomic,strong) UIButton *leftBtn;
-//@property (nonatomic,strong) UIButton *rightBtn;
 
 @end
 
@@ -26,10 +24,7 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = R_G_B_16(0xFAFAFA);
-    //    [self getData];
-    
     [self setNav];
-    
     [self createCenter];
     [self createBtn];
 }
@@ -45,9 +40,6 @@
     label.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     label.textColor = R_G_B_16(0x323232);
     [self.view addSubview:label];
-    
-
-    
 }
 -(void)createBtn
 {
@@ -70,10 +62,8 @@
     rightBtn.layer.cornerRadius = 6;
     rightBtn.layer.borderWidth = PX_TO_PT(1);
     rightBtn.layer.borderColor = [R_G_B_16(0x00B38A) CGColor];
-
     [rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:rightBtn];
-    
 }
 
 
@@ -92,10 +82,16 @@
 - (void)rightBtnClick:(UIButton *)button
 {
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    XNRTabBarController *tabVC = (XNRTabBarController *)window.rootViewController;
-    tabVC.selectedIndex = 0;
-    [self.navigationController popToRootViewControllerAnimated:YES];
+//    if ([self.navigationController.viewControllers firstObject].presentedViewController == nil) {
+//        XNRTabBarController *tabVC = (XNRTabBarController *)window.rootViewController;
+//        tabVC.selectedIndex = 0;
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+//    }
     
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    window.rootViewController = [[XNRTabBarController alloc]init];
+    [window makeKeyAndVisible];
+
 }
 
 #pragma mark - 设置导航
@@ -104,10 +100,7 @@
     self.navigationItem.title = @"订单已支付";
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
     backButton.frame=CGRectMake(0, 0, 30, 44);
-
-    
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchDown];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
@@ -135,8 +128,6 @@
     }
     
     [self.navigationController popToRootViewControllerAnimated:YES];
-    
-    //    NSNotification *notification = [[NSNotification alloc]initWithName:@"reloadOrderList" object:nil userInfo:nil];
     
 }
 

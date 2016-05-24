@@ -181,7 +181,6 @@
 
     [UMessage didReceiveRemoteNotification:userInfo];
     
-    
     NSString *alert = [userInfo objectForKey:@"page"];
     NSString *orderId = [userInfo objectForKey:@"orderId"];
     NSString *title = [userInfo objectForKey:@"title"];

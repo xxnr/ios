@@ -267,7 +267,7 @@
     [topBgView addSubview:emailTF];
     
     for (int i = 0; i<7; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96)*i, ScreenWidth, PX_TO_PT(2))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96)*i, ScreenWidth, PX_TO_PT(1))];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [topBgView addSubview:lineView];
     }
@@ -362,7 +362,7 @@
     [midView addSubview:mySwitch];
     
     for (int i = 0; i<2; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(2))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(1))];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [midView addSubview:lineView];
      }
