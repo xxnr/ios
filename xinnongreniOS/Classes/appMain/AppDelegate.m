@@ -258,7 +258,6 @@
             XNRNavigationController *orderNavVC = [[XNRNavigationController alloc]initWithRootViewController:vc];
 
             [myorderVC presentViewController:orderNavVC animated:NO completion:nil];
-            
 //            [application setApplicationIconBadgeNumber:0];
         }
         else

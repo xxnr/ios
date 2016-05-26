@@ -223,9 +223,12 @@
 }
 -(void)viewWillDisappear:(BOOL)animated
 {
-    self.badgeImage.hidden = YES;
-    self.bgLoginView.hidden = YES;
-    self.bgNotLoginView.hidden = YES;
+//    self.badgeImage.hidden = YES;
+//    self.bgLoginView.hidden = YES;
+//    self.bgNotLoginView.hidden = YES;
+    [self.mainTabelView removeFromSuperview];
+//    [self.topBgView removeFromSuperview];
+//    [self.view removeFromSuperview];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -339,6 +342,7 @@
     }
     
     UITableView *mainTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
+    self.mainTabelView = mainTableView;
     mainTableView.delegate = self;
     mainTableView.dataSource  = self;
     mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;

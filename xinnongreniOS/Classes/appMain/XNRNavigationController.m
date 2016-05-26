@@ -8,7 +8,11 @@
 
 #import "XNRNavigationController.h"
 
+<<<<<<< HEAD
 @interface XNRNavigationController ()<UINavigationControllerDelegate,UIGestureRecognizerDelegate>
+=======
+@interface XNRNavigationController ()     
+>>>>>>> ynn_ios
 
 @end
 
