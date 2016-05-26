@@ -8,7 +8,7 @@
 
 #import "XNRNavigationController.h"
 
-@interface XNRNavigationController ()
+@interface XNRNavigationController ()     
 
 @end
 
