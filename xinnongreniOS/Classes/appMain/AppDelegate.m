@@ -28,6 +28,8 @@
 #import "XNRMyStoreOrderController.h"
 #import "XNRRscOrderDetialController.h"
 #import "XNRLoginViewController.h"
+#import "UIImageView+WebCache.h"
+
 @interface AppDelegate ()<UITabBarControllerDelegate>
 {
     BOOL _is_Notification;
@@ -309,6 +311,19 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     
 }
+
+/**
+ *  内存警告
+ */
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+{
+    // 取消所有的下载图片请求
+    [[SDWebImageManager sharedManager] cancelAll];
+    
+    // 清除内存缓存
+    [[SDWebImageManager sharedManager].imageCache clearMemory];
+}
+
 
 
 

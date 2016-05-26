@@ -270,11 +270,9 @@
     if (_dataFrameArray.count>0) {
         XNRRscFootFrameModel *frameModel = _dataFrameArray[section];
         return frameModel.footViewHeight;
-        
     }else{
         return 0;
     }
-    
 }
 
 //设置段数

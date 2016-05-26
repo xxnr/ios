@@ -214,7 +214,7 @@
         self.pageControl = pageControl;
 
     }else{
-        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(700), ScreenWidth, PX_TO_PT(1))];
+        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(700), ScreenWidth, 1)];
         bgView.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.contentView addSubview:bgView];
     }
@@ -238,6 +238,7 @@
     UILabel *presaleLabel = [[UILabel alloc] init];
     presaleLabel.textColor = R_G_B_16(0x989898);
     presaleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+//    presaleLabel.backgroundColor = [UIColor redColor];
     self.presaleLabel = presaleLabel;
     [self.contentView addSubview:presaleLabel];
 

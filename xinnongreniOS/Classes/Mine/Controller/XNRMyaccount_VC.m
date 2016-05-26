@@ -193,11 +193,11 @@
     [nickBtn addSubview:nickNameLabel];
     
     
-    UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(120),ScreenWidth,PX_TO_PT(1))];
+    UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(120),ScreenWidth,1)];
     topLine.backgroundColor=R_G_B_16(0xc7c7c7);
     [self.mainScrollView addSubview:topLine];
     
-    UIView*bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(208), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(208), ScreenWidth, 1)];
     bottomLine.backgroundColor=R_G_B_16(0xc7c7c7);
     [self.mainScrollView addSubview:bottomLine];
 }
@@ -247,11 +247,11 @@
         [button addSubview:arrow3];
 
         //分割线
-        UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(0,PX_TO_PT(228)+i*PX_TO_PT(88), ScreenWidth, .5)];
+        UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(0,PX_TO_PT(228)+i*PX_TO_PT(88), ScreenWidth, 1)];
         line2.backgroundColor=R_G_B_16(0xc7c7c7);
         [self.mainScrollView addSubview:line2];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(228)+3*PX_TO_PT(88)+PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(228)+3*PX_TO_PT(88)+PX_TO_PT(86), ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [self.mainScrollView addSubview:lineView];
 }
@@ -452,7 +452,7 @@
     [warnView addSubview:cancelBtn];
     
     for (int i = 1; i<4; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100)*i, ScreenWidth-PX_TO_PT(200), PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100)*i, ScreenWidth-PX_TO_PT(200), 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [warnView addSubview:lineView];
     }
@@ -547,7 +547,7 @@
     [arrow setImage:[UIImage imageNamed:@"arrow-1"]];
     [RscBtn addSubview:arrow];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [RscBtn addSubview:lineView];
 
@@ -638,15 +638,15 @@
     addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [addressManagerBtn addSubview:addressLabel];
 
-    UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth,PX_TO_PT(1))];
+    UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth,1)];
     topLine.backgroundColor=R_G_B_16(0xc7c7c7);
     [bottomBtn addSubview:topLine];
     
-    UIView *middleLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+    UIView *middleLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(86), ScreenWidth, 1)];
     middleLine.backgroundColor=R_G_B_16(0xc7c7c7);
     [bottomBtn addSubview:middleLine];
     
-    UIView *bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(176), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(176), ScreenWidth, 1)];
     bottomLine.backgroundColor=R_G_B_16(0xc7c7c7);
     [bottomBtn addSubview:bottomLine];
 

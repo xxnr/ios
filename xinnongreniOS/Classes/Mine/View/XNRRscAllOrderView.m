@@ -304,13 +304,12 @@
 // 段尾高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (_dataFrameArray.count>0) {
-        XNRRscFootFrameModel *frameModel = _dataFrameArray[section];
-        return frameModel.footViewHeight;
-
-    }else{
-        return 0;
-    }
+        if (_dataFrameArray.count>0) {
+            XNRRscFootFrameModel *frameModel = _dataFrameArray[section];
+            return frameModel.footViewHeight;
+        }else{
+            return 0;
+        }
 }
 
 //设置段数

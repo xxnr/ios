@@ -106,12 +106,12 @@
         
         maxY = CGRectGetMaxY(DetailLabel.frame)+PX_TO_PT(28);
         
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, maxY+1, ScreenWidth, PX_TO_PT(1))];
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, maxY+1, ScreenWidth, 1)];
         line.backgroundColor = R_G_B_16(0xE0E0E0);
         [midView addSubview:line];
     }
     
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(1), ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 1, ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xe0e0e0);
     [midView addSubview:line];
 
@@ -140,7 +140,7 @@
     
     [midView addSubview:titleLabel];
 
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xE0E0E0);
     [midView addSubview:line];
     
@@ -157,7 +157,7 @@
     [midView addSubview:detailLabel];
     
     for (int i=0; i<2; i++) {
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(394)*i, ScreenWidth, PX_TO_PT(1))];
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(394)*i, ScreenWidth, 1)];
         line.backgroundColor = R_G_B_16(0xe0e0e0);
         [midView addSubview:line];
     }

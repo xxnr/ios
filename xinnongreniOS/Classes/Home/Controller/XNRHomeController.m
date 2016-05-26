@@ -203,11 +203,9 @@
 
 #pragma mark - 获取轮播数据
 -(void)getCircleData{
+    [_cyclePicArr removeAllObjects];
     [KSHttpRequest post:KHomeGetAdList parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
-       
        if ([result[@"code"] integerValue] == 1000) {
-           //请求成功删除
-           [_cyclePicArr removeAllObjects];
            NSDictionary *datasDic = result[@"datas"];
            NSArray *rowsArr = datasDic[@"rows"];
            for (NSDictionary *subDic in rowsArr) {

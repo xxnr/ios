@@ -87,13 +87,13 @@
             CGFloat textTopLineX = CGRectGetMaxX(_leftBtnF);
             CGFloat textTopLineY = CGRectGetMaxY(_attributesLabelF)+margin;
             CGFloat textTopLineW = PX_TO_PT(84);
-            CGFloat textTopLineH = PX_TO_PT(1);
+            CGFloat textTopLineH = 1;
             _textTopLineF = CGRectMake(textTopLineX, textTopLineY, textTopLineW, textTopLineH);
             
             CGFloat bottomLineX = CGRectGetMaxX(_leftBtnF);
             CGFloat bottomLineY = CGRectGetMaxY(_attributesLabelF)+PX_TO_PT(67);
             CGFloat bottomLineW = PX_TO_PT(84);
-            CGFloat bottomLineH = PX_TO_PT(1);
+            CGFloat bottomLineH = 1;
             _textbottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
 
 
@@ -142,13 +142,13 @@
             CGFloat textTopLineX = CGRectGetMaxX(_leftBtnF);
             CGFloat textTopLineY = CGRectGetMaxY(_picImageViewF)+margin;
             CGFloat textTopLineW = PX_TO_PT(84);
-            CGFloat textTopLineH = PX_TO_PT(1);
+            CGFloat textTopLineH = 1;
             _textTopLineF = CGRectMake(textTopLineX, textTopLineY, textTopLineW, textTopLineH);
             
             CGFloat bottomLineX = CGRectGetMaxX(_leftBtnF);
             CGFloat bottomLineY = CGRectGetMaxY(_picImageViewF)+PX_TO_PT(67);
             CGFloat bottomLineW = PX_TO_PT(84);
-            CGFloat bottomLineH = PX_TO_PT(1);
+            CGFloat bottomLineH = 1;
             _textbottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
 
             
@@ -207,7 +207,7 @@
          topLineH = PX_TO_PT(1.5);
 
     }else{
-         topLineH = PX_TO_PT(1);
+         topLineH = 1;
     }
     CGFloat topLineW = ScreenWidth;
     CGFloat topLineY;
@@ -243,7 +243,7 @@
             middleLineH = PX_TO_PT(1.5);
             
         }else{
-            middleLineH = PX_TO_PT(1);
+            middleLineH = 1;
         }
         _middleLineF = CGRectMake(middleLineX, middleLineY, middleLineW, middleLineH);
         
@@ -270,7 +270,7 @@
             bottomLineH = PX_TO_PT(1.5);
             
         }else{
-            bottomLineH = PX_TO_PT(1);
+            bottomLineH = 1;
         }
         _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         

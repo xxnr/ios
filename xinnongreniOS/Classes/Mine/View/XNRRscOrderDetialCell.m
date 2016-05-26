@@ -54,7 +54,7 @@
     if (IS_FourInch) {
         imageView.layer.borderWidth = PX_TO_PT(2);
     }else{
-        imageView.layer.borderWidth = PX_TO_PT(1);
+        imageView.layer.borderWidth = 1;
     }
     imageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     self.goodsImageView = imageView;

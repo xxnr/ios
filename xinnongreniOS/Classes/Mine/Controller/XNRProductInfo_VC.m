@@ -316,7 +316,7 @@
     [midView addSubview:selectLine];
     
     for (int i = 1; i<3; i++) {
-        UIView *dividedLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3*i, PX_TO_PT(20), PX_TO_PT(1), PX_TO_PT(40))];
+        UIView *dividedLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3*i, PX_TO_PT(20), 1, PX_TO_PT(40))];
         dividedLine.backgroundColor = R_G_B_16(0xc7c7c7);
         [midView addSubview:dividedLine];
         
@@ -501,7 +501,7 @@
     expectLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [bgExpectView addSubview:expectLabel];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgExpectView addSubview:lineView];
     
@@ -528,7 +528,7 @@
     [bgView addSubview:addBuyCarBtn];
     
     //分割线
-    UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,PX_TO_PT(1) )];
+    UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,1 )];
     line.backgroundColor=R_G_B_16(0xc7c7c7);
     [bgView addSubview:line];
     

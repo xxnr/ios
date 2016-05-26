@@ -135,7 +135,7 @@
             lastLine.backgroundColor = R_G_B_16(0xE0E0E0);
             [self.view addSubview:lastLine];
 
-            UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastLine.frame)+PX_TO_PT(1), ScreenWidth, ScreenHeight -CGRectGetMaxY(lastLine.frame)-PX_TO_PT(1))];
+            UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastLine.frame)+1, ScreenWidth, ScreenHeight -CGRectGetMaxY(lastLine.frame)-1)];
             bgView.backgroundColor = R_G_B_16(0xf8f8f8);
             [self.view addSubview:bgView];
         }

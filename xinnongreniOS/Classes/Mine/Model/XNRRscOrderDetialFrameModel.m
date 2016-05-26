@@ -55,13 +55,13 @@
             CGFloat bottomLineX = 0;
             CGFloat bottomLineY = CGRectGetMaxY(_attributesLabelF)+PX_TO_PT(30);
             CGFloat bottomLineW = ScreenWidth;
-            CGFloat bottomLineH = PX_TO_PT(1);
+            CGFloat bottomLineH = 1;
             _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         }else{
             CGFloat bottomLineX = 0;
             CGFloat bottomLineY = CGRectGetMaxY(_imageViewF)+PX_TO_PT(30);
             CGFloat bottomLineW = ScreenWidth;
-            CGFloat bottomLineH = PX_TO_PT(1);
+            CGFloat bottomLineH = 1;
             _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         }
     }else{
@@ -92,7 +92,7 @@
         CGFloat bottomLineX = 0;
         CGFloat bottomLineY = CGRectGetMaxY(_addtionsLabelF)+PX_TO_PT(30);
         CGFloat bottomLineW = ScreenWidth;
-        CGFloat bottomLineH = PX_TO_PT(1);
+        CGFloat bottomLineH = 1;
         _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         
     }

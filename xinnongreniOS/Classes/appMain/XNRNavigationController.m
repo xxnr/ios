@@ -8,7 +8,7 @@
 
 #import "XNRNavigationController.h"
 
-@interface XNRNavigationController ()
+@interface XNRNavigationController ()<UINavigationControllerDelegate,UIGestureRecognizerDelegate>
 
 @end
 
@@ -37,8 +37,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.interactivePopGestureRecognizer.delegate = nil;
-    
+    // Do any additional setup after loading the view.
+    if ([self respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.interactivePopGestureRecognizer.delegate = self;
+        self.delegate =self;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -49,6 +52,13 @@
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    
+    if ([self respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.interactivePopGestureRecognizer.enabled = NO;
+//        [super pushViewController:viewController animated:YES];
+    }
+    
+    
     CATransition *trans=[CATransition animation];
     trans.type=@"cube";
     trans.subtype=@"fromLeft";
@@ -64,6 +74,20 @@
     trans.duration = .35;
 //    [self.view.layer addAnimation:trans forKey:nil];
     return [super popViewControllerAnimated:animated];
+}
+
+-(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    if ([self respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.interactivePopGestureRecognizer.enabled = YES;
+        if (navigationController.viewControllers.count ==1) {
+            self.interactivePopGestureRecognizer.enabled =NO;
+        }
+        
+    }
+}
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    return YES;
 }
 
 /*

@@ -431,7 +431,7 @@
     getGoodsAddressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [topView addSubview:getGoodsAddressLabel];
 
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(getGoodsAddressLabel.frame)+PX_TO_PT(26), ScreenWidth - PX_TO_PT(31), PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(getGoodsAddressLabel.frame)+PX_TO_PT(26), ScreenWidth - PX_TO_PT(31), 1)];
     line.backgroundColor = R_G_B_16(0xe0e0e0);
     [topView addSubview:line];
     
@@ -878,7 +878,7 @@
     [arrowImageView setImage:[UIImage imageNamed:@"icon_arrow"]];
     [addressView addSubview:arrowImageView];
     
-    UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     headLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [addressView addSubview:headLine];
     _addressView.hidden = YES;
@@ -1021,7 +1021,7 @@
     [arrowImageView setImage:[UIImage imageNamed:@"icon_arrow"]];
     [addressView addSubview:arrowImageView];
     
-    UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     headLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [addressView addSubview:headLine];
     _addressView.hidden = YES;
@@ -1114,11 +1114,11 @@
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
-        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
         lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView1];
         
-        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
         lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView2];
         

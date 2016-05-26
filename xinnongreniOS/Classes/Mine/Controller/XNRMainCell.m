@@ -96,7 +96,7 @@
         
         
         UIView *lineLayer = [[UIView alloc] init];
-        lineLayer.frame = CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1));
+        lineLayer.frame = CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1);
         lineLayer.backgroundColor = R_G_B_16(0xc7c7c7);
         [self addSubview:lineLayer];
 

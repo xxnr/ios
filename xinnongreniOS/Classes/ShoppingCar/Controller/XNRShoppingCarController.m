@@ -20,7 +20,6 @@
 #import "XNRProductInfo_VC.h"
 #import "MJExtension.h"
 #import "XNRShoppingCarFrame.h"
-
 #import "XNRSKUAttributesModel.h"
 
 @interface XNRShoppingCarController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,XNRShopcarViewBtnDelegate,XNRShoppingCartTableViewCellDelegate,UITextFieldDelegate>
@@ -681,11 +680,11 @@
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
-        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
         lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView1];
         
-        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1)];
         lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView2];
         
@@ -823,7 +822,6 @@
         XNRShoppingCarFrame *frameModel = sectionModel.SKUFrameList[indexPath.row];
         NSLog(@"frame.cellHeight==%.2f",frameModel.cellHeight);
         return frameModel.cellHeight;
-        
     }else{
         return 0;
     }
@@ -832,7 +830,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellID = @"cell";
-    
     XNRShoppingCartTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell)
     {

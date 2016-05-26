@@ -241,28 +241,28 @@
     UIView *lineView;
     for (int i = 0; i<5; i++) {
         if (IS_FourInch) {
-            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(3))];
+            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, 1)];
             lineView.backgroundColor = R_G_B_16(0xc7c7c7);
             [self.view addSubview:lineView];
         }else{
-            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(2))];
+            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, 1)];
             lineView.backgroundColor = R_G_B_16(0xc7c7c7);
             [self.view addSubview:lineView];
         }
        
     }
     
-    lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*5, ScreenWidth, PX_TO_PT(2))];
+    lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*5, ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.view addSubview:lineView];
     
     for (int i = 6; i<8; i++) {
         if (IS_FourInch) {
-            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(2))];
+            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, 1)];
             lineView.backgroundColor = R_G_B_16(0xc7c7c7);
             [self.view addSubview:lineView];
         }else{
-            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(1))];
+            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, 1)];
             lineView.backgroundColor = R_G_B_16(0xc7c7c7);
             [self.view addSubview:lineView];
         }

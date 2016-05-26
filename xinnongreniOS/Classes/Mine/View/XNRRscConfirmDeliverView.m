@@ -66,7 +66,7 @@
     bottomView.backgroundColor = R_G_B_16(0xffffff);
     [self.deliverView addSubview:bottomView];
     
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xc7c7c7);
     [bottomView addSubview:line];
     
@@ -216,7 +216,7 @@
     [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [headView addSubview:cancelBtn];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [headView addSubview:lineView];
 }

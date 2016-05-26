@@ -180,7 +180,7 @@
     }
     
     for (int i = 0; i<2; i++) {
-        UIView *line = [[UIView  alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(1))];
+        UIView *line = [[UIView  alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, 1)];
         line.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:line];
     }

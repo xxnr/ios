@@ -180,9 +180,11 @@ NSString * const ID = @"cycleCell";
 - (void)loadImageAtIndex:(NSInteger)index
 {
     NSURL *url = self.imageURLsGroup[index];
-    
+    NSLog(@"====================%@",url);
     // 如果有缓存，直接加载缓存
     NSData *data = [NSData getDataCacheWithIdentifier:url.absoluteString];
+    NSLog(@"=================++++++++===%@",url.absoluteString);
+
     if (data) {
         [self.imagesGroup setObject:[UIImage imageWithData:data] atIndexedSubscript:index];
     } else {

@@ -478,7 +478,7 @@
         [bgViewF addSubview:addBuyCarBtn];
 
         //分割线
-        UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,PX_TO_PT(1) )];
+        UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,1 )];
         line.backgroundColor=R_G_B_16(0xc7c7c7);
         [bgViewF addSubview:line];
     }
@@ -499,7 +499,7 @@
         expectLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
         [bgExpectView addSubview:expectLabel];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [bgExpectView addSubview:lineView];
         

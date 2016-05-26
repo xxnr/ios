@@ -49,7 +49,7 @@
     [leftBtn setTitleColor:R_G_B_16(0x00B38A) forState:UIControlStateNormal];
     [leftBtn setBackgroundColor:[UIColor whiteColor]];
     leftBtn.layer.cornerRadius = 6;
-    leftBtn.layer.borderWidth = PX_TO_PT(1);
+    leftBtn.layer.borderWidth = 1;
     leftBtn.layer.borderColor = [R_G_B_16(0x00B38A) CGColor];
     [leftBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:leftBtn];
@@ -60,7 +60,7 @@
     [rightBtn setTitleColor:R_G_B_16(0x00B38A) forState:UIControlStateNormal];
     [rightBtn setBackgroundColor:[UIColor whiteColor]];
     rightBtn.layer.cornerRadius = 6;
-    rightBtn.layer.borderWidth = PX_TO_PT(1);
+    rightBtn.layer.borderWidth = 1;
     rightBtn.layer.borderColor = [R_G_B_16(0x00B38A) CGColor];
     [rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:rightBtn];

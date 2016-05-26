@@ -131,16 +131,16 @@
     statusLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [headViewTop addSubview:statusLabel];
     
-    UIView *line0 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(1),ScreenWidth, PX_TO_PT(1))];
+    UIView *line0 = [[UIView alloc]initWithFrame:CGRectMake(0, 1,ScreenWidth, 1)];
     line0.backgroundColor = R_G_B_16(0xc7c7c7);
 
     [headViewTop addSubview:line0];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(127),ScreenWidth - PX_TO_PT(66), PX_TO_PT(1))];
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(127),ScreenWidth - PX_TO_PT(66), 1)];
     line1.backgroundColor = R_G_B_16(0xc7c7c7);
     [headViewTop addSubview:line1];
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(249),ScreenWidth, PX_TO_PT(1))];
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(249),ScreenWidth, 1)];
     line2.backgroundColor = R_G_B_16(0xc7c7c7);
     [headViewTop addSubview:line2];
     
@@ -152,11 +152,11 @@
     label.text = @"支付详情";
     [viewTop2 addSubview:label];
     
-    UIView *line3 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(1),ScreenWidth, PX_TO_PT(1))];
+    UIView *line3 = [[UIView alloc]initWithFrame:CGRectMake(0, 1,ScreenWidth, 1)];
     line3.backgroundColor = R_G_B_16(0xc7c7c7);
     [viewTop2 addSubview:line3];
     
-    UIView *line4 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(79),ScreenWidth, PX_TO_PT(1))];
+    UIView *line4 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(79),ScreenWidth, 1)];
     line4.backgroundColor = R_G_B_16(0xc7c7c7);
     [viewTop2 addSubview:line4];
     

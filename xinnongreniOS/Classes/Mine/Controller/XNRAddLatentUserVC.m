@@ -180,7 +180,7 @@
     userTypeLabel.text = @"选择客户想买的商品";
     self.userTypeLabel = userTypeLabel;
     
-    UIView *lastLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*4, ScreenWidth, PX_TO_PT(1))];
+    UIView *lastLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*4, ScreenWidth, 1)];
     lastLine.backgroundColor = R_G_B_16(0xc7c7c7);
     self.line = lastLine;
     [self.bottomView addSubview:lastLine];
@@ -208,7 +208,7 @@
         self.userTypeLabel.numberOfLines = 0;
         self.userTypeLabel.frame = CGRectMake(0,PX_TO_PT(38), size.width,size.height);
         self.userTypeBtn.frame = CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(_streetBtn.frame), ScreenWidth - CGRectGetMaxX(self.titleLabel.frame)-PX_TO_PT(60), size.height);
-        self.line.frame = CGRectMake(0, CGRectGetMaxY(self.userTypeBtn.frame) + PX_TO_PT(68), ScreenWidth, PX_TO_PT(1));
+        self.line.frame = CGRectMake(0, CGRectGetMaxY(self.userTypeBtn.frame) + PX_TO_PT(68), ScreenWidth, 1);
     }
 //    else
 //    {
@@ -248,7 +248,7 @@
     self.nameTf = nameTf;
     [self.view addSubview:nameTf];
     
-    UIView *line1View = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
+    UIView *line1View = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
     line1View.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.view addSubview:line1View];
 
@@ -275,7 +275,7 @@
     phonelabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     phonelabel.text = @"手机号";
     
-    UIView *line2View = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
+    UIView *line2View = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
     line2View.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.bottomView addSubview:line2View];
     
@@ -380,11 +380,11 @@
     [self.bottomView addSubview:_userTypeBtn];
 
     for (int i = 1; i<4; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [self.bottomView addSubview:lineView];
     }
-    UIView *lastLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*4, ScreenWidth, PX_TO_PT(1))];
+    UIView *lastLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*4, ScreenWidth, 1)];
     lastLine.backgroundColor = R_G_B_16(0xc7c7c7);
     self.line = lastLine;
     [self.bottomView addSubview:lastLine];
@@ -495,7 +495,7 @@
                 if ([str integerValue] == 0) {
     
                     self.phoneView.frame = CGRectMake(0, CGRectGetMaxY(self.nameTf.frame) + PX_TO_PT(24), ScreenWidth, PX_TO_PT(198));
-                    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(197), ScreenWidth, PX_TO_PT(2))];
+                    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(197), ScreenWidth, 1)];
                     self.warnView = line;
                     line.backgroundColor = R_G_B_16(0xc7c7c7);
                     [self.phoneView addSubview:line];

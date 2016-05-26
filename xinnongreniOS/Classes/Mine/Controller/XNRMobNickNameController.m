@@ -51,11 +51,11 @@
     self.nickNameTF = nickNameTF;
     [bgView addSubview:nickNameTF];
     
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     topLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgView addSubview:topLine];
     
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
     bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgView addSubview:bottomLine];
     

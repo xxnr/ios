@@ -326,7 +326,7 @@ static bool isBroker;
 //    [self bottomBtnClicked:_leftBtn];
     
     self.selectedBtn = _leftBtn;
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, PX_TO_PT(1), btnH)];
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, btnH)];
     line2.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.bookBtn addSubview:line2];
 
@@ -337,7 +337,7 @@ static bool isBroker;
         self.bookBtn.frame = CGRectMake(CGRectGetMaxX(self.rightBtn.frame), btnY, ScreenWidth/3, btnH);
     }
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame)-PX_TO_PT(1), 0, PX_TO_PT(2), btnH)];
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame)-1, 0, PX_TO_PT(2), btnH)];
     line1.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.leftBtn addSubview:line1];
 
@@ -959,7 +959,7 @@ static bool isBroker;
     self.customerLabel = customerLabel;
     [topView addSubview:customerLabel];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [topView addSubview:lineView];
 
@@ -1088,7 +1088,7 @@ static bool isBroker;
     self.myRepLabel = myRepLabel;
     [myRepTopView addSubview:myRepLabel];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepTopView addSubview:lineView];
 
@@ -1118,11 +1118,11 @@ static bool isBroker;
     self.phoneNumLabel = phoneNumLabel;
     [myRepView addSubview:phoneNumLabel];
     
-    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepView addSubview:topLineView];
     
-    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, 1)];
     bottomLineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepView addSubview:bottomLineView];
 

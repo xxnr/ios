@@ -84,11 +84,11 @@
     self.rightBtn = rightBtn;
     [bgView addSubview:rightBtn];
     
-    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     topView.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgView addSubview:topView];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(70), ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(70), ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgView addSubview:lineView];
 }

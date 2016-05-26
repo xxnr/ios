@@ -350,7 +350,7 @@
         sectionTitleLabel.text = @"若您要关闭或开启消息通知，请在iPhone的【设置】-【通知】中，找到应用“新新农人”更改";
         [sectionHeadView addSubview:sectionTitleLabel];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [sectionHeadView addSubview:lineView];
         
@@ -361,7 +361,7 @@
         sectionHeadView.backgroundColor = R_G_B_16(0xfafafa);
         [self.view addSubview:sectionHeadView];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [sectionHeadView addSubview:lineView];
 

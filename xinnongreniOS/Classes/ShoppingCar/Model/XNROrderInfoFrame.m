@@ -109,7 +109,7 @@
         topLineH = PX_TO_PT(1.5);
         
     }else{
-        topLineH = PX_TO_PT(1);
+        topLineH = 1;
     }
     CGFloat topLineW = ScreenWidth;
     CGFloat topLineY;
@@ -145,7 +145,7 @@
             middleLineH = PX_TO_PT(1.5);
             
         }else{
-            middleLineH = PX_TO_PT(1);
+            middleLineH = 1;
         }
         _middleLineF = CGRectMake(middleLineX, middleLineY, middleLineW, middleLineH);
         
@@ -172,7 +172,7 @@
             bottomLineH = PX_TO_PT(1.5);
             
         }else{
-            bottomLineH = PX_TO_PT(1);
+            bottomLineH = 1;
         }
         _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         

@@ -77,7 +77,6 @@
 {
     [_dataArray removeAllObjects];
     [self getOrderDetialData];
-//    [self.tableView reloadData];
 }
 
 -(void)dealloc
@@ -157,11 +156,10 @@
                 }
             }else{
                 self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
-                    [self.footView removeFromSuperview];
-
+                [self createFootView:model];
             }
         }
-    
+        
         [self.tableView reloadData];
     } failure:^(NSError *error) {
         
@@ -170,6 +168,7 @@
 
 -(void)createFootView:(XNRRscOrderDetailModel *)model
 {
+    [self.footView removeFromSuperview];
     NSDictionary *dict = model.orderStatus;
     UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenHeight -64- PX_TO_PT(80), ScreenWidth,PX_TO_PT(80))];
     footView.backgroundColor = [UIColor whiteColor];
@@ -205,8 +204,9 @@
                 [self.footButton setTitle:@"开始配送" forState:UIControlStateNormal];
             }
         }
+    }else{
+        [footView removeFromSuperview];
     }
-
 }
 
 #pragma mark - 在段尾添加任意视图
@@ -234,7 +234,7 @@
     
     [totalPriceLabel setAttributedText:AttributedStringPrice];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [sectionFootView addSubview:lineView];
 
