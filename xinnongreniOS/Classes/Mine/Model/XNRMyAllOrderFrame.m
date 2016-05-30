@@ -115,9 +115,10 @@
     CGFloat topLineY;
     if (self.orderModel.additions.count>0) {
         topLineY = CGRectGetMaxY(_addtionLabelF)+PX_TO_PT(36);
-    }else{
+    }
+    else{
         topLineY =  CGRectGetMaxY(_productNumLabelF)+PX_TO_PT(36);;
-        
+        topLineH = 0;
     }
     _topLineF = CGRectMake(topLineX, topLineY, topLineW, topLineH);
 

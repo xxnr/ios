@@ -46,7 +46,7 @@
     [self.contentView addSubview:registerLabel];
     
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(76), ScreenWidth, PX_TO_PT(1))];
-    line.backgroundColor = R_G_B_16(0xf0f0f0);
+    line.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.contentView addSubview:line];
 }
 -(void)setModel:(XNRBookUser *)model

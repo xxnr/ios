@@ -83,7 +83,7 @@
     [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"x-v2.0"} success:^(id result) {
         
     if([result[@"code"] integerValue] == 1000){
-            
+        
         NSDictionary *dict = result[@"datas"];
         NSDictionary *address = dict[@"address"];
         NSDictionary *province = address[@"province"];
