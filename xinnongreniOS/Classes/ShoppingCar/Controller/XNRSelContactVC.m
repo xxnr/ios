@@ -330,6 +330,28 @@
     }
     
 }
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField == self.nameTf) {
+        
+        int strlength = 0;
+        char* p = (char*)[textField.text cStringUsingEncoding:NSUnicodeStringEncoding];
+        for (int i=0 ; i<[textField.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+            if (*p) {
+                p++;
+                strlength++;
+            }
+            else {
+                p++;
+            }
+            
+        }
+        
+        self.nameLength = strlength;
+        
+    }
+    return YES;
+}
 
 #pragma mark -- tableView的数据源和代理方法
 -(NSInteger )tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

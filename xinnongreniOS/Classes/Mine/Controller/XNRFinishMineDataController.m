@@ -32,7 +32,7 @@
 @property (nonatomic ,copy) NSString *typeNum;
 
 @property (nonatomic ,weak) UITextField *nameTf;
-
+@property (nonatomic,assign)int nameLength;
 //@property (nonatomic ,weak) UIButton *LocalAddressBtn;
 @property (nonatomic ,weak) UILabel *LocalAddressLabel;
 //@property (nonatomic ,weak) UIButton *streetBtn;
@@ -180,6 +180,7 @@
     }
     nameTf.textColor = R_G_B_16(0x323232);
     nameTf.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    nameTf.delegate = self;
     self.nameTf = nameTf;
     [self.view addSubview:nameTf];
     // 性别男
@@ -364,8 +365,51 @@
     
     return YES;
 }
-
-
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField == self.nameTf) {
+        
+        int strlength = 0;
+        char* p = (char*)[textField.text cStringUsingEncoding:NSUnicodeStringEncoding];
+        for (int i=0 ; i<[textField.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+            if (*p) {
+                p++;
+                strlength++;
+            }
+            else {
+                p++;
+            }
+            
+        }
+        
+        self.nameLength = strlength;
+        
+        if (strlength > 12) {
+            [UILabel showMessage:[NSString stringWithFormat:@"姓名限6个汉字或12个英文字符"]];
+        }
+    }
+}
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField == self.nameTf) {
+        
+        int strlength = 0;
+        char* p = (char*)[textField.text cStringUsingEncoding:NSUnicodeStringEncoding];
+        for (int i=0 ; i<[textField.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+            if (*p) {
+                p++;
+                strlength++;
+            }
+            else {
+                p++;
+            }
+            
+        }
+        
+        self.nameLength = strlength;
+    }
+    return YES;
+}
 #pragma mark - 性别
 -(void)selelctedBtnClick:(UIButton *)button
 {
@@ -411,7 +455,12 @@
     if ([self.LocalAddressLabel.text isEqualToString:@"选择所在的省市区"] || [self.streetLabel.text isEqualToString:@"选择所在街道或乡镇"] || [self.nameTf.text isEqualToString:@""]) {
         
         [UILabel showMessage:@"请完善信息"];
-    }else{
+    }
+    else if(self.nameLength>12)
+    {
+        [UILabel showMessage:@"姓名限6个汉字或12个英文字符"];
+    }
+    else{
         NSDictionary *addressDict = @{@"provinceId":self.provinceID?self.provinceID:@"",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@""};
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
