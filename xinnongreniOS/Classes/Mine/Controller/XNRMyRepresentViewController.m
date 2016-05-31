@@ -378,60 +378,7 @@ static bool isBroker;
         [self.firstView removeFromSuperview];
         [self.thirdView removeFromSuperview];
 
-        [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-            if ([result[@"code"] integerValue]==1000) {
-                self.phoneNum = result[@"datas"][@"inviter"];
-                if (self.phoneNum && self.phoneNum.length>0) {
-                    [self.mrv removeFromSuperview];
-                    [self createMyRepresentUI];
-                    self.phoneNumLabel.text = _phoneNum;
-                    if (result[@"datas"][@"inviterName"]) {
-                        self.nickNameLabel.text = result[@"datas"][@"inviterName"];
-                        CGSize nickNameSize = [self.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]}];
-                        self.nickNameLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(18), nickNameSize.width+PX_TO_PT(24), PX_TO_PT(60));
-
-                    }else{
-                        self.nickNameLabel.text = @"好友未填姓名";
-                        self.nickNameLabel.backgroundColor = R_G_B_16(0xf0f0f0);
-                        self.nickNameLabel.textColor = R_G_B_16(0x2a2a2a);
-                    }
-                } else {
-                    [self.mrv removeFromSuperview];
-
-                    if (self.isfirst) {
-                        [self getNominatedInviter];
-                    }
-                    self.isfirst = NO;
-            
-                    XNRMyRepresentView *mrv = [[XNRMyRepresentView alloc] init];
-                    mrv.delegate = self;
-                    self.mrv = mrv;
-                    [self.view addSubview:mrv];
-                    
-                    XNRMyRepresentViewDataModel *mrvData = [[XNRMyRepresentViewDataModel alloc] init];
-                    XNRMyRepresentViewFrame *mrvF = [[XNRMyRepresentViewFrame alloc] init];
-                    mrvF.model = mrvData;
-                    mrv.viewF = mrvF;
-                    mrv.frame = CGRectMake(0, (self.view.bounds.size.height-mrvF.viewH)*0.3, ScreenWidth, mrvF.viewH);
-                }
-            }else{
-               
-                [UILabel showMessage:result[@"message"]];
-                UserInfo *infos = [[UserInfo alloc]init];
-                infos.loginState = NO;
-                [DataCenter saveAccount:infos];
-                //发送刷新通知
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
-                
-                XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
-                
-                vc.hidesBottomBarWhenPushed = YES;
-                //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
-                [self.navigationController pushViewController:vc animated:YES];
-            }
-        } failure:^(NSError *error) {
-            
-        }];
+        [self getrepresent];
     }
     else if(sender.tag == btnTag + 2)
     {
@@ -460,6 +407,65 @@ static bool isBroker;
     }
     
     [self setupCustomerRefresh];
+
+}
+-(void)getrepresent
+{
+    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        if ([result[@"code"] integerValue]==1000) {
+            self.phoneNum = result[@"datas"][@"inviter"];
+            
+            if (self.phoneNum && self.phoneNum.length>0) {
+                [self.mrv removeFromSuperview];
+                [self createMyRepresentUI];
+                self.phoneNumLabel.text = _phoneNum;
+                if (result[@"datas"][@"inviterName"]) {
+                    self.nickNameLabel.text = result[@"datas"][@"inviterName"];
+                    CGSize nickNameSize = [self.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]}];
+                    self.nickNameLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(18), nickNameSize.width+PX_TO_PT(24), PX_TO_PT(60));
+                    
+                }else{
+                    self.nickNameLabel.text = @"好友未填姓名";
+                    self.nickNameLabel.backgroundColor = R_G_B_16(0xf0f0f0);
+                    self.nickNameLabel.textColor = R_G_B_16(0x2a2a2a);
+                }
+            } else {
+                [self.mrv removeFromSuperview];
+                
+                if (self.isfirst) {
+                    [self getNominatedInviter];
+                }
+                self.isfirst = NO;
+                
+                XNRMyRepresentView *mrv = [[XNRMyRepresentView alloc] init];
+                mrv.delegate = self;
+                self.mrv = mrv;
+                [self.view addSubview:mrv];
+                
+                XNRMyRepresentViewDataModel *mrvData = [[XNRMyRepresentViewDataModel alloc] init];
+                XNRMyRepresentViewFrame *mrvF = [[XNRMyRepresentViewFrame alloc] init];
+                mrvF.model = mrvData;
+                mrv.viewF = mrvF;
+                mrv.frame = CGRectMake(0, (self.view.bounds.size.height-mrvF.viewH)*0.3, ScreenWidth, mrvF.viewH);
+            }
+        }else if ([result[@"code"] integerValue]== 1401){
+            
+            [UILabel showMessage:result[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            //发送刷新通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+            
+            XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+            
+            vc.hidesBottomBarWhenPushed = YES;
+            //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
 
 }
 -(void)creatBookView
@@ -841,7 +847,8 @@ static bool isBroker;
 
                 [self.mrv removeFromSuperview];
 //                [self createMyRepresentUI];
-                [self bottomBtnClicked:self.rightBtn];
+//                [self bottomBtnClicked:self.rightBtn];
+                [self getrepresent];
                 [UILabel showMessage:@"设置代表成功"];
                 [self.myAlert dismissLumAleatView];
                 
@@ -1018,7 +1025,8 @@ static bool isBroker;
                             [KSHttpRequest post:KUserBindInviter parameters:@{@"userId":[DataCenter account].userid,@"inviter":phoneNum,@"user-agent":@"IOS-v2.0"} success:^(id result) {
                                 if ([result[@"code"] integerValue]==1000) {
                                     [self.mrv removeFromSuperview];
-                                    [self bottomBtnClicked:self.rightBtn];
+//                                    [self bottomBtnClicked:self.rightBtn];
+                                    [self getrepresent];
                                     [UILabel showMessage:@"设置代表成功"];
                                 } else {
                                     
@@ -1056,7 +1064,7 @@ static bool isBroker;
 - (BOOL) validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
-    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
+    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9])|(17[0,6-8]))\\d{8}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
 }

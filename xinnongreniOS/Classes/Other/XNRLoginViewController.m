@@ -150,7 +150,7 @@
     usernameTextField.alpha = 1;
     usernameTextField.placeholder = @"请输入您的手机号";
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *userName = [ user objectForKey:@"userName"];
+    NSString *userName = [user objectForKey:@"userName"];
 
     if (userName) {
         usernameTextField.text = userName;
@@ -483,7 +483,7 @@
 - (BOOL)validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
-    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
+    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9])|(17[0,6-8]))\\d{8}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
 }
