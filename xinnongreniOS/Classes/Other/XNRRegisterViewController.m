@@ -369,6 +369,7 @@
 - (void)btnClick:(UIButton *)button
 {
     [[NSUserDefaults standardUserDefaults]setValue:self.newpasswordTextField.text forKey:@"password"];
+    [[NSUserDefaults standardUserDefaults]setValue:self.phoneNumTextField.text forKey:@"userName"];
         NSLog(@"注册");
         if(self.phoneNumTextField.text.length==0||self.verifyNumTextField.text.length==0||self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0){
             

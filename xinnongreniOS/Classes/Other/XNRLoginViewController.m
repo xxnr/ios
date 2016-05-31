@@ -140,7 +140,7 @@
     usernameTextField.alpha = 1;
     usernameTextField.placeholder = @"请输入您的手机号";
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *userName = [ user objectForKey:@"userName"];
+    NSString *userName = [user objectForKey:@"userName"];
 
     if (userName) {
         usernameTextField.text = userName;
