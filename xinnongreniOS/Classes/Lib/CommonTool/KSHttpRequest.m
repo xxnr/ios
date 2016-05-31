@@ -265,6 +265,7 @@ static int loginCount = 0;
     if ([obj isKindOfClass:[NSNull class]]) {
         return YES;
     }
+    
     return NO;
 }
 

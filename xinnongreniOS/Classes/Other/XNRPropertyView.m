@@ -295,7 +295,7 @@
             }
 
             // 市场价
-            if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]]) {
+            if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]] && [marketPrice[@"min"] integerValue] != 0) {
                 if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
                     _marketPrice = [NSString stringWithFormat:@"市场价¥ %@",marketPrice[@"min"]];
                     if ([_marketPrice rangeOfString:@".00"].length == 3) {
@@ -314,11 +314,6 @@
             }else{
                 _marketPrice = @"";
             }
-            
-            if ([marketPrice[@"min"] integerValue] == 0) {
-                _marketPrice = @"";
-            }
-
             
             // 价格区间改变
             if ([price[@"min"] floatValue] == [price[@"max"] floatValue]) {
@@ -808,9 +803,11 @@
             NSLog(@"0-=9=90%@",addtionArray);
         }
     }
-//    if (attributesArray.count>0) {
+    if (attributesArray.count == 0) {
+        _marketPrice = nil;
+    }
+
         self.valueBlock(attributesArray,addtionArray,self.priceLabel.text,_marketPrice);
-//    }
     
 }
 #pragma mark - createCollectionView

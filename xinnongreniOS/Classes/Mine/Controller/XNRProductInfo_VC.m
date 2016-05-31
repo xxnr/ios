@@ -192,21 +192,8 @@
     
     NSLog(@"navigation===%@",self.navigationController);
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshGoodsDetialView) name:@"refreshGoodsDetialView" object:nil];
-
     
 }
-
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-//-(void)refreshGoodsDetialView
-//{
-//    [self.tableView reloadData];
-//}
-
 
 -(void)notSelectedAttributes
 {
