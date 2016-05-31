@@ -69,7 +69,7 @@
 
 @property (nonatomic, strong) NSMutableArray *picBrowserList;
 
-
+@property (nonatomic, assign) BOOL bottomBtnClick;
 @end
 
 @implementation XNRProductInfo_VC
@@ -192,12 +192,20 @@
     
     NSLog(@"navigation===%@",self.navigationController);
     
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshGoodsDetialView) name:@"refreshGoodsDetialView" object:nil];
+
+    
 }
 
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+//-(void)refreshGoodsDetialView
+//{
+//    [self.tableView reloadData];
+//}
 
 
 -(void)notSelectedAttributes
@@ -537,11 +545,14 @@
 -(void)buyBtnClick
 {
     [self.propertyView show:XNRBuyType];
+    _bottomBtnClick = YES;
 }
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
     [self.propertyView show:XNRAddCartType];
+    _bottomBtnClick = YES;
+
 }
 #pragma 加减数量
 -(void)btnClick:(UIButton*)button{
@@ -590,7 +601,7 @@
     cell.additions = _additions;
     cell.Price = _Price;
     cell.marketPrice = _marketPrice;
-    
+    cell.bottomBtnClick = _bottomBtnClick;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     // 传值

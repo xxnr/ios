@@ -7,11 +7,14 @@
 //
 
 #import "XNRHomeCollectionHeaderView.h"
+#import "SDCycleScrollView.h"
 #define kMenuTag 1000
 #define kTitleLabelTag 2000
 
 @interface XNRHomeCollectionHeaderView ()<XNRFerSelectAddBtnDelegate>
 @property (nonatomic, weak) XNRFerSelect *ferView;
+@property (nonatomic, strong) SDCycleScrollView *cycleScrollView;
+
 @end
 
 @implementation XNRHomeCollectionHeaderView
@@ -95,12 +98,14 @@
 -(void)createCycleScrollViewWith:(NSArray *)imagesURL{
 
     // 网络加载 --- 创建带标题的图片轮播器
-    self.cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0,0, ScreenWidth, PX_TO_PT(350)) imageURLsGroup:imagesURL];
-
-    self.cycleScrollView.autoScrollTimeInterval=3.0;
+    self.cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0,0, ScreenWidth, PX_TO_PT(350)) delegate:nil placeholderImage:[UIImage imageNamed:@"icon_home_banner"]];
+    self.cycleScrollView.imageURLStringsGroup = imagesURL;
+    self.cycleScrollView.autoScrollTimeInterval = 3.0;
     self.cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
-//    self.cycleScrollView.delegate = self;
-    self.cycleScrollView.dotColor = R_G_B_16(0x00ebb4); // 自定义分页控件小圆标颜色
+    self.cycleScrollView.currentPageDotImage = [UIImage imageNamed:@"-current-0"];
+    self.cycleScrollView.pageDotImage = [UIImage imageNamed:@"default-0"];
+//    self.cycleScrollView.currentPageDotColor = R_G_B_16(0x00ebb4); // 自定义分页控件小圆标颜色
+//    self.cycleScrollView.pageDotColor = [UIColor clearColor];
     self.cycleScrollView.placeholderImage = [UIImage imageNamed:@"placeholder"];
     [self addSubview:self.cycleScrollView];
 }

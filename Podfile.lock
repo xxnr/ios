@@ -1,10 +1,18 @@
 PODS:
-  - Bugtags (1.2.1)
+  - Bugtags (1.2.6)
+  - SDCycleScrollView (1.64):
+    - SDWebImage (~> 3.7)
+  - SDWebImage (3.7.6):
+    - SDWebImage/Core (= 3.7.6)
+  - SDWebImage/Core (3.7.6)
 
 DEPENDENCIES:
   - Bugtags
+  - SDCycleScrollView (~> 1.64)
 
 SPEC CHECKSUMS:
-  Bugtags: dacf20b913e9299fe85dc6b41b91242da83ee03c
+  Bugtags: 10d4b0c089b34f6e28877e5830218627ebd14dbb
+  SDCycleScrollView: 806fedb9342ab03b58b84442f985517b42c7cbb7
+  SDWebImage: c325cf02c30337336b95beff20a13df489ec0ec9
 
 COCOAPODS: 0.39.0

@@ -155,8 +155,8 @@
                     }
                 }
             }else{
-                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
                 [self createFootView:model];
+                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
             }
         }
         
@@ -168,13 +168,12 @@
 
 -(void)createFootView:(XNRRscOrderDetailModel *)model
 {
-    [self.footView removeFromSuperview];
-    NSDictionary *dict = model.orderStatus;
-    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenHeight -64- PX_TO_PT(80), ScreenWidth,PX_TO_PT(80))];
-    footView.backgroundColor = [UIColor whiteColor];
-    self.footView = footView;
-    [self.view addSubview:footView];
-    
+    if (self.footView == nil) {
+        UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenHeight -64- PX_TO_PT(80), ScreenWidth,PX_TO_PT(80))];
+        footView.backgroundColor = [UIColor whiteColor];
+        self.footView = footView;
+        [self.view addSubview:footView];
+    }
     UIButton *footButton = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(170), PX_TO_PT(10), PX_TO_PT(140), PX_TO_PT(60))];
     footButton.layer.cornerRadius = 5.0;
     footButton.layer.masksToBounds = YES;
@@ -182,12 +181,13 @@
     footButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [footButton addTarget:self action:@selector(footButtonClick) forControlEvents:UIControlEventTouchUpInside];
     self.footButton = footButton;
-    [footView addSubview:footButton];
+    [self.footView addSubview:footButton];
     
     UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(2))];
     topLine.backgroundColor = R_G_B_16(0xc7c7c7);
-    [footView addSubview:topLine];
+    [self.footView addSubview:topLine];
     
+    NSDictionary *dict = model.orderStatus;
     if ([dict[@"type"] integerValue] == 2) {
         [self.footButton setTitle:@"审核付款" forState:UIControlStateNormal];
     }else if ([dict[@"type"] integerValue] == 4){
@@ -205,9 +205,10 @@
             }
         }
     }else{
-        [footView removeFromSuperview];
+        [self.footView removeFromSuperview];
     }
 }
+
 
 #pragma mark - 在段尾添加任意视图
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -342,6 +343,8 @@
 
 -(void)backClick
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+
     if ([self.presentingViewController isKindOfClass:[XNRNavigationController class]]) {
         [self dismissViewControllerAnimated:NO completion:nil];
         return;

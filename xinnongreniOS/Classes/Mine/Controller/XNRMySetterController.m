@@ -14,11 +14,12 @@
 #import "XNRAboutMainController.h"
 #import "XNRNavigationController.h"
 #import "XNRUMShareView.h"
-#import "SDImageCache.h"
+//#import "SDImageCache.h"
 #import "NSString+File.h"
 #import "UMSocial.h"
 #import "UMSocialWechatHandler.h"
 #import "UMSocialQQHandler.h"
+
 
 @interface XNRMySetterController ()<XNRUMShareViewDelegate>
 
@@ -203,7 +204,7 @@
     
     // 2.设置组的所有行数据
     XNRMainArrowItem *cleanCache = [XNRMainArrowItem itemWithTitle:@"清除缓存" icon:@"bin-"];
-    NSString *imageCachePath = [SDImageCache sharedImageCache].diskCachePath;
+//    NSString *imageCachePath = [SDImageCache sharedImageCache].diskCachePath;
 //    long long fileSize = [imageCachePath fileSize];
 //    if (fileSize>0) {
 //        cleanCache.subtitle = [NSString stringWithFormat:@"(%.1fM)", fileSize / (1000.0 * 1000.0)];
@@ -219,7 +220,7 @@
                     [self createCoverView];
                     // 清除缓存
                     NSFileManager *mgr = [NSFileManager defaultManager];
-                    [mgr removeItemAtPath:imageCachePath error:nil];
+//                    [mgr removeItemAtPath:imageCachePath error:nil];
                     
                     // 设置subtitle
                     weakClearCache.subtitle = nil;

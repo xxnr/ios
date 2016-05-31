@@ -522,7 +522,7 @@
     [myStoreBtn addSubview:storeArrowBtn];
     
     CALayer *storeLineLayer = [[CALayer alloc] init];
-    storeLineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, PX_TO_PT(1));
+    storeLineLayer.frame = CGRectMake(0, PX_TO_PT(94), ScreenWidth, 1);
     storeLineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
     [myStoreBtn.layer addSublayer:storeLineLayer];
 
@@ -551,7 +551,7 @@
     [orderBtn addSubview:arrowBtn];
     
     CALayer *lineLayer = [[CALayer alloc] init];
-    lineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, PX_TO_PT(1));
+    lineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, 1);
     lineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
     [orderBtn.layer addSublayer:lineLayer];
 
@@ -596,7 +596,7 @@
     }
     
     CALayer *orderlineLayer = [[CALayer alloc] init];
-    orderlineLayer.frame = CGRectMake(0, PX_TO_PT(129), ScreenWidth, PX_TO_PT(1));
+    orderlineLayer.frame = CGRectMake(0, PX_TO_PT(129), ScreenWidth, 1);
     orderlineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
     [orderStateView.layer addSublayer:orderlineLayer];
 

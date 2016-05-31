@@ -324,7 +324,7 @@
  
             
             };
-            self.headView.cycleScrollView.hidden = YES;
+//            self.headView.cycleScrollView.hidden = YES;
             self.headView.ferBtn.hidden = YES;
             self.headView.carBtn.hidden = YES;
             self.headView.imageView.hidden = YES;
@@ -419,7 +419,6 @@
     }else{
         vc.model=_huafeiArr[indexPath.row];
     }
-    
     vc.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -461,13 +460,11 @@
             NSArray *arr = dicts[@"rows"];
             for (NSDictionary *dict in arr) {
                 XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
-                
                 [model setValuesForKeysWithDictionary:dict];
                 [_huafeiArr addObject:model];
             }
         }
         [self getCarData];
-        
         } failure:^(NSError *error) {
     }];
 }

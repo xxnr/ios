@@ -293,7 +293,7 @@
                 self.shopcarModel.product = skuDict[@"product"];
                 
             }
-            
+
             // 市场价
             if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]]) {
                 if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
@@ -305,16 +305,20 @@
                 }else{
                     NSString *minPrice = [NSString stringWithFormat:@"%@",marketPrice[@"min"]];
                     NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] doubleValue]];
-//                    if ([minPrice rangeOfString:@".00"].length == 3) {
-//                        minPrice = [minPrice substringToIndex:minPrice.length-3];
-//                    }
                     if ([maxPrice rangeOfString:@".00"].length == 3) {
                         maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
                     }
                     _marketPrice = [NSString stringWithFormat:@"市场价¥ %@ - %@",minPrice,maxPrice];
                 }
                 
+            }else{
+                _marketPrice = @"";
             }
+            
+            if ([marketPrice[@"min"] integerValue] == 0) {
+                _marketPrice = @"";
+            }
+
             
             // 价格区间改变
             if ([price[@"min"] floatValue] == [price[@"max"] floatValue]) {
@@ -804,9 +808,9 @@
             NSLog(@"0-=9=90%@",addtionArray);
         }
     }
-    if (attributesArray.count>0) {
+//    if (attributesArray.count>0) {
         self.valueBlock(attributesArray,addtionArray,self.priceLabel.text,_marketPrice);
-    }
+//    }
     
 }
 #pragma mark - createCollectionView
@@ -948,7 +952,7 @@
                 NSDictionary *price = datas[@"price"];
                 NSDictionary *marketPrice = datas[@"market_price"];
                 // 市场价
-                if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]]) {
+                if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]] &&[marketPrice[@"min"] integerValue] != 0 ) {
                     if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
                         _marketPrice = [NSString stringWithFormat:@"市场价¥ %@",marketPrice[@"min"]];
 //                        if ([_marketPrice rangeOfString:@".00"].length == 3) {
@@ -968,8 +972,9 @@
                         
                     }
 
+                }else{
+                    _marketPrice = @"";
                 }
-
                 // 价格区间改变
                 if ([price[@"min"] floatValue] == [price[@"max"] floatValue]) {
                     // 判断是否是预售商品
@@ -1134,13 +1139,20 @@
                 }
                 if (addtionCellModel.isSelected) {// 选中
                     // 价格
+                  
                     self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",currentPrice+addPrice];
+
                     if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
                         self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
                     }
                     
                     // 市场价
-                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",currentMarketPrice+addPrice];
+                    if (currentMarketPrice == 0) {
+                        _marketPrice = @"";
+                        
+                    }else{
+                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",currentMarketPrice+addPrice];
+                    }
                     if ([_marketPrice rangeOfString:@".00"].length == 3) {
                         _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
                     }
@@ -1158,7 +1170,11 @@
                         self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
                     }
                     // 市场价
-                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",currentMarketPrice-addPrice];
+                    if (currentMarketPrice == 0) {
+                        _marketPrice = @"";
+                    }else{
+                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",currentMarketPrice-addPrice];
+                    }
                     if ([_marketPrice rangeOfString:@".00"].length == 3) {
                         _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
                     }
