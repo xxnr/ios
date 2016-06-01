@@ -256,6 +256,8 @@
             [self.deliverView show:_orderModel andType:isFromDeliverController];
         }else if([dict[@"type"] integerValue] == 5){
             [self.deliverView show:_orderModel andType:isFromTakeController];
+        }else{
+            [self.tableView reloadData];
         }
     }
 }
@@ -263,7 +265,6 @@
 -(void)getdetailData:(XNRRscOrderDetailModel *)model
 {
     [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model.id} success:^(id result) {
-        
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *orderDict = result[@"order"];
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];
@@ -273,10 +274,9 @@
             detailModel.id = payment[@"id"];
             [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
         }
-        
     } failure:^(NSError *error) {
         
-    }];
+   }];
 }
 #pragma mark - tableView代理方法
 // 段尾高度

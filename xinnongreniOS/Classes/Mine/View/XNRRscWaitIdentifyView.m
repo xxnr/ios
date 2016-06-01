@@ -248,7 +248,11 @@
         XNRRscFootFrameModel*footFrameModel = _dataFrameArray[section];
         [sectionFootView upDataFootViewWithModel:footFrameModel];
         sectionFootView.com = ^{
-            [self getdetailData:sectionModel];
+            if ([sectionModel.type integerValue] == 2) {
+                [self getdetailData:sectionModel];
+            }else{
+                [self.tableView reloadData];
+            }
         };
         return sectionFootView;
     }else{

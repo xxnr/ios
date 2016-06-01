@@ -221,15 +221,12 @@
 
 
 }
+
 -(void)viewWillDisappear:(BOOL)animated
 {
-//    self.badgeImage.hidden = YES;
-//    self.bgLoginView.hidden = YES;
-//    self.bgNotLoginView.hidden = YES;
     [self.mainTabelView removeFromSuperview];
-//    [self.topBgView removeFromSuperview];
-//    [self.view removeFromSuperview];
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -328,7 +325,6 @@
     
     XNRUserInfoModel *infoMdoel = [_userArray firstObject];
     UIView *topBgView;
-//     && [infoMdoel.userType integerValue] == 5
     if ([infoMdoel.isRSC integerValue] == 1) {
         topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(512))];
         topBgView.backgroundColor = [UIColor whiteColor];
@@ -478,7 +474,6 @@
     XNRUserInfoModel *infoModel = [_userArray firstObject];
     UIButton *myStoreBtn;
     UIButton *orderBtn;
-//    && [infoModel.userType integerValue] == 5
     if ([infoModel.isRSC integerValue] == 1) {
         // 我的网点
         myStoreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -557,7 +552,6 @@
 
     // 我的订单的状态
     UIView *orderStateView ;
-//    && [infoModel.userType integerValue] == 5
     if ([infoModel.isRSC integerValue] == 1) {
         return;
     }else{
