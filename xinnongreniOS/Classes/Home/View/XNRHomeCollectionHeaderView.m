@@ -104,8 +104,6 @@
     self.cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
     self.cycleScrollView.currentPageDotImage = [UIImage imageNamed:@"-current-0"];
     self.cycleScrollView.pageDotImage = [UIImage imageNamed:@"default-0"];
-//    self.cycleScrollView.currentPageDotColor = R_G_B_16(0x00ebb4); // 自定义分页控件小圆标颜色
-//    self.cycleScrollView.pageDotColor = [UIColor clearColor];
     self.cycleScrollView.placeholderImage = [UIImage imageNamed:@"placeholder"];
     [self addSubview:self.cycleScrollView];
 }
