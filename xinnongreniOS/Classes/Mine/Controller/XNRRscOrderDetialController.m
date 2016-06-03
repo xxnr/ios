@@ -270,7 +270,9 @@
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];
             detailModel.consigneeName = orderDict[@"consigneeName"];
             NSDictionary *payment = orderDict[@"payment"];
-            detailModel.price = payment[@"price"];
+            if (payment.count>0) {
+                detailModel.price = payment[@"price"];
+            }
             detailModel.id = payment[@"id"];
             [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
         }

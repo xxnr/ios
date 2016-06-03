@@ -388,7 +388,6 @@ static bool isBroker;
         self.mrv.hidden = YES;
         
         [self.thirdView removeFromSuperview];
-//        [self.firstView removeFromSuperview];
         [self.mrv removeFromSuperview];
         [self.myRepTopView removeFromSuperview];
         [self.myRepLabel removeFromSuperview];
@@ -401,8 +400,6 @@ static bool isBroker;
         [self bookViewGetData];
         
         currentTableView = self.tableView2;
-
-//        [self setupCustomerRefresh];
 
     }
     
@@ -511,7 +508,7 @@ static bool isBroker;
     UIButton *addBtn = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(80)-PX_TO_PT(34), PX_TO_PT(29),PX_TO_PT(80), PX_TO_PT(80))];
     [addBtn setBackgroundImage:[UIImage imageNamed:@"6add-orange"] forState:UIControlStateNormal];
 
-    [addBtn addTarget:self action:@selector(addUser:) forControlEvents:UIControlEventTouchDown];
+    [addBtn addTarget:self action:@selector(addUser:) forControlEvents:UIControlEventTouchUpInside];
     addBtn.layer.cornerRadius = PX_TO_PT(80)/2;
     addBtn.layer.masksToBounds = YES;
     self.addbtn = addBtn;
@@ -615,7 +612,7 @@ static bool isBroker;
                 [self.circleView addSubview:addbtn];
 
                 UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(262), PX_TO_PT(630), PX_TO_PT(197), PX_TO_PT(100))];
-                [btn addTarget:self action:@selector(coverClick:) forControlEvents:UIControlEventTouchDown];
+                [btn addTarget:self action:@selector(coverClick:) forControlEvents:UIControlEventTouchUpInside];
                 
                 
                 if (IS_IPHONE4) {
@@ -737,8 +734,6 @@ static bool isBroker;
                 countLeftToday/=10;
                 j++;
             }
-//            NSInteger i = [result[@"count"] integerValue]/10;
-//            NSInteger j = [result[@"countLeftToday"] integerValue]/10;
             
             if (self.bookTopTotalLabel) {
                 

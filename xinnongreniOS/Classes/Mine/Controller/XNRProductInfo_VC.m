@@ -547,16 +547,12 @@
         
         if([self.numTextField.text integerValue]>1){
         self.numTextField.text = [NSString stringWithFormat:@"%ld",(long)[self.numTextField.text floatValue]-1];
-        
         }else{
-            
             self.numTextField.text=@"1";
         }
         
         if([self.numTextField.text isEqualToString:@"1"]){
-            
             self.addBuyCarBtn.enabled=YES;
-            
         }
     }else if(button.tag == kRightBtn){
       
@@ -655,7 +651,6 @@
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0, 30, 44);
-//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];

@@ -102,9 +102,7 @@
                 originLineView.backgroundColor = R_G_B_16(0x909009);
                 self.originLineView = originLineView;
                 [self.marketPriceLabel addSubview:originLineView];
-
             }
-            
             if (marketPrice == nil) {
                 type = YES;
                 [self setupFrame];
@@ -113,7 +111,6 @@
         
             if ([marketPrice isEqualToString:@""]) {
                 [self.originLineView removeFromSuperview];
-                
                 [self.marketPriceLabel setHidden:YES];
                 if (!([_model.Desc isEqualToString:@""] || _model.Desc == nil)) {
                     self.descriptionLabel.frame = CGRectMake(0, CGRectGetMaxY(self.priceLabel.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(80));

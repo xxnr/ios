@@ -184,6 +184,7 @@
         
         if (_dataArray.count == 0) {
             self.totalLabel.backgroundColor = R_G_B_16(0xc7c7c7);
+            self.tableView.scrollEnabled = NO;
             [self emptyView];
         }
 
