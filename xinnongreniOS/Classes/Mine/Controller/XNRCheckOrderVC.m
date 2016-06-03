@@ -72,12 +72,18 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getHeight:) name:@"height" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshView) name:@"orderVCRefresh" object:nil];
 }
+-(void)viewDidAppear:(BOOL)animated
+{
+    if (_becomeCarryVC == YES) {
+        [self refreshView];
+        _becomeCarryVC = NO;
+    }
+}
 -(void)refreshView
 {
-    [_bottomView removeFromSuperview];
-//
-//    self.tableview.frame =CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth,ScreenHeight- CGRectGetMaxY(self.headView.frame) - 64);
-//
+    _ismakeSureBtm = NO;
+    _isHoldBtm = NO;
+
     self.tableview.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64);
     
     [self getData];
@@ -267,6 +273,8 @@
             sectionModel.value = orderStatus[@"value"];
             self.value = sectionModel.value;
             
+            [_bottomView removeFromSuperview];
+
             if ([self.value isEqualToString: @"待付款"] || [self.value isEqualToString:@"部分付款"]) {
                 self.tableview.frame =CGRectMake(0, 0, ScreenWidth,ScreenHeight -PX_TO_PT(88) - 64);
                 // 底部视图
@@ -466,6 +474,8 @@
 -(void)holdBtnClick:(UIButton *)sender
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+    
+    _becomeCarryVC = YES;
     XNRCarryVC *vc=[[XNRCarryVC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
     _carryVC = vc;
