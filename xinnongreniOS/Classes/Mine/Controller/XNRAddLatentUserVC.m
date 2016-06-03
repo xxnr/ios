@@ -207,13 +207,18 @@
         CGSize size = [self.userTypeLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(ScreenWidth - CGRectGetMaxX(self.titleLabel.frame)-PX_TO_PT(60), MAXFLOAT)];
         self.userTypeLabel.numberOfLines = 0;
         self.userTypeLabel.frame = CGRectMake(0,PX_TO_PT(38), size.width,size.height);
+<<<<<<< HEAD
         self.userTypeBtn.frame = CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(_streetBtn.frame), ScreenWidth - CGRectGetMaxX(self.titleLabel.frame)-PX_TO_PT(60), size.height);
         self.line.frame = CGRectMake(0, CGRectGetMaxY(self.userTypeBtn.frame) + PX_TO_PT(68), ScreenWidth, 1);
+=======
+        self.userTypeBtn.frame = CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(_streetBtn.frame), ScreenWidth - CGRectGetMaxX(self.titleLabel.frame)-PX_TO_PT(60), size.height+PX_TO_PT(68));
+        
+        self.line.frame = CGRectMake(0, CGRectGetMaxY(self.userTypeBtn.frame), ScreenWidth, PX_TO_PT(1));
+        
+        self.bottomView.frame = CGRectMake(0, CGRectGetMaxY(self.phoneView.frame), ScreenWidth, CGRectGetMaxY(self.userTypeBtn.frame));
+>>>>>>> ynn_ios
     }
-//    else
-//    {
-//        self.userTypeLabel.text = @"选择客户想买的商品";
-//    }
+
 
     
     [_userTypeBtn addSubview:_userTypeLabel];
@@ -364,7 +369,7 @@
         self.streetLabel = streetLabel;
     [streetBtn addSubview:streetLabel];
     
-    // 类型
+    //选择商品
     UIButton *userTypeBtn = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(streetBtn.frame), ScreenWidth, PX_TO_PT(98))];
     [userTypeBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     userTypeBtn.tag = 1002;
@@ -410,6 +415,10 @@
             }else{
                 weakSelf.LocalAddressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
             }
+            weakSelf.streetLabel.text = @"选择所在街道或乡镇";
+            weakSelf.townID = nil;
+            self.streetLabel.textColor = R_G_B_16(0x909090);
+
             self.LocalAddressLabel.textColor = R_G_B_16(0x646464);
             weakSelf.provinceID = province_id;
             weakSelf.cityID  = city_id;
@@ -486,9 +495,9 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    self.iswarn = NO;
     //验证手机号输入是否正确
     if (textField == self.phoneNumTextField) {
+        self.iswarn = NO;
         [KSHttpRequest get:KGetIsAvailable parameters:@{@"phone":textField.text} success:^(id result) {
             if ([result[@"code"]integerValue] == 1000) {
                 NSNumber *str =result[@"available"];
@@ -499,6 +508,10 @@
                     self.warnView = line;
                     line.backgroundColor = R_G_B_16(0xc7c7c7);
                     [self.phoneView addSubview:line];
+                    
+                    [self.warnLabel removeFromSuperview];
+                    [self.warnView removeFromSuperview];
+                    [self.icon removeFromSuperview];
                     
                     UIImageView *icon = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), PX_TO_PT(119), PX_TO_PT(30), PX_TO_PT(30))];
                     icon.image = [UIImage imageNamed:@"reg-prinpt"];
@@ -603,7 +616,7 @@
 -(void)saveBtn {
     [self.phoneNumTextField resignFirstResponder];
     BOOL flag = [self validateMobile:self.phoneNumTextField.text];
-    if ([self.LocalAddressLabel.text isEqualToString:@"选择所在的省市区"] || [self.streetLabel.text isEqualToString:@"选择所在街道或乡镇"] || [self.phoneNumTextField.text isEqualToString:@""]||[self.userTypeLabel.text isEqualToString:@"选择客户想买的商品"] || [self.nameTf.text isEqualToString:@""]) {
+    if ([self.LocalAddressLabel.text isEqualToString:@"选择所在的省市区"] || [self.streetLabel.text isEqualToString:@"选择所在街道或乡镇"] ||!self.provinceID ||!self.cityID || !self.townID || [self.phoneNumTextField.text isEqualToString:@""]||[self.userTypeLabel.text isEqualToString:@"选择客户想买的商品"] || [self.nameTf.text isEqualToString:@""]) {
         
         [UILabel showMessage:@"请完善信息"];
     }
@@ -655,7 +668,7 @@
                 [UILabel showMessage:@"客户登记成功"];
                 [self.navigationController popViewControllerAnimated:NO];
             }
-            else
+            else if([resultObj[@"code"] integerValue] == 1401)
             {
                 [UILabel showMessage:resultObj[@"message"]];
                 UserInfo *infos = [[UserInfo alloc]init];

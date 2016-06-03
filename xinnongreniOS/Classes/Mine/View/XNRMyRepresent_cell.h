@@ -12,6 +12,7 @@
 @interface XNRMyRepresent_cell : UITableViewCell
 
 @property (nonatomic, strong) XNRMyRepresentModel *model;
+@property (nonatomic ,weak) UIImageView *redImageView;
 
 //- (void)setCellDataWithRepresentModel:(XNRMyRepresentModel *)model;
 

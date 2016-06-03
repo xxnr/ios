@@ -992,11 +992,11 @@
 
 -(void)backClick{
     
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
     
     if ([self.presentingViewController isKindOfClass:[XNRNavigationController class]]) {
         [self dismissViewControllerAnimated:NO completion:nil];

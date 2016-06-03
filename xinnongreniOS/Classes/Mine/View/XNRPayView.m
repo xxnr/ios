@@ -16,13 +16,16 @@
 #import "XNRMyAllOrderFrame.h"
 #import "XNROffLine_VC.h"
 #import "XNRPayType_VC.h"
+#import "BMProgressView.h"
 
 #define MAX_PAGE_SIZE 20
 
 @interface XNRPayView ()<XNROrderEmptyViewBtnDelegate>
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
 @property (nonatomic, weak) UIButton *backtoTopBtn;
+@property (nonatomic ,weak) BMProgressView *progressView;
 
+@property (nonatomic,assign) BOOL isRefresh;
 @end
 
 
@@ -67,11 +70,32 @@
         
         [self setupStayPayViewRefresh];
         
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"payHeadRefresh" object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(payHeadRefresh) name:@"payHeadRefresh" object:nil];
 
     }
     
     return self;
+}
+-(BMProgressView *)progressView{
+    if (!_progressView) {
+        BMProgressView *progressView = [[BMProgressView alloc] init];
+        self.progressView = progressView;
+        [self addSubview:progressView];
+    }
+    return _progressView;
+}
+
+
+-(void)payHeadRefresh
+{
+    [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
+    
+    _isRefresh = YES;
+    [self headRefresh];
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [BMProgressView LoadViewDisappear:self];
+    });
 }
 
 #pragma mark - 滑动到顶部按钮
@@ -226,6 +250,12 @@
             [self orderEmptyView];
 
         }
+        
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
+        }
+
         //  如果到达最后一页 就消除footer
         
         NSInteger pages = [result[@"datas"][@"pages"] integerValue];

@@ -12,7 +12,8 @@
 @interface XNRMyRepresent_cell ()
 @property (nonatomic, weak) UILabel *nickNameLabel;
 @property (nonatomic, weak) UILabel *phoneNumLabel;
-@property (nonatomic ,weak) UIImageView *redImageView;
+@property(nonatomic,weak)UIView *myRepView;
+//@property (nonatomic ,weak) UIImageView *redImageView;
 @end
 
 
@@ -32,12 +33,14 @@
 - (void)setModel:(XNRMyRepresentModel *)model {
     _model = model;
  
+    [_myRepView removeFromSuperview];
     [_nickNameLabel removeFromSuperview];
     [_phoneNumLabel removeFromSuperview];
     [_redImageView removeFromSuperview];
     
     CGFloat myRepLabelH = PX_TO_PT(96);
     UIView *myRepView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, myRepLabelH)];
+    self.myRepView = myRepView;
     myRepView.backgroundColor = [UIColor whiteColor];
     
     [self addSubview:myRepView];
