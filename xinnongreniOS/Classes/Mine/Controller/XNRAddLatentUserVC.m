@@ -490,9 +490,9 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    self.iswarn = NO;
     //验证手机号输入是否正确
     if (textField == self.phoneNumTextField) {
+        self.iswarn = NO;
         [KSHttpRequest get:KGetIsAvailable parameters:@{@"phone":textField.text} success:^(id result) {
             if ([result[@"code"]integerValue] == 1000) {
                 NSNumber *str =result[@"available"];
@@ -503,6 +503,10 @@
                     self.warnView = line;
                     line.backgroundColor = R_G_B_16(0xc7c7c7);
                     [self.phoneView addSubview:line];
+                    
+                    [self.warnLabel removeFromSuperview];
+                    [self.warnView removeFromSuperview];
+                    [self.icon removeFromSuperview];
                     
                     UIImageView *icon = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), PX_TO_PT(119), PX_TO_PT(30), PX_TO_PT(30))];
                     icon.image = [UIImage imageNamed:@"reg-prinpt"];
@@ -607,7 +611,7 @@
 -(void)saveBtn {
     [self.phoneNumTextField resignFirstResponder];
     BOOL flag = [self validateMobile:self.phoneNumTextField.text];
-    if ([self.LocalAddressLabel.text isEqualToString:@"选择所在的省市区"] || [self.streetLabel.text isEqualToString:@"选择所在街道或乡镇"] || [self.phoneNumTextField.text isEqualToString:@""]||[self.userTypeLabel.text isEqualToString:@"选择客户想买的商品"] || [self.nameTf.text isEqualToString:@""]) {
+    if ([self.LocalAddressLabel.text isEqualToString:@"选择所在的省市区"] || [self.streetLabel.text isEqualToString:@"选择所在街道或乡镇"] ||!self.provinceID ||!self.cityID || !self.townID || [self.phoneNumTextField.text isEqualToString:@""]||[self.userTypeLabel.text isEqualToString:@"选择客户想买的商品"] || [self.nameTf.text isEqualToString:@""]) {
         
         [UILabel showMessage:@"请完善信息"];
     }
