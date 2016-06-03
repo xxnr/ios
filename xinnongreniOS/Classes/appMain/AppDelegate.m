@@ -258,11 +258,12 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)applicatio
 {
+    [[UIApplication sharedApplication]setApplicationIconBadgeNumber:0];
+    
     _is_Notification = NO;
 }
 

@@ -14,11 +14,16 @@
 #import "XNROrderEmptyView.h"
 #import "XNRMyOrderServe_Cell.h"
 #import "XNRMyAllOrderFrame.h"
+#import "BMProgressView.h"
+
 #define MAX_PAGE_SIZE 20
 @interface XNRCommentView()<XNROrderEmptyViewBtnDelegate>
 @property (nonatomic ,strong) UITableView *tableView;
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
 @property (nonatomic, weak) UIButton *backtoTopBtn;
+@property (nonatomic ,weak) BMProgressView *progressView;
+
+@property (nonatomic,assign) BOOL isRefresh;
 @end
 @implementation XNRCommentView
 #pragma mark - 订单为空的图片
@@ -59,13 +64,33 @@
         
         [self createbackBtn];
         
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"commentHeadRefresh" object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(commentHeadRefresh) name:@"commentHeadRefresh" object:nil];
 
         
     }
     return self;
 }
+-(BMProgressView *)progressView{
+    if (!_progressView) {
+        BMProgressView *progressView = [[BMProgressView alloc] init];
+        self.progressView = progressView;
+        [self addSubview:progressView];
+    }
+    return _progressView;
+}
 
+
+-(void)commentHeadRefresh
+{
+    [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
+    
+    _isRefresh = YES;
+    [self headRefresh];
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [BMProgressView LoadViewDisappear:self];
+    });
+}
 #pragma mark - 滑动到顶部按钮
 
 -(void)createbackBtn
@@ -259,6 +284,12 @@
             [self orderEmptyView];
         }
         
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
+        }
+        
+
         //  如果到达最后一页 就消除footer
         
         NSInteger pages = [result[@"datas"][@"pages"] integerValue];
