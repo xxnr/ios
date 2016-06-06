@@ -13,7 +13,7 @@
  *  我的订单类型
  */
 @property (nonatomic,copy) NSString *myOrderType;
-
+@property (nonatomic,assign) BOOL becomeCarryVC;
 @property (nonatomic,assign) BOOL isRoot;
 @property(nonatomic,copy) NSString*orderID;
 @property(nonatomic,copy) NSString*orderNO;
