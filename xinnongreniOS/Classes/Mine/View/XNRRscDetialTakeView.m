@@ -1,16 +1,16 @@
 //
-//  XNRRscCustomerTakeView.m
+//  XNRRscDetialTakeView.m
 //  xinnongreniOS
 //
-//  Created by xxnr on 16/4/28.
+//  Created by xxnr on 16/6/6.
 //  Copyright © 2016年 qxhiOS. All rights reserved.
 //
 
-#import "XNRRscCustomerTakeView.h"
+#import "XNRRscDetialTakeView.h"
 #import "XNRRscOrderModel.h"
 #import "XNRRscOrderDetailModel.h"
 
-@interface XNRRscCustomerTakeView()<UITextFieldDelegate>
+@interface XNRRscDetialTakeView()<UITextFieldDelegate>
 
 @property (nonatomic, weak) UIView *coverView;
 
@@ -24,12 +24,11 @@
 
 @property (nonatomic, weak) UITextField *deliverNumberTF;
 
-@property (nonatomic, strong) XNRRscOrderModel *model;
+@property (nonatomic, strong) XNRRscOrderDetailModel *model;
 
 @end
 
-@implementation XNRRscCustomerTakeView
-
+@implementation XNRRscDetialTakeView
 -(instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -65,7 +64,7 @@
         [admireBtn addTarget:self action:@selector(admireBtnClick) forControlEvents:UIControlEventTouchUpInside];
         self.admireBtn = admireBtn;
         [bottomView addSubview:admireBtn];
-
+        
     }
 }
 
@@ -74,12 +73,12 @@
     if (self.admireBtn.selected == YES) {
         if (self.admireBtn.selected == YES) {
             NSMutableArray *refArray = [NSMutableArray array];
-            for (XNRRscSkusModel *model in _model.SKUs) {
+            for (XNRRscSkusModel *model in _model.SKUList) {
                 if (model.isSelected) {
                     [refArray addObject:model.ref];
                 }
             }
-            NSDictionary *params = @{@"orderId":_model._id,@"code":self.deliverNumberTF.text,@"SKURefs":refArray,@"token":[DataCenter account].token?[DataCenter account].token:@""};
+            NSDictionary *params = @{@"orderId":_model.id,@"code":self.deliverNumberTF.text,@"SKURefs":refArray,@"token":[DataCenter account].token?[DataCenter account].token:@""};
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             manager.responseSerializer = [AFHTTPResponseSerializer serializer];
             manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -103,7 +102,7 @@
                 }else if([resultObj[@"code"] integerValue] == 1429){
                     [self cancel];
                     [UILabel showMessage:@"您输入错误次数较多，请一分钟后再试"];
-
+                    
                 }else{
                     [UILabel showMessage:@"自提码错误，请重新输入"];
                 }
@@ -115,7 +114,7 @@
             }];
             
         }
-
+        
     }else{
         [UILabel showMessage:@"请输入自提码"];
     }
@@ -209,8 +208,8 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-//    self.deliverNumberTF.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
-
+    //    self.deliverNumberTF.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    
     if (self.deliverNumberTF.text.length == 7) {
         self.admireBtn.selected = YES;
     }else{
@@ -263,7 +262,7 @@
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView];
-
+        
     }
 }
 
@@ -273,7 +272,7 @@
 }
 
 
--(void)show:(XNRRscOrderModel *)model
+-(void)show:(XNRRscOrderDetailModel *)model
 {
     if (_coverView == nil && _takeView == nil) {
         [self createView];
@@ -293,7 +292,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.takeView.frame = CGRectMake(0, ScreenHeight, ScreenWidth, 0);
     } completion:^(BOOL finished) {
-//        self.coverView.hidden = YES;
+        //        self.coverView.hidden = YES;
         [self.coverView removeFromSuperview];
         [self.takeView removeFromSuperview];
     }];
@@ -306,5 +305,4 @@
     self.coverView = nil;
     self.takeView = nil;
 }
-
 @end

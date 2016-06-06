@@ -158,6 +158,7 @@
 }
 
 -(void)getDeliveries{
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -172,9 +173,8 @@
         
         [_deliveryArr removeAllObjects];
 
-
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"---------返回数据:---------%@",str);
+//        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -236,7 +236,7 @@
 
 -(void)getRSCWebSiteData
 {
-    [KSHttpRequest get:KgetRSC parameters:@{@"products":[self GetProId],@"province":@"",@"city":@"",@"county":@""} success:^(id result)
+    [KSHttpRequest get:KgetRSC parameters:@{@"products":[self GetProId],@"province":@"",@"city":@"",@"county":@"",@"token":[DataCenter account].token} success:^(id result)
      {
          if ([result[@"code"]integerValue] == 1000) {
              _webSiteArr = (NSMutableArray *)[XNRRSCModel objectArrayWithKeyValuesArray:result[@"RSCs"]];
@@ -273,6 +273,7 @@
     }];
 }
 -(void)getData {
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -431,7 +432,7 @@
     getGoodsAddressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [topView addSubview:getGoodsAddressLabel];
 
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(getGoodsAddressLabel.frame)+PX_TO_PT(26), ScreenWidth - PX_TO_PT(31), 1)];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(getGoodsAddressLabel.frame)+PX_TO_PT(26), ScreenWidth - PX_TO_PT(31), PX_TO_PT(1))];
     line.backgroundColor = R_G_B_16(0xe0e0e0);
     [topView addSubview:line];
     
@@ -878,7 +879,7 @@
     [arrowImageView setImage:[UIImage imageNamed:@"icon_arrow"]];
     [addressView addSubview:arrowImageView];
     
-    UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+    UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
     headLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [addressView addSubview:headLine];
     _addressView.hidden = YES;
@@ -1021,7 +1022,7 @@
     [arrowImageView setImage:[UIImage imageNamed:@"icon_arrow"]];
     [addressView addSubview:arrowImageView];
     
-    UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+    UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
     headLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [addressView addSubview:headLine];
     _addressView.hidden = YES;
@@ -1114,11 +1115,11 @@
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
-        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
         lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView1];
         
-        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
+        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
         lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView2];
         

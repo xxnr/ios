@@ -195,7 +195,11 @@
         if (_dataArray.count == 0) {
             [self noOrderView];
         }
-        
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
+        }
+
         //  如果到达最后一页 就消除footer
         NSInteger page = [result[@"pageCount"] integerValue];
         self.tableView.mj_footer.hidden = page == _currentPage;
@@ -247,12 +251,9 @@
         XNRRscOrderModel *sectionModel = _dataArray[section];
         XNRRscFootFrameModel*footFrameModel = _dataFrameArray[section];
         [sectionFootView upDataFootViewWithModel:footFrameModel];
+        __weak __typeof(&*self)weakSelf = self;
         sectionFootView.com = ^{
-            if ([sectionModel.type integerValue] == 2) {
-                [self getdetailData:sectionModel];
-            }else{
-                [self.tableView reloadData];
-            }
+                [weakSelf getdetailData:sectionModel];
         };
         return sectionFootView;
     }else{
@@ -269,13 +270,15 @@
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];
             detailModel.consigneeName = orderDict[@"consigneeName"];
             NSDictionary *payment = orderDict[@"payment"];
-            if (payment.count>0) {
+            if (![KSHttpRequest isNULL:payment]) {
                 detailModel.price = payment[@"price"];
+                detailModel.id = payment[@"id"];
+                [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            }else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+                [UILabel showMessage:@"订单已审核"];
             }
-            detailModel.id = payment[@"id"];
-            [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
         }
-
     } failure:^(NSError *error) {
         
     }];
@@ -336,8 +339,8 @@
 {
     if (_dataArray.count>0) {
         XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
-        if (self.com) {
-            self.com(sectionModel);
+        if (self.identifycom) {
+            self.identifycom(sectionModel);
         }
     }
 }

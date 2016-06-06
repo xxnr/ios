@@ -52,7 +52,6 @@
     self.view.backgroundColor = R_G_B_16(0xffffff);
     [self setNavigationBar];
     [self createView];
-    
 }
 
 -(void)createView
@@ -68,7 +67,7 @@
     if (self.RscAllOrderView == nil) {
         self.RscAllOrderView  = [[XNRRscAllOrderView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscAllOrderView.com = ^(XNRRscOrderModel *model){
+        self.RscAllOrderView.allcom = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
             orderDetialVC.orderModel = model;
@@ -78,7 +77,7 @@
     if (self.RscWaitPayView == nil) {
         self.RscWaitPayView  = [[XNRRscWaitPayView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitPayView.com = ^(XNRRscOrderModel *model){
+        self.RscWaitPayView.paycom = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
             orderDetialVC.orderModel = model;
@@ -88,7 +87,7 @@
     if (self.RscWaitIdentifyView == nil) {
         self.RscWaitIdentifyView  = [[XNRRscWaitIdentifyView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitIdentifyView.com = ^(XNRRscOrderModel *model){
+        self.RscWaitIdentifyView.identifycom = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
             orderDetialVC.orderModel = model;
@@ -98,7 +97,7 @@
     if (self.RscWaitDeliverView == nil) {
         self.RscWaitDeliverView  = [[XNRRscWaitDeliverView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitDeliverView.com = ^(XNRRscOrderModel *model){
+        self.RscWaitDeliverView.delivercom = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
             orderDetialVC.orderModel = model;
@@ -108,7 +107,7 @@
     if (self.RscWaitTakeView == nil) {
         self.RscWaitTakeView  = [[XNRRscWaitTakeView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitTakeView.com = ^(XNRRscOrderModel *model){
+        self.RscWaitTakeView.takecom = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
             orderDetialVC.orderModel = model;
@@ -204,17 +203,23 @@
      [self.scrollView setContentOffset:CGPointMake((ScreenWidth+PX_TO_PT(20))*(button.tag-KtitleBtn),0) animated:NO];
     if (button.tag == KtitleBtn) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        self.RscAllOrderView.isRefresh = YES;
     }else if (button.tag == KtitleBtn +1){
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        self.RscWaitPayView.isRefresh = YES;
 
     }else if (button.tag == KtitleBtn +2){
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        self.RscWaitIdentifyView.isRefresh = YES;
 
     }else if (button.tag == KtitleBtn +3){
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        self.RscWaitDeliverView.isRefresh = YES;
 
     }else{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        self.RscWaitTakeView.isRefresh = YES;
+
     }
     [BMProgressView LoadViewDisappear:self.view];
 }

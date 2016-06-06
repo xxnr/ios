@@ -203,11 +203,12 @@
             [self setWarnViewTitle:@"审核成功"];
             // 刷新tableView
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        }else if ([result[@"code"] integerValue] == 1002){
+            [self cancel];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+            [UILabel showMessage:@"订单已审核"];
+            
         }
-//        else{
-//            [self cancel];
-//            [self setWarnViewTitle:@"请稍后再试"];
-//        }
         
     } failure:^(NSError *error) {
         

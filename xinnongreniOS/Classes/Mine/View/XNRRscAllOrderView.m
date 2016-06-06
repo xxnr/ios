@@ -35,7 +35,6 @@
 
 @property (nonatomic, weak) XNRRscNoOrderView *noOrderView;
 
-
 @end
 
 @implementation XNRRscAllOrderView
@@ -135,9 +134,6 @@
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
     MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
     
-    
-    //    footer.automaticallyHidden = YES;
-    
     // 设置刷新图片
     [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
     footer.refreshingTitleHidden = YES;
@@ -204,6 +200,11 @@
         }
         if (_dataArray.count == 0) {
             [self noOrderView];
+        }
+        
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
         }
 
         //  如果到达最后一页 就消除footer
@@ -347,8 +348,8 @@
 {
     if (_dataArray.count>0) {
         XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
-        if (self.com) {
-            self.com(sectionModel);
+        if (self.allcom) {
+            self.allcom(sectionModel);
         }
     }
    

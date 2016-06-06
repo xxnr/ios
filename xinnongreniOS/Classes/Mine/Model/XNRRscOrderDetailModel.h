@@ -36,5 +36,8 @@
 
 @property (nonatomic ,strong) NSMutableArray *subOrders;
 
+@property (nonatomic ,assign) BOOL isSelected;
+
+
 
 @end

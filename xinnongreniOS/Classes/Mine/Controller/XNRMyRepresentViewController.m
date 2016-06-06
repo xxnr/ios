@@ -421,11 +421,6 @@ static bool isBroker;
         [self bookViewGetData];
         
         currentTableView = self.tableView2;
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> ynn_ios
     }
     
     [self setupCustomerRefresh];

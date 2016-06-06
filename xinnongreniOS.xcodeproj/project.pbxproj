@@ -182,6 +182,9 @@
 		491755301CC5DC65001A2E2E /* NSString+File.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917552F1CC5DC65001A2E2E /* NSString+File.m */; };
 		4917DBBB1C1BB84E00CE1588 /* XNRTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917DBBA1C1BB84E00CE1588 /* XNRTypeModel.m */; };
 		4917DBBE1C1BC23000CE1588 /* XNRTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917DBBD1C1BC23000CE1588 /* XNRTypeView.m */; };
+		4919AEB31D054C87004DC7CA /* XNRRscDetialDeliverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4919AEB21D054C87004DC7CA /* XNRRscDetialDeliverView.m */; };
+		4919AEB61D054CA7004DC7CA /* XNRRscDetialDeliverCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4919AEB51D054CA7004DC7CA /* XNRRscDetialDeliverCell.m */; };
+		4919AEB91D054CD3004DC7CA /* XNRRscDetialTakeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4919AEB81D054CD3004DC7CA /* XNRRscDetialTakeView.m */; };
 		491AF0501C76C5C500AA3CC8 /* XNRPropertyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 491AF04F1C76C5C500AA3CC8 /* XNRPropertyView.m */; };
 		491AF0561C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 491AF0551C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.m */; };
 		491AF0591C79C0E500AA3CC8 /* XNRPropertyBrandView.m in Sources */ = {isa = PBXBuildFile; fileRef = 491AF0581C79C0E500AA3CC8 /* XNRPropertyBrandView.m */; };
@@ -896,6 +899,12 @@
 		4917DBBA1C1BB84E00CE1588 /* XNRTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRTypeModel.m; sourceTree = "<group>"; };
 		4917DBBC1C1BC23000CE1588 /* XNRTypeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRTypeView.h; sourceTree = "<group>"; };
 		4917DBBD1C1BC23000CE1588 /* XNRTypeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRTypeView.m; sourceTree = "<group>"; };
+		4919AEB11D054C87004DC7CA /* XNRRscDetialDeliverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRscDetialDeliverView.h; sourceTree = "<group>"; };
+		4919AEB21D054C87004DC7CA /* XNRRscDetialDeliverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRscDetialDeliverView.m; sourceTree = "<group>"; };
+		4919AEB41D054CA7004DC7CA /* XNRRscDetialDeliverCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRscDetialDeliverCell.h; sourceTree = "<group>"; };
+		4919AEB51D054CA7004DC7CA /* XNRRscDetialDeliverCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRscDetialDeliverCell.m; sourceTree = "<group>"; };
+		4919AEB71D054CD3004DC7CA /* XNRRscDetialTakeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRscDetialTakeView.h; sourceTree = "<group>"; };
+		4919AEB81D054CD3004DC7CA /* XNRRscDetialTakeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRscDetialTakeView.m; sourceTree = "<group>"; };
 		491AF04E1C76C5C500AA3CC8 /* XNRPropertyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPropertyView.h; sourceTree = "<group>"; };
 		491AF04F1C76C5C500AA3CC8 /* XNRPropertyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRPropertyView.m; sourceTree = "<group>"; };
 		491AF0541C79BD6300AA3CC8 /* XNRPropertyCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRPropertyCollectionViewCell.h; sourceTree = "<group>"; };
@@ -2277,6 +2286,12 @@
 				4912814C1CD0815C009E67C4 /* XNRRscConfirmDeliverCell.m */,
 				491281541CD19F46009E67C4 /* XNRRscCustomerTakeView.h */,
 				491281551CD19F46009E67C4 /* XNRRscCustomerTakeView.m */,
+				4919AEB11D054C87004DC7CA /* XNRRscDetialDeliverView.h */,
+				4919AEB21D054C87004DC7CA /* XNRRscDetialDeliverView.m */,
+				4919AEB41D054CA7004DC7CA /* XNRRscDetialDeliverCell.h */,
+				4919AEB51D054CA7004DC7CA /* XNRRscDetialDeliverCell.m */,
+				4919AEB71D054CD3004DC7CA /* XNRRscDetialTakeView.h */,
+				4919AEB81D054CD3004DC7CA /* XNRRscDetialTakeView.m */,
 				9C3FAC681CD3643600915DF8 /* XNRRscOrderDetialCell.h */,
 				9C3FAC691CD3643600915DF8 /* XNRRscOrderDetialCell.m */,
 				9C3FAC6B1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.h */,
@@ -4182,6 +4197,7 @@
 				49F7A57C1C58469400A1FA45 /* MJRefreshAutoStateFooter.m in Sources */,
 				491610F31C8C422200F1E243 /* MWZoomingScrollView.m in Sources */,
 				491281351CCCBB2D009E67C4 /* XNRRscOrderModel.m in Sources */,
+				4919AEB31D054C87004DC7CA /* XNRRscDetialDeliverView.m in Sources */,
 				4916112C1C8D189400F1E243 /* IQBarButtonItem.m in Sources */,
 				49F7A5801C58469400A1FA45 /* MJRefreshGifHeader.m in Sources */,
 				49EC525F1BEBBA5E00AA8898 /* NSDictionary+BSExt.m in Sources */,
@@ -4270,6 +4286,7 @@
 				49F7A5851C58469400A1FA45 /* UIScrollView+MJExtension.m in Sources */,
 				84FE64401B183CEA00F0C67C /* XNRMyOrderSend_Cell.m in Sources */,
 				49CD5E3B1C0BE7F1004235C4 /* XNRMessageModel.m in Sources */,
+				4919AEB61D054CA7004DC7CA /* XNRRscDetialDeliverCell.m in Sources */,
 				4967138C1CE0975800782C12 /* XNRRscNoOrderView.m in Sources */,
 				4976FC291BE9A2AA0002E8F8 /* RSADataVerifier.m in Sources */,
 				53031B8A1B299736004B4B07 /* Photo.m in Sources */,
@@ -4280,6 +4297,7 @@
 				490F0B121C9EFEFD00BDC7E0 /* XNRShoppingCarFrame.m in Sources */,
 				84FE64311B18056200F0C67C /* XNRSendView.m in Sources */,
 				4916112A1C8D189400F1E243 /* IQSegmentedNextPrevious.m in Sources */,
+				4919AEB91D054CD3004DC7CA /* XNRRscDetialTakeView.m in Sources */,
 				53445E941B143B0C009F79E5 /* XNRRegisterViewController.m in Sources */,
 				9C3FAC611CD3007A00915DF8 /* XNRCheckOrderVC.m in Sources */,
 				53C5B1581B15C75500C67501 /* XNRHomeCollectionHeaderView.m in Sources */,

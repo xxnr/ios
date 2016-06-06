@@ -16,6 +16,7 @@
 #import "XNRRscConfirmDeliverView.h"
 #import "XNRRscIdentifyPayView.h"
 #import "XNRNavigationController.h"
+#import "XNRRscDetialDeliverView.h"
 
 @interface XNRRscOrderDetialController()<UITableViewDelegate,UITableViewDataSource>
 
@@ -29,7 +30,7 @@
 
 @property (nonatomic, weak) XNRRscIdentifyPayView *identifyPayView;
 
-@property (nonatomic, weak) XNRRscConfirmDeliverView *deliverView;
+@property (nonatomic, weak) XNRRscDetialDeliverView *deliverView;
 
 @property (nonatomic, weak) UIButton *footButton;
 
@@ -49,10 +50,10 @@
     return _identifyPayView;
 }
 
--(XNRRscConfirmDeliverView *)deliverView
+-(XNRRscDetialDeliverView *)deliverView
 {
     if (!_deliverView) {
-        XNRRscConfirmDeliverView *deliverView = [[XNRRscConfirmDeliverView alloc] init];
+        XNRRscDetialDeliverView *deliverView = [[XNRRscDetialDeliverView alloc] init];
         self.deliverView = deliverView;
         [self.view addSubview:deliverView];
     }
@@ -248,16 +249,15 @@
     for (XNRRscSkusModel *skuModel in _orderModel.SKUs) {
         skuModel.isSelected = NO;
     }
+    
     for (XNRRscOrderDetailModel *detailModel in _dataArray) {
         NSDictionary *dict = detailModel.orderStatus;
         if ([dict[@"type"] integerValue] == 2) {
             [self getdetailData:detailModel];
         }else if ([dict[@"type"] integerValue] == 4||[dict[@"type"] integerValue] == 6){
-            [self.deliverView show:_orderModel andType:isFromDeliverController];
+            [self.deliverView show:detailModel andType:isFromDeliverController];
         }else if([dict[@"type"] integerValue] == 5){
-            [self.deliverView show:_orderModel andType:isFromTakeController];
-        }else{
-            [self.tableView reloadData];
+            [self.deliverView show:detailModel andType:isFromTakeController];
         }
     }
 }
@@ -270,11 +270,14 @@
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];
             detailModel.consigneeName = orderDict[@"consigneeName"];
             NSDictionary *payment = orderDict[@"payment"];
-            if (payment.count>0) {
+            if (![KSHttpRequest isNULL:payment]) {
                 detailModel.price = payment[@"price"];
+                detailModel.id = payment[@"id"];
+                [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            }else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+                [UILabel showMessage:@"订单已审核"];
             }
-            detailModel.id = payment[@"id"];
-            [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
         }
     } failure:^(NSError *error) {
         
@@ -316,10 +319,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XNRRscOrderDetialCell *cell = [XNRRscOrderDetialCell cellWithTableView:tableView];
-    XNRRscOrderDetailModel *model = _dataArray[indexPath.section];
-    XNRRscOrderDetialFrameModel *frameModel = model.SKUFrameList[indexPath.row];
-    cell.frameModel = frameModel;
-    return cell;
+    if (_dataArray.count>0) {
+        XNRRscOrderDetailModel *model = _dataArray[indexPath.section];
+        XNRRscOrderDetialFrameModel *frameModel = model.SKUFrameList[indexPath.row];
+        cell.frameModel = frameModel;
+    }
+        return cell;
     
 }
 

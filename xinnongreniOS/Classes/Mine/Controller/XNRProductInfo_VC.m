@@ -105,18 +105,16 @@
             [self.tableView reloadData];
         };
         // 提交订单页面的跳转
-        XNROrderInfo_VC *orderVC = [[XNROrderInfo_VC alloc] init];
         propertyView.com = ^(NSMutableArray *dataArray,CGFloat totalPrice,NSString *totalNum){
+            XNROrderInfo_VC *orderVC = [[XNROrderInfo_VC alloc] init];
             orderVC.dataArray = dataArray;
             orderVC.totalPrice = totalPrice;
             orderVC.totalSelectNum = totalNum.intValue;
             orderVC.isRoot = YES;
             [weakSelf.navigationController pushViewController:orderVC animated:YES];
-            
         };
         // 跳转登录界面
         propertyView.loginBlock = ^(){
-            
             XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
             login.loginFromProductInfo = YES;
             login.hidesBottomBarWhenPushed = YES;

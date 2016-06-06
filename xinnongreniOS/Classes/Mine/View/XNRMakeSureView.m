@@ -18,6 +18,7 @@
 @property (nonatomic,weak)UIView *tatologyView;
 @property (nonatomic,weak)UIView *auditView;
 @property (nonatomic,weak)UIView *dispatchView;
+@property (nonatomic,weak)UIView *midView;
 @property (nonatomic,weak)UIButton *makeSureBtn;
 @property (nonatomic,strong)NSMutableArray *selProArr;
 @property (nonatomic,assign)NSInteger count;
@@ -55,7 +56,7 @@
     [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
-
+    
     NSMutableArray *arr = [NSMutableArray array];
     for (int i=0; i<self.modelArr.count; i++) {
         XNRMyOrderModel *model = self.modelArr[i];
@@ -65,6 +66,7 @@
     
     [manager POST:KconfirmSKUReceived parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
+        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -72,7 +74,7 @@
             resultDic = (NSDictionary *)resultObj;
         }
         if ([resultObj[@"code"] integerValue] == 1000) {
-
+            
             [self.tableView reloadData];
         }
         
@@ -81,10 +83,10 @@
         
     }];
     
-
+    
 }
 -(void)createview
-{    
+{
     UIButton *coverView = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     UIColor *color = [UIColor blackColor];
     coverView.backgroundColor = [color colorWithAlphaComponent:0.6];
@@ -93,42 +95,86 @@
     
     UIWindow *window = [[UIApplication sharedApplication].delegate window];
     [window addSubview:coverView];
+    
+    [self createMidView];
+    [UIView animateWithDuration:0.3f animations:^{
 
-    [self createTableView];
-    [self createBottomView];
+        self.midView.frame = CGRectMake(0, PX_TO_PT(350), ScreenWidth,  self.coverView.height - PX_TO_PT(350));
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 -(void)coverClick
 {
-    [self.coverView removeFromSuperview];
-    [self removeFromSuperview];
+    [UIView animateWithDuration:0.3f animations:^{
 
+        self.midView.frame = CGRectMake(0, ScreenHeight, ScreenWidth,  self.coverView.height - PX_TO_PT(350));
+    } completion:^(BOOL finished) {
+        [self.coverView removeFromSuperview];
+        [self removeFromSuperview];
+    }];
+    
+    
+}
+
+-(void)createMidView
+{
+    UIView *midView = [[UIView alloc]initWithFrame:CGRectMake(0,ScreenHeight, ScreenWidth, self.coverView.height - PX_TO_PT(350))];
+    self.midView = midView;
+    
+    [self.coverView addSubview:self.midView];
+    
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0,0, ScreenWidth, midView.height - PX_TO_PT(99)) style:UITableViewStylePlain];
+    tableView.backgroundColor = R_G_B_16(0xf9f9f9);
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    self.tableView = tableView;
+    [self.midView addSubview:self.tableView];
+    
+    UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(tableView.frame), ScreenWidth, PX_TO_PT(99))];
+    self.bottomView = bottom;
+    bottom.backgroundColor = [UIColor whiteColor];
+    UIButton *okBtn = [[UIButton alloc]initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(190))/2, PX_TO_PT(24), PX_TO_PT(190), PX_TO_PT(52))];
+    self.makeSureBtn = okBtn;
+    //    okBtn.backgroundColor = R_G_B_16(0xFE9B00);
+    okBtn.backgroundColor = R_G_B_16(0xe0e0e0);
+    okBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    [okBtn setTitle:@"确定" forState:UIControlStateNormal];
+    okBtn.layer.cornerRadius = PX_TO_PT(8);
+    [okBtn addTarget:self action:@selector(makeSure:) forControlEvents:UIControlEventTouchUpInside];
+    [bottom addSubview:self.makeSureBtn];
+    [self.midView addSubview:self.bottomView];
+    
 }
 -(void)createTableView
 {
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0,PX_TO_PT(350), ScreenWidth, self.coverView.height - PX_TO_PT(350) - PX_TO_PT(99)) style:UITableViewStylePlain];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0,ScreenHeight, ScreenWidth, self.coverView.height - PX_TO_PT(350) - PX_TO_PT(99)) style:UITableViewStylePlain];
     tableView.backgroundColor = R_G_B_16(0xf9f9f9);
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.delegate = self;
     tableView.dataSource = self;
     self.tableView = tableView;
     [self.coverView addSubview:tableView];
+    
+    
 }
 -(void)createBottomView
 {
-    UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.tableView.frame), ScreenWidth, PX_TO_PT(99))];
+    UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_tableView.frame), ScreenWidth, PX_TO_PT(99))];
     self.bottomView = bottom;
     bottom.backgroundColor = [UIColor whiteColor];
     UIButton *okBtn = [[UIButton alloc]initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(190))/2, PX_TO_PT(24), PX_TO_PT(190), PX_TO_PT(52))];
     self.makeSureBtn = okBtn;
-//    okBtn.backgroundColor = R_G_B_16(0xFE9B00);
+    //    okBtn.backgroundColor = R_G_B_16(0xFE9B00);
     okBtn.backgroundColor = R_G_B_16(0xe0e0e0);
-
+    
     [okBtn setTitle:@"确定" forState:UIControlStateNormal];
     okBtn.layer.cornerRadius = PX_TO_PT(8);
     [okBtn addTarget:self action:@selector(makeSure:) forControlEvents:UIControlEventTouchUpInside];
     [bottom addSubview:okBtn];
-    [self.coverView addSubview:bottom];
+    [self.midView addSubview:self.bottomView];
 }
 //确认收货
 -(void)makeSure:(UIButton *)sender
@@ -145,7 +191,7 @@
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     
-    NSDictionary *dic = @{@"orderId":self.orderId,@"SKURefs":self.selProArr,@"token":[DataCenter account].token?[DataCenter account].token:@""};
+    NSDictionary *dic = @{@"orderId":self.orderId,@"SKURefs":self.selProArr,@"token":[DataCenter account].token,};
     [manager POST:KconfirmSKUReceived parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
@@ -174,22 +220,22 @@
             
             [UIView animateWithDuration:1.5f animations:^{
                 warnView.alpha = 0;
-          
+                
             } completion:^(BOOL finished) {
                 [self.coverView removeFromSuperview];
                 [self removeFromSuperview];
-
+                
                 if ([_iscome isEqualToString:@"XNROrderVC"]) {
                     [[NSNotificationCenter defaultCenter]postNotificationName:@"orderVCRefresh" object:self];
                 }
-
-
+                
+                
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
-
+                
             }];
             //
             
@@ -201,7 +247,7 @@
             
             [self.coverView removeFromSuperview];
             [self removeFromSuperview];
-
+            
         }
         else{
             self.tableView.hidden = YES;
@@ -232,7 +278,7 @@
             }];
         }
         
-
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         self.tableView.hidden = YES;
         self.bottomView.hidden = YES;
@@ -260,9 +306,9 @@
             [self removeFromSuperview];
             
         }];
-
+        
     }];
-
+    
 }
 //关闭
 -(void)closeView:(UIButton *)sender
@@ -289,9 +335,9 @@
     
     UIButton *closeBtn = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(28) - PX_TO_PT(32), PX_TO_PT(29), PX_TO_PT(32), PX_TO_PT(32))];
     [closeBtn setImage:[UIImage imageNamed:@"shutdown"] forState:UIControlStateNormal];
-    [closeBtn addTarget:self action:@selector(closeView:) forControlEvents:UIControlEventTouchUpInside];
+    [closeBtn addTarget:self action:@selector(coverClick) forControlEvents:UIControlEventTouchUpInside];
     [headView addSubview:closeBtn];
-
+    
     return headView;
 }
 
@@ -309,7 +355,7 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XNRMyOrderModel *model = self.modelArr[indexPath.row];
-
+    
     static NSString *cellID = @"cellID";
     XNRMakeSureCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
@@ -317,9 +363,9 @@
     }
     
     cell.accessoryType = UITableViewCellAccessoryNone;
-
+    
     [cell setModel:model];
-
+    
     XNRSelWebBtn *iconBtn = [[XNRSelWebBtn alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, cell.height)];
     [iconBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
     [iconBtn setImage:[UIImage imageNamed:@"checkthe"] forState:UIControlStateSelected];
@@ -334,14 +380,14 @@
     [cell addSubview:iconBtn];
     
     return cell;
-
+    
 }
 
 -(void)iconClick:(UIButton *)sender
 {
     XNRMyOrderModel *model = self.modelArr[sender.tag];
-   
-
+    
+    
     if (sender.selected == NO) {
         sender.selected = YES;
         _count += [model.count integerValue];
@@ -361,6 +407,10 @@
     else{
         self.makeSureBtn.backgroundColor = R_G_B_16(0xFE9B00);
         [self.makeSureBtn setTitle:[NSString stringWithFormat:@"确定(%ld)",_count] forState:UIControlStateNormal];
+        CGSize size = [self.makeSureBtn.titleLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(ScreenWidth, PX_TO_PT(52))];
+        
+        self.makeSureBtn.frame = CGRectMake((ScreenWidth-size.width-PX_TO_PT(80))/2, PX_TO_PT(24),size.width+PX_TO_PT(80),PX_TO_PT(52));
+
     }
 }
 

@@ -179,6 +179,10 @@
         if (_dataArray.count == 0) {
             [self noOrderView];
         }
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
+        }
 
         
         //  如果到达最后一页 就消除footer
@@ -290,8 +294,8 @@
 {
     if (_dataArray.count>0) {
         XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
-        if (self.com) {
-            self.com(sectionModel);
+        if (self.paycom) {
+            self.paycom(sectionModel);
         }
     }
 }

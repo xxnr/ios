@@ -1,18 +1,18 @@
 //
-//  XNRRscConfirmDeliverView.m
+//  XNRRscDetialDeliverView.m
 //  xinnongreniOS
 //
-//  Created by xxnr on 16/4/27.
+//  Created by xxnr on 16/6/6.
 //  Copyright © 2016年 qxhiOS. All rights reserved.
 //
 
-#import "XNRRscConfirmDeliverView.h"
+#import "XNRRscDetialDeliverView.h"
 #import "XNRRscOrderModel.h"
 #import "XNRRscConfirmDeliverCell.h"
 #import "XNRRscDeliverFrameModel.h"
-#import "XNRRscCustomerTakeView.h"
+#import "XNRRscDetialTakeView.h"
 #import "XNRRscOrderDetailModel.h"
-@interface XNRRscConfirmDeliverView()<UITableViewDelegate,UITableViewDataSource>
+@interface XNRRscDetialDeliverView()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, weak) UIView *coverView;
 
@@ -20,7 +20,7 @@
 
 @property (nonatomic, weak) UITableView *tableView;
 
-@property (nonatomic, strong) XNRRscOrderModel *model;
+//@property (nonatomic, strong) XNRRscOrderModel *model;
 
 @property (nonatomic, strong) XNRRscOrderDetailModel *detailModel;
 
@@ -28,21 +28,20 @@
 
 @property (nonatomic, weak) UILabel *stateLabel;
 
-@property (nonatomic, weak) XNRRscCustomerTakeView *takeView;
+@property (nonatomic, weak) XNRRscDetialTakeView *takeView;
 
 @property (nonatomic, assign) NSInteger totalCount;
 
-@property (nonatomic, assign) XNRRscConfirmDeliverViewType type;
+@property (nonatomic, assign) XNRRscDetialConfirmDeliverViewType type;
 
 @end
 
-@implementation XNRRscConfirmDeliverView
+@implementation XNRRscDetialDeliverView
 
-
--(XNRRscCustomerTakeView *)takeView
+-(XNRRscDetialTakeView *)takeView
 {
     if (!_takeView) {
-        XNRRscCustomerTakeView *takeView = [[XNRRscCustomerTakeView alloc] init];
+        XNRRscDetialTakeView *takeView = [[XNRRscDetialTakeView alloc] init];
         self.takeView = takeView;
         [self addSubview:takeView];
     }
@@ -89,7 +88,7 @@
 {
     if (_totalCount>0) {
         if (self.admireBtn.selected == YES) {
-            [self.takeView show:_model];
+            [self.takeView show:_detailModel];
             [self.deliverView removeFromSuperview];
             [self.coverView removeFromSuperview];
         }else{
@@ -98,12 +97,12 @@
     }else{
         if (self.admireBtn.selected == YES) {
             NSMutableArray *refArray = [NSMutableArray array];
-            for (XNRRscSkusModel *model in _model.SKUs) {
+            for (XNRRscSkusModel *model in _detailModel.SKUList) {
                 if (model.isSelected) {
                     [refArray addObject:model.ref];
                 }
             }
-            NSDictionary *params = @{@"orderId":_model._id,@"SKURefs":refArray,@"token":[DataCenter account].token?[DataCenter account].token:@""};
+            NSDictionary *params = @{@"orderId":_detailModel.id,@"SKURefs":refArray,@"token":[DataCenter account].token?[DataCenter account].token:@""};
             
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -226,11 +225,11 @@
     [self cancel];
 }
 
--(void)show:(XNRRscOrderModel *)model andType:(XNRRscConfirmDeliverViewType)type
+-(void)show:(XNRRscOrderDetailModel *)model andType:(XNRRscDetialConfirmDeliverViewType)type
 {
     _type = type;
     if (_coverView == nil &&_deliverView == nil) {
-        for (XNRRscSkusModel *skuModel in model.SKUs) {
+        for (XNRRscSkusModel *skuModel in model.SKUList) {
             skuModel.isSelected = NO;
         }
         _totalCount = 0;
@@ -241,14 +240,14 @@
     [model.SKUsDeliverFrame removeAllObjects];
     [self changeState:type];
     
-    for (XNRRscSkusModel *skuModel in model.SKUs) {
+    for (XNRRscSkusModel *skuModel in model.SKUList) {
         XNRRscDeliverFrameModel *frameModel = [[XNRRscDeliverFrameModel alloc] init];
         if ([skuModel.deliverStatus integerValue] == 4) {
             frameModel.model = skuModel;
         }
         [model.SKUsDeliverFrame addObject:frameModel];
     }
-    _model = model;
+    _detailModel = model;
     
     [self.tableView reloadData];
     self.coverView.hidden = NO;
@@ -259,9 +258,9 @@
     
 }
 
--(void)changeState:(XNRRscConfirmDeliverViewType)type
+-(void)changeState:(XNRRscDetialConfirmDeliverViewType)type
 {
-    if (type == isFromDeliverController) {
+    if (type == isFromDetialDeliverController) {
         [self.admireBtn setTitle:@"确定" forState:UIControlStateNormal];
         self.stateLabel.text = @"开始配送";
     }else{
@@ -286,20 +285,20 @@
 //设置行数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _model.SKUsDeliverFrame.count;
+    return _detailModel.SKUsDeliverFrame.count;
 }
 
 //行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRRscDeliverFrameModel *frameModel = _model.SKUsDeliverFrame[indexPath.row];
+    XNRRscDeliverFrameModel *frameModel = _detailModel.SKUsDeliverFrame[indexPath.row];
     return frameModel.cellHeight;
 }
 
 //cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRRscSkusModel *model = _model.SKUs[indexPath.row];
+    XNRRscSkusModel *model = _detailModel.SKUList[indexPath.row];
     if (model.isSelected == YES) {
         model.isSelected = NO;
     }else{
@@ -309,7 +308,7 @@
     if (model.isSelected) {
         self.admireBtn.selected = YES;
         _totalCount = _totalCount + model.count.integerValue;
-        if (_type == isFromDeliverController) {
+        if (_type == isFromDetialDeliverController) {
             [self.admireBtn setTitle:[NSString stringWithFormat:@"确定(%ld)",(long)_totalCount] forState:UIControlStateSelected];
             
         }else{
@@ -323,7 +322,7 @@
             [self.admireBtn setTitle:@"确定"forState:UIControlStateNormal];
         }else{
             self.admireBtn.selected = YES;
-            if (_type == isFromDeliverController) {
+            if (_type == isFromDetialDeliverController) {
                 [self.admireBtn setTitle:[NSString stringWithFormat:@"确定(%ld)",(long)_totalCount] forState:UIControlStateSelected];
                 
             }else{
@@ -341,7 +340,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XNRRscConfirmDeliverCell *cell = [XNRRscConfirmDeliverCell cellWithTableView:tableView];
-    XNRRscDeliverFrameModel *frameModel = _model.SKUsDeliverFrame[indexPath.row];
+    XNRRscDeliverFrameModel *frameModel = _detailModel.SKUsDeliverFrame[indexPath.row];
     cell.frameModel = frameModel;
     return cell;
     
