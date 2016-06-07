@@ -115,7 +115,7 @@
 
     CGFloat topLineW = ScreenWidth;
     CGFloat topLineY;
-
+ 
     if (self.orderModel.additions.count>0) {
         topLineY = CGRectGetMaxY(_addtionLabelF)+PX_TO_PT(36);
     }

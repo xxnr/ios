@@ -279,7 +279,7 @@
 - (void)backClick:(UIButton *)btn
 {
     
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadOrderList" object:nil];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadOrderList" object:nil];
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
