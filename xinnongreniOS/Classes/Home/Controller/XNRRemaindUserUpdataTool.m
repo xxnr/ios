@@ -23,15 +23,10 @@
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:result[@"message"]delegate:self cancelButtonTitle:@"取消"otherButtonTitles:@"更新",nil];
             [alert show];
-            
         }
-        
     } failure:^(NSError *error) {
         
     }];
-
-
-
 }
 
 - (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

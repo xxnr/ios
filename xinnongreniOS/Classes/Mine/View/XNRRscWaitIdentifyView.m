@@ -194,6 +194,8 @@
         
         if (_dataArray.count == 0) {
             [self noOrderView];
+        }else{
+            [self.noOrderView removeFromSuperview];
         }
         if (_isRefresh) {
             [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
@@ -270,7 +272,7 @@
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];
             detailModel.consigneeName = orderDict[@"consigneeName"];
             NSDictionary *payment = orderDict[@"payment"];
-            if (![KSHttpRequest isNULL:payment]) {
+            if (![KSHttpRequest isNULL:payment] && [orderDict[@"orderStatus"][@"type"] integerValue]== 2) {
                 detailModel.price = payment[@"price"];
                 detailModel.id = payment[@"id"];
                 [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];

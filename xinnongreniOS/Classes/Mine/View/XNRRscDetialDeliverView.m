@@ -86,7 +86,7 @@
 
 -(void)admireBtnClick
 {
-    if (_totalCount>0) {
+    if ([self.admireBtn.titleLabel.text rangeOfString:@"下一步"].location != NSNotFound) {
         if (self.admireBtn.selected == YES) {
             [self.takeView show:_detailModel];
             [self.deliverView removeFromSuperview];
@@ -95,48 +95,52 @@
             [UILabel showMessage:@"您还没有选择商品哦"];
         }
     }else{
-        if (self.admireBtn.selected == YES) {
-            NSMutableArray *refArray = [NSMutableArray array];
-            for (XNRRscSkusModel *model in _detailModel.SKUList) {
-                if (model.isSelected) {
-                    [refArray addObject:model.ref];
-                }
-            }
-            NSDictionary *params = @{@"orderId":_detailModel.id,@"SKURefs":refArray,@"token":[DataCenter account].token?[DataCenter account].token:@""};
-            
-            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-            manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-            manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
-            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
-            [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
-            manager.requestSerializer.timeoutInterval = 10.f;
-            [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
-            
-            [manager POST:KRscDelivering parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-                
-                NSDictionary *resultDic;
-                if ([resultObj isKindOfClass:[NSDictionary class]]) {
-                    resultDic = (NSDictionary *)resultObj;
-                }
-                if ([resultObj[@"code"] integerValue] == 1000) {
-                    [self cancel];
-                    [self setWarnViewTitle:@"配送成功"];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        if (_type == isFromDetialDeliverController) {
+            if (self.admireBtn.selected == YES) {
+                NSMutableArray *refArray = [NSMutableArray array];
+                for (XNRRscSkusModel *model in _detailModel.SKUList) {
+                    if (model.isSelected) {
+                        [refArray addObject:model.ref];
+                    }
+                    NSDictionary *params = @{@"orderId":_detailModel.id,@"SKURefs":refArray,@"token":[DataCenter account].token?[DataCenter account].token:@""};
                     
-                }else{
-                    [self cancel];
-                    [UILabel showMessage:resultObj[@"message"]];
-                    //                    [self setWarnViewTitle:@"请稍后再试"];
+                    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+                    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+                    manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
+                    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+                    [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+                    manager.requestSerializer.timeoutInterval = 10.f;
+                    [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+                    [manager POST:KRscDelivering parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+                        
+                        NSDictionary *resultDic;
+                        if ([resultObj isKindOfClass:[NSDictionary class]]) {
+                            resultDic = (NSDictionary *)resultObj;
+                        }
+                        if ([resultObj[@"code"] integerValue] == 1000) {
+                            [self cancel];
+                            [self setWarnViewTitle:@"配送成功"];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+                            
+                        }else{
+                            [self cancel];
+                            [UILabel showMessage:resultObj[@"message"]];
+                        }
+                        
+                        
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        NSLog(@"===%@",error);
+                    }];
                 }
                 
-                
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"===%@",error);
-                
-            }];
+            }else{
+                [UILabel showMessage:@"您还没有选择商品哦"];
+            }
         }else{
-            [UILabel showMessage:@"您还没有选择商品哦"];
+            [self.takeView show:_detailModel];
+            [self.deliverView removeFromSuperview];
+            [self.coverView removeFromSuperview];
         }
     }
     
@@ -215,7 +219,7 @@
     [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [headView addSubview:cancelBtn];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [headView addSubview:lineView];
 }

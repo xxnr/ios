@@ -142,20 +142,17 @@
             }
             self.tableView.tableHeaderView = self.headView;
 
-            
             if ([dict[@"orderStatus"][@"type"] integerValue] == 2 ||[dict[@"orderStatus"][@"type"] integerValue] == 4) {
+                
                 [self createFootView:model];
                 self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(80));
 
             }else if ([dict[@"orderStatus"][@"type"] integerValue] == 5 || [dict[@"orderStatus"][@"type"] integerValue] == 6){
-                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
-                for (XNRRscSkusModel *skuModel in model.SKUList ) {
-                    if ([skuModel.deliverStatus integerValue] == 4) {
-                        [self createFootView:model];
-                        self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(80));
-                    }
-                }
+                
+                [self createFootView:model];
+                
             }else{
+                
                 [self createFootView:model];
                 self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
             }
@@ -196,13 +193,27 @@
     }else if ([dict[@"type"] integerValue] == 5){
         for (XNRRscSkusModel *skuModel in model.SKUList) {
             if ([skuModel.deliverStatus integerValue] == 4) {
+                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(80));
                 [self.footButton setTitle:@"客户自提" forState:UIControlStateNormal];
+                self.footView.hidden = NO;
+
+                return;
+            }else{
+                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
+                self.footView.hidden = YES;
+
             }
         }
     }else if ([dict[@"type"] integerValue] == 6){
         for (XNRRscSkusModel *skuModel in model.SKUList) {
             if ([skuModel.deliverStatus integerValue] == 4) {
+                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(80));
                 [self.footButton setTitle:@"开始配送" forState:UIControlStateNormal];
+                self.footView.hidden = NO;
+                return;
+            }else{
+                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
+                self.footView.hidden = YES;
             }
         }
     }else{
@@ -255,9 +266,9 @@
         if ([dict[@"type"] integerValue] == 2) {
             [self getdetailData:detailModel];
         }else if ([dict[@"type"] integerValue] == 4||[dict[@"type"] integerValue] == 6){
-            [self.deliverView show:detailModel andType:isFromDeliverController];
+            [self.deliverView show:detailModel andType:isFromDetialDeliverController];
         }else if([dict[@"type"] integerValue] == 5){
-            [self.deliverView show:detailModel andType:isFromTakeController];
+            [self.deliverView show:detailModel andType:isFromDetialTakeController];
         }
     }
 }
@@ -270,7 +281,7 @@
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];
             detailModel.consigneeName = orderDict[@"consigneeName"];
             NSDictionary *payment = orderDict[@"payment"];
-            if (![KSHttpRequest isNULL:payment]) {
+            if (![KSHttpRequest isNULL:payment] && [orderDict[@"orderStatus"][@"type"] integerValue]== 2) {
                 detailModel.price = payment[@"price"];
                 detailModel.id = payment[@"id"];
                 [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];

@@ -140,19 +140,11 @@
     self.makeSureBtn = okBtn;
     //    okBtn.backgroundColor = R_G_B_16(0xFE9B00);
     okBtn.backgroundColor = R_G_B_16(0xe0e0e0);
-<<<<<<< HEAD
     okBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [okBtn setTitle:@"确定" forState:UIControlStateNormal];
     okBtn.layer.cornerRadius = PX_TO_PT(8);
     [okBtn addTarget:self action:@selector(makeSure:) forControlEvents:UIControlEventTouchUpInside];
     [bottom addSubview:self.makeSureBtn];
-=======
-    
-    [okBtn setTitle:@"确定" forState:UIControlStateNormal];
-    okBtn.layer.cornerRadius = PX_TO_PT(8);
-    [okBtn addTarget:self action:@selector(makeSure:) forControlEvents:UIControlEventTouchUpInside];
-    [bottom addSubview:okBtn];
->>>>>>> ynn_ios
     [self.midView addSubview:self.bottomView];
     
 }
@@ -170,11 +162,7 @@
 }
 -(void)createBottomView
 {
-<<<<<<< HEAD
     UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_tableView.frame), ScreenWidth, PX_TO_PT(99))];
-=======
-    UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight + CGRectGetMaxY(self.tableView.frame), ScreenWidth, PX_TO_PT(99))];
->>>>>>> ynn_ios
     self.bottomView = bottom;
     bottom.backgroundColor = [UIColor whiteColor];
     UIButton *okBtn = [[UIButton alloc]initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(190))/2, PX_TO_PT(24), PX_TO_PT(190), PX_TO_PT(52))];
@@ -415,6 +403,7 @@
     [self createBottomView];
     if (_count == 0) {
         [self.makeSureBtn setTitle:@"确定" forState:UIControlStateNormal];
+        
     }
     else{
         self.makeSureBtn.backgroundColor = R_G_B_16(0xFE9B00);

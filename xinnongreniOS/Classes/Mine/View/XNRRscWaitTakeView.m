@@ -191,6 +191,8 @@
         
         if (_dataArray.count == 0) {
             [self noOrderView];
+        }else{
+            [self.noOrderView removeFromSuperview];
         }
         
         if (_isRefresh) {

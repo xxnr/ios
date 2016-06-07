@@ -200,6 +200,8 @@
         }
         if (_dataArray.count == 0) {
             [self noOrderView];
+        }else{
+            [self.noOrderView removeFromSuperview];
         }
         
         if (_isRefresh) {
@@ -259,13 +261,14 @@
         XNRRscFootFrameModel*footFrameModel = _dataFrameArray[section];
         [sectionFootView upDataFootViewWithModel:footFrameModel];
         [self addSubview:sectionFootView];
+        __weak __typeof(&*self)weakSelf = self;
         sectionFootView.com = ^{
             if ([sectionModel.type integerValue] == 2) {
-                [self getdetailData:sectionModel];
+                [weakSelf getdetailData:sectionModel];
             }else if ([sectionModel.type integerValue] == 4||[sectionModel.type integerValue] == 6){
-                [self.deliverView show:sectionModel andType:isFromDeliverController];
+                [weakSelf.deliverView show:sectionModel andType:isFromDeliverController];
             }else if([sectionModel.type integerValue] == 5){
-                [self.deliverView show:sectionModel andType:isFromTakeController];
+                [weakSelf.deliverView show:sectionModel andType:isFromTakeController];
             }
         };
         return sectionFootView;
@@ -283,9 +286,15 @@
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];
             detailModel.consigneeName = orderDict[@"consigneeName"];
             NSDictionary *payment = orderDict[@"payment"];
-            detailModel.price = payment[@"price"];
-            detailModel.id = payment[@"id"];
-            [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            if (![KSHttpRequest isNULL:payment] && [orderDict[@"orderStatus"][@"type"] integerValue]== 2) {
+                detailModel.price = payment[@"price"];
+                detailModel.id = payment[@"id"];
+                [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            }else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+                [UILabel showMessage:@"订单已审核"];
+            }
+
         }
     } failure:^(NSError *error) {
         

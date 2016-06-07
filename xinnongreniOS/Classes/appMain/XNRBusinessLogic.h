@@ -84,7 +84,7 @@
 /**
  *  提示用户更新
  */
-#define KuserUpData [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/ISOupgrade"]
+#define KuserUpData [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/IOSupgrade"]
 
 /**
  *  用户选择自提方式时获取收货人列表

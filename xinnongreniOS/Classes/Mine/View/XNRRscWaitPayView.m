@@ -178,6 +178,8 @@
         
         if (_dataArray.count == 0) {
             [self noOrderView];
+        }else{
+            [self.noOrderView removeFromSuperview];
         }
         if (_isRefresh) {
             [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];

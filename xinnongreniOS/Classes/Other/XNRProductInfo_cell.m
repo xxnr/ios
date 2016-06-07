@@ -534,6 +534,7 @@
         CGSize marketPriceSize = [_marketPrice sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]}];
         [self.originLineView removeFromSuperview];
         // 划掉的线
+        [self.originLineView removeFromSuperview];
         UIView *originLineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(100), PX_TO_PT(19), marketPriceSize.width-PX_TO_PT(100), PX_TO_PT(2))];
         originLineView.backgroundColor = R_G_B_16(0x909009);
         self.originLineView = originLineView;
@@ -584,9 +585,18 @@
         }else{
             self.descriptionLabel.hidden =  YES;
             self.bgView.frame = CGRectMake(0, CGRectGetMaxY(self.marketPriceLabel.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(80));
+            [self.originLineView removeFromSuperview];
+
         }
     }
-
+    if ([KSHttpRequest isNULL:self.model.marketMin]) {
+        return;
+    }else{
+        if ([self.model.marketMin integerValue] == 0) {
+            [self.originLineView removeFromSuperview];
+        }
+    }
+ 
     // 从控制器传回来的属相展示
    
     NSString *  attributeStr = [_attributes lastObject];
