@@ -15,6 +15,8 @@
 {
     _orderModel = orderModel;
     
+    _iconTopLineF = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1));
+    
     // 图片
     CGFloat picImageViewX = PX_TO_PT(30);
     CGFloat picImageViewY = PX_TO_PT(30);

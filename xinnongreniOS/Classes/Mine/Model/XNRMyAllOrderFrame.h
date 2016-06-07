@@ -39,6 +39,7 @@
 
 @property (nonatomic ,assign ,readonly) CGRect goPayButtonF;
 
+@property (nonatomic ,assign ,readonly) CGRect iconTopLineF;
 @property (nonatomic ,assign ,readonly) CGRect topLineF;
 @property (nonatomic ,assign ,readonly) CGRect middleLineF;
 @property (nonatomic ,assign ,readonly) CGRect bottomLineF;

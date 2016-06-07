@@ -474,7 +474,7 @@
 -(void)holdBtnClick:(UIButton *)sender
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
-    
+
     _becomeCarryVC = YES;
     XNRCarryVC *vc=[[XNRCarryVC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;

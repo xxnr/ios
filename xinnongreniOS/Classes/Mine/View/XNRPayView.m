@@ -36,7 +36,10 @@
     if (!_orderEmptyView) {
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
         orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
+
         orderEmptyView.delegate = self;
+        self.orderEmptyView = orderEmptyView;
+        
         [self addSubview:orderEmptyView];
     }
     return _orderEmptyView;
@@ -61,7 +64,7 @@
         _dataArr = [[NSMutableArray alloc]init];
         
         //获取数据
-        [self getData];
+//        [self getData];
         
         //创建订单
         [self createbackBtn];
@@ -193,7 +196,8 @@
 #pragma mark - 获取数据
 - (void)getData
 {
-    
+    [self.orderEmptyView removeFromSuperview];
+
     //typeValue说明：1为待付款，2为待发货，3已发货（待收货），4已收货
     [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"typeValue":@"1",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         

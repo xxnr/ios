@@ -89,6 +89,21 @@ typedef void (^UMTableViewCellConfig)(UITableViewCell *cell,UMSViewControllerTyp
  */
 @property (nonatomic, assign) BOOL hiddenStatusTip;
 
+/**
+ * 设置分享web url是否转换成回流的url, 默认为NO
+ */
+@property (nonatomic, assign) BOOL isGetInverseFlowUrl;
+
+/**
+ * 设定分享次数的统计在分享操作之前or之后
+ * @default YES(分享成功跳转回app后进行统计)
+ * @discuss 
+ 1、分享跳转app前进行统计，不会出现分享后‘留在app’时没统计上，但若在目标app分享之前取消了分享操作，计数会比实际多计一次。
+ 2、分享完成并跳转后统计（默认），这个是在‘返回我的app’后进行统计，可能因’留在app‘没返回而没统计上。
+ */
+@property (nonatomic, assign) BOOL statisticsAfterShareEventReturned;
+
+
 + (UMSocialConfig *)shareInstance;
 
 /**
@@ -265,7 +280,8 @@ typedef void (^UMTableViewCellConfig)(UITableViewCell *cell,UMSViewControllerTyp
  */
 + (void)hiddenNotInstallPlatforms:(NSArray *)hiddenPlatforms;
 
-+ (UMSocialConfig *)shareInstance;
+
+@property (nonatomic, assign) BOOL forCocos2dx;
 
 /** deprecated API, Use ''[UMSocialSinaHandler openSSOWithRedirectURL:@"http://sns.whalecloud.com/sina2/callback"];''
 
@@ -319,5 +335,9 @@ typedef void (^UMTableViewCellConfig)(UITableViewCell *cell,UMSViewControllerTyp
  */
 + (void)hiddenStatusTip:(BOOL)isHiden;;
 
+/**
+ * 设置分享web url是否转换成回流的url, 默认为NO
+ */
++ (void)webUrlShareGetInverseFlowUrl:(BOOL)isGetInverseFlowUrl;
 
 @end

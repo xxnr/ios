@@ -629,7 +629,7 @@
         [dic setObject:self.nameTf.text forKey:@"name"];
         [dic setObject:self.phoneNumTextField.text forKey:@"phone"];
         [dic setObject:self.sex forKey:@"sex"];
-        NSDictionary *addressDic;
+        NSDictionary *addressDic = [[NSDictionary alloc]init];
         
         if ([self.countyID isEqualToString:@""]||self.countyID == nil) {
             addressDic = @{@"province":self.provinceID,@"city":self.cityID,@"town":self.townID};
