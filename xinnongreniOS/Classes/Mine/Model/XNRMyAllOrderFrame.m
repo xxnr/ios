@@ -115,11 +115,16 @@
 
     CGFloat topLineW = ScreenWidth;
     CGFloat topLineY;
+
     if (self.orderModel.additions.count>0) {
         topLineY = CGRectGetMaxY(_addtionLabelF)+PX_TO_PT(36);
     }
+    else if([self.orderModel.deposit floatValue] > 0.00f){
+        topLineY =  CGRectGetMaxY(_productNumLabelF)+PX_TO_PT(36);
+    }
+
     else{
-        topLineY =  CGRectGetMaxY(_productNumLabelF)+PX_TO_PT(36);;
+        topLineY =  CGRectGetMaxY(_productNumLabelF)+PX_TO_PT(36);
         topLineH = 0;
     }
     _topLineF = CGRectMake(topLineX, topLineY, topLineW, topLineH);
@@ -143,7 +148,7 @@
         // 中间线
         CGFloat middleLineX = PX_TO_PT(30);
         CGFloat middleLineY = CGRectGetMaxY(_depositLabelF);
-        CGFloat middleLineW = ScreenWidth-PX_TO_PT(60);
+        CGFloat middleLineW = ScreenWidth-PX_TO_PT(30);
         CGFloat middleLineH;
         if (IS_FourInch) {
             middleLineH = PX_TO_PT(1.5);
