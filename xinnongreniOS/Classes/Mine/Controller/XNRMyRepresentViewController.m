@@ -597,7 +597,8 @@ static bool isBroker;
     top3Label.textColor = R_G_B_16(0x323232);
     [top2 addSubview:top3Label];
     
-    UITableView *tableView2 = [[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(top2.frame), ScreenWidth, ScreenHeight - 64 - PX_TO_PT(98) - PX_TO_PT(240)) style:UITableViewStylePlain];
+    
+    UITableView *tableView2 = [[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(top2.frame), ScreenWidth, ScreenHeight - 64 - PX_TO_PT(98) - CGRectGetMaxY(top2.frame)) style:UITableViewStylePlain];
     tableView2.backgroundColor = [UIColor clearColor];
     tableView2.delegate = self;
     tableView2.dataSource = self;
@@ -761,6 +762,7 @@ static bool isBroker;
             self.bookTopTotalLabel.text = [NSString stringWithFormat:@"共登记%@名客户",result[@"count"]];
             self.bookTopRemainLabel.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
 
+<<<<<<< HEAD
             NSInteger i = 1;
             NSInteger count = [result[@"count"] integerValue];
             while(count>=10)
@@ -777,16 +779,21 @@ static bool isBroker;
                 j++;
             }
             
+=======
+>>>>>>> ynn_ios
             if (self.bookTopTotalLabel) {
                 
+                NSString *total = [NSString stringWithFormat:@"%@",result[@"count"]];
+                NSString *remain = [NSString stringWithFormat:@"%@",result[@"countLeftToday"]];
+
                 if (IS_IPHONE4 || IS_IPHONE5) {
-                    [self setDifFont:self.bookTopTotalLabel andPosit:3 andlength:i andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
-                    [self setDifFont:self.bookTopRemainLabel andPosit:6 andlength:j andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+                    [self setbookTopTotalLabelDifFontandlength:total.length andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+                    [self setbookTopRemainLabelDifFontandlength:remain.length andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
                 }
                 else
                 {
-                    [self setDifFont:self.bookTopTotalLabel andPosit:3 andlength:i andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
-                    [self setDifFont:self.bookTopRemainLabel andPosit:6 andlength:j andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+                    [self setbookTopTotalLabelDifFontandlength:total.length andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+                    [self setbookTopRemainLabelDifFontandlength:remain.length andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
                 }
             }
             [self.tableView2 reloadData];
@@ -837,21 +844,38 @@ static bool isBroker;
     self.thirdView.hidden = NO;
     [self.coverView removeFromSuperview];
 }
--(void)setDifFont:(UILabel *)label andPosit:(NSInteger )posit andlength:(NSInteger)length andColor:(UIColor *)color andFont:(UIFont *)font
+//总计
+-(void)setbookTopTotalLabelDifFontandlength:(NSInteger)length andFont:(UIFont *)font
 {
-    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:label.text];
+
+    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.bookTopTotalLabel.text];
     NSDictionary *dict=@{
                          
-                         NSForegroundColorAttributeName:color,
-                         NSFontAttributeName:font,
+                         NSForegroundColorAttributeName:R_G_B_16(0xFE9B00),
+                         NSFontAttributeName:font
                          
                          };
     
-    [AttributedStringDeposit addAttributes:dict range:NSMakeRange(posit,length)];
+    [AttributedStringDeposit addAttributes:dict range:NSMakeRange(3,length)];
     
-    [label setAttributedText:AttributedStringDeposit];
+    [self.bookTopTotalLabel setAttributedText:AttributedStringDeposit];
 
 }
+//还可添加数
+-(void)setbookTopRemainLabelDifFontandlength:(NSInteger)length andFont:(UIFont *)font
+{
+    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.bookTopRemainLabel.text];
+    NSDictionary *dict=@{
+                         NSForegroundColorAttributeName:R_G_B_16(0x00B38A),
+                         NSFontAttributeName:font
+                         };
+    
+    [AttributedStringDeposit addAttributes:dict range:NSMakeRange(6,length)];
+    
+    [self.bookTopRemainLabel setAttributedText:AttributedStringDeposit];
+    
+}
+
 -(void)getNominatedInviter
 {
     [self.middleView removeFromSuperview];

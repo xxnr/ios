@@ -100,6 +100,7 @@
     [UMessage setLogEnabled:YES];
     
 
+    
 
     // 启动bugtags
     [XNRBugTagsTool openBugTags];
@@ -120,7 +121,6 @@
 //        [application registerForRemoteNotificationTypes:
 //         (UIRemoteNotificationTypeBadge |   UIRemoteNotificationTypeNone | UIRemoteNotificationTypeSound)];
 //    }
-    [UMessage setLogEnabled:YES];
 
     // 判断是否是推送进来的
     NSDictionary* remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -202,6 +202,10 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
+    //获取设备号
+    NSLog(@"%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]                  stringByReplacingOccurrencesOfString: @">" withString: @""]                 stringByReplacingOccurrencesOfString: @" " withString: @""]);
+
+    
     [UMessage registerDeviceToken:deviceToken];
     
 }

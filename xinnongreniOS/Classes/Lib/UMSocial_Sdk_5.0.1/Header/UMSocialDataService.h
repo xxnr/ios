@@ -53,7 +53,8 @@ typedef enum {
     UMSResponseGetAppInfo             = 16,         //获取各个sns绑定app 信息
     UMSResponseIsTokenValid           = 17,         //获取各个微博平台的token是否有效
     UMSResponseAnalytics              = 18,
-    UMSResponseAddAppInfo             = 19
+    UMSResponseAddAppInfo             = 19,
+    UMSResponseInverseFlow            = 20,        //获取web分享回流url
 } UMSResponse;
 
 /**
@@ -375,9 +376,10 @@ typedef void (^UMSocialDataServiceCompletion)(UMSocialResponseEntity * response)
  @return completion 返回结果
  */
 - (void)requestIsTokenValid:(NSArray *)snsArray completion:(UMSocialDataServiceCompletion)completion;
-
-
-- (void)requestUse_cocos2dx:(NSInteger)isUseCocos2dx completion:(UMSocialDataServiceCompletion)completion;
+/**
+ 分享网页url时获取回流的url替代原始的url进行分享
+ */
+- (void)getInverseFlowsWithPlatForm:(NSString *)platform webUrl:(NSString *)webUrl completion:(UMSocialDataServiceCompletion)completion;
 
 @end
 

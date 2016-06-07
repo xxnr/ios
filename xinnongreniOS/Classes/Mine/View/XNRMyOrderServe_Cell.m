@@ -32,6 +32,7 @@
 @property (nonatomic ,weak) UILabel *addtionsLabel;
 @property (nonatomic ,weak) UILabel *addtionPriceLabel;
 
+@property (nonatomic,weak) UIView  *iconTopline;
 @property (nonatomic ,weak) UIView *topLine;
 @property (nonatomic ,weak) UIView *middleLine;
 @property (nonatomic ,weak) UIView *bottomLine;
@@ -117,6 +118,11 @@
     self.addtionPriceLabel = addtionPriceLabel;
     [self.contentView addSubview:self.addtionPriceLabel];
     
+    UIView *iconTopline = [[UIView alloc]init];
+    iconTopline.backgroundColor = R_G_B_16(0xc7c7c7);
+    self.iconTopline = iconTopline;
+    [self.contentView addSubview:iconTopline];
+    
     UIView *topLine = [[UIView alloc] init];
     topLine.backgroundColor = R_G_B_16(0xc7c7c7);
     self.topLine = topLine;
@@ -176,6 +182,7 @@
 
 -(void)setupFrame
 {
+    self.iconTopline.frame = self.orderFrame.iconTopLineF;
     self.iconImageView.frame = self.orderFrame.picImageViewF;
     self.goodsNameLabel.frame = self.orderFrame.productNameLabelF;
     self.attributesLabel.frame = self.orderFrame.attributesLabelF;
@@ -198,6 +205,7 @@
 #pragma mark - 设置现在的数据
 - (void)setupData
 {
+    
     XNRMyOrderModel *model = self.orderFrame.orderModel;
     _info = model;
     
