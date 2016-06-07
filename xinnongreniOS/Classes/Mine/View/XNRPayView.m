@@ -329,15 +329,6 @@
         lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView1];
         
-<<<<<<< HEAD
-        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89), ScreenWidth, 1)];
-        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
-        [headView addSubview:lineView2];
-=======
-//        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89), ScreenWidth, PX_TO_PT(1))];
-//        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
-//        [headView addSubview:lineView2];
->>>>>>> ynn_ios
         
         return headView;
         
