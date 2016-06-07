@@ -762,25 +762,7 @@ static bool isBroker;
             self.bookTopTotalLabel.text = [NSString stringWithFormat:@"共登记%@名客户",result[@"count"]];
             self.bookTopRemainLabel.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
 
-<<<<<<< HEAD
-            NSInteger i = 1;
-            NSInteger count = [result[@"count"] integerValue];
-            while(count>=10)
-            {
-                count/=10;
-                i++;
-            }
-            
-            NSInteger j = 1;
-            NSInteger countLeftToday = [result[@"countLeftToday"] integerValue];
-            while(countLeftToday>=10)
-            {
-                countLeftToday/=10;
-                j++;
-            }
-            
-=======
->>>>>>> ynn_ios
+
             if (self.bookTopTotalLabel) {
                 
                 NSString *total = [NSString stringWithFormat:@"%@",result[@"count"]];

@@ -2305,13 +2305,10 @@
 		1F15330C1B09D2CE00CA374B /* Lib */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				499181571CF7F811006A077D /* SDCycleScrollView */,
 				499181251CF7F56E006A077D /* SDWebImage */,
-=======
 				9C920AF41D069EE600C187DB /* UMSocial_Sdk_5.0.1 */,
 				9CEFB01E1D0525630072B318 /* UMessage_Sdk_1.2.6 */,
->>>>>>> ynn_ios
 				4954053E1CC23594001B3234 /* UMSocial_Sdk_Extra_Frameworks */,
 				9C06A4301CA2A21000B0DED9 /* Bugtags.bundle */,
 				9C06A4311CA2A21000B0DED9 /* Bugtags.framework */,
