@@ -851,52 +851,55 @@
 
 // 行高
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+ 
     if (_dataArray.count>0) {
         XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
         if (indexPath.section == 1) {
-            if (sectionModel.SKUList.count > 0) {
-                XNRCheckOrderModel *model = sectionModel.SKUList[indexPath.row];
-                if ([model.deposit floatValue] == 0.00) {
-                    if (model.additions.count == 0) {
-                        return self.cellHeight;
-                    }else{
-                        return self.cellHeight+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-                    }
-                }
-                else{
-                    if (model.additions.count == 0) {
-                        return self.cellHeight;// + PX_TO_PT(150);
-                        
-                    }
-                    else{
-                        return self.cellHeight +model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-                    }
-                }
-
-            }
+            UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+            return cell.height;
+            //            if (sectionModel.SKUList.count > 0) {
+//                XNRCheckOrderModel *model = sectionModel.SKUList[indexPath.row];
+//                if ([model.deposit floatValue] == 0.00) {
+//                    if (model.additions.count == 0) {
+////                        return self.cellHeight;
+//                        return cell.height;
+//                    }else{
+//                        return cell.height+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
+//                    }
+//                }
+//                else{
+//                    if (model.additions.count == 0) {
+//                        return cell.height;// + PX_TO_PT(150);
+//                        
+//                    }
+//                    else{
+//                        return cell.height +model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
+//                    }
+//                }
+//
+//            }
             
-            else
-            {
-                XNRCheckOrderModel *model = sectionModel.orderGoodsList[indexPath.row];
-                if ([model.deposit floatValue] == 0.00) {
-                    if (model.additions.count == 0) {
-                        return self.cellHeight;
-                    }else{
-                        return self.cellHeight+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-                    }
-                }
-                else{
-                    if (model.additions.count == 0) {
-                        return self.cellHeight;// + PX_TO_PT(150);
-                        
-                    }
-                    else{
-                        return self.cellHeight +model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-                    }
-                }
-
-            }
+//            else
+//            {
+//                XNRCheckOrderModel *model = sectionModel.orderGoodsList[indexPath.row];
+//                if ([model.deposit floatValue] == 0.00) {
+//                    if (model.additions.count == 0) {
+//                        return cell.height;
+//                    }else{
+//                        return cell.height+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
+//                    }
+//                }
+//                else{
+//                    if (model.additions.count == 0) {
+//                        return cell.height;// + PX_TO_PT(150);
+//                        
+//                    }
+//                    else{
+//                        return cell.height +model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
+//                    }
+//                }
+//
+//            }
         }
         else if (indexPath.section == 0)
         {
