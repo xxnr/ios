@@ -51,20 +51,26 @@
     [self getFerData];
     // 设置返回到顶部按钮
     [self createbackBtn];
-    // 提示用户更新
-    [XNRRemaindUserUpdataTool remaindUserUpData];
     
     // 调用友盟的方法
     NSDictionary *launchOptions = [AppDelegate shareAppDelegate].launchOptions;
     [XNRUMengPushTool umengTrack:launchOptions];
+
     
     //接收登录界面传递的页面刷新通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dealPageRefresh) name:@"PageRefresh" object:nil];
-    
-    //
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openOrderIdController:) name:@"openOrderIDController" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openOrderIdController:) name:@"openOrderIDController" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openWebSiteController:) name:@"openWebSiteController" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(remaindUserToUpdate) name:@"remaindUserToUpdate" object:nil];
 
+}
+
+-(void)remaindUserToUpdate
+{
+    // 提示用户更新
+    NSString *deviceToken = [AppDelegate shareAppDelegate].deviceToken;
+    [XNRRemaindUserUpdataTool remaindUserUpData:deviceToken];
 }
 -(void)openOrderIdController:(NSNotification *)notification
 {

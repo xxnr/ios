@@ -123,10 +123,11 @@
                             [self setWarnViewTitle:@"配送成功"];
                             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
                             
-                        }else{
-                            [self cancel];
-                            [UILabel showMessage:resultObj[@"message"]];
                         }
+//                        else{
+//                            [self cancel];
+//                            [UILabel showMessage:resultObj[@"message"]];
+//                        }
                         
                         
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -323,7 +324,7 @@
         _totalCount = _totalCount - model.count.integerValue;
         if (_totalCount == 0) {
             self.admireBtn.selected = NO;
-            [self.admireBtn setTitle:@"确定"forState:UIControlStateNormal];
+            [self.admireBtn setTitle:@"下一步"forState:UIControlStateNormal];
         }else{
             self.admireBtn.selected = YES;
             if (_type == isFromDetialDeliverController) {

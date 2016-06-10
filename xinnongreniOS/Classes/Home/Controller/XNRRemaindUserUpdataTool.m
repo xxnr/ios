@@ -12,13 +12,13 @@
 
 @implementation XNRRemaindUserUpdataTool
 
-+(void)remaindUserUpData
++(void)remaindUserUpData:(NSString *)deviceToken
 {
     // 获得当前软件的版本号
     NSString *versionKey = @"CFBundleVersion";
     NSString *currentVersion = [NSBundle mainBundle].infoDictionary[versionKey];
     // 提示更新
-    [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion} success:^(id result) {
+    [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion,@"device_token":deviceToken?deviceToken:@"",@"user_agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:result[@"message"]delegate:self cancelButtonTitle:@"取消"otherButtonTitles:@"更新",nil];

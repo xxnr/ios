@@ -100,28 +100,9 @@
     [UMessage setLogEnabled:YES];
     
 
-    
-
     // 启动bugtags
     [XNRBugTagsTool openBugTags];
     
-
-//    //友盟注册通知
-//    //-- Set Notification
-//    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
-//    {
-//        // iOS 8 Notifications
-//        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIRemoteNotificationTypeNone | UIUserNotificationTypeBadge) categories:nil]];
-//        
-//        [application registerForRemoteNotifications];
-//    }
-//    else
-//    {
-//        // iOS < 8 Notifications
-//        [application registerForRemoteNotificationTypes:
-//         (UIRemoteNotificationTypeBadge |   UIRemoteNotificationTypeNone | UIRemoteNotificationTypeSound)];
-//    }
-
     // 判断是否是推送进来的
     NSDictionary* remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotification != nil) {
@@ -202,10 +183,12 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    //获取设备号
-    NSLog(@"%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]                  stringByReplacingOccurrencesOfString: @">" withString: @""]                 stringByReplacingOccurrencesOfString: @" " withString: @""]);
-
+    _deviceToken = [[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]                  stringByReplacingOccurrencesOfString: @">" withString: @""]                 stringByReplacingOccurrencesOfString: @" " withString: @""];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"remaindUserToUpdate" object:nil];
+    //获取设备号
+    NSLog(@"deviceToken%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]                  stringByReplacingOccurrencesOfString: @">" withString: @""]                 stringByReplacingOccurrencesOfString: @" " withString: @""]);
+
     [UMessage registerDeviceToken:deviceToken];
     
 }

@@ -22,6 +22,8 @@
 
 @property (nonatomic, strong) NSDictionary *launchOptions;
 
+@property (nonatomic, copy) NSString *deviceToken;
+
 + (AppDelegate *)shareAppDelegate;
 
 - (UIViewController *)getTopViewController;
