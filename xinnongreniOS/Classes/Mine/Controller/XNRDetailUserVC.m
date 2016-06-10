@@ -131,11 +131,15 @@
             [self.view addSubview:interestLabel];
             
             
-            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(68),ScreenWidth, PX_TO_PT(1.5))];
+            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(69),ScreenWidth, PX_TO_PT(1.5))];
             lastLine.backgroundColor = R_G_B_16(0xE0E0E0);
             [self.view addSubview:lastLine];
 
+<<<<<<< HEAD
             UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastLine.frame)+1, ScreenWidth, ScreenHeight -CGRectGetMaxY(lastLine.frame)-1)];
+=======
+            UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastLine.frame)+PX_TO_PT(1), ScreenWidth, ScreenHeight -CGRectGetMaxY(lastLine.frame))];
+>>>>>>> ynn_ios
             bgView.backgroundColor = R_G_B_16(0xf8f8f8);
             [self.view addSubview:bgView];
         }

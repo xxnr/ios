@@ -298,32 +298,29 @@
 -(void)setCellDataWithModel:(XNRCheckOrderModel *)model
 {
     // 把重复叠加的视图都移除一下
-    [self.addtionLabel removeFromSuperview];
+//    [self.addtionLabel removeFromSuperview];
     [self.topView removeFromSuperview];
     [self.midView removeFromSuperview];
     [self.bottomView removeFromSuperview];
+    [self.addtionView removeFromSuperview];
     
     _model = model;
-//    if (_model.additions.count == 0) {
-//        [self createTopView:nil];
-//    }else
-//    {
+
         [self createTopView:_model];
-//    }
+
     
     if (_model.deposit && [_model.deposit doubleValue] > 0) {
         
         self.bottomView.hidden = YES;
-//        if (_model.additions.count == 0) {
-//            [self createMidView:nil];
-//            
-//        }else{
-            [self createMidView:_model];
-//        }
         
-    }else{
+        [self createMidView:_model];
+        
+        self.height = CGRectGetMaxY(self.midView.frame);
+
+    }
+    else{
         self.midView.hidden = YES;
-        
+        self.height = CGRectGetMaxY(self.topView.frame);
     }
     
     //    }

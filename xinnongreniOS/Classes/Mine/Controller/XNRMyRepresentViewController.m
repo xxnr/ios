@@ -623,6 +623,19 @@ static bool isBroker;
 {
     
     [KSHttpRequest get:KGetQuery parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",registerCurrentPage],@"max":@11} success:^(id result) {
+        if (registerCurrentPage > [result[@"totalPageNo"] integerValue]  && _userArr.count != 0) {
+            
+            registerCurrentPage--;
+            
+            self.tableView2.mj_footer.hidden = YES;
+            
+            [self.tableView2.mj_header endRefreshing];
+            
+            [self.tableView2.mj_footer endRefreshing];
+            
+            return ;
+        }
+
         if ([result[@"code"] integerValue] == 1000) {
             
             NSMutableArray *arr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];
@@ -918,6 +931,18 @@ static bool isBroker;
 -(void)getCustomerData
 {
     [KSHttpRequest post:KUserGetInvitee parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",currentPage],@"max":@20,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        if (currentPage > [result[@"pages"] integerValue] && _dataArr.count != 0) {
+            
+            currentPage--;
+            
+            self.tableView.mj_footer.hidden = YES;
+            
+            [self.tableView.mj_header endRefreshing];
+            
+            [self.tableView.mj_footer endRefreshing];
+
+            return ;
+        }
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *arr = result[@"invitee"];
             for (NSDictionary *dict in arr) {
@@ -951,10 +976,12 @@ static bool isBroker;
             [UILabel showMessage:result[@"message"]];
         }
         
-        if ([result[@"total"] integerValue] > 0) {
+//        if ([result[@"total"] integerValue] > 0) {
+        if(_dataArr.count > 0){
 //            [self.topView removeFromSuperview];
             self.topView.hidden = YES;
-        }else{
+        }
+        else{
             [self.tableView removeFromSuperview];
             
             self.topView.hidden = NO;
