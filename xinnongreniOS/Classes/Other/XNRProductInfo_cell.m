@@ -216,7 +216,6 @@
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.tag = 1000;
     scrollView.delegate = self;
-//    scrollView.userInteractionEnabled = YES;
     self.scrollView = scrollView;
     [self.contentView addSubview:scrollView];
 }
@@ -275,7 +274,7 @@
     
     UILabel *presaleLabel = [[UILabel alloc] init];
     presaleLabel.textColor = R_G_B_16(0x989898);
-    presaleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    presaleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(38)];
 //    presaleLabel.backgroundColor = [UIColor redColor];
     self.presaleLabel = presaleLabel;
     [self.contentView addSubview:presaleLabel];
@@ -536,7 +535,7 @@
         // 划掉的线
         [self.originLineView removeFromSuperview];
         UIView *originLineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(100), PX_TO_PT(19), marketPriceSize.width-PX_TO_PT(100), PX_TO_PT(2))];
-        originLineView.backgroundColor = R_G_B_16(0x909009);
+        originLineView.backgroundColor = R_G_B_16(0x909090);
         self.originLineView = originLineView;
         [self.marketPriceLabel addSubview:originLineView];
         
@@ -589,13 +588,6 @@
 
         }
     }
-    if ([KSHttpRequest isNULL:self.model.marketMin]) {
-        return;
-    }else{
-        if ([self.model.marketMin integerValue] == 0) {
-            [self.originLineView removeFromSuperview];
-        }
-    }
  
     // 从控制器传回来的属相展示
    
@@ -633,6 +625,15 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.model.app_body_url]];
     [self.webView loadRequest:request];
     NSLog(@"=====%@",self.model.app_body_url);
+    
+    if ([KSHttpRequest isNULL:self.model.marketMin]) {
+        return;
+    }else{
+        if ([self.model.marketMin integerValue] == 0) {
+            [self.originLineView removeFromSuperview];
+        }
+    }
+
 }
 
 #pragma mark -  scrollView的代理
@@ -653,13 +654,6 @@
 
     }else{
         
-//        if (self.webView.scrollView.contentOffset.y<-40) {
-//            if ([self.delegate performSelector:@selector(XNRProductInfo_cellScroll)] ) {
-//                [self.delegate XNRProductInfo_cellScroll];
-//                
-//            }
-//        }
-
     
     }
     

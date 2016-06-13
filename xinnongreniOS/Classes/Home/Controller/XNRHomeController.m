@@ -143,12 +143,7 @@
     __weak __typeof(self)weakSelf = self;
     if (IS_Login) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                if ([CommonTool isSignIn]) {
                 [weakSelf requestSignIn];
-            }else{
-                
-                [UILabel showMessage:@"您今日已签到成功，明天再来呦！"];
-            }
         });
     }
     //非登录提示登录

@@ -49,15 +49,24 @@
             price = [NSString stringWithFormat:@"￥%.f - %.f",self.infoModel.min.doubleValue,self.infoModel.max.doubleValue];
         }
     }
-
     // 价格
-    CGFloat priceLabelX = PX_TO_PT(30);
-    CGFloat priceLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
-//    CGFloat priceLabelW = ScreenWidth/2;
-    CGFloat priceLabelH = PX_TO_PT(38);
-    CGSize priceLabelMaxSize = CGSizeMake(MAXFLOAT, priceLabelH);
-     CGSize priceLabelSize = [price sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:priceLabelMaxSize];
-    _priceLabelF = (CGRect){{priceLabelX, priceLabelY}, priceLabelSize};
+    CGSize priceLabelSize;
+    if ([self.infoModel.presale integerValue] == 1) {
+        CGFloat priceLabelX = PX_TO_PT(30);
+        CGFloat priceLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
+        CGFloat priceLabelW = ScreenWidth/2;
+        CGFloat priceLabelH = PX_TO_PT(38);
+
+        _priceLabelF = CGRectMake(priceLabelX, priceLabelY, priceLabelW, priceLabelH);
+
+    }else{
+        CGFloat priceLabelX = PX_TO_PT(30);
+        CGFloat priceLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
+        CGFloat priceLabelH = PX_TO_PT(38);
+        CGSize priceLabelMaxSize = CGSizeMake(MAXFLOAT, priceLabelH);
+        priceLabelSize = [price sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:priceLabelMaxSize];
+        _priceLabelF = (CGRect){{priceLabelX, priceLabelY}, priceLabelSize};
+    }
     
     // 订金
     if (priceLabelSize.width>ScreenWidth/2) {
