@@ -99,7 +99,7 @@
                 [self.originLineView removeFromSuperview];
                 // 划掉的线
                 UIView *originLineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(100), PX_TO_PT(19), marketPriceSize.width-PX_TO_PT(100), PX_TO_PT(2))];
-                originLineView.backgroundColor = R_G_B_16(0x909009);
+                originLineView.backgroundColor = R_G_B_16(0x909090);
                 self.originLineView = originLineView;
                 [self.marketPriceLabel addSubview:originLineView];
             }
@@ -568,7 +568,7 @@
             [self.originLineView removeFromSuperview];
             // 划掉的线
             UIView *originLineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(100), PX_TO_PT(19), marketPriceSize.width-PX_TO_PT(100), PX_TO_PT(2))];
-            originLineView.backgroundColor = R_G_B_16(0x909009);
+            originLineView.backgroundColor = R_G_B_16(0x909090);
             self.originLineView = originLineView;
             [self.marketPriceLabel addSubview:originLineView];
         }

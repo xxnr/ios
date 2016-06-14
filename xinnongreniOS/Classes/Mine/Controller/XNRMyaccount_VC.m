@@ -738,9 +738,7 @@
 {
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [controller dismissViewControllerAnimated:YES completion:NULL];
-//    NSString *userId = [DataCenter account].userid;
     NSString *urlString = [NSString stringWithFormat:@"%@",KUserUploadPortrait];
-//    NSString *url = [NSString stringWithFormat:@"%@?userId=%@",urlString,userId];
     NSString *picSize = [CommonTool uploadPicUrl:urlString params:@{@"userId":[DataCenter account].userid} file:@"resFile" picImage:croppedImage success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
