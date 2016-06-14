@@ -223,8 +223,7 @@
             [myorderVC presentViewController:orderNavVC animated:NO completion:nil];
 //            [application setApplicationIconBadgeNumber:0];
         }
-        else
-        {
+        else if ([alert isEqualToString:@"RSCOrderDetail"]){
             XNRTabBarController *tabVC = [[XNRTabBarController alloc] init];
             UIWindow *window = [UIApplication sharedApplication].keyWindow;
             window.rootViewController = tabVC;
@@ -246,6 +245,10 @@
             
             [myorderVC presentViewController:orderNavVC animated:NO completion:nil];
 
+        }
+        else
+        {
+        
         }
 
     }
