@@ -164,7 +164,7 @@
     //获取设备号
     NSLog(@"%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]                  stringByReplacingOccurrencesOfString: @">" withString: @""]                 stringByReplacingOccurrencesOfString: @" " withString: @""]);
 
-    
+
     [UMessage registerDeviceToken:deviceToken];
     
 }
