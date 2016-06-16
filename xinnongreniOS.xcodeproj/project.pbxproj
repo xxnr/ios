@@ -51,7 +51,6 @@
 		1FE1D6691B12F1DE00F0D158 /* XNRShoppingCarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FE1D6671B12F1DE00F0D158 /* XNRShoppingCarController.m */; };
 		1FE1D8EF1B131AC200F0D158 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FE1D8ED1B131A9100F0D158 /* MobileCoreServices.framework */; };
 		1FE1D8F01B131AC400F0D158 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FE1D8EB1B131A8900F0D158 /* CFNetwork.framework */; };
-		1FE1D8F91B131AFB00F0D158 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FE1D8F71B131AF200F0D158 /* MapKit.framework */; };
 		1FE1D8FC1B131B8D00F0D158 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FE1D8FA1B131B7F00F0D158 /* CoreData.framework */; };
 		49079BD81BF6F89000628039 /* XNRMyRepresentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49079BD71BF6F89000628039 /* XNRMyRepresentView.m */; };
 		490F0B121C9EFEFD00BDC7E0 /* XNRShoppingCarFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 490F0B111C9EFEFD00BDC7E0 /* XNRShoppingCarFrame.m */; };
@@ -703,7 +702,6 @@
 		1FE1D6671B12F1DE00F0D158 /* XNRShoppingCarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRShoppingCarController.m; sourceTree = "<group>"; };
 		1FE1D8EB1B131A8900F0D158 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		1FE1D8ED1B131A9100F0D158 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		1FE1D8F71B131AF200F0D158 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		1FE1D8FA1B131B7F00F0D158 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		49079BD61BF6F89000628039 /* XNRMyRepresentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMyRepresentView.h; sourceTree = "<group>"; };
 		49079BD71BF6F89000628039 /* XNRMyRepresentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMyRepresentView.m; sourceTree = "<group>"; };
@@ -1180,6 +1178,7 @@
 		499B78C81C1A812F003ECE87 /* XNRProviceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRProviceModel.m; sourceTree = "<group>"; };
 		499B78D51C1AB454003ECE87 /* XNRCityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRCityModel.h; sourceTree = "<group>"; };
 		499B78D61C1AB454003ECE87 /* XNRCityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCityModel.m; sourceTree = "<group>"; };
+		499D63231D112BE700E55E0C /* xinnongreniOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = xinnongreniOS.entitlements; sourceTree = "<group>"; };
 		49A7BD8C1C75747900913927 /* XNRProductPhotoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRProductPhotoModel.h; sourceTree = "<group>"; };
 		49A7BD8D1C75747900913927 /* XNRProductPhotoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRProductPhotoModel.m; sourceTree = "<group>"; };
 		49ADEE1C1C536CE700525AA8 /* XNRNewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRNewFeatureViewController.h; sourceTree = "<group>"; };
@@ -1756,7 +1755,6 @@
 				4976FC331BE9CD510002E8F8 /* UIKit.framework in Frameworks */,
 				4976FC2F1BE9CD290002E8F8 /* CoreText.framework in Frameworks */,
 				1FE1D8FC1B131B8D00F0D158 /* CoreData.framework in Frameworks */,
-				1FE1D8F91B131AFB00F0D158 /* MapKit.framework in Frameworks */,
 				9C06A4331CA2A21000B0DED9 /* Bugtags.framework in Frameworks */,
 				1FE1D8EF1B131AC200F0D158 /* MobileCoreServices.framework in Frameworks */,
 				4976FC1E1BE9A2AA0002E8F8 /* AlipaySDK.framework in Frameworks */,
@@ -1795,7 +1793,6 @@
 				49EC52701BEBD03F00AA8898 /* libsqlite3.tbd */,
 				49EC526E1BEBCDDB00AA8898 /* libz.tbd */,
 				49EC526C1BEBCDD100AA8898 /* libc++.tbd */,
-				1FE1D8F71B131AF200F0D158 /* MapKit.framework */,
 				1FE1D8ED1B131A9100F0D158 /* MobileCoreServices.framework */,
 				1FE1D8EB1B131A8900F0D158 /* CFNetwork.framework */,
 				1F15340E1B09D88C00CA374B /* Security.framework */,
@@ -1875,6 +1872,7 @@
 		1F1532D11B09C58800CA374B /* xinnongreniOS */ = {
 			isa = PBXGroup;
 			children = (
+				499D63231D112BE700E55E0C /* xinnongreniOS.entitlements */,
 				1F1532F81B09D1E200CA374B /* Classes */,
 				1F1532DF1B09C58800CA374B /* Images.xcassets */,
 				1F1532D21B09C58800CA374B /* Supporting Files */,
@@ -3824,6 +3822,12 @@
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = 3GD2Q7M4T8;
 						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -4617,6 +4621,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = xinnongreniOS/xinnongreniOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -4635,7 +4640,7 @@
 					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4670,6 +4675,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = xinnongreniOS/xinnongreniOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -4688,7 +4694,7 @@
 					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

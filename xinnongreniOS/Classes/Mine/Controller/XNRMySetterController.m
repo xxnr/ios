@@ -62,7 +62,7 @@
    
     if (type == wechatbtn_type) {
         [UMSocialData defaultData].extConfig.wechatSessionData.url = APPURL;
-        [UMSocialData defaultData].extConfig.wechatSessionData.title = @"新新农人";
+        [UMSocialData defaultData].extConfig.wechatSessionData.title = @"新新农人 - 农业互联网综合服务平台";
         [[UMSocialDataService defaultDataService] postSNSWithTypes:@[UMShareToWechatSession] content:contentString image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response) {
             if (response.responseCode == UMSResponseCodeSuccess) {
                 [UILabel showShareMessage:@"分享成功"];
@@ -75,7 +75,7 @@
 
     }else if (type == wechatCirclebtn_type){
         [UMSocialData defaultData].extConfig.wechatTimelineData.url = APPURL;
-        [UMSocialData defaultData].extConfig.wechatTimelineData.title = @"新新农人";
+        [UMSocialData defaultData].extConfig.wechatTimelineData.title = @"新新农人 - 农业互联网综合服务平台";
 
         [[UMSocialDataService defaultDataService] postSNSWithTypes:@[UMShareToWechatTimeline] content:contentString image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response) {
             if (response.responseCode == UMSResponseCodeSuccess) {
@@ -88,7 +88,7 @@
 
     }else if (type == qqbtn_type){
         [UMSocialData defaultData].extConfig.qqData.url = APPURL;
-        [UMSocialData defaultData].extConfig.qqData.title = @"新新农人";
+        [UMSocialData defaultData].extConfig.qqData.title = @"新新农人 - 农业互联网综合服务平台";
 
         [[UMSocialDataService defaultDataService] postSNSWithTypes:@[UMShareToQQ] content:contentString image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response) {
             if (response.responseCode == UMSResponseCodeSuccess) {
@@ -101,7 +101,7 @@
 
     }else if(type == qzonebtn_type){
         [UMSocialData defaultData].extConfig.qzoneData.url = APPURL;
-        [UMSocialData defaultData].extConfig.qzoneData.title = @"新新农人";
+        [UMSocialData defaultData].extConfig.qzoneData.title = @"新新农人 - 农业互联网综合服务平台";
 
         [[UMSocialDataService defaultDataService] postSNSWithTypes:@[UMShareToQzone] content:contentString image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response) {
             if (response.responseCode == UMSResponseCodeSuccess) {

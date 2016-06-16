@@ -739,7 +739,7 @@
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [controller dismissViewControllerAnimated:YES completion:NULL];
     NSString *urlString = [NSString stringWithFormat:@"%@",KUserUploadPortrait];
-    NSString *picSize = [CommonTool uploadPicUrl:urlString params:@{@"userId":[DataCenter account].userid} file:@"resFile" picImage:croppedImage success:^(id result) {
+   NSString *picSize = [CommonTool uploadPicUrl:urlString params:@{@"userId":[DataCenter account].userid} file:@"icon" picImage:croppedImage success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
             [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"userPhoto":result[@"imageUrl"],@"user-agent":@"IOS-v2.0"} success:^(id result) {

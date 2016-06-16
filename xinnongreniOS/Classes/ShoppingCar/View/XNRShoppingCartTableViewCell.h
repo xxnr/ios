@@ -34,6 +34,8 @@ typedef void(^XNRShoppingCartTableViewCellBlock)(NSIndexPath *indexP);
 
 @property (nonatomic, copy) XNRShoppingCartTableViewCellBlock pushBlock;
 
+@property (nonatomic, copy) NSString *rightString;
+
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier andCom:(void(^)(NSIndexPath *indexPath))com;
 @end

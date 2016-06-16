@@ -36,8 +36,6 @@
     CGFloat goodNameLabelY = PX_TO_PT(40);
     CGFloat goodNameLabelW = ScreenWidth - goodNameLabelX-PX_TO_PT(30);
     CGFloat goodNameLabelH = PX_TO_PT(80);
-//    CGSize  goodNameLabelMaxSize = CGSizeMake(goodNameLabelW, MAXFLOAT);
-//    CGSize  goodNameLabelSize = [self.shoppingCarModel.productName sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(32)] maxSize:goodNameLabelMaxSize];
     _goodNameLabelF = CGRectMake(goodNameLabelX, goodNameLabelY, goodNameLabelW, goodNameLabelH);
     
     // 商品属性
@@ -55,12 +53,10 @@
     // push按钮
     CGFloat pushBntX = PX_TO_PT(86);
     CGFloat pushBntY = PX_TO_PT(30);
-    CGFloat pushBntW = ScreenWidth-PX_TO_PT(86);
+    CGFloat pushBntW = ScreenWidth-PX_TO_PT(86)*2;
     CGFloat pushBntH = PX_TO_PT(180);
     _pushBtnF = CGRectMake(pushBntX, pushBntY, pushBntW, pushBntH);
 
-    
-    
     if (CGRectGetMaxY(_attributesLabelF)>CGRectGetMaxY(_picImageViewF)) {
         if ([self.shoppingCarModel.online integerValue] == 0) {// 下架
             CGFloat onlineLabelX = PX_TO_PT(86);
@@ -69,6 +65,14 @@
             CGFloat onlineLabelH = PX_TO_PT(48);
             _onlineLabelF = CGRectMake(onlineLabelX, onlineLabelY, onlineLabelW, onlineLabelH);
             
+           _goodNameLabelF = CGRectMake(CGRectGetMaxX(_picImageViewF)+PX_TO_PT(20), PX_TO_PT(40), ScreenWidth-CGRectGetMaxX(_picImageViewF)-PX_TO_PT(20)-PX_TO_PT(150), PX_TO_PT(80));
+
+            CGFloat cancelBtnX = CGRectGetMaxX(_goodNameLabelF)+PX_TO_PT(80);
+            CGFloat cancelBtnY = PX_TO_PT(40);
+            CGFloat cancelBtnW = PX_TO_PT(60);
+            CGFloat cancelBtnH = PX_TO_PT(60);
+            _cancelBtnF = CGRectMake(cancelBtnX, cancelBtnY, cancelBtnW, cancelBtnH);
+
         }else{
             // 左边按钮
             CGFloat leftBtnX = PX_TO_PT(86);
@@ -124,6 +128,14 @@
             CGFloat onlineLabelH = PX_TO_PT(48);
             _onlineLabelF = CGRectMake(onlineLabelX, onlineLabelY, onlineLabelW, onlineLabelH);
             
+             _goodNameLabelF = CGRectMake(CGRectGetMaxX(_picImageViewF)+PX_TO_PT(20), PX_TO_PT(40), ScreenWidth-CGRectGetMaxX(_picImageViewF)-PX_TO_PT(20)-PX_TO_PT(150), PX_TO_PT(80));
+            
+            CGFloat cancelBtnX = CGRectGetMaxX(_goodNameLabelF)+PX_TO_PT(80);
+            CGFloat cancelBtnY = PX_TO_PT(40);
+            CGFloat cancelBtnW = PX_TO_PT(60);
+            CGFloat cancelBtnH = PX_TO_PT(60);
+            _cancelBtnF = CGRectMake(cancelBtnX, cancelBtnY, cancelBtnW, cancelBtnH);
+
         }else{
             // 左边按钮
             CGFloat leftBtnX = PX_TO_PT(86);
@@ -276,7 +288,6 @@
         
 
     }
-    
     
     // 计算cell的高度
     if (self.shoppingCarModel.deposit && [self.shoppingCarModel.deposit doubleValue]>0) {

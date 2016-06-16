@@ -26,12 +26,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    
 }
 
 - (void)viewDidLoad {
-    self.view.backgroundColor = [UIColor whiteColor];
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     currentPage = 1;
     [self setNav];
     [self setupTableView];
@@ -55,7 +54,6 @@
             UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
             
             [RefreshImage addObject:image];
-            
         }
         
         [header setImages:idleImage forState:MJRefreshStateIdle];

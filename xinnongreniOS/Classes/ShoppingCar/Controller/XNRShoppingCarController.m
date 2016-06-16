@@ -116,6 +116,7 @@
         [self getDataFromDatabase];
         [self setupShopCarOfflineRefresh];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCancelBtn" object:nil];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -134,7 +135,6 @@
   
     // 删除完
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:@"refreshTableView" object:nil];
-    
 }
 
 -(void)refreshTableView
@@ -253,6 +253,7 @@
         _deleteBtn.hidden = YES;
         // 下架商品变成可删除的状态
         [[NSNotificationCenter defaultCenter] postNotificationName:@"normalBtnPresent" object:nil];
+
     }
 }
 
@@ -446,18 +447,13 @@
                 }else{
                     [self.shopCarView removeFromSuperview];
                 }
-                
             }
             // 改变底部
             [self changeBottom];
-            
         };
         
         [alertView BMAlertShow];
-
-    
     }
-    
 }
 
 #pragma mark - 跳转订单信息页
@@ -878,6 +874,7 @@
         };
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.delegate = self;
+        cell.rightString = self.editeBtn.titleLabel.text;
         cell.backgroundColor = [UIColor whiteColor];
         cell.changeBottomBlock = ^{
             [self changeBottom];

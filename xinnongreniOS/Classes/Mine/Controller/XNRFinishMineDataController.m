@@ -64,7 +64,7 @@
         [self.addressManagerView hide];
     }else{
         // 点确定以后，置空
-//        self.townLabel.text = @"请选择乡镇";
+        self.streetLabel.text = @"选择所在街道或乡镇";
         self.townID = @"";
         [self.addressManagerView hide];
     }

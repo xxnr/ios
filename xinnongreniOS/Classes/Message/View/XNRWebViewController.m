@@ -113,12 +113,23 @@
     [webView loadRequest:request];
 
 }
+
+-(void)shanreBtnClick
+{
+    [self.shareView show];
+}
+
+-(void)setModel:(XNRMessageModel *)model
+{
+    _model = model;
+}
+
+
 -(void)setNav{
     self.navigationItem.title = @"资讯详情";
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [backBtn setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     backBtn.frame = CGRectMake(0, 0, 30, 44);
-//    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backBtn setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
 
     [backBtn addTarget:self action:@selector(backBtnClick) forControlEvents:UIControlEventTouchUpInside];
@@ -133,17 +144,9 @@
     [shanreBtn addTarget:self action:@selector(shanreBtnClick) forControlEvents:UIControlEventTouchUpInside];
 }
 
--(void)shanreBtnClick
-{
-    [self.shareView show];
-}
-
 -(void)backBtnClick
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
--(void)setModel:(XNRMessageModel *)model
-{
-    _model = model;
-}
+
 @end
