@@ -189,6 +189,10 @@
     //获取设备号
     NSLog(@"deviceToken%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]                  stringByReplacingOccurrencesOfString: @">" withString: @""]                 stringByReplacingOccurrencesOfString: @" " withString: @""]);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ynn_ios
     [UMessage registerDeviceToken:deviceToken];
     
 }
