@@ -78,7 +78,7 @@
     NSString *versionKey = @"CFBundleVersion";
     NSString *currentVersion = [NSBundle mainBundle].infoDictionary[versionKey];
     // 提示更新
-    [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion,@"device_token":deviceToken?deviceToken:@"",@"device_id":UUID,@"user_agent":@"IOS-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion,@"device_token":deviceToken?deviceToken:@"",@"device_id":UUID?UUID:deviceToken,@"user_agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:result[@"message"]delegate:self cancelButtonTitle:@"取消"otherButtonTitles:@"更新",nil];
             [alert show];
