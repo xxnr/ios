@@ -38,7 +38,7 @@
 {
     UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(20), ScreenWidth-PX_TO_PT(60), PX_TO_PT(260))];
     bgView.backgroundColor = [UIColor whiteColor];
-    bgView.layer.borderWidth = PX_TO_PT(1);
+    bgView.layer.borderWidth = 1;
     bgView.layer.cornerRadius = 5.0;
     bgView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     bgView.layer.masksToBounds = YES;
@@ -64,7 +64,7 @@
     self.addressLabel = addressLabel;
     [bgView addSubview:addressLabel];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(160), ScreenWidth-PX_TO_PT(60), PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(160), ScreenWidth-PX_TO_PT(60), 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgView addSubview:lineView];
     

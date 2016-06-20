@@ -637,9 +637,8 @@
         
         _ItemDisEnabled = YES;
         
-//        self.currentCategory = _categorys[0];
         //  获取特有属性
-        [KSHttpRequest get:KAttibutes parameters:@{@"category":self.currentCategory,@"brand":selectedItem.brandsId,@"token":[DataCenter account].token} success:^(id result) {
+        [KSHttpRequest get:KAttibutes parameters:@{@"category":self.currentCategory,@"brand":selectedItem.brandsId} success:^(id result) {
             NSMutableArray *txs = [NSMutableArray array];
             if ([result[@"code"] integerValue] == 1000) {
                 NSArray *arr = result[@"attributes"];
@@ -647,10 +646,8 @@
                 if (arr.count == 0) {
                     return;
                 }
-                //self.kinds[1] =arr[0][@"_id"][@"name"];
                 [self.kinds setObject:arr[0][@"_id"][@"name"] atIndexedSubscript:1];
                 
-                //                [self.kinds addObject: arr[0][@"_id"][@"name"] ];
                 NSArray *values = arr[0][@"values"];
                 int i=0;
                 for (NSString *str in values) {

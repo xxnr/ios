@@ -15,8 +15,6 @@
 @interface XNRoffthestocksVC ()
 
 @property (nonatomic,strong) UILabel *titleLabel;
-//@property (nonatomic,strong) UIButton *leftBtn;
-//@property (nonatomic,strong) UIButton *rightBtn;
 
 @end
 
@@ -26,10 +24,7 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = R_G_B_16(0xFAFAFA);
-    //    [self getData];
-    
     [self setNav];
-    
     [self createCenter];
     [self createBtn];
 }
@@ -45,30 +40,30 @@
     label.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     label.textColor = R_G_B_16(0x323232);
     [self.view addSubview:label];
-    
-
-    
 }
 -(void)createBtn
 {
-    UIButton *leftBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(149), PX_TO_PT(399), PX_TO_PT(181), PX_TO_PT(61))];
+    UIButton *leftBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(149), PX_TO_PT(400), PX_TO_PT(181), PX_TO_PT(61))];
     [leftBtn setTitle:@"查看订单" forState:UIControlStateNormal];
     leftBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
-    [leftBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [leftBtn setBackgroundColor:R_G_B_16(0xFDA940)];
+    [leftBtn setTitleColor:R_G_B_16(0x00B38A) forState:UIControlStateNormal];
+    [leftBtn setBackgroundColor:[UIColor whiteColor]];
     leftBtn.layer.cornerRadius = 6;
+    leftBtn.layer.borderWidth = 1;
+    leftBtn.layer.borderColor = [R_G_B_16(0x00B38A) CGColor];
     [leftBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:leftBtn];
     
-    UIButton *rightBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(389), PX_TO_PT(399), PX_TO_PT(181), PX_TO_PT(61))];
+    UIButton *rightBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(389), PX_TO_PT(400), PX_TO_PT(181), PX_TO_PT(61))];
     [rightBtn setTitle:@"回到首页" forState:UIControlStateNormal];
     rightBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
-    [rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [rightBtn setBackgroundColor:R_G_B_16(0xFDA940)];
+    [rightBtn setTitleColor:R_G_B_16(0x00B38A) forState:UIControlStateNormal];
+    [rightBtn setBackgroundColor:[UIColor whiteColor]];
     rightBtn.layer.cornerRadius = 6;
+    rightBtn.layer.borderWidth = 1;
+    rightBtn.layer.borderColor = [R_G_B_16(0x00B38A) CGColor];
     [rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:rightBtn];
-    
 }
 
 
@@ -87,10 +82,16 @@
 - (void)rightBtnClick:(UIButton *)button
 {
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    XNRTabBarController *tabVC = (XNRTabBarController *)window.rootViewController;
-    tabVC.selectedIndex = 0;
-    [self.navigationController popToRootViewControllerAnimated:YES];
+//    if ([self.navigationController.viewControllers firstObject].presentedViewController == nil) {
+//        XNRTabBarController *tabVC = (XNRTabBarController *)window.rootViewController;
+//        tabVC.selectedIndex = 0;
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+//    }
     
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    window.rootViewController = [[XNRTabBarController alloc]init];
+    [window makeKeyAndVisible];
+
 }
 
 #pragma mark - 设置导航
@@ -99,10 +100,7 @@
     self.navigationItem.title = @"订单已支付";
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
     backButton.frame=CGRectMake(0, 0, 30, 44);
-
-    
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchDown];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
@@ -130,8 +128,6 @@
     }
     
     [self.navigationController popToRootViewControllerAnimated:YES];
-    
-    //    NSNotification *notification = [[NSNotification alloc]initWithName:@"reloadOrderList" object:nil userInfo:nil];
     
 }
 

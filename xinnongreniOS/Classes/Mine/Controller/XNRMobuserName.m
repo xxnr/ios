@@ -14,6 +14,7 @@
 @property (nonatomic ,weak) UITextField *userNameTF;
 @property (nonatomic ,weak) UIButton *finishBtn;
 @property (nonatomic ,weak) UILabel *warnLabel;
+@property (nonatomic,assign) int nameLength;
 
 @end
 @implementation XNRMobuserName
@@ -49,7 +50,7 @@
     self.userNameTF = userNameTF;
     [bgView addSubview:userNameTF];
     
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     topLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgView addSubview:topLine];
     
@@ -60,7 +61,7 @@
     self.warnLabel = warnLabel;
     [self.view addSubview:warnLabel];
     
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
     bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgView addSubview:bottomLine];
     
@@ -82,7 +83,12 @@
         NSString *str = @"您还没有填写姓名哦";
         [UILabel showMessage:str];
         
-    }else{
+    }
+    else if(self.nameLength>12)
+    {
+        [UILabel showMessage:@"姓名限6个汉字或12个英文字符"];
+    }
+    else{
         [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"userName":self.userNameTF.text,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 self.com(self.userNameTF.text);
@@ -102,23 +108,69 @@
 }
 
 #pragma mark -- textField代理
-
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField == self.userNameTF) {
+        
+        int strlength = 0;
+        char* p = (char*)[textField.text cStringUsingEncoding:NSUnicodeStringEncoding];
+        for (int i=0 ; i<[textField.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+            if (*p) {
+                p++;
+                strlength++;
+            }
+            else {
+                p++;
+            }
+            
+        }
+        
+        self.nameLength = strlength;
+        
+        if (strlength > 12) {
+            [UILabel showMessage:[NSString stringWithFormat:@"姓名限6个汉字或12个英文字符"]];
+        }
+    }
+}
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    [self.finishBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
-    [self.finishBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateNormal];
+        [self.finishBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#66d1b9"]] forState:UIControlStateHighlighted];
+        [self.finishBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#00b38a"]] forState:UIControlStateNormal];
 
-    NSString * mstr = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    CGSize textSize = [mstr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0]}];
-    
-    if (textSize.width>PX_TO_PT(210)&&![string isEqualToString:@""]) {
-        [textField resignFirstResponder];
-        mstr = [mstr substringWithRange:NSMakeRange(0, 6)];
-        [UILabel showMessage:[NSString stringWithFormat:@"不能超过%d个汉字",(int)mstr.length]];
-        return NO;
+    if (textField == self.userNameTF) {
+        
+        int strlength = 0;
+        char* p = (char*)[textField.text cStringUsingEncoding:NSUnicodeStringEncoding];
+        for (int i=0 ; i<[textField.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+            if (*p) {
+                p++;
+                strlength++;
+            }
+            else {
+                p++;
+            }
+            
+        }
+        
+        self.nameLength = strlength;
     }
     return YES;
 }
+
+//-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+//{
+//
+//    NSString * mstr = [textField.text stringByReplacingCharactersInRange:range withString:string];
+//    CGSize textSize = [mstr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0]}];
+//    
+//    if (textSize.width>PX_TO_PT(210)&&![string isEqualToString:@""]) {
+//        [textField resignFirstResponder];
+//        mstr = [mstr substringWithRange:NSMakeRange(0, 6)];
+//        [UILabel showMessage:[NSString stringWithFormat:@"不能超过%d个汉字",(int)mstr.length]];
+//        return NO;
+//    }
+//    return YES;
+//}
 -(BOOL)textFieldShouldClear:(UITextField *)textField
 {
     self.finishBtn.backgroundColor = R_G_B_16(0xe0e0e0);

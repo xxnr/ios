@@ -241,28 +241,28 @@
     UIView *lineView;
     for (int i = 0; i<5; i++) {
         if (IS_FourInch) {
-            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(3))];
+            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, 1)];
             lineView.backgroundColor = R_G_B_16(0xc7c7c7);
             [self.view addSubview:lineView];
         }else{
-            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(2))];
+            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, 1)];
             lineView.backgroundColor = R_G_B_16(0xc7c7c7);
             [self.view addSubview:lineView];
         }
        
     }
     
-    lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*5, ScreenWidth, PX_TO_PT(2))];
+    lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*5, ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.view addSubview:lineView];
     
     for (int i = 6; i<8; i++) {
         if (IS_FourInch) {
-            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(2))];
+            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, 1)];
             lineView.backgroundColor = R_G_B_16(0xc7c7c7);
             [self.view addSubview:lineView];
         }else{
-            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(1))];
+            lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, 1)];
             lineView.backgroundColor = R_G_B_16(0xc7c7c7);
             [self.view addSubview:lineView];
         }
@@ -413,7 +413,7 @@
             }
             else
             {
-                
+                [UILabel showMessage:resultObj[@"message"]];
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"----%@",error);
@@ -438,7 +438,7 @@
 - (BOOL)validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
-    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
+    NSString *phoneRegex = @"^1\\d{10}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
 }

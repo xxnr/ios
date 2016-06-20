@@ -16,6 +16,8 @@
 #import "XNRUser_Cell.h"
 #import "XNRAddLatentUserVC.h"
 #import "XNRDetailUserVC.h"
+#import "BMProgressView.h"
+
 #define btnTag 1000
 #define tbTag 2000
 
@@ -36,6 +38,7 @@
 @property (nonatomic, weak) UIButton *rightBtn;
 @property (nonatomic,weak) UIButton *bookBtn;
 @property (nonatomic, weak) UIButton *selectedBtn; // 临时button
+
 @property (nonatomic, strong) XNRMyRepresentView *mrv;
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -52,6 +55,8 @@
 @property (nonatomic, weak) UIView *headView;
 
 @property (nonatomic ,weak) UIView *topView;
+
+@property (nonatomic,weak) UIView *middleView;
 
 @property (nonatomic ,weak) UIView *myRepTopView;
 
@@ -74,13 +79,23 @@
 @property (nonatomic,weak)UIView *bgview;
 @property (nonatomic,weak) UIButton *addbtn;
 @property (nonatomic,weak)UIView *circleView;
+@property (nonatomic ,weak) BMProgressView *progressView;
 @property (nonatomic,assign)BOOL isadd;
 @property (nonatomic,assign)BOOL isfirst;
 @property (nonatomic,assign)BOOL isFirstTableView;
+@property (nonatomic,assign)BOOL isuserDetail;
 @end
 
 @implementation XNRMyRepresentViewController
 static bool isBroker;
+-(BMProgressView *)progressView{
+    if (!_progressView) {
+        BMProgressView *progressView = [[BMProgressView alloc] init];
+        self.progressView = progressView;
+        [self.view addSubview:progressView];
+    }
+    return _progressView;
+}
 
 +(void)SetisBroker:(BOOL)broker
 {
@@ -97,14 +112,14 @@ static bool isBroker;
         [self bookViewGetData];
         currentTableView = self.tableView2;
     }
+    else if (_isuserDetail) {
+        currentTableView = self.tableView2;
+    }
     else
     {
-        [_dataArr removeAllObjects];
-        currentPage = 1;
-//        [self getCustomerData];
         currentTableView = self.tableView;
-
     }
+    
     [self setupCustomerRefresh];
 
 }
@@ -127,13 +142,20 @@ static bool isBroker;
     [self setNavigationbarTitle];
     [self setBottomButton];
     [self createTableView];
+    [self createCustomerLabel];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRedPoint) name:@"removeRedPoint" object:nil];
+    [_dataArr removeAllObjects];
+    currentPage = 1;
+    [self getCustomerData];
+    currentTableView = self.tableView;
+
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRedPoint) name:@"removeRedPoint" object:nil];
 }
 
 -(void)removeRedPoint
 {
     currentPage = 1;
+    [_dataArr removeAllObjects];
     [self getCustomerData];
     
 }
@@ -250,7 +272,6 @@ static bool isBroker;
     backButton.frame = CGRectMake(0,0,30,44);
 //    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backButton addTarget:self action:@selector(backButtonClick) forControlEvents:UIControlEventTouchUpInside];
-     [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
 
@@ -283,6 +304,7 @@ static bool isBroker;
     leftBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
     [leftBtn addTarget:self action:@selector(bottomBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     leftBtn.tag = btnTag;
+    leftBtn.selected = YES;
     self.leftBtn = leftBtn;
     [self.view addSubview:_leftBtn];
     
@@ -321,9 +343,10 @@ static bool isBroker;
     _bookBtn.hidden = YES;
     [self.view addSubview:_bookBtn];
     
-    [self bottomBtnClicked:_leftBtn];
+//    [self bottomBtnClicked:_leftBtn];
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, PX_TO_PT(1), btnH)];
+    self.selectedBtn = _leftBtn;
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, btnH)];
     line2.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.bookBtn addSubview:line2];
 
@@ -334,7 +357,7 @@ static bool isBroker;
         self.bookBtn.frame = CGRectMake(CGRectGetMaxX(self.rightBtn.frame), btnY, ScreenWidth/3, btnH);
     }
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame)-PX_TO_PT(1), 0, PX_TO_PT(2), btnH)];
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame)-1, 0, PX_TO_PT(2), btnH)];
     line1.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.leftBtn addSubview:line1];
 
@@ -342,105 +365,55 @@ static bool isBroker;
 
 - (void)bottomBtnClicked:(UIButton *)sender {
     
+    if (self.selectedBtn.tag == sender.tag) {
+        return;
+    }
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     self.selectedBtn.selected = NO;
     sender.selected = YES;
     self.selectedBtn = sender;
-
+    
     if (sender.tag == btnTag) {
         
         [_dataArr removeAllObjects];
         self.isadd = NO;
+        self.isuserDetail = NO;
         currentPage = 1;
-        [self getCustomerData];
-        currentTableView = self.tableView;
-
-        self.isFirstTableView = YES;
-        [self.topView removeFromSuperview];
         _tableView.hidden = NO;
         
-        
+        [self.middleView removeFromSuperview];
         [self.thirdView removeFromSuperview];
         [self.mrv removeFromSuperview];
-        [self.myRepTopView removeFromSuperview];
-        [self.myRepView removeFromSuperview];
-        [self createCustomerLabel];
+        
+        [self getCustomerData];
+        currentTableView = self.tableView;
+        
+        self.isFirstTableView = YES;
     } else if(sender.tag == btnTag + 1){
         self.isFirstTableView = NO;
         self.isadd = NO;
-        _tableView.hidden = sender.selected;
-        self.topView.hidden = sender.selected;
-        [self.firstView removeFromSuperview];
+        self.isuserDetail = NO;
+        
+        _tableView.hidden = YES;
+        self.topView.hidden = YES;
         [self.thirdView removeFromSuperview];
-
-        [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-            if ([result[@"code"] integerValue]==1000) {
-                self.phoneNum = result[@"datas"][@"inviter"];
-                if (self.phoneNum && self.phoneNum.length>0) {
-                    [self.mrv removeFromSuperview];
-                    [self createMyRepresentUI];
-                    self.phoneNumLabel.text = _phoneNum;
-                    if (result[@"datas"][@"inviterName"]) {
-                        self.nickNameLabel.text = result[@"datas"][@"inviterName"];
-                        CGSize nickNameSize = [self.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]}];
-                        self.nickNameLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(18), nickNameSize.width+PX_TO_PT(24), PX_TO_PT(60));
-
-                    }else{
-                        self.nickNameLabel.text = @"好友未填姓名";
-                        self.nickNameLabel.backgroundColor = R_G_B_16(0xf0f0f0);
-                        self.nickNameLabel.textColor = R_G_B_16(0x2a2a2a);
-                    }
-                } else {
-                    [self.mrv removeFromSuperview];
-
-                    if (self.isfirst) {
-                        [self getNominatedInviter];
-                    }
-                    self.isfirst = NO;
-            
-                    XNRMyRepresentView *mrv = [[XNRMyRepresentView alloc] init];
-                    mrv.delegate = self;
-                    self.mrv = mrv;
-                    [self.view addSubview:mrv];
-                    
-                    XNRMyRepresentViewDataModel *mrvData = [[XNRMyRepresentViewDataModel alloc] init];
-                    XNRMyRepresentViewFrame *mrvF = [[XNRMyRepresentViewFrame alloc] init];
-                    mrvF.model = mrvData;
-                    mrv.viewF = mrvF;
-                    mrv.frame = CGRectMake(0, (self.view.bounds.size.height-mrvF.viewH)*0.3, ScreenWidth, mrvF.viewH);
-                }
-            }else{
-               
-                [UILabel showMessage:result[@"message"]];
-                UserInfo *infos = [[UserInfo alloc]init];
-                infos.loginState = NO;
-                [DataCenter saveAccount:infos];
-                //发送刷新通知
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
-                
-                XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
-                
-                vc.hidesBottomBarWhenPushed = YES;
-                //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
-                [self.navigationController pushViewController:vc animated:YES];
-            }
-        } failure:^(NSError *error) {
-            
-        }];
+        
+        [self createMrv];
+        [self createMyRepresentUI];
+        
+        [self getrepresent];
+        
     }
     else if(sender.tag == btnTag + 2)
     {
         self.isFirstTableView = NO;
         _tableView.hidden = YES;
         self.topView.hidden = YES;
+        
         self.mrv.hidden = YES;
-        
+        [self.middleView removeFromSuperview];
         [self.thirdView removeFromSuperview];
-//        [self.firstView removeFromSuperview];
         [self.mrv removeFromSuperview];
-        [self.myRepTopView removeFromSuperview];
-        [self.myRepLabel removeFromSuperview];
-        [self.myRepView removeFromSuperview];
-        
         
         [self.userArr removeAllObjects];
         registerCurrentPage = 1;
@@ -448,19 +421,97 @@ static bool isBroker;
         [self bookViewGetData];
         
         currentTableView = self.tableView2;
-
-//        [self setupCustomerRefresh];
-
     }
     
     [self setupCustomerRefresh];
+    
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [BMProgressView LoadViewDisappear:self.view];
+    });
+    
+
+  
+
+}
+-(void)getrepresent
+{
+    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        if ([result[@"code"] integerValue]==1000) {
+            
+            self.topView.hidden = YES;
+
+            self.phoneNum = result[@"datas"][@"inviter"];
+            
+            if (self.phoneNum && self.phoneNum.length>0) {
+                [self.mrv removeFromSuperview];
+                self.middleView.hidden = NO;
+//                [self createMyRepresentUI];
+                self.phoneNumLabel.text = _phoneNum;
+                if (result[@"datas"][@"inviterName"]) {
+                    self.nickNameLabel.text = result[@"datas"][@"inviterName"];
+                    CGSize nickNameSize = [self.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]}];
+                    self.nickNameLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(18), nickNameSize.width+PX_TO_PT(24), PX_TO_PT(60));
+                    
+                }else{
+                    self.nickNameLabel.text = @"好友未填姓名";
+                    self.nickNameLabel.backgroundColor = R_G_B_16(0xf0f0f0);
+                    self.nickNameLabel.textColor = R_G_B_16(0x2a2a2a);
+                }
+            } else {
+                
+//                [self.mrv removeFromSuperview];
+                [self.middleView removeFromSuperview];
+                
+                if (self.isfirst) {
+                    [self getNominatedInviter];
+                }
+                self.isfirst = NO;
+                
+                self.mrv.hidden = NO;
+            }
+        }else if ([result[@"code"] integerValue]== 1401){
+            
+            [UILabel showMessage:result[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            //发送刷新通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+            
+            XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+            
+            vc.hidesBottomBarWhenPushed = YES;
+            //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+
+}
+-(void)createMrv
+{
+    [self.mrv removeFromSuperview];
+    
+    XNRMyRepresentView *mrv = [[XNRMyRepresentView alloc] init];
+    mrv.delegate = self;
+    self.mrv = mrv;
+    self.mrv.hidden = YES;
+    [self.view addSubview:mrv];
+    
+    XNRMyRepresentViewDataModel *mrvData = [[XNRMyRepresentViewDataModel alloc] init];
+    XNRMyRepresentViewFrame *mrvF = [[XNRMyRepresentViewFrame alloc] init];
+    mrvF.model = mrvData;
+    mrv.viewF = mrvF;
+    mrv.frame = CGRectMake(0, (self.view.bounds.size.height-mrvF.viewH)*0.3, ScreenWidth, mrvF.viewH);
 
 }
 -(void)creatBookView
 {
 
     //添加顶部视图
-    UIView *thirdView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(88)-PX_TO_PT(98))];
+    UIView *thirdView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(98))];
     thirdView.backgroundColor = [UIColor clearColor];
     self.thirdView = thirdView;
     
@@ -499,7 +550,7 @@ static bool isBroker;
     UIButton *addBtn = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(80)-PX_TO_PT(34), PX_TO_PT(29),PX_TO_PT(80), PX_TO_PT(80))];
     [addBtn setBackgroundImage:[UIImage imageNamed:@"6add-orange"] forState:UIControlStateNormal];
 
-    [addBtn addTarget:self action:@selector(addUser:) forControlEvents:UIControlEventTouchDown];
+    [addBtn addTarget:self action:@selector(addUser:) forControlEvents:UIControlEventTouchUpInside];
     addBtn.layer.cornerRadius = PX_TO_PT(80)/2;
     addBtn.layer.masksToBounds = YES;
     self.addbtn = addBtn;
@@ -546,7 +597,8 @@ static bool isBroker;
     top3Label.textColor = R_G_B_16(0x323232);
     [top2 addSubview:top3Label];
     
-    UITableView *tableView2 = [[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(top2.frame), ScreenWidth, ScreenHeight - 64 - PX_TO_PT(98) - PX_TO_PT(240)) style:UITableViewStylePlain];
+    
+    UITableView *tableView2 = [[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(top2.frame), ScreenWidth, ScreenHeight - 64 - PX_TO_PT(98) - CGRectGetMaxY(top2.frame)) style:UITableViewStylePlain];
     tableView2.backgroundColor = [UIColor clearColor];
     tableView2.delegate = self;
     tableView2.dataSource = self;
@@ -571,6 +623,19 @@ static bool isBroker;
 {
     
     [KSHttpRequest get:KGetQuery parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",registerCurrentPage],@"max":@11} success:^(id result) {
+        if (registerCurrentPage > [result[@"totalPageNo"] integerValue]  && _userArr.count != 0) {
+            
+            registerCurrentPage--;
+            
+            self.tableView2.mj_footer.hidden = YES;
+            
+            [self.tableView2.mj_header endRefreshing];
+            
+            [self.tableView2.mj_footer endRefreshing];
+            
+            return ;
+        }
+
         if ([result[@"code"] integerValue] == 1000) {
             
             NSMutableArray *arr = (NSMutableArray *)[XNRBookUser objectArrayWithKeyValuesArray:result[@"potentialCustomers"]];
@@ -603,7 +668,7 @@ static bool isBroker;
                 [self.circleView addSubview:addbtn];
 
                 UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(262), PX_TO_PT(630), PX_TO_PT(197), PX_TO_PT(100))];
-                [btn addTarget:self action:@selector(coverClick:) forControlEvents:UIControlEventTouchDown];
+                [btn addTarget:self action:@selector(coverClick:) forControlEvents:UIControlEventTouchUpInside];
                 
                 
                 if (IS_IPHONE4) {
@@ -710,34 +775,20 @@ static bool isBroker;
             self.bookTopTotalLabel.text = [NSString stringWithFormat:@"共登记%@名客户",result[@"count"]];
             self.bookTopRemainLabel.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
 
-            NSInteger i = 1;
-            NSInteger count = [result[@"count"] integerValue];
-            while(count>=10)
-            {
-                count/=10;
-                i++;
-            }
-            
-            NSInteger j = 1;
-            NSInteger countLeftToday = [result[@"countLeftToday"] integerValue];
-            while(countLeftToday>=10)
-            {
-                countLeftToday/=10;
-                j++;
-            }
-//            NSInteger i = [result[@"count"] integerValue]/10;
-//            NSInteger j = [result[@"countLeftToday"] integerValue]/10;
-            
+
             if (self.bookTopTotalLabel) {
                 
+                NSString *total = [NSString stringWithFormat:@"%@",result[@"count"]];
+                NSString *remain = [NSString stringWithFormat:@"%@",result[@"countLeftToday"]];
+
                 if (IS_IPHONE4 || IS_IPHONE5) {
-                    [self setDifFont:self.bookTopTotalLabel andPosit:3 andlength:i andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
-                    [self setDifFont:self.bookTopRemainLabel andPosit:6 andlength:j andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+                    [self setbookTopTotalLabelDifFontandlength:total.length andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
+                    [self setbookTopRemainLabelDifFontandlength:remain.length andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
                 }
                 else
                 {
-                    [self setDifFont:self.bookTopTotalLabel andPosit:3 andlength:i andColor:R_G_B_16(0xFE9B00) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
-                    [self setDifFont:self.bookTopRemainLabel andPosit:6 andlength:j andColor:R_G_B_16(0x00B38A) andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+                    [self setbookTopTotalLabelDifFontandlength:total.length andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
+                    [self setbookTopRemainLabelDifFontandlength:remain.length andFont:[UIFont systemFontOfSize:PX_TO_PT(40)]];
                 }
             }
             [self.tableView2 reloadData];
@@ -748,7 +799,7 @@ static bool isBroker;
             
             NSInteger page = [result[@"currentPageNo"] integerValue];
             
-            self.tableView2.mj_footer.hidden = pages == page;
+            self.tableView2.mj_footer.hidden = pages <= page;
             
             [self.tableView2.mj_header endRefreshing];
             
@@ -756,7 +807,7 @@ static bool isBroker;
             
 
         }
-        else
+        else if([result[@"code"] integerValue] == 1401)
         {
             [UILabel showMessage:result[@"message"]];
             UserInfo *infos = [[UserInfo alloc]init];
@@ -771,6 +822,10 @@ static bool isBroker;
 //            UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
             [self.navigationController pushViewController:vc animated:YES];
         }
+        else
+        {
+            [UILabel showMessage:result[@"message"]];
+        }
     } failure:^(NSError *error) {
         [self.tableView2.mj_header endRefreshing];
         [self.tableView2.mj_footer endRefreshing];
@@ -784,23 +839,42 @@ static bool isBroker;
     self.thirdView.hidden = NO;
     [self.coverView removeFromSuperview];
 }
--(void)setDifFont:(UILabel *)label andPosit:(NSInteger )posit andlength:(NSInteger)length andColor:(UIColor *)color andFont:(UIFont *)font
+//总计
+-(void)setbookTopTotalLabelDifFontandlength:(NSInteger)length andFont:(UIFont *)font
 {
-    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:label.text];
+
+    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.bookTopTotalLabel.text];
     NSDictionary *dict=@{
                          
-                         NSForegroundColorAttributeName:color,
-                         NSFontAttributeName:font,
+                         NSForegroundColorAttributeName:R_G_B_16(0xFE9B00),
+                         NSFontAttributeName:font
                          
                          };
     
-    [AttributedStringDeposit addAttributes:dict range:NSMakeRange(posit,length)];
+    [AttributedStringDeposit addAttributes:dict range:NSMakeRange(3,length)];
     
-    [label setAttributedText:AttributedStringDeposit];
+    [self.bookTopTotalLabel setAttributedText:AttributedStringDeposit];
 
 }
+//还可添加数
+-(void)setbookTopRemainLabelDifFontandlength:(NSInteger)length andFont:(UIFont *)font
+{
+    NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:self.bookTopRemainLabel.text];
+    NSDictionary *dict=@{
+                         NSForegroundColorAttributeName:R_G_B_16(0x00B38A),
+                         NSFontAttributeName:font
+                         };
+    
+    [AttributedStringDeposit addAttributes:dict range:NSMakeRange(6,length)];
+    
+    [self.bookTopRemainLabel setAttributedText:AttributedStringDeposit];
+    
+}
+
 -(void)getNominatedInviter
 {
+    [self.middleView removeFromSuperview];
+
     [KSHttpRequest get:KGetNominatedInviter parameters:nil success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             self.name = result[@"nominated_inviter"][@"name"];
@@ -830,8 +904,9 @@ static bool isBroker;
             if ([result[@"code"] integerValue]==1000) {
 
                 [self.mrv removeFromSuperview];
-//                [self createMyRepresentUI];
-                [self bottomBtnClicked:self.rightBtn];
+                [self createMyRepresentUI];
+//                [self bottomBtnClicked:self.rightBtn];
+                [self getrepresent];
                 [UILabel showMessage:@"设置代表成功"];
                 [self.myAlert dismissLumAleatView];
                 
@@ -855,8 +930,19 @@ static bool isBroker;
 }
 -(void)getCustomerData
 {
-//    [_dataArr removeAllObjects];
     [KSHttpRequest post:KUserGetInvitee parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",currentPage],@"max":@20,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        if (currentPage > [result[@"pages"] integerValue] && _dataArr.count != 0) {
+            
+            currentPage--;
+            
+            self.tableView.mj_footer.hidden = YES;
+            
+            [self.tableView.mj_header endRefreshing];
+            
+            [self.tableView.mj_footer endRefreshing];
+
+            return ;
+        }
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *arr = result[@"invitee"];
             for (NSDictionary *dict in arr) {
@@ -890,12 +976,16 @@ static bool isBroker;
             [UILabel showMessage:result[@"message"]];
         }
         
-        if ([result[@"total"] integerValue] > 0) {
-            [self.myRepTopView removeFromSuperview];
-            [self.topView removeFromSuperview];
-        }else{
-            [self.headView removeFromSuperview];
+//        if ([result[@"total"] integerValue] > 0) {
+        if(_dataArr.count > 0){
+//            [self.topView removeFromSuperview];
+            self.topView.hidden = YES;
+        }
+        else{
             [self.tableView removeFromSuperview];
+            
+            self.topView.hidden = NO;
+//            [self createCustomerLabel];
         }
         [self.tableView reloadData];
         
@@ -905,7 +995,7 @@ static bool isBroker;
         
         NSInteger page = [result[@"page"] integerValue];
         
-        self.tableView.mj_footer.hidden = pages == page;
+        self.tableView.mj_footer.hidden = pages <= page;
         
         [self.tableView.mj_header endRefreshing];
         
@@ -924,15 +1014,18 @@ static bool isBroker;
 }
 
 -(void)createCustomerLabel{
+    [self.topView removeFromSuperview];
+    
     UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(260))];
     
     topView.backgroundColor = R_G_B_16(0xf0f0f0);
     self.topView = topView;
-    [self.view addSubview:topView];
+    self.topView.hidden = YES;
+    [self.view addSubview:_topView];
     
     UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(36), PX_TO_PT(140), PX_TO_PT(140))];
     [iconImageView setImage:[UIImage imageNamed:@"mine_represent"]];
-    [topView addSubview:iconImageView];
+    [_topView addSubview:iconImageView];
     
     CGFloat customerLabelX = 0;
     CGFloat customerLabelY = CGRectGetMaxY(iconImageView.frame) + PX_TO_PT(20);
@@ -944,11 +1037,11 @@ static bool isBroker;
     customerLabel.textColor = R_G_B_16(0x909090);
     customerLabel.textAlignment = NSTextAlignmentCenter;
     self.customerLabel = customerLabel;
-    [topView addSubview:customerLabel];
+    [_topView addSubview:customerLabel];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
-    [topView addSubview:lineView];
+    [_topView addSubview:lineView];
 
 }
 
@@ -969,7 +1062,8 @@ static bool isBroker;
     self.headLabel = headLabel;
     [headView addSubview:headLabel];
 
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(98)-64) style:UITableViewStylePlain];
+    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(98)-64) style:UITableViewStylePlain];
+    _tableView = tableView;
     _tableView.tag = tbTag;
     _tableView.backgroundColor = [UIColor colorWithHexString_Ext:@"#EEEEEE"];
     _tableView.separatorColor = [UIColor clearColor];
@@ -1005,7 +1099,10 @@ static bool isBroker;
                             [KSHttpRequest post:KUserBindInviter parameters:@{@"userId":[DataCenter account].userid,@"inviter":phoneNum,@"user-agent":@"IOS-v2.0"} success:^(id result) {
                                 if ([result[@"code"] integerValue]==1000) {
                                     [self.mrv removeFromSuperview];
-                                    [self bottomBtnClicked:self.rightBtn];
+//                                    [self bottomBtnClicked:self.rightBtn];
+                                    [self createMyRepresentUI];
+
+                                    [self getrepresent];
                                     [UILabel showMessage:@"设置代表成功"];
                                 } else {
                                     
@@ -1043,21 +1140,28 @@ static bool isBroker;
 - (BOOL) validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
-    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
+    NSString *phoneRegex = @"^1\\d{10}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
 }
 
 
 -(void)createMyRepresentUI {
-    [self.myRepTopView removeFromSuperview];
-    [self.myRepView removeFromSuperview];
+    
+//    [self.mrv removeFromSuperview];
+    [self.middleView removeFromSuperview];
+    
+    UIView *middleView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(98))];
+    middleView.backgroundColor = [UIColor clearColor];
+    self.middleView = middleView;
+    self.middleView.hidden = YES;
+    [self.view addSubview:self.middleView];
     
     UIView *myRepTopView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(260))];
 //    myRepTopView.frame = CGRectMake(300, 33, 234, 33);
     myRepTopView.backgroundColor = R_G_B_16(0xf0f0f0);
     self.myRepTopView = myRepTopView;
-    [self.view addSubview:myRepTopView];
+    [self.middleView addSubview:myRepTopView];
     
     UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(36), PX_TO_PT(140), PX_TO_PT(140))];
     [iconImageView setImage:[UIImage imageNamed:@"mine_represent"]];
@@ -1075,7 +1179,7 @@ static bool isBroker;
     self.myRepLabel = myRepLabel;
     [myRepTopView addSubview:myRepLabel];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepTopView addSubview:lineView];
 
@@ -1083,7 +1187,7 @@ static bool isBroker;
     UIView *myRepView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.myRepTopView.frame), ScreenWidth, PX_TO_PT(96))];
     myRepView.backgroundColor = [UIColor whiteColor];
     self.myRepView = myRepView;
-    [self.view addSubview:myRepView];
+    [self.middleView addSubview:myRepView];
     
     CGFloat nickNameLabelY = (PX_TO_PT(96) - PX_TO_PT(60))*0.5;
 //    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(220), PX_TO_PT(60))];
@@ -1105,11 +1209,11 @@ static bool isBroker;
     self.phoneNumLabel = phoneNumLabel;
     [myRepView addSubview:phoneNumLabel];
     
-    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepView addSubview:topLineView];
     
-    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, 1)];
     bottomLineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepView addSubview:bottomLineView];
 
@@ -1146,7 +1250,10 @@ static bool isBroker;
         customerVC.hidesBottomBarWhenPushed = YES;
         XNRMyRepresentModel *model = _dataArr[indexPath.row];
         customerVC.inviteeId = model.userId;
-        
+        if (model.newOrdersNumber > 0) {
+            XNRMyRepresent_cell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            [cell.redImageView removeFromSuperview];
+        }
         [self.navigationController pushViewController:customerVC animated:YES];
 
     }
@@ -1154,7 +1261,8 @@ static bool isBroker;
     {
         XNRDetailUserVC *detailUser = [[XNRDetailUserVC alloc]init];
         detailUser.hidesBottomBarWhenPushed = YES;
-        self.isadd = YES;
+        self.isadd = NO;
+        self.isuserDetail = YES;
         XNRBookUser *user = _userArr[indexPath.row];
         detailUser._id = user._id;
         [self.navigationController pushViewController:detailUser animated:YES];

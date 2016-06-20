@@ -18,6 +18,7 @@
 #import "XNRShoppingCarController.h"
 #import "XNRProductInfo_VC.h"
 #import "XNROffLine_VC.h"
+#import "XNRPropertyView.h"
 #define kPayTypeBtn 1000
 #define kSelectedBtn 2000
 
@@ -111,14 +112,14 @@
     //    [self getMinPayPrice];
     [self getData];
     
-    //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(librate) name:@"succss_Push" object:nil];
 }
 
-
+-(void)viewWillDisappear:(BOOL)animated{
+    [[XNRPropertyView sharedInstanceWithModel:nil] changeSelfToIdentify];
+}
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
 }
 -(void)getMinPayPrice
 {
@@ -341,7 +342,7 @@
     
     //顶部视图描边
     for (int i = 0; i<2; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, i*top1.height, ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, i*top1.height, ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [topView addSubview:lineView];
         
@@ -351,12 +352,11 @@
 #pragma mark - 中部视图
 
 -(void)createMidView{
-    //    self.midView = [[UIView alloc]init];
     
     UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.topView.frame) + PX_TO_PT(20), ScreenWidth, PX_TO_PT(233))];
     [self.view addSubview:midView];
-    //支付方式
     
+    //支付方式
     UIView *typeView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(69))];
     typeView.backgroundColor = R_G_B_16(0xF0F0F0);
     
@@ -785,7 +785,7 @@
         //        self.selectedBtnTwo.selected = NO;
         //        _payType = 1;
         //        [self payType];
-        
+        NSLog(@"KAlipay===%@",KAlipay);
         NSDictionary *params = @{@"consumer":@"app",@"orderId":self.orderID,@"price": _Money,@"user-agent":@"IOS-v2.0"};
         [KSHttpRequest post:KAlipay parameters:params success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {

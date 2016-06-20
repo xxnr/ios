@@ -13,7 +13,7 @@
 #define textFieldTag 1000
 @interface XNRAddAddress_VC()<UITextFieldDelegate,XNRAddressPickerViewBtnDelegate,XNRTownPickerViewBtnDelegate>
 {
-    int addressType;
+    NSString *addressType;
 }
 
 @property (nonatomic ,weak) UIView *topBgView;
@@ -109,6 +109,7 @@
 -(void)viewDidLoad{
     self.view.backgroundColor = [UIColor whiteColor];
     [self createNav];
+    addressType = self.model.type;
     [self createTopView];
     [self createMidView];
     [self createBottomView];
@@ -266,7 +267,7 @@
     [topBgView addSubview:emailTF];
     
     for (int i = 0; i<7; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96)*i, ScreenWidth, PX_TO_PT(2))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96)*i, ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [topBgView addSubview:lineView];
     }
@@ -361,19 +362,18 @@
     [midView addSubview:mySwitch];
     
     for (int i = 0; i<2; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(2))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [midView addSubview:lineView];
      }
 }
 
 -(void)mySwitchChange:(UISwitch *)mySwitch{
-    
     if (mySwitch.isOn) {
-        addressType = 1;
+        addressType = @"1";
         NSLog(@"开启");
     }else{
-        addressType = 2;
+        addressType = @"2";
         NSLog(@"关闭");
     }
 }
@@ -417,11 +417,11 @@
     }else{
         if ([self.titleLabel isEqualToString:@"添加收货地址"]) {
             
-            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@"",@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",addressType],@"user-agent":@"IOS-v2.0"};
+            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@"",@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%@",addressType],@"user-agent":@"IOS-v2.0"};
             
             [KSHttpRequest post:KSaveUserAddress parameters:params success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
-                    if (addressType == 1) {
+                    if ([addressType isEqualToString:@"1"]) {
                         UserInfo *info = [DataCenter account];
                         NSString *address1 = [NSString stringWithFormat:@"%@%@",self.model.areaName,self.model.cityName];
                         NSString *address2 = [NSString stringWithFormat:@"%@%@%@",self.model.areaName,self.model.cityName,self.model.countyName];
@@ -455,7 +455,7 @@
             }];
 
         }else{// 更新收货地址
-            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"addressId":self.model.addressId,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:self.model.cityId,@"countyId":self.countyID?self.countyID:self.model.countyId,@"townId":self.townID?self.townID:self.model.townId,@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",addressType]?[NSString stringWithFormat:@"%d",addressType]:self.model.type,@"user-agent":@"IOS-v2.0"};
+            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"addressId":self.model.addressId,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:self.model.cityId,@"countyId":self.countyID?self.countyID:self.model.countyId,@"townId":self.townID?self.townID:self.model.townId,@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":addressType,@"user-agent":@"IOS-v2.0"};
             
             [KSHttpRequest post:KUpdateUserAddress parameters:params success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
@@ -484,7 +484,7 @@
 - (BOOL) validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
-    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
+    NSString *phoneRegex = @"^1\\d{10}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
 }
@@ -504,7 +504,6 @@
     backBtn.frame = CGRectMake(0, 0, 30, 44);
 //    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backBtn addTarget: self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
-     [backBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backBtn setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [backBtn setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
 

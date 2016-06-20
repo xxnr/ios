@@ -84,7 +84,21 @@
     _dataFrameArray = [NSMutableArray array];
     [self createView];
     [self setupAllViewRefresh];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshDetialTableView) name:@"refreshTableView" object:nil];
+
 }
+
+-(void)refreshDetialTableView
+{
+    [self headRefresh];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 #pragma mark - 刷新
 -(void)setupAllViewRefresh{
@@ -300,9 +314,14 @@
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];
             detailModel.consigneeName = orderDict[@"consigneeName"];
             NSDictionary *payment = orderDict[@"payment"];
-            detailModel.price = payment[@"price"];
-            detailModel.id = payment[@"id"];
-            [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            if (![KSHttpRequest isNULL:payment] && [orderDict[@"orderStatus"][@"type"] integerValue]== 2) {
+                detailModel.price = payment[@"price"];
+                detailModel.id = payment[@"id"];
+                [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            }else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+                [UILabel showMessage:@"订单已审核"];
+            }
         }
         
     } failure:^(NSError *error) {

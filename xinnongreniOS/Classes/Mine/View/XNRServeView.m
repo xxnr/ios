@@ -20,6 +20,7 @@
 #import "XNRMakeSureView.h"
 #import "XNRMyOrderModel.h"
 #import "XNRCarryVC.h"
+#import "BMProgressView.h"
 #define MAX_PAGE_SIZE 10
 
 @interface XNRServeView()<XNROrderEmptyViewBtnDelegate>
@@ -28,9 +29,10 @@
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
 @property (nonatomic ,weak) UIButton *backtoTopBtn;
 @property (nonatomic,strong)XNRMyOrderSectionModel *currentModel;
+@property (nonatomic ,weak) BMProgressView *progressView;
 @property (nonatomic,assign)BOOL isMakesureOwn;
 @property (nonatomic,assign)BOOL isHoldOwn;
-
+@property (nonatomic,assign)BOOL isRefresh;
 @end
 @implementation XNRServeView
 
@@ -40,6 +42,7 @@
     if (!_orderEmptyView) {
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
         orderEmptyView.delegate = self;
+        self.orderEmptyView = orderEmptyView;
         orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
         [self addSubview:orderEmptyView];
     }
@@ -90,18 +93,40 @@
     if (self) {
         _currentPage = 1;
         _dataArr = [[NSMutableArray alloc]init];
+        
         //获取数据
-        [self getData];
+//        [self getData];
         [self createbackBtn];
         //创建订单
         [self createMainTableView];
         [self setupAllViewRefresh];
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"serveHeadRefresh" object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(serveHeadRefresh) name:@"serveHeadRefresh" object:nil];
 
     }
     return self;
 }
 
+-(BMProgressView *)progressView{
+    if (!_progressView) {
+        BMProgressView *progressView = [[BMProgressView alloc] init];
+        self.progressView = progressView;
+        [self addSubview:progressView];
+    }
+    return _progressView;
+}
+
+
+-(void)serveHeadRefresh
+{
+    [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
+    
+    _isRefresh = YES;
+    [self headRefresh];
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [BMProgressView LoadViewDisappear:self];
+    });
+}
 #pragma mark - 刷新
 -(void)setupAllViewRefresh{
     
@@ -168,6 +193,8 @@
 #pragma mark - 获取数据
 - (void)getData
 {
+    [self.orderEmptyView removeFromSuperview];
+
     // typeValue说明：1未付款 ，2待发货，3已发货，4已收货  全部订单为空
     [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid?[DataCenter account].userid:@"",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"typeValue":@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
@@ -179,7 +206,6 @@
                 sectionModel.payType = subDic[@"payType"];
                 sectionModel.duePrice = subDic[@"duePrice"];
 
-                
                 NSDictionary *orders = subDic[@"order"];
                 sectionModel.totalPrice = orders[@"totalPrice"];
                 sectionModel.deposit = orders[@"deposit"];
@@ -196,8 +222,6 @@
                         XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
                         // 把订单模型传递给frame模型
                         orderFrame.orderModel = model;
-                        
-                        
                         [sectionModel.orderFrameArray addObject:orderFrame];
                         NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
                     }
@@ -211,13 +235,9 @@
                         [sectionModel.orderFrameArray addObject:orderFrame];
                         NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
                     }
-
-                
                 }
             [_dataArr addObject:sectionModel];
             }
-               
-
         }
         
         //刷新列表
@@ -227,6 +247,10 @@
             [self orderEmptyView];
         }
         
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
+        }
         //  如果到达最后一页 就消除footer
         NSInteger pages = [result[@"datas"][@"pages"] integerValue];
         NSInteger page = [result[@"datas"][@"page"] integerValue];
@@ -245,8 +269,6 @@
 }
 #pragma mark--创建TableView
 -(void)createMainTableView{
-    
-    
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(100)) style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.showsVerticalScrollIndicator = YES;
@@ -289,9 +311,9 @@
         lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView1];
         
-        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89), ScreenWidth, PX_TO_PT(1))];
-        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
-        [headView addSubview:lineView2];
+//        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89), ScreenWidth, PX_TO_PT(1))];
+//        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
+//        [headView addSubview:lineView2];
         
         return headView;
         

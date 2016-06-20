@@ -47,6 +47,17 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self createMainView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushLoginVC) name:@"pushLoginVC" object:nil];
+}
+
+-(void)pushLoginVC
+{
+    [self.navigationController pushViewController:self animated:YES];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -110,7 +121,7 @@
     }
     if (self.com) {
         self.com();
-    }
+        }
 
 }
 #pragma mark - 创建中部视图(包含用户名和密码)
@@ -139,7 +150,7 @@
     usernameTextField.alpha = 1;
     usernameTextField.placeholder = @"请输入您的手机号";
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *userName = [ user objectForKey:@"userName"];
+    NSString *userName = [user objectForKey:@"userName"];
 
     if (userName) {
         usernameTextField.text = userName;
@@ -309,6 +320,7 @@
     {
         flag=0;
         title=@"手机格式错误";
+        
        
     }else{
         
@@ -321,6 +333,10 @@
                 [self getNetwork];
                 NSLog(@"======%@",pubKey);
                 
+            }
+            else
+            {
+                [UILabel showMessage:result[@"message"]];
             }
             
         } failure:^(NSError *error) {
@@ -359,7 +375,7 @@
             NSDictionary *county = address[@"county"];
             NSDictionary *town = address[@"town"];
 
-            UserInfo *info = [DataCenter account];
+            UserInfo *info = [[UserInfo alloc] init];
             [info setValuesForKeysWithDictionary:datasDic];
             info.loginState = YES;
             info.userid = datasDic[@"userid"];
@@ -388,7 +404,7 @@
                     [self synchShoppingCarDataWith:model];
                 }
                 // 清空购物车列表
-                [dataManager deleteShoppingCar];
+//                [dataManager deleteShoppingCar];
             }
             
             
@@ -472,7 +488,7 @@
 - (BOOL)validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
-    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
+    NSString *phoneRegex = @"^1\\d{10}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
 }

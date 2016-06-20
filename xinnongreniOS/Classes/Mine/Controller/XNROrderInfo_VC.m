@@ -174,7 +174,7 @@
         [_deliveryArr removeAllObjects];
 
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"---------返回数据:---------%@",str);
+//        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -1038,7 +1038,7 @@
 
 #pragma mark-中部视图
 -(void)createMid{
-    UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64-PX_TO_PT(89) ) style:UITableViewStylePlain];
+    UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64-PX_TO_PT(88) ) style:UITableViewStyleGrouped];
     tableview.backgroundColor=[UIColor clearColor];
     tableview.showsHorizontalScrollIndicator=NO;
     tableview.showsVerticalScrollIndicator=NO;
@@ -1138,7 +1138,10 @@
     return PX_TO_PT(89);
 
 }
-
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 1;
+}
 //设置段数
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

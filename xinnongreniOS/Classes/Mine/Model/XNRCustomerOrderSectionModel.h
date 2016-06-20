@@ -41,6 +41,8 @@
  */
 @property (nonatomic ,copy) NSString *typeValue;
 
+@property (nonatomic, copy) NSString *totalPrice;
+
 
 @end
 

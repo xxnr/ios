@@ -69,7 +69,7 @@
 
 @property (nonatomic, strong) NSMutableArray *picBrowserList;
 
-
+@property (nonatomic, assign) BOOL bottomBtnClick;
 @end
 
 @implementation XNRProductInfo_VC
@@ -97,7 +97,7 @@
     if (!_propertyView) {
         __weak __typeof(self)weakSelf = self;
         // 传回来的属性
-        propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice){
+            propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice){
             _attributes = attributes;
             _additions = addtions;
             _Price = price;
@@ -112,11 +112,9 @@
             orderVC.totalSelectNum = totalNum.intValue;
             orderVC.isRoot = YES;
             [weakSelf.navigationController pushViewController:orderVC animated:YES];
-            
         };
         // 跳转登录界面
         propertyView.loginBlock = ^(){
-            
             XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
             login.loginFromProductInfo = YES;
             login.hidesBottomBarWhenPushed = YES;
@@ -192,13 +190,8 @@
     
     NSLog(@"navigation===%@",self.navigationController);
     
+    
 }
-
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 
 -(void)notSelectedAttributes
 {
@@ -316,7 +309,7 @@
     [midView addSubview:selectLine];
     
     for (int i = 1; i<3; i++) {
-        UIView *dividedLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3*i, PX_TO_PT(20), PX_TO_PT(1), PX_TO_PT(40))];
+        UIView *dividedLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3*i, PX_TO_PT(20), 1, PX_TO_PT(40))];
         dividedLine.backgroundColor = R_G_B_16(0xc7c7c7);
         [midView addSubview:dividedLine];
         
@@ -501,7 +494,7 @@
     expectLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [bgExpectView addSubview:expectLabel];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgExpectView addSubview:lineView];
     
@@ -528,7 +521,7 @@
     [bgView addSubview:addBuyCarBtn];
     
     //分割线
-    UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,PX_TO_PT(1) )];
+    UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,1 )];
     line.backgroundColor=R_G_B_16(0xc7c7c7);
     [bgView addSubview:line];
     
@@ -537,11 +530,14 @@
 -(void)buyBtnClick
 {
     [self.propertyView show:XNRBuyType];
+    _bottomBtnClick = YES;
 }
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
     [self.propertyView show:XNRAddCartType];
+    _bottomBtnClick = YES;
+
 }
 #pragma 加减数量
 -(void)btnClick:(UIButton*)button{
@@ -549,16 +545,12 @@
         
         if([self.numTextField.text integerValue]>1){
         self.numTextField.text = [NSString stringWithFormat:@"%ld",(long)[self.numTextField.text floatValue]-1];
-        
         }else{
-            
             self.numTextField.text=@"1";
         }
         
         if([self.numTextField.text isEqualToString:@"1"]){
-            
             self.addBuyCarBtn.enabled=YES;
-            
         }
     }else if(button.tag == kRightBtn){
       
@@ -590,7 +582,7 @@
     cell.additions = _additions;
     cell.Price = _Price;
     cell.marketPrice = _marketPrice;
-    
+    cell.bottomBtnClick = _bottomBtnClick;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     // 传值
@@ -657,7 +649,6 @@
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0, 30, 44);
-//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];

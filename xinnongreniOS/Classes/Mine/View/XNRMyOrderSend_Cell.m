@@ -28,6 +28,7 @@
 @property (nonatomic ,weak) UILabel *addtionsLabel;
 @property (nonatomic ,weak) UILabel *addtionPriceLabel;
 
+@property (nonatomic,weak) UIView *iconTopline;
 @property (nonatomic ,weak) UIView *topLine;
 @property (nonatomic ,weak) UIView *middleLine;
 @property (nonatomic ,weak) UIView *bottomLine;

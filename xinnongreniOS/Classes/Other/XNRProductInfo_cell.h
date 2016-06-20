@@ -50,5 +50,7 @@ typedef void(^XNRProductInfo_cellPhotoBrowserBlock)(NSInteger page);
 @property (nonatomic ,copy) NSString *marketPrice;
 @property (nonatomic ,copy) NSString *Price;
 
+@property (nonatomic, assign) BOOL bottomBtnClick;
+
 
 @end

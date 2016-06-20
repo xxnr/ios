@@ -52,7 +52,7 @@
     [topView addSubview:successLabel];
     
     UILabel *holdMoneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame)+PX_TO_PT(67), CGRectGetMaxY(successLabel.frame)+PX_TO_PT(18), ScreenWidth-CGRectGetMaxX(imageView.frame)-PX_TO_PT(67), PX_TO_PT(32))];
-    holdMoneyLabel.text = [NSString stringWithFormat:@"待支付金额：¥%@",self.holdPayMoney];
+    holdMoneyLabel.text = [NSString stringWithFormat:@"待支付金额：¥%.2f",[self.holdPayMoney floatValue]];
     holdMoneyLabel.textColor = R_G_B_16(0xFF4E00);
     holdMoneyLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:holdMoneyLabel.text];
@@ -106,12 +106,12 @@
         
         maxY = CGRectGetMaxY(DetailLabel.frame)+PX_TO_PT(28);
         
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, maxY+1, ScreenWidth, PX_TO_PT(1))];
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, maxY+1, ScreenWidth, 1)];
         line.backgroundColor = R_G_B_16(0xE0E0E0);
         [midView addSubview:line];
     }
     
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(1), ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 1, ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xe0e0e0);
     [midView addSubview:line];
 
@@ -140,7 +140,7 @@
     
     [midView addSubview:titleLabel];
 
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xE0E0E0);
     [midView addSubview:line];
     
@@ -157,7 +157,7 @@
     [midView addSubview:detailLabel];
     
     for (int i=0; i<2; i++) {
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(394)*i, ScreenWidth, PX_TO_PT(1))];
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(394)*i, ScreenWidth, 1)];
         line.backgroundColor = R_G_B_16(0xe0e0e0);
         [midView addSubview:line];
     }
@@ -279,14 +279,14 @@
 - (void)backClick:(UIButton *)btn
 {
     
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadOrderList" object:nil];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadOrderList" object:nil];
     
-//    [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
-//    [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
-//    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
-//    [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
-//    [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
-//
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
+
     if ([self.fromType isEqualToString:@"orderList"]) {
         [self.navigationController popViewControllerAnimated:YES];
         return;

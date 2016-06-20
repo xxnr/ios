@@ -27,8 +27,9 @@
     } else {
         image_data = UIImagePNGRepresentation(picImage);
     }
-    image_data=[Photo scaleData:image_data toWidth:100 toHeight:100];
-    
+    image_data=[Photo scaleData:image_data toWidth:300 toHeight:300];
+
+
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
@@ -42,7 +43,7 @@
 
     [manager POST:urlString parameters:dic constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
-        [formData appendPartWithFileData:image_data name:file fileName:@"icon.png" mimeType:@"image/jpeg"];
+    [formData appendPartWithFileData:image_data name:file fileName:@"icon.jpg" mimeType:@"image/jpg"];
         
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -54,7 +55,7 @@
     }];
     
     //NSLog(@"url-->%@",urlString);
-    NSString*image_path=[NSTemporaryDirectory() stringByAppendingString:@"tempPic.png"];
+    NSString *image_path=[NSTemporaryDirectory() stringByAppendingString:@"tempPic.png"];
     //NSLog(@"image_path-->%@",image_path);
     [image_data writeToFile:image_path atomically:YES];
     

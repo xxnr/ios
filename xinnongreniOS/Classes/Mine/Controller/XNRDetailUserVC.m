@@ -81,11 +81,11 @@
             NSString *sex = @"";
             if (user.sex) {
                 if ([user.sex integerValue] == 0) {
-                    sex = @"女";
+                    sex = @"男";
                 }
                 else
                 {
-                    sex = @"男";
+                    sex = @"女";
                 }
             }
             XNRAddressModel *address = [XNRAddressModel objectWithKeyValues:result[@"potentialCustomer"][@"address"] ];
@@ -131,11 +131,14 @@
             [self.view addSubview:interestLabel];
             
             
-            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(68),ScreenWidth, PX_TO_PT(1.5))];
+            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(69),ScreenWidth, PX_TO_PT(1.5))];
             lastLine.backgroundColor = R_G_B_16(0xE0E0E0);
             [self.view addSubview:lastLine];
+            
+//            UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastLine.frame)+1, ScreenWidth, ScreenHeight -CGRectGetMaxY(lastLine.frame)-1)];
 
-            UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastLine.frame)+PX_TO_PT(1), ScreenWidth, ScreenHeight -CGRectGetMaxY(lastLine.frame)-PX_TO_PT(1))];
+            UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastLine.frame)+PX_TO_PT(1), ScreenWidth, ScreenHeight -CGRectGetMaxY(lastLine.frame))];
+
             bgView.backgroundColor = R_G_B_16(0xf8f8f8);
             [self.view addSubview:bgView];
         }

@@ -12,7 +12,8 @@
 @interface XNRMyRepresent_cell ()
 @property (nonatomic, weak) UILabel *nickNameLabel;
 @property (nonatomic, weak) UILabel *phoneNumLabel;
-@property (nonatomic ,weak) UIImageView *redImageView;
+@property(nonatomic,weak)UIView *myRepView;
+//@property (nonatomic ,weak) UIImageView *redImageView;
 @end
 
 
@@ -22,76 +23,24 @@
     if (self) {
 //        [self createUI];
         self.backgroundColor = [UIColor clearColor];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRedPoint) name:@"removeRedPoint" object:nil];
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRedPoint) name:@"removeRedPoint" object:nil];
     }
     return self;
 
 
 }
 
--(void)removeRedPoint{
-    self.redImageView.hidden = YES;
-}
-
-//-(void)createUI{
-//    
-// 
-//    CGFloat myRepLabelH = PX_TO_PT(96);
-//    UIView *myRepView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, myRepLabelH)];
-//    myRepView.backgroundColor = [UIColor whiteColor];
-//    
-//    [self addSubview:myRepView];
-//    
-//    CGFloat nickNameLabelY = (myRepLabelH - PX_TO_PT(60))*0.5;
-////    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(220), PX_TO_PT(60))];
-//    UILabel *nickNameLabel = [[UILabel alloc] init];
-//    nickNameLabel.backgroundColor = R_G_B_16(0x00b38a);
-//    nickNameLabel.layer.cornerRadius = 5.0;
-//    nickNameLabel.layer.masksToBounds = YES;
-//    nickNameLabel.adjustsFontSizeToFitWidth = YES;
-//    nickNameLabel.textColor = R_G_B_16(0xffffff);
-//    nickNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-//    nickNameLabel.textAlignment = NSTextAlignmentCenter;
-//    [nickNameLabel fitTextWidth_Ext];
-//    self.nickNameLabel = nickNameLabel;
-//    [myRepView addSubview:nickNameLabel];
-//    
-//    UILabel *phoneNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, nickNameLabelY, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(60))];
-//    phoneNumLabel.textAlignment = NSTextAlignmentRight;
-//    phoneNumLabel.textColor = R_G_B_16(0x00b38a);
-//    phoneNumLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-//    [phoneNumLabel fitTextWidth_Ext];
-//    self.phoneNumLabel = phoneNumLabel;
-//    [myRepView addSubview:phoneNumLabel];
-//    
-//    // 小红点
-//    UIImageView *redImageView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(nickNameLabel.frame)-PX_TO_PT(20), PX_TO_PT(2), PX_TO_PT(24), PX_TO_PT(24))];
-//    redImageView.backgroundColor = [UIColor redColor];
-//    redImageView.layer.cornerRadius = PX_TO_PT(12);
-//    redImageView.layer.masksToBounds = YES;
-//    self.redImageView = redImageView;
-//    [myRepView addSubview:redImageView];
-//    
-//    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-//    topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
-//    [myRepView addSubview:topLineView];
-//    
-//    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, PX_TO_PT(1))];
-//    bottomLineView.backgroundColor = R_G_B_16(0xc7c7c7);
-//    [myRepView addSubview:bottomLineView];
-//
-//
-//}
-
 - (void)setModel:(XNRMyRepresentModel *)model {
     _model = model;
  
+    [_myRepView removeFromSuperview];
     [_nickNameLabel removeFromSuperview];
     [_phoneNumLabel removeFromSuperview];
     [_redImageView removeFromSuperview];
     
     CGFloat myRepLabelH = PX_TO_PT(96);
     UIView *myRepView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, myRepLabelH)];
+    self.myRepView = myRepView;
     myRepView.backgroundColor = [UIColor whiteColor];
     
     [self addSubview:myRepView];
@@ -126,11 +75,11 @@
     self.redImageView = redImageView;
     [myRepView addSubview:redImageView];
     
-    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepView addSubview:topLineView];
     
-    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, 1)];
     bottomLineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepView addSubview:bottomLineView];
     

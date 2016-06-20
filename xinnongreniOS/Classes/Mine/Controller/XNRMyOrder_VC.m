@@ -297,7 +297,7 @@
         }
     }
     
-    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(99), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(99), ScreenWidth, 1)];
     bottomView.backgroundColor = R_G_B_16(0xc7c7c7);
     [midBg addSubview:bottomView];
 

@@ -52,12 +52,14 @@
     NSDictionary *subDict = model.deliveryType;
     if ([subDict[@"type"] integerValue] == 2) {    //配送到户
         if (model.subOrders.count==2) {            // 分次支付
-            UIView *tableHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(878))];
+            UIView *tableHeadView = [[UIView alloc] init];
+//                                     WithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(878))];
             tableHeadView.backgroundColor = R_G_B_16(0xf4f4f4);
             self.tableHeadView = tableHeadView;
             [self addSubview:tableHeadView];
         }else{
-            UIView *tableHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(748))];
+            UIView *tableHeadView = [[UIView alloc] init];
+//                                     WithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(748))];
             tableHeadView.backgroundColor = R_G_B_16(0xf4f4f4);
             self.tableHeadView = tableHeadView;
             [self addSubview:tableHeadView];
@@ -154,7 +156,7 @@
         middleMarginView.backgroundColor = R_G_B_16(0xf4f4f4);
         [middleView addSubview:middleMarginView];
         
-        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth, PX_TO_PT(1))];
+        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth, 1)];
         topLine.backgroundColor = R_G_B_16(0xc7c7c7);
         [middleView addSubview:topLine];
         
@@ -201,11 +203,11 @@
     bottomMarginView.backgroundColor = R_G_B_16(0xf4f4f4);
     [headView addSubview:bottomMarginView];
     
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth, PX_TO_PT(1))];
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth, 1)];
     topLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [headView addSubview:topLine];
     
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(130), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(130), ScreenWidth, 1)];
     bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [headView addSubview:bottomLine];
     
@@ -255,16 +257,16 @@
     middleMarginView.backgroundColor = R_G_B_16(0xf4f4f4);
     [middleView addSubview:middleMarginView];
     
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     topLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [middleView addSubview:topLine];
     
-    UIView *middleLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(1))];
+    UIView *middleLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, 1)];
     middleLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [middleView addSubview:middleLine];
     
     
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(160), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(160), ScreenWidth, 1)];
     bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [middleView addSubview:bottomLine];
 }
@@ -283,11 +285,11 @@
         [bottomView addSubview:payInfo];
         
         
-        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
         topLine.backgroundColor = R_G_B_16(0xc7c7c7);
         [bottomView addSubview:topLine];
         
-        UIView *topLine1 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80),ScreenWidth, PX_TO_PT(1))];
+        UIView *topLine1 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80),ScreenWidth, 1)];
         topLine1.backgroundColor = R_G_B_16(0xc7c7c7);
         [bottomView addSubview:topLine1];
         
@@ -313,7 +315,7 @@
         [bottomView addSubview:shouldPayOne];
         
         
-        UIView *topLine2 = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(210),ScreenWidth-PX_TO_PT(60), PX_TO_PT(1))];
+        UIView *topLine2 = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(210),ScreenWidth-PX_TO_PT(60), 1)];
         topLine2.backgroundColor = R_G_B_16(0xc7c7c7);
         [bottomView addSubview:topLine2];
         
@@ -343,7 +345,7 @@
         [bottomView addSubview:bottomMarginView];
         
         
-        UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(340), ScreenWidth, PX_TO_PT(1))];
+        UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(340), ScreenWidth, 1)];
         bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
         [bottomView addSubview:bottomLine];
         
@@ -357,9 +359,11 @@
         sectionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         [sectionView addSubview:sectionLabel];
         
-        UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
         sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
         [sectionView addSubview:sectionLine];
+        
+        _headViewHeight = CGRectGetMaxY(bottomView.frame);
     
     }else{
         UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.middleView.frame), ScreenWidth, PX_TO_PT(318))];
@@ -373,11 +377,11 @@
         [bottomView addSubview:payInfo];
         
         
-        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
         topLine.backgroundColor = R_G_B_16(0xc7c7c7);
         [bottomView addSubview:topLine];
         
-        UIView *topLine1 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80),ScreenWidth, PX_TO_PT(1))];
+        UIView *topLine1 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80),ScreenWidth, 1)];
         topLine1.backgroundColor = R_G_B_16(0xc7c7c7);
         [bottomView addSubview:topLine1];
         
@@ -406,7 +410,7 @@
         bottomMarginView.backgroundColor = R_G_B_16(0xf4f4f4);
         [bottomView addSubview:bottomMarginView];
         
-        UIView *topLine2 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(210),ScreenWidth, PX_TO_PT(1))];
+        UIView *topLine2 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(210),ScreenWidth, 1)];
         topLine2.backgroundColor = R_G_B_16(0xc7c7c7);
         [bottomView addSubview:topLine2];
 
@@ -421,9 +425,11 @@
         sectionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         [sectionView addSubview:sectionLabel];
         
-        UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
         sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
         [sectionView addSubview:sectionLine];
+        
+        _headViewHeight = CGRectGetMaxY(bottomView.frame);
     
     }
 
@@ -458,8 +464,10 @@
             self.depisitStateOne.text = @"未付款";
             self.depisitStateOne.textColor = R_G_B_16(0xfe9b00);
 
-        }else {
+        }else if([modelOne.payStatus integerValue] == 2){
             self.depisitStateOne.text = @"已付款";
+        }else{
+            self.depisitStateOne.text = @"部分付款";
         }
         
         XNRRscSubOrdersModel *modelTwo = _model.subOrders[1];
@@ -468,8 +476,10 @@
             self.depisitStateTwo.text = @"未付款";
             self.depisitStateTwo.textColor = R_G_B_16(0xfe9b00);
 
-        }else {
+        }else if([modelTwo.payStatus integerValue] == 2){
             self.depisitStateTwo.text = @"已付款";
+        }else{
+            self.depisitStateTwo.text = @"部分付款";
         }
 
     }else{
@@ -478,10 +488,11 @@
         if ([model.payStatus integerValue] == 1) {
             self.depisitStateOne.text = @"未付款";
             self.depisitStateOne.textColor = R_G_B_16(0xfe9b00);
-        }else {
+        }else if([model.payStatus integerValue] == 2){
             self.depisitStateOne.text = @"已付款";
+        }else{
+            self.depisitStateOne.text = @"部分付款";
         }
-    
     }    
 }
 

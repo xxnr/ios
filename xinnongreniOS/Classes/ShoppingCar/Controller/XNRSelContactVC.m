@@ -169,10 +169,13 @@
     
     [KSHttpRequest post:KsaveConsignees parameters:dic success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
-            
-            }
-        self.setRSCContactChoseBlock(self.currentModel);
-        [self.navigationController popViewControllerAnimated:YES];
+            self.setRSCContactChoseBlock(self.currentModel);
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else
+        {
+            [UILabel showMessage:result[@"message"]];
+        }
         
     } failure:^(NSError *error) {
         
@@ -268,7 +271,7 @@
     titleLabel.textColor = R_G_B_16(0x323232);
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xc7c7c7);
     [contactView addSubview:imageView];
     [contactView addSubview:titleLabel];
@@ -282,7 +285,7 @@
 - (BOOL)validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
-    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
+    NSString *phoneRegex = @"^1\\d{10}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
 }
@@ -329,6 +332,28 @@
         }
     }
     
+}
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField == self.nameTf) {
+        
+        int strlength = 0;
+        char* p = (char*)[textField.text cStringUsingEncoding:NSUnicodeStringEncoding];
+        for (int i=0 ; i<[textField.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+            if (*p) {
+                p++;
+                strlength++;
+            }
+            else {
+                p++;
+            }
+            
+        }
+        
+        self.nameLength = strlength;
+        
+    }
+    return YES;
 }
 
 #pragma mark -- tableView的数据源和代理方法

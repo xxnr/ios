@@ -369,6 +369,7 @@
 - (void)btnClick:(UIButton *)button
 {
     [[NSUserDefaults standardUserDefaults]setValue:self.newpasswordTextField.text forKey:@"password"];
+    [[NSUserDefaults standardUserDefaults]setValue:self.phoneNumTextField.text forKey:@"userName"];
         NSLog(@"注册");
         if(self.phoneNumTextField.text.length==0||self.verifyNumTextField.text.length==0||self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0){
             
@@ -395,6 +396,11 @@
                     self.pubKey = pubKey;
                     [self getNetwork];
                 }
+                else
+                {
+                    [UILabel showMessage:result[@"message"]];
+                }
+
             } failure:^(NSError *error) {
                 
             }];
@@ -443,11 +449,9 @@
 - (BOOL) validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
-    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
+    NSString *phoneRegex = @"^1\\d{10}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
-    
-
 }
 #pragma mark - 创建登录按钮
 -(void)createLoginBtn

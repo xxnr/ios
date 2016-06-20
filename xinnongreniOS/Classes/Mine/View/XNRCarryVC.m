@@ -19,6 +19,7 @@
 @property (nonatomic,weak)UIView *tbHeadView;
 @property (nonatomic,strong)XNRRSCInfoModel *model;
 @property (nonatomic,copy)NSString *carryNum;
+@property (nonatomic,copy)NSMutableArray *dataArr;
 @end
 
 @implementation XNRCarryVC
@@ -29,21 +30,28 @@
     }
     return _modelArr;
 }
-
+-(NSMutableArray *)dataArr
+{
+    if (!_dataArr) {
+        _dataArr = [NSMutableArray array];
+    }
+    return _dataArr;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setNavigationbarTitle];
     
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStylePlain];
     
     tableView.backgroundColor = R_G_B_16(0xf9f9f9);
     tableView.delegate = self;
     tableView.dataSource = self;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView = tableView;
-    //    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:(CGRectMake(0, 0, 0, 0))];
-    self.tableView.tableHeaderView=[[UIView alloc] initWithFrame:(CGRectMake(0,20,82,0.5))];
-    
     [self.view addSubview:tableView];
+    
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:(CGRectMake(0, 0, 0, 300))];
+    
     
     [self getDeliveryCode];
     
@@ -51,36 +59,19 @@
 #pragma mark -- UItableView的数据源和代理方法
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.modelArr.count;
+    return self.dataArr.count;
 }
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return CGRectGetMaxY(self.threeView.frame);
-    
-}
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    
-    [self createCenter];
-    UIView *tbHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(500))];
-    
-    tbHeadView.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(_threeView.frame));
-    self.tbHeadView = tbHeadView;
-    [_tbHeadView addSubview:_topView];
-    [_tbHeadView addSubview:_midView];
-    [_tbHeadView addSubview:_threeView];
-    
-    return _tbHeadView;
-}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+
     return cell.height;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRMyOrderModel *model = self.modelArr[indexPath.row];
+    XNRMyOrderModel *model = self.dataArr[indexPath.row];
     
     static NSString *cellID = @"cellID";
     XNRDeliveryCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
@@ -115,13 +106,6 @@
     carryLabel.text = self.carryNum;
     [self.topView addSubview:carryLabel];
     
-    
-    //    UILabel *headLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.topView.frame)+PX_TO_PT(18), ScreenWidth, PX_TO_PT(30))];
-    //    headLabel.text = @"服务网点";
-    //    headLabel.textColor = R_G_B_16(0x646464);
-    //    headLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
-    //    [self.view addSubview:headLabel];
-    
     UIView *midView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.topView.frame)+PX_TO_PT(18), ScreenWidth, PX_TO_PT(400))];
     midView.backgroundColor = [UIColor whiteColor];
     
@@ -149,12 +133,12 @@
         
         maxY = CGRectGetMaxY(DetailLabel.frame)+PX_TO_PT(28);
         
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, maxY+1, ScreenWidth, PX_TO_PT(1))];
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, maxY+1, ScreenWidth, 1)];
         line.backgroundColor = R_G_B_16(0xE0E0E0);
         [midView addSubview:line];
     }
     
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(1), ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 1, ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xe0e0e0);
     [midView addSubview:line];
     
@@ -172,17 +156,19 @@
     
     for(int i=0;i<2;i++)
     {
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89)*i, ScreenWidth, PX_TO_PT(1))];
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89)*i, ScreenWidth, 1)];
         line.backgroundColor = R_G_B_16(0xe0e0e0);
         [threeView addSubview:line];
         
     }
-    tbHeadView.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(threeView.frame));
     
     [_tbHeadView addSubview:_topView];
     [_tbHeadView addSubview:_midView];
     [_tbHeadView addSubview:_threeView];
-    
+
+    tbHeadView.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(threeView.frame));
+    self.tableView.tableHeaderView = _tbHeadView;
+
     //    [self.view addSubview:_tbHeadView];
     
 }
@@ -207,7 +193,7 @@
     
     [midView addSubview:titleLabel];
     
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xE0E0E0);
     [midView addSubview:line];
     
@@ -224,7 +210,7 @@
     [midView addSubview:detailLabel];
     
     for (int i=0; i<2; i++) {
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(394)*i, ScreenWidth, PX_TO_PT(1))];
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(394)*i, ScreenWidth, 1)];
         line.backgroundColor = R_G_B_16(0xe0e0e0);
         [midView addSubview:line];
     }
@@ -256,22 +242,13 @@
             if (orderModel.RSCInfo.count != 0) {
                 self.model = [XNRRSCInfoModel objectWithKeyValues:orderModel.RSCInfo];
                 [self createCenter];
+
             }
             else
             {
                 [self createEmptyCenter];
             }
-            
-            //            UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStyleGrouped];
-            //
-            //            tableView.backgroundColor = R_G_B_16(0xf9f9f9);
-            //
-            //            tableView.delegate = self;
-            //            tableView.dataSource = self;
-            //            self.tableView = tableView;
-            //
-            //            [self.view addSubview:tableView];
-            
+            _dataArr = [NSMutableArray arrayWithArray:_modelArr];
             [self.tableView reloadData];
         }
         
@@ -297,7 +274,6 @@
     backButton.frame = CGRectMake(0,0,30,44);
 //    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backButton addTarget:self action:@selector(backButtonClick) forControlEvents:UIControlEventTouchUpInside];
-     [backButton setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
 
@@ -307,6 +283,13 @@
 }
 -(void)backButtonClick{
     [[NSNotificationCenter defaultCenter] postNotificationName:@"removeRedPoint" object:nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"orderVCRefresh" object:self];
+
     [self.navigationController popViewControllerAnimated:YES];
 }
 

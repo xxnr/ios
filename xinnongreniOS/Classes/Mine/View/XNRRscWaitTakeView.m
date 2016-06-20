@@ -181,7 +181,7 @@
                     [sectionModel.SKUsFrame addObject:frameModel];
                 }
                 [_dataArray addObject:sectionModel];
-                
+                                
                 XNRRscFootFrameModel *footModel = [[XNRRscFootFrameModel alloc] init];
                 footModel.model = sectionModel;
                 [_dataFrameArray addObject:footModel];
@@ -191,6 +191,13 @@
         
         if (_dataArray.count == 0) {
             [self noOrderView];
+        }else{
+            [self.noOrderView removeFromSuperview];
+        }
+        
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
         }
 
         
@@ -270,11 +277,9 @@
     if (_dataFrameArray.count>0) {
         XNRRscFootFrameModel *frameModel = _dataFrameArray[section];
         return frameModel.footViewHeight;
-        
     }else{
         return 0;
     }
-    
 }
 
 //设置段数
@@ -311,8 +316,8 @@
 {
     if (_dataArray.count>0) {
         XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
-        if (self.com) {
-            self.com(sectionModel);
+        if (self.takecom) {
+            self.takecom(sectionModel);
         }
     }
 }
@@ -324,7 +329,8 @@
         XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
         XNRRscSkusFrameModel *skuModel = sectionModel.SKUsFrame[indexPath.row];
         cell.frameModel = skuModel;
-    }
+     }
+    
     return cell;
 }
 

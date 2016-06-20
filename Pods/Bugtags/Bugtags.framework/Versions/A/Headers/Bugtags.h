@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2016 by Bugtags, Ltd., all rights reserved.
  
- Version:    1.2.1
+ Version:    1.2.6
  */
 
 #import "BTGConstants.h"
@@ -36,18 +36,31 @@
 
 /**
  *  是否跟踪网络请求，只跟踪 HTTP / HTTPS 请求，默认 NO
+ *  强烈建议同时设置 trackingNetworkURLFilter 对需要跟踪的网络请求进行过滤
  */
 @property(nonatomic, assign) BOOL trackingNetwork;
 
 /**
  *  设置需要跟踪的网络请求 URL，多个地址用 | 隔开，支持正则表达式，不设置则跟踪所有请求
+ *  强烈建议设置为应用服务器接口的域名，如果接口是通过 IP 地址访问，则设置为 IP 地址
+ *  如：设置为 bugtags.com，则网络请求跟踪只对 URL 中包含 bugtags.com 的请求有效
  */
 @property(nonatomic, copy) NSString *trackingNetworkURLFilter;
+
+/**
+ * 网络请求跟踪遇到 HTTPS 请求证书无效的时候，是否允许继续访问，默认 NO
+ */
+@property(nonatomic, assign) BOOL trackingNetworkContinueWithInvalidCertificate;
 
 /**
  *  是否收集闪退时的界面截图，默认 YES
  */
 @property(nonatomic, assign) BOOL crashWithScreenshot;
+
+/**
+ *  是否忽略 PIPE Signal (SIGPIPE) 闪退，默认 NO
+ */
+@property(nonatomic, assign) BOOL ignorePIPESignalCrash;
 
 /**
  * 支持的屏幕方向，默认 UIInterfaceOrientationMaskAllButUpsideDown，请根据您的 App 支持的屏幕方向来设置
@@ -92,6 +105,13 @@
  * @return none
  */
 + (void)setInvocationEvent:(BTGInvocationEvent)invocationEvent;
+
+/**
+ * 获取 Bugtags 当前的呼出方式
+ *
+ * @return 呼出方式
+ */
++ (BTGInvocationEvent)currentInvocationEvent;
 
 /**
  * Bugtags 日志工具，添加自定义日志，不会在控制台输出
@@ -139,6 +159,7 @@ void BTGLog(NSString *format, ...);
 
 /**
  *  设置是否跟踪网络请求，只跟踪 HTTP / HTTPS 请求
+ *  强烈建议同时设置 trackingNetworkURLFilter 对需要跟踪的网络请求进行过滤
  *  @param trackingNetwork - 默认 NO
  *  @return none
  */

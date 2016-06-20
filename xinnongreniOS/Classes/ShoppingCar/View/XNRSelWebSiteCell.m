@@ -43,7 +43,7 @@
     phoneLabel.tintColor = R_G_B_16(0x646464);
     self.phoneLabel = phoneLabel;
 
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(phoneLabel.frame)+PX_TO_PT(15), ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(phoneLabel.frame)+PX_TO_PT(15), ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xc7c7c7);
     self.line = line;
     
@@ -71,7 +71,7 @@
     phoneLabel.textColor = R_G_B_16(0x646464);
     self.phoneLabel = phoneLabel;
     
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(phoneLabel.frame)+PX_TO_PT(15), ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(phoneLabel.frame)+PX_TO_PT(15), ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xc7c7c7);
     self.line = line;
     

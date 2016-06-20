@@ -46,14 +46,14 @@
     [self.contentView addSubview:registerLabel];
     
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(76), ScreenWidth, PX_TO_PT(1))];
-    line.backgroundColor = R_G_B_16(0xf0f0f0);
+    line.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.contentView addSubview:line];
 }
 -(void)setModel:(XNRBookUser *)model
 {
     self.registerLabel.hidden = YES;
     self.nameLabel.text = model.name;
-    if ([model.sex integerValue] == 1) {
+    if ([model.sex integerValue] == 0) {
         [self.icon setImage:[UIImage imageNamed:@"boy1-ico"]];
     }
     else

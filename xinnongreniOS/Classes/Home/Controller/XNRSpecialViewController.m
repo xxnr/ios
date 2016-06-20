@@ -21,11 +21,14 @@
 @interface XNRSpecialViewController()<UITableViewDelegate,UITableViewDataSource,XNRferViewAddBtnDelegate>
 {
     XNRferViewDoType _fertype;
+    XNRferViewDoType _lastType;
+
     BOOL isSort;
     int totalCurPage;
     int compositorCurPage;
     int filterCurPage;
     BOOL isCancel;
+    BOOL istotal;
 }
 
 @property (nonatomic, weak) XNRferView *ferView;
@@ -105,6 +108,7 @@
     totalCurPage = 1;
     compositorCurPage = 1;
     filterCurPage = 1;
+    istotal = YES;
     _totalArray = [NSMutableArray array];
     _compositorArr  = [NSMutableArray array];
     _filterArr = [NSMutableArray array];
@@ -112,6 +116,7 @@
     [self createbackBtn];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     self.currentBtn = 1;
+//    [self getData];
     [self getTotalData];
     // 刷新
     [self setupTotalRefresh];
@@ -286,32 +291,17 @@
         if ([resultObj[@"code"] integerValue] == 1000) {
             NSDictionary *dict = resultDic[@"datas"];
             NSArray *arr = dict[@"rows"];
-            if (_isfirst == NO) {
                 for (NSDictionary *dicts in arr) {
                     XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
                     [model setValuesForKeysWithDictionary:dicts];
                     
-                    [_totalArray addObject:model];
+                    [_filterArr addObject:model];
                 }
-                _isfirst = YES;
-            }
+            
         }
-        //  如果到达最后一页 就消除footer
-        NSInteger pages = [resultDic[@"datas"][@"pages"] integerValue];
-        NSInteger page = [resultDic[@"datas"][@"page"] integerValue];
-        self.tableView.mj_footer.hidden = pages == page;
-        
-        [self.tableView reloadData];
-        [self.tableView.mj_header endRefreshing];
-        [self.tableView.mj_footer endRefreshing];
-        
-        [BMProgressView LoadViewDisappear:self.view];
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self.tableView.mj_header endRefreshing];
-        [self.tableView.mj_footer endRefreshing];
-        [BMProgressView LoadViewDisappear:self.view];
         
         
     }];
@@ -332,6 +322,7 @@
     
     _fertype = type;
     if (type == XNRferView_DoTotalType) {// 综合
+        istotal = YES;
         self.currentBtn = 1;
         totalCurPage = 1;
         [self.totalArray removeAllObjects];
@@ -340,8 +331,9 @@
         [XNRHomeSelectBrandView cancelSelectedBrandView];
         [self.noSelectView removeFromSuperview];
         [self getTotalData];
-        
+        _lastType = type;
     }else if (type == XNRferView_DoPriceType){ // 价格排序
+        istotal = NO;
         self.currentBtn = 2;
         compositorCurPage = 1;
         [self.compositorArr removeAllObjects];
@@ -359,14 +351,15 @@
             [self getPriceDataWith:@"price-desc"];
         }
         
+        _lastType = type;
     }else if(type == XNRferView_DoSelectType){   // 筛选
+
         self.currentBtn = 3;
         filterCurPage = 1;
-        [self.filterArr removeAllObjects];
         
         NSLog(@"筛选");
         self.kind = @"车系";
-        [_filterArr removeAllObjects];
+//        [_filterArr removeAllObjects];
         isCancel = !isCancel;
         NSLog(@"_____+=====%d",isCancel);
         if (isCancel) {
@@ -398,7 +391,9 @@
             [self.view bringSubviewToFront:self.ferView];
             
         }else{
+            _fertype = _lastType;
             [XNRHomeSelectBrandView cancelSelectedBrandView];
+            
         }
     }
 }
@@ -475,7 +470,7 @@
     
     NSDictionary *dic = [NSDictionary dictionary];
     if (self.atts.count != 0) {
-        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.currentBrand?self.currentBrand:@"",@"attributes":self.atts,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",compositorCurPage],@"token":[DataCenter account].token,@"user-agent":@"IOS-v2.0"};
+        dic = @{@"classId":_classId,@"sort":sort,@"brand":self.currentBrand?self.currentBrand:@"",@"attributes":self.atts,@"reservePrice":self.reservePrice?self.reservePrice:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",compositorCurPage],@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     }
     else
     {
@@ -527,6 +522,9 @@
 }
 
 -(void)getselectDataWithName:(NSArray *)param1 and:(NSArray *)param2 and:(NSArray *)param3 and:(NSString *)param4 and:(NSArray *)kinds{
+
+    _lastType = XNRferView_DoSelectType;
+
     NSMutableDictionary *dics = [NSMutableDictionary dictionary];
     [dics setObject:_classId forKey:@"classId"];
     // 品牌的ID
@@ -582,11 +580,12 @@
     
     NSDictionary *dic = [NSDictionary dictionary];
     if (arr.count != 0) {
-        dic = @{@"attributes":arr,@"brand":str?str:@"",@"classId":_classId?_classId:@"",@"reservePrice":param4?param4:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",filterCurPage],@"token":[DataCenter account].token,@"user-agent":@"IOS-v2.0"};
+        dic = @{@"attributes":arr,@"brand":str?str:@"",@"classId":_classId?_classId:@"",@"reservePrice":param4?param4:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",filterCurPage],@"user-agent":@"IOS-v2.0"};
     }else{
         dic =@{@"brand":str?str:@"",@"classId":_classId?_classId:@"",@"reservePrice":param4?param4:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",filterCurPage],@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     }
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.filterArr removeAllObjects];
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -610,14 +609,36 @@
         [self noselectViewShowAndHidden:_filterArr];
         //        self.tableView.legendFooter.hidden = YES;
         self.tableView.mj_footer.hidden = YES;
-        [self.tableView reloadData];
+//        [self.tableView reloadData];
         
+        if (!istotal) {
+        
+            _fertype = XNRferView_DoPriceType;
+            _lastType =XNRferView_DoPriceType;
+            compositorCurPage = 1;
+            [_compositorArr removeAllObjects];
+            if (isSort) { // 正序
+                NSLog(@"正序");
+                [self getPriceDataWith:@"price-asc"];
+            }else{   // 反序
+                NSLog(@"反序");
+                [self getPriceDataWith:@"price-desc"];
+            }
+        }
+        else
+        {
+            _fertype = XNRferView_DoTotalType;
+            _lastType =XNRferView_DoTotalType;
+            totalCurPage = 1;
+            [_totalArray removeAllObjects];
+            [self getTotalData];
+        }
         //  如果到达最后一页 就消除footer
         NSInteger pages = [resultDic[@"datas"][@"pages"] integerValue];
         NSInteger page = [resultDic[@"datas"][@"page"] integerValue];
         self.tableView.mj_footer.hidden = pages == page;
         
-        [self.tableView reloadData];
+//        [self.tableView reloadData];
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         
@@ -674,7 +695,6 @@
     backBtn.frame = CGRectMake(0, 0, 30, 44);
 //    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backBtn addTarget: self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
-     [backBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#009975"]] forState:UIControlStateHighlighted];
     [backBtn setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [backBtn setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
 

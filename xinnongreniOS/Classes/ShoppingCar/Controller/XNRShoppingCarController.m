@@ -20,7 +20,6 @@
 #import "XNRProductInfo_VC.h"
 #import "MJExtension.h"
 #import "XNRShoppingCarFrame.h"
-
 #import "XNRSKUAttributesModel.h"
 
 @interface XNRShoppingCarController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,XNRShopcarViewBtnDelegate,XNRShoppingCartTableViewCellDelegate,UITextFieldDelegate>
@@ -117,6 +116,7 @@
         [self getDataFromDatabase];
         [self setupShopCarOfflineRefresh];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCancelBtn" object:nil];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -135,7 +135,6 @@
   
     // 删除完
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:@"refreshTableView" object:nil];
-    
 }
 
 -(void)refreshTableView
@@ -254,6 +253,7 @@
         _deleteBtn.hidden = YES;
         // 下架商品变成可删除的状态
         [[NSNotificationCenter defaultCenter] postNotificationName:@"normalBtnPresent" object:nil];
+
     }
 }
 
@@ -447,18 +447,13 @@
                 }else{
                     [self.shopCarView removeFromSuperview];
                 }
-                
             }
             // 改变底部
             [self changeBottom];
-            
         };
         
         [alertView BMAlertShow];
-
-    
     }
-    
 }
 
 #pragma mark - 跳转订单信息页
@@ -555,6 +550,7 @@
         self.navigationItem.title = @"购物车";
         self.editeBtn.hidden = YES;
         [self.shopCarView show];
+        return;
     }
     // 取出商品的skuid和数量和additions
     NSMutableArray *tempMarr = [[NSMutableArray alloc]init];
@@ -563,7 +559,7 @@
         NSDictionary *params = @{@"_id":model._id,@"count":model.num?model.num:@"1",@"additions":model.additions,@"token":[DataCenter account].token?[DataCenter account].token:@""};
         [tempMarr addObject:params];
     }
-    [_dataArr removeAllObjects];
+//    [_dataArr removeAllObjects];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -680,11 +676,11 @@
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
-        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
         lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView1];
         
-        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1)];
         lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView2];
         
@@ -822,7 +818,6 @@
         XNRShoppingCarFrame *frameModel = sectionModel.SKUFrameList[indexPath.row];
         NSLog(@"frame.cellHeight==%.2f",frameModel.cellHeight);
         return frameModel.cellHeight;
-        
     }else{
         return 0;
     }
@@ -831,7 +826,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellID = @"cell";
-    
     XNRShoppingCartTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell)
     {
@@ -880,12 +874,12 @@
         };
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.delegate = self;
+        cell.rightString = self.editeBtn.titleLabel.text;
         cell.backgroundColor = [UIColor whiteColor];
         cell.changeBottomBlock = ^{
             [self changeBottom];
         };
     }
-    
     
     if (_dataArr.count > 0) {
         cell.indexPath = indexPath;
@@ -895,6 +889,10 @@
             //传递数据模型model
             cell.shoppingCarFrame = frame;
         }
+    }else{
+            [self.shopCarView show];
+            self.editeBtn.hidden = YES;
+            self.navigationItem.title = @"购物车";
     }
     return cell;
 }
