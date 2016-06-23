@@ -86,7 +86,7 @@
 
 #else
 
-#define Host @"https://101.200.194.203"
+#define Host @"http://101.200.194.203"
 
 #endif
 

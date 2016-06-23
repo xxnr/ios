@@ -216,6 +216,7 @@
 		495405551CC3CEEA001B3234 /* XNRMainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 495405541CC3CEEA001B3234 /* XNRMainItem.m */; };
 		4954055B1CC3CFFA001B3234 /* XNRMainArrowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4954055A1CC3CFFA001B3234 /* XNRMainArrowItem.m */; };
 		4954055E1CC47ABD001B3234 /* XNRMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4954055D1CC47ABD001B3234 /* XNRMainCell.m */; };
+		4955AA541D17C15C00403050 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4955AA531D17C15C00403050 /* libicucore.tbd */; };
 		496713781CD8198500782C12 /* XNRSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 496713771CD8198500782C12 /* XNRSearchBar.m */; };
 		4967137B1CD81F9300782C12 /* XNRRscSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4967137A1CD81F9300782C12 /* XNRRscSearchController.m */; };
 		4967137E1CD8922D00782C12 /* XNRRscFootFrameModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4967137D1CD8922D00782C12 /* XNRRscFootFrameModel.m */; };
@@ -954,6 +955,7 @@
 		4954055A1CC3CFFA001B3234 /* XNRMainArrowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XNRMainArrowItem.m; path = ../Controller/XNRMainArrowItem.m; sourceTree = "<group>"; };
 		4954055C1CC47ABD001B3234 /* XNRMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XNRMainCell.h; path = ../Controller/XNRMainCell.h; sourceTree = "<group>"; };
 		4954055D1CC47ABD001B3234 /* XNRMainCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XNRMainCell.m; path = ../Controller/XNRMainCell.m; sourceTree = "<group>"; };
+		4955AA531D17C15C00403050 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		496713761CD8198500782C12 /* XNRSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSearchBar.h; sourceTree = "<group>"; };
 		496713771CD8198500782C12 /* XNRSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRSearchBar.m; sourceTree = "<group>"; };
 		496713791CD81F9300782C12 /* XNRRscSearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRscSearchController.h; sourceTree = "<group>"; };
@@ -1734,6 +1736,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4955AA541D17C15C00403050 /* libicucore.tbd in Frameworks */,
 				495405171CC1F828001B3234 /* libz.tbd in Frameworks */,
 				495405161CC1F815001B3234 /* libstdc++.tbd in Frameworks */,
 				9C920B371D0E5E7000C187DB /* libWeChatSDK.a in Frameworks */,
@@ -2596,6 +2599,7 @@
 		34BE09A7682540D1BF98EAF1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4955AA531D17C15C00403050 /* libicucore.tbd */,
 				9C06A43E1CA2A87A00B0DED9 /* ImageIO.framework */,
 				9C06A43C1CA2A87300B0DED9 /* CoreLocation.framework */,
 				9C06A43A1CA2A82000B0DED9 /* AVFoundation.framework */,
@@ -4657,9 +4661,13 @@
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMSocial_Sdk_Extra_Frameworks/Wechat",
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_1.2.6/UMSocial_Sdk_5.0.1",
+					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/EPos",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-objc",
+					"-all_load",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ksfc.xxnr;
 				PRODUCT_NAME = xinnongreniOS;
 				PROVISIONING_PROFILE = "";
@@ -4711,9 +4719,13 @@
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMSocial_Sdk_Extra_Frameworks/Wechat",
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/UMessage_Sdk_1.2.6/UMSocial_Sdk_5.0.1",
+					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/EPos",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-objc",
+					"-all_load",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ksfc.xxnr;
 				PRODUCT_NAME = xinnongreniOS;
 				PROVISIONING_PROFILE = "";

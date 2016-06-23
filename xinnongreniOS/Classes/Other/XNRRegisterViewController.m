@@ -144,7 +144,7 @@
     UITextField *newpasswordTextField = [[UITextField alloc]initWithFrame:CGRectMake(PX_TO_PT(96),PX_TO_PT(274), ScreenWidth-PX_TO_PT(160), PX_TO_PT(52))];
     newpasswordTextField.borderStyle = UITextBorderStyleNone;
     newpasswordTextField.secureTextEntry=YES;
-    newpasswordTextField.placeholder = @"请设置您的密码";
+    newpasswordTextField.placeholder = @"请输入您的密码";
     newpasswordTextField.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     newpasswordTextField.delegate = self;
     //设置键盘类型
@@ -214,17 +214,10 @@
                     [self readSecond];
                     
                 }else{
-                    
                     [UILabel showMessage:result[@"message"]];
-                    
                 }
-                
-                
-                
             } failure:^(NSError *error) {
                 NSLog(@"%@",error);
-                
-                
             }];
             //读秒开始记录时间
             NSDate *datenow = [NSDate date];
@@ -236,7 +229,7 @@
             NSString*signTime=[[NSUserDefaults standardUserDefaults]objectForKey:@"getMessageTimeRegister"];
             int signTime_NUM=[signTime intValue];
             /**
-             获取获取验证码的时间
+             获取验证码的时间
              */
             NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:signTime_NUM];
             NSTimeInterval interval=[[NSDate date]timeIntervalSinceDate:confromTimesp];
@@ -253,22 +246,16 @@
                     if([result[@"code"] isEqualToString:@"1000"]){
                         //请求成功读秒
                         [self readSecond];
-                        
                     }else{
-                        
                         [UILabel showMessage:result[@"message"]];
-                        
                     }
                     
                 } failure:^(NSError *error) {
                     
                     [UILabel showMessage:@"网络错误"];
-                    
-                    
-                }];
+            }];
         }
     }
-
 }
 
 #pragma mark - 读秒开始
@@ -371,24 +358,30 @@
     [[NSUserDefaults standardUserDefaults]setValue:self.newpasswordTextField.text forKey:@"password"];
     [[NSUserDefaults standardUserDefaults]setValue:self.phoneNumTextField.text forKey:@"userName"];
         NSLog(@"注册");
-        if(self.phoneNumTextField.text.length==0||self.verifyNumTextField.text.length==0||self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0){
+        if(self.phoneNumTextField.text.length==0){
             
-            [UILabel showMessage:@"请完善您要填写的资料"];
-            
+            [UILabel showMessage:@"请输入手机号"];
+        }else if(self.verifyNumTextField.text.length==0){
+            [UILabel showMessage:@"请输入验证码"];
+
+        }else if(self.newpasswordTextField.text.length==0){
+            [UILabel showMessage:@"请输入密码"];
+
+        }else if(self.againPasswordTextField.text.length==0){
+            [UILabel showMessage:@"请输入确认密码"];
+
         }else if ([self.newpasswordTextField.text isEqualToString:self.againPasswordTextField.text]==NO){
             
-    
-            [UILabel showMessage:@"两次填写的密码不一致请认真核对"];
+            [UILabel showMessage:@"两次密码输入不一致，请重新输入"];
             
         }else if ([self validateMobile:self.phoneNumTextField.text]==NO){
             
-            [UILabel showMessage:@"手机格式错误"];
+            [UILabel showMessage:@"手机号格式错误"];
         }else if(self.admireBtn.selected == NO){
             
             [UILabel showMessage:@"您需要同意注册协议才可继续注册哦~"];
         
         }else{
-            
             [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
             [KSHttpRequest get:KUserPubkey parameters:nil success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
