@@ -18,6 +18,7 @@
 #import "XNRShoppingCarController.h"
 #import "XNRProductInfo_VC.h"
 #import "XNROffLine_VC.h"
+#import "XNRPropertyView.h"
 #define kPayTypeBtn 1000
 #define kSelectedBtn 2000
 
@@ -111,15 +112,14 @@
     //    [self getMinPayPrice];
     [self getData];
     
-    
-//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(librate) name:@"succss_Push" object:nil];
 }
 
-
+-(void)viewWillDisappear:(BOOL)animated{
+    [[XNRPropertyView sharedInstanceWithModel:nil] changeSelfToIdentify];
+}
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
 }
 -(void)getMinPayPrice
 {
@@ -192,6 +192,7 @@
             sectionModel.value = orderStatus[@"value"];
             sectionModel.orderGoodsList = (NSMutableArray *)[XNRCheckOrderModel objectArrayWithKeyValuesArray:datasDic[@"rows"][@"orderGoodsList"]];
             
+
             [_dataArray addObject:sectionModel];
             
             [self setNav];
@@ -295,7 +296,7 @@
     }
     
     ordertotal.font = [UIFont systemFontOfSize:PX_TO_PT(29)];
-    ordertotal.textAlignment = UITextAlignmentRight;
+    ordertotal.textAlignment = NSTextAlignmentRight;
     NSLog(@"%@",self.paySubOrderType);
     
     [self.view addSubview:ordertotal];
@@ -341,7 +342,7 @@
     
     //顶部视图描边
     for (int i = 0; i<2; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, i*top1.height, ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, i*top1.height, ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [topView addSubview:lineView];
         
@@ -387,7 +388,6 @@
             [btn setTitle:@"分次支付" forState:UIControlStateNormal];
             [midView addSubview:btn];
         }
-        
         [btn addTarget:self action:@selector(selPayType:) forControlEvents:UIControlEventTouchDown];
         [midView addSubview:btn];
     }
@@ -660,7 +660,7 @@
     
     UILabel *str = [[UILabel alloc]initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(23))];
     str.backgroundColor = [UIColor whiteColor];
-    str.textAlignment = UITextAlignmentCenter;
+    str.textAlignment = NSTextAlignmentCenter;
     str.text = [NSString stringWithFormat:@"+-可调节金额，幅度500元；最低调至%@元，不足按实际金额支付",self.minPrice];
     str.font = [UIFont systemFontOfSize:PX_TO_PT(20)];
     NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:str.text];
@@ -785,7 +785,7 @@
         //        self.selectedBtnTwo.selected = NO;
         //        _payType = 1;
         //        [self payType];
-        
+        NSLog(@"KAlipay===%@",KAlipay);
         NSDictionary *params = @{@"consumer":@"app",@"orderId":self.orderID,@"price": _Money,@"user-agent":@"IOS-v2.0"};
         [KSHttpRequest post:KAlipay parameters:params success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {

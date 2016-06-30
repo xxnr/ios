@@ -8,6 +8,7 @@
 
 #import "XNRRscCustomerTakeView.h"
 #import "XNRRscOrderModel.h"
+#import "XNRRscOrderDetailModel.h"
 
 @interface XNRRscCustomerTakeView()<UITextFieldDelegate>
 
@@ -47,7 +48,7 @@
         bottomView.backgroundColor = R_G_B_16(0xffffff);
         [self.takeView addSubview:bottomView];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
         line.backgroundColor = R_G_B_16(0xc7c7c7);
         [bottomView addSubview:line];
         
@@ -164,11 +165,13 @@
     
     UITextField *deliverNumberTF = [[UITextField alloc] init];
     deliverNumberTF.frame = CGRectMake(CGRectGetMaxX(deliverNumberLabel.frame)+PX_TO_PT(20), PX_TO_PT(317), PX_TO_PT(360), PX_TO_PT(60));
-    deliverNumberTF.layer.borderWidth = PX_TO_PT(1);
+    deliverNumberTF.layer.borderWidth = PX_TO_PT(2);
     deliverNumberTF.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
     deliverNumberTF.layer.masksToBounds = YES;
     deliverNumberTF.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     deliverNumberTF.keyboardType = UIKeyboardTypeNumberPad;
+    deliverNumberTF.textAlignment = NSTextAlignmentCenter;
+    deliverNumberTF.textColor = R_G_B_16(0xfe9b00);
     deliverNumberTF.alpha = 1.0;
     deliverNumberTF.delegate = self;
     self.deliverNumberTF = deliverNumberTF;
@@ -257,7 +260,7 @@
         [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
         [headView addSubview:cancelBtn];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView];
 

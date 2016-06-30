@@ -53,7 +53,7 @@
     self.image = image;
     [self addSubview:image];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.image.frame) + PX_TO_PT(19), ScreenWidth, PX_TO_PT(2))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.image.frame) + PX_TO_PT(19), ScreenWidth, 1)];
     
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.contentView addSubview:lineView];
@@ -177,14 +177,8 @@
         self.priceLabel.textColor = R_G_B_16(0xff4e00);
 //        self.priceLabel.text = [NSString stringWithFormat:@"¥%.2f",model.unitPrice.doubleValue];
 //        if (model.unitPrice.floatValue>1) {
-//            self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.unitPrice.floatValue];
-//        }else{
-//            self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.unitPrice.floatValue];
-//        }
-        self.priceLabel.text = [NSString stringWithFormat:@"%@",model.unitPrice];
-        if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
-            self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
-        }
+        //现价
+        self.priceLabel.text = [NSString stringWithFormat:@"￥%@",self.model.unitPrice];
 
         self.shopcarBtn.hidden = NO;
     }

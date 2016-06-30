@@ -19,7 +19,6 @@
  *  @return <#return value description#>
  */
 + (NSString *)saveKeyString;
-+ (NSString *)getKeyChainUID;
 
 /**
  *	随机生成UUID

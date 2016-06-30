@@ -12,6 +12,6 @@
 /**
  *  提醒用户更新
  */
-+(void)remaindUserUpData;
++(void)remaindUserUpData:(NSString *)deviceToken;
 
 @end

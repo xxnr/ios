@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SDCycleScrollView.h"
+//#import "SDCycleScrollView.h"
 #import "XNRSignInView.h"
 #import "XNRFerSelect.h"
 
@@ -28,10 +28,8 @@
 //@property (nonatomic, assign) id<XNRHomeCollectionHeaderViewAddBtnDelegate>delegate;
 
 - (void)createCycleScrollViewWith:(NSArray *)imagesURL;
-- (void)setCycleScrollViewArr:(NSArray *)arr;
 
 
-@property (nonatomic, strong) SDCycleScrollView *cycleScrollView;
 @property (nonatomic, weak) UIImageView *imageView;
 @property (nonatomic, weak) UIButton *ferBtn;
 @property (nonatomic, weak) UIButton *carBtn;

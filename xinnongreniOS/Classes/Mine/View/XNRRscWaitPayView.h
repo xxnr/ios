@@ -11,6 +11,7 @@
 typedef void(^XNRRscWaitPayViewBlock)(XNRRscOrderModel *model);
 
 @interface XNRRscWaitPayView : UIView
-@property (nonatomic, copy) XNRRscWaitPayViewBlock com;
+@property (nonatomic, copy) XNRRscWaitPayViewBlock paycom;
+@property (nonatomic,assign)BOOL isRefresh;
 
 @end

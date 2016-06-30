@@ -38,10 +38,11 @@
     //导航返回按钮
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
+//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchDown];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
 
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];

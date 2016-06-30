@@ -84,7 +84,7 @@
 /**
  *  提示用户更新
  */
-#define KuserUpData [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/ISOupgrade"]
+#define KuserUpData [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/AppUpgrade"]
 
 /**
  *  用户选择自提方式时获取收货人列表
@@ -282,15 +282,15 @@
 /**
  *  银联支付获取tn等信息
  */
-#define KUnionpay [NSString stringWithFormat:@"%@/%@",HOST,@"unionpay"]
+#define KUnionpay [NSString stringWithFormat:@"%@/%@",Host,@"unionpay"]
 /**
  *  支付宝支付
  */
-#define KAlipay [NSString stringWithFormat:@"%@/%@",HOST,@"alipay"]
+#define KAlipay [NSString stringWithFormat:@"%@/%@",Host,@"alipay"]
 /**
  *  线下支付
  */
-#define KOfflinepay [NSString stringWithFormat:@"%@/%@",HOST,@"offlinepay"]
+#define KOfflinepay [NSString stringWithFormat:@"%@/%@",Host,@"offlinepay"]
 
 /**
  *   线下支付方式

@@ -12,6 +12,7 @@ typedef void(^XNRRscWaitDeliverViewBlock)(XNRRscOrderModel *model);
 
 @interface XNRRscWaitDeliverView : UIView
 
-@property (nonatomic, copy) XNRRscWaitDeliverViewBlock com;
+@property (nonatomic, copy) XNRRscWaitDeliverViewBlock delivercom;
+@property (nonatomic,assign)BOOL isRefresh;
 
 @end

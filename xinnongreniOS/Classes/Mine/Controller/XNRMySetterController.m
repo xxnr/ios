@@ -14,11 +14,12 @@
 #import "XNRAboutMainController.h"
 #import "XNRNavigationController.h"
 #import "XNRUMShareView.h"
-#import "SDImageCache.h"
+//#import "SDImageCache.h"
 #import "NSString+File.h"
 #import "UMSocial.h"
 #import "UMSocialWechatHandler.h"
 #import "UMSocialQQHandler.h"
+
 
 @interface XNRMySetterController ()<XNRUMShareViewDelegate>
 
@@ -61,7 +62,7 @@
    
     if (type == wechatbtn_type) {
         [UMSocialData defaultData].extConfig.wechatSessionData.url = APPURL;
-        [UMSocialData defaultData].extConfig.wechatSessionData.title = @"新新农人";
+        [UMSocialData defaultData].extConfig.wechatSessionData.title = @"新新农人 - 农业互联网综合服务平台";
         [[UMSocialDataService defaultDataService] postSNSWithTypes:@[UMShareToWechatSession] content:contentString image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response) {
             if (response.responseCode == UMSResponseCodeSuccess) {
                 [UILabel showShareMessage:@"分享成功"];
@@ -74,7 +75,7 @@
 
     }else if (type == wechatCirclebtn_type){
         [UMSocialData defaultData].extConfig.wechatTimelineData.url = APPURL;
-        [UMSocialData defaultData].extConfig.wechatTimelineData.title = @"新新农人";
+        [UMSocialData defaultData].extConfig.wechatTimelineData.title = @"新新农人 - 农业互联网综合服务平台";
 
         [[UMSocialDataService defaultDataService] postSNSWithTypes:@[UMShareToWechatTimeline] content:contentString image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response) {
             if (response.responseCode == UMSResponseCodeSuccess) {
@@ -87,7 +88,7 @@
 
     }else if (type == qqbtn_type){
         [UMSocialData defaultData].extConfig.qqData.url = APPURL;
-        [UMSocialData defaultData].extConfig.qqData.title = @"新新农人";
+        [UMSocialData defaultData].extConfig.qqData.title = @"新新农人 - 农业互联网综合服务平台";
 
         [[UMSocialDataService defaultDataService] postSNSWithTypes:@[UMShareToQQ] content:contentString image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response) {
             if (response.responseCode == UMSResponseCodeSuccess) {
@@ -100,7 +101,7 @@
 
     }else if(type == qzonebtn_type){
         [UMSocialData defaultData].extConfig.qzoneData.url = APPURL;
-        [UMSocialData defaultData].extConfig.qzoneData.title = @"新新农人";
+        [UMSocialData defaultData].extConfig.qzoneData.title = @"新新农人 - 农业互联网综合服务平台";
 
         [[UMSocialDataService defaultDataService] postSNSWithTypes:@[UMShareToQzone] content:contentString image:shareImage location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response) {
             if (response.responseCode == UMSResponseCodeSuccess) {
@@ -203,7 +204,7 @@
     
     // 2.设置组的所有行数据
     XNRMainArrowItem *cleanCache = [XNRMainArrowItem itemWithTitle:@"清除缓存" icon:@"bin-"];
-    NSString *imageCachePath = [SDImageCache sharedImageCache].diskCachePath;
+//    NSString *imageCachePath = [SDImageCache sharedImageCache].diskCachePath;
 //    long long fileSize = [imageCachePath fileSize];
 //    if (fileSize>0) {
 //        cleanCache.subtitle = [NSString stringWithFormat:@"(%.1fM)", fileSize / (1000.0 * 1000.0)];
@@ -219,7 +220,7 @@
                     [self createCoverView];
                     // 清除缓存
                     NSFileManager *mgr = [NSFileManager defaultManager];
-                    [mgr removeItemAtPath:imageCachePath error:nil];
+//                    [mgr removeItemAtPath:imageCachePath error:nil];
                     
                     // 设置subtitle
                     weakClearCache.subtitle = nil;
@@ -270,7 +271,7 @@
     self.titleLabel = titleLabel;
     [AppKeyWindow addSubview:titleLabel];
     
-    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(22), PX_TO_PT(22), PX_TO_PT(44), PX_TO_PT(44))];
+    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(10), PX_TO_PT(22), PX_TO_PT(44), PX_TO_PT(44))];
     circleImage.image = [UIImage imageNamed:@"loader-"];
     self.circleImage = circleImage;
     [titleLabel addSubview:circleImage];
@@ -350,7 +351,7 @@
         sectionTitleLabel.text = @"若您要关闭或开启消息通知，请在iPhone的【设置】-【通知】中，找到应用“新新农人”更改";
         [sectionHeadView addSubview:sectionTitleLabel];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [sectionHeadView addSubview:lineView];
         
@@ -361,7 +362,7 @@
         sectionHeadView.backgroundColor = R_G_B_16(0xfafafa);
         [self.view addSubview:sectionHeadView];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [sectionHeadView addSubview:lineView];
 

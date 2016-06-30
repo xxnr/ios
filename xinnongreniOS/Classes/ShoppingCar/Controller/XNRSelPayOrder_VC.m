@@ -129,7 +129,7 @@
     self.payButtonSep = payButtonSep;
     [self.midView addSubview:payButtonSep];
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.payButtonSep.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.payButtonSep.frame)+PX_TO_PT(20), ScreenWidth, 1)];
     line2.backgroundColor = R_G_B_16(0xC7C7C7);
     [self.midView addSubview:line2];
     
@@ -187,7 +187,7 @@
     self.payButtonFull = payButtonFull;
     [self.bottomView addSubview:payButtonFull];
     
-    UIView *line4 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.payButtonFull.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
+    UIView *line4 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.payButtonFull.frame)+PX_TO_PT(20), ScreenWidth, 1)];
     line4.backgroundColor = R_G_B_16(0xC7C7C7);
     [self.bottomView addSubview:line4];
 
@@ -195,8 +195,8 @@
     detailView.layer.cornerRadius = 10;
     detailView.layer.masksToBounds = YES;
     detailView0.layer.masksToBounds = YES;
-    self.payTypeSep.textAlignment = UITextAlignmentRight;
-    self.payTypeFull.textAlignment = UITextAlignmentRight;
+    self.payTypeSep.textAlignment = NSTextAlignmentRight;
+    self.payTypeFull.textAlignment = NSTextAlignmentRight;
 
 
 }

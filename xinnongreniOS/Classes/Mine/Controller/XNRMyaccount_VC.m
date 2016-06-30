@@ -64,6 +64,11 @@
 @property (nonatomic, weak) UIView *coverView;
 @property (nonatomic, weak) UIView *warnView;
 
+@property (nonatomic, assign) BOOL identifyState;
+
+@property (nonatomic, strong) NSMutableArray *userArray;
+
+
 
 @end
 
@@ -99,6 +104,7 @@
 -(void)refreshIdentifyState
 {
     self.RscLabel.text = @"资料正在审核，请耐心等待";
+    _identifyState = YES;
 
 }
 -(void)dealloc
@@ -187,11 +193,11 @@
     [nickBtn addSubview:nickNameLabel];
     
     
-    UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(120),ScreenWidth,PX_TO_PT(1))];
+    UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(120),ScreenWidth,1)];
     topLine.backgroundColor=R_G_B_16(0xc7c7c7);
     [self.mainScrollView addSubview:topLine];
     
-    UIView*bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(208), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(208), ScreenWidth, 1)];
     bottomLine.backgroundColor=R_G_B_16(0xc7c7c7);
     [self.mainScrollView addSubview:bottomLine];
 }
@@ -241,11 +247,11 @@
         [button addSubview:arrow3];
 
         //分割线
-        UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(0,PX_TO_PT(228)+i*PX_TO_PT(88), ScreenWidth, .5)];
+        UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(0,PX_TO_PT(228)+i*PX_TO_PT(88), ScreenWidth, 1)];
         line2.backgroundColor=R_G_B_16(0xc7c7c7);
         [self.mainScrollView addSubview:line2];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(228)+3*PX_TO_PT(88)+PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(228)+3*PX_TO_PT(88)+PX_TO_PT(86), ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [self.mainScrollView addSubview:lineView];
 }
@@ -446,7 +452,7 @@
     [warnView addSubview:cancelBtn];
     
     for (int i = 1; i<4; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100)*i, ScreenWidth-PX_TO_PT(200), PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100)*i, ScreenWidth-PX_TO_PT(200), 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [warnView addSubview:lineView];
     }
@@ -494,8 +500,6 @@
         [self.warnView removeFromSuperview];
     } completion:^(BOOL finished) {
     }];
-
-    
 }
 
 
@@ -513,22 +517,37 @@
     RscLabel.textColor = R_G_B_16(0x00b38a);
     RscLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.RscLabel = RscLabel;
-    if ([_model.RSCInfoVerifing integerValue] == 1) {
-        RscLabel.text = @"资料正在审核，请耐心等待";
+    
+    _userArray = [NSMutableArray array];
+    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid} success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            NSDictionary *dict = result[@"datas"];
+            XNRUserInfoModel *model = [[XNRUserInfoModel alloc] init];
+            [model setValuesForKeysWithDictionary:dict];
+            [_userArray addObject:model];
+        }
+        
+        XNRUserInfoModel *infoModel = [_userArray lastObject];
+        if ([infoModel.RSCInfoVerifing integerValue] == 1) {
+            RscLabel.text = @"资料正在审核，请耐心等待";
+        }else{
+            RscLabel.text = @"想成为新新农人的县级网点？去申请认证吧~";
+        }
+        if ([infoModel.isRSC integerValue] == 1) {
+            RscLabel.text = @"查看认证信息";
+        }
+        
+    } failure:^(NSError *error) {
+        
+    }];
 
-    }else{
-        RscLabel.text = @"想成为新新农人的县级网点？去申请认证吧~";
-    }
-    if ([_model.isRSC integerValue] == 1) {
-        RscLabel.text = @"查看认证信息";
-    }
     [RscBtn addSubview:RscLabel];
     
     UIImageView *arrow = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.icon.frame)+PX_TO_PT(10), PX_TO_PT(30), PX_TO_PT(16), PX_TO_PT(28))];
     [arrow setImage:[UIImage imageNamed:@"arrow-1"]];
     [RscBtn addSubview:arrow];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [RscBtn addSubview:lineView];
 
@@ -619,15 +638,15 @@
     addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [addressManagerBtn addSubview:addressLabel];
 
-    UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth,PX_TO_PT(1))];
+    UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth,1)];
     topLine.backgroundColor=R_G_B_16(0xc7c7c7);
     [bottomBtn addSubview:topLine];
     
-    UIView *middleLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+    UIView *middleLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(86), ScreenWidth, 1)];
     middleLine.backgroundColor=R_G_B_16(0xc7c7c7);
     [bottomBtn addSubview:middleLine];
     
-    UIView *bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(176), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(176), ScreenWidth, 1)];
     bottomLine.backgroundColor=R_G_B_16(0xc7c7c7);
     [bottomBtn addSubview:bottomLine];
 
@@ -719,15 +738,14 @@
 {
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [controller dismissViewControllerAnimated:YES completion:NULL];
-//    NSString *userId = [DataCenter account].userid;
     NSString *urlString = [NSString stringWithFormat:@"%@",KUserUploadPortrait];
-//    NSString *url = [NSString stringWithFormat:@"%@?userId=%@",urlString,userId];
-    NSString *picSize = [CommonTool uploadPicUrl:urlString params:@{@"userId":[DataCenter account].userid} file:@"resFile" picImage:croppedImage success:^(id result) {
+   NSString *picSize = [CommonTool uploadPicUrl:urlString params:@{@"userId":[DataCenter account].userid} file:@"icon" picImage:croppedImage success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
             [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"userPhoto":result[@"imageUrl"],@"user-agent":@"IOS-v2.0"} success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
                     [UILabel showMessage:@"头像上传成功"];
+                    [BMProgressView LoadViewDisappear:self.view];
                     [_icon setImage:croppedImage forState:UIControlStateNormal];
                 }else{
                     [UILabel showMessage:result[@"message"]];
@@ -826,8 +844,8 @@
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
     
-    
 }
+
 
 -(void)backClick{
     

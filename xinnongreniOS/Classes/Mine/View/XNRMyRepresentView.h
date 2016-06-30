@@ -21,8 +21,6 @@
 
 @property (nonatomic, assign) id<XNRMyRepresentViewAddBtnDelegate> delegate;
 
-+(void)Represent;
-
 @end
 
 @class XNRMyRepresentViewDataModel;

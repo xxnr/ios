@@ -194,6 +194,12 @@
         
         if (_dataArray.count == 0) {
             [self noOrderView];
+        }else{
+            [self.noOrderView removeFromSuperview];
+        }
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
         }
 
         
@@ -272,7 +278,6 @@
     if (_dataFrameArray.count>0) {
         XNRRscFootFrameModel *frameModel = _dataFrameArray[section];
         return frameModel.footViewHeight;
-        
     }else{
         return 0;
     }
@@ -313,8 +318,8 @@
 {
     if (_dataArray.count>0) {
         XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
-        if (self.com) {
-            self.com(sectionModel);
+        if (self.delivercom) {
+            self.delivercom(sectionModel);
         }
     }}
 

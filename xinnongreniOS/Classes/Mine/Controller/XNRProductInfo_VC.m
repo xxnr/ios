@@ -69,7 +69,7 @@
 
 @property (nonatomic, strong) NSMutableArray *picBrowserList;
 
-
+@property (nonatomic, assign) BOOL bottomBtnClick;
 @end
 
 @implementation XNRProductInfo_VC
@@ -97,13 +97,12 @@
     if (!_propertyView) {
         __weak __typeof(self)weakSelf = self;
         // 传回来的属性
-        propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice){
+            propertyView.valueBlock = ^(NSMutableArray *attributes,NSMutableArray *addtions,NSString *price,NSString *marketPrice){
             _attributes = attributes;
             _additions = addtions;
             _Price = price;
             _marketPrice = marketPrice;
             [self.tableView reloadData];
-            
         };
         // 提交订单页面的跳转
         propertyView.com = ^(NSMutableArray *dataArray,CGFloat totalPrice,NSString *totalNum){
@@ -113,17 +112,13 @@
             orderVC.totalSelectNum = totalNum.intValue;
             orderVC.isRoot = YES;
             [weakSelf.navigationController pushViewController:orderVC animated:YES];
-            
         };
         // 跳转登录界面
         propertyView.loginBlock = ^(){
-            
             XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
             login.loginFromProductInfo = YES;
             login.hidesBottomBarWhenPushed = YES;
             [weakSelf.navigationController pushViewController:login animated:YES];
-            
-            
         };
         [self.view addSubview:propertyView];
         self.propertyView = propertyView;
@@ -181,7 +176,6 @@
     footer.automaticallyHidden = YES;
     self.tableView.mj_footer = footer;
     
-    
     //设置UIWebView 有下拉操作
     MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     header.lastUpdatedTimeLabel.hidden = YES;
@@ -196,18 +190,12 @@
     
     NSLog(@"navigation===%@",self.navigationController);
     
+    
 }
-
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 
 -(void)notSelectedAttributes
 {
     [[XNRPropertyView sharedInstanceWithModel:self.model] changeSelfToIdentify];
-
 }
 
 
@@ -321,7 +309,7 @@
     [midView addSubview:selectLine];
     
     for (int i = 1; i<3; i++) {
-        UIView *dividedLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3*i, PX_TO_PT(20), PX_TO_PT(1), PX_TO_PT(40))];
+        UIView *dividedLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3*i, PX_TO_PT(20), 1, PX_TO_PT(40))];
         dividedLine.backgroundColor = R_G_B_16(0xc7c7c7);
         [midView addSubview:dividedLine];
         
@@ -350,10 +338,7 @@
         [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_body_url]];
         [self.webView loadRequest:request];
-        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-            [BMProgressView LoadViewDisappear:self.view];
-        });
+        [BMProgressView LoadViewDisappear:self.view];
         
     }else if (button.tag == KbtnTag + 1)
     {
@@ -364,10 +349,8 @@
         [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_standard_url]];
         [self.webView loadRequest:request];
-        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-            [BMProgressView LoadViewDisappear:self.view];
-        });
+        [BMProgressView LoadViewDisappear:self.view];
+        
         self.tempLabel.textColor = R_G_B_16(0x646464);
         titleLabel.textColor = R_G_B_16(0x00b38a);
         self.tempLabel = titleLabel;
@@ -384,10 +367,7 @@
         [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_support_url]];
         [self.webView loadRequest:request];
-        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-            [BMProgressView LoadViewDisappear:self.view];
-        });
+        [BMProgressView LoadViewDisappear:self.view];
     }
 }
 
@@ -397,7 +377,6 @@
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, frame.viewHeight)];
     tableView.delegate = self;
     tableView.dataSource = self;
-    
     self.tableView = tableView;
     [self.view addSubview:tableView];
 }
@@ -405,6 +384,8 @@
 #pragma mark-获取网络数据
 -(void)getData {
     [KSHttpRequest post:KHomeGetAppProductDetails parameters:@{@"productId":_model.goodsId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        [BMProgressView showCoverWithTarget:self.view color: nil isNavigation:YES];
+
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dic =result[@"datas"];
             XNRProductInfo_model *model = [[XNRProductInfo_model alloc] init];
@@ -413,7 +394,6 @@
             model.max = dic[@"SKUPrice"][@"max"];
             
             model.marketMin = dic[@"SKUMarketPrice"][@"min"];
-            
             model.marketMax = dic[@"SKUMarketPrice"][@"max"];
 
             model._id = dic[@"_id"];
@@ -450,11 +430,15 @@
                 self.bgExpectView.hidden = YES;
             }
         }
-
+        XNRProductInfo_frame *frame = [_goodsArray lastObject];
+        if ([frame.infoModel.app_body_url isEqualToString:@""] &&[frame.infoModel.app_standard_url isEqualToString:@""] && [frame.infoModel.app_support_url isEqualToString:@""]) {
+                _tableView.scrollEnabled = NO;
+            }
+        
         [self.tableView reloadData];
-        
+        [BMProgressView LoadViewDisappear:self.view];
     } failure:^(NSError *error) {
-        
+        [BMProgressView LoadViewDisappear:self.view];
     }];
 }
 
@@ -486,7 +470,6 @@
     self.bgView = bgView;
     [self.view addSubview:bgView];
     
-    
     UILabel *expectLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80))];
     expectLabel.text = @"商品已下架";
     expectLabel.textAlignment = NSTextAlignmentCenter;
@@ -511,7 +494,7 @@
     expectLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [bgExpectView addSubview:expectLabel];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgExpectView addSubview:lineView];
     
@@ -538,7 +521,7 @@
     [bgView addSubview:addBuyCarBtn];
     
     //分割线
-    UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,PX_TO_PT(1) )];
+    UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,1 )];
     line.backgroundColor=R_G_B_16(0xc7c7c7);
     [bgView addSubview:line];
     
@@ -547,11 +530,14 @@
 -(void)buyBtnClick
 {
     [self.propertyView show:XNRBuyType];
+    _bottomBtnClick = YES;
 }
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
     [self.propertyView show:XNRAddCartType];
+    _bottomBtnClick = YES;
+
 }
 #pragma 加减数量
 -(void)btnClick:(UIButton*)button{
@@ -559,16 +545,12 @@
         
         if([self.numTextField.text integerValue]>1){
         self.numTextField.text = [NSString stringWithFormat:@"%ld",(long)[self.numTextField.text floatValue]-1];
-        
         }else{
-            
             self.numTextField.text=@"1";
         }
         
         if([self.numTextField.text isEqualToString:@"1"]){
-            
             self.addBuyCarBtn.enabled=YES;
-            
         }
     }else if(button.tag == kRightBtn){
       
@@ -600,7 +582,7 @@
     cell.additions = _additions;
     cell.Price = _Price;
     cell.marketPrice = _marketPrice;
-    
+    cell.bottomBtnClick = _bottomBtnClick;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     // 传值
@@ -666,8 +648,7 @@
     self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];

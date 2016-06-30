@@ -196,18 +196,19 @@
             self.nameLabel.text = [NSString stringWithFormat:@"%@",dic[@"name"]];
             
             // 价格
-            if ([dic[@"SKUPrice"][@"min"] floatValue] == [dic[@"SKUPrice"][@"max"] floatValue]) {
-                self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[dic[@"SKUPrice"][@"min"] floatValue]];
+            if ([dic[@"SKUPrice"][@"min"] doubleValue] == [dic[@"SKUPrice"][@"max"] doubleValue]) {
+                self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[dic[@"SKUPrice"][@"min"] doubleValue]];
                 if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
                     self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
                 }
 
             }else{
-                NSString *minPrice = [NSString stringWithFormat:@"%.2f",[dic[@"SKUPrice"][@"min"] floatValue]];
-                NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[dic[@"SKUPrice"][@"max"] floatValue]];
-                if ([minPrice rangeOfString:@".00"].length == 3) {
-                    minPrice = [minPrice substringToIndex:minPrice.length-3];
-                }
+                NSString *minPrice = [NSString stringWithFormat:@"%@",dic[@"SKUPrice"][@"min"]];
+                NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[dic[@"SKUPrice"][@"max"] doubleValue]];
+                
+//                if ([minPrice rangeOfString:@".00"].length == 3) {
+//                    minPrice = [minPrice substringToIndex:minPrice.length-3];
+//                }
                 if ([maxPrice rangeOfString:@".00"].length == 3) {
                     maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
                 }
@@ -292,27 +293,26 @@
                 self.shopcarModel.product = skuDict[@"product"];
                 
             }
-            
+
             // 市场价
-            if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]]) {
+            if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]] && [marketPrice[@"min"] integerValue] != 0) {
                 if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
-                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",[marketPrice[@"min"] floatValue]];
+                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %@",marketPrice[@"min"]];
                     if ([_marketPrice rangeOfString:@".00"].length == 3) {
                         _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
                     }
                     
                 }else{
-                    NSString *minPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"min"] floatValue]];
-                    NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] floatValue]];
-                    if ([minPrice rangeOfString:@".00"].length == 3) {
-                        minPrice = [minPrice substringToIndex:minPrice.length-3];
-                    }
+                    NSString *minPrice = [NSString stringWithFormat:@"%@",marketPrice[@"min"]];
+                    NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] doubleValue]];
                     if ([maxPrice rangeOfString:@".00"].length == 3) {
                         maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
                     }
                     _marketPrice = [NSString stringWithFormat:@"市场价¥ %@ - %@",minPrice,maxPrice];
                 }
                 
+            }else{
+                _marketPrice = @"";
             }
             
             // 价格区间改变
@@ -324,7 +324,7 @@
                     self.priceLabel.textColor = R_G_B_16(0x909090);
                     
                 }else{
-                    self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[price[@"min"] floatValue]];
+                    self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[price[@"min"] doubleValue]];
                     if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
                         self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
                         
@@ -345,11 +345,11 @@
                 }
                 
             } else {
-                NSString *minPrice = [NSString stringWithFormat:@"%.2f",[price[@"min"] floatValue]];
-                NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[price[@"max"] floatValue]];
-                if ([minPrice rangeOfString:@".00"].length == 3) {
-                    minPrice = [minPrice substringToIndex:minPrice.length-3];
-                }
+                NSString *minPrice = [NSString stringWithFormat:@"%@",price[@"min"]];
+                NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[price[@"max"] doubleValue]];
+//                if ([minPrice rangeOfString:@".00"].length == 3) {
+//                    minPrice = [minPrice substringToIndex:minPrice.length-3];
+//                }
                 if ([maxPrice rangeOfString:@".00"].length == 3) {
                     maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
                 }
@@ -396,6 +396,7 @@
                 model.additions = newInfoModel.additions;
             } else {
                 model.additions = [NSMutableArray array];
+                [self.shopcarModel.additions removeAllObjects];
             }
             
             
@@ -476,7 +477,7 @@
         [bgViewF addSubview:addBuyCarBtn];
 
         //分割线
-        UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,PX_TO_PT(1) )];
+        UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,1 )];
         line.backgroundColor=R_G_B_16(0xc7c7c7);
         [bgViewF addSubview:line];
     }
@@ -497,7 +498,7 @@
         expectLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
         [bgExpectView addSubview:expectLabel];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [bgExpectView addSubview:lineView];
         
@@ -551,6 +552,7 @@
             _state = YES;
             [self synchShoppingCarDataWithoutToast];
             NSMutableArray *SKUs = [NSMutableArray array];
+            [SKUs removeAllObjects];
             NSDictionary *param = @{@"_id":self.shopcarModel._id?self.shopcarModel._id:@"",@"count":_numText?_numText:@"1",@"additions":self.shopcarModel.additions,@"product":self.shopcarModel.product?self.shopcarModel.product:@"",@"token":[DataCenter account].token?[DataCenter account].token:@""};
             [SKUs addObject:param];
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -792,6 +794,7 @@
     }
     NSString *addtionStr = @"";
     NSMutableArray *addtionArray = [NSMutableArray array];
+    [addtionArray removeAllObjects];
     for (XNRAddtionsModel *addtionModel in infoModel.additions) {
         
         if (addtionModel.isSelected) {
@@ -800,10 +803,11 @@
             NSLog(@"0-=9=90%@",addtionArray);
         }
     }
-    if (attributesArray.count>0) {
-        self.valueBlock(attributesArray,addtionArray,self.priceLabel.text,_marketPrice);
-        
+    if (attributesArray.count == 0) {
+        _marketPrice = nil;
     }
+
+        self.valueBlock(attributesArray,addtionArray,self.priceLabel.text,_marketPrice);
     
 }
 #pragma mark - createCollectionView
@@ -916,7 +920,7 @@
                     [attributesArray addObject:param];
                     _recordeSelected ++;
                     NSLog(@"_recordeSelected%tu",_recordeSelected);
-                    
+                    [self.addtionsArray removeAllObjects];
                 }
             }
         }
@@ -945,19 +949,19 @@
                 NSDictionary *price = datas[@"price"];
                 NSDictionary *marketPrice = datas[@"market_price"];
                 // 市场价
-                if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]]) {
+                if (![KSHttpRequest isNULL:marketPrice[@"min"]] && ![KSHttpRequest isNULL:marketPrice[@"max"]] &&[marketPrice[@"min"] integerValue] != 0 ) {
                     if ([marketPrice[@"min"] floatValue] == [marketPrice[@"max"] floatValue]) {
-                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",[marketPrice[@"min"] floatValue]];
-                        if ([_marketPrice rangeOfString:@".00"].length == 3) {
-                            _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
-                        }
+                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %@",marketPrice[@"min"]];
+//                        if ([_marketPrice rangeOfString:@".00"].length == 3) {
+//                            _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
+//                        }
                         
                     }else{
-                        NSString *minPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"min"] floatValue]];
-                        NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] floatValue]];
-                        if ([minPrice rangeOfString:@".00"].length == 3) {
-                            minPrice = [minPrice substringToIndex:minPrice.length-3];
-                        }
+                        NSString *minPrice = [NSString stringWithFormat:@"%@",marketPrice[@"min"]];
+                        NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[marketPrice[@"max"] doubleValue]];
+//                        if ([minPrice rangeOfString:@".00"].length == 3) {
+//                            minPrice = [minPrice substringToIndex:minPrice.length-3];
+//                        }
                         if ([maxPrice rangeOfString:@".00"].length == 3) {
                             maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
                         }
@@ -965,8 +969,9 @@
                         
                     }
 
+                }else{
+                    _marketPrice = @"";
                 }
-
                 // 价格区间改变
                 if ([price[@"min"] floatValue] == [price[@"max"] floatValue]) {
                     // 判断是否是预售商品
@@ -975,7 +980,7 @@
                         self.priceLabel.textColor = R_G_B_16(0x909090);
                         
                     }else{
-                        self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[price[@"min"] floatValue]];
+                        self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",[price[@"min"] doubleValue]];
                         if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
                             self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
                     }
@@ -993,11 +998,11 @@
                     }
 
                 } else {
-                    NSString *minPrice = [NSString stringWithFormat:@"%.2f",[price[@"min"] floatValue]];
-                    NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[price[@"max"] floatValue]];
-                    if ([minPrice rangeOfString:@".00"].length == 3) {
-                        minPrice = [minPrice substringToIndex:minPrice.length-3];
-                    }
+                    NSString *minPrice = [NSString stringWithFormat:@"%@",price[@"min"]];
+                    NSString *maxPrice = [NSString stringWithFormat:@"%.2f",[price[@"max"] doubleValue]];
+//                    if ([minPrice rangeOfString:@".00"].length == 3) {
+//                        minPrice = [minPrice substringToIndex:minPrice.length-3];
+//                    }
                     if ([maxPrice rangeOfString:@".00"].length == 3) {
                         maxPrice = [maxPrice substringToIndex:maxPrice.length-3];
                     }
@@ -1092,6 +1097,7 @@
                     infoModel.additions = newInfoModel.additions;
                 } else {
                     infoModel.additions = [NSMutableArray array];
+                    [self.shopcarModel.additions removeAllObjects];
                 }
                 
                 [self.collectionView reloadData];
@@ -1103,7 +1109,6 @@
             
         }];
     } else { // 选择了 addtion section（附加选项） 分区
-        
         CGFloat currentPrice = [[[self.priceLabel.text componentsSeparatedByString:@" "] lastObject] floatValue];
         CGFloat currentMarketPrice = [[[_marketPrice componentsSeparatedByString:@" "] lastObject] floatValue];
         for (XNRAddtionsModel *addtionCellModel in infoModel.additions) {
@@ -1131,13 +1136,20 @@
                 }
                 if (addtionCellModel.isSelected) {// 选中
                     // 价格
+                  
                     self.priceLabel.text = [NSString stringWithFormat:@"¥ %.2f",currentPrice+addPrice];
+
                     if ([self.priceLabel.text rangeOfString:@".00"].length == 3) {
                         self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
                     }
                     
                     // 市场价
-                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",currentMarketPrice+addPrice];
+                    if (currentMarketPrice == 0) {
+                        _marketPrice = @"";
+                        
+                    }else{
+                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",currentMarketPrice+addPrice];
+                    }
                     if ([_marketPrice rangeOfString:@".00"].length == 3) {
                         _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
                     }
@@ -1155,7 +1167,11 @@
                         self.priceLabel.text = [self.priceLabel.text substringToIndex:self.priceLabel.text.length-3];
                     }
                     // 市场价
-                    _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",currentMarketPrice-addPrice];
+                    if (currentMarketPrice == 0) {
+                        _marketPrice = @"";
+                    }else{
+                        _marketPrice = [NSString stringWithFormat:@"市场价¥ %.2f",currentMarketPrice-addPrice];
+                    }
                     if ([_marketPrice rangeOfString:@".00"].length == 3) {
                         _marketPrice = [_marketPrice substringToIndex:_marketPrice.length-3];
                     }
@@ -1304,7 +1320,6 @@
     }];
 }
 -(void)show:(XNRPropertyViewType)buyType{
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hhh:) name:@"hhh" object:nil];
     _isForm = nil;
     _type = buyType;

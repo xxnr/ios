@@ -117,7 +117,7 @@
         titleLabel.text = titleArray[i];
         [self.identifyView addSubview:titleLabel];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88)*(i+1), ScreenWidth, PX_TO_PT(1))];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88)*(i+1), ScreenWidth, 1)];
         line.backgroundColor = R_G_B_16(0xc7c7c7);
         [self.identifyView addSubview:line];
         
@@ -144,7 +144,7 @@
         [payTypeBtn setTitle:model.name forState:UIControlStateNormal];
         payTypeBtn.tag = KpayTypeBtn + i;
         [payTypeBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
-//        payTypeBtn.layer.borderWidth = PX_TO_PT(1);
+//        payTypeBtn.layer.borderWidth = 1;
         payTypeBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
 //        payTypeBtn.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
         
@@ -177,7 +177,7 @@
     bottomView.backgroundColor = R_G_B_16(0xffffff);
     [self.identifyView addSubview:bottomView];
     
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xc7c7c7);
     [bottomView addSubview:line];
     
@@ -203,11 +203,12 @@
             [self setWarnViewTitle:@"审核成功"];
             // 刷新tableView
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        }else if ([result[@"code"] integerValue] == 1002){
+            [self cancel];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+            [UILabel showMessage:@"订单已审核"];
+            
         }
-//        else{
-//            [self cancel];
-//            [self setWarnViewTitle:@"请稍后再试"];
-//        }
         
     } failure:^(NSError *error) {
         

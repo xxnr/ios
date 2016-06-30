@@ -80,7 +80,7 @@
     
     if(IS_Login == YES){
     [_userArray removeAllObjects];
-    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"x-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
     if([result[@"code"] integerValue] == 1000){
         
@@ -221,15 +221,12 @@
 
 
 }
+
 -(void)viewWillDisappear:(BOOL)animated
 {
-//    self.badgeImage.hidden = YES;
-//    self.bgLoginView.hidden = YES;
-//    self.bgNotLoginView.hidden = YES;
     [self.mainTabelView removeFromSuperview];
-//    [self.topBgView removeFromSuperview];
-//    [self.view removeFromSuperview];
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -328,7 +325,6 @@
     
     XNRUserInfoModel *infoMdoel = [_userArray firstObject];
     UIView *topBgView;
-//     && [infoMdoel.userType integerValue] == 5
     if ([infoMdoel.isRSC integerValue] == 1) {
         topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(512))];
         topBgView.backgroundColor = [UIColor whiteColor];
@@ -400,7 +396,7 @@
     self.badgeImage = BadgeImage;
     [self.bgLoginView addSubview:BadgeImage];
 
-    UIImageView *arrowImg = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(50), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(12), PX_TO_PT(18), PX_TO_PT(32))];
+    UIImageView *arrowImg = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(50), CGRectGetMaxY(self.introduceLabel.frame) + PX_TO_PT(18), PX_TO_PT(18), PX_TO_PT(32))];
     [arrowImg setImage:[UIImage imageNamed:@"icon_arrow_back"]];
     self.arrowImg = arrowImg;
     [self.bgLoginView addSubview:arrowImg];
@@ -478,7 +474,6 @@
     XNRUserInfoModel *infoModel = [_userArray firstObject];
     UIButton *myStoreBtn;
     UIButton *orderBtn;
-//    && [infoModel.userType integerValue] == 5
     if ([infoModel.isRSC integerValue] == 1) {
         // 我的网点
         myStoreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -522,7 +517,7 @@
     [myStoreBtn addSubview:storeArrowBtn];
     
     CALayer *storeLineLayer = [[CALayer alloc] init];
-    storeLineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, PX_TO_PT(1));
+    storeLineLayer.frame = CGRectMake(0, PX_TO_PT(94), ScreenWidth, 1);
     storeLineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
     [myStoreBtn.layer addSublayer:storeLineLayer];
 
@@ -551,13 +546,12 @@
     [orderBtn addSubview:arrowBtn];
     
     CALayer *lineLayer = [[CALayer alloc] init];
-    lineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, PX_TO_PT(1));
+    lineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, 1);
     lineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
     [orderBtn.layer addSublayer:lineLayer];
 
     // 我的订单的状态
     UIView *orderStateView ;
-//    && [infoModel.userType integerValue] == 5
     if ([infoModel.isRSC integerValue] == 1) {
         return;
     }else{
@@ -596,7 +590,7 @@
     }
     
     CALayer *orderlineLayer = [[CALayer alloc] init];
-    orderlineLayer.frame = CGRectMake(0, PX_TO_PT(129), ScreenWidth, PX_TO_PT(1));
+    orderlineLayer.frame = CGRectMake(0, PX_TO_PT(129), ScreenWidth, 1);
     orderlineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
     [orderStateView.layer addSublayer:orderlineLayer];
 
@@ -684,6 +678,7 @@
         XNRUserInfoModel *Usermodel = [_userArray firstObject];
         vc.model  = Usermodel;
         vc.hidesBottomBarWhenPushed=YES;
+        vc.isfromMineVC = YES;
         [self.navigationController pushViewController:vc animated:YES];
         
     }else{

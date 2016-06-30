@@ -194,8 +194,14 @@
         
         if (_dataArray.count == 0) {
             [self noOrderView];
+        }else{
+            [self.noOrderView removeFromSuperview];
         }
-        
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
+        }
+
         //  如果到达最后一页 就消除footer
         NSInteger page = [result[@"pageCount"] integerValue];
         self.tableView.mj_footer.hidden = page == _currentPage;
@@ -247,8 +253,9 @@
         XNRRscOrderModel *sectionModel = _dataArray[section];
         XNRRscFootFrameModel*footFrameModel = _dataFrameArray[section];
         [sectionFootView upDataFootViewWithModel:footFrameModel];
+        __weak __typeof(&*self)weakSelf = self;
         sectionFootView.com = ^{
-            [self getdetailData:sectionModel];
+                [weakSelf getdetailData:sectionModel];
         };
         return sectionFootView;
     }else{
@@ -265,11 +272,15 @@
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];
             detailModel.consigneeName = orderDict[@"consigneeName"];
             NSDictionary *payment = orderDict[@"payment"];
-            detailModel.price = payment[@"price"];
-            detailModel.id = payment[@"id"];
-            [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            if (![KSHttpRequest isNULL:payment] && [orderDict[@"orderStatus"][@"type"] integerValue]== 2) {
+                detailModel.price = payment[@"price"];
+                detailModel.id = payment[@"id"];
+                [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            }else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+                [UILabel showMessage:@"订单已审核"];
+            }
         }
-
     } failure:^(NSError *error) {
         
     }];
@@ -291,7 +302,6 @@
     if (_dataFrameArray.count>0) {
         XNRRscFootFrameModel *frameModel = _dataFrameArray[section];
         return frameModel.footViewHeight;
-        
     }else{
         return 0;
     }
@@ -331,8 +341,8 @@
 {
     if (_dataArray.count>0) {
         XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
-        if (self.com) {
-            self.com(sectionModel);
+        if (self.identifycom) {
+            self.identifycom(sectionModel);
         }
     }
 }

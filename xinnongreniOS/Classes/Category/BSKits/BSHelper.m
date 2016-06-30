@@ -14,20 +14,19 @@
 @implementation BSHelper
 + (NSString *)saveKeyString {
     
-    
     KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc]
                                          
                                          initWithIdentifier:@"UUID"
                                          
-                                         accessGroup:@"dfqtest.com.dfqtest.keychain"];
+                                         accessGroup:nil];
     
     NSString *strUUID = [keychainItem objectForKey:(id)CFBridgingRelease(kSecValueData)];
     //首次执行该方法时，uuid为空
-    if ([strUUID isEqualToString:@"dfqtest.com.dfqtest.keychain"]) {
+    if ([strUUID isEqualToString:@""] || strUUID == nil) {
         CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
         
         strUUID = (NSString *)CFBridgingRelease(CFUUIDCreateString (kCFAllocatorDefault,uuidRef));
-        
+
         [keychainItem setObject:strUUID forKey:(id)CFBridgingRelease(kSecValueData)];
         NSLog(@"---%@",strUUID);
     }

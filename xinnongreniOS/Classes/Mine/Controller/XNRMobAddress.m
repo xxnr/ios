@@ -164,7 +164,7 @@
 
 
     for (int i = 0; i<3; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, i*PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, i*PX_TO_PT(98), ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [bgView addSubview:lineView];
     }
@@ -279,10 +279,11 @@
     self.navigationItem.titleView = titleLabel;
     
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 0, 80, 44);
-    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backBtn.frame = CGRectMake(0, 0, 30, 44);
+//    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backBtn addTarget: self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backBtn setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
+
     [backBtn setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
 
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];

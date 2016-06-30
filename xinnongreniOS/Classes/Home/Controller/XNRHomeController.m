@@ -22,6 +22,8 @@
 #import "XNRRemaindUserUpdataTool.h"
 #import "XNRUMengPushTool.h"
 #import "XNRCheckOrderVC.h"
+#import "BSHelper.h"
+#define kStoreAppId  @"1021223448"  // （appid数字串）
 
 @interface XNRHomeController ()<UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,UICollectionViewDelegate,XNRHomeCollectionHeaderViewAddBtnDelegate,XNRFerSelectAddBtnDelegate>
 {
@@ -51,21 +53,54 @@
     [self getFerData];
     // 设置返回到顶部按钮
     [self createbackBtn];
-    // 提示用户更新
-    [XNRRemaindUserUpdataTool remaindUserUpData];
     
     // 调用友盟的方法
     NSDictionary *launchOptions = [AppDelegate shareAppDelegate].launchOptions;
     [XNRUMengPushTool umengTrack:launchOptions];
+
     
     //接收登录界面传递的页面刷新通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dealPageRefresh) name:@"PageRefresh" object:nil];
-    
-    //
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openOrderIdController:) name:@"openOrderIDController" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openOrderIdController:) name:@"openOrderIDController" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openWebSiteController:) name:@"openWebSiteController" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(remaindUserToUpdate) name:@"remaindUserToUpdate" object:nil];
 
 }
+
+-(void)remaindUserToUpdate
+{
+    // 提示用户更新
+    NSString *deviceToken = [AppDelegate shareAppDelegate].deviceToken;
+    NSString *UUID = [BSHelper saveKeyString];
+    NSLog(@"UUID ===== %@",UUID);
+    // 获得当前软件的版本号
+    NSString *versionKey = @"CFBundleVersion";
+    NSString *currentVersion = [NSBundle mainBundle].infoDictionary[versionKey];
+    // 提示更新
+    [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion,@"device_token":deviceToken?deviceToken:@"",@"device_id":UUID?UUID:deviceToken,@"user_agent":@"IOS-v2.0"} success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:result[@"message"]delegate:self cancelButtonTitle:@"取消"otherButtonTitles:@"更新",nil];
+            [alert show];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+
+//    [XNRRemaindUserUpdataTool remaindUserUpData:deviceToken];
+}
+
+- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex==1)
+    {
+        // 此处加入应用在app store的地址，方便用户去更新，一种实现方式如下：
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://itunes.apple.com/cn/app/xin-xin-nong-ren-hu-lian-wang/id%@?l=en&mt=8", kStoreAppId]];
+        [[UIApplication sharedApplication] openURL:url];
+    }
+}
+
+
 -(void)openOrderIdController:(NSNotification *)notification
 {
     
@@ -73,6 +108,7 @@
     orderVC.orderID = (NSString *)notification.userInfo;
     [self.navigationController pushViewController:orderVC animated:orderVC];
 }
+
 -(void)openWebSiteController:(NSNotification *)notification
 {
 
@@ -137,12 +173,7 @@
     __weak __typeof(self)weakSelf = self;
     if (IS_Login) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                if ([CommonTool isSignIn]) {
                 [weakSelf requestSignIn];
-            }else{
-                
-                [UILabel showMessage:@"您今日已签到成功，明天再来呦！"];
-            }
         });
     }
     //非登录提示登录
@@ -203,11 +234,9 @@
 
 #pragma mark - 获取轮播数据
 -(void)getCircleData{
+    [_cyclePicArr removeAllObjects];
     [KSHttpRequest post:KHomeGetAdList parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
-       
        if ([result[@"code"] integerValue] == 1000) {
-           //请求成功删除
-           [_cyclePicArr removeAllObjects];
            NSDictionary *datasDic = result[@"datas"];
            NSArray *rowsArr = datasDic[@"rows"];
            for (NSDictionary *subDic in rowsArr) {
@@ -250,30 +279,24 @@
     
     NSMutableArray *idleImage = [NSMutableArray array];
     for (int i = 1; i<21; i++) {
-        
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         [idleImage addObject:image];
     }
-    
     NSMutableArray *RefreshImage = [NSMutableArray array];
     for (int i = 10; i<21; i++) {
-        
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         [RefreshImage addObject:image];
     }
-    
     [header setImages:idleImage forState:MJRefreshStateIdle];
     [header setImages:RefreshImage forState:MJRefreshStatePulling];
     [header setImages:RefreshImage forState:MJRefreshStateRefreshing];
     // 隐藏时间
     header.lastUpdatedTimeLabel.hidden = YES;
-    
     // 隐藏状态
     header.stateLabel.hidden = YES;
     self.homeCollectionView.mj_header = header;
 
 }
-
 
 #pragma mark -- collectionView的代理
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
@@ -318,7 +341,6 @@
         }else{
             XNRCarSelect *headView = (XNRCarSelect *)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifierSecond" forIndexPath:indexPath];
             
-            
             headView.con = ^(){
                  XNRSpecialViewController *specialFer_VC = [[XNRSpecialViewController alloc] init];
                 specialFer_VC.type = eXNRFerType;
@@ -333,7 +355,7 @@
  
             
             };
-            self.headView.cycleScrollView.hidden = YES;
+//            self.headView.cycleScrollView.hidden = YES;
             self.headView.ferBtn.hidden = YES;
             self.headView.carBtn.hidden = YES;
             self.headView.imageView.hidden = YES;
@@ -428,7 +450,6 @@
     }else{
         vc.model=_huafeiArr[indexPath.row];
     }
-    
     vc.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -470,13 +491,11 @@
             NSArray *arr = dicts[@"rows"];
             for (NSDictionary *dict in arr) {
                 XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
-                
                 [model setValuesForKeysWithDictionary:dict];
                 [_huafeiArr addObject:model];
             }
         }
         [self getCarData];
-        
         } failure:^(NSError *error) {
     }];
 }

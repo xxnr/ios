@@ -102,7 +102,7 @@
     [topView addSubview:brandNameLabel];
     
     UILabel *statusLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(brandNameLabel.frame)+PX_TO_PT(10), PX_TO_PT(44), ScreenWidth - PX_TO_PT(32)-CGRectGetMaxX(brandNameLabel.frame)-PX_TO_PT(10), PX_TO_PT(28))];
-    statusLabel.textAlignment = UITextAlignmentRight;
+    statusLabel.textAlignment = NSTextAlignmentRight;
     statusLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     statusLabel.textColor = R_G_B_16(0xFE9B00);
     if ([addtionsModel.deliverStatus integerValue] == 1) {
@@ -163,11 +163,11 @@
     [topView addSubview:priceLabel];
     
     
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0,0, ScreenWidth, PX_TO_PT(1))];
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0,0, ScreenWidth, 1)];
     topLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [topView addSubview:topLine];
     
-//    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0,CGRectGetMaxY(priceLabel.frame) +PX_TO_PT(35), ScreenWidth, PX_TO_PT(1))];
+//    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0,CGRectGetMaxY(priceLabel.frame) +PX_TO_PT(35), ScreenWidth, 1)];
 //    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
 //        [topView addSubview:bottomLine];
     

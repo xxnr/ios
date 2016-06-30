@@ -267,7 +267,7 @@
     [topBgView addSubview:emailTF];
     
     for (int i = 0; i<7; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96)*i, ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96)*i, ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [topBgView addSubview:lineView];
     }
@@ -362,14 +362,13 @@
     [midView addSubview:mySwitch];
     
     for (int i = 0; i<2; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [midView addSubview:lineView];
      }
 }
 
 -(void)mySwitchChange:(UISwitch *)mySwitch{
-    
     if (mySwitch.isOn) {
         addressType = @"1";
         NSLog(@"开启");
@@ -502,8 +501,8 @@
     self.navigationItem.titleView = titleLabel;
     
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 0, 80, 44);
-    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backBtn.frame = CGRectMake(0, 0, 30, 44);
+//    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backBtn addTarget: self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backBtn setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [backBtn setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];

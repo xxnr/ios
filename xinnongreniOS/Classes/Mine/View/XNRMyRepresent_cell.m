@@ -75,11 +75,11 @@
     self.redImageView = redImageView;
     [myRepView addSubview:redImageView];
     
-    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepView addSubview:topLineView];
     
-    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, 1)];
     bottomLineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepView addSubview:bottomLineView];
     

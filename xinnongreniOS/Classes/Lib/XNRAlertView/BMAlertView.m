@@ -94,7 +94,7 @@
         UIView *btnView = [[UIView alloc]initWithFrame:CGRectMake(0, maxY, alertWidth, 45)];
         CGFloat btnWidth = alertWidth/2;
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(btnWidth, 0, PX_TO_PT(2), 45)];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(btnWidth, 0, 1, 45)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [btnView addSubview:lineView];
         for (int i = 0; i < btns.count; i++) {

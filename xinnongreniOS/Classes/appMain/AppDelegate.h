@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "XNRTabBarController.h"
+#import "XNRNewFeatureViewController.h"
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -15,11 +17,19 @@
 
 @property (nonatomic, strong) XNRTabBarController *tabBarController;
 
+@property (nonatomic, strong) XNRNewFeatureViewController *FeatuewController;
+
+
 @property (nonatomic, strong) NSDictionary *launchOptions;
+
+@property (nonatomic, copy) NSString *deviceToken;
 
 + (AppDelegate *)shareAppDelegate;
 
 - (UIViewController *)getTopViewController;
+
+-(UIViewController *)getCurrentViewController;
+
 
 @end
 

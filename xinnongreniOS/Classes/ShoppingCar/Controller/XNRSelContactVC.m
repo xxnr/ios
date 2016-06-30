@@ -271,7 +271,7 @@
     titleLabel.textColor = R_G_B_16(0x323232);
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xc7c7c7);
     [contactView addSubview:imageView];
     [contactView addSubview:titleLabel];

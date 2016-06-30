@@ -44,6 +44,7 @@
 
 @property (nonatomic ,assign ,readonly) CGRect textTopLineF;
 @property (nonatomic ,assign ,readonly) CGRect textbottomLineF;
+@property (nonatomic ,assign ,readonly) CGRect cancelBtnF;
 
 
 // cell的高度

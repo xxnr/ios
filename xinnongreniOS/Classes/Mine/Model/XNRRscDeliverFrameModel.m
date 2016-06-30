@@ -42,7 +42,7 @@
         CGFloat bottomLineX = 0;
         CGFloat bottomLineY = CGRectGetMaxY(_attributesLabelF)+PX_TO_PT(30);
         CGFloat bottomLineW = ScreenWidth;
-        CGFloat bottomLineH = PX_TO_PT(1);
+        CGFloat bottomLineH = 1;
         _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
     }else{
         NSMutableString *addtionsStr = [[NSMutableString alloc] initWithString:@"附加项目:"];
@@ -59,11 +59,15 @@
         CGFloat bottomLineX = 0;
         CGFloat bottomLineY = CGRectGetMaxY(_addtionsLabelF)+PX_TO_PT(30);
         CGFloat bottomLineW = ScreenWidth;
-        CGFloat bottomLineH = PX_TO_PT(1);
+        CGFloat bottomLineH;
+        if (IS_FourInch) {
+             bottomLineH = PX_TO_PT(2);
+        }else{
+             bottomLineH = 1;
+        }
         _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         
     }
-    
     CGFloat imageViewX = PX_TO_PT(30);
     CGFloat imageViewY = CGRectGetMaxY(_bottomLineF)/2-PX_TO_PT(18);
     CGFloat imageViewW = PX_TO_PT(36);

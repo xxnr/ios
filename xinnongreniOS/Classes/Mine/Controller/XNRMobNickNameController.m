@@ -51,11 +51,11 @@
     self.nickNameTF = nickNameTF;
     [bgView addSubview:nickNameTF];
     
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     topLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgView addSubview:topLine];
     
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
     bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [bgView addSubview:bottomLine];
     
@@ -134,8 +134,9 @@
     self.navigationItem.titleView = titleLabel;
     
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 0, 80, 44);
-    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backBtn.frame = CGRectMake(0, 0, 30, 44);
+//    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+//    backBtn.backgroundColor = [UIColor redColor];
     [backBtn addTarget: self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backBtn setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [backBtn setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];

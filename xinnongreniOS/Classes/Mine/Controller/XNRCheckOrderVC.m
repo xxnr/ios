@@ -116,10 +116,10 @@
     [seePayInfoBtn addTarget:self action:@selector(holdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:seePayInfoBtn];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, PX_TO_PT(1))];
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, 1)];
     line1.backgroundColor = R_G_B_16(0xc7c7c7);
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
     line2.backgroundColor = R_G_B_16(0xc7c7c7);
     
     [bottomView addSubview:line1];
@@ -143,10 +143,10 @@
     [seePayInfoBtn addTarget:self action:@selector(makeSureBtn:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:seePayInfoBtn];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, PX_TO_PT(1))];
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, 1)];
     line1.backgroundColor = R_G_B_16(0xc7c7c7);
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
     line2.backgroundColor = R_G_B_16(0xc7c7c7);
     
     [bottomView addSubview:line1];
@@ -184,10 +184,10 @@
     [reviseBtn addTarget:self action:@selector(reviseBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:reviseBtn];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, PX_TO_PT(1))];
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, 1)];
     line1.backgroundColor = R_G_B_16(0xc7c7c7);
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
     line2.backgroundColor = R_G_B_16(0xc7c7c7);
     
     [bottomView addSubview:line1];
@@ -212,10 +212,10 @@
     [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:sectionFour];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, PX_TO_PT(1))];
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, 1)];
     line1.backgroundColor = R_G_B_16(0xc7c7c7);
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
     line2.backgroundColor = R_G_B_16(0xc7c7c7);
 
     [bottomView addSubview:line1];
@@ -367,7 +367,7 @@
             infoLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             [infoView addSubview:infoLabel];
             
-            UIView *line3 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+            UIView *line3 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
             line3.backgroundColor = R_G_B_16(0xc7c7c7);
             [infoView addSubview:line3];
             
@@ -385,9 +385,9 @@
         listLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         listLabel.textColor = R_G_B_16(0x323232);
         
-        UIView *toplineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
+        UIView *toplineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, 1)];
         toplineView.backgroundColor = R_G_B_16(0xc7c7c7);
-        UIView *bottomlineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(108), ScreenWidth, PX_TO_PT(1))];
+        UIView *bottomlineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(108), ScreenWidth, 1)];
         bottomlineView.backgroundColor = R_G_B_16(0xc7c7c7);
         
         [section1View addSubview:listLabel];
@@ -432,9 +432,9 @@
                 [totalPriceLabel setAttributedText:AttributedStringPrice];
                 
                 
-            UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+            UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
             line1.backgroundColor = R_G_B_16(0xc7c7c7);
-            UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(86), ScreenWidth, PX_TO_PT(1))];
+            UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(86), ScreenWidth, 1)];
             line2.backgroundColor = R_G_B_16(0xc7c7c7);
 
             [bottomView addSubview:line1];
@@ -448,7 +448,7 @@
     else if (section == 0)
     {
 
-        UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
         line1.backgroundColor = R_G_B_16(0xc7c7c7);
         return line1;
     }
@@ -481,6 +481,7 @@
     _carryVC = vc;
     
     if (self.model.orderId) {
+
         _carryVC.orderId = self.model.orderId;
     }
     else
@@ -618,7 +619,7 @@
     [orderView addSubview:payTypeLabel];
     
     for (int i = 0; i<2; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(128)*i, ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(128)*i, ScreenWidth, 1)];
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [orderView addSubview:lineView];
     }
@@ -638,7 +639,7 @@
     [deliveryTypeView addSubview:typeLabel];
     
     UILabel *deliveryInfoLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(115), PX_TO_PT(28), PX_TO_PT(115), PX_TO_PT(30))];
-    deliveryInfoLabel.textAlignment = UITextAlignmentRight;
+    deliveryInfoLabel.textAlignment = NSTextAlignmentRight;
     deliveryInfoLabel.text = sectionModel.deliveryTypeName;
     deliveryInfoLabel.textColor = R_G_B_16(0x646464);
     deliveryInfoLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
@@ -799,7 +800,7 @@
     }
     else if(section == 0)
     {
-        return PX_TO_PT(1);
+        return 1;
     }
     else
     {

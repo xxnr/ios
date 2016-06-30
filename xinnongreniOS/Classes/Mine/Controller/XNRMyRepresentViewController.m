@@ -269,8 +269,8 @@ static bool isBroker;
     self.navigationItem.titleView = titleLabel;
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame = CGRectMake(0,0,80,44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame = CGRectMake(0,0,30,44);
+//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backButton addTarget:self action:@selector(backButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
@@ -346,7 +346,7 @@ static bool isBroker;
 //    [self bottomBtnClicked:_leftBtn];
     
     self.selectedBtn = _leftBtn;
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, PX_TO_PT(1), btnH)];
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, btnH)];
     line2.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.bookBtn addSubview:line2];
 
@@ -357,7 +357,7 @@ static bool isBroker;
         self.bookBtn.frame = CGRectMake(CGRectGetMaxX(self.rightBtn.frame), btnY, ScreenWidth/3, btnH);
     }
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame)-PX_TO_PT(1), 0, PX_TO_PT(2), btnH)];
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame)-1, 0, PX_TO_PT(2), btnH)];
     line1.backgroundColor = R_G_B_16(0xc7c7c7);
     [self.leftBtn addSubview:line1];
 
@@ -421,7 +421,6 @@ static bool isBroker;
         [self bookViewGetData];
         
         currentTableView = self.tableView2;
-        
     }
     
     [self setupCustomerRefresh];
@@ -551,7 +550,7 @@ static bool isBroker;
     UIButton *addBtn = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(80)-PX_TO_PT(34), PX_TO_PT(29),PX_TO_PT(80), PX_TO_PT(80))];
     [addBtn setBackgroundImage:[UIImage imageNamed:@"6add-orange"] forState:UIControlStateNormal];
 
-    [addBtn addTarget:self action:@selector(addUser:) forControlEvents:UIControlEventTouchDown];
+    [addBtn addTarget:self action:@selector(addUser:) forControlEvents:UIControlEventTouchUpInside];
     addBtn.layer.cornerRadius = PX_TO_PT(80)/2;
     addBtn.layer.masksToBounds = YES;
     self.addbtn = addBtn;
@@ -669,7 +668,7 @@ static bool isBroker;
                 [self.circleView addSubview:addbtn];
 
                 UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(262), PX_TO_PT(630), PX_TO_PT(197), PX_TO_PT(100))];
-                [btn addTarget:self action:@selector(coverClick:) forControlEvents:UIControlEventTouchDown];
+                [btn addTarget:self action:@selector(coverClick:) forControlEvents:UIControlEventTouchUpInside];
                 
                 
                 if (IS_IPHONE4) {
@@ -775,6 +774,7 @@ static bool isBroker;
             }
             self.bookTopTotalLabel.text = [NSString stringWithFormat:@"共登记%@名客户",result[@"count"]];
             self.bookTopRemainLabel.text = [NSString stringWithFormat:@"今日还可添加%@名",result[@"countLeftToday"]];
+
 
             if (self.bookTopTotalLabel) {
                 
@@ -1039,7 +1039,7 @@ static bool isBroker;
     self.customerLabel = customerLabel;
     [_topView addSubview:customerLabel];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [_topView addSubview:lineView];
 
@@ -1179,7 +1179,7 @@ static bool isBroker;
     self.myRepLabel = myRepLabel;
     [myRepTopView addSubview:myRepLabel];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, PX_TO_PT(1))];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, 1)];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepTopView addSubview:lineView];
 
@@ -1209,11 +1209,11 @@ static bool isBroker;
     self.phoneNumLabel = phoneNumLabel;
     [myRepView addSubview:phoneNumLabel];
     
-    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
     topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepView addSubview:topLineView];
     
-    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, PX_TO_PT(1))];
+    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, 1)];
     bottomLineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [myRepView addSubview:bottomLineView];
 

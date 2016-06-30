@@ -133,12 +133,12 @@
         
         maxY = CGRectGetMaxY(DetailLabel.frame)+PX_TO_PT(28);
         
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, maxY+1, ScreenWidth, PX_TO_PT(1))];
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, maxY+1, ScreenWidth, 1)];
         line.backgroundColor = R_G_B_16(0xE0E0E0);
         [midView addSubview:line];
     }
     
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(1), ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 1, ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xe0e0e0);
     [midView addSubview:line];
     
@@ -156,7 +156,7 @@
     
     for(int i=0;i<2;i++)
     {
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89)*i, ScreenWidth, PX_TO_PT(1))];
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89)*i, ScreenWidth, 1)];
         line.backgroundColor = R_G_B_16(0xe0e0e0);
         [threeView addSubview:line];
         
@@ -193,7 +193,7 @@
     
     [midView addSubview:titleLabel];
     
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xE0E0E0);
     [midView addSubview:line];
     
@@ -210,7 +210,7 @@
     [midView addSubview:detailLabel];
     
     for (int i=0; i<2; i++) {
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(394)*i, ScreenWidth, PX_TO_PT(1))];
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(394)*i, ScreenWidth, 1)];
         line.backgroundColor = R_G_B_16(0xe0e0e0);
         [midView addSubview:line];
     }
@@ -271,8 +271,8 @@
     self.navigationItem.titleView = titleLabel;
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame = CGRectMake(0,0,80,44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame = CGRectMake(0,0,30,44);
+//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backButton addTarget:self action:@selector(backButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];

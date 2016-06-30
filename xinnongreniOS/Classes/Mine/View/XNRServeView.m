@@ -206,7 +206,6 @@
                 sectionModel.payType = subDic[@"payType"];
                 sectionModel.duePrice = subDic[@"duePrice"];
 
-                
                 NSDictionary *orders = subDic[@"order"];
                 sectionModel.totalPrice = orders[@"totalPrice"];
                 sectionModel.deposit = orders[@"deposit"];
@@ -223,8 +222,6 @@
                         XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
                         // 把订单模型传递给frame模型
                         orderFrame.orderModel = model;
-                        
-                        
                         [sectionModel.orderFrameArray addObject:orderFrame];
                         NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
                     }
@@ -238,13 +235,9 @@
                         [sectionModel.orderFrameArray addObject:orderFrame];
                         NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
                     }
-
-                
                 }
             [_dataArr addObject:sectionModel];
             }
-               
-
         }
         
         //刷新列表
@@ -276,8 +269,6 @@
 }
 #pragma mark--创建TableView
 -(void)createMainTableView{
-    
-    
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(100)) style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.showsVerticalScrollIndicator = YES;
@@ -832,6 +823,9 @@
         cell = [[XNRMyOrderServe_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
         
     }
+    cell.attributesArray  = [NSMutableArray array];
+    cell.addtionsArray  = [NSMutableArray array];
+
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.attributesArray = [NSMutableArray array];
     cell.addtionsArray = [NSMutableArray array];

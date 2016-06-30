@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 @class XNRRscOrderModel;
-@class XNRRscOrderDetailModel;
 
 typedef enum : NSUInteger {
     isFromDeliverController,

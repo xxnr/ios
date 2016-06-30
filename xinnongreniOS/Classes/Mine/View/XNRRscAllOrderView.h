@@ -13,6 +13,9 @@ typedef void(^XNRRscAllOrderViewBlock)(XNRRscOrderModel *model);
 
 @interface XNRRscAllOrderView : UIView
 
-@property (nonatomic, copy) XNRRscAllOrderViewBlock com;
+@property (nonatomic, copy) XNRRscAllOrderViewBlock allcom;
+
+@property (nonatomic,assign)BOOL isRefresh;
+
 
 @end

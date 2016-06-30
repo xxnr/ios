@@ -29,7 +29,7 @@
     self.nameLabel = nameLabel;
     [self.contentView addSubview:_nameLabel];
     
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, 1)];
     line.backgroundColor = R_G_B_16(0xc7c7c7);
     self.line = line;
     [self.contentView addSubview:_line];

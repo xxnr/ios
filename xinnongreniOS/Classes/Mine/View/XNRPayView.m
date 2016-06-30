@@ -325,13 +325,10 @@
         [headView addSubview:payTypeLabel];
         
         
-        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
         lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView1];
         
-//        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89), ScreenWidth, PX_TO_PT(1))];
-//        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
-//        [headView addSubview:lineView2];
         
         return headView;
         
@@ -392,7 +389,7 @@
             
             
             for (int i = 0; i<3; i++) {
-                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, 1)];
                 lineView.backgroundColor = R_G_B_16(0xc7c7c7);
                 [bottomView addSubview:lineView];
             }
@@ -455,7 +452,7 @@
             [bottomView addSubview:reviseBtn];
             
             for (int i = 0; i<3; i++) {
-                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, 1)];
                 lineView.backgroundColor = R_G_B_16(0xc7c7c7);
                 [bottomView addSubview:lineView];
             }
@@ -464,7 +461,7 @@
             sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
             [bottomView addSubview:sectionView];
             
-            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
             sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
             [sectionView addSubview:sectionLine];
             
@@ -500,14 +497,14 @@
             sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
             [bottomView addSubview:sectionView];
             
-            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
             sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
             [sectionView addSubview:sectionLine];
             
             
             for (int i = 0; i<2; i++) {
                 
-                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, 1)];
                 lineView.backgroundColor = R_G_B_16(0xc7c7c7);
                 [bottomView addSubview:lineView];
             }
@@ -569,8 +566,6 @@
     }else{
         return 0;
     }
-    
-    
 }
 
 // 设置段数
@@ -626,7 +621,8 @@
         cell = [[XNRMyOrderPayCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
         
     }
-    
+    cell.attributesArray  = [NSMutableArray array];
+    cell.addtionsArray  = [NSMutableArray array];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     cell.attributesArray = [NSMutableArray array];

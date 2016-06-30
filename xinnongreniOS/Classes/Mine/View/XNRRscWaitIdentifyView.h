@@ -14,6 +14,7 @@ typedef void(^XNRRscWaitIdentifyViewBlock)(XNRRscOrderModel *model);
 
 @property (nonatomic, weak) UITableView *tableView;
 
-@property (nonatomic, copy) XNRRscWaitIdentifyViewBlock com;
+@property (nonatomic, copy) XNRRscWaitIdentifyViewBlock identifycom;
+@property (nonatomic,assign)BOOL isRefresh;
 
 @end
