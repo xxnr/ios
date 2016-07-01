@@ -378,11 +378,11 @@
         }else if ([self.newpasswordTextField.text isEqualToString:self.againPasswordTextField.text]==NO){
             
     
-            [UILabel showMessage:@"两次填写的密码不一致请认真核对"];
+            [UILabel showMessage:@"两次密码输入不一致，请重新输入"];
             
         }else if ([self validateMobile:self.phoneNumTextField.text]==NO){
             
-            [UILabel showMessage:@"手机格式错误"];
+            [UILabel showMessage:@"手机号格式错误"];
         }else if(self.admireBtn.selected == NO){
             
             [UILabel showMessage:@"您需要同意注册协议才可继续注册哦~"];

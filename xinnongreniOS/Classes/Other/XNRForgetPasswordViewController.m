@@ -327,17 +327,17 @@
     
     if(self.phoneNumTextField.text.length==0){
         
-    [UILabel showMessage:@"请输入手机号"];
+    [UILabel showMessage:@"请输入您的手机号码"];
 
     }else if ([self validateMobile:self.phoneNumTextField.text]==NO){
 
-    [UILabel showMessage:@"手机格式错误"];
+    [UILabel showMessage:@"手机号格式错误"];
 
     }else if (self.verifyNumTextField.text.length==0){
         [UILabel showMessage:@"请输入验证码"];
     
     }else if (self.newpasswordTextField.text.length==0){
-        [UILabel showMessage:@"请输入密码"];
+        [UILabel showMessage:@"请输入您的密码"];
 
     
     }else if (self.againPasswordTextField.text.length==0){
@@ -346,7 +346,7 @@
     
     }else if ([self.newpasswordTextField.text isEqualToString:self.againPasswordTextField.text]==NO){
         
-        [UILabel showMessage:@"两次填写的密码不一致请认真核对"];
+        [UILabel showMessage:@"两次密码输入不一致，请重新输入"];
         
     }else{
         

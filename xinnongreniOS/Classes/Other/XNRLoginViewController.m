@@ -311,15 +311,15 @@
     NSString *title;
     if ([self.usernameTextField.text isEqualToString:@""] || self.usernameTextField.text == nil) {
         flag = 0;
-        title= @"用户名不能为空";
+        title= @"请输入您的手机号码";
     }
     else if ([self.passwordTextField.text isEqualToString:@""] || self.passwordTextField.text == nil) {
         flag = 0;
-        title= @"密码不能为空";
+        title= @"请输入密码";
     }else if([self validateMobile:self.usernameTextField.text]==NO)
     {
         flag=0;
-        title=@"手机格式错误";
+        title=@"手机号格式错误";
         
        
     }else{
