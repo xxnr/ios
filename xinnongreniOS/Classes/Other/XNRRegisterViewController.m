@@ -371,21 +371,42 @@
     [[NSUserDefaults standardUserDefaults]setValue:self.newpasswordTextField.text forKey:@"password"];
     [[NSUserDefaults standardUserDefaults]setValue:self.phoneNumTextField.text forKey:@"userName"];
         NSLog(@"注册");
-        if(self.phoneNumTextField.text.length==0||self.verifyNumTextField.text.length==0||self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0){
-            
-            [UILabel showMessage:@"请完善您要填写的资料"];
-            
-        }else if ([self.newpasswordTextField.text isEqualToString:self.againPasswordTextField.text]==NO){
-            
-    
+    if (self.phoneNumTextField.text.length==0) {
+        [UILabel showMessage:@"请输入手机号"];
+
+    }else if ([self validateMobile:self.phoneNumTextField.text]==NO){
+        
+        [UILabel showMessage:@"请输入正确的手机号"];
+    }
+    else if(self.verifyNumTextField.text.length==0)
+    {
+        [UILabel showMessage:@"请输入验证码"];
+
+    }
+    else if(self.newpasswordTextField.text.length==0)
+    {
+        [UILabel showMessage:@"请输入密码"];
+    }
+    else if(self.againPasswordTextField.text.length==0)
+    {
+        [UILabel showMessage:@"请输入确认密码"];
+    }
+    else if(self.newpasswordTextField.text.length < 6)
+    {
+        [UILabel showMessage:@"密码需不小于6位"];
+    }
+
+//        if(self.phoneNumTextField.text.length==0||self.verifyNumTextField.text.length==0||self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0){
+//            
+//            [UILabel showMessage:@"请完善您要填写的资料"];
+//            
+//        }
+        else if ([self.newpasswordTextField.text isEqualToString:self.againPasswordTextField.text]==NO){
             [UILabel showMessage:@"两次密码输入不一致，请重新输入"];
             
-        }else if ([self validateMobile:self.phoneNumTextField.text]==NO){
-            
-            [UILabel showMessage:@"手机号格式错误"];
         }else if(self.admireBtn.selected == NO){
             
-            [UILabel showMessage:@"您需要同意注册协议才可继续注册哦~"];
+            [UILabel showMessage:@"请同意网站使用协议"];
         
         }else{
             
@@ -428,6 +449,8 @@
         NSDictionary *datasDic = result[@"datas"];
         if([result[@"code"] isEqualToString:@"1000"]){
             
+        [UILabel showMessage:result[@"message"]];
+
         XNRLoginViewController *loginVC = [[XNRLoginViewController alloc]init];
         loginVC.loginName = datasDic[@"loginName"];
         [self.navigationController pushViewController:loginVC animated:YES];
