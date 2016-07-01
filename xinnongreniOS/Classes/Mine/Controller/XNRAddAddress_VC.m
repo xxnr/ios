@@ -398,21 +398,21 @@
     NSString *title;
     if ([self.recivePersonTF.text isEqualToString:@""] || self.recivePersonTF.text == nil) {
         flag = 0;
-        title = @"收货人不能为空";
+        title = @"请填写收件人姓名";
     }else if ([self.phoneNumTF.text isEqualToString:@""] || self.phoneNumTF.text == nil){
         flag = 0;
-        title = @"电话号码不能为空";
+        title = @"请填写收件人手机号";
     
     }else if ([self validateMobile:self.phoneNumTF.text] == NO){
         flag = 0;
-        title = @"手机格式错误";
+        title = @"请填写正确的手机号";
     
     }else if ([self.addressLabel.text isEqualToString:@""] || self.addressLabel.text == nil){
         flag = 0;
         title = @"请选择城市";
     }else if ([self.detailAddressTF.text isEqualToString:@""] || self.detailAddressTF.text == nil){
         flag = 0;
-        title = @"请输入您的详细地址";
+        title = @"请填写详细地址";
     
     }else{
         if ([self.titleLabel isEqualToString:@"添加收货地址"]) {
