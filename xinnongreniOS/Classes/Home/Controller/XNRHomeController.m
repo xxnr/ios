@@ -54,6 +54,7 @@
     // 设置返回到顶部按钮
     [self createbackBtn];
     
+
     // 调用友盟的方法
     NSDictionary *launchOptions = [AppDelegate shareAppDelegate].launchOptions;
     [XNRUMengPushTool umengTrack:launchOptions];
