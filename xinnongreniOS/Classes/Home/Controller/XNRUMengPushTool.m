@@ -33,6 +33,8 @@
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= _IPHONE80_
 //    if(UMSYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0"))
 //    {
+    if(iOS8){
+        NSLog(@"%.f",[[UIDevice currentDevice].systemVersion floatValue]);
         //register remoteNotification types
         UIMutableUserNotificationAction *action1 = [[UIMutableUserNotificationAction alloc] init];
         action1.identifier = @"action1_identifier";
@@ -48,8 +50,11 @@
         
         UIMutableUserNotificationCategory *categorys = [[UIMutableUserNotificationCategory alloc] init];
         categorys.identifier = @"category1";//这组动作的唯一标示
+
+    if (action1 && action2) {
         [categorys setActions:@[action1,action2] forContext:(UIUserNotificationActionContextDefault)];
-        
+    }
+
 //        UIUserNotificationSettings *userSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert
 //                                                                                     categories:[NSSet setWithObject:categorys]];
 //        [UMessage registerRemoteNotificationAndUserNotificationSettings:userSettings];
@@ -58,7 +63,11 @@
         UIUserNotificationType type8 = UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound;
     
     [UMessage registerForRemoteNotifications:categories withTypesForIos7:types7 withTypesForIos8:type8];
-        
+    }
+    else
+    {
+         [UMessage registerForRemoteNotifications];
+    }
 //    } else{
         //register remoteNotification types
 //        [UMessage registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge

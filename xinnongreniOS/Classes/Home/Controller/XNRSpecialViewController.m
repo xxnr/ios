@@ -512,6 +512,7 @@
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         

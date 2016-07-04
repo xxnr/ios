@@ -106,6 +106,10 @@
      {
         if ([result[@"code"]integerValue] == 1000) {
             
+             if(currentPage == 1)
+             {
+                 [_dataArr removeAllObjects];
+             }
             NSMutableArray *arr = (NSMutableArray *)[XNRRSCModel objectArrayWithKeyValuesArray:result[@"RSCs"]];
             [_dataArr addObjectsFromArray:arr];
             
@@ -128,6 +132,12 @@
             [BMProgressView LoadViewDisappear:self.view];
 
         }
+         else
+         {
+             [self.tableView.mj_header endRefreshing];
+             [self.tableView.mj_footer endRefreshing];
+         }
+         
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
@@ -185,7 +195,7 @@
 }
 -(void)headRefresh{
     currentPage = 1;
-    [_dataArr removeAllObjects];
+//    [_dataArr removeAllObjects];
     [self getData];
 //    [self.tableView reloadData];
     
@@ -206,7 +216,7 @@
     [self setNav];
     _dataArr = [NSMutableArray array];
     _iconArr = [NSMutableArray array];
-    
+    currentPage = 1;
     [self getData];
     [self createTop];
     
@@ -371,7 +381,6 @@
 }
 -(void)btnClick:(UIButton *)sender
 {
-    [self.dataArr removeAllObjects];
     
     self.rollView.frame = CGRectMake((sender.tag - Tag)*ScreenWidth/3, PX_TO_PT(86), ScreenWidth/3, PX_TO_PT(2));
     self.rollView.hidden = NO;
@@ -500,10 +509,10 @@
 {
     
     if (tableView.tag == TableViewTag) {
-        NSString static *cellID = @"cell";
-        XNRSelWebSiteCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+        NSString static *cellID1 = @"cell1";
+        XNRSelWebSiteCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1];
         if (!cell) {
-            cell = [[XNRSelWebSiteCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+            cell = [[XNRSelWebSiteCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID1];
         }
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -624,6 +633,7 @@
             self.tableView2.frame = CGRectMake(0, -self.tableView2.height, self.tableView2.width, self.tableView2.height);
         }];
         currentPage = 1;
+//        [self.dataArr removeAllObjects];
 //        [self.tableView2 reloadData];
         [self getData];
     }
