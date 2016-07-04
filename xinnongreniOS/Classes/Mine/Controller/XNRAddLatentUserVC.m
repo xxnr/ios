@@ -661,11 +661,14 @@
             }
             if ([resultObj[@"code"] integerValue] == 1000) {
                 [UILabel showMessage:@"客户登记成功"];
+                
                 [self.navigationController popViewControllerAnimated:NO];
             }
             else if([resultObj[@"code"] integerValue] == 1401)
             {
-                [UILabel showMessage:resultObj[@"message"]];
+                NSString *str = (NSString *)resultObj[@"message"];
+                [UILabel showMessage:str];
+                
                 UserInfo *infos = [[UserInfo alloc]init];
                 infos.loginState = NO;
                 [DataCenter saveAccount:infos];
