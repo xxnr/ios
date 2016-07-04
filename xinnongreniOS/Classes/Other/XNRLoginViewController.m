@@ -311,17 +311,16 @@
     NSString *title;
     if ([self.usernameTextField.text isEqualToString:@""] || self.usernameTextField.text == nil) {
         flag = 0;
-        title= @"用户名不能为空";
+        title= @"请输入手机号";
+    }
+    else if([self validateMobile:self.usernameTextField.text]==NO)
+    {
+        flag=0;
+        title=@"请输入正确的手机号";
     }
     else if ([self.passwordTextField.text isEqualToString:@""] || self.passwordTextField.text == nil) {
         flag = 0;
-        title= @"密码不能为空";
-    }else if([self validateMobile:self.usernameTextField.text]==NO)
-    {
-        flag=0;
-        title=@"手机格式错误";
-        
-       
+        title= @"请输入密码";
     }else{
         
         [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:NO];
@@ -365,6 +364,8 @@
     [KSHttpRequest post:encode parameters:@{@"account":self.usernameTextField.text,@"password":encryptPassword,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000){
+            
+            [UILabel showMessage:result[@"message"]];
             
             [BMProgressView LoadViewDisappear:self.view];
             //本地归档保存用户账户信息

@@ -152,21 +152,23 @@
     [self.makeSurePasswordTextField resignFirstResponder];
     [self.againPasswordTextField resignFirstResponder];
     
-    if(self.newpasswordTextField.text.length==0)
-    {
-        [UILabel showMessage:@"请输入原密码"];
-        
-    }else if(self.againPasswordTextField.text.length==0){
-        [UILabel showMessage:@"请填写新密码"];
-
-    }else if(self.makeSurePasswordTextField.text.length==0){
-        [UILabel showMessage:@"请填写确认密码"];
-
-    }else if([self.againPasswordTextField.text isEqualToString:self.newpasswordTextField.text]){
-        [UILabel showMessage:@"新密码和旧密码不能一致"];
-        
-    }else if (![self.againPasswordTextField.text isEqualToString:self.makeSurePasswordTextField.text]){
-        [UILabel showMessage:@"新密码与确认密码不一致"];
+    if(self.newpasswordTextField.text.length==0){
+        [UILabel showMessage:@"请输入旧密码"];
+    }
+    else if (self.againPasswordTextField.text.length==0){
+        [UILabel showMessage:@"请输入新密码"];
+    }
+    else if (self.makeSurePasswordTextField.text.length==0){
+        [UILabel showMessage:@"请输入确认密码"];
+    }
+    else if (self.againPasswordTextField.text.length<6){
+        [UILabel showMessage:@"密码需不小于6位"];
+    }
+    else if (self.makeSurePasswordTextField.text.length<6){
+        [UILabel showMessage:@"密码需不小于6位"];
+    }
+    else if (![self.againPasswordTextField.text isEqualToString:self.makeSurePasswordTextField.text]){
+        [UILabel showMessage:@"两次密码不一致，请重新输入"];
     }
     else{
         
@@ -211,7 +213,8 @@
         NSLog(@"%@",result[@"message"]);
         
         if([result[@"code"] isEqualToString:@"1000"]){
-            [UILabel showMessage:@"密码修改成功"];
+            
+            [UILabel showMessage:@"修改密码成功"];
         
             XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
             login.loginFrom = YES;

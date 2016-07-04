@@ -546,18 +546,20 @@
 -(void)btnClick:(UIButton *)button
 {
     if (button == self.resetBtn) {
-        
+        if (_selecteItemArr.count > 0) {
+
         [self.selecteItemArr[2] removeAllObjects];
 
         [self.txArr removeAllObjects];
         [self.resArr removeAllObjects];
         [self.gxArr removeAllObjects];
         
-        for (int i=0; i<_selecteItemArr.count;i++)
-        {
-        for (XNRHomeSelectedBrandItem *item in _selecteItemArr[i]) {
-            item.isSelected = NO;
-        }
+            for (int i=0; i<_selecteItemArr.count;i++)
+            {
+                for (XNRHomeSelectedBrandItem *item in _selecteItemArr[i]) {
+                    item.isSelected = NO;
+                }
+            }
         }
         
         [self.collectionView reloadData];
@@ -565,7 +567,9 @@
     }else if(button == self.admireBtn){
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"x" object:nil];
-        [self loadSeletedDataWith:nil];
+        if (self.selecteItemArr.count > 0) {
+            [self loadSeletedDataWith:nil];
+        }
         [self cancel];
         
         if (_selecteItemArr) {
@@ -768,6 +772,7 @@
 - (void)loadSeletedDataWith:(id)parameObj {
     //TODO:上传要筛选的数据
     
+ 
     NSArray *arr0 = self.selecteItemArr[0];// 品牌
     NSArray *arr1 = self.selecteItemArr[1];// 共性
     NSArray *arr2 = self.selecteItemArr[2];// 特性

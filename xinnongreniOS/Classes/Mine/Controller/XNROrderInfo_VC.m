@@ -1231,7 +1231,7 @@
             return;
         }
         if([self.RSCContactLabel.text isEqualToString:@"请填写收货人信息"]){
-            [UILabel showMessage:@"请填写收货人信息"];
+            [UILabel showMessage:@"请选择联系人"];
             return;
         }
         if ([self.webSiteLabel.text isEqualToString:@"您选择的商品不能在同一个网点自提，请返回购物车重新选择"]) {

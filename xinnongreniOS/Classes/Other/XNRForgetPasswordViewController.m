@@ -342,7 +342,7 @@
 
     }else if ([self validateMobile:self.phoneNumTextField.text]==NO){
 
-    [UILabel showMessage:@"手机格式错误"];
+    [UILabel showMessage:@"请输入正确的手机号"];
 
     }else if (self.verifyNumTextField.text.length==0){
         [UILabel showMessage:@"请输入验证码"];
@@ -351,13 +351,16 @@
         [UILabel showMessage:@"请输入密码"];
 
     
-    }else if (self.againPasswordTextField.text.length==0){
+    }else if (self.newpasswordTextField.text.length<6){
+        [UILabel showMessage:@"密码需不小于6位"];
+    }
+    else if (self.againPasswordTextField.text.length==0){
         [UILabel showMessage:@"请输入确认密码"];
 
     
     }else if ([self.newpasswordTextField.text isEqualToString:self.againPasswordTextField.text]==NO){
         
-        [UILabel showMessage:@"两次填写的密码不一致请认真核对"];
+        [UILabel showMessage:@"两次密码输入不一致，请重新输入"];
         
     }else{
         
@@ -390,6 +393,8 @@
         [BMProgressView LoadViewDisappear:self.view];
         if([result[@"code"] integerValue] == 1000){
             
+            [UILabel showMessage:result[@"message"]];
+
             XNRLoginViewController *vc=[[XNRLoginViewController alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
             vc.loginFrom = YES;
