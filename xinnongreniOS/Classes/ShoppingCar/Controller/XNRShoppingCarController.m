@@ -21,6 +21,7 @@
 #import "MJExtension.h"
 #import "XNRShoppingCarFrame.h"
 #import "XNRSKUAttributesModel.h"
+#import "XNRAddtionsModel.h"
 
 @interface XNRShoppingCarController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,XNRShopcarViewBtnDelegate,XNRShoppingCartTableViewCellDelegate,UITextFieldDelegate>
 {
@@ -512,8 +513,6 @@
                     [sectionModel.SKUFrameList addObject:frameModel];
                     
                     NSLog(@"++_)_%@",sectionModel.SKUFrameList);
-
-                    
                 }
                 
                 NSLog(@"%@",sectionModel.SKUList);
@@ -559,7 +558,7 @@
         NSDictionary *params = @{@"_id":model._id,@"count":model.num?model.num:@"1",@"additions":model.additions,@"token":[DataCenter account].token?[DataCenter account].token:@""};
         [tempMarr addObject:params];
     }
-//    [_dataArr removeAllObjects];
+    [_dataArr removeAllObjects];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -591,8 +590,6 @@
                         [_dataArr addObject:[goodsArray objectAtIndex:i]];
                     }
                 }
-//                NSSet *set = [NSSet setWithArray:goodsArray];
-//                _dataArr = [[set allObjects] mutableCopy];
 
                 for (int i = 0; i<sectionModel.SKUList.count; i++) {
                     XNRShoppingCartModel *model = sectionModel.SKUList[i];
@@ -718,23 +715,27 @@
     // 遍历整个数据源，然后判断如果是选中的商品，就计算价格
     for (int i = 0; i<_dataArr.count; i++) {
         XNRShopCarSectionModel *sectionModel = _dataArr[i];
+
         for (int j = 0; j<sectionModel.SKUFrameList.count; j++) {
             XNRShoppingCarFrame *model = sectionModel.SKUFrameList[j];
             if (model.shoppingCarModel.num != nil) {
                 _goodsNum = _goodsNum + model.shoppingCarModel.num.integerValue;
             }
             if (model.shoppingCarModel.selectState&&[model.shoppingCarModel.online integerValue]==1) {
-                // 合计xxxx
+                // 合计
                 if (model.shoppingCarModel.deposit && [model.shoppingCarModel.deposit doubleValue] > 0) {
                     _totalPrice = _totalPrice + model.shoppingCarModel.num.intValue*[[NSString stringWithFormat:@"%@",model.shoppingCarModel.deposit] doubleValue];
                 }else{
-                    _totalPrice = _totalPrice + model.shoppingCarModel.num.intValue*[[NSString stringWithFormat:@"%@",model.shoppingCarModel.price] doubleValue];
+                    NSString *price;
+                    for (NSDictionary *subDic in model.shoppingCarModel.additions) {
+                        price = [NSString stringWithFormat:@"%@",[subDic objectForKey:@"price"]];
+                    }
+                    _totalPrice = _totalPrice + model.shoppingCarModel.num.intValue*([[NSString stringWithFormat:@"%@",model.shoppingCarModel.price] doubleValue]+[price doubleValue]);
                 }
-                NSLog(@"totalPriceg === %.2f",_totalPrice);
+                NSLog(@"totalPrice === %.2f",_totalPrice);
                 _goodsNumSelected = _goodsNumSelected + model.shoppingCarModel.num.integerValue;
                 _totalSelectNum = _goodsNumSelected;
                 [self.shoppingCarTableView reloadData];
-                
             } else {
                 
         }

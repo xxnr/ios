@@ -315,6 +315,8 @@
 		499B78D71C1AB454003ECE87 /* XNRCityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 499B78D61C1AB454003ECE87 /* XNRCityModel.m */; };
 		49A7BD8E1C75747900913927 /* XNRProductPhotoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7BD8D1C75747900913927 /* XNRProductPhotoModel.m */; };
 		49ADEE1E1C536CE700525AA8 /* XNRNewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49ADEE1D1C536CE700525AA8 /* XNRNewFeatureViewController.m */; };
+		49B79F021D2665EF00B6017B /* XNRIdentifyCodeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B79F011D2665EF00B6017B /* XNRIdentifyCodeModel.m */; };
+		49B79F051D289C7300B6017B /* XNRIdentifyAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B79F041D289C7300B6017B /* XNRIdentifyAlertView.m */; };
 		49C03D831CC4C11900CAFC65 /* XNRAboutMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C03D821CC4C11900CAFC65 /* XNRAboutMainController.m */; };
 		49CD5E2F1C07FF1B004235C4 /* XNRferView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E2E1C07FF1B004235C4 /* XNRferView.m */; };
 		49CD5E351C0814EC004235C4 /* XNRSpecialCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E341C0814EC004235C4 /* XNRSpecialCell.m */; };
@@ -1185,6 +1187,10 @@
 		49A7BD8D1C75747900913927 /* XNRProductPhotoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRProductPhotoModel.m; sourceTree = "<group>"; };
 		49ADEE1C1C536CE700525AA8 /* XNRNewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRNewFeatureViewController.h; sourceTree = "<group>"; };
 		49ADEE1D1C536CE700525AA8 /* XNRNewFeatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRNewFeatureViewController.m; sourceTree = "<group>"; };
+		49B79F001D2665EF00B6017B /* XNRIdentifyCodeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRIdentifyCodeModel.h; sourceTree = "<group>"; };
+		49B79F011D2665EF00B6017B /* XNRIdentifyCodeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRIdentifyCodeModel.m; sourceTree = "<group>"; };
+		49B79F031D289C7300B6017B /* XNRIdentifyAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRIdentifyAlertView.h; sourceTree = "<group>"; };
+		49B79F041D289C7300B6017B /* XNRIdentifyAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRIdentifyAlertView.m; sourceTree = "<group>"; };
 		49C03D811CC4C11900CAFC65 /* XNRAboutMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRAboutMainController.h; sourceTree = "<group>"; };
 		49C03D821CC4C11900CAFC65 /* XNRAboutMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRAboutMainController.m; sourceTree = "<group>"; };
 		49CD5E2D1C07FF1B004235C4 /* XNRferView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRferView.h; sourceTree = "<group>"; };
@@ -3462,6 +3468,10 @@
 				9C4B2EB91CE98FBB00A9ACD6 /* XNRoffthestocksVC.m */,
 				4910F8F01CF4411200ABD331 /* XNRCustomerOrderEmptyView.h */,
 				4910F8F11CF4411200ABD331 /* XNRCustomerOrderEmptyView.m */,
+				49B79F001D2665EF00B6017B /* XNRIdentifyCodeModel.h */,
+				49B79F011D2665EF00B6017B /* XNRIdentifyCodeModel.m */,
+				49B79F031D289C7300B6017B /* XNRIdentifyAlertView.h */,
+				49B79F041D289C7300B6017B /* XNRIdentifyAlertView.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -4238,6 +4248,7 @@
 				53445E911B141354009F79E5 /* XNRLoginViewController.m in Sources */,
 				1FE1D6471B12EE3200F0D158 /* AFHTTPRequestOperation.m in Sources */,
 				8446C2A31B1D6D19005CA932 /* POPGeometry.mm in Sources */,
+				49B79F051D289C7300B6017B /* XNRIdentifyAlertView.m in Sources */,
 				493AEF231C1DF5260088003A /* XNRAddressPickerView.m in Sources */,
 				491610EC1C8C422200F1E243 /* MWCaptionView.m in Sources */,
 				9C3F9B641CC7426C00E44BA8 /* XNRConsigneesCell.m in Sources */,
@@ -4265,6 +4276,7 @@
 				49F99EEB1C155D130000556A /* XNRProductInfo_cell.m in Sources */,
 				4912813B1CCDD9EF009E67C4 /* XNRRscMyOrderStateCell.m in Sources */,
 				4910F8F21CF4411200ABD331 /* XNRCustomerOrderEmptyView.m in Sources */,
+				49B79F021D2665EF00B6017B /* XNRIdentifyCodeModel.m in Sources */,
 				9C3F9B461CC4A27D00E44BA8 /* XNRDeliveryBtn.m in Sources */,
 				49F6B19A1C2A6EE100DCF8CF /* MJPhotoBrowser.m in Sources */,
 				491610FB1C8C454300F1E243 /* MBProgressHUD+Add.m in Sources */,

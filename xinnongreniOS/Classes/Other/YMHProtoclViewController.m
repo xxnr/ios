@@ -34,7 +34,7 @@
 
 - (void)makeNav
 {
-    self.title = @"用户隐私协议";
+    self.title = @"用户协议";
     //导航返回按钮
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     

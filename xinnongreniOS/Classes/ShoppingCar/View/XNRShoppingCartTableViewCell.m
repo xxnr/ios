@@ -522,10 +522,11 @@
 
         if (self.model.num.intValue<1) {
             self.model.num = @"1";
-            [UILabel showMessage:@"数量不能再减少了"];
+            [UILabel showMessage:@"数量不能再减少了哦"];
         }
     }
     if ([self.model.num integerValue] >= 9999) {
+        [UILabel showMessage:@"商品个数不能大于9999"];
         self.rightBtn.enabled = NO;
     }else{
         self.rightBtn.enabled = YES;

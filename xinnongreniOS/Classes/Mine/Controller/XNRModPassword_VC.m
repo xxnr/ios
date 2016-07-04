@@ -152,15 +152,21 @@
     [self.makeSurePasswordTextField resignFirstResponder];
     [self.againPasswordTextField resignFirstResponder];
     
-    if(self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0 || self.makeSurePasswordTextField.text.length==0)
+    if(self.newpasswordTextField.text.length==0)
     {
+        [UILabel showMessage:@"请输入原密码"];
         
-        [UILabel showMessage:@"请完善您要填写的资料"];
+    }else if(self.againPasswordTextField.text.length==0){
+        [UILabel showMessage:@"请填写新密码"];
+
+    }else if(self.makeSurePasswordTextField.text.length==0){
+        [UILabel showMessage:@"请填写确认密码"];
+
+    }else if([self.againPasswordTextField.text isEqualToString:self.newpasswordTextField.text]){
+        [UILabel showMessage:@"新密码和旧密码不能一致"];
         
-    }
-    else if (![self.againPasswordTextField.text isEqualToString:self.makeSurePasswordTextField.text]){
-       
-        [UILabel showMessage:@"新密码与确认密码不同"];
+    }else if (![self.againPasswordTextField.text isEqualToString:self.makeSurePasswordTextField.text]){
+        [UILabel showMessage:@"新密码与确认密码不一致"];
     }
     else{
         

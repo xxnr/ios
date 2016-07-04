@@ -75,8 +75,10 @@
     NSString *UUID = [BSHelper saveKeyString];
     NSLog(@"UUID ===== %@",UUID);
     // 获得当前软件的版本号
-    NSString *versionKey = @"CFBundleVersion";
+    NSString *versionKey = @"CFBundleShortVersionString";
     NSString *currentVersion = [NSBundle mainBundle].infoDictionary[versionKey];
+    NSLog(@"currentVersion== %@",currentVersion);
+
     // 提示更新
     [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion,@"device_token":deviceToken?deviceToken:@"",@"device_id":UUID?UUID:deviceToken,@"user_agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
