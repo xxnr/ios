@@ -7,7 +7,7 @@
 //
 #import "RSA.h"
 #import "XNRRegisterViewController.h"
-#import "YMHProtoclViewController.h"
+#import "XNRUserProtocolViewController.h"
 #import "KSHttpRequest.h"
 #import "XNRLoginViewController.h"
 #import "XNRFinishMineDataController.h"
@@ -42,6 +42,9 @@
 @property (nonatomic ,weak) UITextField *identifyCodeTF;
 @property (nonatomic ,weak) UIImageView *warnImageView;
 @property (nonatomic ,weak) UILabel *warnLabel;
+@property (nonatomic ,weak) UIButton *picImageBtn;
+@property (nonatomic ,weak) UIImageView *circleImage;
+@property(nonatomic,assign)double angle;
 
 
 @end
@@ -208,6 +211,7 @@
         [UILabel showMessage:@"请输入正确的手机号"];
         
     }else{
+        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         [self sendIentifyCode];
     }
 }
@@ -366,7 +370,7 @@
 
 -(void)proBtnClick
 {
-    YMHProtoclViewController *protocol = [[YMHProtoclViewController alloc]init];
+    XNRUserProtocolViewController *protocol = [[XNRUserProtocolViewController alloc]init];
     protocol.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:protocol animated:YES];
 }
@@ -506,86 +510,97 @@
 }
 
 -(void)identifyCodeShow:(NSString *)picStr{
-    UIView *coverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-    coverView.backgroundColor = [UIColor blackColor];
-    coverView.alpha = 0.6;
-    self.coverView = coverView;
-    [AppKeyWindow addSubview:coverView];
-    
-    UIView *alertView = [[UIView alloc] initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(580))*0.5, (ScreenHeight-PX_TO_PT(356))*0.3, PX_TO_PT(580), PX_TO_PT(356))];
-    alertView.backgroundColor = [UIColor whiteColor];
-    alertView.layer.cornerRadius  = 5.0;
-    alertView.layer.masksToBounds = YES;
-    self.alertView = alertView;
-    [AppKeyWindow addSubview:alertView];
-    
-    
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(30), PX_TO_PT(580), PX_TO_PT(36))];
-    titleLabel.text = @"安全验证";
-    titleLabel.textColor = R_G_B_16(0x323232);
-    titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-    [alertView addSubview:titleLabel];
-    
-    UITextField *identifyCodeTF = [[UITextField alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(122), PX_TO_PT(260), PX_TO_PT(68))];
-    identifyCodeTF.layer.borderWidth = PX_TO_PT(2.0);
-    identifyCodeTF.layer.borderColor = R_G_B_16(0xe2e2e2).CGColor;
-    identifyCodeTF.clearButtonMode = UITextFieldViewModeAlways;
-    identifyCodeTF.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
-    identifyCodeTF.placeholder = @"请输入图形验证码";
-    identifyCodeTF.textAlignment = NSTextAlignmentCenter;
-    self.identifyCodeTF = identifyCodeTF;
-    [alertView addSubview:identifyCodeTF];
-    
-    
-    UIImageView *picImage = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(identifyCodeTF.frame)+PX_TO_PT(20), PX_TO_PT(122), PX_TO_PT(190), PX_TO_PT(68))];
-    picImage.layer.borderWidth = PX_TO_PT(2.0);
-    picImage.layer.borderColor = R_G_B_16(0xe2e2e2).CGColor;
-    [picImage sd_setImageWithURL:[NSURL URLWithString:picStr] placeholderImage:[UIImage imageNamed:@"load-failed"]];
-    picImage.userInteractionEnabled = YES;
-    self.picImage = picImage;
-    [alertView addSubview:picImage];
-    
-    
-    UIButton *picImageBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(190), PX_TO_PT(68))];
-    
-    [picImageBtn addTarget: self action:@selector(picImageBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [picImage addSubview:picImageBtn];
+    if (!self.coverView && !self.alertView) {
+        UIView *coverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+        coverView.backgroundColor = [UIColor blackColor];
+        coverView.alpha = 0.6;
+        self.coverView = coverView;
+        [AppKeyWindow addSubview:coverView];
+        
+        UIView *alertView = [[UIView alloc] initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(580))*0.5, (ScreenHeight-PX_TO_PT(356))*0.3, PX_TO_PT(580), PX_TO_PT(356))];
+        alertView.backgroundColor = [UIColor whiteColor];
+        alertView.layer.cornerRadius  = 5.0;
+        alertView.layer.masksToBounds = YES;
+        self.alertView = alertView;
+        [AppKeyWindow addSubview:alertView];
+        
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(30), PX_TO_PT(580), PX_TO_PT(36))];
+        titleLabel.text = @"安全验证";
+        titleLabel.textColor = R_G_B_16(0x323232);
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+        [alertView addSubview:titleLabel];
+        
+        UITextField *identifyCodeTF = [[UITextField alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(122), PX_TO_PT(260), PX_TO_PT(68))];
+        identifyCodeTF.layer.borderWidth = PX_TO_PT(2.0);
+        identifyCodeTF.layer.borderColor = R_G_B_16(0xe2e2e2).CGColor;
+        identifyCodeTF.clearButtonMode = UITextFieldViewModeAlways;
+        identifyCodeTF.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
+        identifyCodeTF.placeholder = @"请输入图形验证码";
+        identifyCodeTF.textAlignment = NSTextAlignmentCenter;
+        self.identifyCodeTF = identifyCodeTF;
+        [alertView addSubview:identifyCodeTF];
+        
+        UIButton *picImageBtn = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(identifyCodeTF.frame)+PX_TO_PT(20), PX_TO_PT(122), PX_TO_PT(190), PX_TO_PT(68))];
+        picImageBtn.layer.borderWidth = 1.0;
+        picImageBtn.layer.borderColor = R_G_B_16(0xe2e2e2).CGColor;
+        [picImageBtn addTarget: self action:@selector(picImageBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        self.picImageBtn = picImageBtn;
+        [alertView addSubview:picImageBtn];
+        
+        UIImageView *picImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(190), PX_TO_PT(68))];
+        [picImage sd_setImageWithURL:[NSURL URLWithString:picStr] placeholderImage:[UIImage imageNamed:@"load-failed"]];
+        self.picImage = picImage;
+        [picImageBtn addSubview:picImage];
 
-    
-    UIButton *refreshBnt = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picImage.frame)+PX_TO_PT(20), PX_TO_PT(142), PX_TO_PT(28), PX_TO_PT(28))];
-    [refreshBnt setImage:[UIImage imageNamed:@"refresh"] forState:UIControlStateNormal];
-    [refreshBnt addTarget: self action:@selector(refreshBntClick) forControlEvents:UIControlEventTouchUpInside];
-    [alertView addSubview:refreshBnt];
-    
-    
-    UIButton *cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, PX_TO_PT(256), PX_TO_PT(290), PX_TO_PT(100))];
-    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
-    [cancelBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
-    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-    [cancelBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#ffffff"]] forState:UIControlStateHighlighted];
+        
+        
+        UIButton *refreshBnt = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picImageBtn.frame)+PX_TO_PT(20), PX_TO_PT(142), PX_TO_PT(28), PX_TO_PT(28))];
+        [refreshBnt setImage:[UIImage imageNamed:@"refresh"] forState:UIControlStateNormal];
+        [refreshBnt addTarget: self action:@selector(refreshBntClick) forControlEvents:UIControlEventTouchUpInside];
+        [alertView addSubview:refreshBnt];
+        
+        
+        UIButton *cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, PX_TO_PT(256), PX_TO_PT(290), PX_TO_PT(100))];
+        [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+        [cancelBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
+        cancelBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+        [cancelBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#ffffff"]] forState:UIControlStateHighlighted];
+        
+        [cancelBtn addTarget: self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        [alertView addSubview:cancelBtn];
+        
+        UIButton *admireBtn = [[UIButton alloc] initWithFrame:CGRectMake(PX_TO_PT(280), PX_TO_PT(256), PX_TO_PT(290), PX_TO_PT(100))];
+        [admireBtn setTitle:@"确定" forState:UIControlStateNormal];
+        [admireBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
+        [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#ffffff"]] forState:UIControlStateHighlighted];
+        admireBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+        [admireBtn addTarget: self action:@selector(admireBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        [alertView addSubview:admireBtn];
+        
+        
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(255), PX_TO_PT(580), PX_TO_PT(1))];
+        lineView.backgroundColor = R_G_B_16(0xe2e2e2);
+        [alertView addSubview:lineView];
+        
+        
+        UIView *middleLineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(290), PX_TO_PT(256), PX_TO_PT(1), PX_TO_PT(100))];
+        middleLineView.backgroundColor = R_G_B_16(0xe2e2e2);
+        [alertView addSubview:middleLineView];
 
-    [cancelBtn addTarget: self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [alertView addSubview:cancelBtn];
-    
-    UIButton *admireBtn = [[UIButton alloc] initWithFrame:CGRectMake(PX_TO_PT(280), PX_TO_PT(256), PX_TO_PT(290), PX_TO_PT(100))];
-    [admireBtn setTitle:@"确定" forState:UIControlStateNormal];
-    [admireBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
-    [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#ffffff"]] forState:UIControlStateHighlighted];
-    admireBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-    [admireBtn addTarget: self action:@selector(admireBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [alertView addSubview:admireBtn];
-    
-    
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(255), PX_TO_PT(580), PX_TO_PT(1))];
-    lineView.backgroundColor = R_G_B_16(0xe2e2e2);
-    [alertView addSubview:lineView];
-    
-    
-    UIView *middleLineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(290), PX_TO_PT(256), PX_TO_PT(1), PX_TO_PT(100))];
-    middleLineView.backgroundColor = R_G_B_16(0xe2e2e2);
-    [alertView addSubview:middleLineView];
+    }
+   
 }
+
+-(void)transformAction {
+    _angle += 0.5;//angle角度 double angle;
+    if (_angle > 6.28) {//大于 M_PI*2(360度) 角度再次从0开始
+        _angle = 0;
+    }
+    self.circleImage.transform = CGAffineTransformMakeRotation(_angle);
+}
+
+
 // 刷新
 -(void)refreshBntClick
 {
@@ -599,6 +614,14 @@
 
 
 -(void)refreshIdentifyPicture{
+    [self.picImage removeFromSuperview];
+    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44))];
+    circleImage.image = [UIImage imageNamed:@"spinner_gray-0"];
+    self.circleImage = circleImage;
+    [self.picImageBtn addSubview:circleImage];
+    [self startAnimation];
+//    _timer = [NSTimer scheduledTimerWithTimeInterval:0.8 target:self selector:@selector(transformAction) userInfo:nil repeats:YES];
+
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:[DataCenter account].token?[DataCenter account].token:@"" forKey:@"token"];
     [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
@@ -617,18 +640,40 @@
     [manager GET:URL parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSLog(@"---------返回数据:---------%@",responseObject);
-        self.picImage.image = [UIImage imageWithData:responseObject];
+        [circleImage removeFromSuperview];
+        UIImageView *picImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(190), PX_TO_PT(68))];
+        picImage.image = [UIImage imageWithData:responseObject];
+        self.picImage = picImage;
+        [self.picImageBtn addSubview:picImage];
+
         self.identifyCodeTF.text = @"";
         [self.warnImageView removeFromSuperview];
         [self.warnLabel removeFromSuperview];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        self.picImage.image = [UIImage imageNamed:@"load-failed"];
+        [circleImage removeFromSuperview];
+        UIImageView *picImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(190), PX_TO_PT(68))];
+        picImage.image = [UIImage imageNamed:@"load-failed"];
+        self.picImage = picImage;
+        [self.picImageBtn addSubview:picImage];
+
     }];
     
 }
+-(void) startAnimation
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.01];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDidStopSelector:@selector(endAnimation)];
+    self.circleImage.transform = CGAffineTransformMakeRotation(_angle * (M_PI / 180.0f));
+}
 
-
+-(void)endAnimation
+{
+    _angle += 10;
+    [self startAnimation];
+}
 // 取消
 -(void)cancelBtnClick
 {
@@ -639,32 +684,50 @@
 // 确定
 -(void)admireBtnClick
 {
+    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44))];
+    circleImage.image = [UIImage imageNamed:@"spinner_gray-0"];
+    self.circleImage = circleImage;
+    [self.picImageBtn addSubview:circleImage];
+    [self startAnimation];
+
+//    _timer = [NSTimer scheduledTimerWithTimeInterval:0.8 target:self selector:@selector(transformAction) userInfo:nil repeats:YES];
+    
     if ([self.identifyCodeTF.text isEqualToString:@""] || self.identifyCodeTF.text == nil) {
+        [circleImage removeFromSuperview];
         [self showWarn:nil];
     }else{
+        [self.picImage removeFromSuperview];
         [KSHttpRequest post:KUserSms parameters:@{@"bizcode":@"register",@"tel":self.phoneNumTextField.text,@"authCode":self.identifyCodeTF.text?self.identifyCodeTF.text:@""} success:^(id result) {
 
             if([result[@"code"] integerValue] == 1000){
                 XNRIdentifyCodeModel *model = [[XNRIdentifyCodeModel alloc] init];
                 model = [XNRIdentifyCodeModel objectWithKeyValues:result];
                 if (model.captcha) {
-                    [self.picImage sd_setImageWithURL:[NSURL URLWithString:model.captcha] placeholderImage:[UIImage imageNamed:@"load-failed"]];
+                    [circleImage removeFromSuperview];
+                    UIImageView *picImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(190), PX_TO_PT(68))];
+                    [picImage sd_setImageWithURL:[NSURL URLWithString:model.captcha] placeholderImage:nil];
+                    self.picImage = picImage;
+                    [self.picImageBtn addSubview:picImage];
+
                     [self showWarn:result[@"message"]];
+                    self.identifyCodeTF.text = @"";
+
                 }else{
                     [self.coverView removeFromSuperview];
                     [self.alertView removeFromSuperview];
                     
                     //请求成功读秒
                     [self readSecond];
-                    [UILabel showMessage:result[@"message"]];
+                    [UILabel showMessage:@"成功获取短信，请注意查收"];
                 }
                 
             }else{
+                [circleImage removeFromSuperview];
                 [self showWarn:result[@"message"]];
             }
             
         } failure:^(NSError *error) {
-            
+            self.picImage.image = [UIImage imageNamed:@"load-failed"];
             [UILabel showMessage:@"网络错误"];
         }];
     }
@@ -677,7 +740,7 @@
     self.warnImageView = warnImageView;
     [self.alertView addSubview:warnImageView];
     
-    UILabel *warnLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(warnImageView.frame)+PX_TO_PT(7), CGRectGetMaxY(self.identifyCodeTF.frame)+PX_TO_PT(14), PX_TO_PT(200), PX_TO_PT(26))];
+    UILabel *warnLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(warnImageView.frame)+PX_TO_PT(7), CGRectGetMaxY(self.identifyCodeTF.frame)+PX_TO_PT(14), PX_TO_PT(500), PX_TO_PT(26))];
     if (toast == nil) {
         warnLabel.text = @"请输入图形验证码";
     }else{
@@ -704,6 +767,7 @@
             NSLog(@"%@",result);
             
             if([result[@"code"] integerValue] == 1000){
+                [BMProgressView LoadViewDisappear:self.view];
                 XNRIdentifyCodeModel *model = [[XNRIdentifyCodeModel alloc] init];
                 model = [XNRIdentifyCodeModel objectWithKeyValues:result];
                 if (model.captcha) {
@@ -715,14 +779,16 @@
 
                     //请求成功读秒
                     [self readSecond];
-                    [UILabel showMessage:result[@"message"]];
+                    [UILabel showMessage:@"成功获取短信，请注意查收"];
 
                 }
                 
             }else{
+                [BMProgressView LoadViewDisappear:self.view];
                 [UILabel showMessage:result[@"message"]];
             }
         } failure:^(NSError *error) {
+            [UILabel showMessage:@"网络错误"];
             NSLog(@"%@",error);
         }];
         //读秒开始记录时间
@@ -750,6 +816,7 @@
         
         [KSHttpRequest post:KUserSms parameters:@{@"bizcode":@"register",@"tel":self.phoneNumTextField.text,@"authCode":self.identifyCodeTF.text?self.identifyCodeTF.text:@""} success:^(id result) {
             if([result[@"code"] integerValue] == 1000){
+                [BMProgressView LoadViewDisappear:self.view];
                 XNRIdentifyCodeModel *model = [[XNRIdentifyCodeModel alloc] init];
                 model = [XNRIdentifyCodeModel objectWithKeyValues:result];
                 if (model.captcha) {
@@ -761,10 +828,11 @@
 
                     //请求成功读秒
                     [self readSecond];
-                    [UILabel showMessage:result[@"message"]];
+                    [UILabel showMessage:@"成功获取短信，请注意查收"];
 
                 }
             }else{
+                [BMProgressView LoadViewDisappear:self.view];
                 [UILabel showMessage:result[@"message"]];
             }
             

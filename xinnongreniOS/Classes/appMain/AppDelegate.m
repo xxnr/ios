@@ -101,7 +101,7 @@
     
 
     // 启动bugtags
-    [XNRBugTagsTool openBugTags];
+//    [XNRBugTagsTool openBugTags];
     
     // 判断是否是推送进来的
     NSDictionary* remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
