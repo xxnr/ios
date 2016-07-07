@@ -559,7 +559,7 @@
         NSDictionary *params = @{@"_id":model._id,@"count":model.num?model.num:@"1",@"additions":model.additions,@"token":[DataCenter account].token?[DataCenter account].token:@""};
         [tempMarr addObject:params];
     }
-//    [_dataArr removeAllObjects];
+    [_dataArr removeAllObjects];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
