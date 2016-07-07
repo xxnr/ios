@@ -266,9 +266,7 @@
 }
 #pragma mark  - 获得商品数据
 -(void)getData
-{
-    //    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
-    
+{    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -512,6 +510,7 @@
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         

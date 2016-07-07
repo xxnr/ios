@@ -53,6 +53,7 @@
 @property (nonatomic ,weak) UIButton *selectedBtnTwo;
 
 @property (nonatomic,weak) UIButton *selectedBtnThree;
+
 @property (nonatomic, strong) UIButton *btn1;
 
 @property (nonatomic, strong) UIButton *btn2;
@@ -438,6 +439,7 @@
     fkTypeLabel.textColor = R_G_B_16(0x323232);
     fkTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [fkType addSubview:fkTypeLabel];
+    
     
     //付款的几种方式
     UIView *payTypeDetailView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(fkType.frame), ScreenWidth, PX_TO_PT(356))];
@@ -871,6 +873,7 @@
 }
 #pragma mark - 底部视图
 -(void)createBottomView{
+    
     UIButton *goPayBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     goPayBtn.frame = CGRectMake(PX_TO_PT(32), ScreenHeight - PX_TO_PT(40)-PX_TO_PT(89)-64, ScreenWidth - PX_TO_PT(32)*2, PX_TO_PT(89));
     goPayBtn.backgroundColor = R_G_B_16(0xFE9B00);
@@ -928,22 +931,6 @@
         NSLog(@"%@",error);
         
     }];
-
-
-     //
-    //    NSLog(@"%ld",[_Money integerValue]);
-    
-    
-    //    XNROrderSuccessViewController*vc=[[XNROrderSuccessViewController alloc]init];
-    //    vc.money = _Money;
-    //    vc.orderID = self.orderID;
-    //    vc.fromType = self.fromType;
-    //    vc.paymentId = self.paymentId;
-    //    vc.recieveName = self.recieveName;
-    //    vc.recievePhone = self.recievePhone;
-    //    vc.recieveAddress = self.recieveAddress;
-    //    vc.hidesBottomBarWhenPushed=YES;
-    //    [self.navigationController pushViewController:vc animated:YES];
     
 }
 

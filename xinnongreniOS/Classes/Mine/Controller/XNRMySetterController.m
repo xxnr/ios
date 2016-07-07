@@ -285,9 +285,9 @@
     if (_angle > 6.28) {//大于 M_PI*2(360度) 角度再次从0开始
         _angle = 0;
     }
-    //    [UIView animateWithDuration:0.1 animations:^{
-    self.circleImage.transform = CGAffineTransformMakeRotation(_angle);
-    //    }];
+//        [UIView animateWithDuration:0.5 animations:^{
+    self.circleImage.transform = CGAffineTransformMakeRotation(M_PI);
+//        }];
 }
 
 

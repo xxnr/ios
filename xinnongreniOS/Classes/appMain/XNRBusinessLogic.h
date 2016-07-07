@@ -23,7 +23,16 @@
 /**
  *  短信验证码
  */
-#define KUserSms [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/sms"]
+#define KUserSms [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.3/sms"]
+/**
+ *  图形验证码
+ */
+//#define KCapSms [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.3/sms"]
+/**
+ *  刷新图形验证码
+ */
+#define KCaptcha [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.3/captcha"]
+
 /**
  *  用户找回密码
  */

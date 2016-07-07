@@ -63,7 +63,7 @@
 //网络是否打开
 #define NETWORK_OPEN [[MonitorNetworkViewController sharedInstance] isOpen]
 ///0-测试地址 1-生产地址
-#define kYBNetworkRelease 0
+#define kYBNetworkRelease 1
 
 #if kYBNetworkRelease
 
@@ -72,13 +72,12 @@
 #else
 
 #define HOST @"http://101.200.194.203"
-//#define HOST @"http://192.168.1.4"
+//#define HOST @"http://192.168.1.15"
 
 #endif
 
-
 ///0-测试地址 1-生产地址
-#define kXNRNetworkRelease 0
+#define kXNRNetworkRelease 1
 
 #if kXNRNetworkRelease
 
@@ -86,7 +85,7 @@
 
 #else
 
-#define Host @"https://101.200.194.203"
+#define Host @"http://101.200.194.203"
 
 #endif
 

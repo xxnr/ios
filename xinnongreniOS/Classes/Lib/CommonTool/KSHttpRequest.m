@@ -33,11 +33,10 @@ static int loginCount = 0;
     [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
     manager.requestSerializer.timeoutInterval = 30.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
-    
     NSLog(@"=========【get】上传数据：=========%@",[NSString stringWithFormat:@"%@",dic]);
     NSString *URL = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-     [manager GET:URL parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
+     [manager GET:URL parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
          NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
          NSLog(@"---------返回数据:---------%@",str);
          id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];

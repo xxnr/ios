@@ -51,18 +51,13 @@
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    
     if ([self respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.interactivePopGestureRecognizer.enabled = NO;
-//        [super pushViewController:viewController animated:YES];
     }
-    
-    
     CATransition *trans=[CATransition animation];
     trans.type=@"cube";
     trans.subtype=@"fromLeft";
     trans.duration = .35;
-//    [self.view.layer addAnimation:trans forKey:nil];
     [super pushViewController:viewController animated:animated];
 }
 
@@ -71,7 +66,6 @@
     CATransition *trans=[CATransition animation];
     trans.type=@"suckEffect";
     trans.duration = .35;
-//    [self.view.layer addAnimation:trans forKey:nil];
     return [super popViewControllerAnimated:animated];
 }
 

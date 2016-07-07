@@ -54,6 +54,7 @@
     // 设置返回到顶部按钮
     [self createbackBtn];
     
+
     // 调用友盟的方法
     NSDictionary *launchOptions = [AppDelegate shareAppDelegate].launchOptions;
     [XNRUMengPushTool umengTrack:launchOptions];
@@ -65,7 +66,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openWebSiteController:) name:@"openWebSiteController" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(remaindUserToUpdate) name:@"remaindUserToUpdate" object:nil];
-
 }
 
 -(void)remaindUserToUpdate
@@ -75,8 +75,10 @@
     NSString *UUID = [BSHelper saveKeyString];
     NSLog(@"UUID ===== %@",UUID);
     // 获得当前软件的版本号
-    NSString *versionKey = @"CFBundleVersion";
+    NSString *versionKey = @"CFBundleShortVersionString";
     NSString *currentVersion = [NSBundle mainBundle].infoDictionary[versionKey];
+    NSLog(@"currentVersion== %@",currentVersion);
+
     // 提示更新
     [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion,@"device_token":deviceToken?deviceToken:@"",@"device_id":UUID?UUID:deviceToken,@"user_agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
