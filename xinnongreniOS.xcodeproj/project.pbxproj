@@ -531,6 +531,41 @@
 		9C06A43B1CA2A82000B0DED9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C06A43A1CA2A82000B0DED9 /* AVFoundation.framework */; };
 		9C06A43D1CA2A87300B0DED9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C06A43C1CA2A87300B0DED9 /* CoreLocation.framework */; };
 		9C06A43F1CA2A87A00B0DED9 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C06A43E1CA2A87A00B0DED9 /* ImageIO.framework */; };
+		9C206F3D1D2D0BAE0041548A /* compiler.xml in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F161D2D0BAE0041548A /* compiler.xml */; };
+		9C206F3E1D2D0BAE0041548A /* profiles_settings.xml in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F181D2D0BAE0041548A /* profiles_settings.xml */; };
+		9C206F3F1D2D0BAE0041548A /* demo.iml in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F191D2D0BAE0041548A /* demo.iml */; };
+		9C206F401D2D0BAE0041548A /* misc.xml in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F1A1D2D0BAE0041548A /* misc.xml */; };
+		9C206F411D2D0BAE0041548A /* modules.xml in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F1B1D2D0BAE0041548A /* modules.xml */; };
+		9C206F421D2D0BAE0041548A /* workspace.xml in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F1C1D2D0BAE0041548A /* workspace.xml */; };
+		9C206F431D2D0BAE0041548A /* accountTestCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F1E1D2D0BAE0041548A /* accountTestCase.js */; };
+		9C206F441D2D0BAE0041548A /* baseClass.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F1F1D2D0BAE0041548A /* baseClass.js */; };
+		9C206F451D2D0BAE0041548A /* carryCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F201D2D0BAE0041548A /* carryCase.js */; };
+		9C206F461D2D0BAE0041548A /* homeCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F211D2D0BAE0041548A /* homeCase.js */; };
+		9C206F471D2D0BAE0041548A /* lognCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F221D2D0BAE0041548A /* lognCase.js */; };
+		9C206F481D2D0BAE0041548A /* newsCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F231D2D0BAE0041548A /* newsCase.js */; };
+		9C206F491D2D0BAE0041548A /* orderListCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F241D2D0BAE0041548A /* orderListCase.js */; };
+		9C206F4A1D2D0BAE0041548A /* payTypeCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F251D2D0BAE0041548A /* payTypeCase.js */; };
+		9C206F4B1D2D0BAE0041548A /* representCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F261D2D0BAE0041548A /* representCase.js */; };
+		9C206F4C1D2D0BAE0041548A /* specialPerformance.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F271D2D0BAE0041548A /* specialPerformance.js */; };
+		9C206F4D1D2D0BAE0041548A /* test.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F281D2D0BAE0041548A /* test.js */; };
+		9C206F4E1D2D0BAE0041548A /* assertions.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F2A1D2D0BAE0041548A /* assertions.js */; };
+		9C206F4F1D2D0BAE0041548A /* image_asserter in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F2B1D2D0BAE0041548A /* image_asserter */; };
+		9C206F501D2D0BAE0041548A /* image_assertion.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F2C1D2D0BAE0041548A /* image_assertion.js */; };
+		9C206F511D2D0BAE0041548A /* image_assertion.rb in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F2D1D2D0BAE0041548A /* image_assertion.rb */; };
+		9C206F521D2D0BAE0041548A /* lang-ext.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F2E1D2D0BAE0041548A /* lang-ext.js */; };
+		9C206F531D2D0BAE0041548A /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F2F1D2D0BAE0041548A /* LICENSE */; };
+		9C206F541D2D0BAE0041548A /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 9C206F301D2D0BAE0041548A /* README.md */; };
+		9C206F551D2D0BAE0041548A /* screen.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F311D2D0BAE0041548A /* screen.js */; };
+		9C206F561D2D0BAE0041548A /* test.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F321D2D0BAE0041548A /* test.js */; };
+		9C206F571D2D0BAE0041548A /* abbreviated_console_output.rb in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F341D2D0BAE0041548A /* abbreviated_console_output.rb */; };
+		9C206F581D2D0BAE0041548A /* colored_console_output.rb in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F351D2D0BAE0041548A /* colored_console_output.rb */; };
+		9C206F591D2D0BAE0041548A /* console_output.rb in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F361D2D0BAE0041548A /* console_output.rb */; };
+		9C206F5A1D2D0BAE0041548A /* preprocessor.rb in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F371D2D0BAE0041548A /* preprocessor.rb */; };
+		9C206F5B1D2D0BAE0041548A /* run in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F381D2D0BAE0041548A /* run */; };
+		9C206F5C1D2D0BAE0041548A /* xunit_output.rb in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F391D2D0BAE0041548A /* xunit_output.rb */; };
+		9C206F5D1D2D0BAE0041548A /* tuneup.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F3A1D2D0BAE0041548A /* tuneup.js */; };
+		9C206F5E1D2D0BAE0041548A /* tuneup_js.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F3B1D2D0BAE0041548A /* tuneup_js.podspec */; };
+		9C206F5F1D2D0BAE0041548A /* uiautomation-ext.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C206F3C1D2D0BAE0041548A /* uiautomation-ext.js */; };
 		9C293EB61CA128FD00D9C7F6 /* XRNSubOrdersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C293EB51CA128FD00D9C7F6 /* XRNSubOrdersModel.m */; };
 		9C293EB91CA1292F00D9C7F6 /* XNRSubOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C293EB81CA1292F00D9C7F6 /* XNRSubOrderCell.m */; };
 		9C392DE71CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C392DE61CA4E8F200AD0F27 /* XNRCollectionViewFlowLayout.m */; };
@@ -1600,6 +1635,41 @@
 		9C06A43A1CA2A82000B0DED9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9C06A43C1CA2A87300B0DED9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		9C06A43E1CA2A87A00B0DED9 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		9C206F161D2D0BAE0041548A /* compiler.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = compiler.xml; sourceTree = "<group>"; };
+		9C206F181D2D0BAE0041548A /* profiles_settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = profiles_settings.xml; sourceTree = "<group>"; };
+		9C206F191D2D0BAE0041548A /* demo.iml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = demo.iml; sourceTree = "<group>"; };
+		9C206F1A1D2D0BAE0041548A /* misc.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = misc.xml; sourceTree = "<group>"; };
+		9C206F1B1D2D0BAE0041548A /* modules.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = modules.xml; sourceTree = "<group>"; };
+		9C206F1C1D2D0BAE0041548A /* workspace.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = workspace.xml; sourceTree = "<group>"; };
+		9C206F1E1D2D0BAE0041548A /* accountTestCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = accountTestCase.js; sourceTree = "<group>"; };
+		9C206F1F1D2D0BAE0041548A /* baseClass.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = baseClass.js; sourceTree = "<group>"; };
+		9C206F201D2D0BAE0041548A /* carryCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = carryCase.js; sourceTree = "<group>"; };
+		9C206F211D2D0BAE0041548A /* homeCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = homeCase.js; sourceTree = "<group>"; };
+		9C206F221D2D0BAE0041548A /* lognCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = lognCase.js; sourceTree = "<group>"; };
+		9C206F231D2D0BAE0041548A /* newsCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = newsCase.js; sourceTree = "<group>"; };
+		9C206F241D2D0BAE0041548A /* orderListCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = orderListCase.js; sourceTree = "<group>"; };
+		9C206F251D2D0BAE0041548A /* payTypeCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = payTypeCase.js; sourceTree = "<group>"; };
+		9C206F261D2D0BAE0041548A /* representCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = representCase.js; sourceTree = "<group>"; };
+		9C206F271D2D0BAE0041548A /* specialPerformance.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = specialPerformance.js; sourceTree = "<group>"; };
+		9C206F281D2D0BAE0041548A /* test.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = test.js; sourceTree = "<group>"; };
+		9C206F2A1D2D0BAE0041548A /* assertions.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = assertions.js; sourceTree = "<group>"; };
+		9C206F2B1D2D0BAE0041548A /* image_asserter */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = image_asserter; sourceTree = "<group>"; };
+		9C206F2C1D2D0BAE0041548A /* image_assertion.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = image_assertion.js; sourceTree = "<group>"; };
+		9C206F2D1D2D0BAE0041548A /* image_assertion.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = image_assertion.rb; sourceTree = "<group>"; };
+		9C206F2E1D2D0BAE0041548A /* lang-ext.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "lang-ext.js"; sourceTree = "<group>"; };
+		9C206F2F1D2D0BAE0041548A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		9C206F301D2D0BAE0041548A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		9C206F311D2D0BAE0041548A /* screen.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = screen.js; sourceTree = "<group>"; };
+		9C206F321D2D0BAE0041548A /* test.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = test.js; sourceTree = "<group>"; };
+		9C206F341D2D0BAE0041548A /* abbreviated_console_output.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = abbreviated_console_output.rb; sourceTree = "<group>"; };
+		9C206F351D2D0BAE0041548A /* colored_console_output.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = colored_console_output.rb; sourceTree = "<group>"; };
+		9C206F361D2D0BAE0041548A /* console_output.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = console_output.rb; sourceTree = "<group>"; };
+		9C206F371D2D0BAE0041548A /* preprocessor.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = preprocessor.rb; sourceTree = "<group>"; };
+		9C206F381D2D0BAE0041548A /* run */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = run; sourceTree = "<group>"; };
+		9C206F391D2D0BAE0041548A /* xunit_output.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = xunit_output.rb; sourceTree = "<group>"; };
+		9C206F3A1D2D0BAE0041548A /* tuneup.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = tuneup.js; sourceTree = "<group>"; };
+		9C206F3B1D2D0BAE0041548A /* tuneup_js.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tuneup_js.podspec; sourceTree = "<group>"; };
+		9C206F3C1D2D0BAE0041548A /* uiautomation-ext.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "uiautomation-ext.js"; sourceTree = "<group>"; };
 		9C293EB41CA128FD00D9C7F6 /* XRNSubOrdersModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XRNSubOrdersModel.h; sourceTree = "<group>"; };
 		9C293EB51CA128FD00D9C7F6 /* XRNSubOrdersModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XRNSubOrdersModel.m; sourceTree = "<group>"; };
 		9C293EB71CA1292F00D9C7F6 /* XNRSubOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSubOrderCell.h; sourceTree = "<group>"; };
@@ -1861,6 +1931,7 @@
 		1F1532C61B09C58700CA374B = {
 			isa = PBXGroup;
 			children = (
+				9C206F141D2D0BAE0041548A /* xxnr-testCase */,
 				1F1532D11B09C58800CA374B /* xinnongreniOS */,
 				1F1532EB1B09C58800CA374B /* xinnongreniOSTests */,
 				1F1532D01B09C58800CA374B /* Products */,
@@ -3690,6 +3761,89 @@
 			path = SJAvatarBrowser;
 			sourceTree = "<group>";
 		};
+		9C206F141D2D0BAE0041548A /* xxnr-testCase */ = {
+			isa = PBXGroup;
+			children = (
+				9C206F151D2D0BAE0041548A /* .idea */,
+				9C206F1D1D2D0BAE0041548A /* case */,
+				9C206F291D2D0BAE0041548A /* lib */,
+			);
+			name = "xxnr-testCase";
+			path = "xinnongreniOS/xxnr-testCase";
+			sourceTree = "<group>";
+		};
+		9C206F151D2D0BAE0041548A /* .idea */ = {
+			isa = PBXGroup;
+			children = (
+				9C206F161D2D0BAE0041548A /* compiler.xml */,
+				9C206F171D2D0BAE0041548A /* copyright */,
+				9C206F191D2D0BAE0041548A /* demo.iml */,
+				9C206F1A1D2D0BAE0041548A /* misc.xml */,
+				9C206F1B1D2D0BAE0041548A /* modules.xml */,
+				9C206F1C1D2D0BAE0041548A /* workspace.xml */,
+			);
+			path = .idea;
+			sourceTree = "<group>";
+		};
+		9C206F171D2D0BAE0041548A /* copyright */ = {
+			isa = PBXGroup;
+			children = (
+				9C206F181D2D0BAE0041548A /* profiles_settings.xml */,
+			);
+			path = copyright;
+			sourceTree = "<group>";
+		};
+		9C206F1D1D2D0BAE0041548A /* case */ = {
+			isa = PBXGroup;
+			children = (
+				9C206F1E1D2D0BAE0041548A /* accountTestCase.js */,
+				9C206F1F1D2D0BAE0041548A /* baseClass.js */,
+				9C206F201D2D0BAE0041548A /* carryCase.js */,
+				9C206F211D2D0BAE0041548A /* homeCase.js */,
+				9C206F221D2D0BAE0041548A /* lognCase.js */,
+				9C206F231D2D0BAE0041548A /* newsCase.js */,
+				9C206F241D2D0BAE0041548A /* orderListCase.js */,
+				9C206F251D2D0BAE0041548A /* payTypeCase.js */,
+				9C206F261D2D0BAE0041548A /* representCase.js */,
+				9C206F271D2D0BAE0041548A /* specialPerformance.js */,
+				9C206F281D2D0BAE0041548A /* test.js */,
+			);
+			path = case;
+			sourceTree = "<group>";
+		};
+		9C206F291D2D0BAE0041548A /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				9C206F2A1D2D0BAE0041548A /* assertions.js */,
+				9C206F2B1D2D0BAE0041548A /* image_asserter */,
+				9C206F2C1D2D0BAE0041548A /* image_assertion.js */,
+				9C206F2D1D2D0BAE0041548A /* image_assertion.rb */,
+				9C206F2E1D2D0BAE0041548A /* lang-ext.js */,
+				9C206F2F1D2D0BAE0041548A /* LICENSE */,
+				9C206F301D2D0BAE0041548A /* README.md */,
+				9C206F311D2D0BAE0041548A /* screen.js */,
+				9C206F321D2D0BAE0041548A /* test.js */,
+				9C206F331D2D0BAE0041548A /* test_runner */,
+				9C206F3A1D2D0BAE0041548A /* tuneup.js */,
+				9C206F3B1D2D0BAE0041548A /* tuneup_js.podspec */,
+				9C206F3C1D2D0BAE0041548A /* uiautomation-ext.js */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		9C206F331D2D0BAE0041548A /* test_runner */ = {
+			isa = PBXGroup;
+			children = (
+				9C206F341D2D0BAE0041548A /* abbreviated_console_output.rb */,
+				9C206F351D2D0BAE0041548A /* colored_console_output.rb */,
+				9C206F361D2D0BAE0041548A /* console_output.rb */,
+				9C206F371D2D0BAE0041548A /* preprocessor.rb */,
+				9C206F381D2D0BAE0041548A /* run */,
+				9C206F391D2D0BAE0041548A /* xunit_output.rb */,
+			);
+			path = test_runner;
+			sourceTree = "<group>";
+		};
 		9C920AF41D069EE600C187DB /* UMSocial_Sdk_5.0.1 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3878,6 +4032,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C206F4D1D2D0BAE0041548A /* test.js in Resources */,
 				49F7A5B41C5906C200A1FA45 /* 加载7.png in Resources */,
 				496713891CD97D3800782C12 /* button_img@2x.png in Resources */,
 				53EE210A1B538EC400BD765E /* 001@2x.png in Resources */,
@@ -3885,7 +4040,9 @@
 				4910F8EF1CF43FCA00ABD331 /* dingdani-con@3x.png in Resources */,
 				C54CFAFD1B2AC30C004D5C54 /* checkbox1_unchecked@2x.png in Resources */,
 				491610E71C8C422200F1E243 /* UIBarButtonItemGrid@2x.png in Resources */,
+				9C206F5E1D2D0BAE0041548A /* tuneup_js.podspec in Resources */,
 				491610E41C8C422200F1E243 /* UIBarButtonItemArrowRight@2x.png in Resources */,
+				9C206F4F1D2D0BAE0041548A /* image_asserter in Resources */,
 				496BB4391CC49F55007F034F /* loader-@3x.png in Resources */,
 				9C920B151D069EE700C187DB /* UMShareEditViewControlleriPad.xib in Resources */,
 				53010F951B1DAD3E00017740 /* CoreTFKeyBoardToolBarView.xib in Resources */,
@@ -3897,10 +4054,12 @@
 				499551DD1CC09CED00F3B1F9 /* wechat-circle-@2x.png in Resources */,
 				496BB42E1CC49F55007F034F /* notification@2x.png in Resources */,
 				491610D51C8C422200F1E243 /* ImageSelectedSmallOff@2x.png in Resources */,
+				9C206F481D2D0BAE0041548A /* newsCase.js in Resources */,
 				491280F81CC8C2B9009E67C4 /* close@2x.png in Resources */,
 				491280FF1CC8C2B9009E67C4 /* arrow-circle@3x.png in Resources */,
 				49F7A5B01C5906C200A1FA45 /* 加载3.png in Resources */,
 				496BB4401CC49F55007F034F /* wechat-friends@3x.png in Resources */,
+				9C206F521D2D0BAE0041548A /* lang-ext.js in Resources */,
 				49F6B1991C2A6EE100DCF8CF /* MJPhotoBrowser.bundle in Resources */,
 				844AFE931B147ECF00EE29C8 /* b27_icon_star_yellow@2x.png in Resources */,
 				9C920B161D069EE700C187DB /* UMSLoginViewController.xib in Resources */,
@@ -3917,7 +4076,13 @@
 				496BB4351CC49F55007F034F /* xxnr-wz@2x.png in Resources */,
 				491610E21C8C422200F1E243 /* UIBarButtonItemArrowLeft@3x.png in Resources */,
 				496BB42C1CC49F55007F034F /* bj_img@2x.png in Resources */,
+<<<<<<< HEAD
+=======
+				1F16AF541B259F67002C1E73 /* YMHProtoclViewController.xib in Resources */,
+				9C206F581D2D0BAE0041548A /* colored_console_output.rb in Resources */,
+>>>>>>> ynn_ios
 				496BB4311CC49F55007F034F /* recommended--@2x.png in Resources */,
+				9C206F4E1D2D0BAE0041548A /* assertions.js in Resources */,
 				491280F41CC8C2B9009E67C4 /* arrow-circle@2x.png in Resources */,
 				491280D01CC8A30C009E67C4 /* wechat-friendsl@2x.png in Resources */,
 				491610CD1C8C422200F1E243 /* ImageError@3x.png in Resources */,
@@ -3929,6 +4094,7 @@
 				496BB4361CC49F55007F034F /* about@3x.png in Resources */,
 				49F7A5A81C5906C200A1FA45 /* 加载14.png in Resources */,
 				C54CFAFB1B2AC30C004D5C54 /* checkbox1_checked@2x.png in Resources */,
+				9C206F5F1D2D0BAE0041548A /* uiautomation-ext.js in Resources */,
 				499551DF1CC09CED00F3B1F9 /* xxnr-logo@2x.png in Resources */,
 				9C920B351D0E5E7000C187DB /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				9C920B191D069EE700C187DB /* UMSocialSDKResourcesNew.bundle in Resources */,
@@ -3944,6 +4110,7 @@
 				496BB43B1CC49F55007F034F /* qq@3x.png in Resources */,
 				491610E31C8C422200F1E243 /* UIBarButtonItemArrowRight.png in Resources */,
 				491610CC1C8C422200F1E243 /* ImageError@2x.png in Resources */,
+				9C206F491D2D0BAE0041548A /* orderListCase.js in Resources */,
 				491610DF1C8C422200F1E243 /* PlayButtonOverlayLargeTap@3x.png in Resources */,
 				491281001CC8C2B9009E67C4 /* arrow_the_circle@3x.png in Resources */,
 				499551DC1CC09CED00F3B1F9 /* share-ios-@2x.png in Resources */,
@@ -3952,15 +4119,20 @@
 				496BB42B1CC49F55007F034F /* bin-@2x.png in Resources */,
 				496BB4341CC49F55007F034F /* wechat-friends@2x.png in Resources */,
 				49F7A5B61C5906C200A1FA45 /* 加载9.png in Resources */,
+				9C206F511D2D0BAE0041548A /* image_assertion.rb in Resources */,
+				9C206F461D2D0BAE0041548A /* homeCase.js in Resources */,
 				499551E11CC09CED00F3B1F9 /* qqspace@3x.png in Resources */,
 				499551E31CC09CED00F3B1F9 /* wechat-circle-@3x.png in Resources */,
 				49F7A5A61C5906C200A1FA45 /* 加载12.png in Resources */,
 				491610D11C8C422200F1E243 /* ImageSelectedOn.png in Resources */,
+				9C206F5A1D2D0BAE0041548A /* preprocessor.rb in Resources */,
+				9C206F5D1D2D0BAE0041548A /* tuneup.js in Resources */,
 				491610D61C8C422200F1E243 /* ImageSelectedSmallOff@3x.png in Resources */,
 				491280D51CC8A329009E67C4 /* qqlightgray@3x.png in Resources */,
 				49F7A5AC1C5906C200A1FA45 /* 加载18.png in Resources */,
 				4922D6941D2B7AFF0008CB7A /* yonghuxieyi.html in Resources */,
 				8446C2971B1D6D19005CA932 /* pop-Info.plist in Resources */,
+				9C206F411D2D0BAE0041548A /* modules.xml in Resources */,
 				491610D01C8C422200F1E243 /* ImageSelectedOff@3x.png in Resources */,
 				C54CFAFC1B2AC30C004D5C54 /* checkbox1_unchecked.png in Resources */,
 				9C920B141D069EE700C187DB /* UMShareEditViewController.xib in Resources */,
@@ -3969,6 +4141,8 @@
 				53EE21091B538EC400BD765E /* 001@3x.png in Resources */,
 				1F1532E01B09C58800CA374B /* Images.xcassets in Resources */,
 				496713851CD97D1900782C12 /* button_img@3x.png in Resources */,
+				9C206F401D2D0BAE0041548A /* misc.xml in Resources */,
+				9C206F471D2D0BAE0041548A /* lognCase.js in Resources */,
 				49F7A5A51C5906C200A1FA45 /* 加载11.png in Resources */,
 				496BB4301CC49F55007F034F /* qqspace@2x.png in Resources */,
 				49F7A5BC1C590B3800A1FA45 /* xxnr_refresh1.png in Resources */,
@@ -3989,14 +4163,25 @@
 				9C920B171D069EE700C187DB /* UMSnsAccountViewController.xib in Resources */,
 				49F7A5AD1C5906C200A1FA45 /* 加载19.png in Resources */,
 				496BB42F1CC49F55007F034F /* qq@2x.png in Resources */,
+				9C206F571D2D0BAE0041548A /* abbreviated_console_output.rb in Resources */,
+				9C206F4A1D2D0BAE0041548A /* payTypeCase.js in Resources */,
 				491281021CC8C2B9009E67C4 /* check-the@3x.png in Resources */,
+				9C206F3E1D2D0BAE0041548A /* profiles_settings.xml in Resources */,
 				491280CE1CC8A30C009E67C4 /* qqspacel@2x.png in Resources */,
+				9C206F4C1D2D0BAE0041548A /* specialPerformance.js in Resources */,
 				491610DD1C8C422200F1E243 /* PlayButtonOverlayLargeTap.png in Resources */,
 				491610D81C8C422200F1E243 /* ImageSelectedSmallOn@2x.png in Resources */,
+				9C206F431D2D0BAE0041548A /* accountTestCase.js in Resources */,
 				491610D71C8C422200F1E243 /* ImageSelectedSmallOn.png in Resources */,
+				9C206F4B1D2D0BAE0041548A /* representCase.js in Resources */,
 				84B77D001B26BDE6001923E4 /* PEPhotoCropEditor.bundle in Resources */,
 				491281071CC8C2B9009E67C4 /* search-@3x.png in Resources */,
+<<<<<<< HEAD
 				499551E01CC09CED00F3B1F9 /* QQShare@3x.png in Resources */,
+=======
+				499551E01CC09CED00F3B1F9 /* QQ@3x.png in Resources */,
+				9C206F561D2D0BAE0041548A /* test.js in Resources */,
+>>>>>>> ynn_ios
 				49F7A5831C58469400A1FA45 /* MJRefresh.bundle in Resources */,
 				491281081CC8C2B9009E67C4 /* shut-down--@3x.png in Resources */,
 				491280D81CC8A329009E67C4 /* wechat-friendsl@3x.png in Resources */,
@@ -4010,18 +4195,27 @@
 				9C920B181D069EE700C187DB /* UMSShareListController.xib in Resources */,
 				496BB4371CC49F55007F034F /* bin-@3x.png in Resources */,
 				844AFE4A1B14438700EE29C8 /* FZZHJW.TTF in Resources */,
+				9C206F3F1D2D0BAE0041548A /* demo.iml in Resources */,
 				491280FB1CC8C2B9009E67C4 /* search--icon2@2x.png in Resources */,
+				9C206F531D2D0BAE0041548A /* LICENSE in Resources */,
 				491280F61CC8C2B9009E67C4 /* call-contact@2x.png in Resources */,
 				496BB4411CC49F55007F034F /* xxnr-wz@3x.png in Resources */,
 				9C920B111D069EE700C187DB /* UMSCommentDetailController.xib in Resources */,
 				491281031CC8C2B9009E67C4 /* close@3x.png in Resources */,
+				9C206F5C1D2D0BAE0041548A /* xunit_output.rb in Resources */,
 				491280CF1CC8A30C009E67C4 /* wechat-circle-l@2x.png in Resources */,
+				9C206F501D2D0BAE0041548A /* image_assertion.js in Resources */,
 				491610DC1C8C422200F1E243 /* PlayButtonOverlayLarge@3x.png in Resources */,
+				9C206F551D2D0BAE0041548A /* screen.js in Resources */,
 				496713881CD97D3800782C12 /* button_check@2x.png in Resources */,
+				9C206F3D1D2D0BAE0041548A /* compiler.xml in Resources */,
 				49F7A5B51C5906C200A1FA45 /* 加载8.png in Resources */,
 				491610E91C8C422200F1E243 /* VideoOverlay.png in Resources */,
+				9C206F441D2D0BAE0041548A /* baseClass.js in Resources */,
+				9C206F5B1D2D0BAE0041548A /* run in Resources */,
 				9C920B0F1D069EE700C187DB /* UMSocialLocalizable.strings in Resources */,
 				491610E61C8C422200F1E243 /* UIBarButtonItemGrid.png in Resources */,
+				9C206F451D2D0BAE0041548A /* carryCase.js in Resources */,
 				491280CD1CC8A30C009E67C4 /* qqlightgray@2x.png in Resources */,
 				8446C2961B1D6D19005CA932 /* InfoPlist.strings in Resources */,
 				491610EB1C8C422200F1E243 /* VideoOverlay@3x.png in Resources */,
@@ -4030,6 +4224,7 @@
 				496BB43D1CC49F55007F034F /* recommended--@3x.png in Resources */,
 				491610E01C8C422200F1E243 /* UIBarButtonItemArrowLeft.png in Resources */,
 				491610EA1C8C422200F1E243 /* VideoOverlay@2x.png in Resources */,
+				9C206F591D2D0BAE0041548A /* console_output.rb in Resources */,
 				49F7A5BB1C590B3800A1FA45 /* xxnr_refresh3.png in Resources */,
 				49F8EE4B1BE772EE00820928 /* index_image_banner1.png in Resources */,
 				496BB4321CC49F55007F034F /* repeat@2x.png in Resources */,
@@ -4044,6 +4239,7 @@
 				491280FD1CC8C2B9009E67C4 /* shut-down--@2x.png in Resources */,
 				496BB43F1CC49F55007F034F /* wechat-circle-@3x.png in Resources */,
 				9C06A4321CA2A21000B0DED9 /* Bugtags.bundle in Resources */,
+				9C206F421D2D0BAE0041548A /* workspace.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4317,6 +4513,7 @@
 				499181551CF7F56E006A077D /* UIImageView+WebCache.m in Sources */,
 				49EC52671BEBBA5E00AA8898 /* UILabel+BSExt.m in Sources */,
 				4967137B1CD81F9300782C12 /* XNRRscSearchController.m in Sources */,
+				9C206F541D2D0BAE0041548A /* README.md in Sources */,
 				490F0B121C9EFEFD00BDC7E0 /* XNRShoppingCarFrame.m in Sources */,
 				84FE64311B18056200F0C67C /* XNRSendView.m in Sources */,
 				4916112A1C8D189400F1E243 /* IQSegmentedNextPrevious.m in Sources */,
