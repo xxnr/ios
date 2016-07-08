@@ -50,11 +50,26 @@
         }
         NSMutableArray *RefreshImage = [NSMutableArray array];
         
-        for (int i = 10; i<21; i++) {
+        for (int i = 1; i<21; i++) {
             UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
             
             [RefreshImage addObject:image];
         }
+//    for (int i = 1; i<21; i++) {
+//        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+//        
+//        [idleImage addObject:image];
+//    }
+//    NSMutableArray *RefreshImage = [NSMutableArray array];
+//    
+//    for (int i = 1; i<21; i++) {
+//        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+//        
+//        [RefreshImage addObject:image];
+//        
+//    }
+    
+
         
         [header setImages:idleImage forState:MJRefreshStateIdle];
         

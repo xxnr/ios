@@ -152,7 +152,6 @@
     [selectImageView setImage:[UIImage imageNamed:@"new_feature_green"]];
     self.selectImageView = selectImageView;
     [self.view addSubview:selectImageView];
-    
 }
 
 /**

@@ -121,7 +121,7 @@
 //    }
     if ([self.model.presale integerValue] == 1) {
         self.presentPriceLabel.text = @"即将上线";
-        self.presentPriceLabel.textColor = R_G_B_16(0xc7c7c7);
+        self.presentPriceLabel.textColor = R_G_B_16(0x909090);
     }else{
         self.presentPriceLabel.textColor = R_G_B_16(0xff4e00);
     }

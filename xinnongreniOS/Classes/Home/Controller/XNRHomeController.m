@@ -134,6 +134,7 @@
     [backtoTopBtn setImage:[UIImage imageNamed:@"icon_home_backTop"] forState:UIControlStateNormal];
     [backtoTopBtn addTarget:self action:@selector(backtoTopBtnClick) forControlEvents:UIControlEventTouchUpInside];
     self.backtoTopBtn = backtoTopBtn;
+    self.backtoTopBtn.hidden = YES;
     [self.view addSubview:backtoTopBtn];
 }
 
@@ -144,7 +145,7 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     NSLog(@"%f",scrollView.contentOffset.y);
-    if (scrollView.contentOffset.y == 0) {
+    if (scrollView.contentOffset.y <= 0) {
         self.backtoTopBtn.hidden = YES;
     }else{
         self.backtoTopBtn.hidden = NO;
@@ -281,12 +282,16 @@
     NSMutableArray *idleImage = [NSMutableArray array];
     for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
         [idleImage addObject:image];
     }
     NSMutableArray *RefreshImage = [NSMutableArray array];
-    for (int i = 10; i<21; i++) {
+    
+    for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+        
         [RefreshImage addObject:image];
+        
     }
     [header setImages:idleImage forState:MJRefreshStateIdle];
     [header setImages:RefreshImage forState:MJRefreshStatePulling];
