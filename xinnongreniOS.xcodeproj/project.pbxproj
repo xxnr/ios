@@ -4190,13 +4190,13 @@
 				49F6B1991C2A6EE100DCF8CF /* MJPhotoBrowser.bundle in Resources */,
 				844AFE931B147ECF00EE29C8 /* b27_icon_star_yellow@2x.png in Resources */,
 				9C920B161D069EE700C187DB /* UMSLoginViewController.xib in Resources */,
-<<<<<<< HEAD
+
 				499551DA1CC09CED00F3B1F9 /* QQShare@2x.png in Resources */,
-=======
+
 				9C441FFD1D2FAD68007075C3 /* load-16.png in Resources */,
 				499551DA1CC09CED00F3B1F9 /* QQ@2x.png in Resources */,
 				9CC800951D2DFD5000B516E0 /* orderListCase.js in Resources */,
->>>>>>> ynn_ios
+
 				499551E51CC09CED00F3B1F9 /* xxnr-logo@3x.png in Resources */,
 				491280F71CC8C2B9009E67C4 /* check-the@2x.png in Resources */,
 				C54CFAFA1B2AC30C004D5C54 /* checkbox1_checked.png in Resources */,
@@ -4209,11 +4209,11 @@
 				496BB4351CC49F55007F034F /* xxnr-wz@2x.png in Resources */,
 				491610E21C8C422200F1E243 /* UIBarButtonItemArrowLeft@3x.png in Resources */,
 				496BB42C1CC49F55007F034F /* bj_img@2x.png in Resources */,
-<<<<<<< HEAD
-=======
+
+
 				1F16AF541B259F67002C1E73 /* YMHProtoclViewController.xib in Resources */,
 				9C441FF81D2FAD68007075C3 /* load-11.png in Resources */,
->>>>>>> ynn_ios
+
 				496BB4311CC49F55007F034F /* recommended--@2x.png in Resources */,
 				491280F41CC8C2B9009E67C4 /* arrow-circle@2x.png in Resources */,
 				491280D01CC8A30C009E67C4 /* wechat-friendsl@2x.png in Resources */,
