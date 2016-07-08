@@ -75,7 +75,7 @@
         
         
         UIView *bottomEdging = [[UIView alloc]initWithFrame:CGRectMake(0, 44, titleView.width, 1)];
-        bottomEdging.backgroundColor = edgingColor;
+        bottomEdging.backgroundColor = R_G_B_16(0xc7c7c7);
         [titleView addSubview:bottomEdging];
         
         UIView *leftEdging = [[UIView alloc]initWithFrame:CGRectMake(btn.x, 10, 1, titleView.height-20)];
@@ -98,7 +98,7 @@
         lineView.backgroundColor = R_G_B_16(0xc7c7c7);
         [btnView addSubview:lineView];
         for (int i = 0; i < btns.count; i++) {
-            UIButton *btn = [UIButton textBtnWithTitle:btns[i] titleColor:R_G_B_16(0x00b38a) font:[UIFont systemFontOfSize:PX_TO_PT(36)] frame:CGRectMake(btnWidth*i, 0, btnWidth, 45) target:self action:@selector(chooseBtnClicked:)];
+            UIButton *btn = [UIButton textBtnWithTitle:btns[i] titleColor:R_G_B_16(0x00b38a) font:[UIFont systemFontOfSize:PX_TO_PT(36)] frame:CGRectMake(btnWidth*i+(i*1), 0, btnWidth, 45) target:self action:@selector(chooseBtnClicked:)];
 //            btn.backgroundColor = [UIColor redColor];
             btn.tag = i+ 10;
             if (i == btns.count - 1) {
@@ -110,7 +110,7 @@
         }
         
         UIView *bottomEdging = [[UIView alloc]initWithFrame:CGRectMake(0, 0, btnView.width, 1)];
-        bottomEdging.backgroundColor = edgingColor;
+        bottomEdging.backgroundColor = R_G_B_16(0xc7c7c7);
         [btnView addSubview:bottomEdging];
 
         [self addSubview:btnView];

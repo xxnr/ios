@@ -17,6 +17,7 @@
 @property(nonatomic,assign)double angle;
 @property(nonatomic,weak) UIImageView *loadView;
 @property(nonatomic,strong) NSTimer *timer;
+@property (nonatomic,weak) UIView *View;
 @end
 @implementation BMProgressView
 
@@ -27,8 +28,8 @@
 //    bcView.isError = NO;
     bcView.backgroundColor = bcColor;
     [target addSubview:bcView];
-
-
+    [target bringSubviewToFront:bcView];
+    
     UIView *showView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 80, 80)];
     showView.center = CGPointMake(bcView.width/2, bcView.height/2);
 //    if (isNavigation) {

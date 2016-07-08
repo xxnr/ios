@@ -173,7 +173,7 @@
     UIImageView *picImageView = [[UIImageView alloc]init];
     picImageView.contentMode = UIViewContentModeScaleAspectFit;
     picImageView.layer.borderWidth = PX_TO_PT(2);
-    picImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    picImageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     self.picImageView = picImageView;
     [self.contentView addSubview:picImageView];
     
@@ -253,7 +253,7 @@
     [self.contentView addSubview:sectionTwoLabel];
         
     UILabel *subscriptionLabel = [[UILabel alloc] init];
-    subscriptionLabel.textColor = R_G_B_16(0xff4e00);
+    subscriptionLabel.textColor = R_G_B_16(0x323232);
     subscriptionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     subscriptionLabel.textAlignment = NSTextAlignmentRight;
     self.subscriptionLabel = subscriptionLabel;
@@ -268,17 +268,17 @@
     
     
     UIView *topView = [[UIView alloc] init];
-    topView.backgroundColor = R_G_B_16(0xc7c7c7);
+    topView.backgroundColor = R_G_B_16(0xe0e0e0);
     self.topView =  topView;
     [self.contentView addSubview:topView];
         
     UIView *middleLine = [[UIView alloc] init];
-    middleLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    middleLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.middleLine = middleLine;
     [self.contentView addSubview:middleLine];
         
     UIView *bottomLine = [[UIView alloc] init];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.bottomLine = bottomLine;
     [self.contentView addSubview:bottomLine];
 
@@ -318,7 +318,7 @@
     UIImageView *picImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(30), PX_TO_PT(180), PX_TO_PT(180))];
     picImageView.contentMode = UIViewContentModeScaleAspectFit;
     picImageView.layer.borderWidth = PX_TO_PT(2);
-    picImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    picImageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     self.picImageView = picImageView;
     [self.contentView addSubview:picImageView];
 }
@@ -394,6 +394,9 @@
     
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     leftBtn.tag = kRightBtn;
+    leftBtn.backgroundColor = R_G_B_16(0xf0f0f0);
+    leftBtn.layer.borderWidth = PX_TO_PT(2);
+    leftBtn.layer.borderColor = [R_G_B_16(0xe0e0e0) CGColor];
     [leftBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [leftBtn setImage:[UIImage imageNamed:@"icon_minus"] forState:UIControlStateNormal];
     [leftBtn setImage:[UIImage imageNamed:@"discount_default1"] forState:UIControlStateHighlighted];
@@ -422,6 +425,10 @@
     
     UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     rightBtn.tag = kLeftBtn;
+    rightBtn.backgroundColor = R_G_B_16(0xf0f0f0);
+    rightBtn.layer.borderWidth = PX_TO_PT(2);
+    rightBtn.layer.borderColor = [R_G_B_16(0xe0e0e0) CGColor];
+
     [rightBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
 
     [rightBtn setImage:[UIImage imageNamed:@"icon_plus"] forState:UIControlStateNormal];
@@ -431,12 +438,12 @@
     [self.contentView addSubview:rightBtn];
     
     UIView *textTopLine = [[UIView alloc] init];
-    textTopLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    textTopLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.textTopLine = textTopLine;
     [self.contentView addSubview:textTopLine];
     
     UIView *bottomLine = [[UIView alloc] init];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.textbottomLine = bottomLine;
     [self.contentView addSubview:bottomLine];
     
@@ -693,7 +700,7 @@
         self.presentPriceLabel.textColor = R_G_B_16(0x323232);
         self.sectionOneLabel.textColor = R_G_B_16(0x323232);
         self.sectionTwoLabel.textColor = R_G_B_16(0x323232);
-        self.subscriptionLabel.textColor = R_G_B_16(0xff4e00);
+        self.subscriptionLabel.textColor = R_G_B_16(0x323232);
         self.remainLabel.textColor = R_G_B_16(0x323232);
         self.addtionsLabel.textColor = R_G_B_16(0x323232);
         self.addtionPriceLabel.textColor = R_G_B_16(0x323232);

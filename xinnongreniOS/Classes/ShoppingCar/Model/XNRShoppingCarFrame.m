@@ -33,14 +33,14 @@
     
     // 品牌名称
     CGFloat goodNameLabelX = CGRectGetMaxX(_picImageViewF)+margin;
-    CGFloat goodNameLabelY = PX_TO_PT(40);
+    CGFloat goodNameLabelY = PX_TO_PT(36);
     CGFloat goodNameLabelW = ScreenWidth - goodNameLabelX-PX_TO_PT(30);
     CGFloat goodNameLabelH = PX_TO_PT(80);
     _goodNameLabelF = CGRectMake(goodNameLabelX, goodNameLabelY, goodNameLabelW, goodNameLabelH);
     
     // 商品属性
     CGFloat attributesLabelX = CGRectGetMaxX(_picImageViewF)+margin;
-    CGFloat attributesLabelY = CGRectGetMaxY(_goodNameLabelF)+margin;
+    CGFloat attributesLabelY = CGRectGetMaxY(_goodNameLabelF)+PX_TO_PT(10);
     CGFloat attributesLabelW = ScreenWidth - attributesLabelX-PX_TO_PT(30);
     CGSize  attributesLabelMaxSize = CGSizeMake(attributesLabelW, MAXFLOAT);
     NSMutableString *attributesStr = [[NSMutableString alloc] initWithString:@""];
@@ -65,7 +65,7 @@
             CGFloat onlineLabelH = PX_TO_PT(48);
             _onlineLabelF = CGRectMake(onlineLabelX, onlineLabelY, onlineLabelW, onlineLabelH);
             
-           _goodNameLabelF = CGRectMake(CGRectGetMaxX(_picImageViewF)+PX_TO_PT(20), PX_TO_PT(40), ScreenWidth-CGRectGetMaxX(_picImageViewF)-PX_TO_PT(20)-PX_TO_PT(150), PX_TO_PT(80));
+           _goodNameLabelF = CGRectMake(CGRectGetMaxX(_picImageViewF)+PX_TO_PT(20), PX_TO_PT(36), ScreenWidth-CGRectGetMaxX(_picImageViewF)-PX_TO_PT(20)-PX_TO_PT(150), PX_TO_PT(80));
 
             CGFloat cancelBtnX = CGRectGetMaxX(_goodNameLabelF)+PX_TO_PT(80);
             CGFloat cancelBtnY = PX_TO_PT(40);
@@ -77,36 +77,36 @@
             // 左边按钮
             CGFloat leftBtnX = PX_TO_PT(86);
             CGFloat leftBtnY = CGRectGetMaxY(_attributesLabelF)+margin;
-            CGFloat leftBtnW = PX_TO_PT(48);
-            CGFloat leftBtnH = PX_TO_PT(48);
+            CGFloat leftBtnW = PX_TO_PT(49);
+            CGFloat leftBtnH = PX_TO_PT(49);
             _leftBtnF = CGRectMake(leftBtnX, leftBtnY, leftBtnW, leftBtnH);
             
             // text
             CGFloat numTextFieldX = CGRectGetMaxX(_leftBtnF);
             CGFloat numTextFieldY = CGRectGetMaxY(_attributesLabelF)+margin;
             CGFloat numTextFieldW = PX_TO_PT(84);
-            CGFloat numTextFieldH = PX_TO_PT(48);
+            CGFloat numTextFieldH = PX_TO_PT(49);
             _numTextFieldF = CGRectMake(numTextFieldX, numTextFieldY, numTextFieldW, numTextFieldH);
             
             CGFloat textTopLineX = CGRectGetMaxX(_leftBtnF);
             CGFloat textTopLineY = CGRectGetMaxY(_attributesLabelF)+margin;
             CGFloat textTopLineW = PX_TO_PT(84);
-            CGFloat textTopLineH = 1;
+            CGFloat textTopLineH = PX_TO_PT(2);
             _textTopLineF = CGRectMake(textTopLineX, textTopLineY, textTopLineW, textTopLineH);
             
             CGFloat bottomLineX = CGRectGetMaxX(_leftBtnF);
-            CGFloat bottomLineY = CGRectGetMaxY(_attributesLabelF)+PX_TO_PT(67);
+            CGFloat bottomLineY = CGRectGetMaxY(_attributesLabelF)+margin+numTextFieldH;
             CGFloat bottomLineW = PX_TO_PT(84);
-            CGFloat bottomLineH = 1;
-            _textbottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
+            CGFloat bottomLineH = PX_TO_PT(2);
+            _textbottomLineF = CGRectMake(bottomLineX, bottomLineY-PX_TO_PT(2), bottomLineW, bottomLineH);
 
 
             
             //右边按钮
             CGFloat rightBtnX = CGRectGetMaxX(_numTextFieldF);
             CGFloat rightBtnY = CGRectGetMaxY(_attributesLabelF)+margin;
-            CGFloat rightBtnW = PX_TO_PT(48);
-            CGFloat rightBtnH = PX_TO_PT(48);
+            CGFloat rightBtnW = PX_TO_PT(49);
+            CGFloat rightBtnH = PX_TO_PT(49);
             _rightBtnF = CGRectMake(rightBtnX, rightBtnY, rightBtnW, rightBtnH);
             
             
@@ -128,7 +128,7 @@
             CGFloat onlineLabelH = PX_TO_PT(48);
             _onlineLabelF = CGRectMake(onlineLabelX, onlineLabelY, onlineLabelW, onlineLabelH);
             
-             _goodNameLabelF = CGRectMake(CGRectGetMaxX(_picImageViewF)+PX_TO_PT(20), PX_TO_PT(40), ScreenWidth-CGRectGetMaxX(_picImageViewF)-PX_TO_PT(20)-PX_TO_PT(150), PX_TO_PT(80));
+             _goodNameLabelF = CGRectMake(CGRectGetMaxX(_picImageViewF)+PX_TO_PT(20), PX_TO_PT(36), ScreenWidth-CGRectGetMaxX(_picImageViewF)-PX_TO_PT(20)-PX_TO_PT(150), PX_TO_PT(80));
             
             CGFloat cancelBtnX = CGRectGetMaxX(_goodNameLabelF)+PX_TO_PT(80);
             CGFloat cancelBtnY = PX_TO_PT(40);
@@ -141,34 +141,35 @@
             CGFloat leftBtnX = PX_TO_PT(86);
             CGFloat leftBtnY = CGRectGetMaxY(_picImageViewF)+margin;
             CGFloat leftBtnW = PX_TO_PT(48);
-            CGFloat leftBtnH = PX_TO_PT(48);
+            CGFloat leftBtnH = PX_TO_PT(49);
             _leftBtnF = CGRectMake(leftBtnX, leftBtnY, leftBtnW, leftBtnH);
             
             // text
             CGFloat numTextFieldX = CGRectGetMaxX(_leftBtnF);
             CGFloat numTextFieldY = CGRectGetMaxY(_picImageViewF)+margin;
             CGFloat numTextFieldW = PX_TO_PT(84);
-            CGFloat numTextFieldH = PX_TO_PT(48);
+            CGFloat numTextFieldH = PX_TO_PT(49);
             _numTextFieldF = CGRectMake(numTextFieldX, numTextFieldY, numTextFieldW, numTextFieldH);
             
             CGFloat textTopLineX = CGRectGetMaxX(_leftBtnF);
             CGFloat textTopLineY = CGRectGetMaxY(_picImageViewF)+margin;
             CGFloat textTopLineW = PX_TO_PT(84);
-            CGFloat textTopLineH = 1;
+            CGFloat textTopLineH = PX_TO_PT(2);
             _textTopLineF = CGRectMake(textTopLineX, textTopLineY, textTopLineW, textTopLineH);
             
             CGFloat bottomLineX = CGRectGetMaxX(_leftBtnF);
-            CGFloat bottomLineY = CGRectGetMaxY(_picImageViewF)+PX_TO_PT(67);
+            
+            CGFloat bottomLineY = CGRectGetMaxY(_numTextFieldF);
             CGFloat bottomLineW = PX_TO_PT(84);
-            CGFloat bottomLineH = 1;
-            _textbottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
+            CGFloat bottomLineH = PX_TO_PT(2);
+            _textbottomLineF = CGRectMake(bottomLineX, bottomLineY-PX_TO_PT(2), bottomLineW, bottomLineH);
 
             
             //右边按钮
             CGFloat rightBtnX = CGRectGetMaxX(_numTextFieldF);
             CGFloat rightBtnY = CGRectGetMaxY(_picImageViewF)+margin;
             CGFloat rightBtnW = PX_TO_PT(48);
-            CGFloat rightBtnH = PX_TO_PT(48);
+            CGFloat rightBtnH = PX_TO_PT(49);
             _rightBtnF = CGRectMake(rightBtnX, rightBtnY, rightBtnW, rightBtnH);
             
             

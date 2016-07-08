@@ -374,7 +374,7 @@
     self.introduceLabel = introduceLabel;
     [self.bgLoginView addSubview:introduceLabel];
     
-    UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200),(CGRectGetMaxY(self.introduceLabel.frame) + PX_TO_PT(16)), ScreenWidth - PX_TO_PT(200), PX_TO_PT(40))];
+    UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200),(CGRectGetMaxY(self.introduceLabel.frame) + PX_TO_PT(16)), ScreenWidth - PX_TO_PT(70)-PX_TO_PT(200), PX_TO_PT(40))];
     addressLabel.textColor = R_G_B_16(0xffffff);
     addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(26)];
     addressLabel.numberOfLines = 0;
@@ -417,8 +417,8 @@
     icon.clipsToBounds=YES;
     icon.center = CGPointMake(ScreenWidth/2, PX_TO_PT(125));
     icon.layer.cornerRadius=PX_TO_PT(75);
-    icon.layer.borderColor= [UIColor whiteColor].CGColor ;
-    icon.layer.borderWidth=3;
+//    icon.layer.borderColor= [UIColor whiteColor].CGColor ;
+//    icon.layer.borderWidth=3;
     icon.userInteractionEnabled = YES;
     icon.image=[UIImage imageNamed:@"icon_head"];
     UITapGestureRecognizer*tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(iconClick:)];
@@ -434,7 +434,7 @@
     loginBtn.tintColor = [UIColor whiteColor];
     loginBtn.backgroundColor = [UIColor clearColor];
     loginBtn.layer.borderColor = [UIColor whiteColor].CGColor;
-    loginBtn.layer.borderWidth = 2;
+    loginBtn.layer.borderWidth = PX_TO_PT(2);
     loginBtn.layer.cornerRadius = 5.0;
     loginBtn.clipsToBounds = YES;
     [loginBtn addTarget:self action:@selector(loginBtnClick) forControlEvents:UIControlEventTouchUpInside];
@@ -448,7 +448,7 @@
     registBtn.tintColor = [UIColor whiteColor];
     registBtn.backgroundColor = [UIColor clearColor];
     registBtn.layer.borderColor = [UIColor whiteColor].CGColor;
-    registBtn.layer.borderWidth = 2;
+    registBtn.layer.borderWidth = PX_TO_PT(2);
     registBtn.layer.cornerRadius = 5.0;
     registBtn.clipsToBounds = YES;
     [registBtn addTarget: self action:@selector(registBtnClick) forControlEvents:UIControlEventTouchUpInside];
@@ -533,17 +533,21 @@
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [orderBtn addSubview:titleLabel];
     
-    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2 + PX_TO_PT(120), PX_TO_PT(18), ScreenWidth/2, PX_TO_PT(60))];
-    detailLabel.text = @"查看全部订单";
-    detailLabel.textColor = R_G_B_16(0x909090);
-    detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(26)];
-    [orderBtn addSubview:detailLabel];
     
     // 箭头
     UIButton *arrowBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     arrowBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(50), PX_TO_PT(32), PX_TO_PT(18), PX_TO_PT(32));
     [arrowBtn setImage:[UIImage imageNamed:@"arrow"] forState:UIControlStateNormal];
     [orderBtn addSubview:arrowBtn];
+    
+   CGFloat width = [UIImage imageNamed:@"arrow"].size.width + PX_TO_PT(32)+PX_TO_PT(10);
+    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(18), ScreenWidth-width, PX_TO_PT(60))];
+    detailLabel.text = @"查看全部订单";
+    detailLabel.textAlignment = NSTextAlignmentRight;
+    detailLabel.textColor = R_G_B_16(0x909090);
+    detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(26)];
+    [orderBtn addSubview:detailLabel];
+
     
     CALayer *lineLayer = [[CALayer alloc] init];
     lineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, 1);
