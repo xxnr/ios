@@ -72,11 +72,11 @@
     [self addSubview:carBtn];
     
     UIView *midLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/2, CGRectGetMaxY(self.imageView.frame), 1, PX_TO_PT(100))];
-    midLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    midLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [self addSubview:midLine];
     
     UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.ferBtn.frame), ScreenWidth, 1)];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [self addSubview:bottomLine];
 
     XNRFerSelect *ferView = [[XNRFerSelect alloc] initWithFrame:CGRectMake(0, PX_TO_PT(450), ScreenWidth, PX_TO_PT(90))];

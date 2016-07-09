@@ -67,7 +67,7 @@
     [self.deliverView addSubview:bottomView];
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-    line.backgroundColor = R_G_B_16(0xc7c7c7);
+    line.backgroundColor = R_G_B_16(0xe0e0e0);
     [bottomView addSubview:line];
     
     UIButton *admireBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -220,7 +220,7 @@
     [headView addSubview:cancelBtn];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1)];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [headView addSubview:lineView];
 }
 

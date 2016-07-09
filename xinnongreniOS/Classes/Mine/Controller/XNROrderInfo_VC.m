@@ -880,7 +880,7 @@
     [addressView addSubview:arrowImageView];
     
     UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-    headLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    headLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [addressView addSubview:headLine];
     _addressView.hidden = YES;
 //    [self.view addSubview:_headViewSpecial];
@@ -1023,7 +1023,7 @@
     [addressView addSubview:arrowImageView];
     
     UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-    headLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    headLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [addressView addSubview:headLine];
     _addressView.hidden = YES;
     //    [self.view addSubview:_headViewSpecial];
@@ -1088,7 +1088,7 @@
     [footView addSubview: totalPricelabel];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(2))];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [footView addSubview:lineView];
 
 }
@@ -1116,11 +1116,11 @@
         [headView addSubview:label];
         
         UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-        lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView1.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:lineView1];
         
         UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
-        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView2.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:lineView2];
         
         [topView addSubview:headView];
@@ -1371,8 +1371,9 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"提交订单";
     self.navigationItem.titleView = titleLabel;

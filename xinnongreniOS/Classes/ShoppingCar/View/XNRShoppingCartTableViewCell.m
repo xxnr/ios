@@ -173,7 +173,7 @@
     UIImageView *picImageView = [[UIImageView alloc]init];
     picImageView.contentMode = UIViewContentModeScaleAspectFit;
     picImageView.layer.borderWidth = PX_TO_PT(2);
-    picImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    picImageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     self.picImageView = picImageView;
     [self.contentView addSubview:picImageView];
     
@@ -268,17 +268,17 @@
     
     
     UIView *topView = [[UIView alloc] init];
-    topView.backgroundColor = R_G_B_16(0xc7c7c7);
+    topView.backgroundColor = R_G_B_16(0xe0e0e0);
     self.topView =  topView;
     [self.contentView addSubview:topView];
         
     UIView *middleLine = [[UIView alloc] init];
-    middleLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    middleLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.middleLine = middleLine;
     [self.contentView addSubview:middleLine];
         
     UIView *bottomLine = [[UIView alloc] init];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.bottomLine = bottomLine;
     [self.contentView addSubview:bottomLine];
 
@@ -318,7 +318,7 @@
     UIImageView *picImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(30), PX_TO_PT(180), PX_TO_PT(180))];
     picImageView.contentMode = UIViewContentModeScaleAspectFit;
     picImageView.layer.borderWidth = PX_TO_PT(2);
-    picImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    picImageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     self.picImageView = picImageView;
     [self.contentView addSubview:picImageView];
 }
@@ -431,12 +431,12 @@
     [self.contentView addSubview:rightBtn];
     
     UIView *textTopLine = [[UIView alloc] init];
-    textTopLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    textTopLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.textTopLine = textTopLine;
     [self.contentView addSubview:textTopLine];
     
     UIView *bottomLine = [[UIView alloc] init];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.textbottomLine = bottomLine;
     [self.contentView addSubview:bottomLine];
     

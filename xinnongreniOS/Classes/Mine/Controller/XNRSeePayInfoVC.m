@@ -132,16 +132,16 @@
     [headViewTop addSubview:statusLabel];
     
     UIView *line0 = [[UIView alloc]initWithFrame:CGRectMake(0, 1,ScreenWidth, 1)];
-    line0.backgroundColor = R_G_B_16(0xc7c7c7);
+    line0.backgroundColor = R_G_B_16(0xe0e0e0);
 
     [headViewTop addSubview:line0];
     
     UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(127),ScreenWidth - PX_TO_PT(66), 1)];
-    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    line1.backgroundColor = R_G_B_16(0xe0e0e0);
     [headViewTop addSubview:line1];
     
     UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(249),ScreenWidth, 1)];
-    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    line2.backgroundColor = R_G_B_16(0xe0e0e0);
     [headViewTop addSubview:line2];
     
     
@@ -153,11 +153,11 @@
     [viewTop2 addSubview:label];
     
     UIView *line3 = [[UIView alloc]initWithFrame:CGRectMake(0, 1,ScreenWidth, 1)];
-    line3.backgroundColor = R_G_B_16(0xc7c7c7);
+    line3.backgroundColor = R_G_B_16(0xe0e0e0);
     [viewTop2 addSubview:line3];
     
     UIView *line4 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(79),ScreenWidth, 1)];
-    line4.backgroundColor = R_G_B_16(0xc7c7c7);
+    line4.backgroundColor = R_G_B_16(0xe0e0e0);
     [viewTop2 addSubview:line4];
     
     [headView addSubview:headViewTop];
@@ -204,8 +204,9 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"查看支付详情";
     self.navigationItem.titleView = titleLabel;

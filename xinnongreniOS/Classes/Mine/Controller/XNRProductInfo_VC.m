@@ -310,7 +310,7 @@
     
     for (int i = 1; i<3; i++) {
         UIView *dividedLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3*i, PX_TO_PT(20), 1, PX_TO_PT(40))];
-        dividedLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        dividedLine.backgroundColor = R_G_B_16(0xe0e0e0);
         [midView addSubview:dividedLine];
         
     }
@@ -495,7 +495,7 @@
     [bgExpectView addSubview:expectLabel];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [bgExpectView addSubview:lineView];
     
     UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight-64-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
@@ -522,7 +522,7 @@
     
     //分割线
     UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,1 )];
-    line.backgroundColor=R_G_B_16(0xc7c7c7);
+    line.backgroundColor=R_G_B_16(0xe0e0e0);
     [bgView addSubview:line];
     
 }
@@ -641,8 +641,9 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"商品详情";
     self.navigationItem.titleView = titleLabel;

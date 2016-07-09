@@ -183,7 +183,7 @@
         }
         
         if (_dataArray.count == 0) {
-            self.totalLabel.backgroundColor = R_G_B_16(0xc7c7c7);
+            self.totalLabel.backgroundColor = R_G_B_16(0xe0e0e0);
             self.tableView.scrollEnabled = NO;
             [self emptyView];
         }
@@ -260,7 +260,7 @@
         }
         
         UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-        topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        topLineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:topLineView];
         
         return headView;
@@ -302,12 +302,12 @@
         
         
         UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-        topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        topLineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [footView addSubview:topLineView];
 
         
         UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, 1)];
-        bottomLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        bottomLineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [footView addSubview:bottomLineView];
 
         return footView;
@@ -428,8 +428,8 @@
 {
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = R_G_B_16(0xffffff);
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"客户订单";
     self.navigationItem.titleView = titleLabel;

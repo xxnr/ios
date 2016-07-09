@@ -65,7 +65,7 @@
     bgView.layer.borderWidth = PX_TO_PT(2);
     bgView.layer.cornerRadius = 5.0;
     bgView.layer.masksToBounds = YES;
-    bgView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    bgView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     bgView.userInteractionEnabled = YES;
     bgView.backgroundColor =[UIColor whiteColor];
     self.bgView = bgView;

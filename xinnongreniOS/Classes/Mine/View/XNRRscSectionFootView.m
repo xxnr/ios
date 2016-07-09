@@ -73,12 +73,12 @@
     [footView addSubview:marginView];
     
     UIView *middleLineView = [[UIView alloc] init];
-    middleLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    middleLineView.backgroundColor = R_G_B_16(0xe0e0e0);
     self.middleLineView = middleLineView;
     [footView addSubview:middleLineView];
     
     UIView *bottomLineView = [[UIView alloc] init];
-    bottomLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLineView.backgroundColor = R_G_B_16(0xe0e0e0);
     self.bottomLineView = bottomLineView;
     [footView addSubview:bottomLineView];
 }

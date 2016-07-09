@@ -264,8 +264,8 @@
 {
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = R_G_B_16(0xffffff);
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"网点自提";
     self.navigationItem.titleView = titleLabel;

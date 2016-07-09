@@ -82,7 +82,7 @@
     [self.contentView addSubview:addtionsLabel];
     
     UIView *lineView = [[UIView alloc] init];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     self.lineView = lineView;
     [self.contentView addSubview:lineView];
 

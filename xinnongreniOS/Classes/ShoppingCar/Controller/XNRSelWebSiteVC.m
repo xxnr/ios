@@ -302,12 +302,12 @@
     
     for (int i = 1; i<3; i++) {
         UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(i*(ScreenWidth/3), PX_TO_PT(17), 1, PX_TO_PT(61))];
-        midView.backgroundColor = R_G_B_16(0xc7c7c7);
+        midView.backgroundColor = R_G_B_16(0xe0e0e0);
         [self.view addSubview:midView];
     }
     
     UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.view addSubview:bottomLine];
     
     UIView *rollView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(86), ScreenWidth/3, PX_TO_PT(2))];
@@ -325,7 +325,7 @@
     [self.view addSubview:bottomView];
     
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(2))];
-    line.backgroundColor = R_G_B_16(0xc7c7c7);
+    line.backgroundColor = R_G_B_16(0xe0e0e0);
     [bottomView addSubview:line];
     
     UIButton *sureBtn = [[UIButton alloc]initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(161))/2, (PX_TO_PT(99)-PX_TO_PT(52))/2, PX_TO_PT(161), PX_TO_PT(52))];
@@ -684,8 +684,9 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"选择自提网点";
     self.navigationItem.titleView = titleLabel;

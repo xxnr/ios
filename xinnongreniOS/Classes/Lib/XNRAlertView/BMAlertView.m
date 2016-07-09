@@ -95,14 +95,12 @@
         CGFloat btnWidth = alertWidth/2;
         
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(btnWidth, 0, 1, 45)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [btnView addSubview:lineView];
         for (int i = 0; i < btns.count; i++) {
             UIButton *btn = [UIButton textBtnWithTitle:btns[i] titleColor:R_G_B_16(0x00b38a) font:[UIFont systemFontOfSize:PX_TO_PT(36)] frame:CGRectMake(btnWidth*i, 0, btnWidth, 45) target:self action:@selector(chooseBtnClicked:)];
-//            btn.backgroundColor = [UIColor redColor];
             btn.tag = i+ 10;
             if (i == btns.count - 1) {
-//                [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             }
             
             [btnView addSubview:btn];

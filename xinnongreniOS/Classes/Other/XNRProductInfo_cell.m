@@ -252,7 +252,7 @@
 
     }else{
         UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(700), ScreenWidth, 1)];
-        bgView.backgroundColor = R_G_B_16(0xc7c7c7);
+        bgView.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.contentView addSubview:bgView];
     }
 }
@@ -282,6 +282,7 @@
     UILabel *depositLabel = [[UILabel alloc] init];
     depositLabel.textColor = R_G_B_16(0x323232);
     depositLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    depositLabel.textAlignment = NSTextAlignmentLeft;
     self.depositLabel = depositLabel;
     [self.contentView addSubview:depositLabel];
     
@@ -347,11 +348,11 @@
     [self.contentView addSubview:scrollLabel];
     
     UIView *leftLine = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(60), PX_TO_PT(160), PX_TO_PT(2))];
-    leftLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    leftLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [scrollLabel addSubview:leftLine];
     
     UIView *rightLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(192), PX_TO_PT(60), PX_TO_PT(170), PX_TO_PT(2))];
-    rightLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    rightLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [scrollLabel addSubview:rightLine];
     
     UIWebView *webView = [[UIWebView alloc] init];

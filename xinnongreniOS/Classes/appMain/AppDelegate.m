@@ -90,7 +90,7 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
-    //    友盟分享
+    //  友盟分享
     [UMSocialData setAppKey:UM_APPKEY];
     
     [UMSocialWechatHandler setWXAppId:wechatAppId appSecret:wechatAppSecret url:APPURL];
@@ -99,9 +99,8 @@
 
     [UMessage setLogEnabled:YES];
     
-
     // 启动bugtags
-//    [XNRBugTagsTool openBugTags];
+    [XNRBugTagsTool openBugTags];
     
     // 判断是否是推送进来的
     NSDictionary* remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -112,16 +111,13 @@
     return YES;
 }
 
-
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     //如果极简 SDK 不可用,会跳转支付宝钱包进行支付,需要将支付宝钱包的支付结果回传给 SDK if ([url.host isEqualToString:@"safepay"]) {
     [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
         
         NSLog(@"result = %@",resultDic);
         
-        
         [[NSNotificationCenter defaultCenter]postNotificationName:@"alipayResult" object:[resultDic objectForKey:@"resultStatus"]];
-        
         
     }];
     if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回 authCode
@@ -199,7 +195,6 @@
     NSLog(@"---------------------Failed to get token, error:%@", error_str);
     
 }
-
 
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo

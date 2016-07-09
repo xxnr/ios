@@ -21,6 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tabBar.backgroundColor = [UIColor whiteColor];
     
     //首页
     XNRHomeController *home = [[XNRHomeController alloc]init];

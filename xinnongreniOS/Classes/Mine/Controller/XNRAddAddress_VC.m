@@ -268,7 +268,7 @@
     
     for (int i = 0; i<7; i++) {
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96)*i, ScreenWidth, 1)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [topBgView addSubview:lineView];
     }
     
@@ -363,7 +363,7 @@
     
     for (int i = 0; i<2; i++) {
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, 1)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [midView addSubview:lineView];
      }
 }
@@ -494,7 +494,7 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
     titleLabel.textColor = R_G_B_16(0xfbffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = self.titleLabel;

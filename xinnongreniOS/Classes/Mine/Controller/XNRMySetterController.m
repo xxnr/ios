@@ -352,7 +352,7 @@
         [sectionHeadView addSubview:sectionTitleLabel];
         
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [sectionHeadView addSubview:lineView];
         
         return sectionHeadView;
@@ -363,7 +363,7 @@
         [self.view addSubview:sectionHeadView];
         
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, 1)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [sectionHeadView addSubview:lineView];
 
 
@@ -409,7 +409,8 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"设置";
     self.navigationItem.titleView = titleLabel;

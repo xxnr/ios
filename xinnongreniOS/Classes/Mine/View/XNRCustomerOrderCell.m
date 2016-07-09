@@ -53,11 +53,11 @@
     [orderView addSubview:numLabel];
         
     UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-    topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    topLineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [orderView addSubview:topLineView];
     
     UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100), ScreenWidth, 1)];
-    bottomLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [orderView addSubview:bottomLineView];
     
 }

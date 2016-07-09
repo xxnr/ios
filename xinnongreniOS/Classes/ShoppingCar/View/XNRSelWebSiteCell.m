@@ -44,7 +44,7 @@
     self.phoneLabel = phoneLabel;
 
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(phoneLabel.frame)+PX_TO_PT(15), ScreenWidth, 1)];
-    line.backgroundColor = R_G_B_16(0xc7c7c7);
+    line.backgroundColor = R_G_B_16(0xe0e0e0);
     self.line = line;
     
 }
@@ -72,7 +72,7 @@
     self.phoneLabel = phoneLabel;
     
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(phoneLabel.frame)+PX_TO_PT(15), ScreenWidth, 1)];
-    line.backgroundColor = R_G_B_16(0xc7c7c7);
+    line.backgroundColor = R_G_B_16(0xe0e0e0);
     self.line = line;
     
     

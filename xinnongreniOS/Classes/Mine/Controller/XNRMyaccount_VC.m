@@ -194,11 +194,11 @@
     
     
     UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(120),ScreenWidth,1)];
-    topLine.backgroundColor=R_G_B_16(0xc7c7c7);
+    topLine.backgroundColor=R_G_B_16(0xe0e0e0);
     [self.mainScrollView addSubview:topLine];
     
     UIView *bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(208), ScreenWidth, 1)];
-    bottomLine.backgroundColor=R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor=R_G_B_16(0xe0e0e0);
     [self.mainScrollView addSubview:bottomLine];
 }
 
@@ -248,11 +248,11 @@
 
         //分割线
         UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(0,PX_TO_PT(228)+i*PX_TO_PT(88), ScreenWidth, 1)];
-        line2.backgroundColor=R_G_B_16(0xc7c7c7);
+        line2.backgroundColor=R_G_B_16(0xe0e0e0);
         [self.mainScrollView addSubview:line2];
         
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(228)+3*PX_TO_PT(88)+PX_TO_PT(86), ScreenWidth, 1)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [self.mainScrollView addSubview:lineView];
 }
     // 显示姓名
@@ -453,7 +453,7 @@
     
     for (int i = 1; i<4; i++) {
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100)*i, ScreenWidth-PX_TO_PT(200), 1)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [warnView addSubview:lineView];
     }
     
@@ -548,7 +548,7 @@
     [RscBtn addSubview:arrow];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1)];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [RscBtn addSubview:lineView];
 
 }
@@ -639,15 +639,15 @@
     [addressManagerBtn addSubview:addressLabel];
 
     UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth,1)];
-    topLine.backgroundColor=R_G_B_16(0xc7c7c7);
+    topLine.backgroundColor=R_G_B_16(0xe0e0e0);
     [bottomBtn addSubview:topLine];
     
     UIView *middleLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(86), ScreenWidth, 1)];
-    middleLine.backgroundColor=R_G_B_16(0xc7c7c7);
+    middleLine.backgroundColor=R_G_B_16(0xe0e0e0);
     [bottomBtn addSubview:middleLine];
     
     UIView *bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(176), ScreenWidth, 1)];
-    bottomLine.backgroundColor=R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor=R_G_B_16(0xe0e0e0);
     [bottomBtn addSubview:bottomLine];
 
     UIButton *resignLoginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -830,7 +830,8 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"我";
     self.navigationItem.titleView = titleLabel;

@@ -69,19 +69,19 @@
     }
     
     // 订金
-    if (priceLabelSize.width>ScreenWidth/2) {
-        CGFloat depositLabelX = CGRectGetMaxX(_priceLabelF)+PX_TO_PT(20);
+//    if (priceLabelSize.width>ScreenWidth/2) {
+        CGFloat depositLabelX = CGRectGetMaxX(_priceLabelF)+PX_TO_PT(30);
         CGFloat depositLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
         CGFloat depositLabelW = ScreenWidth/2;
         CGFloat depositLabelH = PX_TO_PT(38);
         _depositLabelF = CGRectMake(depositLabelX, depositLabelY, depositLabelW, depositLabelH);
-    }else{
-        CGFloat depositLabelX = ScreenWidth/2;
-        CGFloat depositLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
-        CGFloat depositLabelW = ScreenWidth/2;
-        CGFloat depositLabelH = PX_TO_PT(38);
-        _depositLabelF = CGRectMake(depositLabelX, depositLabelY, depositLabelW, depositLabelH);
-    }
+//    }else{
+//        CGFloat depositLabelX = ScreenWidth/2;
+//        CGFloat depositLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
+//        CGFloat depositLabelW = ScreenWidth/2;
+//        CGFloat depositLabelH = PX_TO_PT(38);
+//        _depositLabelF = CGRectMake(depositLabelX, depositLabelY, depositLabelW, depositLabelH);
+//    }
    
     
     // 市场价 ,商品简介

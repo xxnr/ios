@@ -47,7 +47,7 @@
     picImageView.contentMode = UIViewContentModeScaleAspectFit;
     picImageView.layer.masksToBounds=YES;
     picImageView.layer.borderWidth=PX_TO_PT(2);
-    picImageView.layer.borderColor=R_G_B_16(0xc7c7c7).CGColor;
+    picImageView.layer.borderColor=R_G_B_16(0xe0e0e0).CGColor;
     self.picImageView = picImageView;
     [self.contentView addSubview:self.picImageView];
 }

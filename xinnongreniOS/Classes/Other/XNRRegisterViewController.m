@@ -387,7 +387,7 @@
         
         [BMProgressView LoadViewDisappear:self.view];
         NSDictionary *datasDic = result[@"datas"];
-        if([result[@"code"] isEqualToString:@"1000"]){
+        if([result[@"code"] integerValue] == 1000){
             
         [UILabel showMessage:result[@"message"]];
 
@@ -400,8 +400,6 @@
         [UILabel showMessage:result[@"message"]];
             
         }
-        
-        
     } failure:^(NSError *error) {
         
     }];

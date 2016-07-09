@@ -42,7 +42,7 @@
     orderLabel.text = @"您还没有订单哦";
     orderLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     orderLabel.textAlignment = NSTextAlignmentCenter;
-    orderLabel.textColor = R_G_B_16(0x909090);
+    orderLabel.textColor = R_G_B_16(0x646464);
     [orderView addSubview:orderLabel];
 }
 

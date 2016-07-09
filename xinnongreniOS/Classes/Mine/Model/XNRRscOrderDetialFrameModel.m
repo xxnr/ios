@@ -41,7 +41,7 @@
     
     CGFloat attributesLabelX = CGRectGetMaxX(_imageViewF)+PX_TO_PT(20);
     CGFloat attributesLabelY = CGRectGetMaxY(_goodsNameLabelF)+PX_TO_PT(20);
-    CGFloat attributesLabelW = ScreenWidth - attributesLabelX - PX_TO_PT(100);
+    CGFloat attributesLabelW = PX_TO_PT(342);
     CGSize  attributesLabelMaxSize = CGSizeMake(attributesLabelW, MAXFLOAT);
     NSMutableString *attributesStr = [[NSMutableString alloc] initWithString:@""];
     for (NSDictionary *subDic in self.model.attributes) {

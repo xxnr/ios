@@ -40,7 +40,7 @@
     bgView.backgroundColor = [UIColor whiteColor];
     bgView.layer.borderWidth = 1;
     bgView.layer.cornerRadius = 5.0;
-    bgView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    bgView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     bgView.layer.masksToBounds = YES;
     [self.contentView addSubview:bgView];
     
@@ -65,7 +65,7 @@
     [bgView addSubview:addressLabel];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(160), ScreenWidth-PX_TO_PT(60), 1)];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [bgView addSubview:lineView];
     
     UIButton *selectBtn = [UIButton buttonWithType:UIButtonTypeCustom];

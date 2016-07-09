@@ -418,7 +418,7 @@
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), -PX_TO_PT(30), PX_TO_PT(200), PX_TO_PT(200))];
     imageView.image = [UIImage imageNamed:@"icon_loading-wrong"];
-    imageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    imageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     imageView.layer.borderWidth = 1.0;
     imageView.layer.cornerRadius = 5.0;
     imageView.layer.masksToBounds = YES;
@@ -478,7 +478,7 @@
 
         //分割线
         UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,1 )];
-        line.backgroundColor=R_G_B_16(0xc7c7c7);
+        line.backgroundColor=R_G_B_16(0xe0e0e0);
         [bgViewF addSubview:line];
     }
 }
@@ -499,7 +499,7 @@
         [bgExpectView addSubview:expectLabel];
         
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [bgExpectView addSubview:lineView];
         
     }

@@ -518,7 +518,7 @@
     
     CALayer *storeLineLayer = [[CALayer alloc] init];
     storeLineLayer.frame = CGRectMake(0, PX_TO_PT(94), ScreenWidth, 1);
-    storeLineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
+    storeLineLayer.backgroundColor = R_G_B_16(0xe0e0e0).CGColor;
     [myStoreBtn.layer addSublayer:storeLineLayer];
 
     // 图标
@@ -547,7 +547,7 @@
     
     CALayer *lineLayer = [[CALayer alloc] init];
     lineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, 1);
-    lineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
+    lineLayer.backgroundColor = R_G_B_16(0xe0e0e0).CGColor;
     [orderBtn.layer addSublayer:lineLayer];
 
     // 我的订单的状态
@@ -591,7 +591,7 @@
     
     CALayer *orderlineLayer = [[CALayer alloc] init];
     orderlineLayer.frame = CGRectMake(0, PX_TO_PT(129), ScreenWidth, 1);
-    orderlineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
+    orderlineLayer.backgroundColor = R_G_B_16(0xe0e0e0).CGColor;
     [orderStateView.layer addSublayer:orderlineLayer];
 
     
@@ -706,7 +706,8 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"我的新农人";
     self.navigationItem.titleView = titleLabel;
