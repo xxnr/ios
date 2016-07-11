@@ -312,6 +312,11 @@
 		4976FC331BE9CD510002E8F8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4976FC321BE9CD510002E8F8 /* UIKit.framework */; };
 		4976FC351BE9CD690002E8F8 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4976FC341BE9CD690002E8F8 /* CoreMotion.framework */; };
 		4976FC381BEA47C50002E8F8 /* XNRShopcarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4976FC371BEA47C50002E8F8 /* XNRShopcarView.m */; };
+		4981E12B1D338DA9005A5C28 /* register.js in Resources */ = {isa = PBXBuildFile; fileRef = 4981E12A1D338DA9005A5C28 /* register.js */; };
+		4981E12D1D338DB6005A5C28 /* forgetPwd.js in Resources */ = {isa = PBXBuildFile; fileRef = 4981E12C1D338DB6005A5C28 /* forgetPwd.js */; };
+		4981E12F1D338DC4005A5C28 /* shoppingcar.js in Resources */ = {isa = PBXBuildFile; fileRef = 4981E12E1D338DC4005A5C28 /* shoppingcar.js */; };
+		4981E1311D338DE0005A5C28 /* mine.js in Resources */ = {isa = PBXBuildFile; fileRef = 4981E1301D338DE0005A5C28 /* mine.js */; };
+		4981E1331D338DE9005A5C28 /* myData.js in Resources */ = {isa = PBXBuildFile; fileRef = 4981E1321D338DE9005A5C28 /* myData.js */; };
 		498AB01F1BF8DACA003827E3 /* XNRMyRepresentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 498AB01E1BF8DACA003827E3 /* XNRMyRepresentModel.m */; };
 		498AB0221BF8E1AD003827E3 /* XNRMyRepresent_cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 498AB0211BF8E1AD003827E3 /* XNRMyRepresent_cell.m */; };
 		498AB0251BF97FED003827E3 /* XNRUserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 498AB0241BF97FED003827E3 /* XNRUserInfoModel.m */; };
@@ -1289,6 +1294,11 @@
 		4976FC341BE9CD690002E8F8 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		4976FC361BEA47C50002E8F8 /* XNRShopcarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRShopcarView.h; sourceTree = "<group>"; };
 		4976FC371BEA47C50002E8F8 /* XNRShopcarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRShopcarView.m; sourceTree = "<group>"; };
+		4981E12A1D338DA9005A5C28 /* register.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = register.js; sourceTree = "<group>"; };
+		4981E12C1D338DB6005A5C28 /* forgetPwd.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = forgetPwd.js; sourceTree = "<group>"; };
+		4981E12E1D338DC4005A5C28 /* shoppingcar.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = shoppingcar.js; sourceTree = "<group>"; };
+		4981E1301D338DE0005A5C28 /* mine.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = mine.js; sourceTree = "<group>"; };
+		4981E1321D338DE9005A5C28 /* myData.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = myData.js; sourceTree = "<group>"; };
 		498AB01D1BF8DACA003827E3 /* XNRMyRepresentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMyRepresentModel.h; sourceTree = "<group>"; };
 		498AB01E1BF8DACA003827E3 /* XNRMyRepresentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRMyRepresentModel.m; sourceTree = "<group>"; };
 		498AB0201BF8E1AD003827E3 /* XNRMyRepresent_cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRMyRepresent_cell.h; sourceTree = "<group>"; };
@@ -4137,6 +4147,11 @@
 				9CC800621D2DFD5000B516E0 /* representCase.js */,
 				9CC800631D2DFD5000B516E0 /* specialPerformance.js */,
 				9CC800641D2DFD5000B516E0 /* test.js */,
+				4981E12A1D338DA9005A5C28 /* register.js */,
+				4981E12C1D338DB6005A5C28 /* forgetPwd.js */,
+				4981E12E1D338DC4005A5C28 /* shoppingcar.js */,
+				4981E1301D338DE0005A5C28 /* mine.js */,
+				4981E1321D338DE9005A5C28 /* myData.js */,
 			);
 			path = case;
 			sourceTree = "<group>";
@@ -4323,7 +4338,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				495EB2101D2E0F5A006FE573 /* profiles_settings.xml in Resources */,
-
 				49F7A5B41C5906C200A1FA45 /* 加载7.png in Resources */,
 				9C441FF91D2FAD68007075C3 /* load-12.png in Resources */,
 				496713891CD97D3800782C12 /* button_img@2x.png in Resources */,
@@ -4337,6 +4351,7 @@
 				491610E41C8C422200F1E243 /* UIBarButtonItemArrowRight@2x.png in Resources */,
 				491610E41C8C422200F1E243 /* UIBarButtonItemArrowRight@2x.png in Resources */,
 				9CC800871D2DFD5000B516E0 /* accountTestCase.js in Resources */,
+				4981E1331D338DE9005A5C28 /* myData.js in Resources */,
 				496BB4391CC49F55007F034F /* loader-@3x.png in Resources */,
 				9C920B151D069EE700C187DB /* UMShareEditViewControlleriPad.xib in Resources */,
 				9CC8008D1D2DFD5000B516E0 /* dispathCase(配送到户).js in Resources */,
@@ -4362,6 +4377,7 @@
 				49F7A5B01C5906C200A1FA45 /* 加载3.png in Resources */,
 				9CC800851D2DFD5000B516E0 /* workspace.xml in Resources */,
 				496BB4401CC49F55007F034F /* wechat-friends@3x.png in Resources */,
+				4981E12F1D338DC4005A5C28 /* shoppingcar.js in Resources */,
 				9C441FF31D2FAD68007075C3 /* load-6.png in Resources */,
 				49F6B1991C2A6EE100DCF8CF /* MJPhotoBrowser.bundle in Resources */,
 				495EB21A1D2E0F5A006FE573 /* newsCase.js in Resources */,
@@ -4371,7 +4387,7 @@
 				9C920B161D069EE700C187DB /* UMSLoginViewController.xib in Resources */,
 				499551DA1CC09CED00F3B1F9 /* QQShare@2x.png in Resources */,
 				9C441FFD1D2FAD68007075C3 /* load-16.png in Resources */,
-				499551DA1CC09CED00F3B1F9 /* QQ@2x.png in Resources */,
+				499551DA1CC09CED00F3B1F9 /* QQShare@2x.png in Resources */,
 				9CC800951D2DFD5000B516E0 /* orderListCase.js in Resources */,
 				499551E51CC09CED00F3B1F9 /* xxnr-logo@3x.png in Resources */,
 				491280F71CC8C2B9009E67C4 /* check-the@2x.png in Resources */,
@@ -4387,7 +4403,6 @@
 				491610E21C8C422200F1E243 /* UIBarButtonItemArrowLeft@3x.png in Resources */,
 				495EB2121D2E0F5A006FE573 /* misc.xml in Resources */,
 				496BB42C1CC49F55007F034F /* bj_img@2x.png in Resources */,
-				1F16AF541B259F67002C1E73 /* YMHProtoclViewController.xib in Resources */,
 				9C441FF81D2FAD68007075C3 /* load-11.png in Resources */,
 				496BB4311CC49F55007F034F /* recommended--@2x.png in Resources */,
 				491280F41CC8C2B9009E67C4 /* arrow-circle@2x.png in Resources */,
@@ -4419,6 +4434,7 @@
 				491610D91C8C422200F1E243 /* ImageSelectedSmallOn@3x.png in Resources */,
 				9CC800BB1D2DFD5000B516E0 /* xunit_output.rb in Resources */,
 				9C920B131D069EE700C187DB /* UMSCommentInputControlleriPad.xib in Resources */,
+				4981E12D1D338DB6005A5C28 /* forgetPwd.js in Resources */,
 				49F7A5B21C5906C200A1FA45 /* 加载5.png in Resources */,
 				491280D71CC8A329009E67C4 /* wechat-circle-l@3x.png in Resources */,
 				495EB22F1D2E0F5A006FE573 /* tuneup.js in Resources */,
@@ -4439,6 +4455,7 @@
 				496BB42B1CC49F55007F034F /* bin-@2x.png in Resources */,
 				496BB4341CC49F55007F034F /* wechat-friends@2x.png in Resources */,
 				49F7A5B61C5906C200A1FA45 /* 加载9.png in Resources */,
+				4981E12B1D338DA9005A5C28 /* register.js in Resources */,
 				9CC800A91D2DFD5000B516E0 /* LICENSE in Resources */,
 				499551E11CC09CED00F3B1F9 /* qqspace@3x.png in Resources */,
 				9C4420001D2FAD68007075C3 /* loader-21@2x.png in Resources */,
@@ -4467,6 +4484,7 @@
 				1F1532E01B09C58800CA374B /* Images.xcassets in Resources */,
 				9CC800931D2DFD5000B516E0 /* newsCase.js in Resources */,
 				496713851CD97D1900782C12 /* button_img@3x.png in Resources */,
+				4981E1311D338DE0005A5C28 /* mine.js in Resources */,
 				9CC8007F1D2DFD5000B516E0 /* misc.xml in Resources */,
 				49F7A5A51C5906C200A1FA45 /* 加载11.png in Resources */,
 				492085431D3389A00018EDDC /* shoppingcar.js in Resources */,
@@ -4524,7 +4542,7 @@
 				9C441FEF1D2FAD68007075C3 /* load-2.png in Resources */,
 				84B77D001B26BDE6001923E4 /* PEPhotoCropEditor.bundle in Resources */,
 				491281071CC8C2B9009E67C4 /* search-@3x.png in Resources */,
-				499551E01CC09CED00F3B1F9 /* QQ@3x.png in Resources */,
+				499551E01CC09CED00F3B1F9 /* QQShare@3x.png in Resources */,
 				49F7A5831C58469400A1FA45 /* MJRefresh.bundle in Resources */,
 				9C441FED1D2FAD68007075C3 /* load-0.png in Resources */,
 				491281081CC8C2B9009E67C4 /* shut-down--@3x.png in Resources */,
