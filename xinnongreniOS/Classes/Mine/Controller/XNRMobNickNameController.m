@@ -61,7 +61,7 @@
     
     UILabel *warnLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.bgView.frame)+PX_TO_PT(24), ScreenWidth, PX_TO_PT(20))];
     warnLabel.text = @"限6个汉字或12个英文字符";
-    warnLabel.font = [UIFont systemFontOfSize:PX_TO_PT(20)];
+    warnLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     warnLabel.textColor = R_G_B_16(0x323232);
     self.warnLabel = warnLabel;
     [self.view addSubview:warnLabel];

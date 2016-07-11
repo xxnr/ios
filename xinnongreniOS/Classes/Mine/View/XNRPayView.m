@@ -36,11 +36,10 @@
     if (!_orderEmptyView) {
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
         orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
-
-        orderEmptyView.delegate = self;
         self.orderEmptyView = orderEmptyView;
-        
-        [self addSubview:orderEmptyView];
+        orderEmptyView.delegate = self;
+//        [self addSubview:orderEmptyView];
+        [self insertSubview:orderEmptyView atIndex:0];
     }
     return _orderEmptyView;
     
@@ -70,7 +69,7 @@
         [self createbackBtn];
         
         [self createMainTableView];
-        
+
         [self setupStayPayViewRefresh];
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(payHeadRefresh) name:@"payHeadRefresh" object:nil];
@@ -141,7 +140,7 @@
     }
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
         [RefreshImage addObject:image];
@@ -325,8 +324,13 @@
         [headView addSubview:payTypeLabel];
         
         
+<<<<<<< HEAD
         UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
         lineView1.backgroundColor = R_G_B_16(0xe0e0e0);
+=======
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
+>>>>>>> ynn_ios
         [headView addSubview:lineView1];
         
         
@@ -389,8 +393,13 @@
             
             
             for (int i = 0; i<3; i++) {
+<<<<<<< HEAD
                 UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, 1)];
                 lineView.backgroundColor = R_G_B_16(0xe0e0e0);
+=======
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+>>>>>>> ynn_ios
                 [bottomView addSubview:lineView];
             }
             return bottomView;
@@ -452,8 +461,13 @@
             [bottomView addSubview:reviseBtn];
             
             for (int i = 0; i<3; i++) {
+<<<<<<< HEAD
                 UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, 1)];
                 lineView.backgroundColor = R_G_B_16(0xe0e0e0);
+=======
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+>>>>>>> ynn_ios
                 [bottomView addSubview:lineView];
             }
             
@@ -461,8 +475,13 @@
             sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
             [bottomView addSubview:sectionView];
             
+<<<<<<< HEAD
             UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
             sectionLine.backgroundColor = R_G_B_16(0xe0e0e0);
+=======
+            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+            sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+>>>>>>> ynn_ios
             [sectionView addSubview:sectionLine];
             
             return bottomView;
@@ -497,15 +516,25 @@
             sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
             [bottomView addSubview:sectionView];
             
+<<<<<<< HEAD
             UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
             sectionLine.backgroundColor = R_G_B_16(0xe0e0e0);
+=======
+            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+            sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+>>>>>>> ynn_ios
             [sectionView addSubview:sectionLine];
             
             
             for (int i = 0; i<2; i++) {
                 
+<<<<<<< HEAD
                 UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, 1)];
                 lineView.backgroundColor = R_G_B_16(0xe0e0e0);
+=======
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+>>>>>>> ynn_ios
                 [bottomView addSubview:lineView];
             }
             

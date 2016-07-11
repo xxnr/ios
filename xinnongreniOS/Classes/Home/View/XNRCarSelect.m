@@ -45,9 +45,9 @@
     morePruductBtn.imageView.contentMode = UIViewContentModeCenter;
     [morePruductBtn setTitle:@"更多产品" forState:UIControlStateNormal];
     [morePruductBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
-    morePruductBtn.titleLabel.font = [UIFont systemFontOfSize:10];
-    morePruductBtn.imageEdgeInsets = UIEdgeInsetsMake(10, 0, 10, -160);
-    morePruductBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 50, 0, 0);
+    morePruductBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(22)];
+    morePruductBtn.imageEdgeInsets = UIEdgeInsetsMake(10, 0, 10, -(ScreenWidth/2)-PX_TO_PT(10));
+    morePruductBtn.titleEdgeInsets = UIEdgeInsetsMake(0, PX_TO_PT(ScreenWidth/2)-PX_TO_PT(22), 0, 0);
     [morePruductBtn addTarget:self action:@selector(moreClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:morePruductBtn];
     

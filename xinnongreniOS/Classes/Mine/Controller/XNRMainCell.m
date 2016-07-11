@@ -64,7 +64,7 @@
         // 主题
         self.detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14), ScreenWidth/2-PX_TO_PT(30), PX_TO_PT(60))];
         self.detailLabel.textColor = R_G_B_16(0x00b38a);
-        self.detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(26)];
+        self.detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
         self.detailLabel.textAlignment = NSTextAlignmentRight;
         [self.bgView addSubview:_detailLabel];
         

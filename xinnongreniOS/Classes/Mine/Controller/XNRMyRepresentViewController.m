@@ -186,7 +186,7 @@ static bool isBroker;
     
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         

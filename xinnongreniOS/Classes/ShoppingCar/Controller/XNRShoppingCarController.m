@@ -156,7 +156,7 @@
     }
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
         [RefreshImage addObject:image];
@@ -188,7 +188,7 @@
     }
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
         [RefreshImage addObject:image];
@@ -624,7 +624,7 @@
 - (void)createShoppingCarTableView
 {
     UITableView *shoppingCarTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(88)) style:UITableViewStyleGrouped];
-    shoppingCarTableView.backgroundColor = [UIColor clearColor];
+//    shoppingCarTableView.backgroundColor = [UIColor clearColor];
     shoppingCarTableView.showsVerticalScrollIndicator = YES;
     shoppingCarTableView.delegate = self;
     shoppingCarTableView.dataSource = self;

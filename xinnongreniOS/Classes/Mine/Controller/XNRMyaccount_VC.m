@@ -256,7 +256,7 @@
         [self.mainScrollView addSubview:lineView];
 }
     // 显示姓名
-    UILabel *userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14), ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
+    UILabel *userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14), ScreenWidth/2-PX_TO_PT(70)-PX_TO_PT(10), PX_TO_PT(60))];
     userNameLabel.textAlignment = NSTextAlignmentRight;
     userNameLabel.textColor = R_G_B_16(0x909090);
     userNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
@@ -270,7 +270,7 @@
     [bgView addSubview:userNameLabel];
     
     // 显示性别
-    UILabel *sexLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14)+PX_TO_PT(88), ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
+    UILabel *sexLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14)+PX_TO_PT(88), ScreenWidth/2-PX_TO_PT(70)-PX_TO_PT(10), PX_TO_PT(60))];
     sexLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     sexLabel.textAlignment = NSTextAlignmentRight;
     sexLabel.textColor = R_G_B_16(0x909090);
@@ -291,10 +291,10 @@
     [bgView addSubview:sexLabel];
 
     // 显示所在地区
-    UILabel *areaLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2+PX_TO_PT(30), PX_TO_PT(88)*2, ScreenWidth/2-PX_TO_PT(100), PX_TO_PT(88))];
+    UILabel *areaLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2+PX_TO_PT(30), PX_TO_PT(88)*2, ScreenWidth/2-PX_TO_PT(100)-PX_TO_PT(10), PX_TO_PT(88))];
     areaLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     areaLabel.numberOfLines = 0;
-//    areaLabel.textAlignment = NSTextAlignmentRight;
+    areaLabel.textAlignment = NSTextAlignmentRight;
     areaLabel.textColor = R_G_B_16(0x909090);
     [areaLabel fitTextWidth_Ext];
     if (_model.province) {
@@ -323,7 +323,7 @@
     [bgView addSubview:areaLabel];
 
     // 显示类型
-    UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14) + PX_TO_PT(88)*3, ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
+    UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14) + PX_TO_PT(88)*3, ScreenWidth/2-PX_TO_PT(70)-PX_TO_PT(10), PX_TO_PT(60))];
     typeLabel.textAlignment = NSTextAlignmentRight;
     typeLabel.textColor = R_G_B_16(0x909090);
     typeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
@@ -401,7 +401,7 @@
     self.coverView = coverView;
     [AppKeyWindow addSubview:coverView];
     
-    UIView *warnView = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(100), PX_TO_PT(450), ScreenWidth -  PX_TO_PT(200), PX_TO_PT(400))];
+    UIView *warnView = [[UIView alloc]initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(600))/2, PX_TO_PT(450), PX_TO_PT(600), PX_TO_PT(400))];
     warnView.layer.cornerRadius = PX_TO_PT(20);
     warnView.backgroundColor = [UIColor whiteColor];
     self.warnView = warnView;
@@ -452,8 +452,13 @@
     [warnView addSubview:cancelBtn];
     
     for (int i = 1; i<4; i++) {
+<<<<<<< HEAD
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100)*i, ScreenWidth-PX_TO_PT(200), 1)];
         lineView.backgroundColor = R_G_B_16(0xe0e0e0);
+=======
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100)*i, PX_TO_PT(600), 1)];
+        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+>>>>>>> ynn_ios
         [warnView addSubview:lineView];
     }
     
@@ -512,7 +517,7 @@
     self.RscBtn = RscBtn;
     [self.mainScrollView addSubview:RscBtn];
     
-    UILabel *RscLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(70), PX_TO_PT(88))];
+    UILabel *RscLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(70)-PX_TO_PT(10), PX_TO_PT(88))];
     RscLabel.textAlignment = NSTextAlignmentRight;
     RscLabel.textColor = R_G_B_16(0x00b38a);
     RscLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];

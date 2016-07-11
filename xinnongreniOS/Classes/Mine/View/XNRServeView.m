@@ -44,7 +44,7 @@
         orderEmptyView.delegate = self;
         self.orderEmptyView = orderEmptyView;
         orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
-        [self addSubview:orderEmptyView];
+        [self insertSubview:orderEmptyView atIndex:0];
     }
     return _orderEmptyView;
     
@@ -119,7 +119,7 @@
 -(void)serveHeadRefresh
 {
     [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
-    
+
     _isRefresh = YES;
     [self headRefresh];
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
@@ -140,7 +140,7 @@
     }
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
         [RefreshImage addObject:image];
