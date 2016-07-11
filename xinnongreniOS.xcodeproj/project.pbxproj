@@ -2100,10 +2100,7 @@
 		1F1532C61B09C58700CA374B = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-=======
 				9CC8004E1D2DFD5000B516E0 /* xxnr-testCase */,
->>>>>>> ynn_ios
 				1F1532D11B09C58800CA374B /* xinnongreniOS */,
 				1F1532EB1B09C58800CA374B /* xinnongreniOSTests */,
 				1F1532D01B09C58800CA374B /* Products */,
@@ -4325,10 +4322,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< HEAD
 				495EB2101D2E0F5A006FE573 /* profiles_settings.xml in Resources */,
-=======
->>>>>>> ynn_ios
+
 				49F7A5B41C5906C200A1FA45 /* 加载7.png in Resources */,
 				9C441FF91D2FAD68007075C3 /* load-12.png in Resources */,
 				496713891CD97D3800782C12 /* button_img@2x.png in Resources */,
@@ -4338,13 +4333,10 @@
 				C54CFAFD1B2AC30C004D5C54 /* checkbox1_unchecked@2x.png in Resources */,
 				495EB22D1D2E0F5A006FE573 /* run in Resources */,
 				491610E71C8C422200F1E243 /* UIBarButtonItemGrid@2x.png in Resources */,
-<<<<<<< HEAD
 				495EB2151D2E0F5A006FE573 /* accountTestCase.js in Resources */,
 				491610E41C8C422200F1E243 /* UIBarButtonItemArrowRight@2x.png in Resources */,
-=======
 				491610E41C8C422200F1E243 /* UIBarButtonItemArrowRight@2x.png in Resources */,
 				9CC800871D2DFD5000B516E0 /* accountTestCase.js in Resources */,
->>>>>>> ynn_ios
 				496BB4391CC49F55007F034F /* loader-@3x.png in Resources */,
 				9C920B151D069EE700C187DB /* UMShareEditViewControlleriPad.xib in Resources */,
 				9CC8008D1D2DFD5000B516E0 /* dispathCase(配送到户).js in Resources */,
@@ -4362,10 +4354,7 @@
 				496BB42E1CC49F55007F034F /* notification@2x.png in Resources */,
 				9C441FFC1D2FAD68007075C3 /* load-15.png in Resources */,
 				491610D51C8C422200F1E243 /* ImageSelectedSmallOff@2x.png in Resources */,
-<<<<<<< HEAD
-=======
 				9CC800BD1D2DFD5000B516E0 /* tuneup.js in Resources */,
->>>>>>> ynn_ios
 				491280F81CC8C2B9009E67C4 /* close@2x.png in Resources */,
 				9C441FF11D2FAD68007075C3 /* load-4.png in Resources */,
 				491280FF1CC8C2B9009E67C4 /* arrow-circle@3x.png in Resources */,
@@ -4373,23 +4362,17 @@
 				49F7A5B01C5906C200A1FA45 /* 加载3.png in Resources */,
 				9CC800851D2DFD5000B516E0 /* workspace.xml in Resources */,
 				496BB4401CC49F55007F034F /* wechat-friends@3x.png in Resources */,
-<<<<<<< HEAD
-=======
 				9C441FF31D2FAD68007075C3 /* load-6.png in Resources */,
->>>>>>> ynn_ios
 				49F6B1991C2A6EE100DCF8CF /* MJPhotoBrowser.bundle in Resources */,
 				495EB21A1D2E0F5A006FE573 /* newsCase.js in Resources */,
 				4920853F1D3389850018EDDC /* register.js in Resources */,
 				844AFE931B147ECF00EE29C8 /* b27_icon_star_yellow@2x.png in Resources */,
 				495EB2191D2E0F5A006FE573 /* lognCase.js in Resources */,
 				9C920B161D069EE700C187DB /* UMSLoginViewController.xib in Resources */,
-<<<<<<< HEAD
 				499551DA1CC09CED00F3B1F9 /* QQShare@2x.png in Resources */,
-=======
 				9C441FFD1D2FAD68007075C3 /* load-16.png in Resources */,
 				499551DA1CC09CED00F3B1F9 /* QQ@2x.png in Resources */,
 				9CC800951D2DFD5000B516E0 /* orderListCase.js in Resources */,
->>>>>>> ynn_ios
 				499551E51CC09CED00F3B1F9 /* xxnr-logo@3x.png in Resources */,
 				491280F71CC8C2B9009E67C4 /* check-the@2x.png in Resources */,
 				C54CFAFA1B2AC30C004D5C54 /* checkbox1_checked.png in Resources */,
@@ -4404,11 +4387,8 @@
 				491610E21C8C422200F1E243 /* UIBarButtonItemArrowLeft@3x.png in Resources */,
 				495EB2121D2E0F5A006FE573 /* misc.xml in Resources */,
 				496BB42C1CC49F55007F034F /* bj_img@2x.png in Resources */,
-<<<<<<< HEAD
-=======
 				1F16AF541B259F67002C1E73 /* YMHProtoclViewController.xib in Resources */,
 				9C441FF81D2FAD68007075C3 /* load-11.png in Resources */,
->>>>>>> ynn_ios
 				496BB4311CC49F55007F034F /* recommended--@2x.png in Resources */,
 				491280F41CC8C2B9009E67C4 /* arrow-circle@2x.png in Resources */,
 				491280D01CC8A30C009E67C4 /* wechat-friendsl@2x.png in Resources */,
@@ -4446,10 +4426,7 @@
 				496BB43B1CC49F55007F034F /* qq@3x.png in Resources */,
 				491610E31C8C422200F1E243 /* UIBarButtonItemArrowRight.png in Resources */,
 				491610CC1C8C422200F1E243 /* ImageError@2x.png in Resources */,
-<<<<<<< HEAD
-=======
 				9C441FFA1D2FAD68007075C3 /* load-13.png in Resources */,
->>>>>>> ynn_ios
 				491610DF1C8C422200F1E243 /* PlayButtonOverlayLargeTap@3x.png in Resources */,
 				495EB2301D2E0F5A006FE573 /* tuneup_js.podspec in Resources */,
 				491281001CC8C2B9009E67C4 /* arrow_the_circle@3x.png in Resources */,
@@ -4462,10 +4439,7 @@
 				496BB42B1CC49F55007F034F /* bin-@2x.png in Resources */,
 				496BB4341CC49F55007F034F /* wechat-friends@2x.png in Resources */,
 				49F7A5B61C5906C200A1FA45 /* 加载9.png in Resources */,
-<<<<<<< HEAD
-=======
 				9CC800A91D2DFD5000B516E0 /* LICENSE in Resources */,
->>>>>>> ynn_ios
 				499551E11CC09CED00F3B1F9 /* qqspace@3x.png in Resources */,
 				9C4420001D2FAD68007075C3 /* loader-21@2x.png in Resources */,
 				9CC8009D1D2DFD5000B516E0 /* test.js in Resources */,
@@ -4480,11 +4454,8 @@
 				49F7A5AC1C5906C200A1FA45 /* 加载18.png in Resources */,
 				4922D6941D2B7AFF0008CB7A /* yonghuxieyi.html in Resources */,
 				8446C2971B1D6D19005CA932 /* pop-Info.plist in Resources */,
-<<<<<<< HEAD
-=======
 				9CC800B11D2DFD5000B516E0 /* abbreviated_console_output.rb in Resources */,
 				9CC800811D2DFD5000B516E0 /* modules.xml in Resources */,
->>>>>>> ynn_ios
 				491610D01C8C422200F1E243 /* ImageSelectedOff@3x.png in Resources */,
 				C54CFAFC1B2AC30C004D5C54 /* checkbox1_unchecked.png in Resources */,
 				9C441FFB1D2FAD68007075C3 /* load-14.png in Resources */,
@@ -4496,10 +4467,7 @@
 				1F1532E01B09C58800CA374B /* Images.xcassets in Resources */,
 				9CC800931D2DFD5000B516E0 /* newsCase.js in Resources */,
 				496713851CD97D1900782C12 /* button_img@3x.png in Resources */,
-<<<<<<< HEAD
-=======
 				9CC8007F1D2DFD5000B516E0 /* misc.xml in Resources */,
->>>>>>> ynn_ios
 				49F7A5A51C5906C200A1FA45 /* 加载11.png in Resources */,
 				492085431D3389A00018EDDC /* shoppingcar.js in Resources */,
 				496BB4301CC49F55007F034F /* qqspace@2x.png in Resources */,
@@ -4534,7 +4502,6 @@
 				9C920B171D069EE700C187DB /* UMSnsAccountViewController.xib in Resources */,
 				49F7A5AD1C5906C200A1FA45 /* 加载19.png in Resources */,
 				496BB42F1CC49F55007F034F /* qq@2x.png in Resources */,
-<<<<<<< HEAD
 				492085451D3389AC0018EDDC /* mine.js in Resources */,
 				495EB2211D2E0F5A006FE573 /* image_asserter in Resources */,
 				491281021CC8C2B9009E67C4 /* check-the@3x.png in Resources */,
@@ -4547,7 +4514,6 @@
 				491281071CC8C2B9009E67C4 /* search-@3x.png in Resources */,
 				499551E01CC09CED00F3B1F9 /* QQShare@3x.png in Resources */,
 				499551E01CC09CED00F3B1F9 /* QQShare@3x.png in Resources */,
-=======
 				491281021CC8C2B9009E67C4 /* check-the@3x.png in Resources */,
 				9CC8009B1D2DFD5000B516E0 /* specialPerformance.js in Resources */,
 				9CC8007B1D2DFD5000B516E0 /* profiles_settings.xml in Resources */,
@@ -4559,7 +4525,6 @@
 				84B77D001B26BDE6001923E4 /* PEPhotoCropEditor.bundle in Resources */,
 				491281071CC8C2B9009E67C4 /* search-@3x.png in Resources */,
 				499551E01CC09CED00F3B1F9 /* QQ@3x.png in Resources */,
->>>>>>> ynn_ios
 				49F7A5831C58469400A1FA45 /* MJRefresh.bundle in Resources */,
 				9C441FED1D2FAD68007075C3 /* load-0.png in Resources */,
 				491281081CC8C2B9009E67C4 /* shut-down--@3x.png in Resources */,
@@ -4579,10 +4544,7 @@
 				9CC800991D2DFD5000B516E0 /* representCase.js in Resources */,
 				496BB4371CC49F55007F034F /* bin-@3x.png in Resources */,
 				844AFE4A1B14438700EE29C8 /* FZZHJW.TTF in Resources */,
-<<<<<<< HEAD
-=======
 				9CC8007D1D2DFD5000B516E0 /* demo.iml in Resources */,
->>>>>>> ynn_ios
 				491280FB1CC8C2B9009E67C4 /* search--icon2@2x.png in Resources */,
 				491280F61CC8C2B9009E67C4 /* call-contact@2x.png in Resources */,
 				496BB4411CC49F55007F034F /* xxnr-wz@3x.png in Resources */,
@@ -4590,14 +4552,11 @@
 				491281031CC8C2B9009E67C4 /* close@3x.png in Resources */,
 				491280CF1CC8A30C009E67C4 /* wechat-circle-l@2x.png in Resources */,
 				491610DC1C8C422200F1E243 /* PlayButtonOverlayLarge@3x.png in Resources */,
-<<<<<<< HEAD
 				495EB22C1D2E0F5A006FE573 /* preprocessor.rb in Resources */,
 				496713881CD97D3800782C12 /* button_check@2x.png in Resources */,
-=======
 				9CC800B51D2DFD5000B516E0 /* console_output.rb in Resources */,
 				496713881CD97D3800782C12 /* button_check@2x.png in Resources */,
 				9CC800791D2DFD5000B516E0 /* compiler.xml in Resources */,
->>>>>>> ynn_ios
 				49F7A5B51C5906C200A1FA45 /* 加载8.png in Resources */,
 				492085471D3389B60018EDDC /* myData.js in Resources */,
 				491610E91C8C422200F1E243 /* VideoOverlay.png in Resources */,
@@ -4617,10 +4576,7 @@
 				9CC800A71D2DFD5000B516E0 /* lang-ext.js in Resources */,
 				9C4420031D2FAD68007075C3 /* loader23@2x.png in Resources */,
 				491610EA1C8C422200F1E243 /* VideoOverlay@2x.png in Resources */,
-<<<<<<< HEAD
-=======
 				9CC800B91D2DFD5000B516E0 /* run in Resources */,
->>>>>>> ynn_ios
 				49F7A5BB1C590B3800A1FA45 /* xxnr_refresh3.png in Resources */,
 				49F8EE4B1BE772EE00820928 /* index_image_banner1.png in Resources */,
 				9C441FF71D2FAD68007075C3 /* load-10.png in Resources */,
@@ -4954,10 +4910,7 @@
 				499181551CF7F56E006A077D /* UIImageView+WebCache.m in Sources */,
 				49EC52671BEBBA5E00AA8898 /* UILabel+BSExt.m in Sources */,
 				4967137B1CD81F9300782C12 /* XNRRscSearchController.m in Sources */,
-<<<<<<< HEAD
-=======
 				9CC800AB1D2DFD5000B516E0 /* README.md in Sources */,
->>>>>>> ynn_ios
 				490F0B121C9EFEFD00BDC7E0 /* XNRShoppingCarFrame.m in Sources */,
 				84FE64311B18056200F0C67C /* XNRSendView.m in Sources */,
 				4916112A1C8D189400F1E243 /* IQSegmentedNextPrevious.m in Sources */,
