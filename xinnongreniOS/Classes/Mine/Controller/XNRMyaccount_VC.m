@@ -452,13 +452,8 @@
     [warnView addSubview:cancelBtn];
     
     for (int i = 1; i<4; i++) {
-<<<<<<< HEAD
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100)*i, ScreenWidth-PX_TO_PT(200), 1)];
         lineView.backgroundColor = R_G_B_16(0xe0e0e0);
-=======
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100)*i, PX_TO_PT(600), 1)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
->>>>>>> ynn_ios
         [warnView addSubview:lineView];
     }
     

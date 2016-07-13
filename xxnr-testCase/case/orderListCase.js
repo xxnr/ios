@@ -275,7 +275,6 @@ test("cell中自提按钮点击",function(target,app){
 
 test("cell中点击去付款",function(target,app){
     target.delay(3);
-
     target.frontMostApp().windows()[0].staticTexts()["待付款"].tapWithOptions({tapOffset:{x:0.27, y:0.55}});
     target.delay(3);
     var count = target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups().length/2;

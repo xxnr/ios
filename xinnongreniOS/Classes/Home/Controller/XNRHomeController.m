@@ -41,9 +41,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //设置参数
+    // 设置参数
     [self setTheParameters];
-    //创建列表
+    // 创建列表
     [self createHomeCollectionView];
     // 创建导航栏按钮
     [self setNavigationbarBtn];

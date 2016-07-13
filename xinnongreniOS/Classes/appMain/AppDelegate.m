@@ -181,7 +181,7 @@
 {
     _deviceToken = [[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]                  stringByReplacingOccurrencesOfString: @">" withString: @""]                 stringByReplacingOccurrencesOfString: @" " withString: @""];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"remaindUserToUpdate" object:nil];
+     [[NSNotificationCenter defaultCenter] postNotificationName:@"remaindUserToUpdate" object:nil];
     //获取设备号
     NSLog(@"deviceToken%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]                  stringByReplacingOccurrencesOfString: @">" withString: @""]                 stringByReplacingOccurrencesOfString: @" " withString: @""]);
 
