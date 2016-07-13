@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0e4c9b9b-0aef-4605-b04c-769134e4a1ef" name="Default" comment="" />
+    <list default="true" id="0e4c9b9b-0aef-4605-b04c-769134e4a1ef" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/case/registerData.js" afterPath="$PROJECT_DIR$/case/registerData.js" />
+    </list>
     <ignored path="demo.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -25,14 +27,14 @@
       <file leaf-file-name="register.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/case/register.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="23" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
+            <state relative-caret-position="150">
+              <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="shoppingcar.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="shoppingcar.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/case/shoppingcar.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="180">
@@ -52,13 +54,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="registerData.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="registerData.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/case/registerData.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+            <state relative-caret-position="60">
+              <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
               <folding>
-                <element signature="n#!!doc;n#login#0" expanded="false" />
+                <element signature="e#0#38#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -127,10 +129,10 @@
         <option value="$PROJECT_DIR$/case/orderListCase.js" />
         <option value="$PROJECT_DIR$/case/rscOrder.js" />
         <option value="$PROJECT_DIR$/case/mine.js" />
-        <option value="$PROJECT_DIR$/case/register.js" />
         <option value="$PROJECT_DIR$/case/forgetPwd.js" />
-        <option value="$PROJECT_DIR$/case/registerData.js" />
         <option value="$PROJECT_DIR$/case/shoppingcar.js" />
+        <option value="$PROJECT_DIR$/case/register.js" />
+        <option value="$PROJECT_DIR$/case/registerData.js" />
       </list>
     </option>
   </component>
@@ -148,8 +150,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1568" />
-    <option name="y" value="-102" />
+    <option name="x" value="1874" />
+    <option name="y" value="-94" />
     <option name="width" value="1337" />
     <option name="height" value="801" />
   </component>
@@ -667,15 +669,15 @@
       <workItem from="1467790355006" duration="219000" />
       <workItem from="1467791938280" duration="2841000" />
       <workItem from="1467856143234" duration="10141000" />
-      <workItem from="1468313198086" duration="20860000" />
+      <workItem from="1468313198086" duration="21779000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="118560000" />
+    <option name="totallyTimeSpent" value="119479000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1568" y="-102" width="1337" height="801" extended-state="0" />
+    <frame x="1874" y="-94" width="1337" height="801" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -990,24 +992,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/case/register.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="23" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/case/registerData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
-          <folding>
-            <element signature="n#!!doc;n#login#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/case/baseClass.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -1029,6 +1013,24 @@
         <state relative-caret-position="180">
           <caret line="14" column="26" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/case/register.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/case/registerData.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#38#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

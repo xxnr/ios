@@ -4,44 +4,83 @@
 #import "../lib/tuneup.js"
 
 var target = UIATarget.localTarget();
+target.frontMostApp().windows()[0].tabBar().buttons()["我的"].tap(); 
 
-test("列表页按钮的点击",function (target,app) {
-    target.frontMostApp().windows()[0].tabBar().buttons()["我的"].tap();
-    target.delay(2);
-    target.frontMostApp().windows()[0].tableViews()[0].buttons()[0].tap();
-    target.frontMostApp().windows()[0].logElementTree();
-    target.delay(2);
-    assertEquals("我的订单",target.frontMostApp().windows()[0].navigationBar().staticTexts()[0].value());
-    assertEquals(5,target.frontMostApp().windows()[0].buttons().length);
+target.delay(2);
+target.frontMostApp().windows()[0].logElementTree();
+if(target.frontMostApp().windows()[0].tableViews()[0].buttons().length > 1)
+{
+    test("用户为县级经销商",function () {
+        target.delay(2);
+        target.frontMostApp().windows()[0].tableViews()[0].buttons()[1].tap();
+        target.frontMostApp().windows()[0].logElementTree();
+        target.delay(2);
+        assertEquals("我的订单",target.frontMostApp().windows()[0].navigationBar().staticTexts()[0].value());
+        assertEquals(5,target.frontMostApp().windows()[0].buttons().length);
 
-    target.frontMostApp().windows()[0].staticTexts()["待付款"].tapWithOptions({tapOffset:{x:0.27, y:0.55}});
-    target.delay(2);
+        target.frontMostApp().windows()[0].staticTexts()["待付款"].tapWithOptions({tapOffset:{x:0.27, y:0.55}});
+        target.delay(2);
 
-    target.frontMostApp().windows()[0].logElementTree();
+        target.frontMostApp().windows()[0].logElementTree();
 
-    target.frontMostApp().windows()[0].staticTexts()["待发货"].tapWithOptions({tapOffset:{x:0.30, y:0.82}});
+        target.frontMostApp().windows()[0].staticTexts()["待发货"].tapWithOptions({tapOffset:{x:0.30, y:0.82}});
 
-    target.frontMostApp().windows()[0].staticTexts()["待收货"].tapWithOptions({tapOffset:{x:0.64, y:0.88}});
+        target.frontMostApp().windows()[0].staticTexts()["待收货"].tapWithOptions({tapOffset:{x:0.64, y:0.88}});
 
-    target.frontMostApp().windows()[0].staticTexts()["已完成"].tapWithOptions({tapOffset:{x:0.34, y:0.68}});
+        target.frontMostApp().windows()[0].staticTexts()["已完成"].tapWithOptions({tapOffset:{x:0.34, y:0.68}});
 
-    target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
-})
-test("其他按钮的点击",function () {
-    target.frontMostApp().windows()[0].tableViews()[0].buttons()[1].tap();
-    target.delay(2);
-    target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
-    target.frontMostApp().windows()[0].tableViews()[0].buttons()[2].tap();
-    target.delay(2);
-    target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
-    target.frontMostApp().windows()[0].tableViews()[0].buttons()[3].tap();
-    target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
-    target.frontMostApp().windows()[0].tableViews()[0].buttons()[4].tap();
-    target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
+        target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
+    })
+}
+else {
+    test("列表页按钮的点击", function (target, app) {
+        target.delay(2);
+        target.frontMostApp().windows()[0].tableViews()[0].buttons()[0].tap();
+        target.frontMostApp().windows()[0].logElementTree();
+        target.delay(2);
+        assertEquals("我的订单", target.frontMostApp().windows()[0].navigationBar().staticTexts()[0].value());
+        assertEquals(5, target.frontMostApp().windows()[0].buttons().length);
 
-})
+        target.frontMostApp().windows()[0].staticTexts()["待付款"].tapWithOptions({tapOffset: {x: 0.27, y: 0.55}});
+        target.delay(2);
+
+        target.frontMostApp().windows()[0].logElementTree();
+
+        target.frontMostApp().windows()[0].staticTexts()["待发货"].tapWithOptions({tapOffset: {x: 0.30, y: 0.82}});
+
+        target.frontMostApp().windows()[0].staticTexts()["待收货"].tapWithOptions({tapOffset: {x: 0.64, y: 0.88}});
+
+        target.frontMostApp().windows()[0].staticTexts()["已完成"].tapWithOptions({tapOffset: {x: 0.34, y: 0.68}});
+
+        target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
+    })
+    test("其他按钮的点击", function () {
+        target.frontMostApp().windows()[0].tableViews()[0].buttons()[1].tap();
+        target.delay(2);
+        target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
+        target.frontMostApp().windows()[0].tableViews()[0].buttons()[2].tap();
+        target.delay(2);
+        target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
+        target.frontMostApp().windows()[0].tableViews()[0].buttons()[3].tap();
+        target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
+        target.frontMostApp().windows()[0].tableViews()[0].buttons()[4].tap();
+        target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
+
+    })
+}
 test("待付款",function () {
-    target.frontMostApp().windows()[0].tableViews()[0].buttons()[1].tap();
+    if(target.frontMostApp().windows()[0].tableViews()[0].buttons().length > 1)
+    {
+        target.delay(2);
+        target.frontMostApp().windows()[0].tableViews()[0].buttons()[1].tap();
+        target.delay(1);
+        target.frontMostApp().windows()[0].staticTexts()["待付款"].tapWithOptions({tapOffset: {x: 0.27, y: 0.55}});
+    }
+    else
+    {
+        target.delay(1);
+        target.frontMostApp().windows()[0].tableViews()[0].buttons()[1].tap();
+    }
     target.delay(2);
 
     var count = target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups().length/2;
@@ -60,9 +99,7 @@ test("待付款",function () {
         for (var i = 0; i < count - 1; i++) {
             UIALogger.logMessage("asss");
             //  assertEquals("去付款",target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[(i+1)*2-1].buttons()[0].name());
-            assertEquals(true, target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[i * 2].staticTexts()[0].name() == "待付款" || target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[i * 2].staticTexts()[0].name() == "付款待审核", "待付款商品第'" + i + "'个");
-
-            //   assertNotNull(target.frontMostApp().windows()[0].tableViews()[1].groups()[(i+1)*3-1].buttons()["去付款"]);
+            assertEquals(true, target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[i * 2].staticTexts()[0].name() == "待付款" || target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[i * 2].staticTexts()[0].name() == "付款待审核"|| target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[i * 2].staticTexts()[0].name() == "部分付款", "待付款商品第'" + i + "'个");
         }
     }
 })
@@ -151,7 +188,15 @@ test("滚动列表",function () {
 })
 
 test("跳转订单详情",function(target,app){
-    target.frontMostApp().windows()[0].tableViews()[0].buttons()[0].tap();
+     if(target.frontMostApp().windows()[0].tableViews()[0].buttons().length > 1)
+     {
+     target.frontMostApp().windows()[0].tableViews()[0].buttons()[1].tap();
+     }
+     else
+     {
+     target.frontMostApp().windows()[0].tableViews()[0].buttons()[0].tap();
+     }
+
     target.delay(3);
     var count = target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].cells().length;
     if(count > 0){
@@ -175,14 +220,20 @@ test("cell中确认收货按钮点击",function(target,app){
             if(target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[(i+1)*2-1].buttons()[0].name() == "确认收货" && name)
             {
                 target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[(i+1)*2-1].scrollToVisible();
-
                 name = false;
-                target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[(i+1)*2-1].buttons()["确认收货"].tap();
-                target.delay(2);
-                assertEquals(1,target.frontMostApp().windows()[0].buttons()[5].isVisible());
-                target.frontMostApp().windows()[0].logElementTree();
+                target.delay(1);
+                    
+     target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[(i+1)*2-1].logElementTree();    
+     
+     // target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[(i+1)*2-1].buttons()[0].tap();
 
-                target.frontMostApp().windows()[0].buttons()[5].tapWithOptions({tapOffset:{x:0.63, y:0.22}});
+                //
+                // target.delay(2);
+                // assertEquals(1,target.frontMostApp().windows()[0].buttons()[5].isVisible());
+                // target.frontMostApp().windows()[0].logElementTree();
+                //
+                // target.frontMostApp().windows()[0].buttons()[5].tapWithOptions({tapOffset:{x:0.75, y:0.40}});
+                // target.frontMostApp().windows()[0].buttons()[5].tapWithOptions({tapOffset:{x:0.56, y:0.97}});
 
                 break;
             }
@@ -209,10 +260,10 @@ test("cell中自提按钮点击",function(target,app){
 
                 name = false;
                 target.delay(2);
-                target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[(i+1)*2-1].buttons()["去自提"].tap();
-                target.delay(2);
-                assertEquals("网点自提",target.frontMostApp().windows()[0].navigationBar().staticTexts()[0].value());
-                target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
+                // target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[(i+1)*2-1].buttons()["去自提"].tap();
+                // target.delay(2);
+                // assertEquals("网点自提",target.frontMostApp().windows()[0].navigationBar().staticTexts()[0].value());
+                // target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
                 break;
             }
         }
@@ -224,7 +275,6 @@ test("cell中自提按钮点击",function(target,app){
 
 test("cell中点击去付款",function(target,app){
     target.delay(3);
-
     target.frontMostApp().windows()[0].staticTexts()["待付款"].tapWithOptions({tapOffset:{x:0.27, y:0.55}});
     target.delay(3);
     var count = target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups().length/2;
@@ -237,10 +287,10 @@ test("cell中点击去付款",function(target,app){
                 target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[(i+1)*2-1].scrollToVisible();
 
                 name = false;
-                target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[(i+1)*2-1].buttons()["去付款"].tap();
-                target.delay(2);
-                assertEquals("支付方式",target.frontMostApp().windows()[0].navigationBar().staticTexts()[0].value());
-                target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
+                // target.frontMostApp().windows()[0].scrollViews()[0].tableViews()[0].groups()[(i+1)*2-1].buttons()["去付款"].tap();
+                // target.delay(2);
+                // assertEquals("支付方式",target.frontMostApp().windows()[0].navigationBar().staticTexts()[0].value());
+                // target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
                 break;
             }
         }
