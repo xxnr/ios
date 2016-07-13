@@ -51,12 +51,6 @@ function registerTest(i) {
      
      var toast = window.staticTexts()[0].value();
 
-
-
-
-
-
-
      assertEquals(message,toast);
 }
 

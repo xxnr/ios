@@ -26,13 +26,13 @@ test("个人资料测试",function(target,app){
      target.delay(2);
      
      target.doubleTap({x:0, y:64});
-     
      target.delay(2);
      
      test("我的头像测试",function(target,app){
 
           });
 
+ 
      test("我的昵称测试",function(target,app){
           window.scrollViews()[0].buttons()[1].tap();
           target.delay(2);
@@ -45,6 +45,7 @@ test("个人资料测试",function(target,app){
           window.buttons()["完成"].tap(); 
           target.delay(2);
 
+          
           });
      test("姓名测试",function(target,app){
           window.scrollViews()[0].buttons()[2].tap();
@@ -88,6 +89,7 @@ test("个人资料测试",function(target,app){
           window.buttons()[2].tap();
           target.delay(2);
           
+          
           });
 
      test("类型测试",function(target,app){
@@ -96,6 +98,8 @@ test("个人资料测试",function(target,app){
           window.pickers()[0].wheels()[0].dragInsideWithOptions({startOffset:{x:0.38, y:0.22}, endOffset:{x:0.38, y:0.12}, duration:1.6});
           window.buttons()[1].tap();
           target.delay(2);
+          
+          
           
           window.scrollViews()[0].buttons()[5].tap();
           target.delay(2);
