@@ -7,11 +7,6 @@
 
 
 
-function login() {
-    
-    
-}
-
 var phone;
 var identifyCode;
 var password;
