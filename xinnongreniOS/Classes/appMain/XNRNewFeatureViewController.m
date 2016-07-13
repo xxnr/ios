@@ -7,6 +7,7 @@
 //
 
 #import "XNRNewFeatureViewController.h"
+#import "AppDelegate.h"
 #define XNRNewfeatureImageCount 3
 
 @interface XNRNewFeatureViewController()<UIScrollViewDelegate>
@@ -91,8 +92,6 @@
     [imageView addSubview:startButton];
     
     // 2.设置背景图片
-//    [startButton setBackgroundImage:[UIImage imageWithName:@"new_feature_finish_button"] forState:UIControlStateNormal];
-//    [startButton setBackgroundImage:[UIImage imageWithName:@"new_feature_finish_button_highlighted"] forState:UIControlStateHighlighted];
     [startButton setBackgroundColor:R_G_B_16(0x3dd5b2)];
     startButton.layer.borderWidth = 5.0;
     startButton.layer.cornerRadius = 20.0;
@@ -103,9 +102,6 @@
     startButton.center = CGPointMake(self.view.width *0.5, self.view.height * 0.7);
     
     // 3.设置frame
-//    startButton.size = startButton.currentBackgroundImage.size;
-//    startButton.centerX = self.view.width * 0.5;
-//    startButton.centerY = self.view.height * 0.5;
     
     // 4.设置文字
     [startButton setTitle:@"立即体验" forState:UIControlStateNormal];
@@ -156,7 +152,6 @@
     [selectImageView setImage:[UIImage imageNamed:@"new_feature_green"]];
     self.selectImageView = selectImageView;
     [self.view addSubview:selectImageView];
-    
 }
 
 /**
@@ -167,6 +162,11 @@
     // 显示主控制器（XNRTabBarController）
     XNRTabBarController *vc = [[XNRTabBarController alloc] init];
     // 切换控制器
+//    UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+//    [currentVc.navigationController pushViewController:vc animated:YES];
+
+//    [self.navigationController pushViewController:vc animated:NO];
+//    [self presentViewController:vc animated:NO completion:nil];
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     window.rootViewController = vc;
     

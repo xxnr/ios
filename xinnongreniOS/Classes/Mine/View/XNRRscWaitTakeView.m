@@ -14,6 +14,8 @@
 #import "XNRRscSkusFrameModel.h"
 #import "XNRRscConfirmDeliverView.h"
 #import "XNRRscFootFrameModel.h"
+#import "XNRRscNoOrderView.h"
+
 #define MAX_PAGE_SIZE 10
 
 @interface XNRRscWaitTakeView()<UITableViewDelegate,UITableViewDataSource>
@@ -28,9 +30,23 @@
 
 @property (nonatomic, weak) XNRRscConfirmDeliverView *deliverView;
 
+@property (nonatomic, weak) XNRRscNoOrderView *noOrderView;
+
+
 @end
 
 @implementation XNRRscWaitTakeView
+
+-(XNRRscNoOrderView *)noOrderView
+{
+    if (!_noOrderView) {
+        XNRRscNoOrderView *noOrderView = [[XNRRscNoOrderView  alloc] init];
+        self.noOrderView = noOrderView;
+        [self addSubview:noOrderView];
+    }
+    return _noOrderView;
+    
+}
 
 -(XNRRscConfirmDeliverView *)deliverView
 {
@@ -63,6 +79,10 @@
     [self headRefresh];
 }
 
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - 刷新
 -(void)setupAllViewRefresh{
     
@@ -77,7 +97,7 @@
     }
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
         [RefreshImage addObject:image];
@@ -132,7 +152,7 @@
 
 -(void)getData
 {
-    NSDictionary *params = @{@"type":@"4",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"token":[DataCenter account].token};
+    NSDictionary *params = @{@"type":@"4",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE]};
     [KSHttpRequest get:KRscOrders parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *ordersArray = result[@"orders"];
@@ -161,13 +181,25 @@
                     [sectionModel.SKUsFrame addObject:frameModel];
                 }
                 [_dataArray addObject:sectionModel];
-                
+                                
                 XNRRscFootFrameModel *footModel = [[XNRRscFootFrameModel alloc] init];
                 footModel.model = sectionModel;
                 [_dataFrameArray addObject:footModel];
             }
             [self.tableView reloadData];
         }
+        
+        if (_dataArray.count == 0) {
+            [self noOrderView];
+        }else{
+            [self.noOrderView removeFromSuperview];
+        }
+        
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
+        }
+
         
         //  如果到达最后一页 就消除footer
         NSInteger page = [result[@"pageCount"] integerValue];
@@ -185,7 +217,7 @@
 
 -(void)createView
 {
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(120)) style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(100)) style:UITableViewStyleGrouped];
     tableView.backgroundColor = [UIColor clearColor];
     tableView.showsVerticalScrollIndicator = YES;
     tableView.delegate = self;
@@ -245,11 +277,9 @@
     if (_dataFrameArray.count>0) {
         XNRRscFootFrameModel *frameModel = _dataFrameArray[section];
         return frameModel.footViewHeight;
-        
     }else{
         return 0;
     }
-    
 }
 
 //设置段数
@@ -284,11 +314,12 @@
 //cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
-    if (self.com) {
-        self.com(sectionModel);
+    if (_dataArray.count>0) {
+        XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
+        if (self.takecom) {
+            self.takecom(sectionModel);
+        }
     }
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -298,10 +329,9 @@
         XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
         XNRRscSkusFrameModel *skuModel = sectionModel.SKUsFrame[indexPath.row];
         cell.frameModel = skuModel;
-    }
+     }
     
     return cell;
-    
 }
 
 

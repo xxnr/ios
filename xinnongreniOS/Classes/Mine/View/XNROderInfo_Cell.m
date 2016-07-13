@@ -76,7 +76,7 @@
 //
 //    
 //    for (int i = 0; i<2; i++) {
-//        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(300)*i, ScreenWidth, PX_TO_PT(1))];
+//        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(300)*i, ScreenWidth, 1)];
 //        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
 //        [bgView addSubview:lineView];
 //    }
@@ -153,7 +153,7 @@
 //    [bgBottomView addSubview:remainPriceLabel];
 //    
 //    for (int i = 0; i<3; i++) {
-//        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+//        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, 1)];
 //        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
 //        [bgBottomView addSubview:lineView];
 //    }

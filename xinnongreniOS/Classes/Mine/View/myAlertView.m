@@ -36,7 +36,7 @@
         label1.text = headtitile;
         label1.textColor = R_G_B_16(0x323232);
         label1.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-        label1.textAlignment = UITextAlignmentCenter;
+        label1.textAlignment = NSTextAlignmentCenter;
         [bgview addSubview:label1];
         
         UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(148), PX_TO_PT(141), PX_TO_PT(100), PX_TO_PT(30))];
@@ -58,7 +58,7 @@
         label3.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         [bgview addSubview:label3];
 
-        UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(215), ScreenWidth, PX_TO_PT(1))];
+        UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(215), ScreenWidth, 1)];
         line1.backgroundColor = R_G_B_16(0xE2E2E2);
         [bgview addSubview:line1];
         
@@ -79,7 +79,7 @@
         [rightButton addTarget:self action:@selector(rightAction) forControlEvents:UIControlEventTouchDown];
         [view addSubview:rightButton];
         
-        UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(view.width/2, CGRectGetMaxY(bgview.frame), PX_TO_PT(1), PX_TO_PT(101))];
+        UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(view.width/2, CGRectGetMaxY(bgview.frame), 1, PX_TO_PT(101))];
         line2.backgroundColor =R_G_B_16(0xE2E2E2);
         [view addSubview:line2];
     }

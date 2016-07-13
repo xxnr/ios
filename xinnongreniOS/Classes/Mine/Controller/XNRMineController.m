@@ -80,10 +80,10 @@
     
     if(IS_Login == YES){
     [_userArray removeAllObjects];
-    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"x-v2.0"} success:^(id result) {
+    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
     if([result[@"code"] integerValue] == 1000){
-            
+        
         NSDictionary *dict = result[@"datas"];
         NSDictionary *address = dict[@"address"];
         NSDictionary *province = address[@"province"];
@@ -221,12 +221,12 @@
 
 
 }
+
 -(void)viewWillDisappear:(BOOL)animated
 {
-    self.badgeImage.hidden = YES;
-    self.bgLoginView.hidden = YES;
-    self.bgNotLoginView.hidden = YES;
+    [self.mainTabelView removeFromSuperview];
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -252,6 +252,7 @@
     myPhone.subtitle = @"400-056-0371";
     myPhone.operation = ^{
         // 客服电话
+        
         if(TARGET_IPHONE_SIMULATOR){
             [UILabel showMessage:@"模拟器不支持打电话，请用真机测试"];
         } else {
@@ -324,7 +325,7 @@
     
     XNRUserInfoModel *infoMdoel = [_userArray firstObject];
     UIView *topBgView;
-    if ([infoMdoel.isRSC integerValue] == 1 && [infoMdoel.userType integerValue] == 5) {
+    if ([infoMdoel.isRSC integerValue] == 1) {
         topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(512))];
         topBgView.backgroundColor = [UIColor whiteColor];
         self.topBgView = topBgView;
@@ -337,6 +338,7 @@
     }
     
     UITableView *mainTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
+    self.mainTabelView = mainTableView;
     mainTableView.delegate = self;
     mainTableView.dataSource  = self;
     mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -372,7 +374,7 @@
     self.introduceLabel = introduceLabel;
     [self.bgLoginView addSubview:introduceLabel];
     
-    UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200),(CGRectGetMaxY(self.introduceLabel.frame) + PX_TO_PT(16)), ScreenWidth - PX_TO_PT(200), PX_TO_PT(40))];
+    UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(200),(CGRectGetMaxY(self.introduceLabel.frame) + PX_TO_PT(16)), ScreenWidth - PX_TO_PT(70)-PX_TO_PT(200), PX_TO_PT(40))];
     addressLabel.textColor = R_G_B_16(0xffffff);
     addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(26)];
     addressLabel.numberOfLines = 0;
@@ -394,7 +396,7 @@
     self.badgeImage = BadgeImage;
     [self.bgLoginView addSubview:BadgeImage];
 
-    UIImageView *arrowImg = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(50), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(12), PX_TO_PT(18), PX_TO_PT(32))];
+    UIImageView *arrowImg = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(50), CGRectGetMaxY(self.introduceLabel.frame) + PX_TO_PT(18), PX_TO_PT(18), PX_TO_PT(32))];
     [arrowImg setImage:[UIImage imageNamed:@"icon_arrow_back"]];
     self.arrowImg = arrowImg;
     [self.bgLoginView addSubview:arrowImg];
@@ -415,8 +417,8 @@
     icon.clipsToBounds=YES;
     icon.center = CGPointMake(ScreenWidth/2, PX_TO_PT(125));
     icon.layer.cornerRadius=PX_TO_PT(75);
-    icon.layer.borderColor= [UIColor whiteColor].CGColor ;
-    icon.layer.borderWidth=3;
+//    icon.layer.borderColor= [UIColor whiteColor].CGColor ;
+//    icon.layer.borderWidth=3;
     icon.userInteractionEnabled = YES;
     icon.image=[UIImage imageNamed:@"icon_head"];
     UITapGestureRecognizer*tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(iconClick:)];
@@ -432,7 +434,7 @@
     loginBtn.tintColor = [UIColor whiteColor];
     loginBtn.backgroundColor = [UIColor clearColor];
     loginBtn.layer.borderColor = [UIColor whiteColor].CGColor;
-    loginBtn.layer.borderWidth = 2;
+    loginBtn.layer.borderWidth = PX_TO_PT(2);
     loginBtn.layer.cornerRadius = 5.0;
     loginBtn.clipsToBounds = YES;
     [loginBtn addTarget:self action:@selector(loginBtnClick) forControlEvents:UIControlEventTouchUpInside];
@@ -446,22 +448,19 @@
     registBtn.tintColor = [UIColor whiteColor];
     registBtn.backgroundColor = [UIColor clearColor];
     registBtn.layer.borderColor = [UIColor whiteColor].CGColor;
-    registBtn.layer.borderWidth = 2;
+    registBtn.layer.borderWidth = PX_TO_PT(2);
     registBtn.layer.cornerRadius = 5.0;
     registBtn.clipsToBounds = YES;
     [registBtn addTarget: self action:@selector(registBtnClick) forControlEvents:UIControlEventTouchUpInside];
     self.registBtn = registBtn;
     [bgNotLoginView addSubview:registBtn];
-
 }
-
 
 -(void)loginBtnClick
 {
     XNRLoginViewController *loginView = [[XNRLoginViewController alloc] init];
     loginView.hidesBottomBarWhenPushed  = YES;
     [self.navigationController pushViewController:loginView animated:YES];
-    
 }
 
 -(void)registBtnClick
@@ -469,15 +468,13 @@
     XNRRegisterViewController *registerView = [[XNRRegisterViewController  alloc] init];
     registerView.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:registerView animated:YES];
-
 }
 #pragma mark--创建底部视图
 -(void)createMiddleView{
-    
     XNRUserInfoModel *infoModel = [_userArray firstObject];
     UIButton *myStoreBtn;
     UIButton *orderBtn;
-    if ([infoModel.isRSC integerValue] == 1 && [infoModel.userType integerValue] == 5) {
+    if ([infoModel.isRSC integerValue] == 1) {
         // 我的网点
         myStoreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         myStoreBtn.frame = CGRectMake(0, PX_TO_PT(320), ScreenWidth, PX_TO_PT(96));
@@ -501,7 +498,6 @@
         self.orderBtn = orderBtn;
         [self.topBgView addSubview:orderBtn];
     }
-    
     // 图标
     UIImageView *storeImgView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(18), PX_TO_PT(60), PX_TO_PT(60))];
     [storeImgView setImage:[UIImage imageNamed:@"branch_icon"]];
@@ -521,11 +517,10 @@
     [myStoreBtn addSubview:storeArrowBtn];
     
     CALayer *storeLineLayer = [[CALayer alloc] init];
-    storeLineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, PX_TO_PT(1));
-    storeLineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
+    storeLineLayer.frame = CGRectMake(0, PX_TO_PT(94), ScreenWidth, 1);
+    storeLineLayer.backgroundColor = R_G_B_16(0xe0e0e0).CGColor;
     [myStoreBtn.layer addSublayer:storeLineLayer];
 
-    
     // 图标
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(18), PX_TO_PT(60), PX_TO_PT(60))];
     [imgView setImage:[UIImage imageNamed:@"icon_order"]];
@@ -538,11 +533,6 @@
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [orderBtn addSubview:titleLabel];
     
-    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2 + PX_TO_PT(120), PX_TO_PT(18), ScreenWidth/2, PX_TO_PT(60))];
-    detailLabel.text = @"查看全部订单";
-    detailLabel.textColor = R_G_B_16(0x909090);
-    detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(26)];
-    [orderBtn addSubview:detailLabel];
     
     // 箭头
     UIButton *arrowBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -550,14 +540,23 @@
     [arrowBtn setImage:[UIImage imageNamed:@"arrow"] forState:UIControlStateNormal];
     [orderBtn addSubview:arrowBtn];
     
+   CGFloat width = [UIImage imageNamed:@"arrow"].size.width + PX_TO_PT(32)+PX_TO_PT(10);
+    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(18), ScreenWidth-width, PX_TO_PT(60))];
+    detailLabel.text = @"查看全部订单";
+    detailLabel.textAlignment = NSTextAlignmentRight;
+    detailLabel.textColor = R_G_B_16(0x909090);
+    detailLabel.font = [UIFont systemFontOfSize:PX_TO_PT(26)];
+    [orderBtn addSubview:detailLabel];
+
+    
     CALayer *lineLayer = [[CALayer alloc] init];
-    lineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, PX_TO_PT(1));
-    lineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
+    lineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, 1);
+    lineLayer.backgroundColor = R_G_B_16(0xe0e0e0).CGColor;
     [orderBtn.layer addSublayer:lineLayer];
 
     // 我的订单的状态
     UIView *orderStateView ;
-    if ([infoModel.isRSC integerValue] == 1 && [infoModel.userType integerValue] == 5) {
+    if ([infoModel.isRSC integerValue] == 1) {
         return;
     }else{
         orderStateView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(orderBtn.frame), ScreenWidth, PX_TO_PT(130))];
@@ -573,7 +572,6 @@
     CGFloat imageW = PX_TO_PT(49);
     CGFloat imageH = PX_TO_PT(47);
     
-
     for (int i = 0; i<orderStateImage.count; i++) {
         UIImageView *orderStateImageView = [[UIImageView alloc] init];
         orderStateImageView.frame = CGRectMake(((ScreenWidth-PX_TO_PT(64))/4)*i+margin+PX_TO_PT(32),imageY, imageW, imageH);
@@ -596,8 +594,8 @@
     }
     
     CALayer *orderlineLayer = [[CALayer alloc] init];
-    orderlineLayer.frame = CGRectMake(0, PX_TO_PT(129), ScreenWidth, PX_TO_PT(1));
-    orderlineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
+    orderlineLayer.frame = CGRectMake(0, PX_TO_PT(129), ScreenWidth, 1);
+    orderlineLayer.backgroundColor = R_G_B_16(0xe0e0e0).CGColor;
     [orderStateView.layer addSublayer:orderlineLayer];
 
     
@@ -684,6 +682,7 @@
         XNRUserInfoModel *Usermodel = [_userArray firstObject];
         vc.model  = Usermodel;
         vc.hidesBottomBarWhenPushed=YES;
+        vc.isfromMineVC = YES;
         [self.navigationController pushViewController:vc animated:YES];
         
     }else{
@@ -704,7 +703,6 @@
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
-    
 }
 
 - (void)setNavigationbarTitle{
@@ -712,11 +710,11 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"我的新农人";
     self.navigationItem.titleView = titleLabel;
-    
 }
 
 - (void)didReceiveMemoryWarning {

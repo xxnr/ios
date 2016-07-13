@@ -13,7 +13,7 @@
 #define textFieldTag 1000
 @interface XNRAddAddress_VC()<UITextFieldDelegate,XNRAddressPickerViewBtnDelegate,XNRTownPickerViewBtnDelegate>
 {
-    int addressType;
+    NSString *addressType;
 }
 
 @property (nonatomic ,weak) UIView *topBgView;
@@ -109,6 +109,7 @@
 -(void)viewDidLoad{
     self.view.backgroundColor = [UIColor whiteColor];
     [self createNav];
+    addressType = self.model.type;
     [self createTopView];
     [self createMidView];
     [self createBottomView];
@@ -137,6 +138,7 @@
     UITextField *recivePersonTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.recivePerson.frame), y, ScreenWidth-w, h)];
     recivePersonTF.placeholder = @"请输入收货人姓名";
     recivePersonTF.textColor = R_G_B_16(0x909090);
+    [recivePersonTF setValue:R_G_B_16(0x909090) forKeyPath:@"_placeholderLabel.textColor"];
     recivePersonTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     recivePersonTF.text = self.model.receiptPeople;
     recivePersonTF.delegate = self;
@@ -154,6 +156,7 @@
     UITextField *phoneNumTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.phoneNum.frame), PX_TO_PT(96)+MARGIN, ScreenWidth-w, h)];
     phoneNumTF.placeholder = @"请输入收货人电话";
     phoneNumTF.textColor = R_G_B_16(0x909090);
+    [phoneNumTF setValue:R_G_B_16(0x909090) forKeyPath:@"_placeholderLabel.textColor"];
     phoneNumTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     phoneNumTF.keyboardType = UIKeyboardTypePhonePad;
     phoneNumTF.text = self.model.receiptPhone;
@@ -184,7 +187,6 @@
             
             addressLabel.text = [NSString stringWithFormat:@"%@%@%@",_model.areaName,_model.cityName,_model.countyName];
         }else{
-            
             UserInfo *info = [DataCenter account];
             info.cityID = self.model.cityId;
             [DataCenter saveAccount:info];
@@ -192,7 +194,6 @@
         }
     }else{
         addressLabel.text = @"请选择地区";
- 
     }
 
     self.addressLabel = addressLabel;
@@ -235,6 +236,7 @@
     UITextField *detailAddressTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.detailAddress.frame), PX_TO_PT(96)*4+MARGIN, ScreenWidth-w, h)];
     detailAddressTF.placeholder = @"不必重复填写省市区信息";
     detailAddressTF.textColor = R_G_B_16(0x909090);
+    [detailAddressTF setValue:R_G_B_16(0x909090) forKeyPath:@"_placeholderLabel.textColor"];
     detailAddressTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     detailAddressTF.text = self.model.address;
     detailAddressTF.delegate = self;
@@ -253,6 +255,7 @@
     UITextField *emailTF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.eMail.frame), PX_TO_PT(96)*5+MARGIN, ScreenWidth-w, h)];
     emailTF.placeholder = @"(选填)请输入邮政编码";
     emailTF.textColor = R_G_B_16(0x909090);
+    [emailTF setValue:R_G_B_16(0x909090) forKeyPath:@"_placeholderLabel.textColor"];
     emailTF.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     emailTF.tag = textFieldTag + 3;
     emailTF.delegate = self;
@@ -264,8 +267,8 @@
     [topBgView addSubview:emailTF];
     
     for (int i = 0; i<7; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96)*i, ScreenWidth, PX_TO_PT(2))];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96)*i, ScreenWidth, 1)];
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [topBgView addSubview:lineView];
     }
     
@@ -286,9 +289,7 @@
 
         }else{
             weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",province,city,county];
-
         }
-        
         weakSelf.provinceID = provinceID;
         weakSelf.cityID  = cityId;
         weakSelf.countyID = countyId;
@@ -361,19 +362,18 @@
     [midView addSubview:mySwitch];
     
     for (int i = 0; i<2; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(2))];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, 1)];
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [midView addSubview:lineView];
      }
 }
 
 -(void)mySwitchChange:(UISwitch *)mySwitch{
-    
     if (mySwitch.isOn) {
-        addressType = 1;
+        addressType = @"1";
         NSLog(@"开启");
     }else{
-        addressType = 2;
+        addressType = @"2";
         NSLog(@"关闭");
     }
 }
@@ -398,30 +398,30 @@
     NSString *title;
     if ([self.recivePersonTF.text isEqualToString:@""] || self.recivePersonTF.text == nil) {
         flag = 0;
-        title = @"收货人不能为空";
+        title = @"请填写收件人姓名";
     }else if ([self.phoneNumTF.text isEqualToString:@""] || self.phoneNumTF.text == nil){
         flag = 0;
-        title = @"电话号码不能为空";
+        title = @"请填写收件人手机号";
     
     }else if ([self validateMobile:self.phoneNumTF.text] == NO){
         flag = 0;
-        title = @"手机格式错误";
+        title = @"请填写正确的手机号";
     
     }else if ([self.addressLabel.text isEqualToString:@""] || self.addressLabel.text == nil){
         flag = 0;
         title = @"请选择城市";
     }else if ([self.detailAddressTF.text isEqualToString:@""] || self.detailAddressTF.text == nil){
         flag = 0;
-        title = @"请输入您的详细地址";
+        title = @"请填写详细地址";
     
     }else{
         if ([self.titleLabel isEqualToString:@"添加收货地址"]) {
             
-            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@"",@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",addressType],@"user-agent":@"IOS-v2.0"};
+            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@"",@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%@",addressType],@"user-agent":@"IOS-v2.0"};
             
             [KSHttpRequest post:KSaveUserAddress parameters:params success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
-                    if (addressType == 1) {
+                    if ([addressType isEqualToString:@"1"]) {
                         UserInfo *info = [DataCenter account];
                         NSString *address1 = [NSString stringWithFormat:@"%@%@",self.model.areaName,self.model.cityName];
                         NSString *address2 = [NSString stringWithFormat:@"%@%@%@",self.model.areaName,self.model.cityName,self.model.countyName];
@@ -455,7 +455,7 @@
             }];
 
         }else{// 更新收货地址
-            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"addressId":self.model.addressId,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:self.model.cityId,@"countyId":self.countyID?self.countyID:self.model.countyId,@"townId":self.townID?self.townID:self.model.townId,@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":[NSString stringWithFormat:@"%d",addressType]?[NSString stringWithFormat:@"%d",addressType]:self.model.type,@"user-agent":@"IOS-v2.0"};
+            NSDictionary *params = @{@"userId":[DataCenter account].userid,@"addressId":self.model.addressId,@"receiptPhone":self.phoneNumTF.text,@"receiptPeople":self.recivePersonTF.text,@"address":self.detailAddressTF.text,@"areaId":@"58054e5ba551445",@"cityId":self.cityID?self.cityID:self.model.cityId,@"countyId":self.countyID?self.countyID:self.model.countyId,@"townId":self.townID?self.townID:self.model.townId,@"zipCode":self.eMailTF.text?self.eMailTF.text:@"",@"type":addressType,@"user-agent":@"IOS-v2.0"};
             
             [KSHttpRequest post:KUpdateUserAddress parameters:params success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
@@ -484,7 +484,7 @@
 - (BOOL) validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
-    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
+    NSString *phoneRegex = @"^1\\d{10}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
 }
@@ -494,17 +494,19 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
     titleLabel.textColor = R_G_B_16(0xfbffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = self.titleLabel;
     self.navigationItem.titleView = titleLabel;
     
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 0, 80, 44);
-    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backBtn.frame = CGRectMake(0, 0, 30, 44);
+//    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backBtn addTarget: self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backBtn setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
+    [backBtn setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     self.navigationItem.leftBarButtonItem = leftItem;
 

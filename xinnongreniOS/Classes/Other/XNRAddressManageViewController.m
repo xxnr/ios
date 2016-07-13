@@ -118,11 +118,11 @@
     self.navigationItem.title = @"收货地址";
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchDown];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
     
@@ -147,7 +147,9 @@
     if (_dataArr.count>0) {
         XNRAddressManageModel *model = _dataArr[0];
         model.selected = YES;
-        self.addressChoseBlock(model);
+        if (self.addressChoseBlock) {
+            self.addressChoseBlock(model);
+        }
         [self.addressManageTableView reloadData];
     }else{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"initNOAddressView" object:nil];

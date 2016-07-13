@@ -20,8 +20,8 @@
 #import "XNRProductInfo_VC.h"
 #import "MJExtension.h"
 #import "XNRShoppingCarFrame.h"
-
 #import "XNRSKUAttributesModel.h"
+#import "XNRAddtionsModel.h"
 
 @interface XNRShoppingCarController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,XNRShopcarViewBtnDelegate,XNRShoppingCartTableViewCellDelegate,UITextFieldDelegate>
 {
@@ -117,6 +117,7 @@
         [self getDataFromDatabase];
         [self setupShopCarOfflineRefresh];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCancelBtn" object:nil];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -135,7 +136,6 @@
   
     // 删除完
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:@"refreshTableView" object:nil];
-    
 }
 
 -(void)refreshTableView
@@ -156,7 +156,7 @@
     }
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
         [RefreshImage addObject:image];
@@ -188,7 +188,7 @@
     }
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
         [RefreshImage addObject:image];
@@ -254,6 +254,7 @@
         _deleteBtn.hidden = YES;
         // 下架商品变成可删除的状态
         [[NSNotificationCenter defaultCenter] postNotificationName:@"normalBtnPresent" object:nil];
+
     }
 }
 
@@ -447,18 +448,13 @@
                 }else{
                     [self.shopCarView removeFromSuperview];
                 }
-                
             }
             // 改变底部
             [self changeBottom];
-            
         };
         
         [alertView BMAlertShow];
-
-    
     }
-    
 }
 
 #pragma mark - 跳转订单信息页
@@ -517,8 +513,6 @@
                     [sectionModel.SKUFrameList addObject:frameModel];
                     
                     NSLog(@"++_)_%@",sectionModel.SKUFrameList);
-
-                    
                 }
                 
                 NSLog(@"%@",sectionModel.SKUList);
@@ -555,12 +549,13 @@
         self.navigationItem.title = @"购物车";
         self.editeBtn.hidden = YES;
         [self.shopCarView show];
+        return;
     }
     // 取出商品的skuid和数量和additions
     NSMutableArray *tempMarr = [[NSMutableArray alloc]init];
     for (int i=0; i<allGoodArr.count; i++) {
         XNRShoppingCartModel *model = allGoodArr[i];
-        NSDictionary *params = @{@"_id":model._id,@"count":model.num?model.num:@"1",@"additions":model.additions};
+        NSDictionary *params = @{@"_id":model._id,@"count":model.num?model.num:@"1",@"additions":model.additions,@"token":[DataCenter account].token?[DataCenter account].token:@""};
         [tempMarr addObject:params];
     }
     [_dataArr removeAllObjects];
@@ -595,8 +590,6 @@
                         [_dataArr addObject:[goodsArray objectAtIndex:i]];
                     }
                 }
-//                NSSet *set = [NSSet setWithArray:goodsArray];
-//                _dataArr = [[set allObjects] mutableCopy];
 
                 for (int i = 0; i<sectionModel.SKUList.count; i++) {
                     XNRShoppingCartModel *model = sectionModel.SKUList[i];
@@ -631,7 +624,7 @@
 - (void)createShoppingCarTableView
 {
     UITableView *shoppingCarTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(88)) style:UITableViewStyleGrouped];
-    shoppingCarTableView.backgroundColor = [UIColor clearColor];
+//    shoppingCarTableView.backgroundColor = [UIColor clearColor];
     shoppingCarTableView.showsVerticalScrollIndicator = YES;
     shoppingCarTableView.delegate = self;
     shoppingCarTableView.dataSource = self;
@@ -680,12 +673,12 @@
         label.textAlignment = NSTextAlignmentLeft;
         [headView addSubview:label];
         
-        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-        lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+        lineView1.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:lineView1];
         
-        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
-        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1)];
+        lineView2.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:lineView2];
         
         return headView;
@@ -722,23 +715,27 @@
     // 遍历整个数据源，然后判断如果是选中的商品，就计算价格
     for (int i = 0; i<_dataArr.count; i++) {
         XNRShopCarSectionModel *sectionModel = _dataArr[i];
+
         for (int j = 0; j<sectionModel.SKUFrameList.count; j++) {
             XNRShoppingCarFrame *model = sectionModel.SKUFrameList[j];
             if (model.shoppingCarModel.num != nil) {
                 _goodsNum = _goodsNum + model.shoppingCarModel.num.integerValue;
             }
             if (model.shoppingCarModel.selectState&&[model.shoppingCarModel.online integerValue]==1) {
-                // 合计xxxx
+                // 合计
                 if (model.shoppingCarModel.deposit && [model.shoppingCarModel.deposit doubleValue] > 0) {
                     _totalPrice = _totalPrice + model.shoppingCarModel.num.intValue*[[NSString stringWithFormat:@"%@",model.shoppingCarModel.deposit] doubleValue];
                 }else{
-                    _totalPrice = _totalPrice + model.shoppingCarModel.num.intValue*[[NSString stringWithFormat:@"%@",model.shoppingCarModel.price] doubleValue];
+                    NSString *price;
+                    for (NSDictionary *subDic in model.shoppingCarModel.additions) {
+                        price = [NSString stringWithFormat:@"%@",[subDic objectForKey:@"price"]];
+                    }
+                    _totalPrice = _totalPrice + model.shoppingCarModel.num.intValue*([[NSString stringWithFormat:@"%@",model.shoppingCarModel.price] doubleValue]+[price doubleValue]);
                 }
-                NSLog(@"totalPriceg === %.2f",_totalPrice);
+                NSLog(@"totalPrice === %.2f",_totalPrice);
                 _goodsNumSelected = _goodsNumSelected + model.shoppingCarModel.num.integerValue;
                 _totalSelectNum = _goodsNumSelected;
                 [self.shoppingCarTableView reloadData];
-                
             } else {
                 
         }
@@ -822,7 +819,6 @@
         XNRShoppingCarFrame *frameModel = sectionModel.SKUFrameList[indexPath.row];
         NSLog(@"frame.cellHeight==%.2f",frameModel.cellHeight);
         return frameModel.cellHeight;
-        
     }else{
         return 0;
     }
@@ -831,7 +827,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellID = @"cell";
-    
     XNRShoppingCartTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell)
     {
@@ -880,12 +875,12 @@
         };
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.delegate = self;
+        cell.rightString = self.editeBtn.titleLabel.text;
         cell.backgroundColor = [UIColor whiteColor];
         cell.changeBottomBlock = ^{
             [self changeBottom];
         };
     }
-    
     
     if (_dataArr.count > 0) {
         cell.indexPath = indexPath;
@@ -895,6 +890,10 @@
             //传递数据模型model
             cell.shoppingCarFrame = frame;
         }
+    }else{
+            [self.shopCarView show];
+            self.editeBtn.hidden = YES;
+            self.navigationItem.title = @"购物车";
     }
     return cell;
 }

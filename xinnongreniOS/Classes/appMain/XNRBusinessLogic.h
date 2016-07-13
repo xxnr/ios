@@ -23,7 +23,16 @@
 /**
  *  短信验证码
  */
-#define KUserSms [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/sms"]
+#define KUserSms [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.3/sms"]
+/**
+ *  图形验证码
+ */
+//#define KCapSms [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.3/sms"]
+/**
+ *  刷新图形验证码
+ */
+#define KCaptcha [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.3/captcha"]
+
 /**
  *  用户找回密码
  */
@@ -84,7 +93,7 @@
 /**
  *  提示用户更新
  */
-#define KuserUpData [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/ISOupgrade"]
+#define KuserUpData [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/AppUpgrade"]
 
 /**
  *  用户选择自提方式时获取收货人列表
@@ -106,11 +115,11 @@
 /**
  *  获取商品的品牌
  */
-#define KBrands [NSString stringWithFormat:@"%@/%@",HOST,@"/api/v2.1/brands"]
+#define KBrands [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/brands"]
 /**
  *  获取品牌的属性
  */
-#define KAttibutes [NSString stringWithFormat:@"%@/%@",HOST,@"/api/v2.1/products/attributes"]
+#define KAttibutes [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/products/attributes"]
 
 /**
  *  获取商品分类 get
@@ -282,15 +291,15 @@
 /**
  *  银联支付获取tn等信息
  */
-#define KUnionpay [NSString stringWithFormat:@"%@/%@",HOST,@"unionpay"]
+#define KUnionpay [NSString stringWithFormat:@"%@/%@",Host,@"unionpay"]
 /**
  *  支付宝支付
  */
-#define KAlipay [NSString stringWithFormat:@"%@/%@",HOST,@"alipay"]
+#define KAlipay [NSString stringWithFormat:@"%@/%@",Host,@"alipay"]
 /**
  *  线下支付
  */
-#define KOfflinepay [NSString stringWithFormat:@"%@/%@",HOST,@"offlinepay"]
+#define KOfflinepay [NSString stringWithFormat:@"%@/%@",Host,@"offlinepay"]
 
 /**
  *   线下支付方式

@@ -1,2 +1,0 @@
-# ios
-xxnr ios app

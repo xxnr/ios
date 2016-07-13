@@ -106,6 +106,10 @@
      {
         if ([result[@"code"]integerValue] == 1000) {
             
+             if(currentPage == 1)
+             {
+                 [_dataArr removeAllObjects];
+             }
             NSMutableArray *arr = (NSMutableArray *)[XNRRSCModel objectArrayWithKeyValuesArray:result[@"RSCs"]];
             [_dataArr addObjectsFromArray:arr];
             
@@ -128,6 +132,12 @@
             [BMProgressView LoadViewDisappear:self.view];
 
         }
+         else
+         {
+             [self.tableView.mj_header endRefreshing];
+             [self.tableView.mj_footer endRefreshing];
+         }
+         
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
@@ -150,7 +160,7 @@
     }
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
         [RefreshImage addObject:image];
@@ -185,9 +195,9 @@
 }
 -(void)headRefresh{
     currentPage = 1;
-    [_dataArr removeAllObjects];
+//    [_dataArr removeAllObjects];
     [self getData];
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
     
     
 }
@@ -195,7 +205,7 @@
     
     currentPage ++;
     [self getData];
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
 
     
 }
@@ -206,6 +216,7 @@
     [self setNav];
     _dataArr = [NSMutableArray array];
     _iconArr = [NSMutableArray array];
+    currentPage = 1;
     [self getData];
     [self createTop];
     
@@ -221,7 +232,7 @@
     proviceBtn.frame = CGRectMake(0,0, ScreenWidth/3, PX_TO_PT(89));
     proviceBtn.tag =Tag;
     [proviceBtn setTitle:@"河南" forState:UIControlStateNormal];
-    proviceBtn.titleLabel.font = [UIFont systemFontOfSize:(18)];
+    proviceBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     proviceBtn.backgroundColor = [UIColor whiteColor];
     [proviceBtn setTitleColor:R_G_B_16(0xff4e00) forState:UIControlStateSelected];
     [proviceBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
@@ -231,7 +242,6 @@
     [proviceBtn setImage:[UIImage imageNamed:@"top--arrow"] forState:UIControlStateSelected];
 
     proviceBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-    CGSize size = [proviceBtn.titleLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(18)] constrainedToSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
     
     [proviceBtn setImageEdgeInsets:UIEdgeInsetsMake(0, PX_TO_PT(180), 0, 0)];
 
@@ -251,7 +261,7 @@
     cityBtn.backgroundColor = [UIColor whiteColor];
 
     cityBtn.adjustsImageWhenHighlighted = NO;
-    cityBtn.titleLabel.font = [UIFont systemFontOfSize:(18)];
+    cityBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [cityBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
     [cityBtn setTitleColor:R_G_B_16(0xff4e00) forState:UIControlStateSelected];
     cityBtn.adjustsImageWhenHighlighted = NO;
@@ -260,7 +270,6 @@
     [cityBtn setImage:[UIImage imageNamed:@"bottom-arrow"] forState:UIControlStateNormal];
     [cityBtn setImage:[UIImage imageNamed:@"top--arrow"] forState:UIControlStateSelected];
 
-    CGSize citySize = [cityBtn.titleLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(18)] constrainedToSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
    
     [cityBtn setImageEdgeInsets:UIEdgeInsetsMake(0, PX_TO_PT(180), 0, 0)];
 
@@ -278,14 +287,13 @@
     [areaBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
     [areaBtn setTitleColor:R_G_B_16(0xC7C7C7) forState:UIControlStateDisabled];
     cityBtn.adjustsImageWhenHighlighted = NO;
-    areaBtn.titleLabel.font = [UIFont systemFontOfSize:(18)];
+    areaBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [areaBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
     [areaBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [areaBtn setImage:[UIImage imageNamed:@"bottom-arrow"] forState:UIControlStateNormal];
     [areaBtn setImage:[UIImage imageNamed:@"top--arrow"] forState:UIControlStateSelected];
-    CGSize areaSize = [areaBtn.titleLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(18)] constrainedToSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
+
     [areaBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, image.size.width+PX_TO_PT(30))];
-//    [areaBtn setImageEdgeInsets:UIEdgeInsetsMake(0, areaSize.width+image.size.width+PX_TO_PT(20), 0, -areaSize.width-image.size.width-PX_TO_PT(20))];
     [areaBtn setImageEdgeInsets:UIEdgeInsetsMake(0, PX_TO_PT(180), 0, 0)];
     
     areaBtn.enabled = NO;
@@ -294,12 +302,12 @@
     
     for (int i = 1; i<3; i++) {
         UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(i*(ScreenWidth/3), PX_TO_PT(17), 1, PX_TO_PT(61))];
-        midView.backgroundColor = R_G_B_16(0xc7c7c7);
+        midView.backgroundColor = R_G_B_16(0xe0e0e0);
         [self.view addSubview:midView];
     }
     
     UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.view addSubview:bottomLine];
     
     UIView *rollView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(86), ScreenWidth/3, PX_TO_PT(2))];
@@ -317,12 +325,13 @@
     [self.view addSubview:bottomView];
     
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(2))];
-    line.backgroundColor = R_G_B_16(0xc7c7c7);
+    line.backgroundColor = R_G_B_16(0xe0e0e0);
     [bottomView addSubview:line];
     
     UIButton *sureBtn = [[UIButton alloc]initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(161))/2, (PX_TO_PT(99)-PX_TO_PT(52))/2, PX_TO_PT(161), PX_TO_PT(52))];
     sureBtn.backgroundColor = R_G_B_16(0xFE9B00);
     [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    sureBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     sureBtn.layer.cornerRadius = PX_TO_PT(10);
     [sureBtn addTarget:self action:@selector(sureBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:sureBtn];
@@ -372,7 +381,6 @@
 }
 -(void)btnClick:(UIButton *)sender
 {
-    [self.dataArr removeAllObjects];
     
     self.rollView.frame = CGRectMake((sender.tag - Tag)*ScreenWidth/3, PX_TO_PT(86), ScreenWidth/3, PX_TO_PT(2));
     self.rollView.hidden = NO;
@@ -421,7 +429,7 @@
     [self.provinceList removeAllObjects];
     [self.currentCityArr removeAllObjects];
 
-    [KSHttpRequest get:KgetProvince parameters:@{@"token":[DataCenter account].token,@"userId":[DataCenter account].userid,@"products":self.proId} success:^(id result) {
+    [KSHttpRequest get:KgetProvince parameters:@{@"userId":[DataCenter account].userid,@"products":self.proId} success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             self.provinceList = (NSMutableArray *)[XNRCityDetailModel objectArrayWithKeyValuesArray:result[@"provinceList"]];
             
@@ -441,7 +449,7 @@
 {
     [self.cityList removeAllObjects];
     [self.currentCityArr removeAllObjects];
-    [KSHttpRequest get:KgetCity parameters:@{@"token":[DataCenter account].token,@"userId":[DataCenter account].userid,@"products":self.proId,@"province":self.proviceId?self.proviceId:@"5649bd6c8eba3c20360afa0a"} success:^(id result) {
+    [KSHttpRequest get:KgetCity parameters:@{@"userId":[DataCenter account].userid,@"products":self.proId,@"province":self.proviceId?self.proviceId:@"5649bd6c8eba3c20360afa0a"} success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             self.cityList = (NSMutableArray *)[XNRCityDetailModel objectArrayWithKeyValuesArray:result[@"cityList"]];
             XNRCityDetailModel *model = [[XNRCityDetailModel alloc]init];
@@ -466,7 +474,7 @@
     [self.areaList removeAllObjects];
     [self.currentCityArr removeAllObjects];
 
-    [KSHttpRequest get:KgetCounty parameters:@{@"token":[DataCenter account].token,@"userId":[DataCenter account].userid,@"products":self.proId,@"province":self.proviceId?self.proviceId:@"5649bd6c8eba3c20360afa0a",@"city":self.cityId} success:^(id result) {
+    [KSHttpRequest get:KgetCounty parameters:@{@"userId":[DataCenter account].userid,@"products":self.proId,@"province":self.proviceId?self.proviceId:@"5649bd6c8eba3c20360afa0a",@"city":self.cityId} success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             self.areaList = (NSMutableArray *)[XNRCityDetailModel objectArrayWithKeyValuesArray:result[@"countyList"]];
 
@@ -491,44 +499,53 @@
     if (tableView.tag == TableViewTag) {
         return _dataArr.count;
     }
-    else
+    else if(tableView.tag == TableViewTag+1)
     {
         return _currentCityArr.count;
     }
+    return 0;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
     if (tableView.tag == TableViewTag) {
-        NSString static *cellID = @"cell";
-        XNRSelWebSiteCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+        NSString static *cellID1 = @"cell1";
+        XNRSelWebSiteCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1];
         if (!cell) {
-            cell = [[XNRSelWebSiteCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+            cell = [[XNRSelWebSiteCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID1];
         }
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        //删除cell的所有子视图
+        while ([cell.contentView.subviews lastObject] != nil)
+        {
+            [(UIView*)[cell.contentView.subviews lastObject] removeFromSuperview];
+        }
+//        for (XNRSelWebBtn *btn in cell.contentView.subviews) {
+//            [btn removeFromSuperview];
+//        }
+    
         XNRRSCModel *RSCmodel = [self.dataArr objectAtIndex:indexPath.row];
         XNRRSCDetailModel *model = [XNRRSCDetailModel objectWithKeyValues:RSCmodel.RSCInfo];
         cell.model = model;
         
-        UIImage *image = [UIImage imageNamed:@"address_circle"];
         XNRSelWebBtn *iconBtn = [[XNRSelWebBtn alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, cell.height)];
 
         [iconBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
         [iconBtn setImage:[UIImage imageNamed:@"address_right"] forState:UIControlStateSelected];
-//        iconBtn.imageEdgeInsets = UIEdgeInsetsMake(-(cell.height - image.size.height)/2, 0, (cell.height - image.size.height)/2, 0);
+
         [iconBtn addTarget:self action:@selector(iconClick:) forControlEvents:UIControlEventTouchDown];
         iconBtn.tag = indexPath.row;
         
         if (self.currentModel == self.dataArr[iconBtn.tag]) {
                 iconBtn.selected = YES;
             }
-        [cell addSubview:iconBtn];
+        [cell.contentView addSubview:iconBtn];
         [_iconArr addObject:iconBtn];
         return cell;
     }
-    else
+    else if(tableView.tag == TableViewTag+1)
     {
         NSString static *cellID = @"cell";
         XNRCityCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
@@ -553,6 +570,7 @@
 
         return cell;
     }
+    return nil;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -615,6 +633,7 @@
             self.tableView2.frame = CGRectMake(0, -self.tableView2.height, self.tableView2.width, self.tableView2.height);
         }];
         currentPage = 1;
+//        [self.dataArr removeAllObjects];
 //        [self.tableView2 reloadData];
         [self getData];
     }
@@ -665,17 +684,19 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"选择自提网点";
     self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
 }

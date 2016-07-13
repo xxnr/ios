@@ -15,6 +15,8 @@
 #import "XNRRscDetialFootFrameModel.h"
 #import "XNRRscConfirmDeliverView.h"
 #import "XNRRscIdentifyPayView.h"
+#import "XNRNavigationController.h"
+#import "XNRRscDetialDeliverView.h"
 
 @interface XNRRscOrderDetialController()<UITableViewDelegate,UITableViewDataSource>
 
@@ -28,9 +30,11 @@
 
 @property (nonatomic, weak) XNRRscIdentifyPayView *identifyPayView;
 
-@property (nonatomic, weak) XNRRscConfirmDeliverView *deliverView;
+@property (nonatomic, weak) XNRRscDetialDeliverView *deliverView;
 
 @property (nonatomic, weak) UIButton *footButton;
+
+@property (nonatomic, weak) UIView *footView;
 
 @end
 
@@ -46,10 +50,10 @@
     return _identifyPayView;
 }
 
--(XNRRscConfirmDeliverView *)deliverView
+-(XNRRscDetialDeliverView *)deliverView
 {
     if (!_deliverView) {
-        XNRRscConfirmDeliverView *deliverView = [[XNRRscConfirmDeliverView alloc] init];
+        XNRRscDetialDeliverView *deliverView = [[XNRRscDetialDeliverView alloc] init];
         self.deliverView = deliverView;
         [self.view addSubview:deliverView];
     }
@@ -66,11 +70,24 @@
     self.view.backgroundColor = R_G_B_16(0xf4f4f4);
     [self createView];
     [self getOrderDetialData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshDetialTableView) name:@"refreshTableView" object:nil];
+}
+
+-(void)refreshDetialTableView
+{
+    [_dataArray removeAllObjects];
+    [self getOrderDetialData];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)createView
 {
-    XNRRscOrderDetialHeadView *headView =  [[XNRRscOrderDetialHeadView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(798))];
+    XNRRscOrderDetialHeadView *headView =  [[XNRRscOrderDetialHeadView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(778))];
     self.headView = headView;
     [self.view addSubview:headView];
     
@@ -84,7 +101,7 @@
 
 -(void)getOrderDetialData
 {
-    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":_orderModel._id,@"token":[DataCenter account].token} success:^(id result) {
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":_orderModel._id?_orderModel._id:_orderId} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dict = result[@"order"];
             XNRRscOrderDetailModel *model = [[XNRRscOrderDetailModel alloc] init];
@@ -111,30 +128,36 @@
             [self.headView updataWithModel:model];
             
             if ([dict[@"deliveryType"][@"type"] integerValue] == 2) {
-                self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(898));
+                if (model.subOrders.count == 2) {
+                    self.headView.frame = CGRectMake(0, 0, ScreenWidth, self.headView.headViewHeight);
+                }else{
+                    self.headView.frame = CGRectMake(0, 0, ScreenWidth, self.headView.headViewHeight);
+                }
             }else{
-                self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(798));
+                if (model.subOrders.count == 2) {
+                    self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(778));
+                }else{
+                    self.headView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(648));
+                }
             }
             self.tableView.tableHeaderView = self.headView;
 
-            
             if ([dict[@"orderStatus"][@"type"] integerValue] == 2 ||[dict[@"orderStatus"][@"type"] integerValue] == 4) {
+                
                 [self createFootView:model];
                 self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(80));
 
             }else if ([dict[@"orderStatus"][@"type"] integerValue] == 5 || [dict[@"orderStatus"][@"type"] integerValue] == 6){
-                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
-                for (XNRRscSkusModel *skuModel in model.SKUList ) {
-                    if ([skuModel.deliverStatus integerValue] == 4) {
-                        [self createFootView:model];
-                        self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(80));
-                    }
-                }
+                
+                [self createFootView:model];
+                
             }else{
+                
+                [self createFootView:model];
                 self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
             }
         }
-    
+        
         [self.tableView reloadData];
     } failure:^(NSError *error) {
         
@@ -143,11 +166,12 @@
 
 -(void)createFootView:(XNRRscOrderDetailModel *)model
 {
-    NSDictionary *dict = model.orderStatus;
-    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenHeight -64- PX_TO_PT(80), ScreenWidth,PX_TO_PT(80))];
-    footView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:footView];
-    
+    if (self.footView == nil) {
+        UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenHeight -64- PX_TO_PT(80), ScreenWidth,PX_TO_PT(80))];
+        footView.backgroundColor = [UIColor whiteColor];
+        self.footView = footView;
+        [self.view addSubview:footView];
+    }
     UIButton *footButton = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(170), PX_TO_PT(10), PX_TO_PT(140), PX_TO_PT(60))];
     footButton.layer.cornerRadius = 5.0;
     footButton.layer.masksToBounds = YES;
@@ -155,8 +179,13 @@
     footButton.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [footButton addTarget:self action:@selector(footButtonClick) forControlEvents:UIControlEventTouchUpInside];
     self.footButton = footButton;
-    [footView addSubview:footButton];
+    [self.footView addSubview:footButton];
     
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(2))];
+    topLine.backgroundColor = R_G_B_16(0xe0e0e0);
+    [self.footView addSubview:topLine];
+    
+    NSDictionary *dict = model.orderStatus;
     if ([dict[@"type"] integerValue] == 2) {
         [self.footButton setTitle:@"审核付款" forState:UIControlStateNormal];
     }else if ([dict[@"type"] integerValue] == 4){
@@ -164,18 +193,34 @@
     }else if ([dict[@"type"] integerValue] == 5){
         for (XNRRscSkusModel *skuModel in model.SKUList) {
             if ([skuModel.deliverStatus integerValue] == 4) {
+                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(80));
                 [self.footButton setTitle:@"客户自提" forState:UIControlStateNormal];
+                self.footView.hidden = NO;
+
+                return;
+            }else{
+                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
+                self.footView.hidden = YES;
+
             }
         }
     }else if ([dict[@"type"] integerValue] == 6){
         for (XNRRscSkusModel *skuModel in model.SKUList) {
             if ([skuModel.deliverStatus integerValue] == 4) {
+                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(80));
                 [self.footButton setTitle:@"开始配送" forState:UIControlStateNormal];
+                self.footView.hidden = NO;
+                return;
+            }else{
+                self.tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
+                self.footView.hidden = YES;
             }
         }
+    }else{
+        [self.footView removeFromSuperview];
     }
-
 }
+
 
 #pragma mark - 在段尾添加任意视图
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -202,8 +247,8 @@
     
     [totalPriceLabel setAttributedText:AttributedStringPrice];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(1))];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, 1)];
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [sectionFootView addSubview:lineView];
 
     return sectionFootView;
@@ -215,39 +260,40 @@
     for (XNRRscSkusModel *skuModel in _orderModel.SKUs) {
         skuModel.isSelected = NO;
     }
+    
     for (XNRRscOrderDetailModel *detailModel in _dataArray) {
         NSDictionary *dict = detailModel.orderStatus;
         if ([dict[@"type"] integerValue] == 2) {
             [self getdetailData:detailModel];
         }else if ([dict[@"type"] integerValue] == 4||[dict[@"type"] integerValue] == 6){
-            [self.deliverView show:_orderModel andType:isFromDeliverController];
+            [self.deliverView show:detailModel andType:isFromDetialDeliverController];
         }else if([dict[@"type"] integerValue] == 5){
-            [self.deliverView show:_orderModel andType:isFromTakeController];
+            [self.deliverView show:detailModel andType:isFromDetialTakeController];
         }
     }
 }
 
 -(void)getdetailData:(XNRRscOrderDetailModel *)model
 {
-    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model.id,@"token":[DataCenter account].token} success:^(id result) {
-        
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model.id} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *orderDict = result[@"order"];
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];
             detailModel.consigneeName = orderDict[@"consigneeName"];
             NSDictionary *payment = orderDict[@"payment"];
-            detailModel.price = payment[@"price"];
-            detailModel.id = payment[@"id"];
-            [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            if (![KSHttpRequest isNULL:payment] && [orderDict[@"orderStatus"][@"type"] integerValue]== 2) {
+                detailModel.price = payment[@"price"];
+                detailModel.id = payment[@"id"];
+                [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            }else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+                [UILabel showMessage:@"订单已审核"];
+            }
         }
-        
     } failure:^(NSError *error) {
         
-    }];
-    
+   }];
 }
-
-
 #pragma mark - tableView代理方法
 // 段尾高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -284,10 +330,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XNRRscOrderDetialCell *cell = [XNRRscOrderDetialCell cellWithTableView:tableView];
-    XNRRscOrderDetailModel *model = _dataArray[indexPath.section];
-    XNRRscOrderDetialFrameModel *frameModel = model.SKUFrameList[indexPath.row];
-    cell.frameModel = frameModel;
-    return cell;
+    if (_dataArray.count>0) {
+        XNRRscOrderDetailModel *model = _dataArray[indexPath.section];
+        XNRRscOrderDetialFrameModel *frameModel = model.SKUFrameList[indexPath.row];
+        cell.frameModel = frameModel;
+    }
+        return cell;
     
 }
 
@@ -296,23 +344,30 @@
 {
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont systemFontOfSize:20];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"订单详情";
     self.navigationItem.titleView = titleLabel;
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame = CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
-    [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
+    backButton.frame = CGRectMake(0, 0, 30, 44);
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+    [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *leftItem =[[UIBarButtonItem alloc]initWithCustomView:backButton];
-    self.navigationItem.leftBarButtonItem=leftItem;
+    self.navigationItem.leftBarButtonItem = leftItem;
 }
 
 -(void)backClick
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+
+    if ([self.presentingViewController isKindOfClass:[XNRNavigationController class]]) {
+        [self dismissViewControllerAnimated:NO completion:nil];
+        return;
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 

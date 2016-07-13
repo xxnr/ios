@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "XNRCheckOrderModel.h"
 @interface XNROrderInfoCell : UITableViewCell
+@property (nonatomic,assign)CGFloat height;
 
 -(void)setCellDataWithModel:(XNRCheckOrderModel *)model;
 +(CGFloat)cellHeight;

@@ -22,6 +22,7 @@
     BOOL sort;
     int _keyBoardHeight;
     NSString *_count;
+    BOOL _editType;
 }
 @property (nonatomic,strong) XNRShoppingCartModel *model;
 @property (nonatomic ,weak) UIButton *selectedBtn;
@@ -84,6 +85,8 @@
         // 接受编辑，删除按钮的通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(normalBtnPresent) name:@"normalBtnPresent" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelBtnPresent) name:@"cancelBtnPresent" object:nil];
+        self.cancelBtn.hidden = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenCancelBtn) name:@"hiddenCancelBtn" object:nil];
     }
     return self;
 }
@@ -93,24 +96,21 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
 }
+
 -(void)cancelBtnPresent{
-    if ([self.model.online integerValue] == 0) {// 下架 （点击编辑）
-        self.goodNameLabel.frame = CGRectMake(CGRectGetMaxX(self.picImageView.frame)+PX_TO_PT(20), PX_TO_PT(40), ScreenWidth-CGRectGetMaxX(self.picImageView.frame)-PX_TO_PT(20)-PX_TO_PT(150), PX_TO_PT(80));
-        [self createCancelBtn];
-    }
+    self.cancelBtn.hidden = NO;
     
 }
 -(void)normalBtnPresent{
-    if ([self.model.online integerValue] == 0) {// 下架 （点击完成）
-        self.goodNameLabel.frame = self.shoppingCarFrame.goodNameLabelF;
-        [self.cancelBtn removeFromSuperview];
-//        self.cancelBtn.hidden = YES;
-    }
+    self.cancelBtn.hidden = YES;
 }
 
+-(void)hiddenCancelBtn
+{
+    self.cancelBtn.hidden = YES;
+}
 
 -(void)cancelBtnClick{
-//    NSMutableArray *cancelArray = [NSMutableArray array];
     BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确认要删除该商品吗?" chooseBtns:@[@"取消",@"确定"]];
     
     alertView.chooseBlock = ^void(UIButton *btn){
@@ -132,27 +132,13 @@
                     } failure:^(NSError *error) {
                         
                     }];
-                    
-                    
                 }
-                
             }
-
-            
-        
         }
     };
     [alertView BMAlertShow];
 }
 
--(void)createCancelBtn{
-    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelBtn.frame = CGRectMake(CGRectGetMaxX(self.goodNameLabel.frame)+PX_TO_PT(80), PX_TO_PT(40), PX_TO_PT(60), PX_TO_PT(60));
-    [cancelBtn setImage:[UIImage imageNamed:@"address_delete"] forState:UIControlStateNormal];
-    [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    self.cancelBtn = cancelBtn;
-    [self.contentView addSubview:cancelBtn];
-}
 
 -(void)textFieldChanged:(NSNotification*)noti {
     
@@ -175,7 +161,6 @@
 
 - (void)createUI
 {
-
     // 选择按钮
     UIButton *selectedBtn = [[UIButton alloc] init];
     [selectedBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -188,7 +173,7 @@
     UIImageView *picImageView = [[UIImageView alloc]init];
     picImageView.contentMode = UIViewContentModeScaleAspectFit;
     picImageView.layer.borderWidth = PX_TO_PT(2);
-    picImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    picImageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     self.picImageView = picImageView;
     [self.contentView addSubview:picImageView];
     
@@ -199,6 +184,15 @@
     goodNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.goodNameLabel = goodNameLabel;
     [self.contentView addSubview:goodNameLabel];
+    
+    // 删除按钮
+    UIButton *cancelBtn = [[UIButton alloc] init];
+    [cancelBtn setImage:[UIImage imageNamed:@"address_delete"] forState:UIControlStateNormal];
+    [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    self.cancelBtn = cancelBtn;
+    [self.contentView addSubview:cancelBtn];
+    self.cancelBtn.hidden = YES;
+
     
     //属性
     UILabel *introduceLabel = [[UILabel alloc] init];
@@ -226,6 +220,7 @@
     [self createSelectedBtn];
     // cell上按钮点击跳转
     [self createPushBtn];
+    
 }
 -(void)createPushBtn
 {
@@ -258,7 +253,7 @@
     [self.contentView addSubview:sectionTwoLabel];
         
     UILabel *subscriptionLabel = [[UILabel alloc] init];
-    subscriptionLabel.textColor = R_G_B_16(0xff4e00);
+    subscriptionLabel.textColor = R_G_B_16(0x323232);
     subscriptionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     subscriptionLabel.textAlignment = NSTextAlignmentRight;
     self.subscriptionLabel = subscriptionLabel;
@@ -273,17 +268,17 @@
     
     
     UIView *topView = [[UIView alloc] init];
-    topView.backgroundColor = R_G_B_16(0xc7c7c7);
+    topView.backgroundColor = R_G_B_16(0xe0e0e0);
     self.topView =  topView;
     [self.contentView addSubview:topView];
         
     UIView *middleLine = [[UIView alloc] init];
-    middleLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    middleLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.middleLine = middleLine;
     [self.contentView addSubview:middleLine];
         
     UIView *bottomLine = [[UIView alloc] init];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.bottomLine = bottomLine;
     [self.contentView addSubview:bottomLine];
 
@@ -323,7 +318,7 @@
     UIImageView *picImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.selectedBtn.frame) + PX_TO_PT(20), PX_TO_PT(30), PX_TO_PT(180), PX_TO_PT(180))];
     picImageView.contentMode = UIViewContentModeScaleAspectFit;
     picImageView.layer.borderWidth = PX_TO_PT(2);
-    picImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    picImageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     self.picImageView = picImageView;
     [self.contentView addSubview:picImageView];
 }
@@ -387,7 +382,6 @@
         
         if (IS_Login) {
             self.numTextField.text = @"0";
-//            [self requestShoppingCarURL];
             [self requestShoppingCarInputNumberURL];
         }
     }
@@ -400,6 +394,9 @@
     
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     leftBtn.tag = kRightBtn;
+    leftBtn.backgroundColor = R_G_B_16(0xf0f0f0);
+    leftBtn.layer.borderWidth = PX_TO_PT(2);
+    leftBtn.layer.borderColor = [R_G_B_16(0xe0e0e0) CGColor];
     [leftBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [leftBtn setImage:[UIImage imageNamed:@"icon_minus"] forState:UIControlStateNormal];
     [leftBtn setImage:[UIImage imageNamed:@"discount_default1"] forState:UIControlStateHighlighted];
@@ -428,6 +425,10 @@
     
     UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     rightBtn.tag = kLeftBtn;
+    rightBtn.backgroundColor = R_G_B_16(0xf0f0f0);
+    rightBtn.layer.borderWidth = PX_TO_PT(2);
+    rightBtn.layer.borderColor = [R_G_B_16(0xe0e0e0) CGColor];
+
     [rightBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
 
     [rightBtn setImage:[UIImage imageNamed:@"icon_plus"] forState:UIControlStateNormal];
@@ -437,12 +438,12 @@
     [self.contentView addSubview:rightBtn];
     
     UIView *textTopLine = [[UIView alloc] init];
-    textTopLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    textTopLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.textTopLine = textTopLine;
     [self.contentView addSubview:textTopLine];
     
     UIView *bottomLine = [[UIView alloc] init];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.textbottomLine = bottomLine;
     [self.contentView addSubview:bottomLine];
     
@@ -495,7 +496,6 @@
 
     if (IS_Login) {
         //单次申请购物车接口
-//        [self requestShoppingCarURL];
         [self requestShoppingCarInputNumberURL];
 
     }else{
@@ -529,10 +529,11 @@
 
         if (self.model.num.intValue<1) {
             self.model.num = @"1";
-            [UILabel showMessage:@"数量不能再减少了"];
+            [UILabel showMessage:@"数量不能再减少了哦"];
         }
     }
     if ([self.model.num integerValue] >= 9999) {
+        [UILabel showMessage:@"商品个数不能大于9999"];
         self.rightBtn.enabled = NO;
     }else{
         self.rightBtn.enabled = YES;
@@ -572,6 +573,8 @@
     
     self.goodNameLabel.frame = self.shoppingCarFrame.goodNameLabelF;
     
+    self.cancelBtn.frame = self.shoppingCarFrame.cancelBtnF;
+
     self.introduceLabel.frame = self.shoppingCarFrame.attributesLabelF;
     
     self.leftBtn.frame = self.shoppingCarFrame.leftBtnF;
@@ -600,12 +603,12 @@
     self.pushBtn.frame = self.shoppingCarFrame.pushBtnF;
     
     self.numLabel.frame = self.shoppingCarFrame.onlineLabelF;
-
+    
 }
+
 #pragma mark - 设置现在的数据
 - (void)setupData
 {
-    self.cancelBtn.hidden = YES;
     XNRShoppingCartModel *model = self.shoppingCarFrame.shoppingCarModel;
     _model = model;
     if (model.selectState) {
@@ -656,23 +659,15 @@
     self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.price.doubleValue];
 
     // 订金
-
     self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",model.deposit.doubleValue *[_model.num integerValue]];
     // 尾款
     self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",(model.price.doubleValue + totalPrice - model.deposit.doubleValue)*[model.num integerValue]];
-    
-//    if (_model.num == 0) {
-//        self.numTextField.text = @"1";
-//    }else{
-//        self.numTextField.text = [NSString stringWithFormat:@"%@",model.num];
-//    }
-    
+        
     // 下架
     if ([model.online integerValue] == 0) {
         self.selectedBtn.hidden = YES;
         self.offLineLabel.hidden = NO;
-        self.cancelBtn.hidden = NO;
-
+                
         self.backgroundColor = R_G_B_16(0xf0f0f0);
         self.goodNameLabel.textColor = R_G_B_16(0x909090);
         self.presentPriceLabel.textColor = R_G_B_16(0x909090);
@@ -691,28 +686,27 @@
         
         self.numLabel.text = [NSString stringWithFormat:@"x %@",model.num];
 
-    }else{
+    }else{   // 非下架
         self.backgroundColor = [UIColor whiteColor];
         self.selectedBtn.hidden = NO;
         self.offLineLabel.hidden = YES;
-        self.cancelBtn.hidden = YES;
-        
         self.leftBtn.hidden = NO;
         self.numTextField.hidden = NO;
         self.rightBtn.hidden = NO;
         self.textTopLine.hidden = NO;
         self.textbottomLine.hidden = NO;
-        
         self.backgroundColor = [UIColor whiteColor];
         self.goodNameLabel.textColor = R_G_B_16(0x323232);
         self.presentPriceLabel.textColor = R_G_B_16(0x323232);
         self.sectionOneLabel.textColor = R_G_B_16(0x323232);
         self.sectionTwoLabel.textColor = R_G_B_16(0x323232);
-        self.subscriptionLabel.textColor = R_G_B_16(0xff4e00);
+        self.subscriptionLabel.textColor = R_G_B_16(0x323232);
         self.remainLabel.textColor = R_G_B_16(0x323232);
         self.addtionsLabel.textColor = R_G_B_16(0x323232);
         self.addtionPriceLabel.textColor = R_G_B_16(0x323232);
         
+//        [self.cancelBtn removeFromSuperview];
+
         if (_model.num == 0) {
             self.numTextField.text = @"1";
         }else{

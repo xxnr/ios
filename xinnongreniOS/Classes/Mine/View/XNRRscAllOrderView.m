@@ -16,6 +16,7 @@
 #import "XNRRscConfirmDeliverView.h"
 #import "XNRRscOrderDetailModel.h"
 #import "XNRRscFootFrameModel.h"
+#import "XNRRscNoOrderView.h"
 #define MAX_PAGE_SIZE 10
 
 @interface XNRRscAllOrderView()<UITableViewDelegate,UITableViewDataSource>
@@ -32,9 +33,23 @@
 
 @property (nonatomic, weak) XNRRscConfirmDeliverView *deliverView;
 
+@property (nonatomic, weak) XNRRscNoOrderView *noOrderView;
+
 @end
 
 @implementation XNRRscAllOrderView
+
+-(XNRRscNoOrderView *)noOrderView
+{
+    if (!_noOrderView) {
+        XNRRscNoOrderView *noOrderView = [[XNRRscNoOrderView  alloc] init];
+        self.noOrderView = noOrderView;
+        [self addSubview:noOrderView];
+    }
+    return _noOrderView;
+    
+}
+
 
 -(XNRRscIdentifyPayView *)identifyPayView
 {
@@ -76,6 +91,10 @@
 {
     [self headRefresh];
 }
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 #pragma mark - 刷新
 -(void)setupAllViewRefresh{
@@ -91,7 +110,7 @@
     }
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
         [RefreshImage addObject:image];
@@ -114,9 +133,6 @@
     
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
     MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footRefresh)];
-    
-    
-    //    footer.automaticallyHidden = YES;
     
     // 设置刷新图片
     [footer setImages:RefreshImage forState:MJRefreshStateRefreshing];
@@ -146,7 +162,7 @@
 
 -(void)getData
 {
-    NSDictionary *params = @{@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"token":[DataCenter account].token};
+    NSDictionary *params = @{@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE]};
     [KSHttpRequest get:KRscOrders parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *ordersArray = result[@"orders"];
@@ -182,7 +198,17 @@
             }
             [self.tableView reloadData];
         }
+        if (_dataArray.count == 0) {
+            [self noOrderView];
+        }else{
+            [self.noOrderView removeFromSuperview];
+        }
         
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
+        }
+
         //  如果到达最后一页 就消除footer
         NSInteger page = [result[@"pageCount"] integerValue];
         self.tableView.mj_footer.hidden = page == _currentPage;
@@ -199,7 +225,7 @@
 
 -(void)createView
 {
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(120)) style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(100)) style:UITableViewStyleGrouped];
     tableView.backgroundColor = [UIColor clearColor];
     tableView.showsVerticalScrollIndicator = YES;
     tableView.delegate = self;
@@ -235,13 +261,14 @@
         XNRRscFootFrameModel*footFrameModel = _dataFrameArray[section];
         [sectionFootView upDataFootViewWithModel:footFrameModel];
         [self addSubview:sectionFootView];
+        __weak __typeof(&*self)weakSelf = self;
         sectionFootView.com = ^{
             if ([sectionModel.type integerValue] == 2) {
-                [self getdetailData:sectionModel];
+                [weakSelf getdetailData:sectionModel];
             }else if ([sectionModel.type integerValue] == 4||[sectionModel.type integerValue] == 6){
-                [self.deliverView show:sectionModel andType:isFromDeliverController];
+                [weakSelf.deliverView show:sectionModel andType:isFromDeliverController];
             }else if([sectionModel.type integerValue] == 5){
-                [self.deliverView show:sectionModel andType:isFromTakeController];
+                [weakSelf.deliverView show:sectionModel andType:isFromTakeController];
             }
         };
         return sectionFootView;
@@ -252,18 +279,23 @@
 
 -(void)getdetailData:(XNRRscOrderModel *)model
 {
-    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model._id,@"token":[DataCenter account].token} success:^(id result) {
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model._id} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *orderDict = result[@"order"];
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];
             detailModel.consigneeName = orderDict[@"consigneeName"];
             NSDictionary *payment = orderDict[@"payment"];
-            detailModel.price = payment[@"price"];
-            detailModel.id = payment[@"id"];
-            [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            if (![KSHttpRequest isNULL:payment] && [orderDict[@"orderStatus"][@"type"] integerValue]== 2) {
+                detailModel.price = payment[@"price"];
+                detailModel.id = payment[@"id"];
+                [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            }else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+                [UILabel showMessage:@"订单已审核"];
+            }
+
         }
-        
     } failure:^(NSError *error) {
         
     }];
@@ -282,13 +314,12 @@
 // 段尾高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (_dataFrameArray.count>0) {
-        XNRRscFootFrameModel *frameModel = _dataFrameArray[section];
-        return frameModel.footViewHeight;
-
-    }else{
-        return 0;
-    }
+        if (_dataFrameArray.count>0) {
+            XNRRscFootFrameModel *frameModel = _dataFrameArray[section];
+            return frameModel.footViewHeight;
+        }else{
+            return 0;
+        }
 }
 
 //设置段数
@@ -324,10 +355,13 @@
 // cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
-    if (self.com) {
-        self.com(sectionModel);
+    if (_dataArray.count>0) {
+        XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
+        if (self.allcom) {
+            self.allcom(sectionModel);
+        }
     }
+   
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

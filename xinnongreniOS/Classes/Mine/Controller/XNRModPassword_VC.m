@@ -152,15 +152,23 @@
     [self.makeSurePasswordTextField resignFirstResponder];
     [self.againPasswordTextField resignFirstResponder];
     
-    if(self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0 || self.makeSurePasswordTextField.text.length==0)
-    {
-        
-        [UILabel showMessage:@"请完善您要填写的资料"];
-        
+    if(self.newpasswordTextField.text.length==0){
+        [UILabel showMessage:@"请输入旧密码"];
+    }
+    else if (self.againPasswordTextField.text.length==0){
+        [UILabel showMessage:@"请输入新密码"];
+    }
+    else if (self.makeSurePasswordTextField.text.length==0){
+        [UILabel showMessage:@"请输入确认密码"];
+    }
+    else if (self.againPasswordTextField.text.length<6){
+        [UILabel showMessage:@"密码需不小于6位"];
+    }
+    else if (self.makeSurePasswordTextField.text.length<6){
+        [UILabel showMessage:@"密码需不小于6位"];
     }
     else if (![self.againPasswordTextField.text isEqualToString:self.makeSurePasswordTextField.text]){
-       
-        [UILabel showMessage:@"新密码与确认密码不同"];
+        [UILabel showMessage:@"两次密码不一致，请重新输入"];
     }
     else{
         
@@ -172,6 +180,11 @@
                 self.pubKey = pubKey;
                 [self getNetwork];
             }
+            else
+            {
+                [UILabel showMessage:result[@"message"]];
+            }
+
             
         } failure:^(NSError *error) {
             
@@ -200,7 +213,8 @@
         NSLog(@"%@",result[@"message"]);
         
         if([result[@"code"] isEqualToString:@"1000"]){
-            [UILabel showMessage:@"密码修改成功"];
+            
+            [UILabel showMessage:@"修改密码成功"];
         
             XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
             login.loginFrom = YES;
@@ -230,7 +244,7 @@
 - (BOOL) validateMobile:(NSString *)mobile
 {
     //手机号以13，15，18开头，八个 \d 数字字符
-    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
+    NSString *phoneRegex = @"^1\\d{10}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
 }
@@ -252,10 +266,11 @@
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-     backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchDown];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
 }

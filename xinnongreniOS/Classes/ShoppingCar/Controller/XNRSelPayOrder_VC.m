@@ -107,7 +107,7 @@
     [self.midView addSubview:totalMoneyLabelSep];
     
     UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(self.totalMoneyLabelSep.frame) + PX_TO_PT(27), ScreenWidth - PX_TO_PT(62), PX_TO_PT(2))];
-    line1.backgroundColor = R_G_B_16(0xC7C7C7);
+    line1.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.midView addSubview:line1];
     
     UIView *detailView0 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31),CGRectGetMaxY(line1.frame) + PX_TO_PT(12), ScreenWidth - PX_TO_PT(62), PX_TO_PT(80))];
@@ -129,8 +129,8 @@
     self.payButtonSep = payButtonSep;
     [self.midView addSubview:payButtonSep];
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.payButtonSep.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
-    line2.backgroundColor = R_G_B_16(0xC7C7C7);
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.payButtonSep.frame)+PX_TO_PT(20), ScreenWidth, 1)];
+    line2.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.midView addSubview:line2];
     
     UIView *bgViewFull = [[UIView alloc]initWithFrame: CGRectMake(0,0, ScreenWidth, PX_TO_PT(80))];
@@ -165,7 +165,7 @@
     [self.bottomView addSubview:totalMoneyLabelFull];
     
     UIView *line3 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(self.totalMoneyLabelFull.frame) + PX_TO_PT(26), ScreenWidth - PX_TO_PT(62), PX_TO_PT(2))];
-    line3.backgroundColor = R_G_B_16(0xC7C7C7);
+    line3.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.bottomView addSubview:line3];
     
     UIView *detailView = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31),CGRectGetMaxY(line3.frame) + PX_TO_PT(12), ScreenWidth - PX_TO_PT(62), PX_TO_PT(80))];
@@ -187,16 +187,16 @@
     self.payButtonFull = payButtonFull;
     [self.bottomView addSubview:payButtonFull];
     
-    UIView *line4 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.payButtonFull.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
-    line4.backgroundColor = R_G_B_16(0xC7C7C7);
+    UIView *line4 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.payButtonFull.frame)+PX_TO_PT(20), ScreenWidth, 1)];
+    line4.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.bottomView addSubview:line4];
 
     detailView0.layer.cornerRadius = 10;
     detailView.layer.cornerRadius = 10;
     detailView.layer.masksToBounds = YES;
     detailView0.layer.masksToBounds = YES;
-    self.payTypeSep.textAlignment = UITextAlignmentRight;
-    self.payTypeFull.textAlignment = UITextAlignmentRight;
+    self.payTypeSep.textAlignment = NSTextAlignmentRight;
+    self.payTypeFull.textAlignment = NSTextAlignmentRight;
 
 
 }
@@ -240,11 +240,11 @@
     self.navigationItem.title = @"选择支付订单";
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchDown];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
 }

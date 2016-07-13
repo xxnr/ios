@@ -10,6 +10,7 @@
 #import "XNRRscSkusFrameModel.h"
 #import "XNRRscOrderModel.h"
 #import "UIImageView+WebCache.h"
+#import "UILabel+ZSC.h"
 
 @interface XNRRscMyOrderStateCell()
 
@@ -49,8 +50,12 @@
 -(void)createView
 {
     UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.layer.borderWidth = PX_TO_PT(1);
-    imageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    if (IS_FourInch) {
+        imageView.layer.borderWidth = PX_TO_PT(2);
+    }else{
+        imageView.layer.borderWidth = 1;
+    }
+    imageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     self.goodsImageView = imageView;
     [self.contentView addSubview:imageView];
     
@@ -85,7 +90,7 @@
     [self.contentView addSubview:addtionsLabel];
     
     UIView *lineView = [[UIView alloc] init];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     self.lineView = lineView;
     [self.contentView addSubview:lineView];
 
@@ -106,6 +111,8 @@
 {
     self.goodsImageView.frame = self.frameModel.imageViewF;
     self.goodsNameLabel.frame = self.frameModel.goodsNameLabelF;
+    [self.goodsNameLabel verticalUpAlignmentWithText:self.model.productName maxHeight:PX_TO_PT(80)];
+
     self.goodsNumberLabel.frame = self.frameModel.goodsNumberLabelF;
     self.attributesLabel.frame = self.frameModel.attributesLabelF;
     self.addtionsLabel.frame = self.frameModel.addtionsLabelF;
@@ -125,7 +132,8 @@
         }else{
             [self.goodsImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
         }}];
-    self.goodsNameLabel.text = model.name;
+    self.goodsNameLabel.text = model.productName;
+    
     self.goodsNumberLabel.text = [NSString stringWithFormat:@"x %@",model.count];
     
     // 属性

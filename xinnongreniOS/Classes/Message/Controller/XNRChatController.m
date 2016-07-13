@@ -26,18 +26,17 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    [self setupRefresh];
-    
 }
 
 - (void)viewDidLoad {
-    self.view.backgroundColor = [UIColor whiteColor];
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     currentPage = 1;
     [self setNav];
     [self setupTableView];
     [self createbackBtn];
     [self getData];
+    [self setupRefresh];
 }
 #pragma mark - 刷新
 -(void)setupRefresh{
@@ -51,12 +50,26 @@
         }
         NSMutableArray *RefreshImage = [NSMutableArray array];
         
-        for (int i = 10; i<21; i++) {
+        for (int i = 1; i<21; i++) {
             UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
             
             [RefreshImage addObject:image];
-            
         }
+//    for (int i = 1; i<21; i++) {
+//        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+//        
+//        [idleImage addObject:image];
+//    }
+//    NSMutableArray *RefreshImage = [NSMutableArray array];
+//    
+//    for (int i = 1; i<21; i++) {
+//        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
+//        
+//        [RefreshImage addObject:image];
+//        
+//    }
+    
+
         
         [header setImages:idleImage forState:MJRefreshStateIdle];
         
@@ -142,7 +155,6 @@
 
 -(void)getData
 {
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [KSHttpRequest get:KMessageNews parameters:@{@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
@@ -160,17 +172,13 @@
         NSInteger page = [result[@"datas"][@"page"] integerValue];
         self.tableView.mj_footer.hidden = pages==page;
 
-        [self.tableView reloadData];
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
-        [BMProgressView LoadViewDisappear:self.view];
-        
+        [self.tableView reloadData];
+
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
-        [BMProgressView LoadViewDisappear:self.view];
-
-
     }];
 
 }
@@ -196,11 +204,12 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XNRWebViewController *webViewController = [[XNRWebViewController alloc] init];
-    XNRMessageModel *model = _messageArr[indexPath.row];
-    webViewController.model = model;
+    if (_messageArr.count>0) {
+        XNRMessageModel *model = _messageArr[indexPath.row];
+        webViewController.model = model;
+    }
     webViewController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:webViewController animated:YES];
-    
 }
 
 - (void)didReceiveMemoryWarning {

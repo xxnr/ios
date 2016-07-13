@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "XNRTabBarController.h"
 #import "GBAlipayManager.h"
-#import "XNRNewFeatureViewController.h"
+//#import "XNRNewFeatureViewController.h"
 #import "UMessage.h"
 #import "IQKeyboardManager.h"
 #import <Bugtags/Bugtags.h>
@@ -27,6 +27,9 @@
 #import "XNRMyOrder_VC.h"
 #import "XNRMyStoreOrderController.h"
 #import "XNRRscOrderDetialController.h"
+#import "XNRLoginViewController.h"
+#import "UIImageView+WebCache.h"
+
 @interface AppDelegate ()<UITabBarControllerDelegate>
 {
     BOOL _is_Notification;
@@ -56,6 +59,7 @@
     [self.window makeKeyAndVisible];
     
     _tabBarController = [[XNRTabBarController alloc]init];
+     _FeatuewController = [[XNRNewFeatureViewController alloc] init];
     _tabBarController.delegate = self;
     
     // 设置窗口的根控制器
@@ -70,7 +74,7 @@
     if ([currentVersion isEqualToString:lastVersion]) {
         self.window.rootViewController = _tabBarController;
     }else{
-        self.window.rootViewController = [[XNRNewFeatureViewController alloc] init];
+        self.window.rootViewController = _FeatuewController;
         // 存储这次试用的版本
         [defaults setObject:currentVersion forKey:versionKey];
         [defaults synchronize];
@@ -86,7 +90,7 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
-    //    友盟分享
+    //  友盟分享
     [UMSocialData setAppKey:UM_APPKEY];
     
     [UMSocialWechatHandler setWXAppId:wechatAppId appSecret:wechatAppSecret url:APPURL];
@@ -95,29 +99,9 @@
 
     [UMessage setLogEnabled:YES];
     
-
-
     // 启动bugtags
-//    [XNRBugTagsTool openBugTags];
+    [XNRBugTagsTool openBugTags];
     
-
-    //友盟注册通知
-    //-- Set Notification
-    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
-    {
-        // iOS 8 Notifications
-        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIRemoteNotificationTypeNone | UIUserNotificationTypeBadge) categories:nil]];
-        
-        [application registerForRemoteNotifications];
-    }
-    else
-    {
-        // iOS < 8 Notifications
-        [application registerForRemoteNotificationTypes:
-         (UIRemoteNotificationTypeBadge |   UIRemoteNotificationTypeNone | UIRemoteNotificationTypeSound)];
-    }
-    [UMessage setLogEnabled:YES];
-
     // 判断是否是推送进来的
     NSDictionary* remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotification != nil) {
@@ -127,16 +111,13 @@
     return YES;
 }
 
-
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     //如果极简 SDK 不可用,会跳转支付宝钱包进行支付,需要将支付宝钱包的支付结果回传给 SDK if ([url.host isEqualToString:@"safepay"]) {
     [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
         
         NSLog(@"result = %@",resultDic);
         
-        
         [[NSNotificationCenter defaultCenter]postNotificationName:@"alipayResult" object:[resultDic objectForKey:@"resultStatus"]];
-        
         
     }];
     if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回 authCode
@@ -155,12 +136,55 @@
 }
 
 - (UIViewController *)getTopViewController {
-    UINavigationController *nav = [_tabBarController selectedViewController];
+    UINavigationController *nav;
+    if (AppKeyWindow.rootViewController == _tabBarController) {
+        nav = [_tabBarController selectedViewController];
+    }else{
+        _tabBarController.selectedIndex = 3;
+        AppKeyWindow.rootViewController = _tabBarController;
+        nav = [_tabBarController selectedViewController];
+    }
     return [nav topViewController];
+    
+}
+
+- (UIViewController *)getCurrentVC
+{
+    UIViewController *result = nil;
+    
+    UIWindow * window = [[UIApplication sharedApplication] keyWindow];
+    if (window.windowLevel != UIWindowLevelNormal)
+    {
+        NSArray *windows = [[UIApplication sharedApplication] windows];
+        for(UIWindow * tmpWin in windows)
+        {
+            if (tmpWin.windowLevel == UIWindowLevelNormal)
+            {
+                window = tmpWin;
+                break;
+            }
+        }
+    }
+    
+    UIView *frontView = [[window subviews] objectAtIndex:0];
+    id nextResponder = [frontView nextResponder];
+    
+    if ([nextResponder isKindOfClass:[UIViewController class]])
+        result = nextResponder;
+    else
+        result = window.rootViewController;
+    
+    return result;
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
+    _deviceToken = [[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]                  stringByReplacingOccurrencesOfString: @">" withString: @""]                 stringByReplacingOccurrencesOfString: @" " withString: @""];
+    
+     [[NSNotificationCenter defaultCenter] postNotificationName:@"remaindUserToUpdate" object:nil];
+    //获取设备号
+    NSLog(@"deviceToken%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]                  stringByReplacingOccurrencesOfString: @">" withString: @""]                 stringByReplacingOccurrencesOfString: @" " withString: @""]);
+
     [UMessage registerDeviceToken:deviceToken];
     
 }
@@ -173,7 +197,6 @@
 }
 
 
-
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     //关闭友盟默认提示框
@@ -181,20 +204,12 @@
 
     [UMessage didReceiveRemoteNotification:userInfo];
     
-    
     NSString *alert = [userInfo objectForKey:@"page"];
     NSString *orderId = [userInfo objectForKey:@"orderId"];
     NSString *title = [userInfo objectForKey:@"title"];
     NSString *text = [userInfo objectForKey:@"text"];
     //前台状态下
     if (!_is_Notification) {
-//            application.applicationIconBadgeNumber++;
-//        UILocalNotification *localNotifiction = [[UILocalNotification alloc]init];
-//        localNotifiction.userInfo = userInfo;
-//        localNotifiction.soundName = UILocalNotificationDefaultSoundName;
-//        localNotifiction.alertBody = @"hahah";
-//        localNotifiction.fireDate = [NSDate date];
-//        [[UIApplication sharedApplication] scheduleLocalNotification:localNotifiction];
 
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:title message:text delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [alert show];
@@ -225,11 +240,9 @@
             XNRNavigationController *orderNavVC = [[XNRNavigationController alloc]initWithRootViewController:vc];
 
             [myorderVC presentViewController:orderNavVC animated:NO completion:nil];
-            
 //            [application setApplicationIconBadgeNumber:0];
         }
-        else
-        {
+        else if ([alert isEqualToString:@"RSCOrderDetail"]){
             XNRTabBarController *tabVC = [[XNRTabBarController alloc] init];
             UIWindow *window = [UIApplication sharedApplication].keyWindow;
             window.rootViewController = tabVC;
@@ -252,6 +265,10 @@
             [myorderVC presentViewController:orderNavVC animated:NO completion:nil];
 
         }
+        else
+        {
+        
+        }
 
     }
     _is_Notification = NO;
@@ -267,17 +284,31 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)applicatio
 {
+    [[UIApplication sharedApplication]setApplicationIconBadgeNumber:0];
+    
     _is_Notification = NO;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     
 }
+
+/**
+ *  内存警告
+ */
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+{
+    // 取消所有的下载图片请求
+    [[SDWebImageManager sharedManager] cancelAll];
+    
+    // 清除内存缓存
+    [[SDWebImageManager sharedManager].imageCache clearMemory];
+}
+
 
 
 

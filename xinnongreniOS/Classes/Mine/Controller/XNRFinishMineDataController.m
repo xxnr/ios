@@ -32,7 +32,7 @@
 @property (nonatomic ,copy) NSString *typeNum;
 
 @property (nonatomic ,weak) UITextField *nameTf;
-
+@property (nonatomic,assign)int nameLength;
 //@property (nonatomic ,weak) UIButton *LocalAddressBtn;
 @property (nonatomic ,weak) UILabel *LocalAddressLabel;
 //@property (nonatomic ,weak) UIButton *streetBtn;
@@ -64,7 +64,7 @@
         [self.addressManagerView hide];
     }else{
         // 点确定以后，置空
-//        self.townLabel.text = @"请选择乡镇";
+        self.streetLabel.text = @"选择所在街道或乡镇";
         self.townID = @"";
         [self.addressManagerView hide];
     }
@@ -180,6 +180,7 @@
     }
     nameTf.textColor = R_G_B_16(0x323232);
     nameTf.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    nameTf.delegate = self;
     self.nameTf = nameTf;
     [self.view addSubview:nameTf];
     // 性别男
@@ -280,8 +281,8 @@
     [userTypeBtn addSubview:userTypeLabel];
 
     for (int i = 1; i<7; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(1))];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, 1)];
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [self.view addSubview:lineView];
     }
     
@@ -364,8 +365,51 @@
     
     return YES;
 }
-
-
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField == self.nameTf) {
+        
+        int strlength = 0;
+        char* p = (char*)[textField.text cStringUsingEncoding:NSUnicodeStringEncoding];
+        for (int i=0 ; i<[textField.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+            if (*p) {
+                p++;
+                strlength++;
+            }
+            else {
+                p++;
+            }
+            
+        }
+        
+        self.nameLength = strlength;
+        
+        if (strlength > 12) {
+            [UILabel showMessage:[NSString stringWithFormat:@"姓名限6个汉字或12个英文字符"]];
+        }
+    }
+}
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField == self.nameTf) {
+        
+        int strlength = 0;
+        char* p = (char*)[textField.text cStringUsingEncoding:NSUnicodeStringEncoding];
+        for (int i=0 ; i<[textField.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+            if (*p) {
+                p++;
+                strlength++;
+            }
+            else {
+                p++;
+            }
+            
+        }
+        
+        self.nameLength = strlength;
+    }
+    return YES;
+}
 #pragma mark - 性别
 -(void)selelctedBtnClick:(UIButton *)button
 {
@@ -411,11 +455,16 @@
     if ([self.LocalAddressLabel.text isEqualToString:@"选择所在的省市区"] || [self.streetLabel.text isEqualToString:@"选择所在街道或乡镇"] || [self.nameTf.text isEqualToString:@""]) {
         
         [UILabel showMessage:@"请完善信息"];
-    }else{
+    }
+    else if(self.nameLength>12)
+    {
+        [UILabel showMessage:@"姓名限6个汉字或12个英文字符"];
+    }
+    else{
         NSDictionary *addressDict = @{@"provinceId":self.provinceID?self.provinceID:@"",@"cityId":self.cityID?self.cityID:@"",@"countyId":self.countyID?self.countyID:@"",@"townId":self.townID?self.townID:@""};
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
-        [dic setObject:[DataCenter account].token forKey:@"token"];
+        [dic setObject:[DataCenter account].token?[DataCenter account].token:@"" forKey:@"token"];
         [dic setObject:[DataCenter account].userid forKey:@"userId"];
         [dic setObject:addressDict forKey:@"address"];
         [dic setObject:self.nameTf.text forKey:@"userName"];
@@ -451,17 +500,17 @@
 -(void)createNavigation{
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"完善个人资料";
     self.navigationItem.titleView = titleLabel;
-    
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem *leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
 

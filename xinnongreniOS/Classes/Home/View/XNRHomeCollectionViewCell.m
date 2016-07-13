@@ -47,7 +47,7 @@
     picImageView.contentMode = UIViewContentModeScaleAspectFit;
     picImageView.layer.masksToBounds=YES;
     picImageView.layer.borderWidth=PX_TO_PT(2);
-    picImageView.layer.borderColor=R_G_B_16(0xc7c7c7).CGColor;
+    picImageView.layer.borderColor=R_G_B_16(0xe0e0e0).CGColor;
     self.picImageView = picImageView;
     [self.contentView addSubview:self.picImageView];
 }
@@ -100,24 +100,29 @@
         [self.picImageView setImage:[UIImage imageNamed:@"icon_placehold"]];
     }else{
         [self.picImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-    }}];
+    }
+    }];
 
     self.goodNameLabel.text = self.model.goodsName;
     [self.goodNameLabel verticalUpAlignmentWithText:self.model.goodsName maxHeight:PX_TO_PT(80)];
 
     
     //现价
-    if (self.model.unitPrice.floatValue>1) {
-        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.f",self.model.unitPrice.floatValue];
-    }else{
-        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.floatValue];
-    }
-    if ([self.presentPriceLabel.text rangeOfString:@".00"].length == 3) {
-        self.presentPriceLabel.text = [self.presentPriceLabel.text substringToIndex:self.presentPriceLabel.text.length-3];
-    }
+    self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%@",self.model.unitPrice];
+
+//    NSString *str = [NSString stringWithFormat:@"%@",self.model.unitPrice];
+//    if ([str rangeOfString:@"."].location != NSNotFound) {
+//        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.2f",self.model.unitPrice.doubleValue];
+//    }else{
+//        self.presentPriceLabel.text = [NSString stringWithFormat:@"￥%.f",self.model.unitPrice.doubleValue];
+//    }
+    
+//     if ([self.presentPriceLabel.text rangeOfString:@".00"].length == 3) {
+//        self.presentPriceLabel.text = [self.presentPriceLabel.text substringToIndex:self.presentPriceLabel.text.length-3];
+//    }
     if ([self.model.presale integerValue] == 1) {
         self.presentPriceLabel.text = @"即将上线";
-        self.presentPriceLabel.textColor = R_G_B_16(0xc7c7c7);
+        self.presentPriceLabel.textColor = R_G_B_16(0x909090);
     }else{
         self.presentPriceLabel.textColor = R_G_B_16(0xff4e00);
     }

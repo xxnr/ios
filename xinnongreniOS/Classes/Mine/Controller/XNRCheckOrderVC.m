@@ -47,6 +47,8 @@
 @property (nonatomic,assign)BOOL ismakeSureBtm;
 @property (nonatomic,assign)CGFloat cellHeight;
 @property (nonatomic,strong)XNRRSCInfoModel *RSCInfoModel;
+@property (nonatomic,strong)NSMutableArray *proArr;
+@property (nonatomic,strong)XNRCarryVC *carryVC;
 @end
 
 @implementation XNRCheckOrderVC
@@ -57,6 +59,7 @@
     self.view.backgroundColor = R_G_B_16(0xf4f4f4);
     [self setNavigationbarTitle];
     _dataArray = [[NSMutableArray alloc]init];
+    _proArr = [[NSMutableArray alloc]init];
     //中部视图
     [self createMid];
     
@@ -69,12 +72,18 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getHeight:) name:@"height" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshView) name:@"orderVCRefresh" object:nil];
 }
+-(void)viewDidAppear:(BOOL)animated
+{
+    if (_becomeCarryVC == YES) {
+        [self refreshView];
+        _becomeCarryVC = NO;
+    }
+}
 -(void)refreshView
 {
-    [_bottomView removeFromSuperview];
-//
-//    self.tableview.frame =CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth,ScreenHeight- CGRectGetMaxY(self.headView.frame) - 64);
-//
+    _ismakeSureBtm = NO;
+    _isHoldBtm = NO;
+
     self.tableview.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64);
     
     [self getData];
@@ -101,17 +110,17 @@
     seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
     [seePayInfoBtn setTitle:@"去自提" forState:UIControlStateNormal];
     seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
-    seePayInfoBtn.layer.cornerRadius = 10.0;
+    seePayInfoBtn.layer.cornerRadius = PX_TO_PT(10);
     seePayInfoBtn.layer.masksToBounds = YES;
     seePayInfoBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [seePayInfoBtn addTarget:self action:@selector(holdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:seePayInfoBtn];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, PX_TO_PT(1))];
-    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, 1)];
+    line1.backgroundColor = R_G_B_16(0xe0e0e0);
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
-    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
+    line2.backgroundColor = R_G_B_16(0xe0e0e0);
     
     [bottomView addSubview:line1];
     [bottomView addSubview:line2];
@@ -128,17 +137,17 @@
     seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
     [seePayInfoBtn setTitle:@"确认收货" forState:UIControlStateNormal];
     seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
-    seePayInfoBtn.layer.cornerRadius = 10.0;
+    seePayInfoBtn.layer.cornerRadius = PX_TO_PT(10);
     seePayInfoBtn.layer.masksToBounds = YES;
     seePayInfoBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [seePayInfoBtn addTarget:self action:@selector(makeSureBtn:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:seePayInfoBtn];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, PX_TO_PT(1))];
-    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, 1)];
+    line1.backgroundColor = R_G_B_16(0xe0e0e0);
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
-    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
+    line2.backgroundColor = R_G_B_16(0xe0e0e0);
     
     [bottomView addSubview:line1];
     [bottomView addSubview:line2];
@@ -156,7 +165,7 @@
     seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
     [seePayInfoBtn setTitle:@"查看付款信息" forState:UIControlStateNormal];
     seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
-    seePayInfoBtn.layer.cornerRadius = 10.0;
+    seePayInfoBtn.layer.cornerRadius = PX_TO_PT(10);
     seePayInfoBtn.layer.masksToBounds = YES;
     seePayInfoBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [seePayInfoBtn addTarget:self action:@selector(seePayInfoBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -167,7 +176,7 @@
     reviseBtn.backgroundColor = [UIColor whiteColor];
     [reviseBtn setTitle:@"修改付款方式" forState:UIControlStateNormal];
     [reviseBtn setTitleColor:R_G_B_16(0xFE9B00) forState:UIControlStateNormal];
-    reviseBtn.layer.cornerRadius = 10.0;
+    reviseBtn.layer.cornerRadius = PX_TO_PT(10);
     reviseBtn.layer.borderColor = [R_G_B_16(0xFE9B00) CGColor];
     reviseBtn.layer.borderWidth = PX_TO_PT(2);
     reviseBtn.layer.masksToBounds = YES;
@@ -175,11 +184,11 @@
     [reviseBtn addTarget:self action:@selector(reviseBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:reviseBtn];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, PX_TO_PT(1))];
-    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, 1)];
+    line1.backgroundColor = R_G_B_16(0xe0e0e0);
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
-    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
+    line2.backgroundColor = R_G_B_16(0xe0e0e0);
     
     [bottomView addSubview:line1];
     [bottomView addSubview:line2];
@@ -197,17 +206,17 @@
     [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
     [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
     [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
-    sectionFour.layer.cornerRadius = 5.0;
+    sectionFour.layer.cornerRadius = PX_TO_PT(10);
     sectionFour.layer.masksToBounds = YES;
     sectionFour.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [sectionFour addTarget:self action:@selector(sectionFourClick:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:sectionFour];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, PX_TO_PT(1))];
-    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth, 1)];
+    line1.backgroundColor = R_G_B_16(0xe0e0e0);
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
-    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
+    line2.backgroundColor = R_G_B_16(0xe0e0e0);
 
     [bottomView addSubview:line1];
     [bottomView addSubview:line2];
@@ -264,6 +273,8 @@
             sectionModel.value = orderStatus[@"value"];
             self.value = sectionModel.value;
             
+            [_bottomView removeFromSuperview];
+
             if ([self.value isEqualToString: @"待付款"] || [self.value isEqualToString:@"部分付款"]) {
                 self.tableview.frame =CGRectMake(0, 0, ScreenWidth,ScreenHeight -PX_TO_PT(88) - 64);
                 // 底部视图
@@ -356,8 +367,8 @@
             infoLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             [infoView addSubview:infoLabel];
             
-            UIView *line3 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-            line3.backgroundColor = R_G_B_16(0xc7c7c7);
+            UIView *line3 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+            line3.backgroundColor = R_G_B_16(0xe0e0e0);
             [infoView addSubview:line3];
             
             [headView addSubview:infoView];
@@ -374,10 +385,10 @@
         listLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         listLabel.textColor = R_G_B_16(0x323232);
         
-        UIView *toplineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(1))];
-        toplineView.backgroundColor = R_G_B_16(0xc7c7c7);
-        UIView *bottomlineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(108), ScreenWidth, PX_TO_PT(1))];
-        bottomlineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *toplineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, 1)];
+        toplineView.backgroundColor = R_G_B_16(0xe0e0e0);
+        UIView *bottomlineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(108), ScreenWidth, 1)];
+        bottomlineView.backgroundColor = R_G_B_16(0xe0e0e0);
         
         [section1View addSubview:listLabel];
         [section1View addSubview:toplineView];
@@ -421,10 +432,10 @@
                 [totalPriceLabel setAttributedText:AttributedStringPrice];
                 
                 
-            UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-            line1.backgroundColor = R_G_B_16(0xc7c7c7);
-            UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(86), ScreenWidth, PX_TO_PT(1))];
-            line2.backgroundColor = R_G_B_16(0xc7c7c7);
+            UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+            line1.backgroundColor = R_G_B_16(0xe0e0e0);
+            UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(86), ScreenWidth, 1)];
+            line2.backgroundColor = R_G_B_16(0xe0e0e0);
 
             [bottomView addSubview:line1];
             [bottomView addSubview:line2];
@@ -437,8 +448,8 @@
     else if (section == 0)
     {
 
-        UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-        line1.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+        line1.backgroundColor = R_G_B_16(0xe0e0e0);
         return line1;
     }
     
@@ -454,27 +465,65 @@
     XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
     XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
     vc.orderID = sectionModel.id;
-    
+    vc.dueMoney = sectionModel.duePrice;
+    vc.fromType = @"orderList";
+    vc.navigationItem.hidesBackButton = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
+
 -(void)holdBtnClick:(UIButton *)sender
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+
+    _becomeCarryVC = YES;
     XNRCarryVC *vc=[[XNRCarryVC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
-    vc.orderId = self.model.orderId;
+    _carryVC = vc;
     
-    for (int i=0; i<self.model.skus.count; i++) {
-        
-        XNRMyOrderModel *model = self.model.skus[i];
-        if(model.deliverStatus == 4)
-        {
-            [vc.modelArr addObject:model];
-        }
-    }
+    if (self.model.orderId) {
 
-    [self.navigationController pushViewController:vc animated:NO];
+        _carryVC.orderId = self.model.orderId;
+    }
+    else
+    {
+        _carryVC.orderId = self.orderID;
+    }
+        [self getOrderDetail];
     
+}
+
+-(void)getOrderDetail
+{
+    [self.proArr removeAllObjects];
+    [KSHttpRequest post:KGetOrderDetails parameters:@{@"userId":[DataCenter account].userid,@"orderId":self.orderID,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            
+            XNRCheckOrderSectionModel *orderModel = [XNRCheckOrderSectionModel objectWithKeyValues:result[@"datas"][@"rows"]];
+            
+            for (int i=0; i<orderModel.SKUList.count; i++) {
+                XNRMyOrderModel *model = [[XNRMyOrderModel alloc]init];
+                XNRCheckOrderModel *checkModel = [XNRCheckOrderModel objectWithKeyValues:orderModel.SKUList[i]];
+                model.orderId = checkModel.goodsId;
+                
+                model.productName = checkModel.productName;
+                model.attributes = checkModel.attributes;
+                model.additions = checkModel.additions;
+                model.count = checkModel.count;
+                model.deliverStatus = [checkModel.deliverStatus integerValue];
+                
+                if(model.deliverStatus == 4)
+                {
+                    [_carryVC.modelArr addObject:model];
+                }
+            }
+            
+            [self.navigationController pushViewController:_carryVC animated:YES];
+        }
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+    }];
 
 }
 -(void)makeSureBtn:(UIButton *)sender
@@ -511,7 +560,7 @@
     XNROffLine_VC *vc=[[XNROffLine_VC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
     vc.orderID = sectionModel.id;
-    
+    vc.fromType = @"orderList";
     [self.navigationController pushViewController:vc animated:YES];
 
 }
@@ -570,8 +619,8 @@
     [orderView addSubview:payTypeLabel];
     
     for (int i = 0; i<2; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(128)*i, ScreenWidth, PX_TO_PT(1))];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(128)*i, ScreenWidth, 1)];
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [orderView addSubview:lineView];
     }
     
@@ -580,7 +629,7 @@
     [self.headView addSubview:deliveryTypeView];
     
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(2))];
-    line.backgroundColor = R_G_B_16(0xc7c7c7);
+    line.backgroundColor = R_G_B_16(0xe0e0e0);
     [deliveryTypeView addSubview:line];
     
     UILabel *typeLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(26), PX_TO_PT(140), PX_TO_PT(35))];
@@ -590,7 +639,7 @@
     [deliveryTypeView addSubview:typeLabel];
     
     UILabel *deliveryInfoLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(115), PX_TO_PT(28), PX_TO_PT(115), PX_TO_PT(30))];
-    deliveryInfoLabel.textAlignment = UITextAlignmentRight;
+    deliveryInfoLabel.textAlignment = NSTextAlignmentRight;
     deliveryInfoLabel.text = sectionModel.deliveryTypeName;
     deliveryInfoLabel.textColor = R_G_B_16(0x646464);
     deliveryInfoLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
@@ -639,7 +688,7 @@
         
         CGSize size = [sectionModel.address sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), MAXFLOAT)];
         UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(addressImage.frame) + PX_TO_PT(20), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(32), ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), size.height)];
-        addressLabel.textColor = R_G_B_16(0xc7c7c7);
+        addressLabel.textColor = R_G_B_16(0xe0e0e0);
         addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         addressLabel.numberOfLines = 0;
         addressLabel.text = sectionModel.address;
@@ -705,7 +754,7 @@
         [contactImageView setImage:[UIImage imageNamed:@"call-contact-0"]];
         [addressView addSubview:contactImageView];
         
-        UILabel *contactLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(contactImageView.frame)+PX_TO_PT(29),CGRectGetMaxY(addressLine.frame)+ PX_TO_PT(27), PX_TO_PT(500), PX_TO_PT(30))];
+        UILabel *contactLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(contactImageView.frame)+PX_TO_PT(29),CGRectGetMaxY(addressLine.frame)+ PX_TO_PT(27), PX_TO_PT(500), PX_TO_PT(34))];
         contactLabel.textColor = R_G_B_16(0x323232);
         contactLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         contactLabel.text = [NSString stringWithFormat:@"%@ %@",sectionModel.recipientName,sectionModel.recipientPhone];
@@ -751,7 +800,7 @@
     }
     else if(section == 0)
     {
-        return PX_TO_PT(1);
+        return 1;
     }
     else
     {
@@ -803,57 +852,60 @@
 
 // 行高
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+ 
     if (_dataArray.count>0) {
         XNRCheckOrderSectionModel *sectionModel = _dataArray[0];
         if (indexPath.section == 1) {
-            if (sectionModel.SKUList.count > 0) {
-                XNRCheckOrderModel *model = sectionModel.SKUList[indexPath.row];
-                if ([model.deposit floatValue] == 0.00) {
-                    if (model.additions.count == 0) {
-                        return self.cellHeight;
-                    }else{
-                        return self.cellHeight+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-                    }
-                }
-                else{
-                    if (model.additions.count == 0) {
-                        return self.cellHeight;// + PX_TO_PT(150);
-                        
-                    }
-                    else{
-                        return self.cellHeight +model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-                    }
-                }
-
-            }
+            UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+            return cell.height;
+            //            if (sectionModel.SKUList.count > 0) {
+//                XNRCheckOrderModel *model = sectionModel.SKUList[indexPath.row];
+//                if ([model.deposit floatValue] == 0.00) {
+//                    if (model.additions.count == 0) {
+////                        return self.cellHeight;
+//                        return cell.height;
+//                    }else{
+//                        return cell.height+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
+//                    }
+//                }
+//                else{
+//                    if (model.additions.count == 0) {
+//                        return cell.height;// + PX_TO_PT(150);
+//                        
+//                    }
+//                    else{
+//                        return cell.height +model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
+//                    }
+//                }
+//
+//            }
             
-            else
-            {
-                XNRCheckOrderModel *model = sectionModel.orderGoodsList[indexPath.row];
-                if ([model.deposit floatValue] == 0.00) {
-                    if (model.additions.count == 0) {
-                        return self.cellHeight;
-                    }else{
-                        return self.cellHeight+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-                    }
-                }
-                else{
-                    if (model.additions.count == 0) {
-                        return self.cellHeight;// + PX_TO_PT(150);
-                        
-                    }
-                    else{
-                        return self.cellHeight +model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-                    }
-                }
-
-            }
+//            else
+//            {
+//                XNRCheckOrderModel *model = sectionModel.orderGoodsList[indexPath.row];
+//                if ([model.deposit floatValue] == 0.00) {
+//                    if (model.additions.count == 0) {
+//                        return cell.height;
+//                    }else{
+//                        return cell.height+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
+//                    }
+//                }
+//                else{
+//                    if (model.additions.count == 0) {
+//                        return cell.height;// + PX_TO_PT(150);
+//                        
+//                    }
+//                    else{
+//                        return cell.height +model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
+//                    }
+//                }
+//
+//            }
         }
         else if (indexPath.section == 0)
         {
             XRNSubOrdersModel *subOrderModel = sectionModel.subOrders[indexPath.row];
-            if (subOrderModel.payType == 1 || subOrderModel.payType == 2 || subOrderModel.payType == 3|| subOrderModel.payType == 4) {
+            if (subOrderModel.payType == 1 || subOrderModel.payType == 2 || subOrderModel.payType == 3|| subOrderModel.payType == 4|| subOrderModel.payType == 5) {
                 return PX_TO_PT(240);
             }
             else
@@ -933,17 +985,19 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"订单详情";
     self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
     
@@ -952,19 +1006,33 @@
 
 -(void)backClick{
     
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"serveHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"payHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"reciveHeadRefresh" object:self];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"commentHeadRefresh" object:self];
+    
     if ([self.presentingViewController isKindOfClass:[XNRNavigationController class]]) {
         [self dismissViewControllerAnimated:NO completion:nil];
         return;
     }
+
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[XNRMyOrder_VC class]]) {
+            [self.navigationController popToViewController:vc animated:YES];
+            return;
+        }
+    }
+    
     if (self.isRoot) {
         [self.navigationController popViewControllerAnimated:YES];
-        
+        return;
     }
     else
     {
-//        [self.navigationController popToRootViewControllerAnimated:YES];
         XNRMyOrder_VC *orderVC=[[XNRMyOrder_VC alloc]init];
         orderVC.hidesBottomBarWhenPushed=YES;
+        
         [self.navigationController pushViewController:orderVC animated:NO];
     }
     

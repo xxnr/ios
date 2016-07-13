@@ -52,13 +52,13 @@
         self.detailTextLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         self.detailTextLabel.textColor = R_G_B_16(0x323232);
         
-//        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+//        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
 //        lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
 //        [self.contentView addSubview:lineView1];
 
         
-        UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(86), ScreenWidth, PX_TO_PT(1))];
-        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(86), ScreenWidth, 1)];
+        lineView2.backgroundColor = R_G_B_16(0xe0e0e0);
         [self.contentView addSubview:lineView2];
         
 

@@ -44,7 +44,7 @@
     
     UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(32), PX_TO_PT(180), PX_TO_PT(180))];
     iconImageView.layer.borderWidth = 1.0;
-    iconImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    iconImageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     self.iconImageView = iconImageView;
     [topView addSubview:iconImageView];
     
@@ -69,8 +69,8 @@
     [topView addSubview:numLabel];
 
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(300), ScreenWidth, PX_TO_PT(1))];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(300), ScreenWidth, 1)];
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [topView addSubview:lineView];
 }
 
@@ -143,8 +143,8 @@
     [bgView addSubview:remainPriceLabel];
     
     for (int i = 0; i<3; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, 1)];
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [bgView addSubview:lineView];
     }
 
@@ -177,7 +177,13 @@
     }}];
 
     // 商品名
-    self.goodsNameLabel.text = _info.productName;
+    // 商品名
+    if (_info.productName) {
+        self.goodsNameLabel.text = _info.productName;
+        
+    }else{
+        self.goodsNameLabel.text = _info.name;
+    }
     
     // 价格
     self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",_info.price.doubleValue];

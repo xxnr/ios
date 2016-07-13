@@ -51,7 +51,7 @@ static BOOL isPay = NO;
     
     //付款状态
     UILabel *statusLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(0), PX_TO_PT(18), ScreenWidth - PX_TO_PT(30), PX_TO_PT(26))];
-    statusLabel.textAlignment = UITextAlignmentRight;
+    statusLabel.textAlignment = NSTextAlignmentRight;
     statusLabel.textColor = R_G_B_16(0x323232);
     statusLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.statusLabel = statusLabel;
@@ -91,11 +91,11 @@ static BOOL isPay = NO;
     self.payTypeLabel = payTypeLabel;
         [self.contentView addSubview:_payTypeLabel];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(58),ScreenWidth - PX_TO_PT(66), PX_TO_PT(1))];
-    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(58),ScreenWidth - PX_TO_PT(66), 1)];
+    line1.backgroundColor = R_G_B_16(0xe0e0e0);
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+    line2.backgroundColor = R_G_B_16(0xe0e0e0);
     
     [self.contentView addSubview:line1];
     
@@ -191,12 +191,16 @@ static BOOL isPay = NO;
         
         else if(model.payType == 3)
         {
-            _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：线下支付"];
+            _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：现金"];
         }
         else if(model.payType == 4)
         {
             _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：线下POS机"];
+        }else if(model.payType == 5)
+        {
+            _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：EPOS"];
         }
+
 
         else
         {

@@ -72,11 +72,23 @@
 #else
 
 #define HOST @"http://101.200.194.203"
+//#define HOST @"http://192.168.1.15"
 
 #endif
 
-//#define HOST @"http://101.200.194.203/"
-#define IMAGEHOST @"http://101.200.194.203"
+///0-测试地址 1-生产地址
+#define kXNRNetworkRelease 0
+
+#if kXNRNetworkRelease
+
+#define Host @"https://api.xinxinnongren.com"
+
+#else
+
+#define Host @"http://101.200.194.203"
+
+#endif
+
 
 //设置字的大小
 #define XNRFont12 [UIFont systemFontOfSize:PX_TO_PT(24)]

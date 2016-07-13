@@ -117,8 +117,8 @@
         titleLabel.text = titleArray[i];
         [self.identifyView addSubview:titleLabel];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88)*(i+1), ScreenWidth, PX_TO_PT(1))];
-        line.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88)*(i+1), ScreenWidth, 1)];
+        line.backgroundColor = R_G_B_16(0xe0e0e0);
         [self.identifyView addSubview:line];
         
     }
@@ -144,7 +144,7 @@
         [payTypeBtn setTitle:model.name forState:UIControlStateNormal];
         payTypeBtn.tag = KpayTypeBtn + i;
         [payTypeBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
-//        payTypeBtn.layer.borderWidth = PX_TO_PT(1);
+//        payTypeBtn.layer.borderWidth = 1;
         payTypeBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
 //        payTypeBtn.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
         
@@ -177,8 +177,8 @@
     bottomView.backgroundColor = R_G_B_16(0xffffff);
     [self.identifyView addSubview:bottomView];
     
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-    line.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+    line.backgroundColor = R_G_B_16(0xe0e0e0);
     [bottomView addSubview:line];
     
     UIButton *admireBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -195,7 +195,7 @@
 
 -(void)admireBtnClick
 {
-    NSDictionary *params = @{@"paymentId":_paymentId,@"price":_price,@"offlinePayType":_type,@"token":[DataCenter account].token};
+    NSDictionary *params = @{@"paymentId":_paymentId,@"price":_price,@"offlinePayType":_type};
     NSLog(@"ppppppp%@",params);
     [KSHttpRequest get:KRscConfirmOfflinePay parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
@@ -203,9 +203,11 @@
             [self setWarnViewTitle:@"审核成功"];
             // 刷新tableView
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
-        }else{
+        }else if ([result[@"code"] integerValue] == 1002){
             [self cancel];
-            [self setWarnViewTitle:@"请稍后再试"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+            [UILabel showMessage:@"订单已审核"];
+            
         }
         
     } failure:^(NSError *error) {

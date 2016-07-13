@@ -75,7 +75,7 @@
         
         
         UIView *bottomEdging = [[UIView alloc]initWithFrame:CGRectMake(0, 44, titleView.width, 1)];
-        bottomEdging.backgroundColor = edgingColor;
+        bottomEdging.backgroundColor = R_G_B_16(0xc7c7c7);
         [titleView addSubview:bottomEdging];
         
         UIView *leftEdging = [[UIView alloc]initWithFrame:CGRectMake(btn.x, 10, 1, titleView.height-20)];
@@ -94,15 +94,13 @@
         UIView *btnView = [[UIView alloc]initWithFrame:CGRectMake(0, maxY, alertWidth, 45)];
         CGFloat btnWidth = alertWidth/2;
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(btnWidth, 0, PX_TO_PT(2), 45)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(btnWidth, 0, 1, 45)];
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [btnView addSubview:lineView];
         for (int i = 0; i < btns.count; i++) {
             UIButton *btn = [UIButton textBtnWithTitle:btns[i] titleColor:R_G_B_16(0x00b38a) font:[UIFont systemFontOfSize:PX_TO_PT(36)] frame:CGRectMake(btnWidth*i, 0, btnWidth, 45) target:self action:@selector(chooseBtnClicked:)];
-//            btn.backgroundColor = [UIColor redColor];
             btn.tag = i+ 10;
             if (i == btns.count - 1) {
-//                [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             }
             
             [btnView addSubview:btn];
@@ -110,7 +108,7 @@
         }
         
         UIView *bottomEdging = [[UIView alloc]initWithFrame:CGRectMake(0, 0, btnView.width, 1)];
-        bottomEdging.backgroundColor = edgingColor;
+        bottomEdging.backgroundColor = R_G_B_16(0xc7c7c7);
         [btnView addSubview:bottomEdging];
 
         [self addSubview:btnView];
@@ -140,25 +138,28 @@
 -(void)chooseBtnClicked:(UIButton *)btn
 {
     self.chooseBlock(btn);
-    [_cover removeFromSuperview];
+    [UIView animateWithDuration:0.5 animations:^{
+        _cover.alpha = 0;
+    } completion:^(BOOL finished) {
+        [_cover removeFromSuperview];
+    }];
 }
 
 -(void)cancelClicked
 {
     [_cover removeFromSuperview];
+
 }
 
 -(void)BMAlertShow
 {
     BMCover *cover = [BMCover coverShowWithView:self];
     _cover = cover;
-    
     self.center = CGPointMake(BYWindow.width/2, BYWindow.height/2);
-
     [cover addSubview:self];
     
-    
     [BYWindow addSubview:cover];
+
 }
 -(void)BmAlertDisappear
 {

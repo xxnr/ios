@@ -29,6 +29,8 @@
 @property (nonatomic ,weak) UILabel *addtionsLabel;
 @property (nonatomic ,weak) UILabel *addtionPriceLabel;
 
+@property (nonatomic,weak) UIView  *iconTopline;
+
 @property (nonatomic ,weak) UIView *topLine;
 @property (nonatomic ,weak) UIView *middleLine;
 @property (nonatomic ,weak) UIView *bottomLine;
@@ -41,19 +43,37 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        
         [self createTopView];
         [self createBottomView];
-        
     }
     return self;
 }
 
+//-(NSMutableArray *)attributesArray
+//{
+//    if (!_attributesArray) {
+//        _attributesArray = [NSMutableArray array];
+//    }
+//    return _attributesArray;
+//}
+//-(NSMutableArray *)addtionsArray
+//{
+//    if (!_addtionsArray) {
+//        _addtionsArray = [NSMutableArray array];
+//    }
+//    return _addtionsArray;
+//}
+
 - (void)createTopView
 {
+    UIView *iconTopline = [[UIView alloc]init];
+    iconTopline.backgroundColor = R_G_B_16(0xe0e0e0);
+    self.iconTopline = iconTopline;
+    [self.contentView addSubview:iconTopline];
+
     UIImageView *iconImageView = [[UIImageView alloc] init];
     iconImageView.layer.borderWidth = 1.0;
-    iconImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    iconImageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     self.iconImageView = iconImageView;
     [self.contentView addSubview:iconImageView];
     
@@ -102,17 +122,17 @@
     [self.contentView addSubview:self.addtionPriceLabel];
     
     UIView *topLine = [[UIView alloc] init];
-    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    topLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.topLine = topLine;
     [self.contentView addSubview:topLine];
     
     UIView *middleLine = [[UIView alloc] init];
-    middleLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    middleLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.middleLine = middleLine;
     [self.contentView addSubview:middleLine];
     
     UIView *bottomLine = [[UIView alloc] init];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.bottomLine = bottomLine;
     [self.contentView addSubview:bottomLine];
 }
@@ -166,6 +186,8 @@
 }
 -(void)setupFrame
 {
+    self.iconTopline.frame = self.orderFrame.iconTopLineF;
+
     self.iconImageView.frame = self.orderFrame.picImageViewF;
     self.goodsNameLabel.frame = self.orderFrame.productNameLabelF;
     self.attributesLabel.frame = self.orderFrame.attributesLabelF;
@@ -203,8 +225,12 @@
     }}];
 
     // 商品名
-    self.goodsNameLabel.text = _info.productName;
-    
+    if (_info.productName) {
+        self.goodsNameLabel.text = _info.productName;
+        
+    }else{
+        self.goodsNameLabel.text = _info.name;
+    }
     // 属性
     NSMutableString *displayStr = [[NSMutableString alloc] initWithString:@""];
     for (NSDictionary *subDic in _attributesArray) {

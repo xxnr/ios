@@ -14,11 +14,16 @@
 #import "XNROrderEmptyView.h"
 #import "XNRMyOrderServe_Cell.h"
 #import "XNRMyAllOrderFrame.h"
+#import "BMProgressView.h"
+
 #define MAX_PAGE_SIZE 20
 @interface XNRCommentView()<XNROrderEmptyViewBtnDelegate>
 @property (nonatomic ,strong) UITableView *tableView;
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
 @property (nonatomic, weak) UIButton *backtoTopBtn;
+@property (nonatomic ,weak) BMProgressView *progressView;
+
+@property (nonatomic,assign) BOOL isRefresh;
 @end
 @implementation XNRCommentView
 #pragma mark - 订单为空的图片
@@ -28,7 +33,9 @@
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
         orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
         orderEmptyView.delegate  = self;
-        [self addSubview:orderEmptyView];
+        self.orderEmptyView = orderEmptyView;
+        
+        [self insertSubview:orderEmptyView atIndex:0];
     }
     return _orderEmptyView;
 }
@@ -50,8 +57,9 @@
         _currentPage = 1;
         _dataArr = [[NSMutableArray alloc]init];
         
+        
         //获取数据
-        [self getData];
+//        [self getData];
         //创建订单
         [self createMainTableView];
         
@@ -59,13 +67,33 @@
         
         [self createbackBtn];
         
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"commentHeadRefresh" object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(commentHeadRefresh) name:@"commentHeadRefresh" object:nil];
 
         
     }
     return self;
 }
+-(BMProgressView *)progressView{
+    if (!_progressView) {
+        BMProgressView *progressView = [[BMProgressView alloc] init];
+        self.progressView = progressView;
+        [self addSubview:progressView];
+    }
+    return _progressView;
+}
 
+
+-(void)commentHeadRefresh
+{
+    [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
+    
+    _isRefresh = YES;
+    [self headRefresh];
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [BMProgressView LoadViewDisappear:self];
+    });
+}
 #pragma mark - 滑动到顶部按钮
 
 -(void)createbackBtn
@@ -135,7 +163,7 @@
     
     
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
@@ -201,6 +229,8 @@
 - (void)getData
 {
     
+    [self.orderEmptyView removeFromSuperview];
+
     //typeValue说明：1为待支付（代付款）：3为商品准备中（待发货），4已发货（待收货
     [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"typeValue":@"4",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
@@ -259,6 +289,12 @@
             [self orderEmptyView];
         }
         
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
+        }
+        
+
         //  如果到达最后一页 就消除footer
         
         NSInteger pages = [result[@"datas"][@"pages"] integerValue];
@@ -323,13 +359,10 @@
         [headView addSubview:payTypeLabel];
         
         
-        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-        lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+        lineView1.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:lineView1];
         
-        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89), ScreenWidth, PX_TO_PT(1))];
-        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
-        [headView addSubview:lineView2];
         
         return headView;
         
@@ -379,8 +412,8 @@
         
                 for (int i = 0; i<2; i++) {
                     
-                    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-                    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+                    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, 1)];
+                    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
                     [bottomView addSubview:lineView];
                 }
         return bottomView;
@@ -463,10 +496,13 @@
     {
         //单元格复用cellID要一致
         cell = [[XNRMyOrderServe_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
-        
     }
-   
+    cell.attributesArray  = [NSMutableArray array];
+    cell.addtionsArray  = [NSMutableArray array];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.attributesArray = [NSMutableArray array];
+    cell.addtionsArray = [NSMutableArray array];
+    
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
@@ -477,13 +513,9 @@
         }
         XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
         cell.orderFrame  = frameModel;
-
     }
-    
     return cell;
 }
-
-
 
 
 @end

@@ -15,6 +15,8 @@
 #import "XNRRscOrderDetialController.h"
 #import "XNRRscSearchController.h"
 #import "XNRRscOrderModel.h"
+#import "XNRNavigationController.h"
+
 #define KtitleBtn  1000
 
 @interface XNRMyStoreOrderController()<UIScrollViewDelegate>
@@ -50,7 +52,6 @@
     self.view.backgroundColor = R_G_B_16(0xffffff);
     [self setNavigationBar];
     [self createView];
-    
 }
 
 -(void)createView
@@ -66,7 +67,7 @@
     if (self.RscAllOrderView == nil) {
         self.RscAllOrderView  = [[XNRRscAllOrderView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscAllOrderView.com = ^(XNRRscOrderModel *model){
+        self.RscAllOrderView.allcom = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
             orderDetialVC.orderModel = model;
@@ -76,7 +77,7 @@
     if (self.RscWaitPayView == nil) {
         self.RscWaitPayView  = [[XNRRscWaitPayView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitPayView.com = ^(XNRRscOrderModel *model){
+        self.RscWaitPayView.paycom = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
             orderDetialVC.orderModel = model;
@@ -86,7 +87,7 @@
     if (self.RscWaitIdentifyView == nil) {
         self.RscWaitIdentifyView  = [[XNRRscWaitIdentifyView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitIdentifyView.com = ^(XNRRscOrderModel *model){
+        self.RscWaitIdentifyView.identifycom = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
             orderDetialVC.orderModel = model;
@@ -96,7 +97,7 @@
     if (self.RscWaitDeliverView == nil) {
         self.RscWaitDeliverView  = [[XNRRscWaitDeliverView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitDeliverView.com = ^(XNRRscOrderModel *model){
+        self.RscWaitDeliverView.delivercom = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
             orderDetialVC.orderModel = model;
@@ -106,7 +107,7 @@
     if (self.RscWaitTakeView == nil) {
         self.RscWaitTakeView  = [[XNRRscWaitTakeView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
         __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitTakeView.com = ^(XNRRscOrderModel *model){
+        self.RscWaitTakeView.takecom = ^(XNRRscOrderModel *model){
             XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
             orderDetialVC.hidesBottomBarWhenPushed = YES;
             orderDetialVC.orderModel = model;
@@ -132,6 +133,7 @@
     scrollView.contentSize=CGSizeMake((ScreenWidth+PX_TO_PT(20))*5, ScreenHeight-64);
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
+    scrollView.scrollEnabled = NO;
     scrollView.userInteractionEnabled = YES;
     scrollView.pagingEnabled = YES;
     scrollView.delegate = self;
@@ -177,8 +179,8 @@
     }
     
     for (int i = 0; i<2; i++) {
-        UIView *line = [[UIView  alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, PX_TO_PT(1))];
-        line.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *line = [[UIView  alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, 1)];
+        line.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:line];
     }
     UIView *selectedLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(95), ScreenWidth/5, PX_TO_PT(5))];
@@ -193,88 +195,33 @@
     self.tempBtn.selected = NO;
     button.selected = YES;
     self.tempBtn = button;
-    
+    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+   
     [UIView animateWithDuration:.3 animations:^{
-        self.selectedLineView.frame=CGRectMake((button.tag - KtitleBtn)*ScreenWidth/5.0,  PX_TO_PT(95), ScreenWidth/5.0, PX_TO_PT(5));
+    self.selectedLineView.frame=CGRectMake((button.tag - KtitleBtn)*ScreenWidth/5.0,  PX_TO_PT(95), ScreenWidth/5.0, PX_TO_PT(5));
         }];
      [self.scrollView setContentOffset:CGPointMake((ScreenWidth+PX_TO_PT(20))*(button.tag-KtitleBtn),0) animated:NO];
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     if (button.tag == KtitleBtn) {
-       
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        self.RscAllOrderView.isRefresh = YES;
     }else if (button.tag == KtitleBtn +1){
-        self.RscWaitPayView  = [[XNRRscWaitPayView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
-        __weak __typeof(&*self)weakSelf=self;
-        self.RscWaitPayView.com = ^(XNRRscOrderModel *model){
-            XNRRscOrderDetialController *orderDetialVC = [[XNRRscOrderDetialController alloc] init];
-            orderDetialVC.hidesBottomBarWhenPushed = YES;
-            orderDetialVC.orderModel = model;
-            [weakSelf.navigationController pushViewController:orderDetialVC animated:YES];
-        };
-       
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        self.RscWaitPayView.isRefresh = YES;
+
     }else if (button.tag == KtitleBtn +2){
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        self.RscWaitIdentifyView.isRefresh = YES;
 
-        
     }else if (button.tag == KtitleBtn +3){
-       
-        
-    }else{
-        
-    }
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-            [BMProgressView LoadViewDisappear:self.view];
-        });
-}
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        self.RscWaitDeliverView.isRefresh = YES;
 
-#pragma mark - scrollView左右滑动
--(void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    CGFloat offset = self.scrollView.contentOffset.x/(ScreenWidth+PX_TO_PT(20));
-    
-    static int tag = 0;
-
-    if(0 <= offset&&offset < 0.5){
-        tag=0;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-    }else if (0.5<=offset&&offset<1.5){
-        tag=1;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-    }else if (1.5<=offset&&offset<2.5){
-        tag=2;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-    }else if (2.5<=offset&&offset<3.5){
-        tag=3;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
     }else{
-        tag=4;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KtitleBtn+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+        self.RscWaitTakeView.isRefresh = YES;
+
     }
-    
-    [UIView animateWithDuration:.3 animations:^{
-        if (IS_FourInch) {
-            self.selectedLineView.frame = CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(94), ScreenWidth/5.0, PX_TO_PT(6));
-        }else{
-            self.selectedLineView.frame = CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
-        }
-        
-    }];
+    [BMProgressView LoadViewDisappear:self.view];
 }
 
 
@@ -282,17 +229,19 @@
 {
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont systemFontOfSize:20];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"服务站订单";
     self.navigationItem.titleView = titleLabel;
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame = CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame = CGRectMake(0, 0, 30, 44);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem *leftItem =[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
     
@@ -306,6 +255,10 @@
 
 -(void)backClick
 {
+    if ([self.presentingViewController isKindOfClass:[XNRNavigationController class]]) {
+        [self dismissViewControllerAnimated:NO completion:nil];
+        return;
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -314,7 +267,6 @@
     XNRRscSearchController *searchVC = [[XNRRscSearchController alloc] init];
     searchVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:searchVC animated:YES];
-    
 }
 
 

@@ -56,7 +56,7 @@
     }
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
         [RefreshImage addObject:image];
@@ -169,15 +169,14 @@
     
     [KSHttpRequest post:KsaveConsignees parameters:dic success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
-            
             self.setRSCContactChoseBlock(self.currentModel);
             [self.navigationController popViewControllerAnimated:YES];
-            
         }
         else
         {
             [UILabel showMessage:result[@"message"]];
         }
+        
     } failure:^(NSError *error) {
         
     }];
@@ -245,7 +244,7 @@
     for (int i=0; i<3; i++)
     {
         UIView *line2View = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i+1, ScreenWidth, PX_TO_PT(2))];
-        line2View.backgroundColor = R_G_B_16(0xc7c7c7);
+        line2View.backgroundColor = R_G_B_16(0xe0e0e0);
         [writeInfoView addSubview:line2View];
     }
     
@@ -272,8 +271,8 @@
     titleLabel.textColor = R_G_B_16(0x323232);
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
-    line.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
+    line.backgroundColor = R_G_B_16(0xe0e0e0);
     [contactView addSubview:imageView];
     [contactView addSubview:titleLabel];
     [contactView addSubview:line];
@@ -286,7 +285,7 @@
 - (BOOL)validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
-    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
+    NSString *phoneRegex = @"^1\\d{10}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
 }
@@ -333,6 +332,28 @@
         }
     }
     
+}
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField == self.nameTf) {
+        
+        int strlength = 0;
+        char* p = (char*)[textField.text cStringUsingEncoding:NSUnicodeStringEncoding];
+        for (int i=0 ; i<[textField.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+            if (*p) {
+                p++;
+                strlength++;
+            }
+            else {
+                p++;
+            }
+            
+        }
+        
+        self.nameLength = strlength;
+        
+    }
+    return YES;
 }
 
 #pragma mark -- tableView的数据源和代理方法
@@ -426,17 +447,19 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"选择收货人";
     self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
 }

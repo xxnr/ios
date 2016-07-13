@@ -6,6 +6,7 @@
 //  Copyright (c) 2015年 qxhiOS. All rights reserved.
 
 #import <UIKit/UIKit.h>
+
 @class XNRShoppingCartModel;
 @interface XNRProductInfo_VC : UIViewController
 

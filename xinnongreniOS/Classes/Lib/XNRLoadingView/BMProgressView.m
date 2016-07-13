@@ -17,6 +17,7 @@
 @property(nonatomic,assign)double angle;
 @property(nonatomic,weak) UIImageView *loadView;
 @property(nonatomic,strong) NSTimer *timer;
+@property (nonatomic,weak) UIView *View;
 @end
 @implementation BMProgressView
 
@@ -27,8 +28,8 @@
 //    bcView.isError = NO;
     bcView.backgroundColor = bcColor;
     [target addSubview:bcView];
-
-
+    [target bringSubviewToFront:bcView];
+    
     UIView *showView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 80, 80)];
     showView.center = CGPointMake(bcView.width/2, bcView.height/2);
 //    if (isNavigation) {
@@ -120,14 +121,18 @@
 
 +(void)LoadViewDisappear:(UIView *)view
 {
-    for (UIView *subView in view.subviews) {
-        if ([subView isKindOfClass:[BMProgressView class]]) {
-            [UIView animateWithDuration:3 animations:^{
-                [subView removeFromSuperview];
-
-            }];
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        for (UIView *subView in view.subviews) {
+            if ([subView isKindOfClass:[BMProgressView class]]) {
+                [UIView animateWithDuration:3 animations:^{
+                    [subView removeFromSuperview];
+                    
+                }];
+            }
         }
-    }}
+    });
+}
 
 -(void)LoadViewDisappear
 {

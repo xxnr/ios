@@ -20,6 +20,7 @@
 #import "XNRMakeSureView.h"
 #import "XNRMyOrderModel.h"
 #import "XNRCarryVC.h"
+#import "BMProgressView.h"
 #define MAX_PAGE_SIZE 10
 
 @interface XNRServeView()<XNROrderEmptyViewBtnDelegate>
@@ -28,9 +29,10 @@
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
 @property (nonatomic ,weak) UIButton *backtoTopBtn;
 @property (nonatomic,strong)XNRMyOrderSectionModel *currentModel;
+@property (nonatomic ,weak) BMProgressView *progressView;
 @property (nonatomic,assign)BOOL isMakesureOwn;
 @property (nonatomic,assign)BOOL isHoldOwn;
-
+@property (nonatomic,assign)BOOL isRefresh;
 @end
 @implementation XNRServeView
 
@@ -40,8 +42,9 @@
     if (!_orderEmptyView) {
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
         orderEmptyView.delegate = self;
+        self.orderEmptyView = orderEmptyView;
         orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
-        [self addSubview:orderEmptyView];
+        [self insertSubview:orderEmptyView atIndex:0];
     }
     return _orderEmptyView;
     
@@ -90,18 +93,40 @@
     if (self) {
         _currentPage = 1;
         _dataArr = [[NSMutableArray alloc]init];
+        
         //获取数据
-        [self getData];
+//        [self getData];
         [self createbackBtn];
         //创建订单
         [self createMainTableView];
         [self setupAllViewRefresh];
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"serveHeadRefresh" object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(serveHeadRefresh) name:@"serveHeadRefresh" object:nil];
 
     }
     return self;
 }
 
+-(BMProgressView *)progressView{
+    if (!_progressView) {
+        BMProgressView *progressView = [[BMProgressView alloc] init];
+        self.progressView = progressView;
+        [self addSubview:progressView];
+    }
+    return _progressView;
+}
+
+
+-(void)serveHeadRefresh
+{
+    [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
+
+    _isRefresh = YES;
+    [self headRefresh];
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [BMProgressView LoadViewDisappear:self];
+    });
+}
 #pragma mark - 刷新
 -(void)setupAllViewRefresh{
     
@@ -115,7 +140,7 @@
     }
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
         [RefreshImage addObject:image];
@@ -168,6 +193,8 @@
 #pragma mark - 获取数据
 - (void)getData
 {
+    [self.orderEmptyView removeFromSuperview];
+
     // typeValue说明：1未付款 ，2待发货，3已发货，4已收货  全部订单为空
     [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid?[DataCenter account].userid:@"",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"typeValue":@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
@@ -179,7 +206,6 @@
                 sectionModel.payType = subDic[@"payType"];
                 sectionModel.duePrice = subDic[@"duePrice"];
 
-                
                 NSDictionary *orders = subDic[@"order"];
                 sectionModel.totalPrice = orders[@"totalPrice"];
                 sectionModel.deposit = orders[@"deposit"];
@@ -196,8 +222,6 @@
                         XNRMyAllOrderFrame *orderFrame = [[XNRMyAllOrderFrame alloc] init];
                         // 把订单模型传递给frame模型
                         orderFrame.orderModel = model;
-                        
-                        
                         [sectionModel.orderFrameArray addObject:orderFrame];
                         NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
                     }
@@ -211,13 +235,9 @@
                         [sectionModel.orderFrameArray addObject:orderFrame];
                         NSLog(@"orderFrameArray%@",sectionModel.orderFrameArray);
                     }
-
-                
                 }
             [_dataArr addObject:sectionModel];
             }
-               
-
         }
         
         //刷新列表
@@ -227,6 +247,10 @@
             [self orderEmptyView];
         }
         
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
+        }
         //  如果到达最后一页 就消除footer
         NSInteger pages = [result[@"datas"][@"pages"] integerValue];
         NSInteger page = [result[@"datas"][@"page"] integerValue];
@@ -245,8 +269,6 @@
 }
 #pragma mark--创建TableView
 -(void)createMainTableView{
-    
-    
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(100)) style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.showsVerticalScrollIndicator = YES;
@@ -286,12 +308,12 @@
         
         
         UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-        lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView1.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:lineView1];
         
-        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89), ScreenWidth, PX_TO_PT(1))];
-        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
-        [headView addSubview:lineView2];
+//        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89), ScreenWidth, PX_TO_PT(1))];
+//        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
+//        [headView addSubview:lineView2];
         
         return headView;
         
@@ -360,7 +382,7 @@
             [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
             [sectionFour setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
             [sectionFour setTitle:@"去付款" forState:UIControlStateNormal];
-            sectionFour.layer.cornerRadius = 5.0;
+            sectionFour.layer.cornerRadius = PX_TO_PT(10);
             sectionFour.layer.masksToBounds = YES;
             sectionFour.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             sectionFour.tag = section + 1000;
@@ -370,7 +392,7 @@
             
             for (int i = 0; i<3; i++) {
                 UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+                lineView.backgroundColor = R_G_B_16(0xe0e0e0);
                 [bottomView addSubview:lineView];
             }
                     
@@ -379,7 +401,7 @@
             [bottomView addSubview:sectionView];
                 
             UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-                sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+                sectionLine.backgroundColor = R_G_B_16(0xe0e0e0);
                 [sectionView addSubview:sectionLine];
                 
         return bottomView;
@@ -420,7 +442,7 @@
             seePayInfoBtn.backgroundColor = R_G_B_16(0xFE9B00);
             [seePayInfoBtn setTitle:@"查看付款信息" forState:UIControlStateNormal];
             seePayInfoBtn.titleLabel.textColor = [UIColor whiteColor];
-            seePayInfoBtn.layer.cornerRadius = 10.0;
+            seePayInfoBtn.layer.cornerRadius = PX_TO_PT(10);
             seePayInfoBtn.tag = section + 1000;
             seePayInfoBtn.layer.masksToBounds = YES;
             seePayInfoBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
@@ -432,7 +454,7 @@
             reviseBtn.backgroundColor = [UIColor whiteColor];
             [reviseBtn setTitle:@"修改付款方式" forState:UIControlStateNormal];
             [reviseBtn setTitleColor:R_G_B_16(0xFE9B00) forState:UIControlStateNormal];
-            reviseBtn.layer.cornerRadius = 10.0;
+            reviseBtn.layer.cornerRadius = PX_TO_PT(10);
             reviseBtn.layer.borderColor = [R_G_B_16(0xFE9B00) CGColor];
             reviseBtn.layer.borderWidth = PX_TO_PT(2);
             reviseBtn.layer.masksToBounds = YES;
@@ -443,7 +465,7 @@
 
             for (int i = 0; i<3; i++) {
                 UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+                lineView.backgroundColor = R_G_B_16(0xe0e0e0);
                 [bottomView addSubview:lineView];
             }
             
@@ -452,7 +474,7 @@
             [bottomView addSubview:sectionView];
             
             UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-            sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+            sectionLine.backgroundColor = R_G_B_16(0xe0e0e0);
             [sectionView addSubview:sectionLine];
             
             return bottomView;
@@ -492,7 +514,7 @@
             UIButton *makeSureBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
             makeSureBtn.backgroundColor = R_G_B_16(0xfe9b00);
             [makeSureBtn setTitle:@"确认收货" forState:UIControlStateNormal];
-            makeSureBtn.layer.cornerRadius = 5.0;
+            makeSureBtn.layer.cornerRadius = PX_TO_PT(10);
             makeSureBtn.layer.masksToBounds = YES;
             makeSureBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             makeSureBtn.tag = section + 1000;
@@ -502,7 +524,7 @@
             
             for (int i = 0; i<3; i++) {
                 UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+                lineView.backgroundColor = R_G_B_16(0xe0e0e0);
                 [bottomView addSubview:lineView];
             }
             
@@ -511,7 +533,7 @@
             [bottomView addSubview:sectionView];
             
             UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-            sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+            sectionLine.backgroundColor = R_G_B_16(0xe0e0e0);
             [sectionView addSubview:sectionLine];
             
             return bottomView;
@@ -551,7 +573,7 @@
             UIButton *holdNeckBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
             holdNeckBtn.backgroundColor = R_G_B_16(0xfe9b00);
             [holdNeckBtn setTitle:@"去自提" forState:UIControlStateNormal];
-            holdNeckBtn.layer.cornerRadius = 5.0;
+            holdNeckBtn.layer.cornerRadius = PX_TO_PT(10);
             holdNeckBtn.layer.masksToBounds = YES;
             holdNeckBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             holdNeckBtn.tag = section + 1000;
@@ -561,7 +583,7 @@
             
             for (int i = 0; i<3; i++) {
                 UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+                lineView.backgroundColor = R_G_B_16(0xe0e0e0);
                 [bottomView addSubview:lineView];
             }
             
@@ -570,7 +592,7 @@
             [bottomView addSubview:sectionView];
             
             UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-            sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+            sectionLine.backgroundColor = R_G_B_16(0xe0e0e0);
             [sectionView addSubview:sectionLine];
             
             return bottomView;
@@ -611,14 +633,14 @@
         [bottomView addSubview:sectionView];
 
         UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-        sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        sectionLine.backgroundColor = R_G_B_16(0xe0e0e0);
         [sectionView addSubview:sectionLine];
 
 
         for (int i = 0; i<2; i++) {
             
             UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+            lineView.backgroundColor = R_G_B_16(0xe0e0e0);
             [bottomView addSubview:lineView];
         }
 
@@ -685,9 +707,11 @@
     XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
     XNRPayType_VC *vc = [[XNRPayType_VC alloc]init];
     vc.orderID = sectionModel.orderId;
-    
+    vc.dueMoney = sectionModel.duePrice;
+    vc.fromType = @"orderList";
+
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:vc,@"payType", nil];
-    
+
     [[NSNotificationCenter defaultCenter]postNotificationName:@"revisePayType" object:self userInfo:dic];
 }
 -(void)seePayInfoBtnClick:(UIButton *)sender
@@ -696,10 +720,12 @@
     XNROffLine_VC *vc=[[XNROffLine_VC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
     vc.orderID = sectionModel.orderId;
-    
+    vc.fromType = @"orderList";
+
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:vc,@"checkVC", nil];
 
     [[NSNotificationCenter defaultCenter]postNotificationName:@"seePayInfo" object:self userInfo:dic];
+
 }
 #pragma mark - tableView代理方法
 
@@ -797,7 +823,13 @@
         cell = [[XNRMyOrderServe_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
         
     }
+    cell.attributesArray  = [NSMutableArray array];
+    cell.addtionsArray  = [NSMutableArray array];
+
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.attributesArray = [NSMutableArray array];
+    cell.addtionsArray = [NSMutableArray array];
+
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];

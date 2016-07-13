@@ -11,6 +11,7 @@
 #import "XNRCustomerOrderModel.h"
 #import "XNRCustomerOrderCell.h"
 #import "MJExtension.h"
+#import "XNRCustomerOrderEmptyView.h"
 @interface XNRCustomerOrderController()<UITableViewDelegate,UITableViewDataSource>
 {
     int currentPage;
@@ -28,9 +29,21 @@
 
 @property (nonatomic ,weak) UILabel *totalLabel;
 
+@property (nonatomic, weak) XNRCustomerOrderEmptyView *emptyView;
+
 @end
 
 @implementation XNRCustomerOrderController
+
+-(XNRCustomerOrderEmptyView *)emptyView
+{
+    if (!_emptyView) {
+        XNRCustomerOrderEmptyView *emptyView = [[XNRCustomerOrderEmptyView alloc] init];
+        self.emptyView = emptyView;
+        [self.view addSubview:emptyView];
+    }
+    return _emptyView;
+}
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -41,10 +54,12 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self getData];
-    [self setNavigationbarTitle];
+    currentPage = 1;
     [self createHeadView];
     [self createTableView];
+
+    [self getData];
+    [self setNavigationbarTitle];
     _dataArray = [[NSMutableArray alloc] init];
     [self setupCustomerOrderRefresh];
 
@@ -72,7 +87,7 @@
     
     
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
@@ -142,9 +157,7 @@
             
             if (![KSHttpRequest isNULL:datas[@"name"]]) {
                 self.nameLabel.text = [NSString stringWithFormat:@"姓名：%@",datas[@"name"]];
-            }
-            else
-            {
+            }else{
                 self.nameLabel.text = @"该好友未填姓名";
             }
             self.phoneNum.text = [NSString stringWithFormat:@"手机号：%@",datas[@"account"]];
@@ -162,12 +175,19 @@
                 
                 sectionModel.dateCreated = subDic[@"dateCreated"];
                 sectionModel.typeValue = subDic[@"typeValue"];
+                sectionModel.totalPrice = subDic[@"totalPrice"];
                 sectionModel.products = (NSMutableArray *)[XNRCustomerOrderModel objectArrayWithKeyValuesArray:subDic[@"products"]];
                 [_dataArray addObject:sectionModel];
             }
            
         }
         
+        if (_dataArray.count == 0) {
+            self.totalLabel.backgroundColor = R_G_B_16(0xe0e0e0);
+            self.tableView.scrollEnabled = NO;
+            [self emptyView];
+        }
+
         //  如果到达最后一页 就消除footer
         
         NSInteger pages = [result[@"datas"][@"pages"] integerValue];
@@ -199,19 +219,21 @@
         XNRCustomerOrderSectionModel *sectionModel = _dataArray[section];
         
         UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(88))];
-        headView.backgroundColor = R_G_B_16(0xfafafa);
+        headView.backgroundColor = R_G_B_16(0xf0f0f0);
         [self.view addSubview:headView];
         
         UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(30), ScreenWidth, PX_TO_PT(28))];
         timeLabel.textColor = R_G_B_16(0x323232);
-        timeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-        NSString *netDateString = [NSString stringWithFormat:@"%@",sectionModel.dateCreated];
-        NSArray *dateArr = [netDateString componentsSeparatedByString:@"T"];
-        NSDateFormatter *dataFormatter = [[NSDateFormatter alloc] init];
-        [dataFormatter setDateFormat:@"yyyy-MM-dd"];
-        NSString *date = [dataFormatter stringFromDate:[dataFormatter dateFromString:[dateArr firstObject]]];
+        timeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
+        dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"Asia/Shanghai"];
+        NSDate *dateFormatted = [dateFormatter dateFromString:sectionModel.dateCreated];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+        NSString *locationTimeString=[dateFormatter stringFromDate:dateFormatted];
+        timeLabel.text = [NSString stringWithFormat:@"下单时间：%@",locationTimeString];
 
-        timeLabel.text = [NSString stringWithFormat:@"下单时间：%@",date];
         [headView addSubview:timeLabel];
         
         UILabel *orderTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(88))];
@@ -237,8 +259,8 @@
 
         }
         
-        UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-        topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+        topLineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:topLineView];
         
         return headView;
@@ -248,6 +270,54 @@
     
     
 }
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (_dataArray.count>0) {
+        XNRCustomerOrderSectionModel *sectionModel = _dataArray[section];
+        UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(100))];
+        footView.backgroundColor = R_G_B_16(0xfafafa);
+        [self.view addSubview:footView];
+        
+        UILabel *orderPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0, ScreenWidth-PX_TO_PT(32), PX_TO_PT(80))];
+        orderPriceLabel.textColor = R_G_B_16(0x323232);
+        orderPriceLabel.textAlignment = NSTextAlignmentRight;
+        orderPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+        orderPriceLabel.text = [NSString stringWithFormat:@"订单金额：￥%@",sectionModel.totalPrice];
+        NSMutableAttributedString *AttributedStringDeposit = [[NSMutableAttributedString alloc]initWithString:orderPriceLabel.text];
+        NSDictionary *depositStr=@{
+
+                                   NSForegroundColorAttributeName:R_G_B_16(0xff4e00),
+                                   NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(36)]
+
+                                   };
+
+        [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(5,AttributedStringDeposit.length-5)];
+        
+        [orderPriceLabel setAttributedText:AttributedStringDeposit];
+        [footView addSubview:orderPriceLabel];
+        
+        UIView *lastView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, PX_TO_PT(20))];
+        lastView.backgroundColor = R_G_B_16(0xf4f4f4);
+        [footView addSubview:lastView];
+        
+        
+        UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+        topLineView.backgroundColor = R_G_B_16(0xe0e0e0);
+        [footView addSubview:topLineView];
+
+        
+        UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, 1)];
+        bottomLineView.backgroundColor = R_G_B_16(0xe0e0e0);
+        [footView addSubview:bottomLineView];
+
+        return footView;
+
+    }else{
+        return nil;
+    }
+}
+
+
 
 -(void)createHeadView
 {
@@ -306,10 +376,7 @@
 //段尾高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == _dataArray.count-1) {
-        return 0.0;
-    }
-    return 10.0;
+    return PX_TO_PT(100);
 }
 
 //设置段数
@@ -332,7 +399,7 @@
 //行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return PX_TO_PT(260);
+    return PX_TO_PT(100);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -361,23 +428,25 @@
 {
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = R_G_B_16(0xffffff);
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"客户订单";
     self.navigationItem.titleView = titleLabel;
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame = CGRectMake(0,0,80,44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame = CGRectMake(0,0,30,44);
+//    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backButton addTarget:self action:@selector(backButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = leftItem;
     
 }
 -(void)backButtonClick{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"removeRedPoint" object:nil];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"removeRedPoint" object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

@@ -48,6 +48,7 @@
     
     [self setNavigationbarTitle];
     self.mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100),ScreenWidth+PX_TO_PT(20),ScreenHeight-64)];
+    self.mainScrollView.scrollEnabled = NO;
     self.mainScrollView.contentSize=CGSizeMake((ScreenWidth+PX_TO_PT(20))*5, ScreenHeight-64);
     self.mainScrollView.showsHorizontalScrollIndicator = NO;
     self.mainScrollView.showsVerticalScrollIndicator = NO;
@@ -70,7 +71,6 @@
     XNRLoginViewController *loginVC = [[XNRLoginViewController alloc] init];
     loginVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:loginVC animated:YES];
-
 }
 -(void)carry:(NSNotification *)notification
 {
@@ -81,6 +81,7 @@
 -(void)revisePayType:(NSNotification *)notification
 {
     XNRPayType_VC *vc = notification.userInfo[@"payType"];
+    vc.navigationItem.hidesBackButton = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -296,8 +297,8 @@
         }
     }
     
-    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(99), ScreenWidth, PX_TO_PT(1))];
-    bottomView.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(99), ScreenWidth, 1)];
+    bottomView.backgroundColor = R_G_B_16(0xe0e0e0);
     [midBg addSubview:bottomView];
 
 }
@@ -329,7 +330,7 @@
 
         }
            }];
-    [self.mainScrollView setContentOffset:CGPointMake((ScreenWidth+10*SCALE)*(button.tag-KbtnTag),0) animated:NO];
+    [self.mainScrollView setContentOffset:CGPointMake((ScreenWidth+PX_TO_PT(20))*(button.tag-KbtnTag),0) animated:NO];
     
     index = (int)button.tag;
     
@@ -372,101 +373,26 @@
     }
 }
 
-#pragma mark - scrollView左右滑动
--(void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    CGFloat offset = self.mainScrollView.contentOffset.x/(ScreenWidth+PX_TO_PT(20));
-    
-      static int tag = 0;
-
-    if(0 <= offset&&offset < 0.5){
-        tag=0;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
-        _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x00b38a);
-        _tempLabel = label;
-        
-    }else if (0.5<=offset&&offset<1.5){
-        tag=1;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
-        _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x00b38a);
-        _tempLabel = label;
-        
-    }else if (1.5<=offset&&offset<2.5){
-        tag=2;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
-        _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x00b38a);
-        _tempLabel = label;
-
-    }else if (2.5<=offset&&offset<3.5){
-        tag=3;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
-        _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x00b38a);
-        _tempLabel = label;
-
-    }else{
-        tag=4;
-        UIButton *button = (UIButton *)[self.view viewWithTag:KbtnTag+tag];
-        _tempBtn.selected = NO;
-        button.selected = YES;
-        _tempBtn = button;
-        
-        UILabel *label = (UILabel *)[self.view viewWithTag:kLabelTag +tag];
-        _tempLabel.textColor = [UIColor blackColor];
-        label.textColor = R_G_B_16(0x00b38a);
-        _tempLabel = label;
-    }
-    
-    
-    [UIView animateWithDuration:.3 animations:^{
-        if (IS_FourInch) {
-             self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(94), ScreenWidth/5.0, PX_TO_PT(6));
-        }else{
-             self.selectLine.frame=CGRectMake((ScreenWidth/5.0)*offset,  PX_TO_PT(96), ScreenWidth/5.0, PX_TO_PT(4));
-        }
-       
-    }];
-}
-
 - (void)setNavigationbarTitle{
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"我的订单";
     self.navigationItem.titleView = titleLabel;
-    
+
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
+
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
+
     self.navigationItem.leftBarButtonItem=leftItem;
     
 }
@@ -477,8 +403,6 @@
         [self dismissViewControllerAnimated:NO completion:nil];
         return;
     }
-
-    UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController ;
     
     for (UIViewController *vc in self.navigationController.viewControllers) {
         if ([vc isKindOfClass:[XNRMineController class]]) {
@@ -491,7 +415,6 @@
    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     XNRTabBarController *tabVC = (XNRTabBarController *)window.rootViewController;
     tabVC.selectedIndex = 3;
-
     
     //首页的控制器返回到rootVC
     [self.navigationController popToRootViewControllerAnimated:NO];

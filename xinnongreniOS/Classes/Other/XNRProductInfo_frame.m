@@ -31,26 +31,64 @@
     CGSize productNameLabelSize = [self.infoModel.name sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:productNameLabelMaxSize];
     _productNameLabelF = (CGRect){{productNameLabelX, productNameLabelY}, productNameLabelSize};
     
+    NSString *minStr = [NSString stringWithFormat:@"%@",self.infoModel.min];
+    NSString *maxStr = [NSString stringWithFormat:@"%@",self.infoModel.max];
     
+    NSString *price;
+    if ([self.infoModel.min doubleValue]== [self.infoModel.max doubleValue]) {
+        if ([minStr rangeOfString:@"."].location != NSNotFound) {
+            price = [NSString stringWithFormat:@"￥%.2f",self.infoModel.min.doubleValue];
+        }else{
+            price = [NSString stringWithFormat:@"￥%.f",self.infoModel.min.doubleValue];
+        }
+        
+    }else{
+        if ([minStr rangeOfString:@"."].location != NSNotFound || [maxStr rangeOfString:@"."].location != NSNotFound) {
+            price = [NSString stringWithFormat:@"￥%.2f - %.2f",self.infoModel.min.doubleValue,self.infoModel.max.doubleValue];
+        }else{
+            price = [NSString stringWithFormat:@"￥%.f - %.f",self.infoModel.min.doubleValue,self.infoModel.max.doubleValue];
+        }
+    }
     // 价格
-    CGFloat priceLabelX = PX_TO_PT(30);
-    CGFloat priceLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
-    CGFloat priceLabelW = ScreenWidth/2;
-    CGFloat priceLabelH = PX_TO_PT(38);
-    _priceLabelF = CGRectMake(priceLabelX, priceLabelY, priceLabelW, priceLabelH);
+    CGSize priceLabelSize;
+    if ([self.infoModel.presale integerValue] == 1) {
+        CGFloat priceLabelX = PX_TO_PT(30);
+        CGFloat priceLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
+        CGFloat priceLabelW = ScreenWidth/2;
+        CGFloat priceLabelH = PX_TO_PT(38);
+
+        _priceLabelF = CGRectMake(priceLabelX, priceLabelY, priceLabelW, priceLabelH);
+
+    }else{
+        CGFloat priceLabelX = PX_TO_PT(30);
+        CGFloat priceLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
+        CGFloat priceLabelH = PX_TO_PT(38);
+        CGSize priceLabelMaxSize = CGSizeMake(MAXFLOAT, priceLabelH);
+        priceLabelSize = [price sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:priceLabelMaxSize];
+        _priceLabelF = (CGRect){{priceLabelX, priceLabelY}, priceLabelSize};
+    }
     
     // 订金
-    CGFloat depositLabelX = CGRectGetMaxX(_priceLabelF)+PX_TO_PT(20);
-    CGFloat depositLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
-    CGFloat depositLabelW = ScreenWidth/2;
-    CGFloat depositLabelH = PX_TO_PT(38);
-    _depositLabelF = CGRectMake(depositLabelX, depositLabelY, depositLabelW, depositLabelH);
+//    if (priceLabelSize.width>ScreenWidth/2) {
+        CGFloat depositLabelX = CGRectGetMaxX(_priceLabelF)+PX_TO_PT(30);
+        CGFloat depositLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
+        CGFloat depositLabelW = ScreenWidth/2;
+        CGFloat depositLabelH = PX_TO_PT(38);
+        _depositLabelF = CGRectMake(depositLabelX, depositLabelY, depositLabelW, depositLabelH);
+//    }else{
+//        CGFloat depositLabelX = ScreenWidth/2;
+//        CGFloat depositLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
+//        CGFloat depositLabelW = ScreenWidth/2;
+//        CGFloat depositLabelH = PX_TO_PT(38);
+//        _depositLabelF = CGRectMake(depositLabelX, depositLabelY, depositLabelW, depositLabelH);
+//    }
+   
     
     // 市场价 ,商品简介
 //    self.infoModel.marketMin =
     NSLog(@"self.infoModel.marketMin = %@",self.infoModel.marketMin);
-        if ([KSHttpRequest isNULL:self.infoModel.marketMin]) {
-            _marketPriceLabelF = CGRectMake(0, 0, 0, 0);
+        if ([KSHttpRequest isNULL:self.infoModel.marketMin] || [self.infoModel.marketMin integerValue] == 0) { // 市场价为空
+//            _marketPriceLabelF = CGRectMake(0, 0, 0, 0);
             CGFloat introduceLabelX = 0;
             CGFloat introduceLabelY = CGRectGetMaxY(_depositLabelF)+PX_TO_PT(24);
             CGFloat introduceLabelW = ScreenWidth;
@@ -74,7 +112,7 @@
 
     // 商品属性
     if (self.infoModel.Desc == nil || [self.infoModel.Desc isEqualToString:@""]) {// 商品描述为空
-        if ([KSHttpRequest isNULL:self.infoModel.marketMin]) {
+        if ([KSHttpRequest isNULL:self.infoModel.marketMin]||[self.infoModel.marketMin integerValue] == 0) {
             CGFloat attributeLabelX = 0;
             CGFloat attributeLabelY = CGRectGetMaxY(_depositLabelF)+PX_TO_PT(28);
             CGFloat attributeLabelW = ScreenWidth;
@@ -96,41 +134,46 @@
         _attributeLabelF = CGRectMake(attributeLabelX, attributeLabelY, attributeLabelW, attributeLabelH);
     }
     
-    
-    // 拖动
-    if ([self.infoModel.online integerValue] != 0 || self.infoModel.online == nil) {// 非下架
-        CGFloat drawViewX = 0;
-        CGFloat drawViewY = CGRectGetMaxY(_attributeLabelF);
-        CGFloat drawViewW = ScreenWidth;
-        CGFloat drawViewH = PX_TO_PT(120);
-        _drawViewF = CGRectMake(drawViewX, drawViewY, drawViewW, drawViewH);
-    }else{// 下架
-        _attributeLabelF = CGRectMake(0, 0, 0, 0);
-        if (self.infoModel.Desc == nil || [self.infoModel.Desc isEqualToString:@""]) {// 商品描述为空
-            if ([KSHttpRequest isNULL:self.infoModel.marketMin])
-            {
-                CGFloat drawViewX = 0;
-                CGFloat drawViewY = CGRectGetMaxY(_priceLabelF);
-                CGFloat drawViewW = ScreenWidth;
-                CGFloat drawViewH = PX_TO_PT(120);
-                _drawViewF = CGRectMake(drawViewX, drawViewY, drawViewW, drawViewH);
+    if (!([self.infoModel.app_body_url isEqualToString:@""] &&[self.infoModel.app_support_url isEqualToString:@""] && [self.infoModel.app_standard_url isEqualToString:@""]) ) {
+        // 拖动
+        if ([self.infoModel.online integerValue] != 0 || self.infoModel.online == nil) {// 非下架
+            CGFloat drawViewX = 0;
+            CGFloat drawViewY = CGRectGetMaxY(_attributeLabelF);
+            CGFloat drawViewW = ScreenWidth;
+            CGFloat drawViewH = PX_TO_PT(120);
+            _drawViewF = CGRectMake(drawViewX, drawViewY, drawViewW, drawViewH);
+        }else{// 下架
+            _attributeLabelF = CGRectMake(0, 0, 0, 0);
+            if (self.infoModel.Desc == nil || [self.infoModel.Desc isEqualToString:@""]) {// 商品描述为空
+                if ([KSHttpRequest isNULL:self.infoModel.marketMin] || [self.infoModel.marketMin integerValue] == 0)
+                {
+                    CGFloat drawViewX = 0;
+                    CGFloat drawViewY = CGRectGetMaxY(_priceLabelF);
+                    CGFloat drawViewW = ScreenWidth;
+                    CGFloat drawViewH = PX_TO_PT(120);
+                    _drawViewF = CGRectMake(drawViewX, drawViewY, drawViewW, drawViewH);
+                }else{
+                    CGFloat drawViewX = 0;
+                    CGFloat drawViewY = CGRectGetMaxY(_marketPriceLabelF);
+                    CGFloat drawViewW = ScreenWidth;
+                    CGFloat drawViewH = PX_TO_PT(120);
+                    _drawViewF = CGRectMake(drawViewX, drawViewY, drawViewW, drawViewH);
+                }
+                
+                
             }else{
                 CGFloat drawViewX = 0;
-                CGFloat drawViewY = CGRectGetMaxY(_marketPriceLabelF);
+                CGFloat drawViewY = CGRectGetMaxY(_introduceLabelF);
                 CGFloat drawViewW = ScreenWidth;
                 CGFloat drawViewH = PX_TO_PT(120);
                 _drawViewF = CGRectMake(drawViewX, drawViewY, drawViewW, drawViewH);
             }
             
-        
-        }else{
-            CGFloat drawViewX = 0;
-            CGFloat drawViewY = CGRectGetMaxY(_introduceLabelF);
-            CGFloat drawViewW = ScreenWidth;
-            CGFloat drawViewH = PX_TO_PT(120);
-            _drawViewF = CGRectMake(drawViewX, drawViewY, drawViewW, drawViewH);
         }
-    
+
+        
+    }else{
+        NSLog(@"%@",@"fkldfkld");
     }
     // 商品描述
     CGFloat describtionViewX = 0;
@@ -138,9 +181,14 @@
     CGFloat describtionViewW = ScreenWidth;
     CGFloat describtionViewH = PX_TO_PT(80);
     _describtionViewF = CGRectMake(describtionViewX, describtionViewY, describtionViewW, describtionViewH);
-    
     // view的高度
-    _viewHeight = CGRectGetMaxY(_drawViewF);
+    if (!([self.infoModel.app_body_url isEqualToString:@""] &&[self.infoModel.app_support_url isEqualToString:@""] && [self.infoModel.app_standard_url isEqualToString:@""]) ) {
+        _viewHeight = CGRectGetMaxY(_drawViewF);
+
+    }else{
+        _viewHeight = CGRectGetMaxY(_attributeLabelF);
+    }
+
 
 
 }

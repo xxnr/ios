@@ -82,7 +82,7 @@
 -(void)createTopView{
     
     UIImageView *goodsImageView = [[UIImageView alloc] init];
-    goodsImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    goodsImageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     goodsImageView.layer.borderWidth = 1.0;
     self.goodsImageView = goodsImageView;
     [self.contentView addSubview:goodsImageView];
@@ -180,7 +180,7 @@
     
     UILabel *depositLabel = [[UILabel alloc] init];
     depositLabel.textAlignment = NSTextAlignmentRight;
-    depositLabel.textColor = R_G_B_16(0xff4e00);
+    depositLabel.textColor = R_G_B_16(0xFF4E00);
     depositLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.depositLabel = depositLabel;
     [self.contentView addSubview:depositLabel];
@@ -201,17 +201,17 @@
     [self.contentView addSubview:remainPriceLabel];
     
     UIView *topLine = [[UIView alloc] init];
-    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    topLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.topLine = topLine;
     [self.contentView addSubview:topLine];
     
     UIView *midLine = [[UIView alloc] init];
-    midLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    midLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.midLine = midLine;
     [self.contentView addSubview:midLine];
     
     UIView *bottomLine = [[UIView alloc] init];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.bottomLine = bottomLine;
     [self.contentView addSubview:bottomLine];
 

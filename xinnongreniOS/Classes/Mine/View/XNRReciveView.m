@@ -17,16 +17,28 @@
 #import "XNRMyOrderSectionModel.h"
 #import "XNRMakeSureView.h"
 #import "XNRCarryVC.h"
+#import "BMProgressView.h"
 #define MAX_PAGE_SIZE 20
 
 @interface XNRReciveView()<XNROrderEmptyViewBtnDelegate>
 
 @property (nonatomic, weak)XNROrderEmptyView *orderEmptyView;
 @property (nonatomic, weak) UIButton *backtoTopBtn;
+@property (nonatomic ,weak) BMProgressView *progressView;
 @property (nonatomic,assign)BOOL isHoldOwn;
 @property (nonatomic,assign)BOOL isMakesureOwn;
+@property (nonatomic,assign)BOOL isRefresh;
 @end
 @implementation XNRReciveView
+
+-(BMProgressView *)progressView{
+    if (!_progressView) {
+        BMProgressView *progressView = [[BMProgressView alloc] init];
+        self.progressView = progressView;
+        [self addSubview:progressView];
+    }
+    return _progressView;
+}
 
 -(XNROrderEmptyView *)orderEmptyView
 {
@@ -34,7 +46,9 @@
         XNROrderEmptyView *orderEmptyView = [[XNROrderEmptyView alloc] init];
         orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
         orderEmptyView.delegate = self;
-        [self addSubview:orderEmptyView];
+        self.orderEmptyView = orderEmptyView;
+        
+        [self insertSubview:orderEmptyView atIndex:0];
     }
     return _orderEmptyView;
 }
@@ -56,15 +70,31 @@
         self.userInteractionEnabled = YES;
         _dataArr = [[NSMutableArray alloc]init];
         _currentPage = 1;
+        
+        
         //创建订单
         [self createMainTableView];
         //获取数据
         [self setupAlreadySendViewRefresh];
         [self createbackBtn];
-        [self getData];
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"reciveHeadRefresh" object:nil];
+//        [self getData];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reciveHeadRefresh) name:@"reciveHeadRefresh" object:nil];
     }
     return self;
+}
+-(void)reciveHeadRefresh{
+    [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
+
+    _isRefresh = YES;
+//    _currentPage = 1;
+//    [_dataArr removeAllObjects];
+//    [self getData];
+    [self headRefresh];
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [BMProgressView LoadViewDisappear:self];
+    });
+
 }
 
 
@@ -138,7 +168,7 @@
     
     
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
@@ -208,9 +238,7 @@
 -(void)headRefresh{
     
     _currentPage = 1;
-    [_dataArr removeAllObjects];
     [self getData];
-    [self.tableView reloadData];
 }
 
 -(void)footRefresh{
@@ -223,10 +251,15 @@
 #pragma mark - 获取数据
 - (void)getData
 {
+    [self.orderEmptyView removeFromSuperview];
+
     //typeValue说明：1为待支付（代付款）：2为商品准备中（待发货），3已发货（待收货），4已收货（待评价
     [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"typeValue":@"3",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
+            if (_currentPage == 1) {
+                [_dataArr removeAllObjects];
+            }
             NSDictionary *datasDic = result[@"datas"];
             NSArray *rowsArr = datasDic[@"rows"];
             for (NSDictionary *subDic in rowsArr) {
@@ -272,11 +305,14 @@
         }
         //刷新列表
         [self.tableView reloadData];
-        
         if (_dataArr.count == 0) {
             [self orderEmptyView];
         }
         
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
+        }
 
         
         //  如果到达最后一页 就消除footer
@@ -343,13 +379,10 @@
         [headView addSubview:payTypeLabel];
         
         
-        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-        lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+        lineView1.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:lineView1];
         
-        UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(89), ScreenWidth, PX_TO_PT(1))];
-        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
-        [headView addSubview:lineView2];
         
         return headView;
         
@@ -362,6 +395,7 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
+    if (_dataArr.count>0) {
     _isHoldOwn = NO;
     _isMakesureOwn = NO;
     UIView *bottomView = [[UIView alloc] init];
@@ -377,8 +411,6 @@
             _isMakesureOwn = YES;
         }
     }
-    
-    if (_dataArr.count>0) {
         
         if (sectionModel.type == 4 && _isMakesureOwn) {
             bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
@@ -413,7 +445,7 @@
             UIButton *makeSureBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
             makeSureBtn.backgroundColor = R_G_B_16(0xfe9b00);
             [makeSureBtn setTitle:@"确认收货" forState:UIControlStateNormal];
-            makeSureBtn.layer.cornerRadius = 5.0;
+            makeSureBtn.layer.cornerRadius = PX_TO_PT(10);
             makeSureBtn.layer.masksToBounds = YES;
             makeSureBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             makeSureBtn.tag = section + 1000;
@@ -422,8 +454,8 @@
             
             
             for (int i = 0; i<3; i++) {
-                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, 1)];
+                lineView.backgroundColor = R_G_B_16(0xe0e0e0);
                 [bottomView addSubview:lineView];
             }
             
@@ -431,8 +463,9 @@
             sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
             [bottomView addSubview:sectionView];
             
-            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-            sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+            sectionLine.backgroundColor = R_G_B_16(0xe0e0e0);
+
             [sectionView addSubview:sectionLine];
             
             return bottomView;
@@ -472,7 +505,7 @@
             UIButton *holdNeckBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(172), PX_TO_PT(90), PX_TO_PT(140), PX_TO_PT(60))];
             holdNeckBtn.backgroundColor = R_G_B_16(0xfe9b00);
             [holdNeckBtn setTitle:@"去自提" forState:UIControlStateNormal];
-            holdNeckBtn.layer.cornerRadius = 5.0;
+            holdNeckBtn.layer.cornerRadius = PX_TO_PT(10);
             holdNeckBtn.layer.masksToBounds = YES;
             holdNeckBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
             holdNeckBtn.tag = section + 1000;
@@ -481,8 +514,8 @@
             
             
             for (int i = 0; i<3; i++) {
-                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
-                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, 1)];
+                lineView.backgroundColor = R_G_B_16(0xe0e0e0);
                 [bottomView addSubview:lineView];
             }
             
@@ -490,8 +523,8 @@
             sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
             [bottomView addSubview:sectionView];
             
-            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-            sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+            sectionLine.backgroundColor = R_G_B_16(0xe0e0e0);
             [sectionView addSubview:sectionLine];
             
             return bottomView;
@@ -641,7 +674,12 @@
         cell = [[XNRMyOrderServe_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
         
     }
+    cell.attributesArray  = [NSMutableArray array];
+    cell.addtionsArray  = [NSMutableArray array];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.attributesArray = [NSMutableArray array];
+    cell.addtionsArray = [NSMutableArray array];
+
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];

@@ -28,6 +28,7 @@
 @property (nonatomic ,weak) UILabel *addtionsLabel;
 @property (nonatomic ,weak) UILabel *addtionPriceLabel;
 
+@property (nonatomic,weak) UIView *iconTopline;
 @property (nonatomic ,weak) UIView *topLine;
 @property (nonatomic ,weak) UIView *middleLine;
 @property (nonatomic ,weak) UIView *bottomLine;
@@ -51,7 +52,7 @@
 {
     UIImageView *iconImageView = [[UIImageView alloc] init];
     iconImageView.layer.borderWidth = 1.0;
-    iconImageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    iconImageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     self.iconImageView = iconImageView;
     [self.contentView addSubview:iconImageView];
     
@@ -100,17 +101,17 @@
     [self.contentView addSubview:self.addtionPriceLabel];
     
     UIView *topLine = [[UIView alloc] init];
-    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    topLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.topLine = topLine;
     [self.contentView addSubview:topLine];
     
     UIView *middleLine = [[UIView alloc] init];
-    middleLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    middleLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.middleLine = middleLine;
     [self.contentView addSubview:middleLine];
     
     UIView *bottomLine = [[UIView alloc] init];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.bottomLine = bottomLine;
     [self.contentView addSubview:bottomLine];
 }

@@ -69,16 +69,16 @@
     
     //支付完成
     UILabel *successPay = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(26), ScreenWidth - PX_TO_PT(66), PX_TO_PT(28))];
-    successPay.textAlignment = UITextAlignmentRight;
+    successPay.textAlignment = NSTextAlignmentRight;
     successPay.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     successPay.text = @"支付成功";
     [self.contentView addSubview:successPay];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(59),ScreenWidth - PX_TO_PT(65), PX_TO_PT(1))];
-    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(59),ScreenWidth - PX_TO_PT(65), 1)];
+    line1.backgroundColor = R_G_B_16(0xe0e0e0);
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(222), ScreenWidth, PX_TO_PT(1))];
-    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(222), ScreenWidth, 1)];
+    line2.backgroundColor = R_G_B_16(0xe0e0e0);
     self.line2 = line2;
     [self.contentView addSubview:line1];
     
@@ -114,18 +114,22 @@
         }
         else if(model.payType == 3)
         {
-            _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：线下支付"];
+            _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：现金"];
         }
         else if(model.payType == 4)
         {
             _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：线下POS机"];
+        }
+        else if(model.payType == 5)
+        {
+            _payTypeLabel.text = [NSString stringWithFormat:@"付款方式：EPOS"];
         }
 
         else
         {
             _payTypeLabel.frame = CGRectMake(0, 0, 0, 0);
             self.completeLabel.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(130), ScreenWidth - PX_TO_PT(32), PX_TO_PT(28));
-            self.line2.frame = CGRectMake(0, PX_TO_PT(184), ScreenWidth, PX_TO_PT(1));
+            self.line2.frame = CGRectMake(0, PX_TO_PT(184), ScreenWidth, 1);
 
         }
     }

@@ -8,6 +8,7 @@
 
 #import "XNRRscCustomerTakeView.h"
 #import "XNRRscOrderModel.h"
+#import "XNRRscOrderDetailModel.h"
 
 @interface XNRRscCustomerTakeView()<UITextFieldDelegate>
 
@@ -47,8 +48,8 @@
         bottomView.backgroundColor = R_G_B_16(0xffffff);
         [self.takeView addSubview:bottomView];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-        line.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
+        line.backgroundColor = R_G_B_16(0xe0e0e0);
         [bottomView addSubview:line];
         
         UIButton *admireBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -78,7 +79,7 @@
                     [refArray addObject:model.ref];
                 }
             }
-            NSDictionary *params = @{@"orderId":_model._id,@"code":self.deliverNumberTF.text,@"SKURefs":refArray};
+            NSDictionary *params = @{@"orderId":_model._id,@"code":self.deliverNumberTF.text,@"SKURefs":refArray,@"token":[DataCenter account].token?[DataCenter account].token:@""};
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             manager.responseSerializer = [AFHTTPResponseSerializer serializer];
             manager.requestSerializer=[AFJSONRequestSerializer serializer];// 申明请求的数据是json类型
@@ -101,11 +102,10 @@
                     
                 }else if([resultObj[@"code"] integerValue] == 1429){
                     [self cancel];
-                    [UILabel showMessage:@"您输入错误次数较多，请1分钟后再操作"];
+                    [UILabel showMessage:@"您输入错误次数较多，请一分钟后再试"];
 
                 }else{
                     [UILabel showMessage:@"自提码错误，请重新输入"];
-//                    [self setWarnViewTitle:@"请稍后再试"];
                 }
                 
                 
@@ -165,15 +165,41 @@
     
     UITextField *deliverNumberTF = [[UITextField alloc] init];
     deliverNumberTF.frame = CGRectMake(CGRectGetMaxX(deliverNumberLabel.frame)+PX_TO_PT(20), PX_TO_PT(317), PX_TO_PT(360), PX_TO_PT(60));
-    deliverNumberTF.layer.borderWidth = PX_TO_PT(1);
-    deliverNumberTF.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    deliverNumberTF.layer.borderWidth = PX_TO_PT(2);
+    deliverNumberTF.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     deliverNumberTF.layer.masksToBounds = YES;
     deliverNumberTF.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     deliverNumberTF.keyboardType = UIKeyboardTypeNumberPad;
+    deliverNumberTF.textAlignment = NSTextAlignmentCenter;
+    deliverNumberTF.textColor = R_G_B_16(0xfe9b00);
     deliverNumberTF.alpha = 1.0;
     deliverNumberTF.delegate = self;
     self.deliverNumberTF = deliverNumberTF;
     [self.takeView addSubview:deliverNumberTF];
+}
+
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    CGFloat offset = self.takeView.frame.size.height - (textField.frame.origin.y  + textField.frame.size.height +216+PX_TO_PT(100));
+    NSLog(@"====%f",offset);
+    if (offset<=0) {
+        [UIView animateWithDuration:0.3 animations:^{
+            CGRect frame = self.takeView.frame;
+            frame.origin.y = PX_TO_PT(300);
+            self.takeView.frame = frame;
+        }];
+    }
+    return YES;
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect frame = self.takeView.frame;
+        frame.origin.y = ScreenHeight-PX_TO_PT(882);
+        self.takeView.frame = frame;
+    }];
+    return  YES;
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
@@ -183,6 +209,8 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
+//    self.deliverNumberTF.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+
     if (self.deliverNumberTF.text.length == 7) {
         self.admireBtn.selected = YES;
     }else{
@@ -196,6 +224,7 @@
         return NO; // return NO to not change text
     return YES;
 }
+
 
 
 -(void)createView
@@ -231,8 +260,8 @@
         [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
         [headView addSubview:cancelBtn];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1)];
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:lineView];
 
     }

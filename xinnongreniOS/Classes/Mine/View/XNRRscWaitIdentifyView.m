@@ -15,6 +15,7 @@
 #import "XNRRscIdentifyPayView.h"
 #import "XNRRscOrderDetailModel.h"
 #import "XNRRscFootFrameModel.h"
+#import "XNRRscNoOrderView.h"
 #define MAX_PAGE_SIZE 10
 
 @interface XNRRscWaitIdentifyView()<UITableViewDelegate,UITableViewDataSource>
@@ -27,9 +28,24 @@
 
 @property (nonatomic, assign) int currentPage;
 
+@property (nonatomic, weak) UIView *orderView;
+
+@property (nonatomic, weak) XNRRscNoOrderView *noOrderView;
+
 @end
 
 @implementation XNRRscWaitIdentifyView
+
+-(XNRRscNoOrderView *)noOrderView
+{
+    if (!_noOrderView) {
+        XNRRscNoOrderView *noOrderView = [[XNRRscNoOrderView  alloc] init];
+        self.noOrderView = noOrderView;
+        [self addSubview:noOrderView];
+    }
+    return _noOrderView;
+    
+}
 
 -(XNRRscIdentifyPayView *)identifyPayView
 {
@@ -84,7 +100,7 @@
     }
     NSMutableArray *RefreshImage = [NSMutableArray array];
     
-    for (int i = 10; i<21; i++) {
+    for (int i = 1; i<21; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
         
         [RefreshImage addObject:image];
@@ -120,26 +136,25 @@
     self.tableView.mj_footer = footer;
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(headRefresh) name:@"reloadOrderList" object:nil];
-    
+  
 }
+
 -(void)headRefresh{
     _currentPage = 1;
     [_dataFrameArray removeAllObjects];
     [_dataArray removeAllObjects];
     [self getData];
-    
-    
 }
+
 -(void)footRefresh{
     _currentPage ++;
     [self getData];
-    
 }
 
 
 -(void)getData
 {
-    NSDictionary *params = @{@"type":@"2",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"token":[DataCenter account].token};
+    NSDictionary *params = @{@"type":@"2",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE]};
     [KSHttpRequest get:KRscOrders parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *ordersArray = result[@"orders"];
@@ -177,6 +192,16 @@
             [self.tableView reloadData];
         }
         
+        if (_dataArray.count == 0) {
+            [self noOrderView];
+        }else{
+            [self.noOrderView removeFromSuperview];
+        }
+        if (_isRefresh) {
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+            _isRefresh = NO;
+        }
+
         //  如果到达最后一页 就消除footer
         NSInteger page = [result[@"pageCount"] integerValue];
         self.tableView.mj_footer.hidden = page == _currentPage;
@@ -186,6 +211,7 @@
         
         [self.tableView reloadData];
         
+        
     } failure:^(NSError *error) {
         
     }];
@@ -193,7 +219,7 @@
 
 -(void)createView
 {
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(120)) style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(100)) style:UITableViewStyleGrouped];
     tableView.backgroundColor = [UIColor clearColor];
     tableView.showsVerticalScrollIndicator = YES;
     tableView.delegate = self;
@@ -217,7 +243,6 @@
     }else{
         return nil;
     }
-    
 }
 
 #pragma mark - 在断尾添加任意视图
@@ -228,8 +253,9 @@
         XNRRscOrderModel *sectionModel = _dataArray[section];
         XNRRscFootFrameModel*footFrameModel = _dataFrameArray[section];
         [sectionFootView upDataFootViewWithModel:footFrameModel];
+        __weak __typeof(&*self)weakSelf = self;
         sectionFootView.com = ^{
-            [self getdetailData:sectionModel];
+                [weakSelf getdetailData:sectionModel];
         };
         return sectionFootView;
     }else{
@@ -239,18 +265,22 @@
 
 -(void)getdetailData:(XNRRscOrderModel *)model
 {
-    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model._id,@"token":[DataCenter account].token} success:^(id result) {
+    [KSHttpRequest get:KRscOrderDetail parameters:@{@"orderId":model._id} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *orderDict = result[@"order"];
             XNRRscOrderDetailModel *detailModel = [[XNRRscOrderDetailModel alloc] init];
             detailModel.consigneeName = orderDict[@"consigneeName"];
             NSDictionary *payment = orderDict[@"payment"];
-            detailModel.price = payment[@"price"];
-            detailModel.id = payment[@"id"];
-            [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            if (![KSHttpRequest isNULL:payment] && [orderDict[@"orderStatus"][@"type"] integerValue]== 2) {
+                detailModel.price = payment[@"price"];
+                detailModel.id = payment[@"id"];
+                [self.identifyPayView show:detailModel.consigneeName andPrice:detailModel.price andPaymentId:detailModel.id];
+            }else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTableView" object:nil];
+                [UILabel showMessage:@"订单已审核"];
+            }
         }
-
     } failure:^(NSError *error) {
         
     }];
@@ -272,7 +302,6 @@
     if (_dataFrameArray.count>0) {
         XNRRscFootFrameModel *frameModel = _dataFrameArray[section];
         return frameModel.footViewHeight;
-        
     }else{
         return 0;
     }
@@ -310,9 +339,11 @@
 //cell点击方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
-    if (self.com) {
-        self.com(sectionModel);
+    if (_dataArray.count>0) {
+        XNRRscOrderModel *sectionModel = _dataArray[indexPath.section];
+        if (self.identifycom) {
+            self.identifycom(sectionModel);
+        }
     }
 }
 

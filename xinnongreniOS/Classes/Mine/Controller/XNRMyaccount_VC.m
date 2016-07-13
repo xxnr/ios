@@ -19,7 +19,8 @@
 #import "XNRTypeView.h"
 #import "XNRIdentifyServiceStationController.h"
 #import "UMessage.h"
-
+#import "XNRAddressManageViewController.h"
+#import "XNRManagerTakeAddressController.h"
 #define KbtnTag 1000
 #define uploadImageTag  2000   //上传头像
 
@@ -35,11 +36,12 @@
 @property (nonatomic,weak) UIButton *pwdBtn;
 
 @property (nonatomic ,weak) UIButton *bottomBtn;
+@property (nonatomic ,weak) UIButton *addressManagerBtn;
+
 @property (nonatomic ,weak) UIButton *resignLoginBtn;
 
 
 @property (nonatomic,weak) UILabel *nickNameLabel;
-@property (nonatomic,weak) UIAlertView *al;
 
 @property (nonatomic ,weak) UILabel *sendAddressTip;
 @property (nonatomic ,weak) UILabel *userNameLabel;
@@ -58,6 +60,16 @@
 
 
 @property (nonatomic ,weak) XNRTypeView *typeView;
+
+@property (nonatomic, weak) UIView *coverView;
+@property (nonatomic, weak) UIView *warnView;
+
+@property (nonatomic, assign) BOOL identifyState;
+
+@property (nonatomic, strong) NSMutableArray *userArray;
+
+
+
 @end
 
 @implementation XNRMyaccount_VC
@@ -92,6 +104,7 @@
 -(void)refreshIdentifyState
 {
     self.RscLabel.text = @"资料正在审核，请耐心等待";
+    _identifyState = YES;
 
 }
 -(void)dealloc
@@ -180,12 +193,12 @@
     [nickBtn addSubview:nickNameLabel];
     
     
-    UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(120),ScreenWidth,PX_TO_PT(1))];
-    topLine.backgroundColor=R_G_B_16(0xc7c7c7);
+    UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(120),ScreenWidth,1)];
+    topLine.backgroundColor=R_G_B_16(0xe0e0e0);
     [self.mainScrollView addSubview:topLine];
     
-    UIView*bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(208), ScreenWidth, PX_TO_PT(1))];
-    bottomLine.backgroundColor=R_G_B_16(0xc7c7c7);
+    UIView *bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(208), ScreenWidth, 1)];
+    bottomLine.backgroundColor=R_G_B_16(0xe0e0e0);
     [self.mainScrollView addSubview:bottomLine];
 }
 
@@ -204,7 +217,7 @@
 }
 #pragma mark--中部视图
 -(void)createMid{
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(240), ScreenWidth, PX_TO_PT(88)*4)];
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(228), ScreenWidth, PX_TO_PT(88)*4)];
     self.bgView = bgView;
     [self.mainScrollView addSubview:bgView];
     
@@ -233,19 +246,17 @@
         [arrow3 setImage:[UIImage imageNamed:@"arrow-1"]];
         [button addSubview:arrow3];
 
-
-
         //分割线
-        UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(0,PX_TO_PT(240)+i*PX_TO_PT(88), ScreenWidth, .5)];
-        line2.backgroundColor=R_G_B_16(0xc7c7c7);
+        UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(0,PX_TO_PT(228)+i*PX_TO_PT(88), ScreenWidth, 1)];
+        line2.backgroundColor=R_G_B_16(0xe0e0e0);
         [self.mainScrollView addSubview:line2];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(240)+3*PX_TO_PT(88)+PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(228)+3*PX_TO_PT(88)+PX_TO_PT(86), ScreenWidth, 1)];
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [self.mainScrollView addSubview:lineView];
 }
     // 显示姓名
-    UILabel *userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14), ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
+    UILabel *userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14), ScreenWidth/2-PX_TO_PT(70)-PX_TO_PT(10), PX_TO_PT(60))];
     userNameLabel.textAlignment = NSTextAlignmentRight;
     userNameLabel.textColor = R_G_B_16(0x909090);
     userNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
@@ -259,7 +270,7 @@
     [bgView addSubview:userNameLabel];
     
     // 显示性别
-    UILabel *sexLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14)+PX_TO_PT(88), ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
+    UILabel *sexLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14)+PX_TO_PT(88), ScreenWidth/2-PX_TO_PT(70)-PX_TO_PT(10), PX_TO_PT(60))];
     sexLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     sexLabel.textAlignment = NSTextAlignmentRight;
     sexLabel.textColor = R_G_B_16(0x909090);
@@ -280,10 +291,10 @@
     [bgView addSubview:sexLabel];
 
     // 显示所在地区
-    UILabel *areaLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2+PX_TO_PT(30), PX_TO_PT(88)*2, ScreenWidth/2-PX_TO_PT(100), PX_TO_PT(88))];
+    UILabel *areaLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2+PX_TO_PT(30), PX_TO_PT(88)*2, ScreenWidth/2-PX_TO_PT(100)-PX_TO_PT(10), PX_TO_PT(88))];
     areaLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     areaLabel.numberOfLines = 0;
-//    areaLabel.textAlignment = NSTextAlignmentRight;
+    areaLabel.textAlignment = NSTextAlignmentRight;
     areaLabel.textColor = R_G_B_16(0x909090);
     [areaLabel fitTextWidth_Ext];
     if (_model.province) {
@@ -312,7 +323,7 @@
     [bgView addSubview:areaLabel];
 
     // 显示类型
-    UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14) + PX_TO_PT(88)*3, ScreenWidth/2-PX_TO_PT(70), PX_TO_PT(60))];
+    UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(14) + PX_TO_PT(88)*3, ScreenWidth/2-PX_TO_PT(70)-PX_TO_PT(10), PX_TO_PT(60))];
     typeLabel.textAlignment = NSTextAlignmentRight;
     typeLabel.textColor = R_G_B_16(0x909090);
     typeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
@@ -340,10 +351,9 @@
         };
         userNameVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:userNameVC animated:YES];
-        
+       // 性别
     }else if (button.tag == KbtnTag + 1){
-        UIAlertView*al=[[UIAlertView alloc]initWithTitle:@"选择性别" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"男",@"女",nil];
-        [al show];
+        [self createSexAlertView];
     
     }else if (button.tag == KbtnTag +2 ){
         XNRMobAddress *addressVC = [[XNRMobAddress alloc] init];
@@ -368,18 +378,130 @@
             if ([self.typeNum integerValue] == 5) {
                 [self createRscView];
                 self.bottomBtn.frame = CGRectMake(0, CGRectGetMaxY(self.RscBtn.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(88));
-                self.resignLoginBtn.frame = CGRectMake(PX_TO_PT(32),CGRectGetMaxY(self.bottomBtn.frame) + PX_TO_PT(100), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88));
+                self.addressManagerBtn.frame = CGRectMake(0, CGRectGetMaxY(self.bottomBtn.frame), ScreenWidth, PX_TO_PT(88));
+                //  self.resignLoginBtn.frame = CGRectMake(PX_TO_PT(32),CGRectGetMaxY(self.bottomBtn.frame) + PX_TO_PT(100), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88));
 
             }else{
-            self.bottomBtn.frame = CGRectMake(0, CGRectGetMaxY(self.bgView.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(88));
+                self.bottomBtn.frame = CGRectMake(0, CGRectGetMaxY(self.bgView.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(88));
+                self.addressManagerBtn.frame = CGRectMake(0, CGRectGetMaxY(self.bottomBtn.frame), ScreenWidth, PX_TO_PT(88));
                 [self.RscBtn removeFromSuperview];
-                self.resignLoginBtn.frame = CGRectMake(PX_TO_PT(32),CGRectGetMaxY(self.bottomBtn.frame) + PX_TO_PT(100), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88));
+//                self.resignLoginBtn.frame = CGRectMake(PX_TO_PT(32),CGRectGetMaxY(self.bottomBtn.frame) + PX_TO_PT(100), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88));
 
             }
 
         };
     }
 }
+
+-(UIView *)createSexAlertView{
+    
+    UIView *coverView = [[UIView alloc] initWithFrame:AppKeyWindow.bounds];
+    coverView.backgroundColor = [UIColor blackColor];
+    coverView.alpha = 0.6;
+    self.coverView = coverView;
+    [AppKeyWindow addSubview:coverView];
+    
+    UIView *warnView = [[UIView alloc]initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(600))/2, PX_TO_PT(450), PX_TO_PT(600), PX_TO_PT(400))];
+    warnView.layer.cornerRadius = PX_TO_PT(20);
+    warnView.backgroundColor = [UIColor whiteColor];
+    self.warnView = warnView;
+    [AppKeyWindow addSubview:warnView];
+    
+    UILabel *successLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(0), 0, ScreenWidth - PX_TO_PT(200), PX_TO_PT(100))];
+    successLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    successLabel.text = @"选择性别";
+    successLabel.textAlignment = NSTextAlignmentCenter;
+    successLabel.textColor = R_G_B_16(0x323232);
+    [warnView addSubview:successLabel];
+    
+    UIImageView *manImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), CGRectGetMaxY(successLabel.frame)+PX_TO_PT(20), PX_TO_PT(60), PX_TO_PT(60))];
+    manImageView.image = [UIImage imageNamed:@"my_boy-icon"];
+    [warnView addSubview:manImageView];
+    
+    UILabel *manLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(manImageView.frame)+PX_TO_PT(20), CGRectGetMaxY(successLabel.frame), PX_TO_PT(100), PX_TO_PT(100))];
+    manLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    manLabel.text = @"男";
+    manLabel.textAlignment = NSTextAlignmentLeft;
+    manLabel.textColor = R_G_B_16(0x323232);
+    [warnView addSubview:manLabel];
+    
+    UIButton *manBtn = [MyControl createButtonWithFrame:CGRectMake(PX_TO_PT(30),CGRectGetMaxY(successLabel.frame),ScreenWidth - PX_TO_PT(200),PX_TO_PT(100)) ImageName:@"" Target:self Action:@selector(manBtnClick) Title:nil];
+    [warnView addSubview:manBtn];
+    
+    UIImageView *womanImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), CGRectGetMaxY(manBtn.frame)+PX_TO_PT(20), PX_TO_PT(60), PX_TO_PT(60))];
+    womanImageView.image = [UIImage imageNamed:@"my_girl"];
+    [warnView addSubview:womanImageView];
+    
+    UILabel *womanLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(womanImageView.frame)+PX_TO_PT(20), CGRectGetMaxY(manBtn.frame), PX_TO_PT(100), PX_TO_PT(100))];
+    womanLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    womanLabel.text = @"女";
+    womanLabel.textAlignment = NSTextAlignmentLeft;
+    womanLabel.textColor = R_G_B_16(0x323232);
+    [warnView addSubview:womanLabel];
+
+    
+    UIButton *womanBtn = [MyControl createButtonWithFrame:CGRectMake(PX_TO_PT(30),CGRectGetMaxY(manBtn.frame),ScreenWidth - PX_TO_PT(200),PX_TO_PT(100)) ImageName:@"" Target:self Action:@selector(womanBtnClick) Title:nil];
+    [warnView addSubview:womanBtn];
+    
+    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelBtn.frame = CGRectMake(0, CGRectGetMaxY(womanBtn.frame), ScreenWidth - PX_TO_PT(200), PX_TO_PT(100));
+    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
+    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [warnView addSubview:cancelBtn];
+    
+    for (int i = 1; i<4; i++) {
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100)*i, ScreenWidth-PX_TO_PT(200), 1)];
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
+        [warnView addSubview:lineView];
+    }
+    
+    return coverView;
+}
+
+-(void)manBtnClick
+{
+    [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"false",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            self.sexLabel.text = @"男";
+            UserInfo *info = [DataCenter account];
+            info.sex = self.sexLabel.text;
+            [DataCenter saveAccount:info];
+            [self cancelBtnClick];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+
+
+}
+
+-(void)womanBtnClick
+{
+    [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"ture",@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            self.sexLabel.text = @"女";
+            UserInfo *info = [DataCenter account];
+            info.sex = self.sexLabel.text;
+            [DataCenter saveAccount:info];
+            [self cancelBtnClick];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+
+}
+
+-(void)cancelBtnClick
+{
+    [UIView animateWithDuration:2.0 animations:^{
+        [self.coverView removeFromSuperview];
+        [self.warnView removeFromSuperview];
+    } completion:^(BOOL finished) {
+    }];
+}
+
 
 -(void)createRscView
 {
@@ -390,28 +512,43 @@
     self.RscBtn = RscBtn;
     [self.mainScrollView addSubview:RscBtn];
     
-    UILabel *RscLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(70), PX_TO_PT(88))];
+    UILabel *RscLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(70)-PX_TO_PT(10), PX_TO_PT(88))];
     RscLabel.textAlignment = NSTextAlignmentRight;
     RscLabel.textColor = R_G_B_16(0x00b38a);
     RscLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.RscLabel = RscLabel;
-    if ([_model.RSCInfoVerifing integerValue] == 1) {
-        RscLabel.text = @"资料正在审核，请耐心等待";
+    
+    _userArray = [NSMutableArray array];
+    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid} success:^(id result) {
+        if ([result[@"code"] integerValue] == 1000) {
+            NSDictionary *dict = result[@"datas"];
+            XNRUserInfoModel *model = [[XNRUserInfoModel alloc] init];
+            [model setValuesForKeysWithDictionary:dict];
+            [_userArray addObject:model];
+        }
+        
+        XNRUserInfoModel *infoModel = [_userArray lastObject];
+        if ([infoModel.RSCInfoVerifing integerValue] == 1) {
+            RscLabel.text = @"资料正在审核，请耐心等待";
+        }else{
+            RscLabel.text = @"想成为新新农人的县级网点？去申请认证吧~";
+        }
+        if ([infoModel.isRSC integerValue] == 1) {
+            RscLabel.text = @"查看认证信息";
+        }
+        
+    } failure:^(NSError *error) {
+        
+    }];
 
-    }else{
-        RscLabel.text = @"想成为新新农人的县级网点？去申请认证吧~";
-    }
-    if ([_model.isRSC integerValue] == 1) {
-        RscLabel.text = @"查看认证信息";
-    }
     [RscBtn addSubview:RscLabel];
     
     UIImageView *arrow = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.icon.frame)+PX_TO_PT(10), PX_TO_PT(30), PX_TO_PT(16), PX_TO_PT(28))];
     [arrow setImage:[UIImage imageNamed:@"arrow-1"]];
     [RscBtn addSubview:arrow];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, 1)];
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [RscBtn addSubview:lineView];
 
 }
@@ -446,53 +583,21 @@
     }
 }
 
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex ==0) {
-        
-    }else if (buttonIndex == 1){
-        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"false",@"user-agent":@"IOS-v2.0"} success:^(id result) {
-            if ([result[@"code"] integerValue] == 1000) {
-                self.sexLabel.text = @"男";
-                UserInfo *info = [DataCenter account];
-                info.sex = self.sexLabel.text;
-                [DataCenter saveAccount:info];
-             }
-        } failure:^(NSError *error) {
-        
-        }];
-    }else{
-        [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"sex":@"ture",@"user-agent":@"IOS-v2.0"} success:^(id result) {
-            if ([result[@"code"] integerValue] == 1000) {
-                self.sexLabel.text = @"女";
-                UserInfo *info = [DataCenter account];
-                info.sex = self.sexLabel.text;
-                [DataCenter saveAccount:info];
-
-            }
-        } failure:^(NSError *error) {
-            
-        }];
-
-    }
-}
 #pragma mark--底部视图
 -(void)createBottom{
-    
     
     CGFloat margin = PX_TO_PT(20);
     UIButton *bottomBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     if ([_model.userType integerValue] == 5 || [self.typeNum integerValue] == 5) {
         bottomBtn.frame = CGRectMake(0, CGRectGetMaxY(self.RscBtn.frame)+margin, ScreenWidth, PX_TO_PT(88));
-        
     }else{
         bottomBtn.frame = CGRectMake(0, CGRectGetMaxY(self.bgView.frame)+margin, ScreenWidth, PX_TO_PT(88));
     }
     bottomBtn.backgroundColor = [UIColor whiteColor];
     [bottomBtn addTarget: self action:@selector(ModPassword) forControlEvents:UIControlEventTouchUpInside];
-
     self.bottomBtn = bottomBtn;
     [self.mainScrollView addSubview:bottomBtn];
+    
     
     UIImageView *arrow3 = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.icon.frame)+PX_TO_PT(10), PX_TO_PT(30), PX_TO_PT(16), PX_TO_PT(28))];
     [arrow3 setImage:[UIImage imageNamed:@"arrow-1"]];
@@ -500,7 +605,7 @@
 
     UIButton *pwdBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [pwdBtn setImage:[UIImage imageNamed:@"my_password"] forState:UIControlStateNormal];
-    pwdBtn.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(14), PX_TO_PT(45), PX_TO_PT(45));
+    pwdBtn.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(22), PX_TO_PT(39), PX_TO_PT(43));
     self.pwdBtn = pwdBtn;
     [bottomBtn addSubview:pwdBtn];
     
@@ -510,19 +615,45 @@
     pwdLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [bottomBtn addSubview:pwdLabel];
     
-    UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth,PX_TO_PT(1))];
-    topLine.backgroundColor=R_G_B_16(0xc7c7c7);
+    UIButton *addressManagerBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    addressManagerBtn.frame = CGRectMake(0, CGRectGetMaxY(bottomBtn.frame), ScreenWidth, PX_TO_PT(88));
+    addressManagerBtn.backgroundColor = [UIColor whiteColor];
+    [addressManagerBtn addTarget: self action:@selector(addressManagerBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    self.addressManagerBtn = addressManagerBtn;
+    [self.mainScrollView addSubview:addressManagerBtn];
+    
+    UIImageView *arrowAddress = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.icon.frame)+PX_TO_PT(10), PX_TO_PT(30), PX_TO_PT(16), PX_TO_PT(28))];
+    [arrowAddress setImage:[UIImage imageNamed:@"arrow-1"]];
+    [addressManagerBtn addSubview:arrowAddress];
+    
+    UIButton *addressBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addressBtn setImage:[UIImage imageNamed:@"address1-icon"] forState:UIControlStateNormal];
+    addressBtn.frame = CGRectMake(PX_TO_PT(32), PX_TO_PT(22), PX_TO_PT(39), PX_TO_PT(43));
+    //    self.addressBtn = addressBtn;
+    [addressManagerBtn addSubview:addressBtn];
+    
+    UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.nickNameBtn.frame) + margin, PX_TO_PT(14), ScreenWidth/2, PX_TO_PT(60))];
+    addressLabel.text = @"地址管理";
+    addressLabel.textColor = R_G_B_16(0x323232);
+    addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    [addressManagerBtn addSubview:addressLabel];
+
+    UIView *topLine=[[UIView alloc]initWithFrame:CGRectMake(0, 0,ScreenWidth,1)];
+    topLine.backgroundColor=R_G_B_16(0xe0e0e0);
     [bottomBtn addSubview:topLine];
     
-    UIView*bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(88), ScreenWidth, PX_TO_PT(1))];
-    bottomLine.backgroundColor=R_G_B_16(0xc7c7c7);
+    UIView *middleLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(86), ScreenWidth, 1)];
+    middleLine.backgroundColor=R_G_B_16(0xe0e0e0);
+    [bottomBtn addSubview:middleLine];
+    
+    UIView *bottomLine=[[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(176), ScreenWidth, 1)];
+    bottomLine.backgroundColor=R_G_B_16(0xe0e0e0);
     [bottomBtn addSubview:bottomLine];
-    
-    
+
     UIButton *resignLoginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     resignLoginBtn.layer.cornerRadius = 5.0;
     resignLoginBtn.layer.masksToBounds = YES;
-    resignLoginBtn.frame = CGRectMake(PX_TO_PT(32),CGRectGetMaxY(bottomBtn.frame) + PX_TO_PT(100), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88));
+    resignLoginBtn.frame = CGRectMake(PX_TO_PT(32),ScreenHeight-64-PX_TO_PT(122), ScreenWidth-PX_TO_PT(32)*2, PX_TO_PT(88));
     [resignLoginBtn setTitle:@"退出登录" forState:UIControlStateNormal];
     [resignLoginBtn setTitleColor:R_G_B_16(0xffffff) forState:UIControlStateNormal];
     [resignLoginBtn setBackgroundColor:R_G_B_16(0x00b38a)];
@@ -531,7 +662,18 @@
     self.resignLoginBtn = resignLoginBtn;
     [resignLoginBtn addTarget:self action:@selector(resignLoginBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.mainScrollView addSubview:resignLoginBtn];
-   
+}
+
+-(void)addressManagerBtnClick
+{
+    XNRManagerTakeAddressController *addressVC = [[XNRManagerTakeAddressController alloc] init];
+    addressVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:addressVC animated:YES];
+    
+//    XNRAddressManageViewController *addressVC = [[XNRAddressManageViewController alloc] init];
+//    addressVC.hidesBottomBarWhenPushed = YES;
+//    [self.navigationController pushViewController:addressVC animated:YES];
+
 }
 #pragma mark - 退出当前账号
 -(void)resignLoginBtnClick
@@ -539,12 +681,11 @@
     UIActionSheet *actionSheet=[[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"退出当前账号" otherButtonTitles: nil];
         actionSheet.tag = 1000;
         [actionSheet showInView:self.view];
-
 }
 
 #pragma mark-修改密码
 -(void)ModPassword{
-    
+
     XNRModPassword_VC*vc=[[XNRModPassword_VC alloc]init];
     vc.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:vc animated:YES];
@@ -554,7 +695,6 @@
     UIActionSheet *action=[[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从手机相册选择" ,nil];
     action.tag = uploadImageTag;
     [action showInView:self.view];
-    
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -564,7 +704,6 @@
         [self showCamera];
         
     }else if(buttonIndex==1){
-        
         [self openPhotoAlbum];
         NSLog(@"相册");
     }
@@ -597,26 +736,34 @@
  */
 - (void)cropViewController:(PECropViewController *)controller didFinishCroppingImage:(UIImage *)croppedImage
 {
-//    [SVProgressHUD showWithStatus:@"正在上传请稍后..." maskType:SVProgressHUDMaskTypeBlack];
     [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     [controller dismissViewControllerAnimated:YES completion:NULL];
-    NSString *userId = [DataCenter account].userid;
     NSString *urlString = [NSString stringWithFormat:@"%@",KUserUploadPortrait];
-    NSString *url = [NSString stringWithFormat:@"%@?userId=%@",urlString,userId];
-    NSString *picSize = [CommonTool uploadPicUrl:url params:@{@"user-agent":@"IOS-v2.0",@"token":[DataCenter account].token} file:@"resFile" picImage:croppedImage success:^(id result) {
+   NSString *picSize = [CommonTool uploadPicUrl:urlString params:@{@"userId":[DataCenter account].userid} file:@"icon" picImage:croppedImage success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
-            [KSHttpRequest post:KUserModify parameters:@{@"userPhoto":result[@"imageUrl"],@"user-agent":@"IOS-v2.0"} success:^(id result) {
+            [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"userPhoto":result[@"imageUrl"],@"user-agent":@"IOS-v2.0"} success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
-                    
-                    [BMProgressView LoadViewDisappear:self.view];
                     [UILabel showMessage:@"头像上传成功"];
+                    [BMProgressView LoadViewDisappear:self.view];
                     [_icon setImage:croppedImage forState:UIControlStateNormal];
+                }else{
+                    [UILabel showMessage:result[@"message"]];
                 }
             } failure:^(NSError *error) {
-                
+                [BMProgressView LoadViewDisappear:self.view]; 
             }];
-                    }
+        }else if([result[@"code"] integerValue] == 1401){
+            [BMProgressView LoadViewDisappear:self.view];
+
+            [UILabel showMessage:result[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     } failure:^(NSError *error) {
         
         [UILabel showMessage:@"网络请求失败"];
@@ -683,21 +830,23 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"我";
     self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
     
-    
 }
+
 
 -(void)backClick{
     

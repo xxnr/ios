@@ -7,7 +7,7 @@
 //
 
 #import "DataCenter.h"
-
+#import "UMessage.h"
 #define QXHAccountFile [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"QXHMJAccount.data"]
 #define ShopCarMarrFile [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"ShopCarMarr.data"]
 @implementation DataCenter
@@ -28,6 +28,12 @@
 
 +(BOOL)saveAccount:(UserInfo *)account
 {
+    if (!account.loginState) {
+        [UMessage removeAlias:[DataCenter account].userid type:kUMessageAliasTypexxnr response:^(id responseObject, NSError *error) {
+            NSLog(@"友盟消息推送 error: %@" ,error);
+
+        }];
+    }
    return [NSKeyedArchiver archiveRootObject:account toFile:QXHAccountFile];
 }
 

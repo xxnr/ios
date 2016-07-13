@@ -9,6 +9,7 @@
 #import "XNROrderSuccessViewController.h"
 #import "XNRCheckOrderVC.h"
 #import "XNRMyOrder_VC.h"
+#import "XNRProductInfo_VC.h"
 @interface XNROrderSuccessViewController ()
 
 @property (nonatomic,strong) UILabel *titleLabel;
@@ -31,15 +32,7 @@
     [self createBtn];
 }
 
-//-(void)getData
-//{
-//    [KSHttpRequest get:KAlipaySuccess parameters:nil success:^(id result) {
-//        
-//        NSLog(@"%@",result);
-//    } failure:^(NSError *error) {
-//        
-//    }];
-//}
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:YES];
@@ -124,10 +117,11 @@
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
+    
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchDown];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
 }
@@ -143,6 +137,13 @@
             return;
         }
     }
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[XNRProductInfo_VC class]]) {
+            [self.navigationController popToViewController:vc animated:YES];
+            return;
+        }
+    }
+
     [self.navigationController popToRootViewControllerAnimated:YES];
     
 //    NSNotification *notification = [[NSNotification alloc]initWithName:@"reloadOrderList" object:nil userInfo:nil];

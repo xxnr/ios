@@ -41,7 +41,7 @@
     
     CGFloat attributesLabelX = CGRectGetMaxX(_imageViewF)+PX_TO_PT(20);
     CGFloat attributesLabelY = CGRectGetMaxY(_goodsNameLabelF)+PX_TO_PT(20);
-    CGFloat attributesLabelW = ScreenWidth - attributesLabelX - PX_TO_PT(100);
+    CGFloat attributesLabelW = PX_TO_PT(342);
     CGSize  attributesLabelMaxSize = CGSizeMake(attributesLabelW, MAXFLOAT);
     NSMutableString *attributesStr = [[NSMutableString alloc] initWithString:@""];
     for (NSDictionary *subDic in self.model.attributes) {
@@ -55,13 +55,13 @@
             CGFloat bottomLineX = 0;
             CGFloat bottomLineY = CGRectGetMaxY(_attributesLabelF)+PX_TO_PT(30);
             CGFloat bottomLineW = ScreenWidth;
-            CGFloat bottomLineH = PX_TO_PT(1);
+            CGFloat bottomLineH = 1;
             _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         }else{
             CGFloat bottomLineX = 0;
             CGFloat bottomLineY = CGRectGetMaxY(_imageViewF)+PX_TO_PT(30);
             CGFloat bottomLineW = ScreenWidth;
-            CGFloat bottomLineH = PX_TO_PT(1);
+            CGFloat bottomLineH = 1;
             _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         }
     }else{
@@ -92,7 +92,7 @@
         CGFloat bottomLineX = 0;
         CGFloat bottomLineY = CGRectGetMaxY(_addtionsLabelF)+PX_TO_PT(30);
         CGFloat bottomLineW = ScreenWidth;
-        CGFloat bottomLineH = PX_TO_PT(1);
+        CGFloat bottomLineH = 1;
         _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         
     }

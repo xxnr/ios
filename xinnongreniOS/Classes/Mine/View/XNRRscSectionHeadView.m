@@ -45,9 +45,10 @@
     self.dataLabel = dataLabel;
     [headView addSubview:dataLabel];
     
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(dataLabel.frame), 0, PX_TO_PT(110), PX_TO_PT(88))];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(dataLabel.frame), 0, PX_TO_PT(300), PX_TO_PT(88))];
     nameLabel.textColor = R_G_B_16(0x323232);
     nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    nameLabel.textAlignment = NSTextAlignmentLeft;
     self.nameLabel = nameLabel;
     [headView addSubview:nameLabel];
     
@@ -59,8 +60,8 @@
     [headView addSubview:orderStateLabel];
     
     for (int i = 0; i<2; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88)*i, ScreenWidth, PX_TO_PT(1))];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88)*i, ScreenWidth, 1)];
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:lineView];
     }
 

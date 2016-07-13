@@ -167,7 +167,7 @@
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     
-    NSDictionary *params = @{@"userId":[DataCenter account].userid,@"SKUs":self.dataArray,@"user-agent":@"IOS-v2.0"};
+    NSDictionary *params = @{@"userId":[DataCenter account].userid,@"SKUs":self.dataArray,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     
     [manager POST:KGetDeliveries parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -236,7 +236,7 @@
 
 -(void)getRSCWebSiteData
 {
-    [KSHttpRequest get:KgetRSC parameters:@{@"products":[self GetProId],@"province":@"",@"city":@"",@"county":@""} success:^(id result)
+    [KSHttpRequest get:KgetRSC parameters:@{@"products":[self GetProId],@"province":@"",@"city":@"",@"county":@"",@"token":[DataCenter account].token} success:^(id result)
      {
          if ([result[@"code"]integerValue] == 1000) {
              _webSiteArr = (NSMutableArray *)[XNRRSCModel objectArrayWithKeyValuesArray:result[@"RSCs"]];
@@ -281,7 +281,7 @@
     [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
-    NSDictionary *params = @{@"SKUs":self.dataArray,@"user-agent":@"IOS-v2.0"};
+    NSDictionary *params = @{@"SKUs":self.dataArray,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
 
     [manager POST:KGetShoppingCartOffline parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [_dataArr removeAllObjects];
@@ -629,7 +629,7 @@
     }
     CGSize contactLabelSize = [contactLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(PX_TO_PT(600), MAXFLOAT)];
     contactLabel.numberOfLines = 0;
-    contactLabel.frame = CGRectMake(PX_TO_PT(83), PX_TO_PT(28), contactLabelSize.width, contactLabelSize.height);
+    contactLabel.frame = CGRectMake(PX_TO_PT(83), PX_TO_PT(27), contactLabelSize.width, contactLabelSize.height);
     
     contactBtn.frame = CGRectMake(0, CGRectGetMaxY(addressBtn.frame), ScreenWidth, contactLabelSize.height+PX_TO_PT(56));
     contactLabel.textAlignment = NSTextAlignmentLeft;
@@ -763,13 +763,16 @@
             
             NSMutableArray *arr = (NSMutableArray *)[XNRConsigneeModel objectArrayWithKeyValuesArray:result[@"datas"][@"rows"]];
 
-            self.consigneeModel = arr[0];
-            self.consigneeName = self.consigneeModel.consigneeName;
-            self.consigneePhone = self.consigneeModel.consigneePhone;
-           
-            self.RSCContactInfo = [NSString stringWithFormat:@"%@ %@",self.consigneeName,self.consigneePhone];
+            if (arr.count > 0) {
+                self.consigneeModel = arr[0];
+                self.consigneeName = self.consigneeModel.consigneeName;
+                self.consigneePhone = self.consigneeModel.consigneePhone;
+                
+                self.RSCContactInfo = [NSString stringWithFormat:@"%@ %@",self.consigneeName,self.consigneePhone];
+                
 
-
+            }
+     
             [self createDeliveryView:self.RSCDetailAddress andContact:self.RSCContactInfo];
 
             // 来自购物车页面的话才加载
@@ -877,7 +880,7 @@
     [addressView addSubview:arrowImageView];
     
     UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-    headLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    headLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [addressView addSubview:headLine];
     _addressView.hidden = YES;
 //    [self.view addSubview:_headViewSpecial];
@@ -1020,7 +1023,7 @@
     [addressView addSubview:arrowImageView];
     
     UIView *headLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-    headLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    headLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [addressView addSubview:headLine];
     _addressView.hidden = YES;
     //    [self.view addSubview:_headViewSpecial];
@@ -1035,7 +1038,7 @@
 
 #pragma mark-中部视图
 -(void)createMid{
-    UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64-PX_TO_PT(89) ) style:UITableViewStylePlain];
+    UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64-PX_TO_PT(88) ) style:UITableViewStyleGrouped];
     tableview.backgroundColor=[UIColor clearColor];
     tableview.showsHorizontalScrollIndicator=NO;
     tableview.showsVerticalScrollIndicator=NO;
@@ -1085,7 +1088,7 @@
     [footView addSubview: totalPricelabel];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(2))];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [footView addSubview:lineView];
 
 }
@@ -1113,11 +1116,11 @@
         [headView addSubview:label];
         
         UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
-        lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView1.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:lineView1];
         
         UIView *lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, PX_TO_PT(1))];
-        lineView2.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView2.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:lineView2];
         
         [topView addSubview:headView];
@@ -1135,7 +1138,10 @@
     return PX_TO_PT(89);
 
 }
-
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 1;
+}
 //设置段数
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -1225,7 +1231,7 @@
             return;
         }
         if([self.RSCContactLabel.text isEqualToString:@"请填写收货人信息"]){
-            [UILabel showMessage:@"请填写收货人信息"];
+            [UILabel showMessage:@"请选择联系人"];
             return;
         }
         if ([self.webSiteLabel.text isEqualToString:@"您选择的商品不能在同一个网点自提，请返回购物车重新选择"]) {
@@ -1233,7 +1239,7 @@
             return;
         }
 
-        params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"deliveryType":[NSNumber numberWithInt:_deliveryType],@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"RSCId":self.RSCId?self.RSCId:@"",@"consigneePhone":self.consigneePhone,@"consigneeName":self.consigneeName,@"SKUs":self.dataArray,@"token":[DataCenter account].token,@"payType":@"1",@"user-agent":@"IOS-v2.0"};
+        params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"deliveryType":[NSNumber numberWithInt:_deliveryType],@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"RSCId":self.RSCId?self.RSCId:@"",@"consigneePhone":self.consigneePhone,@"consigneeName":self.consigneeName,@"SKUs":self.dataArray,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"payType":@"1",@"user-agent":@"IOS-v2.0"};
 
     }
     else
@@ -1244,10 +1250,7 @@
         }
         
 
-        params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"SKUs":self.dataArray,@"token":[DataCenter account].token,@"payType":@"1",@"user-agent":@"IOS-v2.0"};
-
-
-//        params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"RSCId":self.RSCId?self.RSCId:@"",@"SKUs":self.dataArray,@"token":[DataCenter account].token,@"payType":@"1",@"user-agent":@"IOS-v2.0"};
+        params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"SKUs":self.dataArray,@"payType":@"1",@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -1257,8 +1260,6 @@
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     [manager POST:KAddOrder parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -1309,7 +1310,7 @@
         }else if ([resultObj[@"code"] integerValue] == 1001) {
             [UILabel showMessage:resultObj[@"message"]];
         }
-        else{
+        else if ([resultObj[@"code"] integerValue] == 1401){
                 [UILabel showMessage:resultObj[@"message"]];
                 UserInfo *infos = [[UserInfo alloc]init];
                 infos.loginState = NO;
@@ -1370,17 +1371,19 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"提交订单";
     self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
 }

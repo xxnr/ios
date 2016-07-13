@@ -23,7 +23,7 @@
     
     CGFloat goodsNameLabelX = CGRectGetMaxX(_imageViewF)+PX_TO_PT(20);
     CGFloat goodsNameLabelY = PX_TO_PT(40);
-    CGFloat goodsNameLabelW = ScreenWidth - goodsNameLabelX-PX_TO_PT(100);
+    CGFloat goodsNameLabelW = ScreenWidth - goodsNameLabelX-PX_TO_PT(150);
     CGFloat goodsNameLabelH = PX_TO_PT(80);
     _goodsNameLabelF  =CGRectMake(goodsNameLabelX, goodsNameLabelY, goodsNameLabelW, goodsNameLabelH);
     
@@ -52,13 +52,13 @@
             CGFloat bottomLineX = 0;
             CGFloat bottomLineY = CGRectGetMaxY(_attributesLabelF)+PX_TO_PT(30);
             CGFloat bottomLineW = ScreenWidth;
-            CGFloat bottomLineH = PX_TO_PT(1);
+            CGFloat bottomLineH = 1;
             _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         }else{
             CGFloat bottomLineX = 0;
             CGFloat bottomLineY = CGRectGetMaxY(_imageViewF)+PX_TO_PT(30);
             CGFloat bottomLineW = ScreenWidth;
-            CGFloat bottomLineH = PX_TO_PT(1);
+            CGFloat bottomLineH = 1;
             _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         }
 
@@ -91,7 +91,7 @@
         CGFloat bottomLineX = 0;
         CGFloat bottomLineY = CGRectGetMaxY(_addtionsLabelF)+PX_TO_PT(30);
         CGFloat bottomLineW = ScreenWidth;
-        CGFloat bottomLineH = PX_TO_PT(1);
+        CGFloat bottomLineH = 1;
         _bottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
         
     }

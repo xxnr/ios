@@ -11,6 +11,7 @@
 @interface XNRPayType_VC : UIViewController
 @property (nonatomic,copy) NSString *fromType; //来自哪个界面
 @property (nonatomic, copy) NSString *paymentId;
+@property (nonatomic,copy) NSString *dueMoney;
 @property (nonatomic,copy) NSString *payMoney;    //价钱
 @property (nonatomic,copy) NSString *orderID;  //订单号
 @property (nonatomic, copy) NSString *recieveName;

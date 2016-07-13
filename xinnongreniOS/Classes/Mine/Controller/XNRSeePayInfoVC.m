@@ -110,7 +110,7 @@
     
     //付款状态
     UILabel *statusLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(0), PX_TO_PT(84), ScreenWidth - PX_TO_PT(33), PX_TO_PT(26))];
-    statusLabel.textAlignment = UITextAlignmentRight;
+    statusLabel.textAlignment = NSTextAlignmentRight;
     statusLabel.textColor = R_G_B_16(0xFE9B00);
     
     //付款状态
@@ -131,17 +131,17 @@
     statusLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     [headViewTop addSubview:statusLabel];
     
-    UIView *line0 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(1),ScreenWidth, PX_TO_PT(1))];
-    line0.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line0 = [[UIView alloc]initWithFrame:CGRectMake(0, 1,ScreenWidth, 1)];
+    line0.backgroundColor = R_G_B_16(0xe0e0e0);
 
     [headViewTop addSubview:line0];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(127),ScreenWidth - PX_TO_PT(66), PX_TO_PT(1))];
-    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(127),ScreenWidth - PX_TO_PT(66), 1)];
+    line1.backgroundColor = R_G_B_16(0xe0e0e0);
     [headViewTop addSubview:line1];
     
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(249),ScreenWidth, PX_TO_PT(1))];
-    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(249),ScreenWidth, 1)];
+    line2.backgroundColor = R_G_B_16(0xe0e0e0);
     [headViewTop addSubview:line2];
     
     
@@ -152,12 +152,12 @@
     label.text = @"支付详情";
     [viewTop2 addSubview:label];
     
-    UIView *line3 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(1),ScreenWidth, PX_TO_PT(1))];
-    line3.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line3 = [[UIView alloc]initWithFrame:CGRectMake(0, 1,ScreenWidth, 1)];
+    line3.backgroundColor = R_G_B_16(0xe0e0e0);
     [viewTop2 addSubview:line3];
     
-    UIView *line4 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(79),ScreenWidth, PX_TO_PT(1))];
-    line4.backgroundColor = R_G_B_16(0xc7c7c7);
+    UIView *line4 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(79),ScreenWidth, 1)];
+    line4.backgroundColor = R_G_B_16(0xe0e0e0);
     [viewTop2 addSubview:line4];
     
     [headView addSubview:headViewTop];
@@ -191,7 +191,7 @@
     XNRPayInfoModel *model = [[XNRPayInfoModel alloc]init];
     [model setValuesForKeysWithDictionary:self.model.payments[indexPath.row]];
     
-    if (model.payType == 1 || model.payType == 2 || model.payType == 3|| model.payType == 4) {
+    if (model.payType == 1 || model.payType == 2 || model.payType == 3|| model.payType == 4|| model.payType == 5) {
         return PX_TO_PT(223);
     }
     else
@@ -204,17 +204,19 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"查看支付详情";
     self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backButton.frame=CGRectMake(0, 0, 30, 44);
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
     

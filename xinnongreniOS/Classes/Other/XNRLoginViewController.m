@@ -47,6 +47,17 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self createMainView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushLoginVC) name:@"pushLoginVC" object:nil];
+}
+
+-(void)pushLoginVC
+{
+    [self.navigationController pushViewController:self animated:YES];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -83,8 +94,9 @@
     self.navigationItem.title = @"登录";
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [backBtn setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
-    backBtn.frame = CGRectMake(0, 0, 80, 40);
-    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backBtn.frame = CGRectMake(0, 0, 30, 40);
+    [backBtn setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     [backBtn addTarget:self action:@selector(backBtnClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backBtn];
     self.navigationItem.leftBarButtonItem = leftItem;
@@ -109,7 +121,7 @@
     }
     if (self.com) {
         self.com();
-    }
+        }
 
 }
 #pragma mark - 创建中部视图(包含用户名和密码)
@@ -138,7 +150,7 @@
     usernameTextField.alpha = 1;
     usernameTextField.placeholder = @"请输入您的手机号";
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *userName = [ user objectForKey:@"userName"];
+    NSString *userName = [user objectForKey:@"userName"];
 
     if (userName) {
         usernameTextField.text = userName;
@@ -299,16 +311,16 @@
     NSString *title;
     if ([self.usernameTextField.text isEqualToString:@""] || self.usernameTextField.text == nil) {
         flag = 0;
-        title= @"用户名不能为空";
+        title= @"请输入手机号";
+    }
+    else if([self validateMobile:self.usernameTextField.text]==NO)
+    {
+        flag=0;
+        title=@"请输入正确的手机号";
     }
     else if ([self.passwordTextField.text isEqualToString:@""] || self.passwordTextField.text == nil) {
         flag = 0;
-        title= @"密码不能为空";
-    }else if([self validateMobile:self.usernameTextField.text]==NO)
-    {
-        flag=0;
-        title=@"手机格式错误";
-       
+        title= @"请输入密码";
     }else{
         
         [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:NO];
@@ -320,6 +332,10 @@
                 [self getNetwork];
                 NSLog(@"======%@",pubKey);
                 
+            }
+            else
+            {
+                [UILabel showMessage:result[@"message"]];
             }
             
         } failure:^(NSError *error) {
@@ -349,6 +365,8 @@
         
         if ([result[@"code"] integerValue] == 1000){
             
+            [UILabel showMessage:result[@"message"]];
+            
             [BMProgressView LoadViewDisappear:self.view];
             //本地归档保存用户账户信息
             NSDictionary *datasDic = result[@"datas"];
@@ -358,7 +376,7 @@
             NSDictionary *county = address[@"county"];
             NSDictionary *town = address[@"town"];
 
-            UserInfo *info = [DataCenter account];
+            UserInfo *info = [[UserInfo alloc] init];
             [info setValuesForKeysWithDictionary:datasDic];
             info.loginState = YES;
             info.userid = datasDic[@"userid"];
@@ -387,7 +405,7 @@
                     [self synchShoppingCarDataWith:model];
                 }
                 // 清空购物车列表
-                [dataManager deleteShoppingCar];
+//                [dataManager deleteShoppingCar];
             }
             
             
@@ -437,7 +455,7 @@
     for (NSDictionary *dict in model.additions) {
         [addtionsArray addObject:dict[@"ref"]];
     }
-    NSDictionary *params = @{@"SKUId":model._id?model._id:@"",@"userId":[DataCenter account].userid,@"quantity":model.num,@"additions":addtionsArray,@"update_by_add":@"true",@"user-agent":@"IOS-v2.0"};
+    NSDictionary *params = @{@"SKUId":model._id?model._id:@"",@"userId":[DataCenter account].userid,@"quantity":model.num,@"additions":addtionsArray,@"update_by_add":@"true",@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     NSLog(@"--=0=9%@",params);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -448,8 +466,6 @@
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     
     [manager POST:KAddToCart parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -473,7 +489,7 @@
 - (BOOL)validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
-    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
+    NSString *phoneRegex = @"^1\\d{10}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
 }

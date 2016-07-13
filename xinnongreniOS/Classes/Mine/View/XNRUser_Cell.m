@@ -35,7 +35,7 @@
     
     UILabel *registerLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth - PX_TO_PT(32)-PX_TO_PT(111), PX_TO_PT(25), PX_TO_PT(111), PX_TO_PT(42))];
     registerLabel.text = @"已注册";
-    registerLabel.textAlignment = UITextAlignmentCenter;
+    registerLabel.textAlignment = NSTextAlignmentCenter;
     registerLabel.textColor = R_G_B_16(0x00B38A);
     registerLabel.backgroundColor = [UIColor whiteColor];
     registerLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
@@ -46,14 +46,14 @@
     [self.contentView addSubview:registerLabel];
     
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(76), ScreenWidth, PX_TO_PT(1))];
-    line.backgroundColor = R_G_B_16(0xf0f0f0);
+    line.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.contentView addSubview:line];
 }
 -(void)setModel:(XNRBookUser *)model
 {
     self.registerLabel.hidden = YES;
     self.nameLabel.text = model.name;
-    if ([model.sex integerValue] == 1) {
+    if ([model.sex integerValue] == 0) {
         [self.icon setImage:[UIImage imageNamed:@"boy1-ico"]];
     }
     else

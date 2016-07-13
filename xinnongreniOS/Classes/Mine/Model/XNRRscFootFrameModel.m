@@ -52,7 +52,12 @@
     CGFloat middleLineViewX = 0;
     CGFloat middleLineViewY = PX_TO_PT(88);
     CGFloat middleLineViewW = ScreenWidth;
-    CGFloat middleLineViewH = PX_TO_PT(1);
+    CGFloat middleLineViewH;
+    if (IS_FourInch) {
+        middleLineViewH = PX_TO_PT(2);
+    }else{
+        middleLineViewH = 1;
+    }
     _middleLineViewF = CGRectMake(middleLineViewX, middleLineViewY, middleLineViewW, middleLineViewH);
     
     CGFloat footButtonX = ScreenWidth-PX_TO_PT(170);
@@ -70,7 +75,12 @@
     CGFloat bottomLineViewX = 0;
     CGFloat bottomLineViewY = PX_TO_PT(176);
     CGFloat bottomLineViewW = ScreenWidth;
-    CGFloat bottomLineViewH = PX_TO_PT(1);
+    CGFloat bottomLineViewH;
+    if (IS_FourInch) {
+        bottomLineViewH = PX_TO_PT(2);
+    }else{
+        bottomLineViewH = 1;
+    }
     _bottomLineViewF = CGRectMake(bottomLineViewX, bottomLineViewY, bottomLineViewW, bottomLineViewH);
 
 }
@@ -99,7 +109,7 @@
     CGFloat middleLineViewX = 0;
     CGFloat middleLineViewY = PX_TO_PT(88);
     CGFloat middleLineViewW = ScreenWidth;
-    CGFloat middleLineViewH = PX_TO_PT(1);
+    CGFloat middleLineViewH = 1;
     _middleLineViewF = CGRectMake(middleLineViewX, middleLineViewY, middleLineViewW, middleLineViewH);
 
     CGFloat marginViewX = 0;

@@ -164,8 +164,8 @@
 
 
     for (int i = 0; i<3; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, i*PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, i*PX_TO_PT(98), ScreenWidth, 1)];
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [bgView addSubview:lineView];
     }
     
@@ -244,7 +244,7 @@
         NSDictionary *addressDict = @{@"provinceId":[DataCenter account].provinceID?[DataCenter account].provinceID:@"",@"cityId":[DataCenter account].cityID?[DataCenter account].cityID:@"",@"countyId":[DataCenter account].countyID?[DataCenter account].countyID:@"",@"townId":[DataCenter account].townID?[DataCenter account].townID:@""};
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
-        [dic setObject:[DataCenter account].token forKey:@"token"];
+        [dic setObject:[DataCenter account].token?[DataCenter account].token:@"" forKey:@"token"];
         [dic setObject:[DataCenter account].userid forKey:@"userId"];
         [dic setObject:addressDict forKey:@"address"];
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -256,8 +256,7 @@
         [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
         
         [manager POST:KUserModify parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
-            
+    
             self.com(self.addressLabel.text,self.streetLabel.text);
             
             [self.navigationController popViewControllerAnimated:YES];
@@ -273,16 +272,20 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(48)];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"修改所在地区";
     self.navigationItem.titleView = titleLabel;
     
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 0, 80, 44);
-    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
+    backBtn.frame = CGRectMake(0, 0, 30, 44);
+//    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);
     [backBtn addTarget: self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backBtn setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
+
+    [backBtn setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     self.navigationItem.leftBarButtonItem = leftItem;
     

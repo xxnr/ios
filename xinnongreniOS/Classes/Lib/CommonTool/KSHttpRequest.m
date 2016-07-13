@@ -8,6 +8,7 @@
 
 #import "KSHttpRequest.h"
 #import "AppDelegate.h"
+//#import "XNRPushLoginVC.h"
 @implementation KSHttpRequest
 static int loginCount = 0;
 /**
@@ -22,8 +23,9 @@ static int loginCount = 0;
     success:(void (^)(id result))success
     failure:(void (^)(NSError *error))failure
 {
-//    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:param];
-//    [dic setObject:[DataCenter account].token forKey:@"token"];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:param];
+    [dic setObject:[DataCenter account].token?[DataCenter account].token:@"" forKey:@"token"];
+    [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -31,17 +33,10 @@ static int loginCount = 0;
     [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
     manager.requestSerializer.timeoutInterval = 30.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
-    
-    NSLog(@"=========【get】上传数据：=========%@",[NSString stringWithFormat:@"%@",param]);
+    NSLog(@"=========【get】上传数据：=========%@",[NSString stringWithFormat:@"%@",dic]);
     NSString *URL = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-     [manager GET:URL parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-//        //JSON解析
-//         NSString *json = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-//         NSLog(@"---------【get】返回数据:---------%@",json);
-//
-//         //直接将JSON传出去
-//         success(json);
+     [manager GET:URL parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
          NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
          NSLog(@"---------返回数据:---------%@",str);
          id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
@@ -57,15 +52,13 @@ static int loginCount = 0;
              UserInfo *infos = [[UserInfo alloc]init];
              infos.loginState = NO;
              [DataCenter saveAccount:infos];
-             //发送刷新通知
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
-             
              XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
              vc.com = ^(){
                  loginCount = 0;
              };
              vc.hidesBottomBarWhenPushed = YES;
              UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+             NSLog(@"currentVc===%@",currentVc);
              if (loginCount<1) {
                  [currentVc.navigationController pushViewController:vc animated:YES];
                  loginCount++;
@@ -95,18 +88,9 @@ static int loginCount = 0;
      success:(void (^)(id result))success
      failure:(void (^)(NSError *error))failure
 {
-    NSString *dicString = [NSString stringWithFormat:@"%@",param];
-    NSMutableDictionary *dic;
-    __block BOOL isHadUserId = [dicString rangeOfString:@"userId"].length > 0;
-    if (isHadUserId) {
-        dic =[NSMutableDictionary dictionaryWithDictionary:param];
-        [dic setObject:[DataCenter account].token forKey:@"token"];
-        
-    } else {
-        dic = (NSMutableDictionary *)param;
-    }
-//    [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
-    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:param];
+    [dic setObject:[DataCenter account].token?[DataCenter account].token:@"" forKey:@"token"];
+    [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -134,17 +118,15 @@ static int loginCount = 0;
              UserInfo *infos = [[UserInfo alloc]init];
              infos.loginState = NO;
              [DataCenter saveAccount:infos];
-             //发送刷新通知
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
-             
              XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
              vc.com = ^(){
                  loginCount = 0;
              };
              vc.hidesBottomBarWhenPushed = YES;
              UIViewController *currentVc = [[AppDelegate shareAppDelegate] getTopViewController];
+             NSLog(@"currentVc===%@",currentVc);
              if (loginCount<1) {
-                 [currentVc.navigationController pushViewController:vc animated:YES];
+            [currentVc.navigationController pushViewController:vc animated:YES];
                  loginCount++;
              }
          }
@@ -282,6 +264,7 @@ static int loginCount = 0;
     if ([obj isKindOfClass:[NSNull class]]) {
         return YES;
     }
+    
     return NO;
 }
 
