@@ -13,6 +13,7 @@
 
 var target = UIATarget.localTarget();
 var window = target.frontMostApp().windows()[0];
+
 window.logElementTree();
 test("专场测试",function(target,app){
      target.delay(2);
@@ -105,8 +106,7 @@ test("专场测试",function(target,app){
           window.collectionViews()[0].cells()["SUV"].tap();
           window.collectionViews()[0].cells()["7万元以上"].tap();
           window.buttons()["确定"].tap();
-
-
+          
           window.buttons()["综合"].tap();
 
      });

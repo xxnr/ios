@@ -5,18 +5,20 @@
 //#import "../lib/tuneup.js"
 
 var target = UIATarget.localTarget();
+var window = target.frontMostApp().windows()[0];
+
 // target.delay(2);
-// target.frontMostApp().windows()[0].tabBar().buttons()["购物车"].tap();
-// target.frontMostApp().windows()[0].staticTexts()["合计: ￥0.00"].tapWithOptions({tapOffset:{x:0.08, y:0.48}});
+// window.tabBar().buttons()["购物车"].tap();
+// window.staticTexts()["合计: ￥0.00"].tapWithOptions({tapOffset:{x:0.08, y:0.48}});
 //
-// target.frontMostApp().windows()[0].buttons()["去结算(2)"].tap();
+// window.buttons()["去结算(2)"].tap();
 // target.delay(2);
-// target.frontMostApp().windows()[0].logElementTree();
-// target.frontMostApp().windows()[0].tableViews()[0].buttons()[2].tap();
-// target.frontMostApp().windows()[0].tableViews()[1].cells()[0].tap();
-// target.frontMostApp().windows()[0].buttons()["确定"].tap();
+// window.logElementTree();
+// window.tableViews()[0].buttons()[2].tap();
+// window.tableViews()[1].cells()[0].tap();
+// window.buttons()["确定"].tap();
 //
-// target.frontMostApp().windows()[0].buttons()[0].tap();
+// window.buttons()[0].tap();
 
 
 var holdMoney_num;
@@ -27,62 +29,62 @@ var extentMoney_num;
 test("是否拆分订单",function () {
     target.delay(2);
 
-    if (target.frontMostApp().windows()[0].navigationBar().staticTexts()[0].value() == "选择支付订单")
+    if (window.navigationBar().staticTexts()[0].value() == "选择支付订单")
     {
         UIALogger.logMessage("kajds;fajkfd");
-        target.frontMostApp().windows()[0].logElementTree();
-        assertEquals(2,target.frontMostApp().windows()[0].buttons().length);
-        target.frontMostApp().windows()[0].buttons()[0].tap();
+        window.logElementTree();
+        assertEquals(2,window.buttons().length);
+        window.buttons()[0].tap();
         target.delay(2);
-        assertEquals("支付方式",target.frontMostApp().windows()[0].navigationBar().staticTexts()[0].value());
+        assertEquals("支付方式",window.navigationBar().staticTexts()[0].value());
     }
 })
 test("全额支付",function (target,app) {
     target.delay(2);
 
-    target.frontMostApp().windows()[0].collectionViews()[0].buttons()[5].tap();
-    target.frontMostApp().windows()[0].tableViews()[0].tapWithOptions({tapOffset:{x:0.43, y:0.93}});
-    target.frontMostApp().windows()[0].buttons()["立即购买"].tap();
-    target.frontMostApp().windows()[0].buttons()["确定"].tap();
-    target.frontMostApp().windows()[0].tableViews()[0].buttons()[2].tap();
-    target.frontMostApp().windows()[0].tableViews()[1].cells()[0].tap();
-    target.frontMostApp().windows()[0].buttons()["确定"].tap();
-    target.frontMostApp().windows()[0].buttons()["提交订单(1)"].tap();
+    window.collectionViews()[0].buttons()[5].tap();
+    window.tableViews()[0].tapWithOptions({tapOffset:{x:0.43, y:0.93}});
+    window.buttons()["立即购买"].tap();
+    window.buttons()["确定"].tap();
+    window.tableViews()[0].buttons()[2].tap();
+    window.tableViews()[1].cells()[0].tap();
+    window.buttons()["确定"].tap();
+    window.buttons()["提交订单(1)"].tap();
     target.delay(2);
-    target.frontMostApp().windows()[0].logElementTree();
-    target.frontMostApp().windows()[0].buttons()["全额支付"].tap();
-    assertEquals(1,target.frontMostApp().windows()[0].buttons()[6].isVisible());
+    window.logElementTree();
+    window.buttons()["全额支付"].tap();
+    assertEquals(1,window.buttons()[6].isVisible());
 })
 test("分次支付",function () {
-    target.frontMostApp().windows()[0].buttons()["分次支付"].tap();
+    window.buttons()["分次支付"].tap();
 
-    assertEquals(0,target.frontMostApp().windows()[0].buttons()[6].isVisible());
+    assertEquals(0,window.buttons()[6].isVisible());
 })
 test("再次点击全额支付",function () {
-    target.frontMostApp().windows()[0].buttons()["全额支付"].tap();
-    assertEquals(1,target.frontMostApp().windows()[0].buttons()[6].isVisible());
+    window.buttons()["全额支付"].tap();
+    assertEquals(1,window.buttons()[6].isVisible());
 })
 
 test("全额支付金额显示",function () {
-    target.frontMostApp().windows()[0].buttons()["全额支付"].tap();
+    window.buttons()["全额支付"].tap();
 
-    var holdMoneyStr = target.frontMostApp().windows()[0].staticTexts()[1].value();
+    var holdMoneyStr = window.staticTexts()[1].value();
     var holdMoney = holdMoneyStr.substr(5,holdMoneyStr.length-6);
     holdMoney_num = parseFloat(holdMoney);
 
-    var fullMoneyStr = target.frontMostApp().windows()[0].staticTexts()[5].value();
+    var fullMoneyStr = window.staticTexts()[5].value();
     var fullMoney = fullMoneyStr.substr(1,fullMoneyStr.length-1);
     fullMoney_num = parseFloat(fullMoney);
     assertEquals(holdMoney_num,fullMoney_num,"全额支付显示金额有误");
 })
 test("分次支付金额显示",function () {
-    target.frontMostApp().windows()[0].buttons()["分次支付"].tap();
+    window.buttons()["分次支付"].tap();
 
-    var detailMoneyStr = target.frontMostApp().windows()[0].staticTexts()[7].value();
+    var detailMoneyStr = window.staticTexts()[7].value();
     var detailMoney = detailMoneyStr.substr(19,detailMoneyStr.length-30);
     detailMoney_num = parseFloat(detailMoney);
 
-    var splitMoneyStr = target.frontMostApp().windows()[0].staticTexts()[6].value();
+    var splitMoneyStr = window.staticTexts()[6].value();
     var splitMoney = splitMoneyStr.substr(1,splitMoneyStr.length-1);
     splitMoney_num = parseFloat(splitMoney);
     if (holdMoney_num > detailMoney_num){
@@ -96,37 +98,37 @@ test("分次支付金额显示",function () {
 test("分次支付加减按钮显示",function () {
     if (holdMoney_num <= detailMoney_num)
     {
-        assertEquals(0,target.frontMostApp().windows()[0].buttons()[2].isEnabled());
-        assertEquals(0,target.frontMostApp().windows()[0].buttons()[3].isEnabled());
+        assertEquals(0,window.buttons()[2].isEnabled());
+        assertEquals(0,window.buttons()[3].isEnabled());
     }
     else if (holdMoney_num > detailMoney_num && splitMoney_num == detailMoney_num)
     {
-        assertEquals(0,target.frontMostApp().windows()[0].buttons()[2].isEnabled());
-        assertEquals(1,target.frontMostApp().windows()[0].buttons()[3].isEnabled());
+        assertEquals(0,window.buttons()[2].isEnabled());
+        assertEquals(1,window.buttons()[3].isEnabled());
     }
     else if (holdMoney_num > splitMoney_num && splitMoney_num > detailMoney_num)
     {
-        assertEquals(1,target.frontMostApp().windows()[0].buttons()[2].isEnabled());
-        assertEquals(1,target.frontMostApp().windows()[0].buttons()[3].isEnabled());
+        assertEquals(1,window.buttons()[2].isEnabled());
+        assertEquals(1,window.buttons()[3].isEnabled());
     }
     else if (holdMoney_num <= splitMoney_num)
     {
-        assertEquals(1,target.frontMostApp().windows()[0].buttons()[2].isEnabled());
-        assertEquals(0,target.frontMostApp().windows()[0].buttons()[3].isEnabled());
+        assertEquals(1,window.buttons()[2].isEnabled());
+        assertEquals(0,window.buttons()[3].isEnabled());
     }
 })
 test("分次支付加号按钮操作",function () {
 
-    var extentStr = target.frontMostApp().windows()[0].staticTexts()[7].value();
+    var extentStr = window.staticTexts()[7].value();
     var extentMoney = extentStr.substr(10,3);
     extentMoney_num = parseFloat(extentMoney);
 
-    while (target.frontMostApp().windows()[0].buttons()[3].isEnabled() == 1) {
-        target.frontMostApp().windows()[0].buttons()[3].tap();
+    while (window.buttons()[3].isEnabled() == 1) {
+        window.buttons()[3].tap();
 
         target.delay(1);
 
-        var nowsplitMoneyStr = target.frontMostApp().windows()[0].staticTexts()[6].value();
+        var nowsplitMoneyStr = window.staticTexts()[6].value();
         var nowsplitMoney = nowsplitMoneyStr.substr(1,nowsplitMoneyStr.length-1);
         var nowsplitMoney_num = parseFloat(nowsplitMoney);
 
@@ -146,7 +148,7 @@ test("分次支付加号按钮操作",function () {
 
             target.delay(2);
             assertEquals(holdMoney_num, nowsplitMoney_num);
-            assertEquals(0,target.frontMostApp().windows()[0].buttons()[3].isEnabled());
+            assertEquals(0,window.buttons()[3].isEnabled());
         }
         splitMoney_num = nowsplitMoney_num;
     }
@@ -154,16 +156,16 @@ test("分次支付加号按钮操作",function () {
 
 test("分次支付按钮减号操作",function () {
 
-    var splitMoneyStr = target.frontMostApp().windows()[0].staticTexts()[6].value();
+    var splitMoneyStr = window.staticTexts()[6].value();
     var splitMoney = splitMoneyStr.substr(1,splitMoneyStr.length-1);
     splitMoney_num = parseFloat(splitMoney);
 
-    while (target.frontMostApp().windows()[0].buttons()[2].isEnabled() == 1) {
-        target.frontMostApp().windows()[0].buttons()[2].tap();
+    while (window.buttons()[2].isEnabled() == 1) {
+        window.buttons()[2].tap();
 
         target.delay(1);
 
-        var nowsplitMoneyStr = target.frontMostApp().windows()[0].staticTexts()[6].value();
+        var nowsplitMoneyStr = window.staticTexts()[6].value();
         var nowsplitMoney = nowsplitMoneyStr.substr(1,nowsplitMoneyStr.length-1);
         var nowsplitMoney_num = parseFloat(nowsplitMoney);
 
@@ -179,7 +181,7 @@ test("分次支付按钮减号操作",function () {
         {
             target.delay(2);
             assertEquals(detailMoney_num, nowsplitMoney_num);
-            assertEquals(0,target.frontMostApp().windows()[0].buttons()[2].isEnabled());
+            assertEquals(0,window.buttons()[2].isEnabled());
         }
         splitMoney_num = nowsplitMoney_num;
 
@@ -187,17 +189,17 @@ test("分次支付按钮减号操作",function () {
 
 })
 test("选择支付方式",function () {
-    target.frontMostApp().windows()[0].buttons()["全额支付"].tap();
+    window.buttons()["全额支付"].tap();
 
-    target.frontMostApp().windows()[0].buttons()[5].tap();
-    target.frontMostApp().windows()[0].buttons()[6].tap();
-    target.frontMostApp().windows()[0].buttons()[4].tap();
+    window.buttons()[5].tap();
+    window.buttons()[6].tap();
+    window.buttons()[4].tap();
 
-    target.frontMostApp().windows()[0].buttons()[6].tap();
+    window.buttons()[6].tap();
     target.delay(1);
-    target.frontMostApp().windows()[0].buttons()["去支付"].tap();
+    window.buttons()["去支付"].tap();
     target.delay(2);
-    assertEquals("线下支付",target.frontMostApp().windows()[0].navigationBar().staticTexts()[0].value());
+    assertEquals("线下支付",window.navigationBar().staticTexts()[0].value());
 
 
 })

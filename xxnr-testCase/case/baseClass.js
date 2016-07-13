@@ -2,46 +2,55 @@
  * Created by yangning on 16/6/27.
  */
 
- var errorformatPhone = "11100002334";
- var rightPhone = "18790674259";
+var errorformatPhone = "11100002334";
+var rightPhone = "18790674259";
 
 
+var target = UIATarget.localTarget();
+var window = target.frontMostApp().windows()[0];
 
-var logn = function(phone,password){
-    
-    test("账号密码测试",function(target,app){
+function drop_logn(phone,password,message) {
+    test("账号密码测试",function(target,app) {
 
+        target.delay(2);
+        window.images()[0].logElementTree();
+        if (window.images()[0].textFields()[0].textFields()[0].value() != "请输入您的手机号") {
+            window.images()[0].textFields()[0].buttons()["Clear text"].tap();
+        }
+        if (window.images()[0].secureTextFields()[0].secureTextFields()[0].value() != "请输入您的密码") {
+            window.images()[0].secureTextFields()[0].buttons()["Clear text"].tap();
+        }
+
+        window.images()[0].textFields()[0].textFields()[0].tap();
+        window.images()[0].textFields()[0].setValue(phone);
+
+        window.images()[0].logElementTree();
+        window.images()[0].secureTextFields()[0].secureTextFields()[0].tap();
+        window.images()[0].secureTextFields()[0].secureTextFields()[0].setValue(password);
+        window.images()[0].buttons()["确认登录"].tap();
 
         var warning = window.staticTexts()[0].value();
 
-        if(warning && window.navigationBar().staticTexts()[0].value() == "登录")
-        {
-            UIALogger.logMessage("登录页提示 '"+warning+"'");
+        if (warning && window.navigationBar().staticTexts()[0].value() == "登录") {
+            assertEquals(message, warning, "登录出错提醒");
+        }
 
-            if(warning == "手机格式错误")
-            {
-                UIALogger.logMessage("手机格式错误qqq");
-                assertEquals("手机格式错误",warning,"手机号格式出错提醒hhh");
+        else if (warning == " 登录成功") {
+            var navTitle = window.navigationBar().staticTexts()[0].value();
+
+            if (navTitle == "完善个人资料") {
+                window.buttons()["跳过"].tap();
+                target.delay(1);
             }
-            else if(warning == "密码错误")
-            {
-                // target.frontMostApp().windows()[0].logElementTree();
-                assertEquals("密码错误",warning,"手机号格式出错提醒");
-            }
-            else if(warning == "密码不能为空")
-            {
-                assertEquals("密码不能为空",warning,"密码不能为空");
-            }
-            else if(warning == "用户名不能为空")
-            {
-                assertEquals("用户名不能为空",warning,"用户名不能为空提醒");
-            }
-            else if(warning == "账号不存在")
-            {
-                assertEquals("账号不存在",warning,"账号不存在提醒");
-            }
-            else
-            {
-                UIALogger.logFail("登录页面提示有问题: '"+ warning +"'");
-            }
+        }
+    })
+}  
+function drop(method) {
+    if (target.frontMostApp().windows()[0].staticTexts()["您已在其他地方登录"].value() == "您已在其他地方登录")
+    {
+        target.delay(2);
+        assertEquals("登录",window.navigationBar().staticTexts()[0].value());
+        drop_logn("18790674259","123456");
+        method();
+    }
 }
