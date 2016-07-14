@@ -5,6 +5,7 @@
 /**
  * Created by yangning on 16/7/5.
  */
+
 #import "../lib/tuneup.js"
 #import "baseClass.js"
 #import "xxnrClass.js"
@@ -17,7 +18,7 @@ Ab();
 function Aa() {
     test("三个汽车订单", function () {
         target.delay(1);
-        car_special.tap();r
+        car_special.tap();
         window.tableViews()[0].cells()["江淮汽车 - 第二代瑞风S3 - 2015款"].tap();
         window.buttons()["加入购物车"].tap();
         window.collectionViews()[0].cells()["2.0T 自动（6DCT）"].tap();
@@ -81,7 +82,9 @@ function Ab() {
     test("未支付订单--用户订单",function () {
         target.delay(3);
         window.logElementTree();
-        UIALogger.logMessage("")
+         UIALogger.logMessage("");
+         minebtn(window);
+         
         userOrderBtn.tap();
         drop(Ab);
         target.delay(1);
