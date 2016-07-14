@@ -1,6 +1,6 @@
 
 #import "test.js"
-#import "registerData.js"
+#import "data.js"
 
 var target = UIATarget.localTarget();         
 var window = target.frontMostApp().windows()[0];
@@ -12,16 +12,15 @@ test("注册测试",function(){
      window.tableViews()[0].images()[0].buttons()["注册"].tap();
      window.logElementTree();
 
-     for (int i = 0; i<9; i++){
+     for (var i = 0; i<9; i++){
           registerTest(i);
      }
      target.delay(1);
-
+     
      target.tap({x:32,y:385});
      assertEquals("用户协议",window.navigationBar().name());
      window.navigationBar().buttons()["top back"].tap();
      target.delay(1);
-
      target.tap({x:0,y:503});
      assertEquals("登录",window.navigationBar().name());
      window.navigationBar().buttons()["top back"].tap();
@@ -30,7 +29,7 @@ test("注册测试",function(){
 });
 
 function registerTest(i) {
-     registerData(i)
+     registerData(i);
      // input phone
      window.images()[0].textFields()[0].textFields()[0].tap();
      window.images()[0].textFields()[0].textFields()[0].setValue(phone);

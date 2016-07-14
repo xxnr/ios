@@ -1,6 +1,6 @@
 
 #import "test.js"
-#import "forgetPwd.js"
+#import "data.js"
 
 var target = UIATarget.localTarget();         
 var window = target.frontMostApp().windows()[0];

@@ -1,12 +1,6 @@
 /**
- * Created by XXNR on 16/7/13.
+ * Created by XXNR on 16/7/14.
  */
-
-
-
-
-
-
 var phone;
 var identifyCode;
 var password;
