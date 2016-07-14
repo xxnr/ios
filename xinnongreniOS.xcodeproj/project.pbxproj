@@ -311,7 +311,6 @@
 		49933D5F1D3627F500D89DEB /* orderListCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 49933D4C1D3627F500D89DEB /* orderListCase.js */; };
 		49933D601D3627F500D89DEB /* payTypeCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 49933D4D1D3627F500D89DEB /* payTypeCase.js */; };
 		49933D611D3627F500D89DEB /* register.js in Resources */ = {isa = PBXBuildFile; fileRef = 49933D4E1D3627F500D89DEB /* register.js */; };
-		49933D621D3627F500D89DEB /* registerData.js in Resources */ = {isa = PBXBuildFile; fileRef = 49933D4F1D3627F500D89DEB /* registerData.js */; };
 		49933D631D3627F500D89DEB /* representCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 49933D501D3627F500D89DEB /* representCase.js */; };
 		49933D641D3627F500D89DEB /* rscOrder.js in Resources */ = {isa = PBXBuildFile; fileRef = 49933D511D3627F500D89DEB /* rscOrder.js */; };
 		49933D651D3627F500D89DEB /* shoppingcar.js in Resources */ = {isa = PBXBuildFile; fileRef = 49933D521D3627F500D89DEB /* shoppingcar.js */; };
@@ -1222,7 +1221,6 @@
 		49933D4C1D3627F500D89DEB /* orderListCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = orderListCase.js; sourceTree = "<group>"; };
 		49933D4D1D3627F500D89DEB /* payTypeCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = payTypeCase.js; sourceTree = "<group>"; };
 		49933D4E1D3627F500D89DEB /* register.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = register.js; sourceTree = "<group>"; };
-		49933D4F1D3627F500D89DEB /* registerData.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = registerData.js; sourceTree = "<group>"; };
 		49933D501D3627F500D89DEB /* representCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = representCase.js; sourceTree = "<group>"; };
 		49933D511D3627F500D89DEB /* rscOrder.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = rscOrder.js; sourceTree = "<group>"; };
 		49933D521D3627F500D89DEB /* shoppingcar.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = shoppingcar.js; sourceTree = "<group>"; };
@@ -3253,7 +3251,6 @@
 				49933D4C1D3627F500D89DEB /* orderListCase.js */,
 				49933D4D1D3627F500D89DEB /* payTypeCase.js */,
 				49933D4E1D3627F500D89DEB /* register.js */,
-				49933D4F1D3627F500D89DEB /* registerData.js */,
 				49933D501D3627F500D89DEB /* representCase.js */,
 				49933D511D3627F500D89DEB /* rscOrder.js */,
 				49933D521D3627F500D89DEB /* shoppingcar.js */,
@@ -3919,95 +3916,6 @@
 			path = Wechat;
 			sourceTree = "<group>";
 		};
-<<<<<<< HEAD
-=======
-		9CC8004E1D2DFD5000B516E0 /* xxnr-testCase */ = {
-			isa = PBXGroup;
-			children = (
-				9CC8004F1D2DFD5000B516E0 /* .idea */,
-				9CC800581D2DFD5000B516E0 /* case */,
-				9CC800651D2DFD5000B516E0 /* lib */,
-			);
-			path = "xxnr-testCase";
-			sourceTree = "<group>";
-		};
-		9CC8004F1D2DFD5000B516E0 /* .idea */ = {
-			isa = PBXGroup;
-			children = (
-				9CC800501D2DFD5000B516E0 /* compiler.xml */,
-				9CC800511D2DFD5000B516E0 /* copyright */,
-				9CC800531D2DFD5000B516E0 /* demo.iml */,
-				9CC800541D2DFD5000B516E0 /* misc.xml */,
-				9CC800551D2DFD5000B516E0 /* modules.xml */,
-				9CC800561D2DFD5000B516E0 /* vcs.xml */,
-				9CC800571D2DFD5000B516E0 /* workspace.xml */,
-			);
-			path = .idea;
-			sourceTree = "<group>";
-		};
-		9CC800511D2DFD5000B516E0 /* copyright */ = {
-			isa = PBXGroup;
-			children = (
-				9CC800521D2DFD5000B516E0 /* profiles_settings.xml */,
-			);
-			path = copyright;
-			sourceTree = "<group>";
-		};
-		9CC800581D2DFD5000B516E0 /* case */ = {
-			isa = PBXGroup;
-			children = (
-				9CC800591D2DFD5000B516E0 /* accountTestCase.js */,
-				9CC8005A1D2DFD5000B516E0 /* baseClass.js */,
-				9CC8005B1D2DFD5000B516E0 /* carryCase.js */,
-				9CC8005C1D2DFD5000B516E0 /* dispathCase(配送到户).js */,
-				9CC8005D1D2DFD5000B516E0 /* homeCase.js */,
-				9CC8005E1D2DFD5000B516E0 /* lognCase.js */,
-				9CC8005F1D2DFD5000B516E0 /* newsCase.js */,
-				9CC800601D2DFD5000B516E0 /* orderListCase.js */,
-				9CC800611D2DFD5000B516E0 /* payTypeCase.js */,
-				9CC800621D2DFD5000B516E0 /* representCase.js */,
-				9CC800631D2DFD5000B516E0 /* specialPerformance.js */,
-				9CF64AC21D36232D0064BCAC /* shishi.js */,
-				9CF64AC41D36233C0064BCAC /* xxnrClass.js */,
-				9CC800641D2DFD5000B516E0 /* test.js */,
-			);
-			path = case;
-			sourceTree = "<group>";
-		};
-		9CC800651D2DFD5000B516E0 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				9CC800661D2DFD5000B516E0 /* assertions.js */,
-				9CC800671D2DFD5000B516E0 /* image_asserter */,
-				9CC800681D2DFD5000B516E0 /* image_assertion.js */,
-				9CC800691D2DFD5000B516E0 /* image_assertion.rb */,
-				9CC8006A1D2DFD5000B516E0 /* lang-ext.js */,
-				9CC8006B1D2DFD5000B516E0 /* LICENSE */,
-				9CC8006C1D2DFD5000B516E0 /* README.md */,
-				9CC8006D1D2DFD5000B516E0 /* screen.js */,
-				9CC8006E1D2DFD5000B516E0 /* test.js */,
-				9CC8006F1D2DFD5000B516E0 /* test_runner */,
-				9CC800761D2DFD5000B516E0 /* tuneup.js */,
-				9CC800771D2DFD5000B516E0 /* tuneup_js.podspec */,
-				9CC800781D2DFD5000B516E0 /* uiautomation-ext.js */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		9CC8006F1D2DFD5000B516E0 /* test_runner */ = {
-			isa = PBXGroup;
-			children = (
-				9CC800701D2DFD5000B516E0 /* abbreviated_console_output.rb */,
-				9CC800711D2DFD5000B516E0 /* colored_console_output.rb */,
-				9CC800721D2DFD5000B516E0 /* console_output.rb */,
-				9CC800731D2DFD5000B516E0 /* preprocessor.rb */,
-				9CC800741D2DFD5000B516E0 /* run */,
-				9CC800751D2DFD5000B516E0 /* xunit_output.rb */,
-			);
-			path = test_runner;
-			sourceTree = "<group>";
-		};
->>>>>>> ynn_ios
 		9CC800C31D2FABA100B516E0 /* @2x */ = {
 			isa = PBXGroup;
 			children = (
@@ -4167,12 +4075,8 @@
 				C54CFAFD1B2AC30C004D5C54 /* checkbox1_unchecked@2x.png in Resources */,
 				491610E71C8C422200F1E243 /* UIBarButtonItemGrid@2x.png in Resources */,
 				491610E41C8C422200F1E243 /* UIBarButtonItemArrowRight@2x.png in Resources */,
-<<<<<<< HEAD
 				491610E41C8C422200F1E243 /* UIBarButtonItemArrowRight@2x.png in Resources */,
-=======
-				9CC800871D2DFD5000B516E0 /* accountTestCase.js in Resources */,
 				9CF64AC31D36232D0064BCAC /* shishi.js in Resources */,
->>>>>>> ynn_ios
 				496BB4391CC49F55007F034F /* loader-@3x.png in Resources */,
 				9C920B151D069EE700C187DB /* UMShareEditViewControlleriPad.xib in Resources */,
 				53010F951B1DAD3E00017740 /* CoreTFKeyBoardToolBarView.xib in Resources */,
@@ -4189,11 +4093,8 @@
 				491610D51C8C422200F1E243 /* ImageSelectedSmallOff@2x.png in Resources */,
 				491280F81CC8C2B9009E67C4 /* close@2x.png in Resources */,
 				9C441FF11D2FAD68007075C3 /* load-4.png in Resources */,
-<<<<<<< HEAD
 				49933D5B1D3627F500D89DEB /* lognCase.js in Resources */,
-=======
 				9CF64AC51D36233C0064BCAC /* xxnrClass.js in Resources */,
->>>>>>> ynn_ios
 				491280FF1CC8C2B9009E67C4 /* arrow-circle@3x.png in Resources */,
 				49F7A5B01C5906C200A1FA45 /* 加载3.png in Resources */,
 				496BB4401CC49F55007F034F /* wechat-friends@3x.png in Resources */,
@@ -4329,7 +4230,6 @@
 				49F7A5831C58469400A1FA45 /* MJRefresh.bundle in Resources */,
 				9C441FED1D2FAD68007075C3 /* load-0.png in Resources */,
 				491281081CC8C2B9009E67C4 /* shut-down--@3x.png in Resources */,
-				49933D621D3627F500D89DEB /* registerData.js in Resources */,
 				491280D81CC8A329009E67C4 /* wechat-friendsl@3x.png in Resources */,
 				491281041CC8C2B9009E67C4 /* delivery@3x.png in Resources */,
 				491610DE1C8C422200F1E243 /* PlayButtonOverlayLargeTap@2x.png in Resources */,

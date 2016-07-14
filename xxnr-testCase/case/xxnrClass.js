@@ -155,3 +155,87 @@ function alipay(window) {
     ALipayBack = window.scrollViews()[0].webViews()[0].links()["返回"];
     ALipayBackYes = window.scrollViews()[0].webViews()[0].links()["是"];
 }
+
+// 注册页
+xxnrClass().register = function (window) {
+    return {
+        title:function () {
+            return window.navigationBar().buttons()["注册"];
+        }
+        phoneNum:function () {
+            return window.images()[0].textFields()[0].textFields()[0];
+        }
+        identifyCode:function () {
+            return window.images()[1].textFields()[0].textFields()[0];
+        }
+        passWord:function () {
+            return window.images()[0].secureTextFields()[0].secureTextFields()[0];
+        }
+        passWordAgain:function () {
+            return window.images()[0].secureTextFields()[1].secureTextFields()[0];
+        }
+        identifyBtn:function () {
+            return window.images()[0].buttons()["免费获取验证码"];
+        }
+        protocolSelectBtn:function () {
+            return window.images()[0].buttons()[5];
+        }
+        registerBtn:function () {
+            return  window.images()[0].buttons()["立即注册"];
+        }
+        loginBtn:function () {
+            return  target.tap({x:0,y:503});
+        }
+    }
+
+}
+// 忘记密码页
+xxnrClass().forgetPwd = function (window) {
+    return{
+        title:function () {
+            return window.navigationBar().buttons()["注册"];
+        }
+        phoneNum:function () {
+            return window.images()[0].textFields()[0].textFields()[0];
+        }
+        identifyCode:function () {
+            return window.images()[1].textFields()[0].textFields()[0];
+        }
+        passWord:function () {
+            return window.images()[0].secureTextFields()[0].secureTextFields()[0];
+        }
+        passWordAgain:function () {
+            return window.images()[0].secureTextFields()[1].secureTextFields()[0];
+        }
+        identifyBtn:function () {
+            return window.images()[0].buttons()["免费获取验证码"];
+        }
+        registerBtn:function () {
+            return  window.images()[0].buttons()["完成"];
+        }
+    }
+}
+// 购物车页
+xxnrClass().shoppingCar = function (window) {
+    return{
+        title:function () {
+            return window.navigationBar().buttons()["购物车"];
+            }
+        editBtn:function () {
+            return window.navigationBar().buttons()["编辑"];
+        }
+        finishBtn:function () {
+            return window.navigationBar().buttons()["完成"];
+        }
+        allSelectBtn:function () {
+            return window.buttons()["shopCar circle"];
+        }
+        goPayBtn:function () {
+            return window.buttons()["去结算"];
+        }
+        cancelBtn:function () {
+            return window.buttons()["删除"];
+        }
+
+    }
+}
