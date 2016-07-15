@@ -9,22 +9,28 @@
 // #import "image_assertion.js"
 
 #import "../lib/tuneup.js"
+#import "xxnrElementClass.js"
 
+var target = UIATarget.localTarget();
+var window = target.frontMostApp().windows()[0];
 
 test("资讯模块测试",function(target,app){
-     target.frontMostApp().windows()[0].tabBar().buttons()["资讯"].tap();
+     xxnrElementClass.tab(window).newsTab().tap();
+     xxnrdelay(2);
+     
+     xxnrElementClass.news(window).tableView().dragInsideWithOptions({startOffset:{x:0.49, y:0.0}, endOffset:{x:0.60, y:0.70}, duration:1.0});
 
-     target.frontMostApp().windows()[0].tableViews()[0].dragInsideWithOptions({startOffset:{x:0.49, y:0.0}, endOffset:{x:0.60, y:0.70}, duration:1.0});
+     xxnrdelay(1);
+     xxnrElementClass.news(window).tableView().dragInsideWithOptions({startOffset:{x:0.42, y:0.71}, endOffset:{x:0.53, y:0.00}, duration:2.0});
+     xxnrElementClass.news(window).tableView().dragInsideWithOptions({startOffset:{x:0.49, y:0.73}, endOffset:{x:0.60, y:0.03}, duration:1.0});
+     xxnrdelay(1);
+     xxnrElementClass.news(window).tableView().tapWithOptions({tapOffset:{x:0.50, y:0.12}});
+     xxnrdelay(1);
 
-     target.delay(1);
-     target.frontMostApp().windows()[0].tableViews()[0].dragInsideWithOptions({startOffset:{x:0.42, y:0.71}, endOffset:{x:0.53, y:0.00}, duration:2.0});
-     target.frontMostApp().windows()[0].tableViews()[0].dragInsideWithOptions({startOffset:{x:0.49, y:0.73}, endOffset:{x:0.60, y:0.03}, duration:1.0});
-     target.delay(1);
-     target.frontMostApp().windows()[0].tableViews()[0].tapWithOptions({tapOffset:{x:0.50, y:0.12}});
-     target.delay(1);
-     target.frontMostApp().windows()[0].navigationBar().buttons()[2].tap();
-     target.frontMostApp().windows()[0].buttons()[0].tap();
-     target.frontMostApp().windows()[0].buttons()[1].tap();
-     target.frontMostApp().windows()[0].buttons()[2].tap();
-     target.frontMostApp().windows()[0].buttons()[3].tap();
+     xxnrElementClass.newsDetail(window).navShare().tap();
+     xxnrElementClass.newsDetail(window).WX().tap();
+     xxnrElementClass.newsDetail(window).WXFiends().tap();
+     xxnrElementClass.newsDetail(window).QQ().tap();
+     xxnrElementClass.newsDetail(window).QQSpace().tap();
+
 });

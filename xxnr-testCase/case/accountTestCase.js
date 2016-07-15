@@ -9,17 +9,9 @@
 //#import "test.js"
 //#import "image_assertion.js"
 
-// for (var i=0;i<2;i++){
-//     while(!target.frontMostApp().windows()[0].navigationBar().staticTexts()[0].value() == "新新农人")
-//     {
-//         UIALogger.logMessage("skjslkfjajf");
-//         target.frontMostApp().windows()[0].navigationBar().buttons()["top back"].tap();
-//     }
-//     account(i);
-// }
-//function account(number) {
+
 #import "baseClass.js"
-//require('baseClass.js');
+
 
 var errorformatPhone = "11100002334";
 
@@ -30,193 +22,189 @@ for (var i = 0; i < 8; i++) {
     rightPhone = rightPhone + random;
 }
 
-
-var num = 1;
 var target = UIATarget.localTarget();
 var window = target.frontMostApp().windows()[0];
 
+Aa();
 
 function Aa() {
+    xxnrdelay(2);
+    xxnrElementClass.home(window).fer_specialBtn().tap();
+    xxnrElementClass.special(window).cell(1).tap();
+    xxnrElementClass.goodDetail(window).purchaseBtn().tap();
+    xxnrElementClass.goodDetail(window).addShoppingCar_sure().tap();
 
 
-    window.collectionViews()[0].buttons()[5].tap();
-    window.tableViews()[0].cells()[1].tap();
-    window.buttons()["立即购买"].tap();
-    window.buttons()["确定"].tap();
 
-// target.frontMostApp().windows()[0].collectionViews()[0].buttons()[5].tap();
-// target.frontMostApp().windows()[0].tableViews()[0].tapWithOptions({tapOffset:{x:0.43, y:0.93}});
-// target.frontMostApp().windows()[0].buttons()["立即购买"].tap();
-// target.frontMostApp().windows()[0].buttons()["确定"].tap();
-
-
-    if (window.tableViews()[0].buttons()["配送到户"].isVisible()) {
-        num = 0;
+    if (xxnrElementClass.submitOrder(window).dispatchBtn().isVisible()) {
         test("配送到户", function (target, app) {
-            target.delay(2);
-            window.tableViews()[0].buttons()["配送到户"].tap();
-            target.delay(1);
+            xxnrdelay(2);
+            xxnrElementClass.submitOrder(window).dispatchBtn().tap();
+            xxnrdelay(1);
             //window.buttons()[0].tap();
-            target.delay(1);
+            xxnrdelay(1);
 
-            var address = window.tableViews()[0].staticTexts()[3].value();
-
-            UIALogger.logMessage("'" + address + "'");
-            window.tableViews()[0].buttons()[4].tap();
-            target.delay(1);
-            drop(Aa);
+            var address = xxnrElementClass.submitOrder(window).addressText().value();
+            xxnrlogMessage("'" + address + "'");
+            xxnrElementClass.submitOrder(window).addressBtn().tap();
+            xxnrdelay(1);
             var selAddress;
-            if (window.tableViews()[0].cells().length > 0) {
-                selAddress = window.tableViews()[0].cells()[0].staticTexts()[1].value();
-                for (var i = 0; i < window.tableViews()[0].cells().length; i++) {
-                    if (window.tableViews()[0].cells()[i].staticTexts()["默认"]) {
-                        selAddress = window.tableViews()[0].cells()[i].staticTexts()[1].value();
+            if (xxnrElementClass.receiveAddress(window).cells().length > 0) {
+                selAddress = xxnrElementClass.receiveAddress(window).name(0).value();
+                for (var i = 0; i < xxnrElementClass.receiveAddress(window).cells()　.length; i++) {
+                    if (xxnrElementClass.receiveAddress(window).acquiescent(0)) {
+                        selAddress = xxnrElementClass.receiveAddress(window).name(i).value();
                         break;
                     }
                 }
                 assertTrue(address == selAddress, "显示地址出错");
             }
             window.navigationBar().buttons()["添加"].tap();
-            target.delay(1);
-            assertEquals("添加收货地址", window.navigationBar().staticTexts()[0].value(), "跳转添加收货地址失败");
-            window.navigationBar().buttons()["top back"].tap();
+            xxnrdelay(1);
+            assertEquals("添加收货地址", xxnrElementClass.navTitle(window), "跳转添加收货地址失败");
+            xxnrElementClass.navBack(window).tap();
 
-            if (window.tableViews()[0].cells().length > 0) {
-                window.tableViews()[0].cells()[0].buttons()[1].tap();
-                target.delay(1);
-                assertEquals("编辑收货地址", window.navigationBar().staticTexts()[0].value(), "跳转编辑收货地址失败");
-                window.navigationBar().buttons()["top back"].tap();
+            if (xxnrElementClass.receiveAddress(window).cells()　.length > 0) {
+                xxnrElementClass.receiveAddress(window).editBtn(0).tap();
+                xxnrdelay(1);
+                assertEquals("编辑收货地址", xxnrElementClass.navTitle(window), "跳转编辑收货地址失败");
+                xxnrElementClass.navBack(window).tap();
 
-                window.tableViews()[0].cells()[0].buttons()[2].tap();
-                target.delay(1);
-                window.buttons()["取消"].tap();
+                xxnrElementClass.receiveAddress(window).deletebtn(0).tap();
+                xxnrdelay(1);
 
-                window.tableViews()[0].cells()[0].buttons()[2].tap();
-                target.delay(1);
-                window.buttons()[2].doubleTap();
+                xxnrElementClass.receiveAddress(window).cancelBtn().tap();
+                xxnrdelay(1);
+
+                xxnrElementClass.receiveAddress(window).deletebtn(0).tap();
+
+                xxnrdelay(1);
+                xxnrElementClass.receiveAddress(window).makeSureBtn().doubleTap();
             }
 
-            target.delay(3);
+            xxnrdelay(3);
 
             var cellCount = 0;
-            cellCount = window.tableViews()[0].cells().length;
-            window.navigationBar().buttons()["添加"].tap();
-
+            cellCount = xxnrElementClass.receiveAddress(window).cells().length;
+            xxnrElementClass.receiveAddress(window).navAppendBtn().tap();
 
             test("收件人姓名为空", function () {
-                window.textFields()[1].textFields()[0].tap();
-                window.textFields()[1].textFields()[0].setValue("18933334444");
-                window.buttons()[0].tap();
+                xxnrElementClass.addAddress(window).phoneTextField().tap();
+                xxnrElementClass.addAddress(window).phoneTextField().setValue("18933334444");
+                xxnrElementClass.addAddress(window).cityBtn().tap();
                 window.pickers()[0].wheels()[1].scrollToVisible();
                 window.pickers()[0].wheels()[2].scrollToVisible();
-                window.buttons()[3].tap();
-                window.buttons()[1].tap();
+                xxnrElementClass.addAddress(window).makeSure().tap();
+                xxnrElementClass.addAddress(window).townBtn().tap();
                 window.pickers()[0].wheels()[0].scrollToVisible();
-                window.buttons()[3].tap();
+                xxnrElementClass.addAddress(window).makeSure().tap();
 
-                window.textFields()[2].textFields()[0].tap();
-                window.textFields()[2].textFields()[0].setValue("详细地址");
-                window.logElementTree();
-                window.buttons()["保存"].tap();
-                assertEquals("请填写收件人姓名", window.staticTexts()[7].value());
+                xxnrElementClass.addAddress(window).detailAdressTextField().tap();
+                xxnrElementClass.addAddress(window).detailAdressTextField().setValue("详细地址");
+                xxnrlogEleTree(window);
+                xxnrElementClass.addAddress(window).saveBtn().tap();
+                assertEquals("请填写收件人姓名", xxnrElementClass.addAddress(window).warning());
 
             })
             test("手机号为空", function () {
-                window.textFields()[0].textFields()[0].tap();
-                window.textFields()[0].textFields()[0].setValue("hh");
+                xxnrElementClass.addAddress(window).nameTextField().tap();
+                xxnrElementClass.addAddress(window).nameTextField().setValue("hh");
 
-                window.textFields()[1].textFields()[0].tap();
-                window.textFields()[1].textFields()[0].setValue("");
-                window.buttons()["保存"].tap();
-                window.logElementTree();
-                assertEquals("请填写收件人手机号", window.staticTexts()[7].value());
+                xxnrElementClass.addAddress(window).phoneTextField().tap();
+                xxnrElementClass.addAddress(window).phoneTextField().setValue("");
+                xxnrElementClass.addAddress(window).saveBtn().tap();
+                xxnrlogEleTree(window);
+                assertEquals("请填写收件人手机号", xxnrElementClass.addAddress(window).warning());
 
             })
 
             test("手机号格式错误", function () {
-                window.textFields()[1].textFields()[0].tap();
-                window.textFields()[1].textFields()[0].setValue("111111");
-                window.buttons()["保存"].tap();
-                window.logElementTree();
-                assertEquals("请填写正确的手机号", window.staticTexts()[7].value());
+                xxnrElementClass.addAddress(window).phoneTextField().tap();
+                xxnrElementClass.addAddress(window).phoneTextField().setValue("111111");
+                xxnrElementClass.addAddress(window).saveBtn().tap();
+                xxnrlogEleTree(window);
+                assertEquals("请填写正确的手机号", xxnrElementClass.addAddress(window).warning());
             })
             test("详细地址为空", function () {
-                window.textFields()[1].textFields()[0].tap();
-                window.textFields()[1].textFields()[0].setValue("18899992222");
-                window.textFields()[2].textFields()[0].tap();
-                window.textFields()[2].textFields()[0].setValue("");
-                window.buttons()["保存"].tap();
-                assertEquals("请填写详细地址", window.staticTexts()[7].value());
+                xxnrElementClass.addAddress(window).phoneTextField().tap();
+                xxnrElementClass.addAddress(window).phoneTextField().setValue("18899992222");
+                xxnrElementClass.addAddress(window).detailAdressTextField().tap();
+                xxnrElementClass.addAddress(window).detailAdressTextField().setValue("");
+                xxnrElementClass.addAddress(window).saveBtn().tap();
+                assertEquals("请填写详细地址", xxnrElementClass.addAddress(window).warning());
             })
             test("信息完善", function () {
-                window.textFields()[2].textFields()[0].tap();
-                window.textFields()[2].textFields()[0].setValue("豫苑路天明城");
-                window.buttons()["保存"].tap();
+                xxnrElementClass.addAddress(window).detailAdressTextField().tap();
+                xxnrElementClass.addAddress(window).detailAdressTextField().setValue("豫苑路天明城");
+                xxnrElementClass.addAddress(window).saveBtn().tap();
 
-                target.delay(1);
-                UIALogger.logMessage("cellCount:'" + cellCount + "'");
-                UIALogger.logMessage("window.tableViews()[0].cells().length:'" + window.tableViews()[0].cells().length + "'");
+                xxnrdelay(1);
+                xxnrlogMessage("cellCount:'" + cellCount + "'");
+                xxnrlogMessage("window.tableViews()[0].cells().length:'" + window.tableViews()[0].cells().length + "'");
 
-                assertTrue(window.tableViews()[0].cells().length == cellCount + 1, "保存没有成功");
+                assertTrue(xxnrElementClass.receiveAddress(window).cells().length == cellCount + 1, "保存没有成功");
 
-                window.navigationBar().buttons()["top back"].tap();
+                xxnrdelay(1);
+                xxnrElementClass.navBack(window).tap();
             })
 
 
         });
     }
+        
+    
     test("网点自提", function (target, app) {
-        target.delay(2);
-        window.tableViews()[0].buttons()["网点自提"].tap();
-        UIALogger.logMessage("dddddd:'" + window.tableViews()[0].buttons()[2] + "'");
+        xxnrdelay(2);
+        xxnrElementClass.submitOrder(window).carryBtn().tap();
 
-        window.buttons()[0].tap();
-        window.logElementTree();
+        xxnrlogEleTree(window);
 
         test("选择自提网点", function () {
-            target.delay(2);
-            window.tableViews()[0].buttons()[2 - num].tap();
-            drop(Aa);
-            target.delay(1);
-            window.logElementTree();
-            target.delay(1);
+            xxnrdelay(2);
+            xxnrElementClass.submitOrder(window).selWebsiteBtn().tap();
+            xxnrdelay(1);
+            xxnrlogEleTree(window);
+            xxnrdelay(1);
 
             test("区的不可选", function () {
-                window.buttons()[0].tap();
-                window.buttons()[1].tap();
-                target.delay(2);
-                target.frontMostApp().windows()[0].tableViews()[1].tapWithOptions({tapOffset: {x: 0.30, y: 0.04}});
 
-                assertEquals(0, window.buttons()[2].isEnabled());
+                // window.buttons()[0].tap();
+                // window.buttons()[1].tap();
+                // xxnrdelay(2);
+                // // window.tableViews()[1].tapWithOptions({tapOffset: {x: 0.30, y: 0.04}});
+
+                assertEquals(0, xxnrElementClass.selWebsite(window).areaBtn().isEnabled());
+
             })
 
             test("区的可选", function () {
-                window.buttons()[0].tap();
-                window.buttons()[1].tap();
-                if (window.tableViews()[0].cells().length > 1) {
-                    target.delay(2);
-                    target.frontMostApp().windows()[0].tableViews()[1].tapWithOptions({tapOffset: {x: 0.50, y: 0.10}});
+                xxnrElementClass.selWebsite(window).proviceBtn().tap();
+                xxnrElementClass.selWebsite(window).cityBtn().tap();
+                xxnrdelay(2);
+                
+                if (xxnrElementClass.selWebsite(window).cityCells().length > 1) {
+                    xxnrdelay(2);
+                    window.tableViews()[1].tapWithOptions({tapOffset: {x: 0.50, y: 0.10}});
                 }
 
-                assertEquals(1, window.buttons()[2].isEnabled());
+                assertEquals(1, xxnrElementClass.selWebsite(window).areaBtn().isEnabled());
             })
 
             test("选择一个网点", function () {
 
-                target.frontMostApp().windows()[0].buttons()["确定"].tap();
-                assertEquals("选择自提网点", window.navigationBar().staticTexts()[0].value());
+                xxnrElementClass.selWebsite(window).makeSureBtn().tap();
+                assertEquals("选择自提网点", xxnrElementClass.navTitle(window));
 
-                var count = window.tableViews()[1].cells().length;
+                var count = xxnrElementClass.selWebsite(window).webSiteCells().length;
                 if (count > 0) {
-                    target.frontMostApp().windows()[0].tableViews()[1].dragInsideWithOptions({
+                    xxnrElementClass.selWebsite(window).webSiteTableView().dragInsideWithOptions({
                         startOffset: {
                             x: 0.49,
                             y: 0.0
                         }, endOffset: {x: 0.60, y: 0.70}, duration: 1.0
                     });
-                    target.frontMostApp().windows()[0].tableViews()[1].cells()[0].tap();
-                    drop(Aa);
-                    target.frontMostApp().windows()[0].buttons()["确定"].tap();
+                    xxnrElementClass.selWebsite(window).webSiteCell(0).tap();
+                    xxnrElementClass.selWebsite(window).makeSureBtn().tap();
                 }
             })
 
@@ -225,56 +213,55 @@ function Aa() {
 
 
         test("填写收货人信息", function () {
-            window.tableViews()[0].buttons()[3 - num].tap();
-            drop(Aa);
-            target.delay(1);
+            xxnrElementClass.submitOrder(window).selContactBtn().tap();
+            xxnrdelay(1);
 
-            window.buttons()[0].tap();
-            window.logElementTree();
-            assertEquals("选择收货人", window.navigationBar().staticTexts()[0].value());
+            xxnrElementClass.selContact(window).makeSureBtn().tap();
+            xxnrElementClass.selContact(window).makeSureBtn().tap();
+            xxnrlogEleTree(window);
+            assertEquals("选择收货人", xxnrElementClass.navTitle(window));
 
-            window.textFields()[0].textFields()[0].setValue("haha");
-            window.buttons()[0].tap();
-            assertEquals("选择收货人", window.navigationBar().staticTexts()[0].value());
+            xxnrElementClass.selContact(window).nameTextField().setValue("haha");
+            xxnrElementClass.selContact(window).makeSureBtn().tap();
+            assertEquals("选择收货人", xxnrElementClass.navTitle(window));
 
-            window.textFields()[0].textFields()[0].setValue("haha");
-            window.textFields()[1].textFields()[0].setValue(errorformatPhone);
-            window.buttons()[0].tap();
-            assertEquals("选择收货人", window.navigationBar().staticTexts()[0].value());
+            xxnrElementClass.selContact(window).nameTextField().setValue("haha");
+            xxnrElementClass.selContact(window).phoneTextField().setValue(errorformatPhone);
+            xxnrElementClass.selContact(window).makeSureBtn().tap();
+            assertEquals("选择收货人", xxnrElementClass.navTitle(window));
 
-            window.textFields()[1].textFields()[0].setValue(rightPhone);
-            window.buttons()[0].tap();
-            target.delay(2);
-            assertEquals("提交订单", window.navigationBar().staticTexts()[0].value());
+            xxnrElementClass.selContact(window).phoneTextField().setValue(rightPhone);
+            xxnrElementClass.selContact(window).makeSureBtn().tap();
+            xxnrdelay(2);
+            assertEquals("提交订单", xxnrElementClass.navTitle(window));
         })
 
         test("已注册的用户", function () {
-            window.tableViews()[0].buttons()[3 - num].tap();
+            xxnrElementClass.submitOrder(window).selContactBtn().tap();
 
-            window.textFields()[0].textFields()[0].setValue("haha");
-            window.textFields()[1].textFields()[0].setValue(rightPhone);
-            window.buttons()[0].tap();
-            assertEquals("选择收货人", window.navigationBar().staticTexts()[0].value());
+            xxnrElementClass.selContact(window).nameTextField().setValue("haha");
+            xxnrElementClass.selContact(window).phoneTextField().setValue(rightPhone);
+            xxnrElementClass.selContact(window).makeSureBtn().tap();
+            assertEquals("选择收货人", xxnrElementClass.navTitle(window));
         })
 
 
         test("选择历史收货人", function () {
-            target.delay(2);
-            var count = window.tableViews()[0].cells().length;
+            xxnrdelay(2);
+            var count = xxnrElementClass.selContact(window).contactCells().length;
 
             for (var i = 0; i < 3; i++) {
-                target.delay(2);
-                window.tableViews()[0].cells()[i].tap();
-                assertEquals("提交订单", window.navigationBar().staticTexts()[0].value());
-                window.tableViews()[0].buttons()[3 - num].tap();
+                xxnrdelay(2);
+                xxnrElementClass.selContact(window).contactCell(i).tap();
+                assertEquals("提交订单", xxnrElementClass.navTitle(window));
+                xxnrElementClass.submitOrder(window).selContactBtn().tap();
             }
-            window.navigationBar().buttons()["top back"].tap();
+            xxnrElementClass.navBack(window).tap();
         })
-
-        window.buttons()[0].tap();
-        drop(Aa);
-        target.delay(2);
-        window.logElementTree();
+        
+        xxnrElementClass.submitOrder(window).submitOrderBtn().tap();
+        xxnrdelay(2);
+        xxnrlogEleTree(window);
     });
 
 }
