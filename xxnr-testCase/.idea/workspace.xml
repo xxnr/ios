@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0e4c9b9b-0aef-4605-b04c-769134e4a1ef" name="Default" comment="" />
+    <list default="true" id="0e4c9b9b-0aef-4605-b04c-769134e4a1ef" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/case/orderListCase.js" afterPath="$PROJECT_DIR$/case/orderListCase.js" />
+    </list>
     <ignored path="demo.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -95,8 +97,8 @@
       <file leaf-file-name="orderListCase.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/case/orderListCase.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-110">
-              <caret line="249" column="29" selection-start-line="249" selection-start-column="29" selection-end-line="249" selection-end-column="29" />
+            <state relative-caret-position="105">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -758,7 +760,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="217411000" />
+    <option name="totallyTimeSpent" value="217767000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="293" y="23" width="1058" height="746" extended-state="0" />
@@ -1154,8 +1156,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/case/orderListCase.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-110">
-          <caret line="249" column="29" selection-start-line="249" selection-start-column="29" selection-end-line="249" selection-end-column="29" />
+        <state relative-caret-position="105">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding />
         </state>
       </provider>
