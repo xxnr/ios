@@ -24,8 +24,8 @@
             <file leaf-file-name="xxnrElementClass.js" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/case/xxnrElementClass.js">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="455">
-                    <caret line="397" column="17" selection-start-line="397" selection-start-column="17" selection-end-line="397" selection-end-column="17" />
+                  <state relative-caret-position="320">
+                    <caret line="445" column="9" selection-start-line="445" selection-start-column="9" selection-end-line="445" selection-end-column="9" />
                     <folding />
                   </state>
                 </provider>
@@ -92,21 +92,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="orderListCase.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="orderListCase.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/case/orderListCase.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="185" column="46" selection-start-line="185" selection-start-column="44" selection-end-line="185" selection-end-column="46" />
+            <state relative-caret-position="-110">
+              <caret line="249" column="29" selection-start-line="249" selection-start-column="29" selection-end-line="249" selection-end-column="29" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="payTypeCase.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="payTypeCase.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/case/payTypeCase.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="99" column="27" selection-start-line="99" selection-start-column="27" selection-end-line="99" selection-end-column="27" />
+            <state relative-caret-position="175">
+              <caret line="93" column="59" selection-start-line="93" selection-start-column="59" selection-end-line="93" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -181,7 +181,6 @@
         <option value="$PROJECT_DIR$/case/xxnrClass.js" />
         <option value="$PROJECT_DIR$/case/shishi.js" />
         <option value="$PROJECT_DIR$/case/lognCase.js" />
-        <option value="$PROJECT_DIR$/case/orderListCase.js" />
         <option value="$PROJECT_DIR$/case/specialPerformance.js" />
         <option value="$PROJECT_DIR$/case/newsCase.js" />
         <option value="$PROJECT_DIR$/case/baseClass.js" />
@@ -191,6 +190,7 @@
         <option value="$PROJECT_DIR$/case/representCase.js" />
         <option value="$PROJECT_DIR$/case/xxnrElementClass.js" />
         <option value="$PROJECT_DIR$/case/payTypeCase.js" />
+        <option value="$PROJECT_DIR$/case/orderListCase.js" />
       </list>
     </option>
   </component>
@@ -208,7 +208,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="426" />
+    <option name="x" value="293" />
     <option name="y" value="23" />
     <option name="width" value="1058" />
     <option name="height" value="746" />
@@ -758,10 +758,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="214471000" />
+    <option name="totallyTimeSpent" value="217411000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="426" y="23" width="1058" height="746" extended-state="0" />
+    <frame x="293" y="23" width="1058" height="746" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1096,14 +1096,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/case/orderListCase.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="185" column="46" selection-start-line="185" selection-start-column="44" selection-end-line="185" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/case/specialPerformance.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="207">
@@ -1144,18 +1136,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/case/xxnrElementClass.js">
+    <entry file="file://$PROJECT_DIR$/case/payTypeCase.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="455">
-          <caret line="397" column="17" selection-start-line="397" selection-start-column="17" selection-end-line="397" selection-end-column="17" />
+        <state relative-caret-position="175">
+          <caret line="93" column="59" selection-start-line="93" selection-start-column="59" selection-end-line="93" selection-end-column="59" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/case/payTypeCase.js">
+    <entry file="file://$PROJECT_DIR$/case/xxnrElementClass.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="99" column="27" selection-start-line="99" selection-start-column="27" selection-end-line="99" selection-end-column="27" />
+        <state relative-caret-position="320">
+          <caret line="445" column="9" selection-start-line="445" selection-start-column="9" selection-end-line="445" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/case/orderListCase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-110">
+          <caret line="249" column="29" selection-start-line="249" selection-start-column="29" selection-end-line="249" selection-end-column="29" />
           <folding />
         </state>
       </provider>
