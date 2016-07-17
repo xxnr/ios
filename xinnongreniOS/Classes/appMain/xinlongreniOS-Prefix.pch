@@ -63,7 +63,7 @@
 //网络是否打开
 #define NETWORK_OPEN [[MonitorNetworkViewController sharedInstance] isOpen]
 ///0-测试地址 1-生产地址
-#define kYBNetworkRelease 1
+#define kYBNetworkRelease 0
 
 #if kYBNetworkRelease
 
@@ -72,12 +72,12 @@
 #else
 
 #define HOST @"http://101.200.194.203"
-//#define HOST @"http://192.168.1.15"
+//#define HOST @"http://ppe.xinxinnongren.com"
 
 #endif
 
 ///0-测试地址 1-生产地址
-#define kXNRNetworkRelease 1
+#define kXNRNetworkRelease 0
 
 #if kXNRNetworkRelease
 
@@ -86,6 +86,8 @@
 #else
 
 #define Host @"http://101.200.194.203"
+//#define Host @"https://ppe.xinxinnongren.com"
+
 
 #endif
 
