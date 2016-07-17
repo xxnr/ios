@@ -1,6 +1,7 @@
 
 #import "test.js"
 #import "data.js"
+#import "xxnrClass.js"
 
 var target = UIATarget.localTarget();         
 var window = target.frontMostApp().windows()[0];
@@ -16,40 +17,42 @@ test("注册测试",function(){
           registerTest(i);
      }
      target.delay(1);
-     
-     target.tap({x:32,y:385});
-     assertEquals("用户协议",window.navigationBar().name());
-     window.navigationBar().buttons()["top back"].tap();
-     target.delay(1);
-     target.tap({x:0,y:503});
-     assertEquals("登录",window.navigationBar().name());
-     window.navigationBar().buttons()["top back"].tap();
 
+     xxnrClass().register(window).protocolJumpBtn().tap();
+     assertEquals("用户协议",xxnrClass().register(window).navigationBarTitle());
+     xxnrClass().register(window).navBack().tap();
+     target.delay(1);
+
+     xxnrClass().register(window).loginBtn().tap();
+     assertEquals("登录",xxnrClass().register(window).navigationBarTitle());
+     xxnrClass().register(window).navBack().tap();
 
 });
 
 function registerTest(i) {
      registerData(i);
      // input phone
-     window.images()[0].textFields()[0].textFields()[0].tap();
-     window.images()[0].textFields()[0].textFields()[0].setValue(phone);
-     window.images()[0].buttons()["免费获取验证码"].tap();
+     xxnrClass().register(window).phoneNum().tap();
+     xxnrClass().register(window).phoneNum().setValue(phone);
+     xxnrClass().identifyBtn(window).tap();
+
      // input identifyCode
-     window.images()[0].textFields()[1].textFields()[0].tap();
-     window.images()[0].textFields()[1].textFields()[0].setValue(identifyCode);
+     xxnrClass().register(window).identifyCode().tap();
+     xxnrClass().register(window).identifyCode().setvalue(identifyCode);
+
+
      // input password
-     window.images()[0].secureTextFields()[0].secureTextFields()[0].tap();
-     window.images()[0].secureTextFields()[0].secureTextFields()[0].setValue(password);
-     // input passwordAgain
-     window.images()[0].secureTextFields()[1].secureTextFields()[0].tap();
-     window.images()[0].secureTextFields()[1].secureTextFields()[0].setValue(passWordAgain);
+     xxnrClass().register(window).passWord().tap();
+     xxnrClass().register(window).passWord().setvalue(password);
 
-     window.images()[0].buttons()[5].tap();
+     //  input passwordAgain
+     xxnrClass().register(window).passWordAgain().tap();
+     xxnrClass().register(window).passWordAgain().setvalue(passWordAgain);
 
-     target.tap({x:16,y:409});
-     
+     xxnrClass().register(window).protocolSelectBtn().tap();
+     xxnrClass().register(window).registerBtn().tap();
+
      var toast = window.staticTexts()[0].value();
-
      assertEquals(message,toast);
 }
 

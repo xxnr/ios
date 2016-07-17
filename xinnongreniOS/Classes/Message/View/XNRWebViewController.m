@@ -36,12 +36,16 @@
 {
     [UMSocialConfig setFinishToastIsHidden:YES  position:UMSocialiToastPositionCenter];
     
-        NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:_model.image]];
-        UIImage *shareImage = [UIImage imageWithData:data];
+    UIImage *shareImage;
     if (_model.image == nil || [_model.image isEqualToString:@""]) {
         shareImage = [UIImage imageNamed:@"share_icon"];
+    }else{
+        NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:_model.image]];
+        shareImage = [UIImage imageWithData:data];
+        if (data.length == 0) {
+            shareImage = [UIImage imageNamed:@"share_icon"];
+        }
     }
-    
     NSString *contentString = [NSString stringWithFormat:@"%@",_model.newsabstract];
     if (_model.newsabstract == nil || [_model.newsabstract isEqualToString:@""]) {
         contentString = @"分享自@新新农人";

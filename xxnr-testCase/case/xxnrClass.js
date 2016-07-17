@@ -23,7 +23,10 @@ var addShopcar_type = window.collectionViews()[0].cells()["豪华智能型"];
 var addShopcar_color = window.collectionViews()[0].cells()["拉菲红"];
 var addShopcar_sure = window.buttons()["确定"];
 
-
+// title
+xxnrClass.navigationBarTitle = function (window) {
+    return window.navigationBar().name();
+}
 //返回按钮
 xxnrClass.navBack = function (window) {
     return window.navigationBar().buttons()["top back"];
@@ -180,6 +183,10 @@ xxnrClass().register = function (window) {
         protocolSelectBtn:function () {
             return window.images()[0].buttons()[5];
         }
+        protocolJumpBtn:function () {
+           return  target.tap({x:32,y:385});
+
+        }
         registerBtn:function () {
             return  window.images()[0].buttons()["立即注册"];
         }
@@ -236,6 +243,57 @@ xxnrClass().shoppingCar = function (window) {
         cancelBtn:function () {
             return window.buttons()["删除"];
         }
+        brandSelectBtn:function () {
+            return window.tableViews().groups()[0].buttons()["shopCar circle"];
+        }
+        brandName:function () {
+            return window.tableViews().groups()[0].staticText()["江淮"];
+        }
+        goodsSelectBtn:function () {
+            return window.tableViews().cells()[0].buttons()["address circle"];
+        }
+        minusBtn:function () {
+            return window.tableViews().cells()[0].buttons()["icon minus"];
+        }
+        plusBtn:function () {
+            return window.tableViews().cells()[0].buttons()["icon plus"];
+        }
+        inputCount:function () {
+            return window.tableViews().cells()[0].textFields()[0].textFields()[0];
+        }
+        addtionsName:function () {
+            return window.tableViews().cellls[0].staticText()["附加项目:改七座"];
+        }
+        periodOneName:function () {
+            return window.tableViews().cellls[0].staticText()["阶段一:订金"];
 
+        }
+        periodTwoName:function () {
+            return window.tableViews().cellls[0].staticText()["阶段二:尾款"];
+
+        }
+        goodsName:function () {
+            return window.tableViews().cellls[0].staticText()["江淮汽车 - 第二代瑞风S3 - 2015款"];
+
+        }
+        attributesName:function () {
+            return window.tableViews().cellls[0].staticText()["变速箱"];
+
+        }
+        price:function () {
+            return window.tableViews().cellls[0].staticText()["¥ 9999.00"];
+        }
+        addtionsPrice:function () {
+            return window.tableViews().cellls[0].staticText()["¥ 2000.00"];
+        }
+        deposit:function () {
+            return window.tableViews().cellls[0].staticText()["¥ 3000.00"];
+        }
+        finalPayment:function () {
+            return window.tableViews().cellls[0].staticText()["¥ 98999.00"];
+        }
+        totalPrice:function () {
+            return window.
+        }
     }
 }

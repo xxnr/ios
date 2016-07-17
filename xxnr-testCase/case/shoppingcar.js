@@ -1,5 +1,6 @@
 
 #import "test.js"
+#import "xxnrClass.js"
 
 var target = UIATarget.localTarget();         
 var window = target.frontMostApp().windows()[0];
@@ -9,26 +10,26 @@ test("购物车测试",function(target,app){
      window.logElementTree();
      test("商品的选择测试",function(target,app){
           // 全选
-          target.tap({x:14,y:493});
+          xxnrClass().shoppingCar(window).allSelectBtn().tap();
           target.delay(1);
-          target.tap({x:14,y:493});
+          xxnrClass().shoppingCar(window).allSelectBtn().tap();
           target.delay(1);
           
           // 选择品牌
-          window.tableViews()[0].groups()[0].buttons()["shopCar circle"].tap();
+          xxnrClass().shoppingCar(window).brandSelectBtn().tap();
           target.delay(1);
-          window.tableViews()[0].groups()[0].buttons()["shopCar circle"].tap();
+          xxnrClass().shoppingCar(window).brandSelectBtn().tap();
           target.delay(1);
           
           // 选择单个商品
-          window.tableViews()[0].cells()[0].buttons()["address circle"].tap();
+          xxnrClass().shoppingCar(window).goodsSelectBtn().tap();
           target.delay(1);
-          window.tableViews()[0].cells()[0].buttons()["address circle"].tap();
-          
+          xxnrClass().shoppingCar(window).goodsSelectBtn().tap();
           });
      test("修改商品数量",function(target,app){
 
           var number = "9999";
+          xxnrClass().shoppingCar(window).inputCount().tap();
           window.tableViews()[0].cells()[0].textFields()[0].tap();
           window.tableViews()[0].cells()[0].textFields()[0].setValue(number);
           window.tableViews()[0].cells()[0].buttons()["icon plus"].tap();

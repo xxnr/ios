@@ -1,7 +1,7 @@
 
 #import "test.js"
 #import "data.js"
-
+#import"xxnrClass"
 var target = UIATarget.localTarget();         
 var window = target.frontMostApp().windows()[0];
 window.tabBar().buttons()["我的"].tap();    
@@ -17,21 +17,21 @@ test("忘记密码测试",function(){
 
 function forgetPwd(i) {
      forgetPwdData(i);
-     window.images()[0].textFields()[0].textFields()[0].tap();
-     window.images()[0].textFields()[0].textFields()[0].setValue(phone);
+     xxnrClass().forgetPwd(window).phoneNum().tap();
+     xxnrClass().forgetPwd(window).phoneNum().setvalue(phone);
+     xxnrClass().forgetPwd(window).identifyBtn().tap();
 
-     window.images()[0].buttons()["免费获取验证码"].tap();
+     xxnrClass().forgetPwd(window).identifyCode().tap();
+     xxnrClass().forgetPwd(window).identifyCode().setvalue(identifyCode);
 
-     window.images()[0].textFields()[1].textFields()[0].tap();
-     window.images()[0].textFields()[1].textFields()[0].setValue(identifyCode);
+     xxnrClass().forgetPwd(window).passWord().tap();
+     xxnrClass().forgetPwd(window).passWord().setvalue(password);
 
-     window.images()[0].secureTextFields()[0].secureTextFields()[0].tap();
-     window.images()[0].secureTextFields()[0].secureTextFields()[0].setValue(password);
+     xxnrClass().forgetPwd(window).passWordAgain().tap();
+     xxnrClass().forgetPwd(window).passWordAgain().setvalue(passWordAgain);
 
-     window.images()[0].secureTextFields()[1].secureTextFields()[0].tap();
-     window.images()[0].secureTextFields()[1].secureTextFields()[0].setValue(passWordAgain);
+     xxnrClass().forgetPwd(window).registerBtn().tap();
 
-     target.tap({x:16,y:409});
      var toast = window.staticTexts()[0].value();
      assertEquals(message,toast);
 }
