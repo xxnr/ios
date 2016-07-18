@@ -128,7 +128,7 @@ test("我的代表",function () {
 })
 if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
 {
-    test("客户登记 查看客户详情",function () {
+    test("客户登记 滚动列表&查看客户详情",function () {
         xxnrElementClass.xxnrRepesent(window).clientRegisterTab().tap();
         xxnrdelay(2);
         xxnrlogEleTree(window);

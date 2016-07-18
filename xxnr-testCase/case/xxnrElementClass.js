@@ -4,12 +4,15 @@
 
 
 function xxnrElementClass(){}
+//延迟
 function xxnrdelay(duration) {
     return UIATarget.localTarget().delay(duration);
 }
+//打印信息
 function xxnrlogMessage(message){
     return UIALogger.logMessage(message);
 }
+//打印层级树
 function xxnrlogEleTree(window)
 {
     return window.logElementTree();
@@ -22,7 +25,7 @@ xxnrElementClass.navBack = function (window) {
 xxnrElementClass.navTitle = function (window) {
     return window.navigationBar().staticTexts()[0].value();
 }
-//首页
+//tab
 xxnrElementClass.tab = function (window) {
     return{
         homeTab:function () {
@@ -39,6 +42,7 @@ xxnrElementClass.tab = function (window) {
         }
     }
 }
+//首页
 xxnrElementClass.home = function(window)
 {
     return{
@@ -119,7 +123,13 @@ xxnrElementClass.news = function (window) {
     return{
         tableView:function () {
             return window.tableViews()[0];
-        }
+        },
+        cells:function () {
+            return window.tableViews()[0].cells();
+        },
+        cell:function (index) {
+            return window.tableViews()[0].cells()[index];
+        },
     }
 }
 //资讯详情
@@ -272,7 +282,7 @@ xxnrElementClass.selWebsite = function (window) {
             return window.tableViews()[1].cells();
         },
         cityCell:function (index) {
-           return window.tableViews()[1].cells()[index];
+            return window.tableViews()[1].cells()[index];
         },
         webSiteTableView:function () {
             return window.tableViews()[1];
@@ -422,11 +432,21 @@ xxnrElementClass.login = function (window) {
 //我的订单列表
 xxnrElementClass.myorder = function (window) {
     return{
-        totalTab:function () {return window.staticTexts()["全部"];},
-        holdPayTab:function () {return window.staticTexts()["待付款"];},
-        sendTab:function () {return window.staticTexts()["待发货"];},
-        reciveTab:function () {return window.staticTexts()["待收货"];},
-        commentTab:function () {return window.staticTexts()["已完成"];},
+        totalTab:function () {
+            return window.staticTexts()["全部"];
+        },
+        holdPayTab:function () {
+            return window.staticTexts()["待付款"];
+        },
+        sendTab:function () {
+            return window.staticTexts()["待发货"];
+        },
+        reciveTab:function () {
+            return window.staticTexts()["待收货"];
+        },
+        commentTab:function () {
+            return window.staticTexts()["已完成"];
+        },
         userOrderStaticText:function (index) {
             return window.scrollViews()[0].tableViews()[0].groups()[index].staticTexts()[0].name();
         },
@@ -439,8 +459,14 @@ xxnrElementClass.myorder = function (window) {
         tableView:function () {
             return  window.scrollViews()[0].tableViews()[0];
         },
+        userOrderCells:function () {
+            return window.scrollViews()[0].tableViews()[0].cells();
+        },
         userOrderCell:function (index) {
             return window.scrollViews()[0].tableViews()[0].cells()[index];
+        },
+        goPay:function (index) {
+            return window.scrollViews()[0].tableViews()[0].groups()[index].buttons()["去付款"];
         },
         amendPayType:function (index) {
             return window.scrollViews()[0].tableViews()[0].groups()[index].buttons()["修改付款方式"];
@@ -453,32 +479,6 @@ xxnrElementClass.myorder = function (window) {
         }
     };
 }
-//县级订单列表
-// xxnrElementClass.rscorder = function (window) {
-//     return{
-//         totalTab:function () {return window.staticTexts()["全部"];},
-//         holdPayTab:function () {return window.staticTexts()["待付款"];},
-//         sendTab:function () {return window.staticTexts()["待发货"];},
-//         reciveTab:function () {return window.staticTexts()["待收货"];},
-//         commentTab:function () {return window.staticTexts()["已完成"];},
-//         userOrderStaticText:function (index) {
-//             return window.scrollViews()[0].tableViews()[0].groups()[index].staticTexts()[0].name();
-//         },
-//         userOrderId:function (index) {
-//             return window.scrollViews()[0].tableViews()[0].groups()[index].staticTexts()[1].name();
-//         },
-//         tableViewsgroups:function () {
-//             return window.scrollViews()[0].tableViews()[0].groups();
-//         },
-//         tableView:function () {
-//             return  window.scrollViews()[0].tableViews()[0];
-//         },
-//         userOrderCell:function (index) {
-//             return window.scrollViews()[0].tableViews()[0].cells()[index];
-//         },
-//
-//     };
-// }
 //订单详情
 xxnrElementClass.orderDetail = function (window) {
     return{
@@ -489,14 +489,26 @@ xxnrElementClass.orderDetail = function (window) {
             return window.buttons()["去自提"];
         }
     }
-}//县级订单列表
+}
+
+//县级订单列表
 xxnrElementClass.RSCOrder = function (window) {
     return{
-        totalTab:function () {return window.buttons()["全部"];},
-        holdPayTab:function () {return window.buttons()["待付款"];},
-        verifyTab:function () {return window.buttons()["待审核"];},
-        dispatchTab:function () {return window.buttons()["待配送"];},
-        carryTab:function () {return window.buttons()["待自提"];},
+        totalTab:function () {
+            return window.buttons()["全部"];
+        },
+        holdPayTab:function () {
+            return window.buttons()["待付款"];
+        },
+        verifyTab:function () {
+            return window.buttons()["待审核"];
+        },
+        dispatchTab:function () {
+            return window.buttons()["待配送"];
+        },
+        carryTab:function () {
+            return window.buttons()["待自提"];
+        },
         RSCOrderStaticText:function (index) {
             return window.scrollViews()[0].tableViews()[0].groups()[index].staticTexts()[0].name();
         },
@@ -625,8 +637,8 @@ xxnrElementClass.addClient = function (window) {
         saveBtn:function () {
             return window.buttons()["保存"];
         },
-        warningStaticText:function (text) {
-            return window.staticTexts()[text];
+        warningStaticText:function (message) {
+            return window.staticTexts()[message];
         }
     }
 }

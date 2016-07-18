@@ -33,8 +33,7 @@ function Aa() {
     xxnrElementClass.special(window).cell(1).tap();
     xxnrElementClass.goodDetail(window).purchaseBtn().tap();
     xxnrElementClass.goodDetail(window).addShoppingCar_sure().tap();
-
-
+    
 
     if (xxnrElementClass.submitOrder(window).dispatchBtn().isVisible()) {
         test("配送到户", function (target, app) {
