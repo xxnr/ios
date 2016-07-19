@@ -6,7 +6,6 @@
 #import "xxnrElementClass.js"
 
 var errorformatPhone = "11100002334";
-var rightPhone = "18790674259";
 var addPhone = "188";
 for(var i=0;i<8;i++)
 {
@@ -52,8 +51,6 @@ test("我的客户 下拉刷新",function(){
     }
 })
 test("我的客户  上滑加载",function(){
-    //target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
-
     if (xxnrElementClass.xxnrRepesent_client(window).cells().length > 0)
     {
         var label = xxnrElementClass.xxnrRepesent_client(window).inviteNum();
@@ -64,7 +61,7 @@ test("我的客户  上滑加载",function(){
 
         xxnrlogMessage("'"+count+"'");
 
-        for (var i=0;i<count;i++)
+        for (var i=0;i<=count;i++)
         {
             target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
             target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
@@ -182,7 +179,6 @@ if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
         }
     })
     test("添加潜在客户",function () {
-
         var oldcells = xxnrElementClass.xxnrClientRegister(window).cells().length;
 
         var totallabel = xxnrElementClass.xxnrClientRegister(window).totalNum();
@@ -202,6 +198,7 @@ if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
 
             assertNotNull(xxnrElementClass.addClient(window).warningStaticText("请完善信息"));
         })
+
         test("没有选择城市",function () {
             xxnrlogEleTree(window);
 
@@ -209,7 +206,7 @@ if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
             xxnrElementClass.addClient(window).nameTextField().setValue("na");
 
             xxnrElementClass.addClient(window).phoneTextField().tap();
-            xxnrElementClass.addClient(window).phoneTextField().setValue(rightPhone);
+            xxnrElementClass.addClient(window).phoneTextField().setValue(addPhone);
             xxnrlogEleTree(window);
 
             xxnrElementClass.addClient(window).girlBtn().tap();
@@ -276,9 +273,8 @@ if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
             var newtodaynumStr = newtodaylabel.substr(6,newtodaylabel.length-7);
             var newtodaynum = parseFloat(newtodaynumStr);
 
-            //assertEquals(oldcells+1,xxnrElementClass.xxnrClientRegister(window).cells().length);
             assertEquals(newtotalnum-1,totalnum);
             assertEquals(newtodaynum+1,todaynum);
         })
     })
-}
+

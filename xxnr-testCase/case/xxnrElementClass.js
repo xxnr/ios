@@ -465,6 +465,7 @@ xxnrElementClass.myorder = function (window) {
         userOrderCell:function (index) {
             return window.scrollViews()[0].tableViews()[0].cells()[index];
         },
+        
         goPay:function (index) {
             return window.scrollViews()[0].tableViews()[0].groups()[index].buttons()["去付款"];
         },
@@ -587,7 +588,6 @@ xxnrElementClass.xxnrRepesent_client = function (window) {
         isInviteFriend:function () {
             return window.staticTexts()[0].isVisible();
         }
-
     }
 }
 //客户登记

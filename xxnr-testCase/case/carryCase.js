@@ -86,13 +86,14 @@ function scrollList(order_id,count) {
 }
 function judge(orderId,name) {
     var count = xxnrElementClass.myorder(window).tableViewsgroups().length/2;
+    var num = 0;
     xxnrlogMessage("'"+count+"'");
 
     scrollList(orderId,count);
 
-    num = count - 1;
-    while (count >= num) {
+    while (count > num) {
         if (isHoldPay == false) {
+            num = count;
             xxnrlogMessage("'"+num+"'");
             xxnrlogMessage("'"+orderId+"'");
 
@@ -102,9 +103,8 @@ function judge(orderId,name) {
                 endOffset: {x: 0.60, y: -0.05},
                 duration: 0.5
             });
-            var count = xxnrElementClass.myorder(window).tableViewsgroups().length/2;
+            count = xxnrElementClass.myorder(window).tableViewsgroups().length/2;
             scrollList(orderId,count);
-            num = count-1;
             xxnrlogMessage("no");
         }
         else

@@ -27,25 +27,21 @@ function scrollList(order_id,count) {
 }
 function judge(orderId,name) {
      var count = xxnrElementClass.myorder(window).tableViewsgroups().length/2;
-     xxnrlogMessage("'"+count+"'");
-
+     var  num = 0;
+     
      scrollList(orderId,count);
 
-     num = count - 1;
-     while (count >= num) {
+     while (count > num) {
           if (isHoldPay == false) {
-               xxnrlogMessage("'"+num+"'");
-               xxnrlogMessage("'"+orderId+"'");
-
-               xxnrElementClass.myorder(window).tableViewsgroups()[num].scrollToVisible();
+               num = count;
+               xxnrElementClass.myorder(window).tableViewsgroups()[num-1].scrollToVisible();
                window.scrollViews()[0].tableViews()[0].dragInsideWithOptions({
                     startOffset: {x: 0.49, y: 1.00},
                     endOffset: {x: 0.60, y: -0.05},
                     duration: 0.5
                });
-               var count = xxnrElementClass.myorder(window).tableViewsgroups().length/2;
+               count = xxnrElementClass.myorder(window).tableViewsgroups().length/2;
                scrollList(orderId,count);
-               num = count-1;
                xxnrlogMessage("no");
           }
           else
@@ -139,9 +135,11 @@ function Ab() {
           xxnrdelay(1);
      })
       xxnrElementClass.navBack(window).tap();
+
      test("后台改变分次支付为成功支付",function () {
           xxnrdelay(10);
      })
+
      test("分次支付部分金额--用户订单(成功)",function () {
           xxnrdelay(1);
           xxnrElementClass.myorder(window).totalTab().tapWithOptions({tapOffset:{x:0.49, y:0.78}});
@@ -153,19 +151,18 @@ function Ab() {
           var orderId = orderStr.substr(5,orderStr.length - 5);
           xxnrElementClass.myorder(window).holdPayTab().tapWithOptions({tapOffset: {x: 0.27, y: 0.55}});
           judge(orderId,"待付款");
-
-
      })
       xxnrElementClass.navBack(window).tap();
+
      test("分次支付部分金额--县级订单",function () {
           xxnrdelay(1);
           xxnrElementClass.mine(window).rscOrderBtn().tap();
           xxnrdelay(1);
           assertEquals("待付款",xxnrElementClass.RSCOrder(window).RSCOrderStaticText(0));
 
-
      })
       xxnrElementClass.navBack(window).tap();
+
      test("线下支付剩余款--用户订单",function () {
           xxnrdelay(1);
           xxnrElementClass.mine(window).userOrderBtn().tap();
@@ -189,6 +186,7 @@ function Ab() {
           judge(orderId,"待付款");
      })
       xxnrElementClass.navBack(window).tap();
+
      test("线下支付剩余款--县级订单",function () {
           xxnrdelay(1);
           xxnrElementClass.mine(window).rscOrderBtn().tap();
@@ -204,9 +202,11 @@ function Ab() {
           xxnrdelay(1);
           assertEquals("待厂家发货",xxnrElementClass.RSCOrder(window).RSCOrderStaticText(0));
      })
+
      test("后台操作一个化肥发货",function () {
           xxnrdelay(15);
      })
+
      test("一个化肥发货--县级订单",function () {
           xxnrdelay(1);
           window.buttons()["全部"].tap();
@@ -242,9 +242,9 @@ function Ab() {
           xxnrElementClass.RSCOrder(window).totalTab().tap();
           xxnrdelay(1);
           assertEquals("配送中",xxnrElementClass.RSCOrder(window).RSCOrderStaticText(0));
-
      })
       xxnrElementClass.navBack(window).tap();
+     
      test("确认收货一个商品,另一个商品未发货--用户订单",function () {
           xxnrdelay(1);
           xxnrElementClass.mine(window).userOrderBtn().tap();
@@ -267,22 +267,20 @@ function Ab() {
           var orderId = orderStr.substr(5,orderStr.length - 5);
           xxnrElementClass.myorder(window).reciveTab().tapWithOptions({tapOffset: {x: 0.64, y: 0.88}});
           judge(orderId,"待收货");
-
      })
       xxnrElementClass.navBack(window).tap();
+     
      test("确认收货一个商品,另一个商品未发货--县级订单",function () {
           xxnrdelay(1);
           xxnrElementClass.mine(window).rscOrderBtn().tap();
           xxnrdelay(1);
           assertEquals("配送中",xxnrElementClass.RSCOrder(window).RSCOrderStaticText(0));
-
-
-
      })
 
      test("后台操作另一化肥发货",function () {
           xxnrdelay(15);
      })
+     
      test("配送另一个化肥--县级订单",function () {
           window.buttons()["全部"].tap();
           xxnrdelay(1);
@@ -292,10 +290,9 @@ function Ab() {
           window.buttons()["确定(1)"].tap();
           xxnrdelay(1);
           assertEquals("配送中",xxnrElementClass.RSCOrder(window).RSCOrderStaticText(0));
-
-
      })
       xxnrElementClass.navBack(window).tap();
+     
      test("确认收货--用户订单(已完成)",function () {
           xxnrdelay(1);
           xxnrElementClass.mine(window).userOrderBtn().tap();
@@ -316,6 +313,7 @@ function Ab() {
           judge(orderId,"已完成");
      })
       xxnrElementClass.navBack(window).tap();
+     
      test("已完成--县级订单",function () {
           xxnrdelay(1);
           xxnrElementClass.mine(window).rscOrderBtn().tap();

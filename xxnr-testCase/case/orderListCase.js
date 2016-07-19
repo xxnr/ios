@@ -199,22 +199,20 @@ test("cell中确认收货按钮点击",function(target,app){
 
         for(var i=0;i<count;i++){
 
-            if(xxnrElementClass.myorder(window).tableViewsgroups()[i].buttons()[0].name() == "确认收货" && name)
+            xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].scrollToVisible();
+
+            if(xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].buttons()[0].name() == "确认收货" && name)
             {
-                xxnrElementClass.myorder(window).tableViewsgroups()[i].scrollToVisible();
                 name = false;
-                // xxnrdelay(5);
-                // UIALogger.logMessage("'"+xxnrElementClass.myorder(window).tableViewsgroups()[16].buttons()[0].name()+"'");
-                //
-                // xxnrElementClass.myorder(window).tableViewsgroups()[i].buttons()[0].tap();
-                //
-                //
-                // xxnrdelay(2);
-                // assertEquals(1,window.buttons()[5].isVisible());
-                // window.logElementTree();
-                //
-                // window.buttons()[5].tapWithOptions({tapOffset:{x:0.75, y:0.40}});
-                // window.buttons()[5].tapWithOptions({tapOffset:{x:0.56, y:0.97}});
+                xxnrdelay(1);
+                
+                 xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].buttons()[0].tap();
+                
+                xxnrdelay(2);
+                 assertEquals(1,window.buttons()[5].isVisible());
+
+                 window.buttons()[5].tapWithOptions({tapOffset:{x:0.75, y:0.40}});
+                 window.buttons()[5].tapWithOptions({tapOffset:{x:0.56, y:0.97}});
                 break;
             }
         }
@@ -234,16 +232,17 @@ test("cell中自提按钮点击",function(target,app){
         var name = true;
         for(var i=0;i<count;i++){
 
-            if(xxnrElementClass.myorder(window).tableViewsgroups()[i].buttons()[0].name() == "去自提" && name)
+                xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].scrollToVisible();
+
+            if(xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].buttons()[0].name() == "去自提" && name)
             {
-                xxnrElementClass.myorder(window).tableViewsgroups()[i].scrollToVisible();
 
                 name = false;
-                // xxnrdelay(5);
-                // xxnrElementClass.myorder(window).tableViewsgroups()[i].buttons()["去自提"].tap();
-                // xxnrdelay(2);
-                // assertEquals("网点自提",xxnrElementClass.navTitle(window));
-                // xxnrElementClass.navBack(window).tap();
+                xxnrdelay(5);
+                xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].buttons()["去自提"].tap();
+                xxnrdelay(2);
+                assertEquals("网点自提",xxnrElementClass.navTitle(window));
+                xxnrElementClass.navBack(window).tap();
                 break;
             }
         }
