@@ -12,27 +12,30 @@ target.delay(3);
 
 test("我的新农人页面和其它页面之间的跳转测试",function(target,app){
      window.logElementTree();
-     window.tableViews()[0].images()[0].buttons()["登录"].tap();
-     window.navigationBar().buttons()["top back"].tap();
-     target.delay(1);
-     window.tableViews()[0].images()[0].buttons()["注册"].tap();
-     window.navigationBar().buttons()["top back"].tap();
+     xxnrClass().mine(window).loginBtn().tap();
+     xxnrClass().navBack(window).tap();
+     assertEquals("登录",window.navigationBar().name());
      target.delay(1);
 
-     window.tableViews()[0].buttons()[1].tap();
-     window.buttons()["取消"].tap();
+     xxnrClass().mine(window).registerBtn().tap();
+     xxnrClass().navBack(window).tap();
+     assertEquals("注册",window.navigationBar().name());
      target.delay(1);
 
-     window.tableViews()[0].buttons()[2].tap();
-     window.buttons()["取消"].tap();
+     xxnrClass().mine(window).stayPayBtn().tap();
+     xxnrClass().mine(window).alertCancel().tap();
      target.delay(1);
 
-     window.tableViews()[0].buttons()[3].tap();
-     window.buttons()["取消"].tap();
+     xxnrClass().mine(window).stayDeliverBtn().tap();
+     xxnrClass().mine(window).alertCancel().tap();
      target.delay(1);
 
-     window.tableViews()[0].buttons()[4].tap();
-     window.buttons()["取消"].tap();
+     xxnrClass().mine(window).stayTakeBtn().tap();
+     xxnrClass().mine(window).alertCancel().tap();
+     target.delay(1);
+
+     xxnrClass().mine(window).finishBtn().tap();
+     xxnrClass().mine(window).alertCancel().tap();
      target.delay(1);
 
      window.tableViews()[0].images()["icon_bgView"].buttons()["登录"].tap();
@@ -45,61 +48,50 @@ test("我的新农人页面和其它页面之间的跳转测试",function(target
      window.images()[0].secureTextFields()[0].secureTextFields()[0].tap();
      window.images()[0].secureTextFields()[0].secureTextFields()[0].setValue(password);
      window.images()[0].buttons()["确认登录"].tap();
-     
      target.delay(2);
 
      window.logElementTree();
-     window.tableViews()[0].buttons()[0].tap();
-     window.navigationBar().buttons()["top back"].tap();
+     xxnrClass().mine(window).rscOrderBtn().tap();
+     xxnrClass().navBack(window).tap();
      assertEquals("服务站订单",window.navigationBar().name());
-
      target.delay(1);
 
-     window.tableViews()[0].buttons()[1].tap();
-     window.navigationBar().buttons()["top back"].tap();
+     xxnrClass().mine(window).orderBtn().tap();
+     xxnrClass().navBack(window).tap();
      assertEquals("我的订单",window.navigationBar().name());
-
      target.delay(1);
 
-     
-     window.tableViews()[0].cells()[0].tap();
-     window.navigationBar().buttons()["top back"].tap();
+
+     xxnrClass().mine(window).integrateBtn().tap();
+     xxnrClass().navBack(window).tap();
      assertEquals("我的积分",window.navigationBar().name());
-
      target.delay(1);
 
-     window.tableViews()[0].cells()[1].tap();
-     window.navigationBar().buttons()["top back"].tap();
+     xxnrClass().mine(window).representBtn().tap();
+     xxnrClass().navBack(window).tap();
      assertEquals("新农代表",window.navigationBar().name());
-
      target.delay(1);
 
-     window.tableViews()[0].cells()[2].tap();
+     xxnrClass().mine(window).phoneBtn().tap();
      target.delay(1);
 
-     window.tableViews()[0].cells()[3].tap();
-     window.navigationBar().buttons()["top back"].tap();
+     xxnrClass().mine(window).setBtn().tap();
+     xxnrClass().navBack(window).tap();
      assertEquals("设置",window.navigationBar().name());
-
      target.delay(1);
 
-     window.tabBar().buttons()["首页"].tap();
-     assertEquals("新新农人",window.navigationBar().name());
+     xxnrClass().home(window).mineTab().tap();
+     assertEquals("首页",window.navigationBar().name());
      target.delay(1);
 
-     window.tabBar().buttons()["资讯"].tap();
+     xxnrClass().home(window).newsTab().tap();
      assertEquals("新农资讯",window.navigationBar().name());
-
      target.delay(1);
 
-     window.tabBar().buttons()["购物车"].tap();
-
+     xxnrClass().home(window).shoppingCarTab().tap();
+     assertEquals("购物车",window.navigationBar().name());
      target.delay(1);
      
-     window.tabBar().buttons()["我的"].tap();
-     assertEquals("我的新农人",window.navigationBar().name());
-
      
-
      });
 

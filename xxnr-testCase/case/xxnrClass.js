@@ -292,8 +292,143 @@ xxnrClass().shoppingCar = function (window) {
         finalPayment:function () {
             return window.tableViews().cellls[0].staticText()["¥ 98999.00"];
         }
-        totalPrice:function () {
-            return window.
+        price:function () {
+            return window.staticText()[0].name()["合计: ¥0.00"];
+        }
+        alertCancel:function () {
+            return window.buttons()["取消"];
+        }
+        alertAdmire:function () {
+            return window.buttons()["确定"];
+        }
+        buyFertilizer:function () {
+            return  window.buttons()["去买化肥"];
+
+        }
+        buyCar:function () {
+            return  window.buttons()["去买汽车"];
+
         }
     }
 }
+// 我的新农人页
+xxnrClass().mine = function (window) {
+    return{
+        loginBtn:function () {
+            return window.tableViews()[0].images()[0].buttons()["登录"];
+        }
+        registerBtn:function () {
+            return window.tableViews()[0].images()[0].buttons()["注册"];
+        }
+        stayPayBtn:function () {
+            return window.tableViews()[0].buttons()[1];
+        }
+        stayDeliverBtn:function () {
+            return window.tableViews()[0].buttons()[2];
+        }
+        stayTakeBtn:function () {
+            return window.tableViews()[0].buttons()[3];
+        }
+        finishBtn:function () {
+            return window.tableViews()[0].buttons()[4];
+        }
+        rscOrderBtn:function () {
+            return  window.tableViews()[0].buttons()[0];
+
+        }
+        orderBtn:function () {
+            return  window.tableViews()[0].buttons()[1];
+
+        }
+        integrateBtn:function () {
+            return   window.tableViews()[0].cells()[0];
+        }
+        representBtn:function () {
+            return   window.tableViews()[0].cells()[1];
+
+        }
+        phoneBtn:function () {
+            return   window.tableViews()[0].cells()[2];
+
+        }
+        setBtn:function () {
+            return   window.tableViews()[0].cells()[3];
+
+        }
+        alertCancel function () {
+            return   window.buttons()["取消"];
+
+        }
+        mineBtn:function () {
+            return   target.doubleTap({x:0, y:64});
+
+        }
+    }
+}
+// 我的个人信息页
+xxnrClass().mineData = function (window) {
+    return{
+      headIconBtn:function () {
+          return
+      }
+        nickNameBtn:function () {
+            return  window.scrollViews()[0].buttons()[1];
+
+        }
+        nameBtn:function () {
+            return  window.scrollViews()[0].buttons()[2];
+
+        }
+        nameText:function () {
+            return  window.scrollViews()[0].staticText()[0].name();
+        }
+        sexBtn:function () {
+            return  window.scrollViews()[0].buttons()[3];
+
+        }
+        sexText:function () {
+            return  window.scrollViews()[0].staticText()[0].name();
+        }
+        addressBtn:function () {
+            return  window.scrollViews()[0].buttons()[4];
+
+        }
+        typeBtn:function () {
+            return  window.scrollViews()[0].buttons()[5];
+
+        }
+        inputTextField:function () {
+            return  window.textFields()[0].textFields()[0];
+
+        }
+        finishBtn:function () {
+            return  window.buttons()["完成"];
+
+        }
+        saveBtn:function () {
+            return  window.buttons()["保存"];
+
+        }
+        menBtn:function () {
+           return window.buttons()[0];
+        }
+        womenBtn:function () {
+            return window.buttons()[1];
+        }
+        localBtn:function () {
+            return window.buttons()[0];
+
+        }
+        streetBtn:function () {
+            return window.buttons()[1];
+        }
+        
+        picksBtn:function () {
+            return window.pickers()[0].wheels()[1].dragInsideWithOptions({startOffset:{x:0.38, y:0.66}, endOffset:{x:0.38, y:0.12}, duration:1.6});
+        }
+        addressPicks:function () {
+            return window.buttons()[4];
+        }
+    }
+}
+

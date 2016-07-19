@@ -1,10 +1,9 @@
-
-#import "test.js"
+#import "../lib/tuneup.js"
 #import "xxnrClass.js"
-
+#import "mainClass.js"
 var target = UIATarget.localTarget();         
 var window = target.frontMostApp().windows()[0];
-window.tabBar().buttons()["购物车"].tap();    
+xxnrClass().homeTab(window).shoppingCarTab().tap();
 target.delay(3);
 test("购物车测试",function(target,app){
      window.logElementTree();
@@ -12,147 +11,126 @@ test("购物车测试",function(target,app){
           // 全选
           xxnrClass().shoppingCar(window).allSelectBtn().tap();
           target.delay(1);
+          var allTotalPrice = window.price();
           xxnrClass().shoppingCar(window).allSelectBtn().tap();
           target.delay(1);
           
           // 选择品牌
           xxnrClass().shoppingCar(window).brandSelectBtn().tap();
           target.delay(1);
+          var brandTotalPrice = window.price();
           xxnrClass().shoppingCar(window).brandSelectBtn().tap();
           target.delay(1);
           
           // 选择单个商品
           xxnrClass().shoppingCar(window).goodsSelectBtn().tap();
           target.delay(1);
+          var goodsPrice = window.price();
           xxnrClass().shoppingCar(window).goodsSelectBtn().tap();
           });
+     if(allTotalPrice>brandTotalPrice>goodsPrice){
+          assertEquals("选择测试通过");
+     }else {
+          assertEquals("选择测试有问题");
+     }
      test("修改商品数量",function(target,app){
-
-          var number = "9999";
+          
+          var number = "9990";
           xxnrClass().shoppingCar(window).inputCount().tap();
-          window.tableViews()[0].cells()[0].textFields()[0].tap();
-          window.tableViews()[0].cells()[0].textFields()[0].setValue(number);
-          window.tableViews()[0].cells()[0].buttons()["icon plus"].tap();
+          xxnrClass().shoppingCar(window).inputCount().setValue(number);
           target.delay(1);
 
-          
-          // window.tableViews()[0].cells()[0].buttons()["icon plus"].tap();
-          var number = "9990";
-          window.tableViews()[0].cells()[0].textFields()[0].tap();
-          window.tableViews()[0].cells()[0].textFields()[0].setValue(number);
-          target.delay(2);
-
           for(var i = 0; i<9; i++){
-          window.tableViews()[0].cells()[0].buttons()["icon plus"].tap();
-          
+               xxnrClass().shoppingCar(window).plusBtn().tap();
           }
-          // var warning = window.staticTexts()[0].value();
-          // assertEquals("商品个数不能大于9999",warning);         
+          var toast = window.staticTexts()[0].value();
+          assertEquals("商品个数不能大于9999",toast);
           target.delay(1);
 
           var number = "10";
-          window.tableViews()[0].cells()[0].textFields()[0].tap();
-          window.tableViews()[0].cells()[0].textFields()[0].setValue(number);
+
+          xxnrClass().shoppingCar(window).inputCount().tap();
+          xxnrClass().shoppingCar(window).inputCount().setValue(number);
           
           for(var i = 0; i<10; i++){
-          window.tableViews()[0].cells()[0].buttons()["icon minus"].tap();
+               xxnrClass().shoppingCar(window).minusBtn().tap();
           }
-          var warning = window.staticTexts()[0].value();
-          assertEquals("数量不能再减少了哦",warning);         
-          target.delay(1);
-          
-          var number = "1";
-          window.tableViews()[0].cells()[0].textFields()[0].tap();
-          window.tableViews()[0].cells()[0].textFields()[0].setValue(number);
-          window.tableViews()[0].cells()[0].buttons()["icon minus"].tap();
+          var toast = window.staticTexts()[0].value();
+          assertEquals("数量不能再减少了哦",toast);
           target.delay(1);
 
-          });
+          var number = "1";
+          xxnrClass().shoppingCar(window).inputCount().tap();
+          xxnrClass().shoppingCar(window).inputCount().setValue(number);
+          xxnrClass().shoppingCar(window).minusBtn().tap();
+          var toast = window.staticTexts()[0].value();
+          assertEquals("数量不能再减少了哦",toast);
+          target.delay(1);
+
+          var number = "9998";
+          xxnrClass().shoppingCar(window).inputCount().tap();
+          xxnrClass().shoppingCar(window).inputCount().setValue(number);
+          xxnrClass().shoppingCar(window).plusBtn().tap();
+          var toast = window.staticTexts()[0].value();
+          assertEquals("商品个数不能大于9999",toast);
+          target.delay(1);
+
+     });
     
      test("结算操作测试（未登录）",function(target,app){
-          window.buttons()[0].tap();
-          window.buttons()["取消"].tap();
-
+          xxnrClass().shoppingCar(window).goPayBtn().tap();
+          xxnrClass().shoppingCar(window).alertCancel().tap();
           target.delay(1);
-
-          window.tableViews()[0].cells()[0].buttons()["address circle"].tap();
-          window.buttons()[0].tap();
-
-          });
+          xxnrClass().shoppingCar(window).allSelectBtn().tap();
+          xxnrClass().shoppingCar(window).goPayBtn().tap();
+          xxnrClass().shoppingCar(window).alertAdmire().tap();
+          assertEquals("登录",xxnrClass().navigationBarTitle(window));
+          
+     });
 
      test("购物车页面的跳转测试",function(target,app){
-          
-          window.tabBar().buttons()["首页"].tap();
-          assertEquals("新新农人",window.navigationBar().name());
-          
+          xxnrClass().home(window).homeTab().tap();
+          assertEquals("新新农人",xxnrClass().navigationBarTitle(window));
           target.delay(1);
-        
-          window.tabBar().buttons()["资讯"].tap();
+
+          xxnrClass().home(window).newsTab().tap();
           assertEquals("新农资讯",window.navigationBar().name());
-
-          
           target.delay(1);
-          
-          window.tabBar().buttons()["我的"].tap();
+
+          xxnrClass().home(window).mineTab().tap();
           assertEquals("我的新农人",window.navigationBar().name());
-
-          target.delay(1);
-          
-          
-          window.tabBar().buttons()["购物车"].tap();
-          
-          target.delay(1);
-          
-          
-          target.tap({x:43,y:123});
-          
-          window.navigationBar().buttons()["top back"].tap();
-          
           target.delay(1);
 
-
-          window.navigationBar().buttons()["编辑"].tap();
-          
+          xxnrClass().home(window).shoppingCarTab().tap();
           target.delay(1);
           
           
-          
-          target.tap({x:14,y:493});
-          
+          xxnrClass().shoppingCar(window).cellBtn().tap();
+          assertEquals("商品详情",window.navigationBar().name());
+          xxnrClass().navBack(window).tap();
+          target.delay(1);
+
+          xxnrClass().shoppingCar(window).editBtn().tap();
           target.delay(1);
           
-          
 
-          window.buttons()[1].tap();
+          xxnrClass().shoppingCar(window).cancelBtn().tap();
+          target.delay(1);
           
+          xxnrClass().shoppingCar(window).alertAdmire().tap();
           window.logElementTree();
-          
           target.delay(1);
           
           
-          window.buttons()["确定"].tap();
-          
-          window.logElementTree();
-          
+          xxnrClass().shoppingCar(window).buyFertilizer().tap();
+          assertEquals("化肥",xxnrClass().navigationBarTitle(window));
+          xxnrClass().navBack(window);
           target.delay(1);
-          
-          
-          
-          window.buttons()["去买化肥"].tap();
-          assertEquals("化肥",window.navigationBar().name());
 
-          
-          window.navigationBar().buttons()["top back"].tap();
-          
-          target.delay(1);
-          
-          
-          
-          window.buttons()["去买汽车"].tap();
-          assertEquals("汽车",window.navigationBar().name());
 
-          window.navigationBar().buttons()["top back"].tap();
-          
+          xxnrClass().shoppingCar(window).buyCar().tap();
+          assertEquals("汽车",xxnrClass().navigationBarTitle(window));
+          xxnrClass().navBack(window);
           });
      
      test("结算操作测试（登录）",function(target,app){
@@ -160,33 +138,24 @@ test("购物车测试",function(target,app){
           var target = UIATarget.localTarget();         
 
           window.tabBar().buttons()["我的"].tap();
-          window.tableViews()[0].images()["icon_bgView"].buttons()["登录"].tap();
-          var phone = "18211101020";
-          var password = "123456";
-          window.images()[0].textFields()[0].textFields()[0].tap();
-          window.images()[0].textFields()[0].setValue(phone);
-          
-          window.images()[0].logElementTree(); 
-          window.images()[0].secureTextFields()[0].secureTextFields()[0].tap();
-          window.images()[0].secureTextFields()[0].secureTextFields()[0].setValue(password);
-          window.images()[0].buttons()["确认登录"].tap();
-          
-          target.delay(1);
-          window.tabBar().buttons()["购物车"].tap();
-          
+          xxnrClass().home(window).mineTab().tap();
+          login(18211101020,123456);
           target.delay(1);
 
-          window.buttons()[0].tap();
-          window.buttons()["取消"].tap();
-          
+          xxnrClass().home(window).shoppingCarTab().tap();
           target.delay(1);
-          
-          window.tableViews()[0].cells()[0].buttons()["address circle"].tap();
-          window.buttons()[0].tap();
+
+
+          xxnrClass().shoppingCar(window).goPayBtn().tap();
+          xxnrClass().shoppingCar(window).alertCancel().tap();
           var warning = window.staticTexts()[0].value();
-          assertEquals("请至少选择一件商品",warning);         
+          assertEquals("请至少选择一件商品",warning);
+          target.delay(1);
           
-          
-          });
-
+          xxnrClass().shoppingCar(window).allSelectBtn().tap();
+          xxnrClass().shoppingCar(window).goPayBtn().tap();
+          xxnrClass().shoppingCar(window).alertAdmire().tap();
+          assertEquals("提交订单",xxnrClass().navigationBarTitle(window));
      });
+
+});
