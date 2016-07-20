@@ -32,7 +32,7 @@
         orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
         self.orderEmptyView = orderEmptyView;
         orderEmptyView.delegate = self;
-        [self insertSubview:orderEmptyView atIndex:0];
+        [self insertSubview:orderEmptyView atIndex:1];
     }
     return _orderEmptyView;
     

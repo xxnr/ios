@@ -10,12 +10,12 @@ var window = target.frontMostApp().windows()[0];
 xxnrElementClass.tab(window).mineTab().tap();
 
 xxnrdelay(2);
-window.logElementTree();
+xxnrlogEleTree(window);
 
 test("列表页按钮的点击", function (target, app) {
     xxnrdelay(2);
     xxnrElementClass.mine(window).userOrderBtn().tap();
-    window.logElementTree();
+    xxnrlogEleTree(window);
     xxnrdelay(2);
     assertEquals("我的订单", xxnrElementClass.navTitle(window));
     assertEquals(5, window.buttons().length);
@@ -23,7 +23,7 @@ test("列表页按钮的点击", function (target, app) {
     xxnrElementClass.myorder(window).holdPayTab().tapWithOptions({tapOffset: {x: 0.27, y: 0.55}});
     xxnrdelay(2);
 
-    window.logElementTree();
+    xxnrlogEleTree(window);
 
     xxnrElementClass.myorder(window).sendTab().tapWithOptions({tapOffset: {x: 0.30, y: 0.82}});
 
@@ -63,17 +63,28 @@ test("待付款",function () {
         assertEquals("您还没有订单", xxnrElementClass.myorder(window).noOrderStaticText());
     }
     else {
-
-
         if (count > 20) {
             count = 20;
         }
 
-        window.logElementTree();
+        xxnrlogEleTree(window);
         for (var i = 0; i < count - 1; i++) {
             UIALogger.logMessage("asss");
             assertEquals(true, xxnrElementClass.myorder(window).userOrderStaticText(i * 2) == "待付款" || xxnrElementClass.myorder(window).userOrderStaticText(i * 2) == "付款待审核"|| xxnrElementClass.myorder(window).userOrderStaticText(i * 2) == "部分付款", "待付款商品第'" + i + "'个");
 
+            if(xxnrElementClass.myorder(window).userOrderStaticText(i * 2) == "待付款" ||xxnrElementClass.myorder(window).userOrderStaticText(i * 2) == "部分付款")
+            {
+                assertNotNull(xxnrElementClass.myorder(window).goPay(i*2+1));
+            }
+            else if ( xxnrElementClass.myorder(window).userOrderStaticText(i * 2) == "付款待审核")
+            {
+                assertNotNull(xxnrElementClass.myorder(window).amendPayType(i*2+1));
+                assertNotNull(xxnrElementClass.myorder(window).seePayType(i*2+1));
+            }
+            else
+            {
+                UIALogger.logFail("按钮出错");
+            }
             // assertEquals(true, xxnrElementClass.myorder(window).tableViewsgroups()[i * 2].staticTexts()[0].name() == "待付款" || xxnrElementClass.myorder(window).tableViewsgroups()[i * 2].staticTexts()[0].name() == "付款待审核"|| xxnrElementClass.myorder(window).tableViewsgroups()[i * 2].staticTexts()[0].name() == "部分付款", "待付款商品第'" + i + "'个");
         }
     }
@@ -86,6 +97,7 @@ test("待发货",function () {
     if (count == 0)
     {
         assertEquals("您还没有订单", xxnrElementClass.myorder(window).noOrderStaticText());
+        
     }
     else {
 
@@ -103,7 +115,7 @@ test("待发货",function () {
 test("待收货",function () {
     xxnrElementClass.myorder(window).reciveTab().tapWithOptions({tapOffset:{x:0.64, y:0.88}});
     xxnrdelay(2);
-    window.logElementTree();
+    xxnrlogEleTree(window);
     var count = xxnrElementClass.myorder(window).tableViewsgroups().length/2;
     if (count == 0)
     {
@@ -286,10 +298,10 @@ test("cell中点击修改付款方式",function(target,app){
     if(count > 0){
         var name = true;
         for(var i=0;i<count;i++){
+            xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].scrollToVisible();
 
             if(xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].buttons()[0].name() == "修改付款方式" && name)
             {
-                xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].scrollToVisible();
 
                 name = false;
                 xxnrElementClass.myorder(window).amendPayType((i+1)*2-1).tap();

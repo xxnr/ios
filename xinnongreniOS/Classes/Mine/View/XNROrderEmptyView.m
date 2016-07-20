@@ -28,7 +28,7 @@
 }
 
 -(void)createView{
-
+    
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth/2-PX_TO_PT(92), PX_TO_PT(170), PX_TO_PT(184), PX_TO_PT(214))];
     [imageView setImage:[UIImage imageNamed:@"orderInfo_space"]];
     [self addSubview:imageView];
@@ -87,7 +87,7 @@
         if (button == self.buyFerBtn) {
             type = XNROrderEmptyView_buyFer;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"pushFerVC" object:self];
-
+            
         }else{
             type = XNROrderEmptyView_buyCar;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"pushCarVC" object:self];

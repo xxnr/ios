@@ -44,7 +44,7 @@
         orderEmptyView.delegate = self;
         self.orderEmptyView = orderEmptyView;
         orderEmptyView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-PX_TO_PT(100)-64);
-        [self insertSubview:orderEmptyView atIndex:0];
+        [self insertSubview:orderEmptyView atIndex:1];
     }
     return _orderEmptyView;
     
@@ -96,10 +96,13 @@
         
         //获取数据
 //        [self getData];
-        [self createbackBtn];
         //创建订单
         [self createMainTableView];
+        
         [self setupAllViewRefresh];
+        
+        [self createbackBtn];
+
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(serveHeadRefresh) name:@"serveHeadRefresh" object:nil];
 
     }

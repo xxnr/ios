@@ -472,11 +472,20 @@ xxnrElementClass.myorder = function (window) {
         amendPayType:function (index) {
             return window.scrollViews()[0].tableViews()[0].groups()[index].buttons()["修改付款方式"];
         },
+        seePayType:function (index) {
+            return window.scrollViews()[0].tableViews()[0].groups()[index].buttons()["查看付款信息"];
+        },
         receiveGoods:function (index) {
             return window.scrollViews()[0].tableViews()[0].groups()[index].buttons()["确认收货"];
         },
         noOrderStaticText:function () {
             return window.scrollViews()[0].staticTexts()[0].name();
+        },
+        goPayFer:function () {
+            return window.scrollViews()[0].buttons()["去买化肥"];
+        },
+        goPayCar:function () {
+            return window.scrollViews()[0].buttons()["去买汽车"];
         }
     };
 }

@@ -90,10 +90,13 @@ function logn() {
         xxnrElementClass.login(window).register().tap();
         xxnrElementClass.navBack(window).tap();
     });
+
     for (var i=1;i<7;i++)
     {
-        phoneAndPassword(i);
-        judgelogn();
+        test("测试登录",function () {
+            phoneAndPassword(i);
+            judgelogn();
+        })
     }
 }
 

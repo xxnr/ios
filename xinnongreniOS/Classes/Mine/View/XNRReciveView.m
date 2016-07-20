@@ -48,7 +48,7 @@
         orderEmptyView.delegate = self;
         self.orderEmptyView = orderEmptyView;
         
-        [self insertSubview:orderEmptyView atIndex:0];
+        [self insertSubview:orderEmptyView atIndex:1];
     }
     return _orderEmptyView;
 }
@@ -76,6 +76,7 @@
         [self createMainTableView];
         //获取数据
         [self setupAlreadySendViewRefresh];
+        
         [self createbackBtn];
 //        [self getData];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reciveHeadRefresh) name:@"reciveHeadRefresh" object:nil];
