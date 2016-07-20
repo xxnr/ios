@@ -100,7 +100,8 @@
         [self.picImageView setImage:[UIImage imageNamed:@"icon_placehold"]];
     }else{
         [self.picImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,self.model.imgUrl]] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-    }}];
+    }
+    }];
 
     self.goodNameLabel.text = self.model.goodsName;
     [self.goodNameLabel verticalUpAlignmentWithText:self.model.goodsName maxHeight:PX_TO_PT(80)];

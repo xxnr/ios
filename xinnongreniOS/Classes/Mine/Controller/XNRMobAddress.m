@@ -256,8 +256,7 @@
         [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
         
         [manager POST:KUserModify parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
-            
+    
             self.com(self.addressLabel.text,self.streetLabel.text);
             
             [self.navigationController popViewControllerAnimated:YES];

@@ -152,12 +152,6 @@
     [self.makeSurePasswordTextField resignFirstResponder];
     [self.againPasswordTextField resignFirstResponder];
     
-//    if(self.newpasswordTextField.text.length==0||self.againPasswordTextField.text.length==0 || self.makeSurePasswordTextField.text.length==0)
-//    {
-//        
-//        [UILabel showMessage:@"请完善您要填写的资料"];
-//        
-//    }
     if(self.newpasswordTextField.text.length==0){
         [UILabel showMessage:@"请输入旧密码"];
     }

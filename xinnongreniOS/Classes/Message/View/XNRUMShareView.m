@@ -76,12 +76,12 @@
     NSArray *titleArray = @[@"微信好友",@"微信朋友圈",@"QQ",@"QQ空间"];
     NSArray *imageArray;
     if ([WXApi isWXAppInstalled]&&[QQApiInterface isQQInstalled]) {
-        imageArray = @[@"wechat-friends",@"wechat-circle-",@"QQ",@"qqspace"];
+        imageArray = @[@"wechat-friends",@"wechat-circle-",@"QQShare",@"qqspace"];
     }else if ([WXApi isWXAppInstalled]) {
         imageArray = @[@"wechat-friends",@"wechat-circle-",@"qqlightgray",@"qqspacel"];
 
     }else if([QQApiInterface isQQInstalled]){
-        imageArray = @[@"wechat-friendsl",@"wechat-circle-l",@"QQ",@"qqspace"];
+        imageArray = @[@"wechat-friendsl",@"wechat-circle-l",@"QQShare",@"qqspace"];
     }else{
         imageArray = @[@"wechat-friendsl",@"wechat-circle-l",@"qqlightgray",@"qqspacel"];
 
