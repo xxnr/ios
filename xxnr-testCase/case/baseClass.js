@@ -47,7 +47,18 @@ function drop_logn(phone,password,message) {
             }
         }
     })
-}  
+}
+
+//判断一个元素在不在数组中
+function in_array(stringToSearch, arrayToSearch) {
+    for (s = 0; s < arrayToSearch.length; s++) {
+        thisEntry = arrayToSearch[s];
+        if (thisEntry == stringToSearch) {
+            return true;
+        }
+    }
+    return false;
+}
 // function drop(method) {
 //     if (target.frontMostApp().windows()[0].staticTexts()["您已在其他地方登录"].value() == "您已在其他地方登录")
 //     {

@@ -492,11 +492,54 @@ xxnrElementClass.myorder = function (window) {
 //订单详情
 xxnrElementClass.orderDetail = function (window) {
     return{
+        orderId:function () {
+            return window.tableViews()[0].staticTexts()[0];
+        },
+        orderState:function () {
+            return window.tableViews()[0].staticTexts()[1];
+        },
+        dispatchType:function () {
+            return window.tableViews()[0].staticTexts()[4];
+        },
+        goodsListOneIndex:function () {
+            var count = window.tableViews()[0].cells().length;
+            var arr;
+            if (window.tableViews()[0].cells()[0].staticTexts()[1].name() == "阶段一:订金")
+            {
+               return 2;
+            }
+            else
+            {
+                return 1;
+            }
+        },
+        cells:function () {
+            return window.tableViews()[0].cells();
+        },
+        cell:function (index) {
+            return window.tableViews()[0].cells()[index];
+        },
+        consignmentState:function (cell) {
+            return cell.staticTexts()[4];
+        },
         goPay:function () {
             return window.buttons()["去付款"];
         },
+        receiveGoods:function () {
+            return window.buttons()["确认收货"];
+
+        },
         goCarry:function () {
             return window.buttons()["去自提"];
+        },
+        amendPayType:function () {
+            return window.buttons()["修改付款方式"];
+        },
+        seePayType:function () {
+            return window.buttons()["查看付款信息"];
+        },
+        btmbutton:function () {
+            return window.buttons()[0];
         }
     }
 }
