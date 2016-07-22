@@ -6,6 +6,7 @@ var identifyCode;
 var password;
 var passWordAgain;
 var message;
+var Toast;
 function registerData(i) {
     switch (i)
     {
@@ -18,17 +19,18 @@ function registerData(i) {
             break;
         case 1:
             phone = "12345673456";
-            identifyCode = "";
-            password = "";
-            passWordAgain = "";
+            identifyCode = "123456";
+            password = "1234567";
+            passWordAgain = "1234567";
             message = "请输入正确的手机号";
             break;
         case 2:
             phone = "18211101020";
-            identifyCode = "";
-            password = "";
-            passWordAgain = "";
-            message = "该手机号已注册,请重新输入";
+            identifyCode = "123456";
+            password = "1234567";
+            passWordAgain = "1234567";
+            message = "该手机号已注册，请重新输入";
+            Toast = "验证码已过期，请重新获取";
             break;
         case 3:
             phone = "18211105655";
@@ -38,7 +40,7 @@ function registerData(i) {
             message = "请输入验证码";
             break;
         case 4:
-            phone = "18211101020";
+            phone = "18211105655";
             identifyCode = "123456";
             password = "";
             passWordAgain = "";
@@ -46,28 +48,28 @@ function registerData(i) {
 
             break;
         case 5:
-            phone = "18211101020";
+            phone = "18211105655";
             identifyCode = "123456";
             password = "1234567";
             passWordAgain = "";
             message = "请输入确认密码";
             break;
         case 6:
-            phone = "18211101020";
+            phone = "18211105655";
             identifyCode = "123456";
             password = "123";
             passWordAgain = "123";
             message = "密码需不小于6位";
             break;
         case 7:
-            phone = "18211101020";
+            phone = "18211105655";
             identifyCode = "123456";
             password = "1234567";
             passWordAgain = "123456";
             message = "两次密码输入不一致，请重新输入";
             break;
         case 8:
-            phone = "18211101020";
+            phone = "18211105655";
             identifyCode = "123456";
             password = "123456";
             passWordAgain = "123456";

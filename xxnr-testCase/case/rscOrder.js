@@ -2,51 +2,68 @@
  * Created by XXNR on 16/7/12.
  */
 #import "../lib/tuneup.js"
+#import "xxnrClass.js"
 var target = UIATarget.localTarget();
 var window = target.frontMostApp().windows()[0];
 
 target.setDeviceOrientation(UIA_DEVICE_ORIENTATION_PORTRAIT);
-window.tabBar().buttons()["我的"].tap();
+xxnrClass.home(window).mineTab().tap();
 test("我的网点测试",function(target,app){
-
-    login()
-    window.tableViews()[0].buttons()[0].tap();
+xxnrClass.mine(window).rscOrderBtn().tap();
     window.logElementTree();
     test("全部测试",function(target,app){
         window.logElementTree();
-        test("待审核测试",function(target,app){
-            window.scrollViews()[0].tableViews()[0].groups()["网点自提"].buttons()["审核付款"].tap();
-            assertTrue("审核付款",window.views()[0].staticTexts()[0].value);
+        test("待付款测试",function(target,app){
+            
+            xxnrClass.rscOrders(window).waitPayTab().tap();
+            assertTrue("待付款",xxnrClass.rscOrders(window).orderStatus());
+            
+        });
 
-            window.logElementTree();
-            window.views()[0].buttons()["线下POS机"].tap;
+            test("待审核测试",function(target,app){
+
+                 xxnrClass.rscOrders(window).waitVerifyTab().tap();
+                assertTrue("付款待审核",xxnrClass.rscOrders(window).orderStatus());
+
+
+                xxnrClass.rscOrders(window).identifyPayBtn().tap();
+                target.delay(2);
+
+                window.logElementTree();
+
+
+                assertTrue("审核付款",window.staticTexts()[0].value);
+
+                xxnrClass.rscOrders(window).eposeBtn().tap();
             target.delay(1);
 
-            window.views()[0].buttons()["现金"].tap;
+            xxnrClass.rscOrders(window).cashBtn().tap();
             target.delay(1);
 
-            window.views()[0].buttons()["确定"].tap;
+            xxnrClass.rscOrders(window).admireBtn().tap();
 
-            assertTrue("审核成功",window.views()[0].staticTexts()[0].value);
+            assertTrue("审核成功",window.staticTexts()[0].value);
 
 
         });
         test("待配送测试",function(target,app){
-            window.scrollViews()[0].tableViews()[0].groups()["配送到户"].buttons()["开始配送"].tap();
-            assertTrue("开始配送",window.views()[0].label()[0].value);
-
+            target.delay(1);
             window.logElementTree();
 
-            window.views()[0].tableViews()[0].cell()[0].tap;
+            // window.scrollViews()[0].tableViews()[0].groups()["配送到户"].buttons()["开始配送"].tap();
+            assertTrue("开始配送",window.views()[0].label()[0].value);
+
+
+            window.views()[0].tableViews()[0].cell()[0].tap();
             assertTrue("确定(1)",window.views()[0].buttons()[1].value);
             target.delay(1);
 
-            window.views()[0].tableViews()[0].cell()[0].tap;
+            window.views()[0].tableViews()[0].cell()[0].tap();
             assertTrue("确定",window.views()[0].buttons()[1].value);
             target.delay(1);
 
             window.views()[0].tableViews()[0].cell()[0].tap;
-            window.views()[0].buttons()[@"确定(1)"].tap;
+            window.views()[0].buttons()["确定(1)"].tap;
             assertTrue("配送成功",window.views()[0].staticTexts()[0].value);
 
         });
@@ -65,27 +82,27 @@ test("我的网点测试",function(target,app){
             target.delay(1);
 
             window.views()[0].tableViews()[0].cell()[0].tap;
-            window.views()[0].buttons()[@"下一步(1)"].tap;
+            window.views()[0].buttons()["下一步(1)"].tap;
             assertTrue("客户自提-自提码",window.views()[0].staticTexts()[0].value);
 
 
-            var deliverNumber "123456"
+            var deliverNumber ="123456";
             window.textFields()[0].textFields()[0].tap();
             window.textFields()[0].textFields()[0].setValue(deliverNumber);
-            window.views()[0].buttons()[@"确定"].tap;
+            window.views()[0].buttons()["确定"].tap;
             var warning = window.staticTexts()[0].value();
             assertEquals("请输入自提码",warning);
             target.delay(2);
 
 
-            var deliverNumber "1234567"
+            var deliverNumber ="1234567";
             window.textFields()[0].textFields()[0].tap();
             window.textFields()[0].textFields()[0].setValue(deliverNumber);
-            window.views()[0].buttons()[@"确定"].tap;
+            window.views()[0].buttons()["确定"].tap;
             var warning = window.staticTexts()[0].value();
             assertEquals("自提码错误，请重新输入",warning);
             for(var i = 0; i<2; i++){
-                window.views()[0].buttons()[@"确定"].tap;
+                window.views()[0].buttons()["确定"].tap;
             }
             var warning = window.staticTexts()[0].value();
             assertEquals("您输入错误次数较多，请一分钟后再试",warning);
@@ -93,7 +110,7 @@ test("我的网点测试",function(target,app){
             target.delay(2);
 
 
-            var deliverNumber "正确的自提码"
+            var deliverNumber ="正确的自提码";
             window.textFields()[0].textFields()[0].tap();
             window.textFields()[0].textFields()[0].setValue(deliverNumber);
             window.views()[0].buttons()["确定"].tap;

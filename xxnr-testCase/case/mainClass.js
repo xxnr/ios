@@ -1,7 +1,6 @@
 /**
  * Created by XXNR on 16/7/18.
  */
-#import "../lib/tuneup.js"
 
 
 function login(phone,password) {

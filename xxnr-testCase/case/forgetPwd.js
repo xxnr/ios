@@ -1,13 +1,13 @@
 
-#import "test.js"
+#import "../lib/tuneup.js"
 #import "data.js"
-#import"xxnrClass"
+#import "xxnrClass.js"
 var target = UIATarget.localTarget();         
 var window = target.frontMostApp().windows()[0];
-window.tabBar().buttons()["我的"].tap();    
 target.delay(3);
 test("忘记密码测试",function(){
-     window.tableViews()[0].images()[0].buttons()["登录"].tap();
+     xxnrClass.home(window).mineTab.tap();
+     xxnrClass.mine(window).loginBtn.tap();
      window.images()[0].buttons()["忘记密码?"].tap(); 
      window.logElementTree();
      for (var i=0;i<9;i++) {
@@ -17,20 +17,20 @@ test("忘记密码测试",function(){
 
 function forgetPwd(i) {
      forgetPwdData(i);
-     xxnrClass().forgetPwd(window).phoneNum().tap();
-     xxnrClass().forgetPwd(window).phoneNum().setvalue(phone);
-     xxnrClass().forgetPwd(window).identifyBtn().tap();
+     xxnrClass.forgetPassword(window).phoneNum().tap();
+     xxnrClass.forgetPassword(window).phoneNum().setValue(phone);
+     xxnrClass.forgetPassword(window).identifyBtn().tap();
 
-     xxnrClass().forgetPwd(window).identifyCode().tap();
-     xxnrClass().forgetPwd(window).identifyCode().setvalue(identifyCode);
+     xxnrClass.forgetPassword(window).identifyCode().tap();
+     xxnrClass.forgetPassword(window).identifyCode().setValue(identifyCode);
 
-     xxnrClass().forgetPwd(window).passWord().tap();
-     xxnrClass().forgetPwd(window).passWord().setvalue(password);
+     xxnrClass.forgetPassword(window).passWord().tap();
+     xxnrClass.forgetPassword(window).passWord().setValue(password);
 
-     xxnrClass().forgetPwd(window).passWordAgain().tap();
-     xxnrClass().forgetPwd(window).passWordAgain().setvalue(passWordAgain);
+     xxnrClass.forgetPassword(window).passWordAgain().tap();
+     xxnrClass.forgetPassword(window).passWordAgain().setValue(passWordAgain);
 
-     xxnrClass().forgetPwd(window).registerBtn().tap();
+     xxnrClass.forgetPassword(window).registerBtn().tap();
 
      var toast = window.staticTexts()[0].value();
      assertEquals(message,toast);
