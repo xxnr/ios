@@ -191,7 +191,24 @@
                 [_deliveryArr addObject:sectionModel];
             }
             
+            //顶部视图
+            if (isfirst) {
+                [self createReceiveView];
+                isfirst = NO;
+            }
             
+            [self getRSCWebSiteData];
+            
+            //        [self createDeliveryView:self.RSCDetailAddress andContact:self.RSCContactInfo];
+            
+            
+            if ([_currrentBtn.titleLabel.text isEqualToString:@"网点自提"]) {
+                _NoDeliverView.hidden = NO;
+            }
+            //        else if ([_currrentBtn.titleLabel.text isEqualToString:@"配送到户"]) {
+            //            _addressView.hidden = NO;
+            //            _headViewNormal.hidden = NO;
+            //        }
             
         }
         else if ([resultObj[@"code"] integerValue] == 1401){
@@ -202,30 +219,14 @@
             XNRLoginViewController *loginVC = [[XNRLoginViewController alloc] init];
             loginVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:loginVC animated:YES];
+            
         }
         else{
             
             [UILabel showMessage:resultObj[@"message"]];
         }
         
-        //顶部视图
-        if (isfirst) {
-            [self createReceiveView];
-            isfirst = NO;
-        }
-        
-        [self getRSCWebSiteData];
-        
-//        [self createDeliveryView:self.RSCDetailAddress andContact:self.RSCContactInfo];
-        
-  
-        if ([_currrentBtn.titleLabel.text isEqualToString:@"网点自提"]) {
-            _NoDeliverView.hidden = NO;
-        }
-//        else if ([_currrentBtn.titleLabel.text isEqualToString:@"配送到户"]) {
-//            _addressView.hidden = NO;
-//            _headViewNormal.hidden = NO;
-//        }
+       
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"===%@",error);
@@ -236,7 +237,7 @@
 
 -(void)getRSCWebSiteData
 {
-    [KSHttpRequest get:KgetRSC parameters:@{@"products":[self GetProId],@"province":@"",@"city":@"",@"county":@"",@"token":[DataCenter account].token} success:^(id result)
+    [KSHttpRequest get:KgetRSC parameters:@{@"products":[self GetProId],@"province":@"",@"city":@"",@"county":@"",@"token":[DataCenter account].token?[DataCenter account].token:@""} success:^(id result)
      {
          if ([result[@"code"]integerValue] == 1000) {
              _webSiteArr = (NSMutableArray *)[XNRRSCModel objectArrayWithKeyValuesArray:result[@"RSCs"]];
@@ -328,6 +329,9 @@
                         }
             
                         [self.tableview reloadData];
+            
+            [self getDeliveries];
+
                     }
         else if ([resultObj[@"code"] integerValue] == 1401){
             [UILabel showMessage:resultDic[@"message"]];
@@ -343,7 +347,6 @@
                         [UILabel showMessage:resultObj[@"message"]];
                     }
         
-        [self getDeliveries];
         
         
 
@@ -386,23 +389,25 @@
             {
                 [self createAddressModelView:self.nextAddresModel];
             }
+            
+            if ([_currrentBtn.titleLabel.text isEqualToString:@"配送到户"]) {
+                _addressView.hidden = NO;
+                _headViewNormal.hidden = NO;
+            }
+            if ([_currrentBtn.titleLabel.text isEqualToString:@"网点自提"]) {
+                self.headViewSpecial.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(_NoDeliverView.frame));
+                
+                self.tableview.tableHeaderView = self.headViewSpecial;
+                
+                _NoDeliverView.hidden = NO;
+            }
+            [self.tableview reloadData];
+
         }
         else {
             [UILabel showMessage:result[@"message"]];
         }
         
-        if ([_currrentBtn.titleLabel.text isEqualToString:@"配送到户"]) {
-            _addressView.hidden = NO;
-            _headViewNormal.hidden = NO;
-        }
-        if ([_currrentBtn.titleLabel.text isEqualToString:@"网点自提"]) {
-                self.headViewSpecial.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(_NoDeliverView.frame));
-                
-                self.tableview.tableHeaderView = self.headViewSpecial;
-
-            _NoDeliverView.hidden = NO;
-        }
-        [self.tableview reloadData];
         
     } failure:^(NSError *error) {
         

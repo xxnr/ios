@@ -853,7 +853,6 @@
 }
 -(void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"reloadOrderList" object:nil];
-    
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 @end

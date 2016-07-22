@@ -83,99 +83,99 @@ test("分次支付金额显示",function () {
         assertEquals(holdMoney_num,splitMoney_num,"分次支付显示金额有误,应显示'"+holdMoney_num+"'");
     }
 })
-// test("分次支付加减按钮显示",function () {
-//     if (holdMoney_num <= detailMoney_num)
-//     {
-//         assertEquals(0,window.buttons()[2].isEnabled());
-//         assertEquals(0,window.buttons()[3].isEnabled());
-//     }
-//     else if (holdMoney_num > detailMoney_num && splitMoney_num == detailMoney_num)
-//     {
-//         assertEquals(0,window.buttons()[2].isEnabled());
-//         assertEquals(1,window.buttons()[3].isEnabled());
-//     }
-//     else if (holdMoney_num > splitMoney_num && splitMoney_num > detailMoney_num)
-//     {
-//         assertEquals(1,window.buttons()[2].isEnabled());
-//         assertEquals(1,window.buttons()[3].isEnabled());
-//     }
-//     else if (holdMoney_num <= splitMoney_num)
-//     {
-//         assertEquals(1,window.buttons()[2].isEnabled());
-//         assertEquals(0,window.buttons()[3].isEnabled());
-//     }
-// })
-// test("分次支付加号按钮操作",function () {
-//
-//     var extentStr = window.staticTexts()[7].value();
-//     var extentMoney = extentStr.substr(10,3);
-//     extentMoney_num = parseFloat(extentMoney);
-//
-//     while (window.buttons()[3].isEnabled() == 1) {
-//         window.buttons()[3].tap();
-//
-//         xxnrdelay(1);
-//
-//         var nowsplitMoneyStr = window.staticTexts()[6].value();
-//         var nowsplitMoney = nowsplitMoneyStr.substr(1,nowsplitMoneyStr.length-1);
-//         var nowsplitMoney_num = parseFloat(nowsplitMoney);
-//
-//         xxnrlogMessage("'"+extentMoney_num+"'");
-//
-//         xxnrlogMessage("'"+parseFloat(splitMoney_num+extentMoney_num)+"'");
-//         xxnrlogMessage("'"+holdMoney_num+"'");
-//
-//         if (parseFloat(splitMoney_num+extentMoney_num)<holdMoney_num) {
-//             xxnrlogMessage("if");
-//
-//             assertEquals(parseFloat(splitMoney_num+extentMoney_num).toFixed(2), nowsplitMoney_num);
-//         }
-//         else
-//         {
-//             xxnrlogMessage("else");
-//
-//             xxnrdelay(2);
-//             assertEquals(holdMoney_num, nowsplitMoney_num);
-//             assertEquals(0,window.buttons()[3].isEnabled());
-//         }
-//         splitMoney_num = nowsplitMoney_num;
-//     }
-// })
-//
-// test("分次支付按钮减号操作",function () {
-//
-//     var splitMoneyStr = window.staticTexts()[6].value();
-//     var splitMoney = splitMoneyStr.substr(1,splitMoneyStr.length-1);
-//     splitMoney_num = parseFloat(splitMoney);
-//
-//     while (window.buttons()[2].isEnabled() == 1) {
-//         window.buttons()[2].tap();
-//
-//         xxnrdelay(1);
-//
-//         var nowsplitMoneyStr = window.staticTexts()[6].value();
-//         var nowsplitMoney = nowsplitMoneyStr.substr(1,nowsplitMoneyStr.length-1);
-//         var nowsplitMoney_num = parseFloat(nowsplitMoney);
-//
-//         xxnrlogMessage("'"+splitMoney_num+"'");
-//
-//         xxnrlogMessage("'"+extentMoney_num+"'");
-//         xxnrlogMessage("'"+parseFloat(parseFloat(splitMoney_num)-parseFloat(extentMoney_num))+"'");
-//
-//         if (parseFloat(splitMoney_num-extentMoney_num)>detailMoney_num) {
-//             assertEquals(parseFloat(splitMoney_num-extentMoney_num).toFixed(2), nowsplitMoney_num);
-//         }
-//         else
-//         {
-//             xxnrdelay(2);
-//             assertEquals(detailMoney_num, nowsplitMoney_num);
-//             assertEquals(0,window.buttons()[2].isEnabled());
-//         }
-//         splitMoney_num = nowsplitMoney_num;
-//
-//     }
-//
-// })
+test("分次支付加减按钮显示",function () {
+    if (holdMoney_num <= detailMoney_num)
+    {
+        assertEquals(0,window.buttons()[2].isEnabled());
+        assertEquals(0,window.buttons()[3].isEnabled());
+    }
+    else if (holdMoney_num > detailMoney_num && splitMoney_num == detailMoney_num)
+    {
+        assertEquals(0,window.buttons()[2].isEnabled());
+        assertEquals(1,window.buttons()[3].isEnabled());
+    }
+    else if (holdMoney_num > splitMoney_num && splitMoney_num > detailMoney_num)
+    {
+        assertEquals(1,window.buttons()[2].isEnabled());
+        assertEquals(1,window.buttons()[3].isEnabled());
+    }
+    else if (holdMoney_num <= splitMoney_num)
+    {
+        assertEquals(1,window.buttons()[2].isEnabled());
+        assertEquals(0,window.buttons()[3].isEnabled());
+    }
+})
+test("分次支付加号按钮操作",function () {
+
+    var extentStr = window.staticTexts()[7].value();
+    var extentMoney = extentStr.substr(10,3);
+    extentMoney_num = parseFloat(extentMoney);
+
+    while (window.buttons()[3].isEnabled() == 1) {
+        window.buttons()[3].tap();
+
+        xxnrdelay(1);
+
+        var nowsplitMoneyStr = window.staticTexts()[6].value();
+        var nowsplitMoney = nowsplitMoneyStr.substr(1,nowsplitMoneyStr.length-1);
+        var nowsplitMoney_num = parseFloat(nowsplitMoney);
+
+        xxnrlogMessage("'"+extentMoney_num+"'");
+
+        xxnrlogMessage("'"+parseFloat(splitMoney_num+extentMoney_num)+"'");
+        xxnrlogMessage("'"+holdMoney_num+"'");
+
+        if (parseFloat(splitMoney_num+extentMoney_num)<holdMoney_num) {
+            xxnrlogMessage("if");
+
+            assertEquals(parseFloat(splitMoney_num+extentMoney_num).toFixed(2), nowsplitMoney_num);
+        }
+        else
+        {
+            xxnrlogMessage("else");
+
+            xxnrdelay(2);
+            assertEquals(holdMoney_num, nowsplitMoney_num);
+            assertEquals(0,window.buttons()[3].isEnabled());
+        }
+        splitMoney_num = nowsplitMoney_num;
+    }
+})
+
+test("分次支付按钮减号操作",function () {
+
+    var splitMoneyStr = window.staticTexts()[6].value();
+    var splitMoney = splitMoneyStr.substr(1,splitMoneyStr.length-1);
+    splitMoney_num = parseFloat(splitMoney);
+
+    while (window.buttons()[2].isEnabled() == 1) {
+        window.buttons()[2].tap();
+
+        xxnrdelay(1);
+
+        var nowsplitMoneyStr = window.staticTexts()[6].value();
+        var nowsplitMoney = nowsplitMoneyStr.substr(1,nowsplitMoneyStr.length-1);
+        var nowsplitMoney_num = parseFloat(nowsplitMoney);
+
+        xxnrlogMessage("'"+splitMoney_num+"'");
+
+        xxnrlogMessage("'"+extentMoney_num+"'");
+        xxnrlogMessage("'"+parseFloat(parseFloat(splitMoney_num)-parseFloat(extentMoney_num))+"'");
+
+        if (parseFloat(splitMoney_num-extentMoney_num)>detailMoney_num) {
+            assertEquals(parseFloat(splitMoney_num-extentMoney_num).toFixed(2), nowsplitMoney_num);
+        }
+        else
+        {
+            xxnrdelay(2);
+            assertEquals(detailMoney_num, nowsplitMoney_num);
+            assertEquals(0,window.buttons()[2].isEnabled());
+        }
+        splitMoney_num = nowsplitMoney_num;
+
+    }
+
+})
 test("选择支付方式",function () {
     xxnrElementClass.selPayType(window).fullPay().tap();
 

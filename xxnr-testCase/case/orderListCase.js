@@ -75,6 +75,7 @@ test("待付款",function () {
         }
 
         xxnrlogEleTree(window);
+
         for (var i = 0; i < count - 1; i++) {
             UIALogger.logMessage("asss");
             assertEquals(true, xxnrElementClass.myorder(window).userOrderStaticText(i * 2) == "待付款" || xxnrElementClass.myorder(window).userOrderStaticText(i * 2) == "付款待审核"|| xxnrElementClass.myorder(window).userOrderStaticText(i * 2) == "部分付款", "待付款商品第'" + i + "'个");
@@ -82,11 +83,13 @@ test("待付款",function () {
             if(xxnrElementClass.myorder(window).userOrderStaticText(i * 2) == "待付款" ||xxnrElementClass.myorder(window).userOrderStaticText(i * 2) == "部分付款")
             {
                 assertNotNull(xxnrElementClass.myorder(window).goPay(i*2+1));
+
             }
             else if ( xxnrElementClass.myorder(window).userOrderStaticText(i * 2) == "付款待审核")
             {
                 assertNotNull(xxnrElementClass.myorder(window).amendPayType(i*2+1));
                 assertNotNull(xxnrElementClass.myorder(window).seePayType(i*2+1));
+
             }
             else
             {
@@ -232,13 +235,13 @@ test("cell中确认收货按钮点击",function(target,app){
                 name = false;
                 xxnrdelay(1);
 
-                 xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].buttons()[0].tap();
+                xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].buttons()[0].tap();
 
                 xxnrdelay(2);
-                 assertEquals(1,window.buttons()[5].isVisible());
+                assertEquals(1,window.buttons()[5].isVisible());
 
-                 window.buttons()[5].tapWithOptions({tapOffset:{x:0.75, y:0.40}});
-                 window.buttons()[5].tapWithOptions({tapOffset:{x:0.56, y:0.97}});
+                window.buttons()[5].tapWithOptions({tapOffset:{x:0.75, y:0.40}});
+                window.buttons()[5].tapWithOptions({tapOffset:{x:0.56, y:0.97}});
                 break;
             }
         }
@@ -258,7 +261,7 @@ test("cell中自提按钮点击",function(target,app){
         var name = true;
         for(var i=0;i<count;i++){
 
-                xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].scrollToVisible();
+            xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].scrollToVisible();
 
             if(xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].buttons()[0].name() == "去自提" && name)
             {
@@ -320,8 +323,15 @@ test("cell中点击修改付款方式",function(target,app){
                 name = false;
                 xxnrElementClass.myorder(window).amendPayType((i+1)*2-1).tap();
                 xxnrdelay(2);
-                assertEquals("支付方式",xxnrElementClass.navTitle(window));
-                xxnrElementClass.navBack(window).tap();
+                if(xxnrElementClass.navTitle(window) == "支付方式")
+                {
+                    xxnrElementClass.navBack(window).tap();
+                }
+                else
+                {
+                    assertEquals("订单已支付",xxnrElementClass.navTitle(window));
+                    xxnrElementClass.navBack(window).tap();
+                }
                 break;
             }
         }
@@ -357,38 +367,78 @@ test("cell中点击查看付款详情",function(target,app){
 test("跳转订单详情",function(target,app){
     xxnrdelay(2);
 
+    // xxnrElementClass.myorder(window).reciveTab().tapWithOptions({tapOffset:{x:0.64, y:0.88}});
+
     xxnrElementClass.myorder(window).totalTab().tapWithOptions({tapOffset:{x:0.49, y:0.78}});
 
     xxnrdelay(2);
 
-    var count = xxnrElementClass.myorder(window).userOrderCells().length;
-    UIALogger.logMessage("'" + count+ "'");
+    xxnrlogEleTree(window);
+
+    var count = xxnrElementClass.myorder(window).tableViewsgroups().length+xxnrElementClass.myorder(window).tableViewsgroups().length/2;
+    //UIALogger.logMessage("'" + count+ "'");
+    UIALogger.logMessage("'" +count+ "'");
+
 
     var arr = [];
-        for (var i=0;i<count;i++) {
-            var orderState = xxnrElementClass.myorder(window).userOrderStaticText(i*2);
 
-            
-            if (in_array(orderState,arr))
-            {
-                continue;
-            }
-            else
-            {
-                arr[arr.length] = orderState;
-            }
+    for (var m = 0; m < count; m++) {
 
-            xxnrElementClass.myorder(window).userOrderCell(i).tap();
-            xxnrdelay(1);
-            assertEquals("订单详情", xxnrElementClass.navTitle(window));
+        xxnrdelay(2);
+        var x = ["待付款","待发货","配送中","部分付款","付款待审核","已完成","待自提","已关闭"];
+
+
+        var orderState = xxnrElementClass.myorder(window).elementStaticText(m);
+        xxnrlogMessage("'"+m+"'");
+
+        xxnrlogMessage("'"+xxnrElementClass.myorder(window).elementStaticText(m)+"'");
+
+        if (!in_array(orderState,x)) {
+            continue;
+        }
+
+        if (in_array(orderState, arr)) {
+            continue;
+        }
+        else {
+            arr[arr.length] = orderState;
+        }
+
+        xxnrElementClass.myorder(window).elements(m+1).scrollToVisible();
+
+        xxnrdelay(2);
+
+        xxnrlogMessage("'"+xxnrElementClass.myorder(window).elementStaticText(m+1)+"'");
+
+        xxnrElementClass.myorder(window).elements(m+1).tap();
+
+        xxnrlogEleTree(window);
+
+        xxnrdelay(1);
+        assertEquals("订单详情", xxnrElementClass.navTitle(window));
+
+        test("订单详情",function () {
 
             xxnrlogEleTree(window);
-            UIALogger.logMessage("'" + window.tableViews()[0].groups().count + "'");
+            test("查看支付详情",function () {
+                var isseeDetail = false;
+                for (var i = 0; i < xxnrElementClass.orderDetail(window).cells().length; i++) {
+                    if (xxnrElementClass.orderDetail(window).seePayDetail(xxnrElementClass.orderDetail(window).cell(i)).isVisible()) {
+                        isseeDetail = true;
+                        assertEquals("查看支付详情", xxnrElementClass.navTitle(window));
+                        xxnrElementClass.navBack(window).tap();
+                    }
+                }
+                if (isseeDetail == false)
+                {
+                    xxnrlogMessage("没有分次支付记录");
+                }
+            })
 
-            var orderState = xxnrElementClass.orderDetail(window).orderState().name().substr(5,xxnrElementClass.orderDetail(window).orderState().name().length - 5);
+            var orderState = xxnrElementClass.orderDetail(window).orderState().name().substr(5, xxnrElementClass.orderDetail(window).orderState().name().length - 5);
 
             if (orderState == "待付款" || orderState == "部分付款") {
-                test("待付款或部分付款",function () {
+                test("待付款或部分付款", function () {
                     assertNotNull(xxnrElementClass.orderDetail(window).goPay());
                     xxnrElementClass.orderDetail(window).goPay().tap();
                     xxnrdelay(2);
@@ -397,7 +447,7 @@ test("跳转订单详情",function(target,app){
                 })
             }
             else if (orderState == "付款待审核") {
-                test("付款待审核",function () {
+                test("付款待审核", function () {
                     assertNotNull(xxnrElementClass.orderDetail(window).amendPayType());
                     assertNotNull(xxnrElementClass.orderDetail(window).seePayType());
 
@@ -416,22 +466,36 @@ test("跳转订单详情",function(target,app){
 
             }
             else if (orderState == "待自提") {
-                test("待自提",function () {
+                test("待自提", function () {
+                    xxnrdelay(2);
                     var i = xxnrElementClass.orderDetail(window).goodsListOneIndex();
                     var j = i;
                     var isCarry = false;
-                    for (j; j <= parseInt(xxnrElementClass.orderDetail(window).cells() - i); j++) {
+                    var count = 0;
+                    xxnrlogMessage("'"+i+"'");
+                    xxnrlogMessage("'"+parseInt(xxnrElementClass.orderDetail(window).cells().length)+"'");
+
+                    for (j; j < parseInt(xxnrElementClass.orderDetail(window).cells().length); j++) {
                         var cell = xxnrElementClass.orderDetail(window).cell(j);
+
+                        xxnrlogEleTree(window);
+                        xxnrlogMessage("'"+xxnrElementClass.orderDetail(window).consignmentState(cell).value()+"'");
+
                         if (xxnrElementClass.orderDetail(window).consignmentState(cell).value() == "已到服务站") {
+                            count += 1;
                             isCarry = true;
-                            break;
                         }
                     }
                     if (isCarry == true) {
+
                         assertNotNull(xxnrElementClass.orderDetail(window).goCarry());
                         xxnrElementClass.orderDetail(window).goCarry().tap();
                         xxnrdelay(2);
                         assertEquals("网点自提", xxnrElementClass.navTitle(window));
+                        test("网点自提商品展示是否正确", function () {
+
+                            assertEquals(count, xxnrElementClass.carry(window).cells().length);
+                        })
                         xxnrElementClass.navBack(window).tap();
                     }
                     else {
@@ -440,22 +504,21 @@ test("跳转订单详情",function(target,app){
                 })
             }
             else if (orderState == "配送中") {
-                test("配送中",function () {
+                test("配送中", function () {
                     var i = xxnrElementClass.orderDetail(window).goodsListOneIndex();
                     var j = i;
                     var isdispatch = false;
-                    xxnrlogMessage("'"+j+"'");
-                    xxnrlogMessage("'"+i+"'");
-                    xxnrlogMessage("'"+xxnrElementClass.orderDetail(window).cells().length+"'");
+                    var goodsCount = 0;
 
-                    for (j; j <= parseInt(xxnrElementClass.orderDetail(window).cells().length - i); j++) {
+                    for (j; j < parseInt(xxnrElementClass.orderDetail(window).cells().length); j++) {
                         var cell = xxnrElementClass.orderDetail(window).cell(j);
-                        xxnrlogMessage("'"+xxnrElementClass.orderDetail(window).consignmentState(cell).value()+"'");
+                        xxnrlogMessage("'" + xxnrElementClass.orderDetail(window).consignmentState(cell).value() + "'");
                         if (xxnrElementClass.orderDetail(window).consignmentState(cell).value() == "配送中") {
+                            goodsCount +=1;
                             isdispatch = true;
-                            break;
                         }
                     }
+
                     if (isdispatch == true) {
                         xxnrlogEleTree(window);
                         assertNotNull(xxnrElementClass.orderDetail(window).receiveGoods());
@@ -467,6 +530,15 @@ test("跳转订单详情",function(target,app){
 
                         window.buttons()[1].tapWithOptions({tapOffset: {x: 0.75, y: 0.40}});
                         window.buttons()[1].tapWithOptions({tapOffset: {x: 0.56, y: 0.97}});
+
+                        xxnrdelay(6);
+
+                        var nowCount = 0;
+                        if (xxnrElementClass.orderDetail(window).consignmentState(cell).value() == "配送中") {
+                            nowCount +=1;
+                        }
+                        //验证当前页面是否刷新
+                        assertEquals(nowCount,goodsCount-1,"页面刷新失败");
                     }
                     else {
                         assertNull(xxnrElementClass.orderDetail(window).receiveGoods());
@@ -475,14 +547,17 @@ test("跳转订单详情",function(target,app){
 
             }
             else {
-                test("底部没有按钮",function () {
+                test("底部没有按钮", function () {
                     assertNull(xxnrElementClass.orderDetail(window).btmbutton());
                 })
             }
             xxnrdelay(2);
             xxnrElementClass.navBack(window).tap();
-        }
+        })
+    }
 
-        xxnrdelay(2);
-        xxnrElementClass.navBack(window).tap();
+
+
+    xxnrdelay(2);
+    xxnrElementClass.navBack(window).tap();
 })

@@ -453,6 +453,12 @@ xxnrElementClass.myorder = function (window) {
         userOrderId:function (index) {
             return window.scrollViews()[0].tableViews()[0].groups()[index].staticTexts()[1].name();
         },
+        elements:function (index) {
+            return window.scrollViews()[0].tableViews()[0].elements()[index];
+        },
+        elementStaticText:function (index) {
+            return window.scrollViews()[0].tableViews()[0].elements()[index].staticTexts()[0].name();
+        },
         tableViewsgroups:function () {
             return window.scrollViews()[0].tableViews()[0].groups();
         },
@@ -504,8 +510,9 @@ xxnrElementClass.orderDetail = function (window) {
         goodsListOneIndex:function () {
             var count = window.tableViews()[0].cells().length;
             var arr;
-            if (window.tableViews()[0].cells()[0].staticTexts()[1].name() == "阶段一:订金")
+            if (window.tableViews()[0].cells()[0].staticTexts()[1].name() == "阶段一：订金")
             {
+                xxnrlogMessage("22222222222");
                return 2;
             }
             else
@@ -519,8 +526,21 @@ xxnrElementClass.orderDetail = function (window) {
         cell:function (index) {
             return window.tableViews()[0].cells()[index];
         },
+        seePayDetail:function (cell) {
+            return cell.buttons()["查看详情"];
+        },
         consignmentState:function (cell) {
-            return cell.staticTexts()[4];
+            for (var i=0;i<cell.staticTexts().length;i++)
+            {
+                xxnrlogMessage("'"+cell.staticTexts()[i].rect().size.width+"'");
+                xxnrlogMessage("'"+cell.staticTexts()[i].rect().size.height+"'");
+
+                if(cell.staticTexts()[i].rect().size.width == 75.5 && cell.staticTexts()[i].rect().size.height == 14)
+                {
+                    return cell.staticTexts()[i];
+                }
+            }
+            return nil;
         },
         goPay:function () {
             return window.buttons()["去付款"];
@@ -544,6 +564,17 @@ xxnrElementClass.orderDetail = function (window) {
     }
 }
 
+//网点自提
+xxnrElementClass.carry = function (window) {
+    return {
+        carryNum:function () {
+           return window.tableViews()[0].staticTexts()[1];
+        },
+        cells:function () {
+return window.tableViews()[0].cells();
+        }
+    }
+}
 //县级订单列表
 xxnrElementClass.RSCOrder = function (window) {
     return{

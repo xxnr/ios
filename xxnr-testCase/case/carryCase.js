@@ -296,7 +296,7 @@ function Ab() {
 
         assertEquals("网点自提",xxnrElementClass.navTitle(window));
 
-        carry1 = window.tableViews()[0].staticTexts()[1].value();
+        carry1 = xxnrElementClass.carry(window).carryNum().value();
         xxnrlogMessage("'"+carry1+"'");
         window.logElementTree();
 
@@ -348,7 +348,7 @@ function Ab() {
         xxnrElementClass.orderDetail(window).goCarry().tap();
         xxnrdelay(1);
         assertEquals("网点自提",xxnrElementClass.navTitle(window));
-        carry2 = window.tableViews()[0].staticTexts()[1].value();
+        carry2 = xxnrElementClass.carry(window).carryNum().value();
         xxnrElementClass.navBack(window).tap();
         xxnrElementClass.navBack(window).tap();
         xxnrElementClass.navBack(window).tap();

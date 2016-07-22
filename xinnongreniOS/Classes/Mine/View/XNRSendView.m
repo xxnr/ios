@@ -198,12 +198,6 @@
     
 }
 
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"reloadOrderList" object:nil];
-    
-}
-
 -(void)headRefresh{
     
     _currentPage = 1;
@@ -519,5 +513,11 @@
     
     return cell;
 }
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
+
 
 @end
