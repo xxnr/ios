@@ -510,7 +510,9 @@
                     [_icon setImage:croppedImage forState:UIControlStateNormal];
                 }
             } failure:^(NSError *error) {
-                
+                NSLog(@"%@",error);
+                [BMProgressView LoadViewDisappear:self.view];
+
             }];
                     }
     } failure:^(NSError *error) {

@@ -98,11 +98,11 @@
 /**
  *  获取商品的品牌
  */
-#define KBrands [NSString stringWithFormat:@"%@/%@",HOST,@"/api/v2.1/brands"]
+#define KBrands [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/brands"]
 /**
  *  获取品牌的属性
  */
-#define KAttibutes [NSString stringWithFormat:@"%@/%@",HOST,@"/api/v2.1/products/attributes"]
+#define KAttibutes [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/products/attributes"]
 
 /**
  *  获取商品分类 get

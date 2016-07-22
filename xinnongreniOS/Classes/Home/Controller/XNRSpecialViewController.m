@@ -218,20 +218,6 @@
     }
     [self.tableView reloadData];
     
-    //    currentPage ++;
-    ////    [self getData];
-    //    [self getTotalData];
-    //    if (isSort) { // 正序
-    //        NSLog(@"正序");
-    //        [self getPriceDataWith:@"price-asc"];
-    //    }else{   // 反序
-    //        NSLog(@"反序");
-    //        [self getPriceDataWith:@"price-desc"];
-    //    }
-    //    [self getselectDataWithName:self.brands and:self.gxArr and:self.txArr and:self.reservePrice and:self.kinds];
-    //
-    //    [self.tableView reloadData];
-    
     
 }
 #pragma mark - 返回顶部啊按钮

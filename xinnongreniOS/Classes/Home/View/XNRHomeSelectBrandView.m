@@ -185,8 +185,7 @@
         [param setObject:_categorys[1] forKey:@"category"];
         [param setObject:@"0" forKey:@"brand"];
         [KSHttpRequest get:KBrands parameters:param success:^(id result) {
-            
-            
+        
             if ([result[@"code"] integerValue] == 1000) {
                 
                 
@@ -303,7 +302,8 @@
                     [self.collectionView reloadData];
                     
                 } failure:^(NSError *error) {
-                    
+                    NSLog(@"%@",error);
+
                 }];
                 
                 
@@ -315,7 +315,7 @@
             
             
         } failure:^(NSError *error) {
-            
+            NSLog(@"%@",error);
         }];
         
     }
