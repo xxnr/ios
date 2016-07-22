@@ -448,7 +448,10 @@
     UIImage *iamge1 = [UIImage imageNamed:@"支付宝logo-0"];
     UIImage *image2 = [UIImage imageNamed:@"银联logo"];
 //    UIImage *image3 = [UIImage imageNamed:@"全民付logo-0"];
+<<<<<<< HEAD
 //    UIImage *image3 = [UIImage imageNamed:@"银行扁平化"];
+=======
+>>>>>>> origin/Version2.1.5
     NSArray *imagesarr = [NSArray arrayWithObjects:iamge1,image2,nil];
     
     self.currentSelBtn = [[UIButton alloc]init];
@@ -532,7 +535,7 @@
     
     if (button.tag == 0) {
         self.isFull = YES;
-        self.realityBtn.hidden = NO;
+//        self.realityBtn.hidden = NO;
         self.sepMoneyView.hidden = YES;
         self.fullMoney.hidden = NO;
 
@@ -552,7 +555,7 @@
         _Money = [self.sepMoney.text substringFromIndex:1];
         NSLog(@"%@",_Money);
         self.isFull = NO;
-        self.realityBtn.hidden = YES;
+//        self.realityBtn.hidden = YES;
         self.sepMoneyView.hidden = NO;
         self.fullMoney.hidden = YES;
         [UIView animateWithDuration:0.2 animations:^{
@@ -817,6 +820,7 @@
         }];
         
         
+<<<<<<< HEAD
     }
 //    else if (self.currentSelBtn.tag == kSelectedBtn + 2){
 //        [KSHttpRequest get:KOfflinepay parameters:@{@"orderId":self.orderID,@"price":_Money} success:^(id result) {
@@ -843,6 +847,9 @@
 //        }];
 //    }
     else{
+=======
+    }    else{
+>>>>>>> origin/Version2.1.5
         
     }
 

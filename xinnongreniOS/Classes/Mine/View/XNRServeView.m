@@ -493,9 +493,13 @@
         
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [cell.addtionsArray removeAllObjects];
+    [cell.attributesArray removeAllObjects];
+
     //传递数据模型model
     if (_dataArr.count>0) {
         XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
+
         if (sectionModel.orderFrameArray.count>0) {
             if (sectionModel.skus.count >0) {
                 XNRMyOrderModel *modelArray = sectionModel.skus[indexPath.row];
