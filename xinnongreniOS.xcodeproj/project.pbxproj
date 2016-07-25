@@ -354,6 +354,7 @@
 		49C7E9BD1D3DC66F00CC8DCE /* tuneup.js in Resources */ = {isa = PBXBuildFile; fileRef = 49C7E9AB1D3DC66F00CC8DCE /* tuneup.js */; };
 		49C7E9BE1D3DC66F00CC8DCE /* tuneup_js.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 49C7E9AC1D3DC66F00CC8DCE /* tuneup_js.podspec */; };
 		49C7E9BF1D3DC66F00CC8DCE /* uiautomation-ext.js in Resources */ = {isa = PBXBuildFile; fileRef = 49C7E9AD1D3DC66F00CC8DCE /* uiautomation-ext.js */; };
+		49C836EF1D4607E700E16B5E /* XNRUpdataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C836EE1D4607E700E16B5E /* XNRUpdataCell.m */; };
 		49CD5E2F1C07FF1B004235C4 /* XNRferView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E2E1C07FF1B004235C4 /* XNRferView.m */; };
 		49CD5E351C0814EC004235C4 /* XNRSpecialCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E341C0814EC004235C4 /* XNRSpecialCell.m */; };
 		49CD5E3B1C0BE7F1004235C4 /* XNRMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD5E3A1C0BE7F1004235C4 /* XNRMessageModel.m */; };
@@ -1289,6 +1290,8 @@
 		49C7E9AB1D3DC66F00CC8DCE /* tuneup.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = tuneup.js; sourceTree = "<group>"; };
 		49C7E9AC1D3DC66F00CC8DCE /* tuneup_js.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tuneup_js.podspec; sourceTree = "<group>"; };
 		49C7E9AD1D3DC66F00CC8DCE /* uiautomation-ext.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "uiautomation-ext.js"; sourceTree = "<group>"; };
+		49C836ED1D4607E700E16B5E /* XNRUpdataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRUpdataCell.h; sourceTree = "<group>"; };
+		49C836EE1D4607E700E16B5E /* XNRUpdataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRUpdataCell.m; sourceTree = "<group>"; };
 		49CD5E2D1C07FF1B004235C4 /* XNRferView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRferView.h; sourceTree = "<group>"; };
 		49CD5E2E1C07FF1B004235C4 /* XNRferView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRferView.m; sourceTree = "<group>"; };
 		49CD5E331C0814EC004235C4 /* XNRSpecialCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRSpecialCell.h; sourceTree = "<group>"; };
@@ -2124,6 +2127,8 @@
 				49F6B0E11C295C0000DCF8CF /* XNRNoSelectView.m */,
 				49F99EE91C155D130000556A /* XNRProductInfo_cell.h */,
 				49F99EEA1C155D130000556A /* XNRProductInfo_cell.m */,
+				49C836ED1D4607E700E16B5E /* XNRUpdataCell.h */,
+				49C836EE1D4607E700E16B5E /* XNRUpdataCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4528,6 +4533,7 @@
 				491281351CCCBB2D009E67C4 /* XNRRscOrderModel.m in Sources */,
 				4919AEB31D054C87004DC7CA /* XNRRscDetialDeliverView.m in Sources */,
 				4916112C1C8D189400F1E243 /* IQBarButtonItem.m in Sources */,
+				49C836EF1D4607E700E16B5E /* XNRUpdataCell.m in Sources */,
 				49F7A5801C58469400A1FA45 /* MJRefreshGifHeader.m in Sources */,
 				49EC525F1BEBBA5E00AA8898 /* NSDictionary+BSExt.m in Sources */,
 				8464E4431B16D582008FD57B /* XNRMyOrder_VC.m in Sources */,

@@ -23,9 +23,10 @@
 #import "XNRUMengPushTool.h"
 #import "XNRCheckOrderVC.h"
 #import "BSHelper.h"
+#import "XNRUpdataCell.h"
 #define kStoreAppId  @"1021223448"  // （appid数字串）
 
-@interface XNRHomeController ()<UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,UICollectionViewDelegate,XNRHomeCollectionHeaderViewAddBtnDelegate,XNRFerSelectAddBtnDelegate>
+@interface XNRHomeController ()<UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,UICollectionViewDelegate,XNRHomeCollectionHeaderViewAddBtnDelegate,XNRFerSelectAddBtnDelegate,UITableViewDelegate,UITableViewDataSource>
 {
     NSMutableArray *_huafeiArr; //化肥数据
     NSMutableArray *_carArr;    //农用车数据
@@ -35,6 +36,12 @@
 @property (nonatomic,strong) UICollectionView *homeCollectionView;
 @property (nonatomic,strong) XNRHomeCollectionHeaderView *headView;
 @property (nonatomic, weak) UIButton *backtoTopBtn;
+@property (nonatomic, weak) NSString *message;
+@property (nonatomic, weak) NSString *version;
+
+@property (nonatomic, strong) NSMutableArray *messageArray;
+@property (nonatomic, weak) UIView *coverView;
+@property (nonatomic, weak) UIView *upDataAlertView;
 @end
 
 @implementation XNRHomeController
@@ -82,8 +89,10 @@
     // 提示更新
     [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion,@"device_token":deviceToken?deviceToken:@"",@"device_id":UUID?UUID:deviceToken,@"user_agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:result[@"message"]delegate:self cancelButtonTitle:@"取消"otherButtonTitles:@"更新",nil];
-            [alert show];
+            _version = result[@"version"];
+            [self createUpdataAlertView];
+            _message = result[@"message"];
+            [_messageArray addObject:_message];
         }
     } failure:^(NSError *error) {
         
@@ -92,16 +101,102 @@
 //    [XNRRemaindUserUpdataTool remaindUserUpData:deviceToken];
 }
 
-- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+-(void)createUpdataAlertView
 {
-    if(buttonIndex==1)
-    {
-        // 此处加入应用在app store的地址，方便用户去更新，一种实现方式如下：
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://itunes.apple.com/cn/app/xin-xin-nong-ren-hu-lian-wang/id%@?l=en&mt=8", kStoreAppId]];
-        [[UIApplication sharedApplication] openURL:url];
-    }
+    UIView *coverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    coverView.backgroundColor = [UIColor blackColor];
+    coverView.alpha = 0.6;
+    self.coverView = coverView;
+    [AppKeyWindow addSubview:coverView];
+    
+    UIView *upDataAlertView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(80), (ScreenHeight-PX_TO_PT(432))*0.5, PX_TO_PT(590), PX_TO_PT(432))];
+    upDataAlertView.backgroundColor = [UIColor whiteColor];
+    upDataAlertView.layer.cornerRadius = 5.0;
+    upDataAlertView.layer.masksToBounds = YES;
+    self.upDataAlertView = upDataAlertView;
+    [AppKeyWindow addSubview:upDataAlertView];
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(42), PX_TO_PT(590), PX_TO_PT(36))];
+    titleLabel.text = @"版本更新";
+    titleLabel.textColor = R_G_B_16(0x323232);
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    [upDataAlertView addSubview:titleLabel];
+    
+    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(30), CGRectGetMaxY(titleLabel.frame)+PX_TO_PT(28), PX_TO_PT(590), PX_TO_PT(36))];
+    versionLabel.text = [NSString stringWithFormat:@"V%@",_version];
+    versionLabel.textColor = R_G_B_16(0x323232);
+    versionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    [upDataAlertView addSubview:versionLabel];
+    
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), CGRectGetMaxY(versionLabel.frame)+PX_TO_PT(32), PX_TO_PT(530), PX_TO_PT(126))];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    tableView.separatorStyle = NO;
+    _messageArray = [NSMutableArray array];
+    [upDataAlertView addSubview:tableView];
+    
+    
+    UIButton *cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, PX_TO_PT(332), PX_TO_PT(295), PX_TO_PT(100))];
+    [cancelBtn setTitle:@"以后再说" forState:UIControlStateNormal];
+    [cancelBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
+    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    [cancelBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#ffffff"]] forState:UIControlStateNormal];
+    [cancelBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fafafa"]] forState:UIControlStateHighlighted];
+    [cancelBtn addTarget: self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [upDataAlertView addSubview:cancelBtn];
+    
+    UIButton *admireBtn = [[UIButton alloc] initWithFrame:CGRectMake(PX_TO_PT(295), PX_TO_PT(332), PX_TO_PT(295), PX_TO_PT(100))];
+    [admireBtn setTitle:@"立即更新" forState:UIControlStateNormal];
+    [admireBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
+    admireBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
+    [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#ffffff"]] forState:UIControlStateNormal];
+    [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fafafa"]] forState:UIControlStateHighlighted];
+    [admireBtn addTarget: self action:@selector(admireBtnBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [upDataAlertView addSubview:admireBtn];
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(332), PX_TO_PT(590), PX_TO_PT(1))];
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
+    [upDataAlertView addSubview:lineView];
+    
+    UIView *devidelineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(295), PX_TO_PT(332), PX_TO_PT(1), PX_TO_PT(100))];
+    devidelineView.backgroundColor = R_G_B_16(0xe0e0e0);
+    [upDataAlertView addSubview:devidelineView];
+
+
+
 }
 
+-(void)cancelBtnClick{
+    [self.coverView removeFromSuperview];
+    [self.upDataAlertView removeFromSuperview];
+}
+
+-(void)admireBtnBtnClick{
+    // 此处加入应用在app store的地址，方便用户去更新，一种实现方式如下：
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://itunes.apple.com/cn/app/xin-xin-nong-ren-hu-lian-wang/id%@?l=en&mt=8", kStoreAppId]];
+    [[UIApplication sharedApplication] openURL:url]; 
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *message = [_messageArray firstObject];
+    CGSize messageSize = [message sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(24)]}];
+    return messageSize.height;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+   
+    XNRUpdataCell *cell = [XNRUpdataCell cellWithTableView:tableView];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+    [cell upDataWithData:_messageArray];
+    
+    return cell;
+}
 
 -(void)openOrderIdController:(NSNotification *)notification
 {

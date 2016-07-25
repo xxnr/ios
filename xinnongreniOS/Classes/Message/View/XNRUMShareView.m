@@ -22,6 +22,7 @@
 @property (nonatomic, weak) UIView *shareView;
 @property (nonatomic, weak) UIView *shareBtn;
 
+@property (nonatomic, assign) XNRUMShareViewType type;
 @end
 
 @implementation XNRUMShareView
@@ -118,29 +119,29 @@
 {
 
     if ([self.delegate performSelector:@selector(XNRUMShareViewBtnClick:)]) {
-        XNRUMShareViewType type;
+//        XNRUMShareViewType type;
         if ([WXApi isWXAppInstalled]&&[QQApiInterface isQQInstalled]) {
             if (button.tag == 1000) {
-                type = wechatbtn_type;
+                _type = wechatbtn_type;
                 
             }else if(button.tag == 1001){
-                type = wechatCirclebtn_type;
+                _type = wechatCirclebtn_type;
                 
                 
             }else if (button.tag == 1002){
-                type = qqbtn_type;
+                _type = qqbtn_type;
                 
                 
             }else{
-                type = qzonebtn_type;
+                _type = qzonebtn_type;
             }
 
         }else if ([WXApi isWXAppInstalled]) {
             if (button.tag == 1000) {
-                type = wechatbtn_type;
+                _type = wechatbtn_type;
                 
             }else if(button.tag == 1001){
-                type = wechatCirclebtn_type;
+                _type = wechatCirclebtn_type;
                 
                 
             }else{
@@ -149,10 +150,10 @@
             
         }else if([QQApiInterface isQQInstalled]){
             if (button.tag == 1002) {
-                type = qqbtn_type;
+                _type = qqbtn_type;
                 
             }else if(button.tag == 1003){
-                type = qzonebtn_type;
+                _type = qzonebtn_type;
                 
                 
             }else {
@@ -162,7 +163,7 @@
         }else{
             button.enabled = NO;
         }
-        [self.delegate XNRUMShareViewBtnClick:type];
+        [self.delegate XNRUMShareViewBtnClick:_type];
     }
 
 }

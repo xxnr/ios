@@ -25,15 +25,12 @@
     [window addSubview:showview];
     
     UILabel *label = [[UILabel alloc]init];
-//    CGSize LabelSize = [message sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(290, 9000)];
     CGSize LabelSize = CGSizeZero;
     if ([message isKindOfClass:[NSString class]]) {
         
-//        LabelSize = [message sizeWithFont_BSExt:[UIFont systemFontOfSize:15] maxSize:CGSizeMake(ScreenWidth-PX_TO_PT(40), MAXFLOAT)];
-        LabelSize = [message sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(30)] constrainedToSize:CGSizeMake(ScreenWidth-PX_TO_PT(40), MAXFLOAT)];
-
+        LabelSize = [message sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(30)] maxSize:CGSizeMake(ScreenWidth-PX_TO_PT(40), MAXFLOAT)];
     }
-    label.frame = CGRectMake(PX_TO_PT(20), PX_TO_PT(10), LabelSize.width+PX_TO_PT(5), LabelSize.height);
+    label.frame = CGRectMake(PX_TO_PT(20), PX_TO_PT(10), LabelSize.width+PX_TO_PT(8), LabelSize.height);
     label.text = message;
     label.textColor = [UIColor whiteColor];
     label.textAlignment = 1;

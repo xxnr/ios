@@ -37,7 +37,6 @@
         UILabel *label = [UILabel labelWithFrame:CGRectMake(25, 16, alertWidth, 0) font:[UIFont systemFontOfSize:PX_TO_PT(36)] text:content textColor:R_G_B_16(0x323232) alignment:NSTextAlignmentCenter superView:view lineSpacing:7.0 firstLineHeadIndent:0];
         label.center = CGPointMake(view.width/2, label.center.y);
         view.height = 50;
-        
         [self setUpAlertWithTitle:title view:view chooseBtns:btns];
     }
     return self;

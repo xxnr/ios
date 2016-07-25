@@ -75,7 +75,6 @@
         if (navigationController.viewControllers.count ==1) {
             self.interactivePopGestureRecognizer.enabled =NO;
         }
-        
     }
 }
 

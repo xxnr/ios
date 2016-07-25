@@ -14,7 +14,6 @@ xxnrClass.mine(window).rscOrderBtn().tap();
     test("全部测试",function(target,app){
         window.logElementTree();
         test("待付款测试",function(target,app){
-            
             xxnrClass.rscOrders(window).waitPayTab().tap();
             assertTrue("待付款",xxnrClass.rscOrders(window).orderStatus());
             
@@ -22,7 +21,7 @@ xxnrClass.mine(window).rscOrderBtn().tap();
 
             test("待审核测试",function(target,app){
 
-                 xxnrClass.rscOrders(window).waitVerifyTab().tap();
+                xxnrClass.rscOrders(window).waitVerifyTab().tap();
                 assertTrue("付款待审核",xxnrClass.rscOrders(window).orderStatus());
 
 
@@ -47,18 +46,17 @@ xxnrClass.mine(window).rscOrderBtn().tap();
 
         });
         test("待配送测试",function(target,app){
+            xxnrClass.rscOrders(window).startDeliverBtn().tap();
             target.delay(1);
+
             window.logElementTree();
 
-            // window.scrollViews()[0].tableViews()[0].groups()["配送到户"].buttons()["开始配送"].tap();
             assertTrue("开始配送",window.views()[0].label()[0].value);
 
-
-            window.views()[0].tableViews()[0].cell()[0].tap();
+            xxnrClass.rscOrders(window).cellBnt().tap();
             assertTrue("确定(1)",window.views()[0].buttons()[1].value);
             target.delay(1);
 
-            window.views()[0].tableViews()[0].cell()[0].tap();
             assertTrue("确定",window.views()[0].buttons()[1].value);
             target.delay(1);
 

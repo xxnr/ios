@@ -44,7 +44,7 @@
 @property (nonatomic ,weak) UILabel *warnLabel;
 @property (nonatomic ,weak) UIButton *picImageBtn;
 @property (nonatomic ,weak) UIImageView *circleImage;
-@property(nonatomic,assign)double angle;
+@property (nonatomic,assign) float angle;
 
 
 @end
@@ -59,7 +59,7 @@
     self.mainView = mainView;
     [self.view addSubview:mainView];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
+    _angle = 2;
     [self setNav];
     [self createMidView];
     [self createPhoneNumTextField];
@@ -324,7 +324,7 @@
         
         [UILabel showMessage:@"请输入正确的手机号"];
     }
-    else if(self.verifyNumTextField.text.length==0)
+    else if(self.verifyNumTextField.text.length == 0)
     {
         [UILabel showMessage:@"请输入验证码"];
 
@@ -340,9 +340,8 @@
     else if(self.newpasswordTextField.text.length < 6)
     {
         [UILabel showMessage:@"密码需不小于6位"];
-    }
-
-        else if ([self.newpasswordTextField.text isEqualToString:self.againPasswordTextField.text]==NO){
+        
+    }else if ([self.newpasswordTextField.text isEqualToString:self.againPasswordTextField.text]==NO){
             [UILabel showMessage:@"两次密码输入不一致，请重新输入"];
             
         }else if(self.admireBtn.selected == NO){
@@ -590,14 +589,6 @@
    
 }
 
--(void)transformAction {
-    _angle += 0.5;//angle角度 double angle;
-    if (_angle > 6.28) {//大于 M_PI*2(360度) 角度再次从0开始
-        _angle = 0;
-    }
-    self.circleImage.transform = CGAffineTransformMakeRotation(_angle);
-}
-
 
 // 刷新
 -(void)refreshBntClick
@@ -613,13 +604,17 @@
 
 -(void)refreshIdentifyPicture{
     [self.picImage removeFromSuperview];
-    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44))];
-    circleImage.image = [UIImage imageNamed:@"spinner_gray-0"];
-    self.circleImage = circleImage;
-    [self.picImageBtn addSubview:circleImage];
-    [self startAnimation];
-//    _timer = [NSTimer scheduledTimerWithTimeInterval:0.8 target:self selector:@selector(transformAction) userInfo:nil repeats:YES];
-
+//    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44))];
+//    circleImage.image = [UIImage imageNamed:@"spinner_gray-0"];
+//    self.circleImage = circleImage;
+//    [self.picImageBtn addSubview:circleImage];
+//    [self startAnimation];
+    
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    indicator.frame = CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44));
+    [self.picImageBtn addSubview:indicator];
+    [indicator startAnimating];
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:[DataCenter account].token?[DataCenter account].token:@"" forKey:@"token"];
     [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];
@@ -638,7 +633,9 @@
     [manager GET:URL parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSLog(@"---------返回数据:---------%@",responseObject);
-        [circleImage removeFromSuperview];
+//        [circleImage removeFromSuperview];
+        [indicator stopAnimating];
+
         UIImageView *picImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(190), PX_TO_PT(68))];
         picImage.image = [UIImage imageWithData:responseObject];
         self.picImage = picImage;
@@ -649,7 +646,10 @@
         [self.warnLabel removeFromSuperview];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [circleImage removeFromSuperview];
+//        [circleImage removeFromSuperview];
+        [indicator stopAnimating];
+
+
         UIImageView *picImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(190), PX_TO_PT(68))];
         picImage.image = [UIImage imageNamed:@"load-failed"];
         self.picImage = picImage;
@@ -658,20 +658,33 @@
     }];
     
 }
--(void) startAnimation
+- (void)startAnimation
 {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.01];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDidStopSelector:@selector(endAnimation)];
-    self.circleImage.transform = CGAffineTransformMakeRotation(_angle * (M_PI / 180.0f));
+    NSLog(@"=====_angel===%f",_angle);
+    CGAffineTransform endAngle = CGAffineTransformMakeRotation(_angle * (M_PI / 180.0f));
+    
+    [UIView animateWithDuration:0.01 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+        self.circleImage.transform = endAngle;
+    } completion:^(BOOL finished) {
+        _angle += 2;
+        [self startAnimation];
+    }];
+    
 }
-
--(void)endAnimation
-{
-    _angle += 10;
-    [self startAnimation];
-}
+//-(void) startAnimation
+//{
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.01];
+//    [UIView setAnimationDelegate:self];
+//    [UIView setAnimationDidStopSelector:@selector(endAnimation)];
+//    self.circleImage.transform = CGAffineTransformMakeRotation(_angle * (M_PI / 180.0f));
+//}
+//
+//-(void)endAnimation
+//{
+//    _angle += 2;
+//    [self startAnimation];
+//}
 // 取消
 -(void)cancelBtnClick
 {
@@ -682,16 +695,22 @@
 // 确定
 -(void)admireBtnClick
 {
-    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44))];
-    circleImage.image = [UIImage imageNamed:@"spinner_gray-0"];
-    self.circleImage = circleImage;
-    [self.picImageBtn addSubview:circleImage];
-    [self startAnimation];
+//    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44))];
+//    circleImage.image = [UIImage imageNamed:@"spinner_gray-0"];
+//    self.circleImage = circleImage;
+//    [self.picImageBtn addSubview:circleImage];
 
-//    _timer = [NSTimer scheduledTimerWithTimeInterval:0.8 target:self selector:@selector(transformAction) userInfo:nil repeats:YES];
+//    [self startAnimation];
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    indicator.frame = CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44));
+    [self.picImageBtn addSubview:indicator];
+    [indicator startAnimating];
+
     
     if ([self.identifyCodeTF.text isEqualToString:@""] || self.identifyCodeTF.text == nil) {
-        [circleImage removeFromSuperview];
+        [indicator stopAnimating];
+//        [circleImage removeFromSuperview];
         [self showWarn:nil];
     }else{
         [self.picImage removeFromSuperview];
@@ -701,7 +720,9 @@
                 XNRIdentifyCodeModel *model = [[XNRIdentifyCodeModel alloc] init];
                 model = [XNRIdentifyCodeModel objectWithKeyValues:result];
                 if (model.captcha) {
-                    [circleImage removeFromSuperview];
+                    [indicator stopAnimating];
+
+//                    [circleImage removeFromSuperview];
                     UIImageView *picImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(190), PX_TO_PT(68))];
                     [picImage sd_setImageWithURL:[NSURL URLWithString:model.captcha] placeholderImage:nil];
                     self.picImage = picImage;
@@ -720,7 +741,9 @@
                 }
                 
             }else{
-                [circleImage removeFromSuperview];
+                [indicator stopAnimating];
+
+//                [circleImage removeFromSuperview];
                 [self showWarn:result[@"message"]];
             }
             
@@ -743,7 +766,6 @@
         warnLabel.text = @"请输入图形验证码";
     }else{
         warnLabel.text = toast;
-        
     }
     warnLabel.textColor = R_G_B_16(0xdf3d3e);
     warnLabel.textAlignment = NSTextAlignmentLeft;

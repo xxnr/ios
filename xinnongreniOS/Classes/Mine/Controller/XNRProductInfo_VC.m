@@ -38,6 +38,8 @@
 
 }
 @property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) UIScrollView *mainScrollView;
+
 @property(nonatomic,strong) UITableView *tableView;
 @property(nonatomic,strong) UIWebView *webView;
 @property(nonatomic,weak) UIImageView *headView;
@@ -153,6 +155,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    UIScrollView *mainScrollView = [MyControl createUIScrollViewWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) contentSize:CGSizeMake(ScreenWidth, 600*SCALE) pagingEnabled:NO showsHorizontalScrollIndicator:NO showsVerticalScrollIndicator:NO delegate:self];
+    self.mainScrollView = mainScrollView;
+    [self.scrollView addSubview:mainScrollView];
     // 获取网络数据
     [self getData];
     _goodsArray  = [NSMutableArray array];
@@ -166,7 +172,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     [self.view addSubview:self.scrollView];
-    [self.scrollView addSubview:self.tableView];
+    [self.mainScrollView addSubview:self.tableView];
     [self.scrollView addSubview:self.webView];
     
     
@@ -330,8 +336,7 @@
         self.tempBtn.selected = NO;
         button.selected = YES;
         self.tempBtn = button;
-        
-        
+    
         self.tempLabel.textColor = R_G_B_16(0x646464);
         titleLabel.textColor = R_G_B_16(0x00b38a);
         self.tempLabel = titleLabel;
@@ -433,7 +438,7 @@
         XNRProductInfo_frame *frame = [_goodsArray lastObject];
         if ([frame.infoModel.app_body_url isEqualToString:@""] &&[frame.infoModel.app_standard_url isEqualToString:@""] && [frame.infoModel.app_support_url isEqualToString:@""]) {
                 _tableView.scrollEnabled = NO;
-            }
+        }
         
         [self.tableView reloadData];
         [BMProgressView LoadViewDisappear:self.view];

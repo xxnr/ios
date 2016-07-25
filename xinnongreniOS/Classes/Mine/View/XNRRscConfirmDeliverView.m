@@ -323,7 +323,15 @@
         _totalCount = _totalCount - model.count.integerValue;
         if (_totalCount == 0) {
             self.admireBtn.selected = NO;
-            [self.admireBtn setTitle:@"下一步"forState:UIControlStateNormal];
+            if (_type == isFromDeliverController) {
+                [self.admireBtn setTitle:@"确定"forState:UIControlStateNormal];
+                
+            }else{
+                [self.admireBtn setTitle:@"下一步"forState:UIControlStateNormal];
+                
+            }
+
+//            [self.admireBtn setTitle:@"确定"forState:UIControlStateNormal];
         }else{
             self.admireBtn.selected = YES;
             if (_type == isFromDeliverController) {

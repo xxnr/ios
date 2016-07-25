@@ -175,7 +175,6 @@
         if (i == 0) {
             [self titleBtnClick:titleBtn];
         }
-        
     }
     
     for (int i = 0; i<2; i++) {

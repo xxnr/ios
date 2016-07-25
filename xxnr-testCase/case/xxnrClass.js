@@ -398,11 +398,9 @@ xxnrClass.rscOrders = function (window) {
             },
             waitVerifyTab:function () {
                 return window.buttons()["待审核"];
-
             },
             waitDeliverTab:function () {
                 return window.buttons()["待配送"];
-
             },
             waitTakeTab:function () {
                 return window.buttons()["待自提"];
@@ -412,7 +410,6 @@ xxnrClass.rscOrders = function (window) {
             },
             identifyPayBtn:function () {
                 return window.scrollViews()[0].tableViews()[0].groups()["网点自提"].buttons()["审核付款"];
-
             },
             eposeBtn:function () {
                 return window.buttons()["线下POS机"];
@@ -425,13 +422,20 @@ xxnrClass.rscOrders = function (window) {
             },
             closeBtn:function () {
                 return window.buttons()["close"];
-
             },
             startDeliverBtn:function () {
                 return window.scrollViews()[0].tableViews()[0].groups()["配送到户"].buttons()["开始配送"];
             },
+            cellBnt:function () {
+                return window.tableViews()[0].cell()[0].tap();
+            },
+            userTakeBtn:function () {
+              return  window.scrollViews()[0].tableViews()[0].groups()["网点自提"].buttons()["客户自提"];
+            },
+            nextStepBtn:function () {
+               return window.views()[0].buttons()["下一步"];
 
-            
+            }
             
         }
 }
