@@ -377,7 +377,7 @@ test("跳转订单详情",function(target,app){
 
     var count = xxnrElementClass.myorder(window).tableViewsgroups().length+xxnrElementClass.myorder(window).tableViewsgroups().length/2;
     //UIALogger.logMessage("'" + count+ "'");
-    UIALogger.logMessage("'" +count+ "'");
+    // UIALogger.logMessage("'" +count+ "'");
 
 
     var arr = [];
@@ -389,9 +389,9 @@ test("跳转订单详情",function(target,app){
 
 
         var orderState = xxnrElementClass.myorder(window).elementStaticText(m);
-        xxnrlogMessage("'"+m+"'");
+        // xxnrlogMessage("'"+m+"'");
 
-        xxnrlogMessage("'"+xxnrElementClass.myorder(window).elementStaticText(m)+"'");
+        // xxnrlogMessage("'"+xxnrElementClass.myorder(window).elementStaticText(m)+"'");
 
         if (!in_array(orderState,x)) {
             continue;
@@ -408,11 +408,11 @@ test("跳转订单详情",function(target,app){
 
         xxnrdelay(2);
 
-        xxnrlogMessage("'"+xxnrElementClass.myorder(window).elementStaticText(m+1)+"'");
+        // xxnrlogMessage("'"+xxnrElementClass.myorder(window).elementStaticText(m+1)+"'");
 
         xxnrElementClass.myorder(window).elements(m+1).tap();
 
-        xxnrlogEleTree(window);
+        // xxnrlogEleTree(window);
 
         xxnrdelay(1);
         assertEquals("订单详情", xxnrElementClass.navTitle(window));

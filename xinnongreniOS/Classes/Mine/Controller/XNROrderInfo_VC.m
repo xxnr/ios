@@ -106,7 +106,7 @@
     return _webSiteArr;
 }
 -(void)viewWillAppear:(BOOL)animated{
-     //获取预处理订单信息
+    //获取预处理订单信息
     [super viewWillAppear:YES];
     [_NoDeliverView removeFromSuperview];
     [_headViewNormal removeFromSuperview];
@@ -118,8 +118,8 @@
     _dataArr = [[NSMutableArray alloc] init];
     
     [self.tableview reloadData];
-
-
+    
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -128,28 +128,28 @@
     NSLog(@"shoppingCar-->%@",self.shopCarID);
     
     isfirst = YES;
-
+    
     // 中部视图
     [self createMid];
     // 底部视图
     [self createFoot];
     
-//    [self getcontactData];
-//    [self getData];
-
+    //    [self getcontactData];
+    //    [self getData];
+    
     _deliverBtnArr = [[NSMutableArray alloc] init];
     _deliveryArr = [[NSMutableArray alloc] init];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNOAddressView) name:@"initNOAddressView" object:nil];
 }
 
 -(void)initNOAddressView
 {
     self.nextAddresModel = nil;
-
+    
     [_headViewNormal removeFromSuperview];
     [_addressView removeFromSuperview];
-    [self createHeadView];    
+    [self createHeadView];
 }
 
 -(void)dealloc
@@ -172,9 +172,9 @@
     [manager POST:KGetDeliveries parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         [_deliveryArr removeAllObjects];
-
+        
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"---------返回数据:---------%@",str);
+        //        NSLog(@"---------返回数据:---------%@",str);
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -226,7 +226,7 @@
             [UILabel showMessage:resultObj[@"message"]];
         }
         
-       
+        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"===%@",error);
@@ -267,11 +267,11 @@
              loginVC.hidesBottomBarWhenPushed = YES;
              [self.navigationController pushViewController:loginVC animated:YES];
          }
-
          
-
+         
+         
      } failure:^(NSError *error) {
-    }];
+     }];
 }
 -(void)getData {
     
@@ -283,10 +283,10 @@
     manager.requestSerializer.timeoutInterval = 10.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     NSDictionary *params = @{@"SKUs":self.dataArray,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
-
+    
     [manager POST:KGetShoppingCartOffline parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [_dataArr removeAllObjects];
-
+        
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
@@ -295,44 +295,44 @@
             resultDic = (NSDictionary *)resultObj;
         }
         if ([resultObj[@"code"] integerValue] == 1000) {
-                        NSDictionary *datasDic = resultDic[@"datas"];
-                        NSArray *rowsArr = datasDic[@"rows"];
-                        for (NSDictionary *subDic in rowsArr) {
-                                XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
-                                sectionModel.brandName = subDic[@"brandName"];
+            NSDictionary *datasDic = resultDic[@"datas"];
+            NSArray *rowsArr = datasDic[@"rows"];
+            for (NSDictionary *subDic in rowsArr) {
+                XNRShopCarSectionModel *sectionModel = [[XNRShopCarSectionModel alloc] init];
+                sectionModel.brandName = subDic[@"brandName"];
+                
+                NSArray *SKUList = subDic[@"SKUList"];
+                for (NSDictionary *dict in SKUList) {
+                    sectionModel.goodsCount = dict[@"count"];
+                    sectionModel.deposit = dict[@"deposit"];
+                    sectionModel.unitPrice = dict[@"price"];
+                }
+                
+                sectionModel.SKUList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"SKUList"]];
+                
+                
+                for (int i = 0; i<sectionModel.SKUList.count; i++) {
+                    XNRShoppingCartModel *model = sectionModel.SKUList[i];
+                    XNROrderInfoFrame *frameModel = [[XNROrderInfoFrame alloc] init];
+                    // 传递购物车模型数据
+                    frameModel.shoppingCarModel = model;
+                    
+                    frameModel.shoppingCarModel.num = frameModel.shoppingCarModel.count;
+                    [sectionModel.SKUFrameList addObject:frameModel];
+                    
+                    NSLog(@"++_)_%@",sectionModel.SKUFrameList);
+                    
+                    
+                }
+                [_dataArr addObject:sectionModel];
+                
+            }
             
-                            NSArray *SKUList = subDic[@"SKUList"];
-                            for (NSDictionary *dict in SKUList) {
-                                sectionModel.goodsCount = dict[@"count"];
-                                sectionModel.deposit = dict[@"deposit"];
-                                sectionModel.unitPrice = dict[@"price"];
-                            }
-            
-                        sectionModel.SKUList = (NSMutableArray *)[XNRShoppingCartModel objectArrayWithKeyValuesArray:subDic[@"SKUList"]];
-                            
-
-                            for (int i = 0; i<sectionModel.SKUList.count; i++) {
-                                XNRShoppingCartModel *model = sectionModel.SKUList[i];
-                                XNROrderInfoFrame *frameModel = [[XNROrderInfoFrame alloc] init];
-                                // 传递购物车模型数据
-                                frameModel.shoppingCarModel = model;
-                                
-                                frameModel.shoppingCarModel.num = frameModel.shoppingCarModel.count;
-                                [sectionModel.SKUFrameList addObject:frameModel];
-                                
-                                NSLog(@"++_)_%@",sectionModel.SKUFrameList);
-                                
-                                
-                            }
-                            [_dataArr addObject:sectionModel];
-
-                        }
-            
-                        [self.tableview reloadData];
+            [self.tableview reloadData];
             
             [self getDeliveries];
-
-                    }
+            
+        }
         else if ([resultObj[@"code"] integerValue] == 1401){
             [UILabel showMessage:resultDic[@"message"]];
             UserInfo *infos = [[UserInfo alloc]init];
@@ -343,13 +343,13 @@
             [self.navigationController pushViewController:loginVC animated:YES];
         }
         else{
-    
-                        [UILabel showMessage:resultObj[@"message"]];
-                    }
+            
+            [UILabel showMessage:resultObj[@"message"]];
+        }
         
         
         
-
+        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"===%@",error);
@@ -378,8 +378,8 @@
                 
                 if (_addressArr.count>0) {
                     [self createAddressView:_addressArr];
-    //                [self createHeadView];
-
+                    //                [self createHeadView];
+                    
                 }
                 else{
                     [self createHeadView];
@@ -402,7 +402,7 @@
                 _NoDeliverView.hidden = NO;
             }
             [self.tableview reloadData];
-
+            
         }
         else {
             [UILabel showMessage:result[@"message"]];
@@ -421,7 +421,7 @@
 -(void)createReceiveView
 {
     [_topView removeFromSuperview];
-//    UIView *headViewSpecial = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(350))];
+    //    UIView *headViewSpecial = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(350))];
     UIView *headViewSpecial = [[UIView alloc] init];
     headViewSpecial.backgroundColor = [UIColor whiteColor];
     self.headViewSpecial = headViewSpecial;
@@ -436,7 +436,7 @@
     getGoodsAddressLabel.textAlignment = NSTextAlignmentLeft;
     getGoodsAddressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [topView addSubview:getGoodsAddressLabel];
-
+    
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31), CGRectGetMaxY(getGoodsAddressLabel.frame)+PX_TO_PT(26), ScreenWidth - PX_TO_PT(31), PX_TO_PT(1))];
     line.backgroundColor = R_G_B_16(0xe0e0e0);
     [topView addSubview:line];
@@ -444,7 +444,7 @@
     for (int i=0; i<self.deliveryArr.count; i++) {
         XNRDeliveryTypeModel *model = self.deliveryArr[i];
         if ([model.deliveryName isEqualToString:@"网点自提"] && self.deliveryArr.count > 1) {
-//            [self.deliveryArr replaceObjectAtIndex:0 withObject:model];
+            //            [self.deliveryArr replaceObjectAtIndex:0 withObject:model];
             [self.deliveryArr exchangeObjectAtIndex:0 withObjectAtIndex:1];
         }
     }
@@ -462,9 +462,9 @@
         deliveryBtn.layer.borderColor = [R_G_B_16(0xB0B0B0) CGColor];
         deliveryBtn.layer.borderWidth = PX_TO_PT(2);
         deliveryBtn.tag = [model.deliveryType integerValue];
-
+        
         [deliveryBtn addTarget:self action:@selector(deliveryClick:) forControlEvents:UIControlEventTouchUpInside];
-//        [self.view addSubview:_headViewSpecial];
+        //        [self.view addSubview:_headViewSpecial];
         [topView addSubview:deliveryBtn];
         
         if ([model.deliveryName isEqualToString:@"网点自提"]) {
@@ -486,21 +486,21 @@
         return;
     }
     UIImage *iamge = [UIImage imageNamed:@"check-the"];
-
-
+    
+    
     for (UIButton *btn in _deliverBtnArr) {
         btn.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
         btn.selected = NO;
         btn.layer.borderColor = [R_G_B_16(0xB0B0B0)CGColor];
     }
     sender.titleEdgeInsets = UIEdgeInsetsMake(0, -iamge.size.width, 0, 0);
-
+    
     
     if ([sender.titleLabel.text isEqualToString:@"网点自提"])
     {
         _deliveryType = 1;
         self.headViewSpecial.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(_NoDeliverView.frame));
-//        self.tableview.tableHeaderView = self.headViewSpecial;
+        //        self.tableview.tableHeaderView = self.headViewSpecial;
         
         _NoDeliverView.hidden = NO;
         _headViewNormal.hidden = YES;
@@ -517,17 +517,17 @@
         {
             self.headViewSpecial.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(_headViewNormal.frame));
         }
-
+        
         _NoDeliverView.hidden = YES;
         _headViewNormal.hidden = NO;
         _addressView.hidden = NO;
-
+        
     }
     sender.selected = YES;
     sender.layer.borderColor = [R_G_B_16(0xFE9B00)CGColor];
     _currrentBtn = sender;
     self.tableview.tableHeaderView = self.headViewSpecial;
-
+    
 }
 //
 -(void)createDeliveryView:(NSString *)addressDetail andContact:(NSString *)contact
@@ -559,7 +559,7 @@
         webSiteLabel.numberOfLines = 0;
         webSiteLabel.textColor = R_G_B_16(0x323232);
         [webSiteView addSubview:webSiteLabel];
-     
+        
         downImageView.frame = CGRectMake(0, PX_TO_PT(113), ScreenWidth, PX_TO_PT(7));
         
         NoDeliveryView.frame = CGRectMake(0, CGRectGetMaxY(btn.frame)+PX_TO_PT(27), ScreenWidth,PX_TO_PT(120));
@@ -569,7 +569,7 @@
         [NoDeliveryView addSubview:webSiteView];
         
         if ([self.currrentBtn.titleLabel.text isEqualToString:@"网点自提"]) {
-//          NoDeliveryView.hidden = YES;
+            //          NoDeliveryView.hidden = YES;
         }
         else
         {
@@ -580,17 +580,17 @@
         self.headViewSpecial.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(NoDeliveryView.frame));
         
         self.tableview.tableHeaderView = self.headViewSpecial;
-//        [self.tableview reloadData];
-
+        //        [self.tableview reloadData];
+        
         return;
     }
-
+    
     UIButton *addressBtn =[MyControl createButtonWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(89)) ImageName:nil Target:self Action:@selector(addressBtnClick:) Title:nil];
     [addressBtn setBackgroundColor:R_G_B_16(0xfffaf0)];
     
     UIButton *contactBtn =[MyControl createButtonWithFrame:CGRectMake(0, CGRectGetMaxY(addressBtn.frame), ScreenWidth, PX_TO_PT(89)) ImageName:nil Target:self Action:@selector(contactBtnClick:) Title:nil];
     [contactBtn setBackgroundColor:R_G_B_16(0xfffaf0)];
-
+    
     
     UILabel *addressLabel = [MyControl createLabelWithFrame:CGRectMake(PX_TO_PT(83), PX_TO_PT(35), PX_TO_PT(600), PX_TO_PT(30)) Font:PX_TO_PT(28) Text:nil];
     self.RSCAddressLabel = addressLabel;
@@ -608,7 +608,7 @@
     addressBtn.frame = CGRectMake(0, 0, ScreenWidth, size.height+PX_TO_PT(56));
     addressLabel.textAlignment = NSTextAlignmentLeft;
     addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-//    addressLabel.textColor = R_G_B_16(0x323232);
+    //    addressLabel.textColor = R_G_B_16(0x323232);
     [addressBtn addSubview:addressLabel];
     
     // 地址图标
@@ -657,8 +657,8 @@
     [NoDeliveryView addSubview:addressBtn];
     [NoDeliveryView addSubview:contactBtn];
     [contactBtn addSubview:downImageView];
-//    [self.view addSubview:_headViewSpecial];
-
+    //    [self.view addSubview:_headViewSpecial];
+    
     if ([self.currrentBtn.titleLabel.text isEqualToString:@"网点自提"]) {
         //          NoDeliveryView.hidden = YES;
     }
@@ -679,9 +679,9 @@
     XNRSelWebSiteVC *vc = [[XNRSelWebSiteVC alloc]init];
     
     __weak __typeof(&*self)weakSelf=self;
-
+    
     [vc setRSCDetailChoseBlock:^(XNRRSCModel *model) {
-
+        
         weakSelf.RSCdetailModel = [XNRRSCDetailModel objectWithKeyValues:model.RSCInfo]
         ;
         
@@ -714,10 +714,10 @@
     }];
     vc.hidesBottomBarWhenPushed=YES;
     
-//    [self productId];
+    //    [self productId];
     vc.proId = [weakSelf GetProId];
     [weakSelf.navigationController pushViewController:vc animated:YES];
-
+    
 }
 -(NSString *)GetProId
 {
@@ -737,7 +737,7 @@
 -(void)contactBtnClick:(UIButton *)sender
 {
     XNRSelContactVC *vc = [[XNRSelContactVC alloc]init];
-
+    
     __weak __typeof(&*self)weakSelf=self;
     [vc setSetRSCContactChoseBlock:^(XNRConsigneeModel *model)
      {
@@ -749,11 +749,11 @@
          {
              weakSelf.RSCContactInfo = nil;
          }
-        weakSelf.consigneeName = model.consigneeName;
-        weakSelf.consigneePhone = model.consigneePhone;
-        weakSelf.consigneeModel = model;
-        
-    }];
+         weakSelf.consigneeName = model.consigneeName;
+         weakSelf.consigneePhone = model.consigneePhone;
+         weakSelf.consigneeModel = model;
+         
+     }];
     vc.hidesBottomBarWhenPushed=YES;
     vc.model = self.consigneeModel;
     [weakSelf.navigationController pushViewController:vc animated:YES];
@@ -767,7 +767,7 @@
         if ([result[@"code"]integerValue] == 1000) {
             
             NSMutableArray *arr = (NSMutableArray *)[XNRConsigneeModel objectArrayWithKeyValuesArray:result[@"datas"][@"rows"]];
-
+            
             if (arr.count > 0) {
                 self.consigneeModel = arr[0];
                 self.consigneeName = self.consigneeModel.consigneeName;
@@ -775,18 +775,18 @@
                 
                 self.RSCContactInfo = [NSString stringWithFormat:@"%@ %@",self.consigneeName,self.consigneePhone];
                 
-
+                
             }
-     
+            
             [self createDeliveryView:self.RSCDetailAddress andContact:self.RSCContactInfo];
-
+            
             // 来自购物车页面的话才加载
             if (self.isRoot) {// 获得地址信息
                 [self getAddressData];
                 _addressArr = [[NSMutableArray alloc] init];
             }
             
-
+            
         }
         else if ([result[@"code"] integerValue] == 1401){
             [UILabel showMessage:result[@"message"]];
@@ -797,7 +797,7 @@
             loginVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:loginVC animated:YES];
         }
-
+        
     } failure:^(NSError *error) {
     }];
 }
@@ -811,7 +811,7 @@
     XNRAddressManageModel *model = addressArray[0];
     model.selected = YES;
     self.nextAddresModel = model;
-
+    
     UIButton *btn = self.deliverBtnArr[0];
     UIView *addressView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(btn.frame)+PX_TO_PT(27), ScreenWidth, PX_TO_PT(173))];
     self.addressView = addressView;
@@ -838,7 +838,7 @@
     _recipientPhoneLabel.textColor = R_G_B_16(0x323232);
     _recipientPhoneLabel.text = [NSString stringWithFormat:@"%@",model.receiptPhone];
     [addressView addSubview:_recipientPhoneLabel];
-
+    
     
     UIImageView *addressImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(_recipientNameLabel.frame) + PX_TO_PT(32), PX_TO_PT(26), PX_TO_PT(34))];
     [addressImageView setImage:[UIImage imageNamed:@"orderInfo_address_picture"]];
@@ -850,7 +850,7 @@
     _addressDetail.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     _addressDetail.textColor = R_G_B_16(0xc7c7c7);
     [addressView addSubview:_addressDetail];
-
+    
     NSString *address1 = [NSString stringWithFormat:@"%@%@",model.areaName,model.cityName];
     NSString *address2 = [NSString stringWithFormat:@"%@%@%@",model.areaName,model.cityName,model.countyName];
     if ([model.countyName isEqualToString:@""] || model.countyName == nil) {
@@ -872,12 +872,12 @@
     }
     _addressDetail.numberOfLines = 0;
     
-    CGSize size = [_addressDetail.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake( ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), MAXFLOAT)];
+    CGSize size = [_addressDetail.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake( ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), PX_TO_PT(80))];
     _addressDetail.frame = CGRectMake(PX_TO_PT(90), CGRectGetMaxY(_recipientNameLabel.frame) +PX_TO_PT(32), ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), size.height);
     downImageViewSpecial.frame = CGRectMake(0, CGRectGetMaxY(_addressDetail.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(7));
     addressBtnSpecial.frame = CGRectMake(0,0, ScreenWidth, CGRectGetMaxY(downImageViewSpecial.frame)-CGRectGetMaxY(upImageViewSpecial.frame));
     _addressView.frame = CGRectMake(0, CGRectGetMaxY(btn.frame)+PX_TO_PT(27), ScreenWidth, CGRectGetMaxY(downImageViewSpecial.frame));
-
+    
     // 箭头
     UIImageView *arrowImageView=[[UIImageView  alloc] init];
     arrowImageView.frame=CGRectMake(ScreenWidth-PX_TO_PT(32)-PX_TO_PT(24),PX_TO_PT(83) , PX_TO_PT(24), PX_TO_PT(42));
@@ -888,12 +888,12 @@
     headLine.backgroundColor = R_G_B_16(0xc7c7c7);
     [addressView addSubview:headLine];
     _addressView.hidden = YES;
-//    [self.view addSubview:_headViewSpecial];
-
+    //    [self.view addSubview:_headViewSpecial];
+    
     
     self.headViewSpecial.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(_addressView.frame));
     self.tableview.tableHeaderView = _headViewSpecial;
-
+    
     [_headViewSpecial addSubview:addressView];
 }
 #pragma mark-创建没有地址的视图
@@ -937,13 +937,13 @@
     [addressBtn addSubview:arrowImageView];
     
     [headViewNormal addSubview:addressBtn];
-
+    
     self.headViewSpecial.frame = CGRectMake(0, 0, ScreenWidth,  CGRectGetMaxY(_headViewNormal.frame));
     self.tableview.tableHeaderView = _headViewSpecial;
-
+    
     _headViewNormal.hidden = YES;
     [_headViewSpecial addSubview:headViewNormal];
-
+    
 }
 
 -(void)createAddressModelView:(XNRAddressManageModel *)model{
@@ -951,7 +951,7 @@
     
     model.selected = YES;
     self.nextAddresModel = model;
-
+    
     UIButton *btn = self.deliverBtnArr[0];
     UIView *addressView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(btn.frame)+PX_TO_PT(27), ScreenWidth, PX_TO_PT(173))];
     self.addressView = addressView;
@@ -969,7 +969,7 @@
     [downImageViewSpecial setImage:[UIImage imageNamed:@"orderInfo_down"]];
     [addressView addSubview:downImageViewSpecial];
     
-
+    
     _recipientNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(90), PX_TO_PT(28), PX_TO_PT(200), PX_TO_PT(36))];
     _recipientNameLabel.textColor = R_G_B_16(0x323232);
     _recipientNameLabel.text = model.receiptPeople;
@@ -1014,12 +1014,12 @@
     
     _addressDetail.numberOfLines = 0;
     
-    CGSize size = [_addressDetail.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake( ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), MAXFLOAT)];
+    CGSize size = [_addressDetail.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake( ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24),  PX_TO_PT(80))];
     _addressDetail.frame = CGRectMake(PX_TO_PT(90), CGRectGetMaxY(_recipientNameLabel.frame) +PX_TO_PT(32), ScreenWidth-PX_TO_PT(90)-PX_TO_PT(32)-PX_TO_PT(24), size.height);
     downImageViewSpecial.frame = CGRectMake(0, CGRectGetMaxY(_addressDetail.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(7));
     addressBtnSpecial.frame = CGRectMake(0,0, ScreenWidth, CGRectGetMaxY(downImageViewSpecial.frame)-CGRectGetMaxY(upImageViewSpecial.frame));
     _addressView.frame = CGRectMake(0, CGRectGetMaxY(btn.frame)+PX_TO_PT(27), ScreenWidth, CGRectGetMaxY(downImageViewSpecial.frame));
-
+    
     
     // 箭头
     UIImageView *arrowImageView=[[UIImageView  alloc] init];
@@ -1067,7 +1067,7 @@
     totalPriceBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [totalPriceBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fe9b00"]] forState:UIControlStateNormal];
     [totalPriceBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#fec366"]] forState:UIControlStateHighlighted];
-
+    
     [footView addSubview:totalPriceBtn];
     
     // 总计
@@ -1088,14 +1088,14 @@
     [AttributedStringDeposit addAttributes:depositStr range:NSMakeRange(3,AttributedStringDeposit.length-3)];
     
     [totalPricelabel setAttributedText:AttributedStringDeposit];
-
+    
     self.totalPricelabel = totalPricelabel;
     [footView addSubview: totalPricelabel];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(2))];
     lineView.backgroundColor = R_G_B_16(0xc7c7c7);
     [footView addSubview:lineView];
-
+    
 }
 #pragma mark - TableViewDelegate
 
@@ -1110,7 +1110,7 @@
         
         UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(88))];
         headView.backgroundColor = [UIColor whiteColor];
-//        [self.view addSubview:headView];
+        //        [self.view addSubview:headView];
         
         
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(28), ScreenWidth, PX_TO_PT(32))];
@@ -1141,7 +1141,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return PX_TO_PT(89);
-
+    
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -1152,7 +1152,7 @@
 {
     if (_dataArr.count>0) {
         return _dataArr.count;
-
+        
     }else{
         return 0;
     }
@@ -1181,7 +1181,7 @@
     }else{
         return 0;
     }
-
+    
 }
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *cellID=@"XNROderInfo";
@@ -1197,7 +1197,7 @@
             XNROrderInfoFrame *frameModel = sectionModel.SKUFrameList[indexPath.row];
             cell.orderFrame = frameModel;
         }
-       
+        
     }
     cell.backgroundColor=R_G_B_16(0xf4f4f4);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1216,9 +1216,9 @@
         NSLog(@"%@",model.addressId);
         
         self.headViewNormal.hidden = YES;
-//        [self createAddressModelView:model];
+        //        [self createAddressModelView:model];
         
-
+        
     }];
     vc.hidesBottomBarWhenPushed=YES;
     
@@ -1243,9 +1243,9 @@
             [UILabel showMessage:@"您选择的商品不能在同一个网点自提，请返回购物车重新选择"];
             return;
         }
-
+        
         params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"deliveryType":[NSNumber numberWithInt:_deliveryType],@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"RSCId":self.RSCId?self.RSCId:@"",@"consigneePhone":self.consigneePhone,@"consigneeName":self.consigneeName,@"SKUs":self.dataArray,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"payType":@"1",@"user-agent":@"IOS-v2.0"};
-
+        
     }
     else
     {
@@ -1254,7 +1254,7 @@
             return;
         }
         
-
+        
         params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"SKUs":self.dataArray,@"payType":@"1",@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -1304,38 +1304,38 @@
                 self.addOrderModelFull.money = [NSString stringWithFormat:@"%.2f",deposit2.doubleValue];
                 
                 [self.tableview reloadData];
-
-            
-        }else{
-            
-            [UILabel showMessage:resultObj[@"message"]];
-        }
+                
+                
+            }else{
+                
+                [UILabel showMessage:resultObj[@"message"]];
+            }
             [self selectVC];
-
+            
         }else if ([resultObj[@"code"] integerValue] == 1001) {
             [UILabel showMessage:resultObj[@"message"]];
         }
         else if ([resultObj[@"code"] integerValue] == 1401){
-                [UILabel showMessage:resultObj[@"message"]];
-                UserInfo *infos = [[UserInfo alloc]init];
-                infos.loginState = NO;
-                [DataCenter saveAccount:infos];
-                //发送刷新通知
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
-                
-                XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-
+            [UILabel showMessage:resultObj[@"message"]];
+            UserInfo *infos = [[UserInfo alloc]init];
+            infos.loginState = NO;
+            [DataCenter saveAccount:infos];
+            //发送刷新通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];
+            
+            XNRLoginViewController *vc = [[XNRLoginViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+            
         }
-    
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"===%@",error);
         
     }];
-
+    
     [self selectVC];
-
+    
 }
 
 -(void)selectVC
@@ -1360,7 +1360,7 @@
         [self.navigationController pushViewController:selVC animated:YES];
         
     }
-
+    
 }
 -(void)select:(UIButton*)button{
     button.selected=!button.selected;
@@ -1368,7 +1368,7 @@
         
         [self.select setImage:[UIImage imageNamed:@"list_btn_unchecked_gray"] forState:UIControlStateNormal];
     }else{
-         [self.select setImage:[UIImage imageNamed:@"list_btn_checked_green"] forState:UIControlStateNormal];
+        [self.select setImage:[UIImage imageNamed:@"list_btn_checked_green"] forState:UIControlStateNormal];
         
     }
 }
@@ -1376,7 +1376,7 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
+    titleLabel.font = [UIFont boldSystemFontOfSize:PX_TO_PT(40)];
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"提交订单";
@@ -1387,6 +1387,7 @@
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -PX_TO_PT(32), 0, 0);
 
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
@@ -1403,13 +1404,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

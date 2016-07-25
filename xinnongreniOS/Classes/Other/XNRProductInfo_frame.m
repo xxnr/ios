@@ -29,7 +29,7 @@
     CGFloat productNameLabelW = ScreenWidth-PX_TO_PT(60);
     CGSize productNameLabelMaxSize = CGSizeMake(productNameLabelW, MAXFLOAT);
     CGSize productNameLabelSize = [self.infoModel.name sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:productNameLabelMaxSize];
-    _productNameLabelF = (CGRect){{productNameLabelX, productNameLabelY}, productNameLabelSize};
+    _productNameLabelF = (CGRect){{productNameLabelX, productNameLabelY}, productNameLabelW,productNameLabelSize.height};
     
     NSString *minStr = [NSString stringWithFormat:@"%@",self.infoModel.min];
     NSString *maxStr = [NSString stringWithFormat:@"%@",self.infoModel.max];
@@ -49,39 +49,42 @@
             price = [NSString stringWithFormat:@"￥%.f - %.f",self.infoModel.min.doubleValue,self.infoModel.max.doubleValue];
         }
     }
+    
     // 价格
     CGSize priceLabelSize;
     if ([self.infoModel.presale integerValue] == 1) {
         CGFloat priceLabelX = PX_TO_PT(30);
-        CGFloat priceLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
+        CGFloat priceLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(18);
         CGFloat priceLabelW = ScreenWidth/2;
-        CGFloat priceLabelH = PX_TO_PT(38);
-
-        _priceLabelF = CGRectMake(priceLabelX, priceLabelY, priceLabelW, priceLabelH);
-
-    }else{
-        CGFloat priceLabelX = PX_TO_PT(30);
-        CGFloat priceLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
         CGFloat priceLabelH = PX_TO_PT(38);
         CGSize priceLabelMaxSize = CGSizeMake(MAXFLOAT, priceLabelH);
         priceLabelSize = [price sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:priceLabelMaxSize];
-        _priceLabelF = (CGRect){{priceLabelX, priceLabelY}, priceLabelSize};
+        
+        _priceLabelF = (CGRect){{priceLabelX, priceLabelY},priceLabelW, priceLabelSize.height};
+
+    }else{
+        CGFloat priceLabelX = PX_TO_PT(30);
+        CGFloat priceLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(18);
+        CGFloat priceLabelH = PX_TO_PT(38);
+        CGSize priceLabelMaxSize = CGSizeMake(MAXFLOAT, priceLabelH);
+        priceLabelSize = [price sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:priceLabelMaxSize];
+        _priceLabelF = (CGRect){{priceLabelX, priceLabelY}, priceLabelSize.width,priceLabelSize.height};
     }
     
     // 订金
-    if (priceLabelSize.width>ScreenWidth/2) {
-        CGFloat depositLabelX = CGRectGetMaxX(_priceLabelF)+PX_TO_PT(20);
-        CGFloat depositLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
+//    if (priceLabelSize.width>ScreenWidth/2) {
+//        CGFloat depositLabelX = CGRectGetMaxX(_priceLabelF)+PX_TO_PT(30);
+//        CGFloat depositLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(18);
+//        CGFloat depositLabelW = ScreenWidth/2;
+//        CGFloat depositLabelH = PX_TO_PT(40);
+//        _depositLabelF = CGRectMake(depositLabelX, depositLabelY, depositLabelW, depositLabelH);
+//    }else{
+        CGFloat depositLabelX =  CGRectGetMaxX(_priceLabelF)+PX_TO_PT(30);
+        CGFloat depositLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(18);
         CGFloat depositLabelW = ScreenWidth/2;
-        CGFloat depositLabelH = PX_TO_PT(38);
+        CGFloat depositLabelH = PX_TO_PT(40);
         _depositLabelF = CGRectMake(depositLabelX, depositLabelY, depositLabelW, depositLabelH);
-    }else{
-        CGFloat depositLabelX = ScreenWidth/2;
-        CGFloat depositLabelY = CGRectGetMaxY(_productNameLabelF)+PX_TO_PT(28);
-        CGFloat depositLabelW = ScreenWidth/2;
-        CGFloat depositLabelH = PX_TO_PT(38);
-        _depositLabelF = CGRectMake(depositLabelX, depositLabelY, depositLabelW, depositLabelH);
-    }
+//    }
    
     
     // 市场价 ,商品简介
@@ -97,7 +100,7 @@
             
         }else{
             CGFloat marketPriceLabelX = PX_TO_PT(30);
-            CGFloat marketPriceLabelY = CGRectGetMaxY(_depositLabelF)+PX_TO_PT(14);
+            CGFloat marketPriceLabelY = CGRectGetMaxY(_depositLabelF)+PX_TO_PT(24);
             CGFloat marketPriceLabelW = ScreenWidth;
             CGFloat marketPriceLabelH = PX_TO_PT(38);
             _marketPriceLabelF = CGRectMake(marketPriceLabelX, marketPriceLabelY, marketPriceLabelW, marketPriceLabelH);

@@ -262,7 +262,7 @@ static bool isBroker;
 {
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
+    titleLabel.font = [UIFont boldSystemFontOfSize:PX_TO_PT(40)];
     titleLabel.textColor = R_G_B_16(0xffffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"新农代表";
@@ -274,6 +274,7 @@ static bool isBroker;
     [backButton addTarget:self action:@selector(backButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -PX_TO_PT(32), 0, 0);
 
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = leftItem;
@@ -1080,15 +1081,15 @@ static bool isBroker;
     NSString *title;
     if (self.phoneNum == nil || [self.phoneNum isEqualToString:@""]) {
         flag = 0;
-        title = @"手机号不能为空";
+        title = @"请输入手机号";
     }else if ([self validateMobile:phoneNum] == NO) {
         flag = 0;
-        title = @"手机格式错误";
+        title = @"请输入正确的手机号";
     } else {
         [KSHttpRequest post:KUserFindAccount parameters:@{@"account":phoneNum,@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 if ([self.phoneNum  isEqualToString:[DataCenter account].phone]) {
-                    [UILabel showMessage:@"不能设置自己为新农代表哦"];
+                    [UILabel showMessage:@"不能绑定自己为新农代表，请重新输入"];
                 }else{
 
                     BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确定设置为您的代表吗？" chooseBtns:@[@"取消",@"确定"]];

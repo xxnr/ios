@@ -558,7 +558,7 @@
        self.nameLength = strlength;
 
         if (strlength > 12) {
-            [UILabel showMessage:[NSString stringWithFormat:@"您的输入超过限制"]];
+            [UILabel showMessage:[NSString stringWithFormat:@"请输入小于6个汉字或12个英文字符"]];
         }
    }
 
@@ -615,14 +615,18 @@
         
         [UILabel showMessage:@"请完善信息"];
     }
-    else if(!flag ||self.iswarn)
-    {
-    [UILabel showMessage:@"请修改填写的手机号"];
-                     
-    }
     else if(self.nameLength>12)
     {
-        [UILabel showMessage:@"您输入的姓名超过限制"];
+        [UILabel showMessage:@"请输入小于6个汉字或12个英文字符"];
+    }
+    else if(!flag)
+    {
+    [UILabel showMessage:@"请输入正确的手机号"];
+                     
+    }
+    else if(self.iswarn)
+    {
+        [UILabel showMessage:@"请修改填写的手机号"];
     }
     else{
         NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
@@ -695,7 +699,7 @@
 -(void)createNavigation{
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];
+    titleLabel.font = [UIFont boldSystemFontOfSize:PX_TO_PT(40)];
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"添加潜在客户";
@@ -708,6 +712,7 @@
     [backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -PX_TO_PT(32), 0, 0);
 
     UIBarButtonItem *leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;

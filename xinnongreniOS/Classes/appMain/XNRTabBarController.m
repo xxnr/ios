@@ -24,19 +24,19 @@
     
     //首页
     XNRHomeController *home = [[XNRHomeController alloc]init];
-    [self addChildViewController:home title:@"首页" image:@"icon_home" selImage:@"icon_home_selelcted"];
+    [self addChildViewController:home title:@"首页" image:@"index_default-0" selImage:@"index_-select"];
     
     //咨询
      XNRChatController *chat = [[XNRChatController alloc]init];
-     [self addChildViewController:chat title:@"资讯" image:@"icon_message" selImage:@"icon_message_selected"];
+     [self addChildViewController:chat title:@"资讯" image:@"information_default-0" selImage:@"information_select"];
     
     //购物车
     XNRShoppingCarController *shoppingCar = [[XNRShoppingCarController alloc]init];
-    [self addChildViewController:shoppingCar title:@"购物车" image:@"icon_shopcar" selImage:@"icon_shopcar_selected"];
+    [self addChildViewController:shoppingCar title:@"购物车" image:@"shopping_default-0" selImage:@"shopping_select"];
     
     //我的
     XNRMineController *mine = [[XNRMineController alloc]init];
-    [self addChildViewController:mine title:@"我的" image:@"icon_profile" selImage:@"icon_profile_selected"];
+    [self addChildViewController:mine title:@"我的" image:@"my_default" selImage:@"my_select-0"];
     
     
     UITabBarItem *item = [UITabBarItem appearance];
@@ -52,6 +52,8 @@
     selDic[NSForegroundColorAttributeName] = R_G_B_16(0x00b38a);
     [item setTitleTextAttributes:selDic forState:UIControlStateSelected];
 
+
+    [item setTitlePositionAdjustment:UIOffsetMake(0, -PX_TO_PT(4))];
 }
 /**
  *  设置子控制器
@@ -63,7 +65,9 @@
     UIImage *sel = [UIImage imageNamed:selImage];
     sel = [sel imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     [childController.tabBarItem setSelectedImage:sel];
+
     XNRNavigationController *nav = [[XNRNavigationController alloc]initWithRootViewController:childController];
+
     [self addChildViewController:nav];
 }
 

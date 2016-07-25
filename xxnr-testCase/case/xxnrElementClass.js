@@ -532,8 +532,8 @@ xxnrElementClass.orderDetail = function (window) {
         consignmentState:function (cell) {
             for (var i=0;i<cell.staticTexts().length;i++)
             {
-                xxnrlogMessage("'"+cell.staticTexts()[i].rect().size.width+"'");
-                xxnrlogMessage("'"+cell.staticTexts()[i].rect().size.height+"'");
+                // xxnrlogMessage("'"+cell.staticTexts()[i].rect().size.width+"'");
+                // xxnrlogMessage("'"+cell.staticTexts()[i].rect().size.height+"'");
 
                 if(cell.staticTexts()[i].rect().size.width == 75.5 && cell.staticTexts()[i].rect().size.height == 14)
                 {

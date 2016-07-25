@@ -41,6 +41,8 @@
     NSInteger _goodsNum;
     NSInteger _goodsNumSelected;
 }
+@property (nonatomic,weak) UILabel *titleLabel;
+
 @property (nonatomic,strong) UIView *bottomView; // 底部视图
 
 @property (nonatomic,weak) UITableView *shoppingCarTableView;//购物车
@@ -224,7 +226,16 @@
 
 #pragma mark - 创建导航栏
 -(void)createNavgation{
-    self.navigationItem.title = @"购物车";
+//    self.navigationItem.title = @"购物车";
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 200, 44)];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
+    titleLabel.textColor = R_G_B_16(0xfbffff);
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.text = @"购物车";
+    self.titleLabel = titleLabel;
+    self.navigationItem.titleView = titleLabel;
+
     UIButton *editeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     editeBtn.frame = CGRectMake(0, 0, 40, 40);
     [editeBtn setTitle:@"编辑" forState:UIControlStateNormal];
@@ -444,7 +455,15 @@
                 if (_dataArr.count == 0) {
                     [self.shopCarView show];
                     self.editeBtn.hidden = YES;
-                    self.navigationItem.title = @"购物车";
+//                    self.navigationItem.title = @"购物车";
+//                    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
+//                    titleLabel.backgroundColor = [UIColor clearColor];
+//                    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
+//                    titleLabel.textColor = R_G_B_16(0xfbffff);
+//                    titleLabel.textAlignment = NSTextAlignmentCenter;
+                    self.titleLabel.text = @"购物车";
+                    self.navigationItem.titleView = self.titleLabel;
+
                 }else{
                     [self.shopCarView removeFromSuperview];
                 }
@@ -527,7 +546,15 @@
         if (_dataArr.count == 0) {
             [self.shopCarView show];
             self.editeBtn.hidden = YES;
-            self.navigationItem.title = @"购物车";
+//            self.navigationItem.title = @"购物车";
+//            UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
+//            titleLabel.backgroundColor = [UIColor clearColor];
+//            titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
+//            titleLabel.textColor = R_G_B_16(0xfbffff);
+//            titleLabel.textAlignment = NSTextAlignmentCenter;
+            self.titleLabel.text = @"购物车";
+            self.navigationItem.titleView = self.titleLabel;
+
         }else{
             [self.shopCarView removeFromSuperview];
         }
@@ -546,7 +573,15 @@
     NSArray *allGoodArr = [dbManager queryAllGood];
     // 如果购物车为空
     if (allGoodArr.count == 0) {
-        self.navigationItem.title = @"购物车";
+//        self.navigationItem.title = @"购物车";
+//        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
+//        titleLabel.backgroundColor = [UIColor clearColor];
+//        titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
+//        titleLabel.textColor = R_G_B_16(0xfbffff);
+//        titleLabel.textAlignment = NSTextAlignmentCenter;
+        self.titleLabel.text = @"购物车";
+        self.navigationItem.titleView = self.titleLabel;
+
         self.editeBtn.hidden = YES;
         [self.shopCarView show];
         return;
@@ -601,7 +636,15 @@
                 if (_dataArr.count == 0) {
                     [self.shopCarView show];
                     self.editeBtn.hidden = YES;
-                    self.navigationItem.title = @"购物车";
+//                    self.navigationItem.title = @"购物车";
+//                    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
+//                    titleLabel.backgroundColor = [UIColor clearColor];
+//                    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
+//                    titleLabel.textColor = R_G_B_16(0xfbffff);
+//                    titleLabel.textAlignment = NSTextAlignmentCenter;
+                    self.titleLabel.text = @"购物车";
+                    self.navigationItem.titleView = self.titleLabel;
+
                     
                 }else{
                     [self.shopCarView removeFromSuperview];
@@ -740,7 +783,11 @@
                 
         }
             // 购物车的总数
-            self.navigationItem.title = [NSString stringWithFormat:@"购物车(%ld)",(long)_goodsNum];
+//            self.navigationItem.title = [NSString stringWithFormat:@"购物车(%ld)",(long)_goodsNum];
+            
+            self.titleLabel.text = [NSString stringWithFormat:@"购物车(%ld)",(long)_goodsNum];
+            self.navigationItem.titleView = self.titleLabel;
+
         }
     }
     
@@ -893,7 +940,15 @@
     }else{
             [self.shopCarView show];
             self.editeBtn.hidden = YES;
-            self.navigationItem.title = @"购物车";
+//            self.navigationItem.title = @"购物车";
+//        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
+//        titleLabel.backgroundColor = [UIColor clearColor];
+//        titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
+//        titleLabel.textColor = R_G_B_16(0xfbffff);
+//        titleLabel.textAlignment = NSTextAlignmentCenter;
+        self.titleLabel.text = @"购物车";
+        self.navigationItem.titleView = self.titleLabel;
+
     }
     return cell;
 }
