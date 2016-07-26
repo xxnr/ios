@@ -447,7 +447,13 @@
 #pragma mark - 设置导航
 - (void)setNav
 {
-    self.navigationItem.title = @"注册";
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.font = [UIFont boldSystemFontOfSize:PX_TO_PT(40)];
+    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.text = @"注册";
+    self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
@@ -455,6 +461,7 @@
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchDown];
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
+    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -PX_TO_PT(32), 0, 0);
 
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem=leftItem;
@@ -512,14 +519,14 @@
         coverView.backgroundColor = [UIColor blackColor];
         coverView.alpha = 0.6;
         self.coverView = coverView;
-        [AppKeyWindow addSubview:coverView];
+        [self.view addSubview:coverView];
         
         UIView *alertView = [[UIView alloc] initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(580))*0.5, (ScreenHeight-PX_TO_PT(356))*0.3, PX_TO_PT(580), PX_TO_PT(356))];
         alertView.backgroundColor = [UIColor whiteColor];
         alertView.layer.cornerRadius  = 5.0;
         alertView.layer.masksToBounds = YES;
         self.alertView = alertView;
-        [AppKeyWindow addSubview:alertView];
+        [self.view addSubview:alertView];
         
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, PX_TO_PT(30), PX_TO_PT(580), PX_TO_PT(36))];
         titleLabel.text = @"安全验证";
@@ -572,7 +579,7 @@
         [admireBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
         [admireBtn setBackgroundImage:[UIImage imageWithColor_Ext:[UIColor colorFromString_Ext:@"#ffffff"]] forState:UIControlStateHighlighted];
         admireBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-        [admireBtn addTarget: self action:@selector(admireBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        [admireBtn addTarget: self action:@selector(admireBtnClick1) forControlEvents:UIControlEventTouchUpInside];
         [alertView addSubview:admireBtn];
         
         
@@ -604,11 +611,6 @@
 
 -(void)refreshIdentifyPicture{
     [self.picImage removeFromSuperview];
-//    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44))];
-//    circleImage.image = [UIImage imageNamed:@"spinner_gray-0"];
-//    self.circleImage = circleImage;
-//    [self.picImageBtn addSubview:circleImage];
-//    [self startAnimation];
     
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
@@ -693,14 +695,8 @@
 
 }
 // 确定
--(void)admireBtnClick
+-(void)admireBtnClick1
 {
-//    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44))];
-//    circleImage.image = [UIImage imageNamed:@"spinner_gray-0"];
-//    self.circleImage = circleImage;
-//    [self.picImageBtn addSubview:circleImage];
-
-//    [self startAnimation];
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     indicator.frame = CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44));
@@ -735,8 +731,10 @@
                     [self.coverView removeFromSuperview];
                     [self.alertView removeFromSuperview];
                     
+
                     //请求成功读秒
                     [self readSecond];
+                    
                     [UILabel showMessage:@"成功获取短信，请注意查收"];
                 }
                 
@@ -803,7 +801,8 @@
 
                 }
                 
-            }else{
+            }
+            else{
                 [BMProgressView LoadViewDisappear:self.view];
                 [UILabel showMessage:result[@"message"]];
             }

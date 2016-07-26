@@ -253,7 +253,7 @@
     [self.contentView addSubview:sectionTwoLabel];
         
     UILabel *subscriptionLabel = [[UILabel alloc] init];
-    subscriptionLabel.textColor = R_G_B_16(0x323232);
+    subscriptionLabel.textColor = R_G_B_16(0xff4e00);
     subscriptionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     subscriptionLabel.textAlignment = NSTextAlignmentRight;
     self.subscriptionLabel = subscriptionLabel;
@@ -347,7 +347,7 @@
 - (void)createPresentPriceLabel
 {
     UILabel *presentPriceLabel = [[UILabel alloc]init];
-    presentPriceLabel.textColor = R_G_B_16(0x323232);
+    presentPriceLabel.textColor = R_G_B_16(0xff4e00);
     presentPriceLabel.textAlignment = NSTextAlignmentRight;
     presentPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.presentPriceLabel = presentPriceLabel;
@@ -660,6 +660,7 @@
 
     // 订金
     self.subscriptionLabel.text = [NSString stringWithFormat:@"￥%.2f",model.deposit.doubleValue *[_model.num integerValue]];
+    
     // 尾款
     self.remainLabel.text = [NSString stringWithFormat:@"￥%.2f",(model.price.doubleValue + totalPrice - model.deposit.doubleValue)*[model.num integerValue]];
         
@@ -697,10 +698,14 @@
         self.textbottomLine.hidden = NO;
         self.backgroundColor = [UIColor whiteColor];
         self.goodNameLabel.textColor = R_G_B_16(0x323232);
-        self.presentPriceLabel.textColor = R_G_B_16(0x323232);
+        self.presentPriceLabel.textColor = R_G_B_16(0xff4e00);
+        if (model.deposit.doubleValue > 0) {
+            self.presentPriceLabel.textColor = R_G_B_16(0x323232);
+        }
+
         self.sectionOneLabel.textColor = R_G_B_16(0x323232);
         self.sectionTwoLabel.textColor = R_G_B_16(0x323232);
-        self.subscriptionLabel.textColor = R_G_B_16(0x323232);
+        self.subscriptionLabel.textColor = R_G_B_16(0xff4e00);
         self.remainLabel.textColor = R_G_B_16(0x323232);
         self.addtionsLabel.textColor = R_G_B_16(0x323232);
         self.addtionPriceLabel.textColor = R_G_B_16(0x323232);

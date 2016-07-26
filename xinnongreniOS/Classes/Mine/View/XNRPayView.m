@@ -39,7 +39,7 @@
         self.orderEmptyView = orderEmptyView;
         orderEmptyView.delegate = self;
 //        [self addSubview:orderEmptyView];
-        [self insertSubview:orderEmptyView atIndex:0];
+        [self insertSubview:orderEmptyView atIndex:1];
     }
     return _orderEmptyView;
     
@@ -66,12 +66,13 @@
 //        [self getData];
         
         //创建订单
-        [self createbackBtn];
         
         [self createMainTableView];
 
         [self setupStayPayViewRefresh];
         
+        [self createbackBtn];
+
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(payHeadRefresh) name:@"payHeadRefresh" object:nil];
 
     }
@@ -645,4 +646,8 @@
     
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
 @end

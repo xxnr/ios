@@ -3,9 +3,9 @@
  */
 
 #import "../lib/tuneup.js"
+#import "xxnrElementClass.js"
 
 var errorformatPhone = "11100002334";
-var rightPhone = "18790674259";
 var addPhone = "188";
 for(var i=0;i<8;i++)
 {
@@ -13,8 +13,7 @@ for(var i=0;i<8;i++)
 
     addPhone = addPhone + num;
 }
-UIALogger.logMessage("'"+addPhone+"'");
-
+xxnrlogMessage("'"+addPhone+"'");
 var register;
 
 var target = UIATarget.localTarget();
@@ -22,116 +21,118 @@ var window = target.frontMostApp().windows()[0];
 
 
 test("新农代表tab的点击",function(){
-    window.tabBar().buttons()["我的"].tap();
-    window.tableViews()[0].cells()[1].tap();
+    xxnrElementClass.tab(window).mineTab().tap();
+    xxnrElementClass.mine(window).cell(1).tap();
 
-    window.buttons()["我的代表"].tap();
-    target.delay(2);
+    xxnrElementClass.xxnrRepesent(window).myrepesentTab().tap();
+    xxnrdelay(2);
 
-    if (window.buttons()["客户登记"])
+    if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
     {
-        window.buttons()["客户登记"].tap();
+        xxnrElementClass.xxnrRepesent(window).clientRegisterTab().tap();
     }
 })
 test("我的客户 下拉刷新",function(){
-    target.delay(2);
-    window.buttons()["我的客户"].tap();
-    target.delay(2);
+    xxnrdelay(2);
+    xxnrElementClass.xxnrRepesent(window).myclientTab().tap();
+    xxnrdelay(2);
+    if (xxnrElementClass.xxnrRepesent_client(window).inviteLabel().isVisible()) {
+        xxnrElementClass.xxnrRepesent(window).myclientTab().dragInsideWithOptions({
+            startOffset: {x: 0.74, y: -3.54},
+            endOffset: {x: 0.83, y: 0.99}
+        });
+        xxnrdelay(2);
+        var label = xxnrElementClass.xxnrRepesent_client(window).inviteNum();
+        var numStr = label.substr(3, label.length - 6);
 
-    window.buttons()["我的客户"].dragInsideWithOptions({startOffset:{x:0.74, y:-3.54}, endOffset:{x:0.83, y:0.99}});
-    target.delay(2);
-    var label = window.tableViews()[0].staticTexts()[0].value();
-    var numStr = label.substr(3,label.length-6);
-
-    var num = parseInt(numStr);
-    var count = window.tableViews()[0].cells().length;
-    assertEquals(num,count);
+        var num = parseInt(numStr);
+        var count = xxnrElementClass.xxnrRepesent_client(window).cells().length;
+        assertEquals(num, count);
+    }
 })
 test("我的客户  上滑加载",function(){
-    //target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
-
-    if (window.tableViews()[0].cells().length > 0)
+    if (xxnrElementClass.xxnrRepesent_client(window).cells().length > 0)
     {
-        var label = window.tableViews()[0].staticTexts()[0].value();
+        var label = xxnrElementClass.xxnrRepesent_client(window).inviteNum();
         var numStr = label.substr(3,label.length-6);
 
         var num = parseInt(numStr);
         var count = Math.floor(num/10);
 
-        UIALogger.logMessage("'"+count+"'");
+        xxnrlogMessage("'"+count+"'");
 
-        for (var i=0;i<count;i++)
+        for (var i=0;i<=count;i++)
         {
             target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
             target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
 
-            target.delay(2);
+            xxnrdelay(2);
             window.tableViews()[0].visibleCells()[0].tap();
-            target.delay(2);
-            window.logElementTree();
-            window.navigationBar().buttons()["top back"].tap();
+            xxnrdelay(2);
+            xxnrlogEleTree(window);
+            xxnrElementClass.navBack(window).tap();
         }
     }
 })
 
 test("我的客户 邀请好友数",function(){
 
-    if (window.tableViews()[0].cells().length > 0)
+    if (xxnrElementClass.xxnrRepesent_client(window).cells().length > 0)
     {
-        window.logElementTree();
-        var label = window.tableViews()[0].staticTexts()[0].value();
+        xxnrlogEleTree(window);
+        var label = xxnrElementClass.xxnrRepesent_client(window).inviteNum();
         var numStr = label.substr(3,label.length-6);
 
         var num = parseFloat(numStr);
-        var count = window.tableViews()[0].cells().length;
+        var count = xxnrElementClass.xxnrRepesent_client(window).cells().length;
         assertEquals(num,count);
-        UIALogger.logMessage("'"+window.staticTexts()[0].isVisible()+"'");
-        assertEquals(0,window.staticTexts()[0].isVisible());
+        xxnrlogMessage("'"+xxnrElementClass.xxnrRepesent_client(window).isInviteFriend()+"'");
+        assertEquals(0,xxnrElementClass.xxnrRepesent_client(window).isInviteFriend());
     }
     else
     {
-        assertEquals(1,window.staticTexts()[0].isVisible());
+        assertEquals(1,xxnrElementClass.xxnrRepesent_client(window).isInviteFriend());
     }
 
 })
 test("我的客户 客户详情",function(){
-    window.buttons()["我的客户"].tap();
-    if (window.tableViews()[0].cells().length > 0){
-        window.tableViews()[0].cells()[1].tap();
-        target.delay(2);
-        assertEquals("客户订单",window.navigationBar().staticTexts()[0].value());
-        window.navigationBar().buttons()["top back"].tap();
-        window.tableViews()[0].cells()[2].tap();
-        target.delay(2);
-        assertEquals("客户订单",window.navigationBar().staticTexts()[0].value());
-        window.navigationBar().buttons()["top back"].tap();
+    xxnrElementClass.xxnrRepesent(window).myclientTab().tap();
+    if (xxnrElementClass.xxnrRepesent_client(window).cells().length > 0){
+        xxnrElementClass.xxnrRepesent_client(window).cell(1).tap();
+        xxnrdelay(2);
+        assertEquals("客户订单",xxnrElementClass.navTitle(window));
+        xxnrElementClass.navBack(window).tap();
+        xxnrElementClass.xxnrRepesent_client(window).cell(2).tap();
+        xxnrdelay(2);
+        assertEquals("客户订单",xxnrElementClass.navTitle(window));
+        xxnrElementClass.navBack(window).tap();
     }
 
 })
 
 test("我的代表",function () {
-    window.buttons()["我的代表"].tap();
-    target.delay(2);
-    window.logElementTree();
+    xxnrElementClass.xxnrRepesent(window).myrepesentTab().tap();
+    xxnrdelay(2);
+    xxnrlogEleTree(window);
     if (window.buttons()["添加"].isVisible())
     {
-        UIALogger.logMessage("没有添加新农代表");
+        xxnrlogMessage("没有添加新农代表");
     }
     else
     {
-        UIALogger.logMessage("有新农代表");
+        xxnrlogMessage("有新农代表");
     }
 })
-if (window.buttons()["客户登记"])
+if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
 {
-    test("客户登记 查看客户详情",function () {
-        window.buttons()["客户登记"].tap();
-        target.delay(2);
-        window.logElementTree();
+    test("客户登记 滚动列表&查看客户详情",function () {
+        xxnrElementClass.xxnrRepesent(window).clientRegisterTab().tap();
+        xxnrdelay(2);
+        xxnrlogEleTree(window);
 
-        if (window.tableViews()[1].cells().length > 0)
+        if (xxnrElementClass.xxnrClientRegister(window).cells().length > 0)
         {
-            var label = window.staticTexts()[1].value();
+            var label = xxnrElementClass.xxnrClientRegister(window).totalNum();
             var numStr = label.substr(3,label.length-6);
 
             var num = parseInt(numStr);
@@ -141,141 +142,139 @@ if (window.buttons()["客户登记"])
                 target.dragFromToForDuration({x:255.00, y:442.00}, {x:261.50, y:70.50}, 0.6);
                 target.dragFromToForDuration({x:255.00, y:442.00}, {x:261.50, y:70.50}, 0.6);
 
-                target.delay(2);
+                xxnrdelay(2);
                 window.tableViews()[1].visibleCells()[1].tap();
-                target.delay(2);
-                window.logElementTree();
+                xxnrdelay(2);
+                xxnrlogEleTree(window);
 
-                register = window.staticTexts()[3].value();
-                window.logElementTree();
-                window.navigationBar().buttons()["top back"].tap();
+                register = xxnrElementClass.clientDetail(window).phone();
+                xxnrlogEleTree(window);
+                xxnrElementClass.navBack(window).tap();
             }
         }
     })
 
     test("客户登记 显示与实际数量",function () {
-        if (window.tableViews()[1].cells().length > 0)
+        if (xxnrElementClass.xxnrClientRegister(window).cells().length > 0)
         {
-            window.logElementTree();
-            var label = window.staticTexts()[1].value();
+            xxnrlogEleTree(window);
+            var label = xxnrElementClass.xxnrClientRegister(window).totalNum();
             var numStr = label.substr(3,label.length-6);
 
             var num = parseFloat(numStr);
-            var count = window.tableViews()[1].cells().length;
+            var count = xxnrElementClass.xxnrClientRegister(window).cells().length;
             assertEquals(num,count);
         }
     })
     test("客户登记  今日添加",function () {
-        var label = window.staticTexts()[2].value();
+        var label = xxnrElementClass.xxnrClientRegister(window).todayNum();
         var numStr = label.substr(6,label.length-7);
         var num = parseInt(numStr);
         if (num > 0){
-            assertEquals(1,window.buttons()[0].isEnabled());
+            assertEquals(1,xxnrElementClass.xxnrClientRegister(window).addBtn().isEnabled());
         }
         else
         {
-            assertEquals(0,window.buttons()[0].isEnabled());
+            assertEquals(0,xxnrElementClass.xxnrClientRegister(window).addBtn().isEnabled());
         }
     })
     test("添加潜在客户",function () {
+        var oldcells = xxnrElementClass.xxnrClientRegister(window).cells().length;
 
-        var oldcells = window.tableViews()[1].cells().length;
-
-        var totallabel = window.staticTexts()[1].value();
+        var totallabel = xxnrElementClass.xxnrClientRegister(window).totalNum();
         var totalnumStr = totallabel.substr(3,totallabel.length-6);
         var totalnum = parseFloat(totalnumStr);
 
-        var todaylabel = window.staticTexts()[2].value();
+        var todaylabel = xxnrElementClass.xxnrClientRegister(window).todayNum();
         var todaynumStr = todaylabel.substr(6,todaylabel.length-7);
         var todaynum = parseFloat(todaynumStr);
 
-        UIALogger.logMessage("'"+register+"'");
+        xxnrlogMessage("'"+register+"'");
 
-        window.buttons()[0].tap();
+        xxnrElementClass.xxnrClientRegister(window).addBtn().tap();
         test("没有信息",function () {
-            window.buttons()["保存"].tap();
-            window.logElementTree();
+            xxnrElementClass.addClient(window).saveBtn().tap();
+            xxnrlogEleTree(window);
 
-            assertNotNull(window.staticTexts()["请完善信息"]);
+            assertNotNull(xxnrElementClass.addClient(window).warningStaticText("请完善信息"));
         })
+
         test("没有选择城市",function () {
-            window.logElementTree();
+            xxnrlogEleTree(window);
 
-            window.textFields()[0].textFields()[0].tap();
-            window.textFields()[0].textFields()[0].setValue("na");
+            xxnrElementClass.addClient(window).nameTextField().tap();
+            xxnrElementClass.addClient(window).nameTextField().setValue("na");
 
-            window.textFields()[1].textFields()[0].tap();
-            window.textFields()[1].textFields()[0].setValue(rightPhone);
-            window.logElementTree();
+            xxnrElementClass.addClient(window).phoneTextField().tap();
+            xxnrElementClass.addClient(window).phoneTextField().setValue(addPhone);
+            xxnrlogEleTree(window);
 
-            window.buttons()[1].tap();
-            window.buttons()[0].tap();
+            xxnrElementClass.addClient(window).girlBtn().tap();
+            xxnrElementClass.addClient(window).boyBtn().tap();
 
+            xxnrElementClass.addClient(window).selProBtn().tap();
+            xxnrElementClass.selPro(window).tableView().tapWithOptions({tapOffset:{x:0.47, y:0.05}});
+            xxnrElementClass.selPro(window).makeSureBtn().tap();
 
-            window.buttons()[4].tap();
-            window.tableViews()[0].tapWithOptions({tapOffset:{x:0.47, y:0.05}});
-            window.buttons()["确定"].tap();
-
-            window.buttons()["保存"].tap();
-            assertNotNull(window.staticTexts()["请完善信息"]);
+            xxnrElementClass.addClient(window).saveBtn().tap();
+            assertNotNull(xxnrElementClass.addClient(window).warningStaticText("请完善信息"));
         })
         test("没有意向商品" ,function () {
-            window.buttons()[2].tap();
-            window.pickers()[0].wheels()[1].tapWithOptions({tapOffset:{x:0.81, y:0.34}});
+            xxnrElementClass.addClient(window).addressBtn().tap();
+            window.pickers()[0   ].wheels()[1].tapWithOptions({tapOffset:{x:0.81, y:0.34}});
             window.pickers()[0].wheels()[2].tapWithOptions({tapOffset:{x:0.44, y:0.49}});
-            window.buttons()["确定"].tap();
+            xxnrElementClass.selPro(window).makeSureBtn().tap();
 
-            window.buttons()[3].tap();
+            xxnrElementClass.addClient(window).streetBtn().tap();
             window.pickers()[0].wheels()[0].tapWithOptions({tapOffset:{x:0.65, y:0.52}});
-            target.delay(1);
-            window.buttons()["确定"].tap();
+            xxnrdelay(1);
+            xxnrElementClass.selPro(window).makeSureBtn().tap();
 
-            window.buttons()[4].tap();
-            window.tableViews()[0].tapWithOptions({tapOffset:{x:0.47, y:0.05}});
-            window.buttons()["确定"].tap();
+            xxnrElementClass.addClient(window).selProBtn().tap();
+            xxnrElementClass.selPro(window).tableView().tapWithOptions({tapOffset:{x:0.47, y:0.05}});
+            xxnrElementClass.selPro(window).makeSureBtn().tap();
 
-            window.buttons()["保存"].tap();
-            assertNotNull(window.staticTexts()["请完善信息"]);
+            xxnrElementClass.addClient(window).saveBtn().tap();
+            assertNotNull(xxnrElementClass.addClient(window).warningStaticText("请完善信息"));
         })
         test("没有手机号" ,function () {
-            window.buttons()[4].tap();
-            window.tableViews()[0].tapWithOptions({tapOffset:{x:0.47, y:0.05}});
-            window.buttons()["确定"].tap();
-            window.textFields()[1].textFields()[0].tap();
-            window.textFields()[1].textFields()[0].setValue("");
-            window.buttons()["保存"].tap();
-            assertNotNull(window.staticTexts()["请完善信息"]);
+            xxnrElementClass.addClient(window).selProBtn().tap();
+            xxnrElementClass.selPro(window).tableView().tapWithOptions({tapOffset:{x:0.47, y:0.05}});
+            xxnrElementClass.selPro(window).makeSureBtn().tap();
+            xxnrElementClass.addClient(window).phoneTextField().tap();
+            xxnrElementClass.addClient(window).phoneTextField().setValue("");
+            xxnrElementClass.addClient(window).saveBtn().tap();
+            assertNotNull(xxnrElementClass.addClient(window).warningStaticText("请完善信息"));
         })
         test("手机号格式错误" ,function () {
-            window.textFields()[1].textFields()[0].tap();
-            window.textFields()[1].textFields()[0].setValue(errorformatPhone);
-            window.buttons()["保存"].tap();
-            assertNotNull(window.staticTexts()["请输入正确的手机号"]);
+            xxnrElementClass.addClient(window).phoneTextField().tap();
+            xxnrElementClass.addClient(window).phoneTextField().setValue(errorformatPhone);
+            xxnrElementClass.addClient(window).saveBtn().tap();
+            assertNotNull(xxnrElementClass.addClient(window).warningStaticText("请输入正确的手机号"));
         })
         test("手机号已登记过" ,function () {
-            window.textFields()[1].textFields()[0].tap();
-            window.textFields()[1].textFields()[0].setValue(register);
-            window.buttons()["保存"].tap();
-            assertNotNull(window.staticTexts()["该客户资料已经登记过"]);
+            xxnrElementClass.addClient(window).phoneTextField().tap();
+            xxnrElementClass.addClient(window).phoneTextField().setValue(register);
+            xxnrElementClass.addClient(window).saveBtn().tap();
+            assertNotNull(xxnrElementClass.addClient(window).warningStaticText("该客户资料已经登记过"));
         })
         test("信息完整" ,function () {
-            window.textFields()[1].textFields()[0].tap();
-            window.textFields()[1].textFields()[0].setValue(addPhone);
-            window.buttons()["保存"].tap();
+            xxnrElementClass.addClient(window).phoneTextField().tap();
+            xxnrElementClass.addClient(window).phoneTextField().setValue(addPhone);
+            xxnrElementClass.addClient(window).saveBtn().tap();
 
-            target.delay(2);
-            assertEquals("新农代表",window.navigationBar().staticTexts()[0].value());
-            var newtotallabel = window.staticTexts()[1].value();
+            xxnrdelay(2);
+            assertEquals("新农代表",xxnrElementClass.navTitle(window));
+            var newtotallabel = xxnrElementClass.xxnrClientRegister(window).totalNum();
             var newtotalnumStr = newtotallabel.substr(3,newtotallabel.length-6);
             var newtotalnum = parseFloat(newtotalnumStr);
 
-            var newtodaylabel = window.staticTexts()[2].value();
+            var newtodaylabel = xxnrElementClass.xxnrClientRegister(window).todayNum();
             var newtodaynumStr = newtodaylabel.substr(6,newtodaylabel.length-7);
             var newtodaynum = parseFloat(newtodaynumStr);
 
-            //assertEquals(oldcells+1,window.tableViews()[1].cells().length);
             assertEquals(newtotalnum-1,totalnum);
             assertEquals(newtodaynum+1,todaynum);
         })
     })
-}
+

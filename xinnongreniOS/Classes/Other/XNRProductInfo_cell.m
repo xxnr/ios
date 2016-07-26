@@ -134,16 +134,23 @@
                     self.bgView.frame = CGRectMake(0, CGRectGetMaxY(self.marketPriceLabel.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(80));
                 }
             }
+            
+
             // 价格
+            self.priceLabel.text = [NSString stringWithFormat:@"%@",price];
             CGFloat priceLabelX = PX_TO_PT(30);
-            CGFloat priceLabelY = CGRectGetMaxY(self.goodNameLabel.frame)+PX_TO_PT(28);
+            CGFloat priceLabelY = CGRectGetMaxY(self.goodNameLabel.frame)+PX_TO_PT(18);
             //    CGFloat priceLabelW = ScreenWidth/2;
             CGFloat priceLabelH = PX_TO_PT(38);
             CGSize priceLabelMaxSize = CGSizeMake(MAXFLOAT, priceLabelH);
-            CGSize priceLabelSize = [price sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:priceLabelMaxSize];
+            CGSize priceLabelSize = [self.priceLabel.text sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:priceLabelMaxSize];
             self.priceLabel.frame = (CGRect){{priceLabelX, priceLabelY}, priceLabelSize};
 
-            self.priceLabel.text = [NSString stringWithFormat:@"%@",price];
+            CGFloat depositLabelX =  CGRectGetMaxX(self.priceLabel.frame)+PX_TO_PT(30);
+            CGFloat depositLabelY = CGRectGetMaxY(self.goodNameLabel.frame)+PX_TO_PT(18);
+            CGFloat depositLabelW = ScreenWidth/2;
+            CGFloat depositLabelH = PX_TO_PT(40);
+            self.depositLabel.frame = CGRectMake(depositLabelX, depositLabelY, depositLabelW, depositLabelH);
             
             NSString *  attributeStr = [attributes lastObject];
             NSString *addtionStr = [addtions lastObject];
@@ -387,7 +394,7 @@
     self.scrollView.frame = self.infoFrame.imageViewF;
     self.goodNameLabel.frame = self.infoFrame.productNameLabelF;
     self.priceLabel.frame = self.infoFrame.priceLabelF;
-    self.presaleLabel.frame = self.infoFrame.priceLabelF;
+      self.presaleLabel.frame = self.infoFrame.priceLabelF;
     self.marketPriceLabel.frame = self.infoFrame.marketPriceLabelF;
     self.depositLabel.frame = self.infoFrame.depositLabelF;
     self.descriptionLabel.frame = self.infoFrame.introduceLabelF;
@@ -455,39 +462,47 @@
     NSString *maxStr = [NSString stringWithFormat:@"%.2f",[self.model.max doubleValue]];
 
     if ([self.model.min doubleValue]== [self.model.max doubleValue]) {
-        NSString *price = [NSString stringWithFormat:@"￥%@ - %@",minStr,maxStr];
+//        NSString *price = [NSString stringWithFormat:@"￥%@ - %@",minStr,maxStr];
+        self.priceLabel.text = [NSString stringWithFormat:@"￥%@",self.model.min];
 
         // 价格
         CGFloat priceLabelX = PX_TO_PT(30);
-        CGFloat priceLabelY = CGRectGetMaxY(self.goodNameLabel.frame)+PX_TO_PT(28);
+        CGFloat priceLabelY = CGRectGetMaxY(self.goodNameLabel.frame)+PX_TO_PT(18);
         //    CGFloat priceLabelW = ScreenWidth/2;
         CGFloat priceLabelH = PX_TO_PT(38);
         CGSize priceLabelMaxSize = CGSizeMake(MAXFLOAT, priceLabelH);
-        CGSize priceLabelSize = [price sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:priceLabelMaxSize];
+        CGSize priceLabelSize = [self.priceLabel.text sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:priceLabelMaxSize];
         self.priceLabel.frame = (CGRect){{priceLabelX, priceLabelY}, priceLabelSize};
 
-        self.priceLabel.text = [NSString stringWithFormat:@"￥%@",self.model.min];
 
     }else{
-        NSString *price = [NSString stringWithFormat:@"￥%@ - %@",maxStr,maxStr];
+//        NSString *price = [NSString stringWithFormat:@"￥%@ - %@",maxStr,maxStr];
+        if ([maxStr rangeOfString:@".00"].length == 3) {
+            maxStr = [maxStr substringToIndex:maxStr.length-3];
+        }
+        self.priceLabel.text = [NSString stringWithFormat:@"￥%@ - %@",minStr,maxStr];
+
         // 价格
         CGFloat priceLabelX = PX_TO_PT(30);
-        CGFloat priceLabelY = CGRectGetMaxY(self.goodNameLabel.frame)+PX_TO_PT(28);
+        CGFloat priceLabelY = CGRectGetMaxY(self.goodNameLabel.frame)+PX_TO_PT(18);
         CGFloat priceLabelH = PX_TO_PT(38);
         CGSize priceLabelMaxSize = CGSizeMake(MAXFLOAT, priceLabelH);
-        CGSize priceLabelSize = [price sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:priceLabelMaxSize];
+        CGSize priceLabelSize = [self.priceLabel.text sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(38)] maxSize:priceLabelMaxSize];
         self.priceLabel.frame = (CGRect){{priceLabelX, priceLabelY}, priceLabelSize};
-            if ([maxStr rangeOfString:@".00"].length == 3) {
-                maxStr = [maxStr substringToIndex:maxStr.length-3];
-            }
+        
 
-        self.priceLabel.text = [NSString stringWithFormat:@"￥%@ - %@",minStr,maxStr];
 
     }
     
     
     if ([_model.online integerValue] != 0 || _model.online == nil) {
+        
+        CGFloat depositLabelX =  CGRectGetMaxX(self.priceLabel.frame)+PX_TO_PT(30);
+        CGFloat depositLabelY = CGRectGetMaxY(self.goodNameLabel.frame)+PX_TO_PT(18);
+        CGFloat depositLabelW = ScreenWidth/2;
+        CGFloat depositLabelH = PX_TO_PT(40);
         self.depositLabel.text = [NSString stringWithFormat:@"订金:￥%.2f",self.model.deposit];
+        self.depositLabel.frame = CGRectMake(depositLabelX, depositLabelY, depositLabelW, depositLabelH);
         
         if ([self.depositLabel.text rangeOfString:@".00"].length == 3) {
             self.depositLabel.text = [self.depositLabel.text substringToIndex:self.depositLabel.text.length-3];

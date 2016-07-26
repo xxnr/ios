@@ -35,7 +35,7 @@
         orderEmptyView.delegate  = self;
         self.orderEmptyView = orderEmptyView;
         
-        [self insertSubview:orderEmptyView atIndex:0];
+        [self insertSubview:orderEmptyView atIndex:1];
     }
     return _orderEmptyView;
 }
@@ -517,5 +517,9 @@
     return cell;
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
 
 @end

@@ -74,7 +74,7 @@
         
         
         UIView *bottomEdging = [[UIView alloc]initWithFrame:CGRectMake(0, 44, titleView.width, 1)];
-        bottomEdging.backgroundColor = R_G_B_16(0xc7c7c7);
+        bottomEdging.backgroundColor = R_G_B_16(0xe0e0e0);
         [titleView addSubview:bottomEdging];
         
         UIView *leftEdging = [[UIView alloc]initWithFrame:CGRectMake(btn.x, 10, 1, titleView.height-20)];
@@ -107,7 +107,7 @@
         }
         
         UIView *bottomEdging = [[UIView alloc]initWithFrame:CGRectMake(0, 0, btnView.width, 1)];
-        bottomEdging.backgroundColor = R_G_B_16(0xc7c7c7);
+        bottomEdging.backgroundColor = R_G_B_16(0xe0e0e0);
         [btnView addSubview:bottomEdging];
 
         [self addSubview:btnView];

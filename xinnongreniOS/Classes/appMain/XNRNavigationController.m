@@ -72,6 +72,7 @@
 -(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
     if ([self respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.interactivePopGestureRecognizer.enabled = YES;
+       
         if (navigationController.viewControllers.count ==1) {
             self.interactivePopGestureRecognizer.enabled =NO;
         }
@@ -80,6 +81,14 @@
 
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
     return YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+
+{
+    
+    return [gestureRecognizer isKindOfClass:UIScreenEdgePanGestureRecognizer.class];
+    
 }
 
 /*

@@ -2,24 +2,10 @@
  * Created by yangning on 16/6/24.
  */
 
-//#import "../lib/tuneup.js"
-
+#import "../lib/tuneup.js"
+#import "xxnrElementClass.js"
 var target = UIATarget.localTarget();
 var window = target.frontMostApp().windows()[0];
-
-// target.delay(2);
-// window.tabBar().buttons()["购物车"].tap();
-// window.staticTexts()["合计: ￥0.00"].tapWithOptions({tapOffset:{x:0.08, y:0.48}});
-//
-// window.buttons()["去结算(2)"].tap();
-// target.delay(2);
-// window.logElementTree();
-// window.tableViews()[0].buttons()[2].tap();
-// window.tableViews()[1].cells()[0].tap();
-// window.buttons()["确定"].tap();
-//
-// window.buttons()[0].tap();
-
 
 var holdMoney_num;
 var fullMoney_num;
@@ -27,46 +13,48 @@ var splitMoney_num;
 var detailMoney_num;
 var extentMoney_num;
 test("是否拆分订单",function () {
-    target.delay(2);
+    xxnrdelay(2);
 
-    if (window.navigationBar().staticTexts()[0].value() == "选择支付订单")
+    if (xxnrElementClass.navTitle(window) == "选择支付订单")
     {
-        UIALogger.logMessage("kajds;fajkfd");
-        window.logElementTree();
+        xxnrlogMessage("kajds;fajkfd");
+        xxnrlogEleTree(window);
         assertEquals(2,window.buttons().length);
         window.buttons()[0].tap();
-        target.delay(2);
-        assertEquals("支付方式",window.navigationBar().staticTexts()[0].value());
+        xxnrdelay(2);
+        assertEquals("支付方式",xxnrElementClass.navTitle(window));
     }
 })
 test("全额支付",function (target,app) {
-    target.delay(2);
+    xxnrdelay(2);
 
-    window.collectionViews()[0].buttons()[5].tap();
+   xxnrElementClass.home(window).fer_specialBtn().tap();
     window.tableViews()[0].tapWithOptions({tapOffset:{x:0.43, y:0.93}});
-    window.buttons()["立即购买"].tap();
-    window.buttons()["确定"].tap();
+    xxnrElementClass.goodDetail(window).purchaseBtn().tap();
+   xxnrElementClass.goodDetail(window).addShoppingCar_sure().tap();
     window.tableViews()[0].buttons()[2].tap();
     window.tableViews()[1].cells()[0].tap();
-    window.buttons()["确定"].tap();
-    window.buttons()["提交订单(1)"].tap();
-    target.delay(2);
-    window.logElementTree();
-    window.buttons()["全额支付"].tap();
-    assertEquals(1,window.buttons()[6].isVisible());
+   xxnrElementClass.goodDetail(window).addShoppingCar_sure().tap();
+    // window.buttons()["提交订单(1)"].tap();
+     
+    xxnrElementClass.submitOrder(window).submitOrderBtn().tap();
+    xxnrdelay(2);
+    xxnrlogEleTree(window);
+    xxnrElementClass.selPayType(window).fullPay().tap();
+    assertEquals(1,xxnrElementClass.selPayType(window).offLineBtn().isVisible());
 })
 test("分次支付",function () {
-    window.buttons()["分次支付"].tap();
+    xxnrElementClass.selPayType(window).separatePay().tap();
 
-    assertEquals(0,window.buttons()[6].isVisible());
+    assertEquals(0,xxnrElementClass.selPayType(window).offLineBtn().isVisible());
 })
 test("再次点击全额支付",function () {
-    window.buttons()["全额支付"].tap();
-    assertEquals(1,window.buttons()[6].isVisible());
+    xxnrElementClass.selPayType(window).fullPay().tap();
+    assertEquals(1,xxnrElementClass.selPayType(window).offLineBtn().isVisible());
 })
 
 test("全额支付金额显示",function () {
-    window.buttons()["全额支付"].tap();
+    xxnrElementClass.selPayType(window).fullPay().tap();
 
     var holdMoneyStr = window.staticTexts()[1].value();
     var holdMoney = holdMoneyStr.substr(5,holdMoneyStr.length-6);
@@ -78,7 +66,7 @@ test("全额支付金额显示",function () {
     assertEquals(holdMoney_num,fullMoney_num,"全额支付显示金额有误");
 })
 test("分次支付金额显示",function () {
-    window.buttons()["分次支付"].tap();
+    xxnrElementClass.selPayType(window).separatePay().tap();
 
     var detailMoneyStr = window.staticTexts()[7].value();
     var detailMoney = detailMoneyStr.substr(19,detailMoneyStr.length-30);
@@ -126,27 +114,27 @@ test("分次支付加号按钮操作",function () {
     while (window.buttons()[3].isEnabled() == 1) {
         window.buttons()[3].tap();
 
-        target.delay(1);
+        xxnrdelay(1);
 
         var nowsplitMoneyStr = window.staticTexts()[6].value();
         var nowsplitMoney = nowsplitMoneyStr.substr(1,nowsplitMoneyStr.length-1);
         var nowsplitMoney_num = parseFloat(nowsplitMoney);
 
-        UIALogger.logMessage("'"+extentMoney_num+"'");
+        xxnrlogMessage("'"+extentMoney_num+"'");
 
-        UIALogger.logMessage("'"+parseFloat(splitMoney_num+extentMoney_num)+"'");
-        UIALogger.logMessage("'"+holdMoney_num+"'");
+        xxnrlogMessage("'"+parseFloat(splitMoney_num+extentMoney_num)+"'");
+        xxnrlogMessage("'"+holdMoney_num+"'");
 
         if (parseFloat(splitMoney_num+extentMoney_num)<holdMoney_num) {
-            UIALogger.logMessage("if");
+            xxnrlogMessage("if");
 
             assertEquals(parseFloat(splitMoney_num+extentMoney_num).toFixed(2), nowsplitMoney_num);
         }
         else
         {
-            UIALogger.logMessage("else");
+            xxnrlogMessage("else");
 
-            target.delay(2);
+            xxnrdelay(2);
             assertEquals(holdMoney_num, nowsplitMoney_num);
             assertEquals(0,window.buttons()[3].isEnabled());
         }
@@ -163,23 +151,23 @@ test("分次支付按钮减号操作",function () {
     while (window.buttons()[2].isEnabled() == 1) {
         window.buttons()[2].tap();
 
-        target.delay(1);
+        xxnrdelay(1);
 
         var nowsplitMoneyStr = window.staticTexts()[6].value();
         var nowsplitMoney = nowsplitMoneyStr.substr(1,nowsplitMoneyStr.length-1);
         var nowsplitMoney_num = parseFloat(nowsplitMoney);
 
-        UIALogger.logMessage("'"+splitMoney_num+"'");
+        xxnrlogMessage("'"+splitMoney_num+"'");
 
-        UIALogger.logMessage("'"+extentMoney_num+"'");
-        UIALogger.logMessage("'"+parseFloat(parseFloat(splitMoney_num)-parseFloat(extentMoney_num))+"'");
+        xxnrlogMessage("'"+extentMoney_num+"'");
+        xxnrlogMessage("'"+parseFloat(parseFloat(splitMoney_num)-parseFloat(extentMoney_num))+"'");
 
         if (parseFloat(splitMoney_num-extentMoney_num)>detailMoney_num) {
             assertEquals(parseFloat(splitMoney_num-extentMoney_num).toFixed(2), nowsplitMoney_num);
         }
         else
         {
-            target.delay(2);
+            xxnrdelay(2);
             assertEquals(detailMoney_num, nowsplitMoney_num);
             assertEquals(0,window.buttons()[2].isEnabled());
         }
@@ -189,17 +177,31 @@ test("分次支付按钮减号操作",function () {
 
 })
 test("选择支付方式",function () {
-    window.buttons()["全额支付"].tap();
+    xxnrElementClass.selPayType(window).fullPay().tap();
 
-    window.buttons()[5].tap();
-    window.buttons()[6].tap();
-    window.buttons()[4].tap();
+    xxnrElementClass.selPayType(window).unionpayBtn().tap();
+     xxnrElementClass.selPayType(window).goPay().tap();
+     xxnrdelay(5);
+     xxnrElementClass.unionpay(window).UnionpayBack().tap();
+     xxnrdelay(2);
+     xxnrElementClass.unionpay(window).UnionpayBackYes().tap();
+     xxnrdelay(2);
+     
+    xxnrElementClass.selPayType(window).offLineBtn().tap();
+     
+    xxnrElementClass.selPayType(window).alipayBtn().tap();
+     xxnrElementClass.selPayType(window).goPay().tap();
+     xxnrdelay(2);
+     xxnrElementClass.alipay(window).ALipayBack().tap();
+     xxnrdelay(2);
+     xxnrElementClass.alipay(window).ALipayBackYes().tap();
+     xxnrdelay(2);
 
-    window.buttons()[6].tap();
-    target.delay(1);
-    window.buttons()["去支付"].tap();
-    target.delay(2);
-    assertEquals("线下支付",window.navigationBar().staticTexts()[0].value());
+    xxnrElementClass.selPayType(window).offLineBtn().tap();
+    xxnrdelay(1);
+    xxnrElementClass.selPayType(window).goPay().tap();
+    xxnrdelay(2);
+    assertEquals("线下支付",xxnrElementClass.navTitle(window));
 
 
 })
