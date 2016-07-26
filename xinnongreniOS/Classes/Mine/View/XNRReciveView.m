@@ -372,8 +372,8 @@
         [headView addSubview:payTypeLabel];
         
         
-        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-        lineView1.backgroundColor = R_G_B_16(0xe0e0e0);
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+        lineView1.backgroundColor = R_G_B_16(0xc7c7c7);
         [headView addSubview:lineView1];
         
         
@@ -447,8 +447,8 @@
             
             
             for (int i = 0; i<3; i++) {
-                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, 1)];
-                lineView.backgroundColor = R_G_B_16(0xe0e0e0);
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
                 [bottomView addSubview:lineView];
             }
             
@@ -456,9 +456,8 @@
             sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
             [bottomView addSubview:sectionView];
             
-            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-            sectionLine.backgroundColor = R_G_B_16(0xe0e0e0);
-
+            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+            sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
             [sectionView addSubview:sectionLine];
             
             return bottomView;
@@ -507,8 +506,8 @@
             
             
             for (int i = 0; i<3; i++) {
-                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, 1)];
-                lineView.backgroundColor = R_G_B_16(0xe0e0e0);
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80)*i, ScreenWidth, PX_TO_PT(1))];
+                lineView.backgroundColor = R_G_B_16(0xc7c7c7);
                 [bottomView addSubview:lineView];
             }
             
@@ -516,8 +515,8 @@
             sectionView.backgroundColor = R_G_B_16(0xf4f4f4);
             [bottomView addSubview:sectionView];
             
-            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-            sectionLine.backgroundColor = R_G_B_16(0xe0e0e0);
+            UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+            sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
             [sectionView addSubview:sectionLine];
             
             return bottomView;

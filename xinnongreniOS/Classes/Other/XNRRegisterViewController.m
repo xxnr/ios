@@ -702,7 +702,6 @@
     indicator.frame = CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44));
     [self.picImageBtn addSubview:indicator];
     [indicator startAnimating];
-
     
     if ([self.identifyCodeTF.text isEqualToString:@""] || self.identifyCodeTF.text == nil) {
         [indicator stopAnimating];

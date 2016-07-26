@@ -2,10 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
 <<<<<<< HEAD
+<<<<<<< HEAD
     <list default="true" id="cf12b85f-0026-4f89-835e-a2af65d8c3c3" name="Default" comment="" />
     <ignored path="case.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
+=======
+    <list default="true" id="1822443d-5fae-427f-9d03-bcaf82c75f2b" name="Default" comment="" />
+    <ignored path="case.iws" />
+    <ignored path=".idea/workspace.xml" />
+>>>>>>> ynn_ios
 =======
     <list default="true" id="1822443d-5fae-427f-9d03-bcaf82c75f2b" name="Default" comment="" />
     <ignored path="case.iws" />
@@ -26,6 +32,7 @@
     <favorites_list name="case" />
   </component>
   <component name="FileEditorManager">
+<<<<<<< HEAD
 <<<<<<< HEAD
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="shoppingcar.js" pinned="false" current-in-tab="false">
@@ -106,16 +113,24 @@
 =======
     <leaf>
       <file leaf-file-name="accountTestCase.js" pinned="false" current-in-tab="true">
+=======
+    <leaf>
+      <file leaf-file-name="accountTestCase.js" pinned="false" current-in-tab="false">
+>>>>>>> ynn_ios
         <entry file="file://$PROJECT_DIR$/accountTestCase.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="600">
               <caret line="40" column="69" selection-start-line="40" selection-start-column="69" selection-end-line="40" selection-end-column="69" />
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
 <<<<<<< HEAD
       <file leaf-file-name="mainClass.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mainClass.js">
@@ -125,6 +140,14 @@
               <folding>
                 <element signature="n#!!doc;n#login#0" expanded="false" />
               </folding>
+=======
+      <file leaf-file-name="orderListCase.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/orderListCase.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+>>>>>>> ynn_ios
             </state>
           </provider>
         </entry>
@@ -132,12 +155,17 @@
       <file leaf-file-name="baseClass.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/baseClass.js">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="705">
               <caret line="47" column="23" selection-start-line="47" selection-start-column="23" selection-end-line="47" selection-end-column="23" />
 =======
       <file leaf-file-name="baseClass.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/baseClass.js">
           <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+>>>>>>> ynn_ios
+=======
             <state relative-caret-position="150">
               <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
 >>>>>>> ynn_ios
@@ -149,6 +177,7 @@
     </leaf>
   </component>
 <<<<<<< HEAD
+<<<<<<< HEAD
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -156,6 +185,8 @@
       </list>
     </option>
   </component>
+=======
+>>>>>>> ynn_ios
 =======
 >>>>>>> ynn_ios
   <component name="GradleLocalSettings">
@@ -166,6 +197,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+<<<<<<< HEAD
 <<<<<<< HEAD
         <option value="$PROJECT_DIR$/registerData.js" />
         <option value="$PROJECT_DIR$/Data.js" />
@@ -195,13 +227,22 @@
     <option name="width" value="1267" />
     <option name="height" value="712" />
 =======
+=======
+>>>>>>> ynn_ios
         <option value="$PROJECT_DIR$/baseClass.js" />
         <option value="$PROJECT_DIR$/accountTestCase.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
+<<<<<<< HEAD
     <option name="x" value="599" />
+    <option name="y" value="23" />
+    <option name="width" value="1095" />
+    <option name="height" value="877" />
+>>>>>>> ynn_ios
+=======
+    <option name="x" value="54" />
     <option name="y" value="23" />
     <option name="width" value="1095" />
     <option name="height" value="877" />
@@ -217,6 +258,7 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
+<<<<<<< HEAD
 <<<<<<< HEAD
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -266,6 +308,10 @@
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
 >>>>>>> ynn_ios
+=======
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+>>>>>>> ynn_ios
   </component>
   <component name="RunManager">
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
@@ -274,6 +320,7 @@
       <option name="PROGRAM_PARAMETERS" />
       <method />
     </configuration>
+<<<<<<< HEAD
 <<<<<<< HEAD
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="" />
@@ -330,6 +377,8 @@
     </configuration>
 =======
 >>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HTML_USED" value="false" />
       <option name="WIDTH" value="400" />
@@ -353,6 +402,7 @@
       <envs />
       <method />
     </configuration>
+<<<<<<< HEAD
 <<<<<<< HEAD
     <configuration default="true" type="ArquillianJUnit" factoryName="">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -508,6 +558,8 @@
     </configuration>
 =======
 >>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -529,6 +581,7 @@
       <patterns />
       <method />
     </configuration>
+<<<<<<< HEAD
 <<<<<<< HEAD
     <configuration default="true" type="JUnitTestDiscovery" factoryName="JUnit Test Discovery" changeList="All">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -602,6 +655,8 @@
     </configuration>
 =======
 >>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -611,12 +666,15 @@
       <method />
     </configuration>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
       <envs />
       <method />
     </configuration>
+=======
+>>>>>>> ynn_ios
 =======
 >>>>>>> ynn_ios
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -647,6 +705,7 @@
       <listeners />
       <method />
     </configuration>
+<<<<<<< HEAD
 <<<<<<< HEAD
     <configuration default="true" type="TestNGTestDiscovery" factoryName="TestNG Test Discovery" changeList="All">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -700,12 +759,15 @@
     </configuration>
 =======
 >>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+<<<<<<< HEAD
 <<<<<<< HEAD
       <changelist id="cf12b85f-0026-4f89-835e-a2af65d8c3c3" name="Default" comment="" />
       <created>1468396014956</created>
@@ -785,6 +847,8 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
 =======
+=======
+>>>>>>> ynn_ios
       <changelist id="1822443d-5fae-427f-9d03-bcaf82c75f2b" name="Default" comment="" />
       <created>1469416029044</created>
       <option name="number" value="Default" />
@@ -794,7 +858,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="599" y="23" width="1095" height="877" extended-state="1" />
+=======
+    <frame x="54" y="23" width="1095" height="877" extended-state="0" />
+>>>>>>> ynn_ios
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -821,6 +889,9 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -835,6 +906,7 @@
     <option name="myLimit" value="2678400000" />
   </component>
 <<<<<<< HEAD
+<<<<<<< HEAD
   <component name="VcsManagerConfiguration">
     <ignored-roots>
       <path value="$PROJECT_DIR$/../.." />
@@ -842,11 +914,14 @@
   </component>
 =======
 >>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
 <<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/myData.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -1161,15 +1236,21 @@
         <state relative-caret-position="1365">
           <caret line="91" column="13" selection-start-line="91" selection-start-column="13" selection-end-line="91" selection-end-column="13" />
 =======
+=======
+>>>>>>> ynn_ios
     <entry file="file://$PROJECT_DIR$/baseClass.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
 <<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/mainClass.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -1209,10 +1290,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2025">
           <caret line="135" column="36" selection-start-line="135" selection-start-column="36" selection-end-line="135" selection-end-column="36" />
+=======
+    <entry file="file://$PROJECT_DIR$/accountTestCase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="40" column="69" selection-start-line="40" selection-start-column="69" selection-end-line="40" selection-end-column="69" />
+>>>>>>> ynn_ios
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/rscOrder.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -1222,6 +1310,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
           <caret line="40" column="69" selection-start-line="40" selection-start-column="69" selection-end-line="40" selection-end-column="69" />
+>>>>>>> ynn_ios
+=======
+    <entry file="file://$PROJECT_DIR$/orderListCase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
 >>>>>>> ynn_ios
           <folding />
         </state>

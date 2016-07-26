@@ -48,8 +48,13 @@
     [morePruductBtn setTitle:@"更多产品" forState:UIControlStateNormal];
     [morePruductBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
     morePruductBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(22)];
-    morePruductBtn.imageEdgeInsets = UIEdgeInsetsMake(10, 0, 10, -(ScreenWidth/2)-PX_TO_PT(10));
-    morePruductBtn.titleEdgeInsets = UIEdgeInsetsMake(0, PX_TO_PT(ScreenWidth/2)-PX_TO_PT(22), 0, 0);    [morePruductBtn addTarget:self action:@selector(moreClick) forControlEvents:UIControlEventTouchUpInside];
+    morePruductBtn.imageEdgeInsets = UIEdgeInsetsMake(10, 0, 10, -(ScreenWidth/2)-PX_TO_PT(8));
+//    morePruductBtn.titleEdgeInsets = UIEdgeInsetsMake(0, PX_TO_PT(ScreenWidth/2)-PX_TO_PT(22), 0, 0);
+    CGSize size = [morePruductBtn.titleLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(22)]];
+    
+    morePruductBtn.titleEdgeInsets = UIEdgeInsetsMake(0, [UIImage imageNamed:@"icon_right_arrow"].size.width+size.width+PX_TO_PT(60), 0,0);
+
+    [morePruductBtn addTarget:self action:@selector(moreClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:morePruductBtn];
 }
 

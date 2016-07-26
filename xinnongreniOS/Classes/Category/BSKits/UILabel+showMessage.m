@@ -29,6 +29,7 @@
     if ([message isKindOfClass:[NSString class]]) {
         
         LabelSize = [message sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(30)] maxSize:CGSizeMake(ScreenWidth-PX_TO_PT(40), MAXFLOAT)];
+
     }
     label.frame = CGRectMake(PX_TO_PT(20), PX_TO_PT(10), LabelSize.width+PX_TO_PT(8), LabelSize.height);
     label.text = message;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
 <<<<<<< HEAD
+<<<<<<< HEAD
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -8,6 +9,8 @@
       </MavenGeneralSettings>
     </option>
   </component>
+=======
+>>>>>>> ynn_ios
 =======
 >>>>>>> ynn_ios
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -21,6 +24,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_3" default="true" assert-keyword="false" jdk-15="false" />
+<<<<<<< HEAD
 <<<<<<< HEAD
   <component name="masterDetails">
     <states>
@@ -37,6 +41,8 @@
       </state>
     </states>
   </component>
+=======
+>>>>>>> ynn_ios
 =======
 >>>>>>> ynn_ios
 </project>

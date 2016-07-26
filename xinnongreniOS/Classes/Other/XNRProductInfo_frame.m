@@ -84,7 +84,6 @@
         CGFloat depositLabelW = ScreenWidth/2;
         CGFloat depositLabelH = PX_TO_PT(40);
         _depositLabelF = CGRectMake(depositLabelX, depositLabelY, depositLabelW, depositLabelH);
-
 //    }
    
     
