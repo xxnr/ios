@@ -53,7 +53,7 @@
     [item setTitleTextAttributes:selDic forState:UIControlStateSelected];
 
 
-    [item setTitlePositionAdjustment:UIOffsetMake(0, -PX_TO_PT(4))];
+    [item setTitlePositionAdjustment:UIOffsetMake(0, -PX_TO_PT(3))];
 }
 /**
  *  设置子控制器
@@ -61,11 +61,15 @@
 - (void)addChildViewController:(UIViewController *)childController title:(NSString *)title image:(NSString *)image selImage:(NSString *)selImage
 {
     childController.title = title;
-    [childController.tabBarItem setImage:[UIImage imageNamed:image]];
+//    [childController.tabBarItem setImage:[UIImage imageNamed:image]];
+    UIImage *noSel = [UIImage imageNamed:image];
+    childController.tabBarItem.image = [noSel imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
     UIImage *sel = [UIImage imageNamed:selImage];
-    sel = [sel imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    [childController.tabBarItem setSelectedImage:sel];
+    childController.tabBarItem.selectedImage = [sel imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//    [childController.tabBarItem setSelectedImage:sel];
 
+    childController.tabBarItem.imageInsets = UIEdgeInsetsMake(-PX_TO_PT(3), 0, PX_TO_PT(3), 0);
     XNRNavigationController *nav = [[XNRNavigationController alloc]initWithRootViewController:childController];
 
     [self addChildViewController:nav];
