@@ -94,7 +94,7 @@
     //我的积分
     UILabel*titleLabel=[[UILabel alloc]initWithFrame:CGRectMake(15, 15, 100, 20)];
     titleLabel.textColor=R_G_B_16(0x7e7e7e);
-    titleLabel.font=[UIFont boldSystemFontOfSize:16];
+    titleLabel.font=[UIFont systemFontOfSize:16];
     titleLabel.text=@"我的积分:";
     
     [myScoreBg addSubview:titleLabel];
@@ -146,7 +146,7 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:PX_TO_PT(40)];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"我的积分";

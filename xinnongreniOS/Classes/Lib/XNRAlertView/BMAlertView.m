@@ -57,7 +57,7 @@
         UIButton *titleView = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, alertWidth, 90)];
 
         //标题
-        UILabel *label = [UILabel labelWithFrame:CGRectMake(0, 14, alertWidth, 16) font:[UIFont boldSystemFontOfSize:16] text:title textColor:AlertFontColor alignment:NSTextAlignmentCenter superView:titleView ];
+        UILabel *label = [UILabel labelWithFrame:CGRectMake(0, 14, alertWidth, 16) font:[UIFont systemFontOfSize:16] text:title textColor:AlertFontColor alignment:NSTextAlignmentCenter superView:titleView ];
         label.center = CGPointMake(label.center.x, titleView.height/2);
 
         //取消按钮

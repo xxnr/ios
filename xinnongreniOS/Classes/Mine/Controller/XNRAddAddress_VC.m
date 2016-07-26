@@ -494,7 +494,7 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:PX_TO_PT(40)];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
     titleLabel.textColor = R_G_B_16(0xfbffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = self.titleLabel;

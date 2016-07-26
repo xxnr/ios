@@ -61,7 +61,7 @@
         [_titleLabel setTextAlignment:NSTextAlignmentCenter];
         [_titleLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
         [self setTitle:title];
-        [self setFont:[UIFont boldSystemFontOfSize:12.0]];
+        [self setFont:[UIFont systemFontOfSize:12.0]];
         [_titleView addSubview:_titleLabel];
         
         self.customView = _titleView;

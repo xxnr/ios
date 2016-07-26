@@ -500,7 +500,7 @@
 //        stringLabel.textAlignment = NSTextAlignmentCenter;
 //#endif
 		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-		stringLabel.font = [UIFont boldSystemFontOfSize:16];
+		stringLabel.font = [UIFont systemFontOfSize:16];
 		stringLabel.shadowColor = [UIColor blackColor];
 		stringLabel.shadowOffset = CGSizeMake(0, -1);
         stringLabel.numberOfLines = 0;

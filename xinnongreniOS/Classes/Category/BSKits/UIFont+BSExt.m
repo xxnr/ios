@@ -55,7 +55,7 @@
     } else {
         
     }
-    return [UIFont boldSystemFontOfSize:font_pt];
+    return [UIFont systemFontOfSize:font_pt];
 }
 
 @end

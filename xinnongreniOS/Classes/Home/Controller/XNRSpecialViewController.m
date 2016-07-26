@@ -261,6 +261,7 @@
     [backtoTopBtn setImage:[UIImage imageNamed:@"icon_home_backTop"] forState:UIControlStateNormal];
     [backtoTopBtn addTarget:self action:@selector(backtoTopBtnClick) forControlEvents:UIControlEventTouchUpInside];
     self.backtoTopBtn = backtoTopBtn;
+    self.backtoTopBtn.hidden = YES;
     [self.view addSubview:backtoTopBtn];
 }
 
@@ -272,7 +273,7 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     NSLog(@"%f",scrollView.contentOffset.y);
-    if (scrollView.contentOffset.y == 0) {
+    if (scrollView.contentOffset.y <= 0) {
         self.backtoTopBtn.hidden = YES;
     }else{
         self.backtoTopBtn.hidden = NO;
@@ -705,7 +706,7 @@
 {
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:PX_TO_PT(40)];
+    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = _tempTitle;
