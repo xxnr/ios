@@ -56,7 +56,7 @@
     UIButton *totalBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     totalBtn.frame = CGRectMake(0,0, ScreenWidth/3, PX_TO_PT(89));
     [totalBtn setTitle:@"综合" forState:UIControlStateNormal];
-    totalBtn.titleLabel.font = [UIFont systemFontOfSize:(18)];
+    totalBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(34)];
     [totalBtn setTitleColor:R_G_B_16(0xff4e00) forState:UIControlStateSelected];
     [totalBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
     [totalBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -68,7 +68,7 @@
     priceBtn.frame = CGRectMake(CGRectGetMaxX(self.totalBtn.frame),0, ScreenWidth/3, PX_TO_PT(89));
     [priceBtn setTitle:@"价格" forState:UIControlStateNormal];
     priceBtn.adjustsImageWhenHighlighted = NO;
-    priceBtn.titleLabel.font = [UIFont systemFontOfSize:(18)];
+    priceBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(34)];
     [priceBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
     [priceBtn setTitleColor:R_G_B_16(0xff4e00) forState:UIControlStateSelected];
     priceBtn.adjustsImageWhenHighlighted = NO;
@@ -86,7 +86,7 @@
     selectedBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -90);
     selectedBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 0);
     priceBtn.adjustsImageWhenHighlighted = NO;
-    selectedBtn.titleLabel.font = [UIFont systemFontOfSize:(18)];
+    selectedBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(34)];
     [selectedBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
     [selectedBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.selectedBtn = selectedBtn;

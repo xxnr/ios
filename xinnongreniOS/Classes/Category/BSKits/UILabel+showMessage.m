@@ -37,7 +37,7 @@
     label.textAlignment = 1;
     label.numberOfLines = 0;
     label.backgroundColor = [UIColor clearColor];
-    label.font = [UIFont boldSystemFontOfSize:PX_TO_PT(30)];
+    label.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
     [showview addSubview:label];
     showview.frame = CGRectMake((ScreenWidth - LabelSize.width - PX_TO_PT(40))/2, ScreenHeight - 100, LabelSize.width+20, LabelSize.height+10);
     [UIView animateWithDuration:4.0 animations:^{
@@ -73,13 +73,13 @@
     label.textColor = [UIColor whiteColor];
     label.textAlignment = 1;
     label.backgroundColor = [UIColor clearColor];
-    label.font = [UIFont boldSystemFontOfSize:15];
+    label.font = [UIFont systemFontOfSize:15];
     [showview addSubview:label];
     showview.frame = CGRectMake((SCREEN_WIDTH - LabelSize.width - 20)/2, SCREEN_HEIGHT - 100, LabelSize.width+20, LabelSize.height+10);
     [UIView animateWithDuration:3.0 animations:^{
-        showview.alpha = 0;
+//        showview.alpha = 0;
     } completion:^(BOOL finished) {
-        [showview removeFromSuperview];
+//        [showview removeFromSuperview];
     }];
     
     

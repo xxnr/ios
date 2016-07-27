@@ -25,7 +25,7 @@
 
     dic[NSForegroundColorAttributeName] = [UIColor whiteColor];
     
-    dic[NSFontAttributeName] = [UIFont systemFontOfSize:PX_TO_PT(48)];
+    dic[NSFontAttributeName] = [UIFont systemFontOfSize:PX_TO_PT(40)];
     [navBar setTitleTextAttributes:dic];
 }
 

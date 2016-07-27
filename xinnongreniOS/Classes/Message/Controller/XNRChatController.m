@@ -136,10 +136,20 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
-    titleLabel.textColor = R_G_B_16(0xfbffff);
+
+    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"新农资讯";
     self.navigationItem.titleView = titleLabel;
+    
+//    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
+//    titleLabel.backgroundColor = [UIColor clearColor];
+//    titleLabel.font = [UIFont boldSystemFontOfSize:PX_TO_PT(40)];
+//    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+//    titleLabel.textAlignment = NSTextAlignmentCenter;
+//    titleLabel.text = @"新农资讯";
+//    self.navigationItem.titleView = titleLabel;
+
 }
 -(void)setupTableView
 {

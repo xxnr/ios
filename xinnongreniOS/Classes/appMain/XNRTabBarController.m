@@ -67,7 +67,6 @@
     childController.tabBarItem.image = [noSel imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
     UIImage *sel = [UIImage imageNamed:selImage];
-
     childController.tabBarItem.selectedImage = [sel imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 //    [childController.tabBarItem setSelectedImage:sel];
 

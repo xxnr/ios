@@ -35,7 +35,7 @@
     
     if (_photos.count > 1) {
         _indexLabel = [[UILabel alloc] init];
-        _indexLabel.font = [UIFont boldSystemFontOfSize:20];
+        _indexLabel.font = [UIFont systemFontOfSize:20];
         _indexLabel.frame = self.bounds;
         _indexLabel.backgroundColor = [UIColor clearColor];
         _indexLabel.textColor = [UIColor whiteColor];

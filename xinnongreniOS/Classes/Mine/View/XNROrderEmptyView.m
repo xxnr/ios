@@ -32,12 +32,6 @@
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth/2-PX_TO_PT(92), PX_TO_PT(170), PX_TO_PT(148), PX_TO_PT(200))];
     [imageView setImage:[UIImage imageNamed:@"blank-space"]];
     
-//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth/2-PX_TO_PT(92), PX_TO_PT(170), PX_TO_PT(184), PX_TO_PT(214))];
-//    [imageView setImage:[UIImage imageNamed:@"orderInfo_space"]];
-
-    
-//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth/2-PX_TO_PT(92), PX_TO_PT(170), PX_TO_PT(184), PX_TO_PT(214))];
-//    [imageView setImage:[UIImage imageNamed:@"orderInfo_space"]];
     [self addSubview:imageView];
     
     UILabel *noOrderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(imageView.frame) + PX_TO_PT(32), ScreenWidth, PX_TO_PT(36))];
