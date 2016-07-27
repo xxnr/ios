@@ -57,36 +57,38 @@ xxnrClass.mine(window).rscOrderBtn().tap();
             assertTrue("确定(1)",window.views()[0].buttons()[1].value);
             target.delay(1);
 
+            xxnrClass.rscOrders(window).cellBnt().tap();
             assertTrue("确定",window.views()[0].buttons()[1].value);
             target.delay(1);
 
-            window.views()[0].tableViews()[0].cell()[0].tap;
-            window.views()[0].buttons()["确定(1)"].tap;
+            xxnrClass.rscOrders(window).cellBnt().tap();
+            target.delay(1);
+
+            xxnrClass.rscOrders(window).admireBtn1().tap();
             assertTrue("配送成功",window.views()[0].staticTexts()[0].value);
 
         });
         test("待自提测试",function(target,app){
-            window.scrollViews()[0].tableViews()[0].groups()["网点自提"].buttons()["客户自提"].tap();
+            xxnrClass.rscOrders(window).userTakeBtn().tap();
             assertTrue("客户自提-选择商品",window.views()[0].staticTexts()[0].value);
-
             window.logElementTree();
 
-            window.views()[0].tableViews()[0].cell()[0].tap;
+            xxnrClass.rscOrders(window).cellBnt().tap();
             assertTrue("下一步(1)",window.views()[0].buttons()[1].value);
             target.delay(1);
 
-            window.views()[0].tableViews()[0].cell()[0].tap;
-            assertTrue("确定",window.views()[0].buttons()[1].value);
+            xxnrClass.rscOrders(window).cellBnt().tap();
+            assertTrue("下一步",window.views()[0].buttons()[1].value);
             target.delay(1);
 
-            window.views()[0].tableViews()[0].cell()[0].tap;
-            window.views()[0].buttons()["下一步(1)"].tap;
-            assertTrue("客户自提-自提码",window.views()[0].staticTexts()[0].value);
+            xxnrClass.rscOrders(window).cellBnt().tap();
+            xxnrClass.rscOrders(window).nextStepBtn1().tap();
+            target.delay(1);
 
 
             var deliverNumber ="123456";
-            window.textFields()[0].textFields()[0].tap();
-            window.textFields()[0].textFields()[0].setValue(deliverNumber);
+            xxnrClass.rscOrders(window).inputTakeNumber().tap();
+            xxnrClass.rscOrders(window).inputTakeNumber().setValue(deliverNumber);
             window.views()[0].buttons()["确定"].tap;
             var warning = window.staticTexts()[0].value();
             assertEquals("请输入自提码",warning);

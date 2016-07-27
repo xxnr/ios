@@ -338,7 +338,7 @@
             
         }
         self.storeNameLength = strlength;
-        if (strlength > 20) {
+        if (strlength > 40) {
             [UILabel showMessage:[NSString stringWithFormat:@"您的输入超过限制"]];
         }
 
@@ -357,7 +357,7 @@
             
         }
         self.detailAddressLength = strlength;
-        if (strlength > 30) {
+        if (strlength > 60) {
             [UILabel showMessage:[NSString stringWithFormat:@"您的输入超过限制"]];
         }
 
@@ -366,6 +366,26 @@
     
 
 }
+
+//-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+//{
+//    if (textField == self.nameTF) {
+//        NSString *toBeString = [self.nameTF.text stringByReplacingCharactersInRange:range withString:string];
+//        if (toBeString.length>6 && range.length != 1) {
+//            self.nameTF.text = [toBeString substringFromIndex:6];
+//            [self.nameTF resignFirstResponder];
+//            [UILabel showMessage:[NSString stringWithFormat:@"您的输入超过限制"]];
+//            return NO;
+//        }
+//
+//    }else if (self.storeNameTF){
+//    
+//    }else if (self.detailAddressTF){
+//    
+//    }
+//
+//    return YES;
+//}
 
 -(void)submitbtnClick
 {

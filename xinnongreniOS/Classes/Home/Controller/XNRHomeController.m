@@ -23,10 +23,9 @@
 #import "XNRUMengPushTool.h"
 #import "XNRCheckOrderVC.h"
 #import "BSHelper.h"
-#import "XNRUpdataCell.h"
 #define kStoreAppId  @"1021223448"  // （appid数字串）
 
-@interface XNRHomeController ()<UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,UICollectionViewDelegate,XNRHomeCollectionHeaderViewAddBtnDelegate,XNRFerSelectAddBtnDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface XNRHomeController ()<UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,UICollectionViewDelegate,XNRHomeCollectionHeaderViewAddBtnDelegate,XNRFerSelectAddBtnDelegate>
 {
     NSMutableArray *_huafeiArr; //化肥数据
     NSMutableArray *_carArr;    //农用车数据
@@ -39,7 +38,6 @@
 @property (nonatomic, weak) NSString *message;
 @property (nonatomic, weak) NSString *version;
 
-@property (nonatomic, strong) NSMutableArray *messageArray;
 @property (nonatomic, weak) UIView *coverView;
 @property (nonatomic, weak) UIView *upDataAlertView;
 @end
@@ -90,9 +88,9 @@
     [KSHttpRequest post:KuserUpData parameters:@{@"version":currentVersion,@"device_token":deviceToken?deviceToken:@"",@"device_id":UUID?UUID:deviceToken,@"user_agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             _version = result[@"version"];
-            [self createUpdataAlertView];
             _message = result[@"message"];
-            [_messageArray addObject:_message];
+            [self createUpdataAlertView:_message];
+
         }
     } failure:^(NSError *error) {
         
@@ -101,7 +99,7 @@
 //    [XNRRemaindUserUpdataTool remaindUserUpData:deviceToken];
 }
 
--(void)createUpdataAlertView
+-(void)createUpdataAlertView:(NSString *)message
 {
     UIView *coverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     coverView.backgroundColor = [UIColor blackColor];
@@ -109,7 +107,8 @@
     self.coverView = coverView;
     [AppKeyWindow addSubview:coverView];
     
-    UIView *upDataAlertView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(80), (ScreenHeight-PX_TO_PT(432))*0.5, PX_TO_PT(590), PX_TO_PT(432))];
+    UIView *upDataAlertView = [[UIView alloc] init];
+//                               WithFrame:CGRectMake(PX_TO_PT(80), (ScreenHeight-PX_TO_PT(432))*0.5, PX_TO_PT(590), PX_TO_PT(432))];
     upDataAlertView.backgroundColor = [UIColor whiteColor];
     upDataAlertView.layer.cornerRadius = 5.0;
     upDataAlertView.layer.masksToBounds = YES;
@@ -128,15 +127,38 @@
     versionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [upDataAlertView addSubview:versionLabel];
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), CGRectGetMaxY(versionLabel.frame)+PX_TO_PT(32), PX_TO_PT(530), PX_TO_PT(126))];
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    tableView.separatorStyle = NO;
-    _messageArray = [NSMutableArray array];
-    [upDataAlertView addSubview:tableView];
+//    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), CGRectGetMaxY(versionLabel.frame)+PX_TO_PT(32), PX_TO_PT(530), PX_TO_PT(126))];
+//    tableView.delegate = self;
+//    tableView.dataSource = self;
+//    tableView.separatorStyle = NO;
+//    _messageArray = [NSMutableArray array];
+//    [upDataAlertView addSubview:tableView];
     
+    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(versionLabel.frame)+PX_TO_PT(32), PX_TO_PT(530), PX_TO_PT(500))];
+    messageLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
+    messageLabel.textColor = R_G_B_16(0x323232);
+    messageLabel.numberOfLines = 0;
+    [upDataAlertView addSubview:messageLabel];
     
-    UIButton *cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, PX_TO_PT(332), PX_TO_PT(295), PX_TO_PT(100))];
+    messageLabel.text = message;
+    CGSize messageSize = [messageLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(30)]}];
+    messageLabel.frame = CGRectMake(PX_TO_PT(30), CGRectGetMaxY(versionLabel.frame)+PX_TO_PT(32), PX_TO_PT(530), messageSize.height);
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:message];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    
+    [paragraphStyle setLineSpacing:PX_TO_PT(12)];//调整行间距
+    
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [messageLabel.text length])];
+    messageLabel.attributedText = attributedString;
+    [messageLabel sizeToFit];
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(messageLabel.frame)+PX_TO_PT(32), PX_TO_PT(590), PX_TO_PT(1))];
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
+    [upDataAlertView addSubview:lineView];
+
+
+    UIButton *cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(lineView.frame), PX_TO_PT(295), PX_TO_PT(100))];
     [cancelBtn setTitle:@"以后再说" forState:UIControlStateNormal];
     [cancelBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
     cancelBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
@@ -145,7 +167,8 @@
     [cancelBtn addTarget: self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [upDataAlertView addSubview:cancelBtn];
     
-    UIButton *admireBtn = [[UIButton alloc] initWithFrame:CGRectMake(PX_TO_PT(295), PX_TO_PT(332), PX_TO_PT(295), PX_TO_PT(100))];
+    
+    UIButton *admireBtn = [[UIButton alloc] initWithFrame:CGRectMake(PX_TO_PT(295), CGRectGetMaxY(lineView.frame), PX_TO_PT(295), PX_TO_PT(100))];
     [admireBtn setTitle:@"立即更新" forState:UIControlStateNormal];
     [admireBtn setTitleColor:R_G_B_16(0x00b38a) forState:UIControlStateNormal];
     admireBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
@@ -154,16 +177,12 @@
     [admireBtn addTarget: self action:@selector(admireBtnBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [upDataAlertView addSubview:admireBtn];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(332), PX_TO_PT(590), PX_TO_PT(1))];
-    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
-    [upDataAlertView addSubview:lineView];
     
-    UIView *devidelineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(295), PX_TO_PT(332), PX_TO_PT(1), PX_TO_PT(100))];
+    UIView *devidelineView = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(295), CGRectGetMaxY(lineView.frame), PX_TO_PT(1), PX_TO_PT(100))];
     devidelineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [upDataAlertView addSubview:devidelineView];
-
-
-
+    
+    upDataAlertView.frame = CGRectMake(PX_TO_PT(80), (ScreenHeight-CGRectGetMaxY(admireBtn.frame))*0.5, PX_TO_PT(590), CGRectGetMaxY(admireBtn.frame));
 }
 
 -(void)cancelBtnClick{
@@ -177,26 +196,26 @@
     [[UIApplication sharedApplication] openURL:url]; 
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 1;
-}
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *message = [_messageArray firstObject];
-    CGSize messageSize = [message sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(24)]}];
-    return messageSize.height;
-}
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-   
-    XNRUpdataCell *cell = [XNRUpdataCell cellWithTableView:tableView];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-    [cell upDataWithData:_messageArray];
-    
-    return cell;
-}
+//-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+//{
+//    return 1;
+//}
+//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    NSString *message = [_messageArray firstObject];
+//    CGSize messageSize = [message sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(24)]}];
+//    return messageSize.height;
+//}
+//-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//   
+//    XNRUpdataCell *cell = [XNRUpdataCell cellWithTableView:tableView];
+//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//
+//    [cell upDataWithData:_messageArray];
+//    
+//    return cell;
+//}
 
 -(void)openOrderIdController:(NSNotification *)notification
 {

@@ -420,6 +420,10 @@ xxnrClass.rscOrders = function (window) {
             admireBtn:function () {
                 return window.buttons()["确定"];
             },
+            admireBtn1:function () {
+                return window.buttons()["确定(1)"];
+
+            }
             closeBtn:function () {
                 return window.buttons()["close"];
             },
@@ -434,6 +438,14 @@ xxnrClass.rscOrders = function (window) {
             },
             nextStepBtn:function () {
                return window.views()[0].buttons()["下一步"];
+
+            }
+            nextStepBtn1:function () {
+                return window.views()[0].buttons()["下一步(1)"];
+
+            }
+            inputTakeNumber:function () {
+                return window.textFields()[0].textFields()[0];
 
             }
             

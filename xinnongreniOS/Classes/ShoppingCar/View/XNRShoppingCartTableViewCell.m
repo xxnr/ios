@@ -394,9 +394,9 @@
     
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     leftBtn.tag = kRightBtn;
-    leftBtn.backgroundColor = R_G_B_16(0xf0f0f0);
-    leftBtn.layer.borderWidth = PX_TO_PT(2);
-    leftBtn.layer.borderColor = [R_G_B_16(0xe0e0e0) CGColor];
+//    leftBtn.backgroundColor = R_G_B_16(0xf0f0f0);
+//    leftBtn.layer.borderWidth = PX_TO_PT(1);
+//    leftBtn.layer.borderColor = [R_G_B_16(0xe0e0e0) CGColor];
     [leftBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [leftBtn setImage:[UIImage imageNamed:@"icon_minus"] forState:UIControlStateNormal];
     [leftBtn setImage:[UIImage imageNamed:@"discount_default1"] forState:UIControlStateHighlighted];
@@ -425,9 +425,9 @@
     
     UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     rightBtn.tag = kLeftBtn;
-    rightBtn.backgroundColor = R_G_B_16(0xf0f0f0);
-    rightBtn.layer.borderWidth = PX_TO_PT(2);
-    rightBtn.layer.borderColor = [R_G_B_16(0xe0e0e0) CGColor];
+//    rightBtn.backgroundColor = R_G_B_16(0xf0f0f0);
+//    rightBtn.layer.borderWidth = PX_TO_PT(2);
+//    rightBtn.layer.borderColor = [R_G_B_16(0xe0e0e0) CGColor];
 
     [rightBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
 

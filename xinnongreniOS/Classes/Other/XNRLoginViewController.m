@@ -414,7 +414,7 @@
                     [self synchShoppingCarDataWith:model];
                 }
                 // 清空购物车列表
-//                [dataManager deleteShoppingCar];
+                [dataManager deleteShoppingCar];
             }
             
             
