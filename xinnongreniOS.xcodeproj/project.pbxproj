@@ -584,6 +584,20 @@
 		9C6BCE9E1CAE8B0A00463096 /* XNRDetailUserVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BCE9D1CAE8B0A00463096 /* XNRDetailUserVC.m */; };
 		9C6BCEA11CAE8D4400463096 /* XNRCustomer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BCEA01CAE8D4400463096 /* XNRCustomer.m */; };
 		9C6BCEA41CAE8F0C00463096 /* XNRBuyIntentionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BCEA31CAE8F0C00463096 /* XNRBuyIntentionModel.m */; };
+		9C79A71E1D486E8700EE4789 /* accountTestCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A7101D486E8700EE4789 /* accountTestCase.js */; };
+		9C79A71F1D486E8700EE4789 /* baseClass.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A7111D486E8700EE4789 /* baseClass.js */; };
+		9C79A7201D486E8700EE4789 /* carryCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A7121D486E8700EE4789 /* carryCase.js */; };
+		9C79A7211D486E8700EE4789 /* dispathCase(配送到户).js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A7131D486E8700EE4789 /* dispathCase(配送到户).js */; };
+		9C79A7221D486E8700EE4789 /* homeCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A7141D486E8700EE4789 /* homeCase.js */; };
+		9C79A7231D486E8700EE4789 /* lognCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A7151D486E8700EE4789 /* lognCase.js */; };
+		9C79A7241D486E8700EE4789 /* newsCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A7161D486E8700EE4789 /* newsCase.js */; };
+		9C79A7251D486E8700EE4789 /* orderListCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A7171D486E8700EE4789 /* orderListCase.js */; };
+		9C79A7261D486E8700EE4789 /* payTypeCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A7181D486E8700EE4789 /* payTypeCase.js */; };
+		9C79A7271D486E8700EE4789 /* representCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A7191D486E8700EE4789 /* representCase.js */; };
+		9C79A7281D486E8700EE4789 /* shishi.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A71A1D486E8700EE4789 /* shishi.js */; };
+		9C79A7291D486E8700EE4789 /* specialPerformance.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A71B1D486E8700EE4789 /* specialPerformance.js */; };
+		9C79A72A1D486E8700EE4789 /* test.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A71C1D486E8700EE4789 /* test.js */; };
+		9C79A72B1D486E8700EE4789 /* xxnrElementClass.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C79A71D1D486E8700EE4789 /* xxnrElementClass.js */; };
 		9C920B0F1D069EE700C187DB /* UMSocialLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C920AF51D069EE700C187DB /* UMSocialLocalizable.strings */; };
 		9C920B101D069EE700C187DB /* libUMSocial_Sdk_5.2.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C920B031D069EE700C187DB /* libUMSocial_Sdk_5.2.1.a */; };
 		9C920B111D069EE700C187DB /* UMSCommentDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C920B051D069EE700C187DB /* UMSCommentDetailController.xib */; };
@@ -617,30 +631,6 @@
 		9CC800841D2DFD5000B516E0 /* vcs.xml in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800561D2DFD5000B516E0 /* vcs.xml */; };
 		9CC800851D2DFD5000B516E0 /* workspace.xml in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800571D2DFD5000B516E0 /* workspace.xml */; };
 		9CC800861D2DFD5000B516E0 /* workspace.xml in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800571D2DFD5000B516E0 /* workspace.xml */; };
-		9CC800871D2DFD5000B516E0 /* accountTestCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800591D2DFD5000B516E0 /* accountTestCase.js */; };
-		9CC800881D2DFD5000B516E0 /* accountTestCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800591D2DFD5000B516E0 /* accountTestCase.js */; };
-		9CC800891D2DFD5000B516E0 /* baseClass.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC8005A1D2DFD5000B516E0 /* baseClass.js */; };
-		9CC8008A1D2DFD5000B516E0 /* baseClass.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC8005A1D2DFD5000B516E0 /* baseClass.js */; };
-		9CC8008B1D2DFD5000B516E0 /* carryCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC8005B1D2DFD5000B516E0 /* carryCase.js */; };
-		9CC8008C1D2DFD5000B516E0 /* carryCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC8005B1D2DFD5000B516E0 /* carryCase.js */; };
-		9CC8008D1D2DFD5000B516E0 /* dispathCase(配送到户).js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC8005C1D2DFD5000B516E0 /* dispathCase(配送到户).js */; };
-		9CC8008E1D2DFD5000B516E0 /* dispathCase(配送到户).js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC8005C1D2DFD5000B516E0 /* dispathCase(配送到户).js */; };
-		9CC8008F1D2DFD5000B516E0 /* homeCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC8005D1D2DFD5000B516E0 /* homeCase.js */; };
-		9CC800901D2DFD5000B516E0 /* homeCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC8005D1D2DFD5000B516E0 /* homeCase.js */; };
-		9CC800911D2DFD5000B516E0 /* lognCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC8005E1D2DFD5000B516E0 /* lognCase.js */; };
-		9CC800921D2DFD5000B516E0 /* lognCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC8005E1D2DFD5000B516E0 /* lognCase.js */; };
-		9CC800931D2DFD5000B516E0 /* newsCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC8005F1D2DFD5000B516E0 /* newsCase.js */; };
-		9CC800941D2DFD5000B516E0 /* newsCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC8005F1D2DFD5000B516E0 /* newsCase.js */; };
-		9CC800951D2DFD5000B516E0 /* orderListCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800601D2DFD5000B516E0 /* orderListCase.js */; };
-		9CC800961D2DFD5000B516E0 /* orderListCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800601D2DFD5000B516E0 /* orderListCase.js */; };
-		9CC800971D2DFD5000B516E0 /* payTypeCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800611D2DFD5000B516E0 /* payTypeCase.js */; };
-		9CC800981D2DFD5000B516E0 /* payTypeCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800611D2DFD5000B516E0 /* payTypeCase.js */; };
-		9CC800991D2DFD5000B516E0 /* representCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800621D2DFD5000B516E0 /* representCase.js */; };
-		9CC8009A1D2DFD5000B516E0 /* representCase.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800621D2DFD5000B516E0 /* representCase.js */; };
-		9CC8009B1D2DFD5000B516E0 /* specialPerformance.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800631D2DFD5000B516E0 /* specialPerformance.js */; };
-		9CC8009C1D2DFD5000B516E0 /* specialPerformance.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800631D2DFD5000B516E0 /* specialPerformance.js */; };
-		9CC8009D1D2DFD5000B516E0 /* test.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800641D2DFD5000B516E0 /* test.js */; };
-		9CC8009E1D2DFD5000B516E0 /* test.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800641D2DFD5000B516E0 /* test.js */; };
 		9CC8009F1D2DFD5000B516E0 /* assertions.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800661D2DFD5000B516E0 /* assertions.js */; };
 		9CC800A01D2DFD5000B516E0 /* assertions.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800661D2DFD5000B516E0 /* assertions.js */; };
 		9CC800A11D2DFD5000B516E0 /* image_asserter in Resources */ = {isa = PBXBuildFile; fileRef = 9CC800671D2DFD5000B516E0 /* image_asserter */; };
@@ -680,7 +670,6 @@
 		9CC8DE5C1CC7713500277CF3 /* XNRCityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8DE5B1CC7713500277CF3 /* XNRCityCell.m */; };
 		9CC8DE5F1CCA086900277CF3 /* XNROffLine_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8DE5E1CCA086900277CF3 /* XNROffLine_VC.m */; };
 		9CEFB0211D0525630072B318 /* libUMessage_Sdk_1.3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CEFB01F1D0525630072B318 /* libUMessage_Sdk_1.3.0.a */; };
-		9CF64AC31D36232D0064BCAC /* shishi.js in Resources */ = {isa = PBXBuildFile; fileRef = 9CF64AC21D36232D0064BCAC /* shishi.js */; };
 		9CF687A41CBDF353005F1A5F /* XNRDeliveryTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687A31CBDF353005F1A5F /* XNRDeliveryTypeModel.m */; };
 		9CF687AA1CBE0FE1005F1A5F /* XNRRSCInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687A91CBE0FE1005F1A5F /* XNRRSCInfoModel.m */; };
 		9CF687AD1CBE3C56005F1A5F /* XNROfflinePayTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687AC1CBE3C56005F1A5F /* XNROfflinePayTypeModel.m */; };
@@ -1779,6 +1768,20 @@
 		9C6BCEA01CAE8D4400463096 /* XNRCustomer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRCustomer.m; sourceTree = "<group>"; };
 		9C6BCEA21CAE8F0C00463096 /* XNRBuyIntentionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRBuyIntentionModel.h; sourceTree = "<group>"; };
 		9C6BCEA31CAE8F0C00463096 /* XNRBuyIntentionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRBuyIntentionModel.m; sourceTree = "<group>"; };
+		9C79A7101D486E8700EE4789 /* accountTestCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = accountTestCase.js; sourceTree = "<group>"; };
+		9C79A7111D486E8700EE4789 /* baseClass.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = baseClass.js; sourceTree = "<group>"; };
+		9C79A7121D486E8700EE4789 /* carryCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = carryCase.js; sourceTree = "<group>"; };
+		9C79A7131D486E8700EE4789 /* dispathCase(配送到户).js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "dispathCase(配送到户).js"; sourceTree = "<group>"; };
+		9C79A7141D486E8700EE4789 /* homeCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = homeCase.js; sourceTree = "<group>"; };
+		9C79A7151D486E8700EE4789 /* lognCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = lognCase.js; sourceTree = "<group>"; };
+		9C79A7161D486E8700EE4789 /* newsCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = newsCase.js; sourceTree = "<group>"; };
+		9C79A7171D486E8700EE4789 /* orderListCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = orderListCase.js; sourceTree = "<group>"; };
+		9C79A7181D486E8700EE4789 /* payTypeCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = payTypeCase.js; sourceTree = "<group>"; };
+		9C79A7191D486E8700EE4789 /* representCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = representCase.js; sourceTree = "<group>"; };
+		9C79A71A1D486E8700EE4789 /* shishi.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = shishi.js; sourceTree = "<group>"; };
+		9C79A71B1D486E8700EE4789 /* specialPerformance.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = specialPerformance.js; sourceTree = "<group>"; };
+		9C79A71C1D486E8700EE4789 /* test.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = test.js; sourceTree = "<group>"; };
+		9C79A71D1D486E8700EE4789 /* xxnrElementClass.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = xxnrElementClass.js; sourceTree = "<group>"; };
 		9C920AF61D069EE700C187DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UMSocialLocalizable.strings; sourceTree = "<group>"; };
 		9C920AF81D069EE700C187DB /* UMSocial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMSocial.h; sourceTree = "<group>"; };
 		9C920AF91D069EE700C187DB /* UMSocialAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMSocialAccountManager.h; sourceTree = "<group>"; };
@@ -1827,18 +1830,6 @@
 		9CC800541D2DFD5000B516E0 /* misc.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = misc.xml; sourceTree = "<group>"; };
 		9CC800561D2DFD5000B516E0 /* vcs.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = vcs.xml; sourceTree = "<group>"; };
 		9CC800571D2DFD5000B516E0 /* workspace.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = workspace.xml; sourceTree = "<group>"; };
-		9CC800591D2DFD5000B516E0 /* accountTestCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = accountTestCase.js; sourceTree = "<group>"; };
-		9CC8005A1D2DFD5000B516E0 /* baseClass.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = baseClass.js; sourceTree = "<group>"; };
-		9CC8005B1D2DFD5000B516E0 /* carryCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = carryCase.js; sourceTree = "<group>"; };
-		9CC8005C1D2DFD5000B516E0 /* dispathCase(配送到户).js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "dispathCase(配送到户).js"; sourceTree = "<group>"; };
-		9CC8005D1D2DFD5000B516E0 /* homeCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = homeCase.js; sourceTree = "<group>"; };
-		9CC8005E1D2DFD5000B516E0 /* lognCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = lognCase.js; sourceTree = "<group>"; };
-		9CC8005F1D2DFD5000B516E0 /* newsCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = newsCase.js; sourceTree = "<group>"; };
-		9CC800601D2DFD5000B516E0 /* orderListCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = orderListCase.js; sourceTree = "<group>"; };
-		9CC800611D2DFD5000B516E0 /* payTypeCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = payTypeCase.js; sourceTree = "<group>"; };
-		9CC800621D2DFD5000B516E0 /* representCase.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = representCase.js; sourceTree = "<group>"; };
-		9CC800631D2DFD5000B516E0 /* specialPerformance.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = specialPerformance.js; sourceTree = "<group>"; };
-		9CC800641D2DFD5000B516E0 /* test.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = test.js; sourceTree = "<group>"; };
 		9CC800661D2DFD5000B516E0 /* assertions.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = assertions.js; sourceTree = "<group>"; };
 		9CC800671D2DFD5000B516E0 /* image_asserter */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = image_asserter; sourceTree = "<group>"; };
 		9CC800681D2DFD5000B516E0 /* image_assertion.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = image_assertion.js; sourceTree = "<group>"; };
@@ -1863,7 +1854,6 @@
 		9CC8DE5E1CCA086900277CF3 /* XNROffLine_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNROffLine_VC.m; sourceTree = "<group>"; };
 		9CEFB01F1D0525630072B318 /* libUMessage_Sdk_1.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMessage_Sdk_1.3.0.a; sourceTree = "<group>"; };
 		9CEFB0201D0525630072B318 /* UMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMessage.h; sourceTree = "<group>"; };
-		9CF64AC21D36232D0064BCAC /* shishi.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = shishi.js; sourceTree = "<group>"; };
 		9CF687A21CBDF353005F1A5F /* XNRDeliveryTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRDeliveryTypeModel.h; sourceTree = "<group>"; };
 		9CF687A31CBDF353005F1A5F /* XNRDeliveryTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRDeliveryTypeModel.m; sourceTree = "<group>"; };
 		9CF687A81CBE0FE1005F1A5F /* XNRRSCInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRSCInfoModel.h; sourceTree = "<group>"; };
@@ -3955,19 +3945,20 @@
 		9CC800581D2DFD5000B516E0 /* case */ = {
 			isa = PBXGroup;
 			children = (
-				9CC800591D2DFD5000B516E0 /* accountTestCase.js */,
-				9CC8005A1D2DFD5000B516E0 /* baseClass.js */,
-				9CC8005B1D2DFD5000B516E0 /* carryCase.js */,
-				9CC8005C1D2DFD5000B516E0 /* dispathCase(配送到户).js */,
-				9CC8005D1D2DFD5000B516E0 /* homeCase.js */,
-				9CC8005E1D2DFD5000B516E0 /* lognCase.js */,
-				9CC8005F1D2DFD5000B516E0 /* newsCase.js */,
-				9CC800601D2DFD5000B516E0 /* orderListCase.js */,
-				9CC800611D2DFD5000B516E0 /* payTypeCase.js */,
-				9CC800621D2DFD5000B516E0 /* representCase.js */,
-				9CC800631D2DFD5000B516E0 /* specialPerformance.js */,
-				9CF64AC21D36232D0064BCAC /* shishi.js */,
-				9CC800641D2DFD5000B516E0 /* test.js */,
+				9C79A7101D486E8700EE4789 /* accountTestCase.js */,
+				9C79A7111D486E8700EE4789 /* baseClass.js */,
+				9C79A7121D486E8700EE4789 /* carryCase.js */,
+				9C79A7131D486E8700EE4789 /* dispathCase(配送到户).js */,
+				9C79A7141D486E8700EE4789 /* homeCase.js */,
+				9C79A7151D486E8700EE4789 /* lognCase.js */,
+				9C79A7161D486E8700EE4789 /* newsCase.js */,
+				9C79A7171D486E8700EE4789 /* orderListCase.js */,
+				9C79A7181D486E8700EE4789 /* payTypeCase.js */,
+				9C79A7191D486E8700EE4789 /* representCase.js */,
+				9C79A71A1D486E8700EE4789 /* shishi.js */,
+				9C79A71B1D486E8700EE4789 /* specialPerformance.js */,
+				9C79A71C1D486E8700EE4789 /* test.js */,
+				9C79A71D1D486E8700EE4789 /* xxnrElementClass.js */,
 			);
 			path = case;
 			sourceTree = "<group>";
@@ -4162,11 +4153,8 @@
 				C54CFAFD1B2AC30C004D5C54 /* checkbox1_unchecked@2x.png in Resources */,
 				491610E71C8C422200F1E243 /* UIBarButtonItemGrid@2x.png in Resources */,
 				491610E41C8C422200F1E243 /* UIBarButtonItemArrowRight@2x.png in Resources */,
-				9CC800871D2DFD5000B516E0 /* accountTestCase.js in Resources */,
-				9CF64AC31D36232D0064BCAC /* shishi.js in Resources */,
 				496BB4391CC49F55007F034F /* loader-@3x.png in Resources */,
 				9C920B151D069EE700C187DB /* UMShareEditViewControlleriPad.xib in Resources */,
-				9CC8008D1D2DFD5000B516E0 /* dispathCase(配送到户).js in Resources */,
 				53010F951B1DAD3E00017740 /* CoreTFKeyBoardToolBarView.xib in Resources */,
 				491610E11C8C422200F1E243 /* UIBarButtonItemArrowLeft@2x.png in Resources */,
 				49F7A5AE1C5906C200A1FA45 /* 加载2.png in Resources */,
@@ -4181,6 +4169,7 @@
 				491610D51C8C422200F1E243 /* ImageSelectedSmallOff@2x.png in Resources */,
 				9CC800BD1D2DFD5000B516E0 /* tuneup.js in Resources */,
 				491280F81CC8C2B9009E67C4 /* close@2x.png in Resources */,
+				9C79A7291D486E8700EE4789 /* specialPerformance.js in Resources */,
 				9C441FF11D2FAD68007075C3 /* load-4.png in Resources */,
 				491280FF1CC8C2B9009E67C4 /* arrow-circle@3x.png in Resources */,
 				49F7A5B01C5906C200A1FA45 /* 加载3.png in Resources */,
@@ -4193,7 +4182,7 @@
 				499551DA1CC09CED00F3B1F9 /* QQShare@2x.png in Resources */,
 				9C441FFD1D2FAD68007075C3 /* load-16.png in Resources */,
 				499551DA1CC09CED00F3B1F9 /* QQShare@2x.png in Resources */,
-				9CC800951D2DFD5000B516E0 /* orderListCase.js in Resources */,
+				9C79A7281D486E8700EE4789 /* shishi.js in Resources */,
 				499551E51CC09CED00F3B1F9 /* xxnr-logo@3x.png in Resources */,
 				491280F71CC8C2B9009E67C4 /* check-the@2x.png in Resources */,
 				C54CFAFA1B2AC30C004D5C54 /* checkbox1_checked.png in Resources */,
@@ -4222,8 +4211,10 @@
 				C54CFAFB1B2AC30C004D5C54 /* checkbox1_checked@2x.png in Resources */,
 				499551DF1CC09CED00F3B1F9 /* xxnr-logo@2x.png in Resources */,
 				9C920B351D0E5E7000C187DB /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
+				9C79A7251D486E8700EE4789 /* orderListCase.js in Resources */,
 				9C920B191D069EE700C187DB /* UMSocialSDKResourcesNew.bundle in Resources */,
 				49F8EE4C1BE772EE00820928 /* index_image_banner2.png in Resources */,
+				9C79A7261D486E8700EE4789 /* payTypeCase.js in Resources */,
 				49F7A5A31C5906C200A1FA45 /* 加载1.png in Resources */,
 				9C4420021D2FAD68007075C3 /* loader22@2x.png in Resources */,
 				491280F51CC8C2B9009E67C4 /* arrow_the_circle@2x.png in Resources */,
@@ -4231,6 +4222,7 @@
 				9CC800B71D2DFD5000B516E0 /* preprocessor.rb in Resources */,
 				491610D91C8C422200F1E243 /* ImageSelectedSmallOn@3x.png in Resources */,
 				9CC800BB1D2DFD5000B516E0 /* xunit_output.rb in Resources */,
+				9C79A7211D486E8700EE4789 /* dispathCase(配送到户).js in Resources */,
 				9C920B131D069EE700C187DB /* UMSCommentInputControlleriPad.xib in Resources */,
 				49F7A5B21C5906C200A1FA45 /* 加载5.png in Resources */,
 				491280D71CC8A329009E67C4 /* wechat-circle-l@3x.png in Resources */,
@@ -4239,6 +4231,7 @@
 				491610E31C8C422200F1E243 /* UIBarButtonItemArrowRight.png in Resources */,
 				491610CC1C8C422200F1E243 /* ImageError@2x.png in Resources */,
 				9C441FFA1D2FAD68007075C3 /* load-13.png in Resources */,
+				9C79A7241D486E8700EE4789 /* newsCase.js in Resources */,
 				491610DF1C8C422200F1E243 /* PlayButtonOverlayLargeTap@3x.png in Resources */,
 				491281001CC8C2B9009E67C4 /* arrow_the_circle@3x.png in Resources */,
 				499551DC1CC09CED00F3B1F9 /* share-ios-@2x.png in Resources */,
@@ -4251,7 +4244,6 @@
 				9CC800A91D2DFD5000B516E0 /* LICENSE in Resources */,
 				499551E11CC09CED00F3B1F9 /* qqspace@3x.png in Resources */,
 				9C4420001D2FAD68007075C3 /* loader-21@2x.png in Resources */,
-				9CC8009D1D2DFD5000B516E0 /* test.js in Resources */,
 				499551E31CC09CED00F3B1F9 /* wechat-circle-@3x.png in Resources */,
 				49F7A5A61C5906C200A1FA45 /* 加载12.png in Resources */,
 				491610D11C8C422200F1E243 /* ImageSelectedOn.png in Resources */,
@@ -4270,7 +4262,6 @@
 				491611301C8D189400F1E243 /* IQKeyboardManager.bundle in Resources */,
 				53EE21091B538EC400BD765E /* 001@3x.png in Resources */,
 				1F1532E01B09C58800CA374B /* Images.xcassets in Resources */,
-				9CC800931D2DFD5000B516E0 /* newsCase.js in Resources */,
 				496713851CD97D1900782C12 /* button_img@3x.png in Resources */,
 				9CC8007F1D2DFD5000B516E0 /* misc.xml in Resources */,
 				49F7A5A51C5906C200A1FA45 /* 加载11.png in Resources */,
@@ -4278,8 +4269,6 @@
 				49F7A5BC1C590B3800A1FA45 /* xxnr_refresh1.png in Resources */,
 				499551E41CC09CED00F3B1F9 /* wechat-friends@3x.png in Resources */,
 				9C441FFF1D2FAD68007075C3 /* load-18.png in Resources */,
-				9CC800971D2DFD5000B516E0 /* payTypeCase.js in Resources */,
-				9CC8008B1D2DFD5000B516E0 /* carryCase.js in Resources */,
 				9CC800A11D2DFD5000B516E0 /* image_asserter in Resources */,
 				491280FE1CC8C2B9009E67C4 /* the-order_icon@2x.png in Resources */,
 				499551E21CC09CED00F3B1F9 /* share-ios-@3x.png in Resources */,
@@ -4291,18 +4280,17 @@
 				491281061CC8C2B9009E67C4 /* search--icon2@3x.png in Resources */,
 				491610DA1C8C422200F1E243 /* PlayButtonOverlayLarge.png in Resources */,
 				491280FC1CC8C2B9009E67C4 /* search-@2x.png in Resources */,
+				9C79A7201D486E8700EE4789 /* carryCase.js in Resources */,
 				4976FC1D1BE9A2AA0002E8F8 /* AlipaySDK.bundle in Resources */,
 				496BB4331CC49F55007F034F /* wechat-circle-@2x.png in Resources */,
 				491610DB1C8C422200F1E243 /* PlayButtonOverlayLarge@2x.png in Resources */,
 				4912810A1CC8C2B9009E67C4 /* branch_icon@2x.png in Resources */,
 				49F7A5AA1C5906C200A1FA45 /* 加载16.png in Resources */,
-				9CC800891D2DFD5000B516E0 /* baseClass.js in Resources */,
 				9C441FF61D2FAD68007075C3 /* load-9.png in Resources */,
 				9C920B171D069EE700C187DB /* UMSnsAccountViewController.xib in Resources */,
 				49F7A5AD1C5906C200A1FA45 /* 加载19.png in Resources */,
 				496BB42F1CC49F55007F034F /* qq@2x.png in Resources */,
 				491281021CC8C2B9009E67C4 /* check-the@3x.png in Resources */,
-				9CC8009B1D2DFD5000B516E0 /* specialPerformance.js in Resources */,
 				9CC8007B1D2DFD5000B516E0 /* profiles_settings.xml in Resources */,
 				491280CE1CC8A30C009E67C4 /* qqspacel@2x.png in Resources */,
 				491610DD1C8C422200F1E243 /* PlayButtonOverlayLargeTap.png in Resources */,
@@ -4317,6 +4305,7 @@
 				491281081CC8C2B9009E67C4 /* shut-down--@3x.png in Resources */,
 				9CC800C11D2DFD5000B516E0 /* uiautomation-ext.js in Resources */,
 				491280D81CC8A329009E67C4 /* wechat-friendsl@3x.png in Resources */,
+				9C79A72A1D486E8700EE4789 /* test.js in Resources */,
 				491281041CC8C2B9009E67C4 /* delivery@3x.png in Resources */,
 				491610DE1C8C422200F1E243 /* PlayButtonOverlayLargeTap@2x.png in Resources */,
 				491610CF1C8C422200F1E243 /* ImageSelectedOff@2x.png in Resources */,
@@ -4327,7 +4316,6 @@
 				9CC800A51D2DFD5000B516E0 /* image_assertion.rb in Resources */,
 				9C920B181D069EE700C187DB /* UMSShareListController.xib in Resources */,
 				9CC800AD1D2DFD5000B516E0 /* screen.js in Resources */,
-				9CC800991D2DFD5000B516E0 /* representCase.js in Resources */,
 				496BB4371CC49F55007F034F /* bin-@3x.png in Resources */,
 				844AFE4A1B14438700EE29C8 /* FZZHJW.TTF in Resources */,
 				9CC8007D1D2DFD5000B516E0 /* demo.iml in Resources */,
@@ -4342,6 +4330,7 @@
 				496713881CD97D3800782C12 /* button_check@2x.png in Resources */,
 				9CC800791D2DFD5000B516E0 /* compiler.xml in Resources */,
 				49F7A5B51C5906C200A1FA45 /* 加载8.png in Resources */,
+				9C79A72B1D486E8700EE4789 /* xxnrElementClass.js in Resources */,
 				491610E91C8C422200F1E243 /* VideoOverlay.png in Resources */,
 				9C920B0F1D069EE700C187DB /* UMSocialLocalizable.strings in Resources */,
 				491610E61C8C422200F1E243 /* UIBarButtonItemGrid.png in Resources */,
@@ -4349,7 +4338,6 @@
 				8446C2961B1D6D19005CA932 /* InfoPlist.strings in Resources */,
 				491610EB1C8C422200F1E243 /* VideoOverlay@3x.png in Resources */,
 				9C920B121D069EE700C187DB /* UMSCommentInputController.xib in Resources */,
-				9CC8008F1D2DFD5000B516E0 /* homeCase.js in Resources */,
 				491610E51C8C422200F1E243 /* UIBarButtonItemArrowRight@3x.png in Resources */,
 				496BB43D1CC49F55007F034F /* recommended--@3x.png in Resources */,
 				9C441FF21D2FAD68007075C3 /* load-5.png in Resources */,
@@ -4367,19 +4355,23 @@
 				4912810B1CC8C2B9009E67C4 /* branch_icon@3x.png in Resources */,
 				49F7A5A91C5906C200A1FA45 /* 加载15.png in Resources */,
 				9C441FEE1D2FAD68007075C3 /* load-1.png in Resources */,
+				9C79A7271D486E8700EE4789 /* representCase.js in Resources */,
 				9C441FF41D2FAD68007075C3 /* load-7.png in Resources */,
 				9C4420011D2FAD68007075C3 /* loader-24@2x.png in Resources */,
 				9CC800BF1D2DFD5000B516E0 /* tuneup_js.podspec in Resources */,
 				496BB4381CC49F55007F034F /* bj_img@3x.png in Resources */,
 				9CC8009F1D2DFD5000B516E0 /* assertions.js in Resources */,
+				9C79A71E1D486E8700EE4789 /* accountTestCase.js in Resources */,
+				9C79A71F1D486E8700EE4789 /* baseClass.js in Resources */,
 				491280FA1CC8C2B9009E67C4 /* mention-icon-@2x.png in Resources */,
-				9CC800911D2DFD5000B516E0 /* lognCase.js in Resources */,
 				491281091CC8C2B9009E67C4 /* the-order_icon@3x.png in Resources */,
 				4910F8ED1CF43FBE00ABD331 /* dingdani-con@2x.png in Resources */,
+				9C79A7231D486E8700EE4789 /* lognCase.js in Resources */,
 				491610CB1C8C422200F1E243 /* ImageError.png in Resources */,
 				491280FD1CC8C2B9009E67C4 /* shut-down--@2x.png in Resources */,
 				496BB43F1CC49F55007F034F /* wechat-circle-@3x.png in Resources */,
 				9C06A4321CA2A21000B0DED9 /* Bugtags.bundle in Resources */,
+				9C79A7221D486E8700EE4789 /* homeCase.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4388,26 +4380,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CC800C21D2DFD5000B516E0 /* uiautomation-ext.js in Resources */,
-				9CC800901D2DFD5000B516E0 /* homeCase.js in Resources */,
 				9CC800B41D2DFD5000B516E0 /* colored_console_output.rb in Resources */,
-				9CC8009A1D2DFD5000B516E0 /* representCase.js in Resources */,
 				9CC800AA1D2DFD5000B516E0 /* LICENSE in Resources */,
 				9CC8007A1D2DFD5000B516E0 /* compiler.xml in Resources */,
-				9CC800921D2DFD5000B516E0 /* lognCase.js in Resources */,
-				9CC8008C1D2DFD5000B516E0 /* carryCase.js in Resources */,
-				9CC8008E1D2DFD5000B516E0 /* dispathCase(配送到户).js in Resources */,
-				9CC800941D2DFD5000B516E0 /* newsCase.js in Resources */,
 				9CC800BC1D2DFD5000B516E0 /* xunit_output.rb in Resources */,
 				9CC800A81D2DFD5000B516E0 /* lang-ext.js in Resources */,
 				9CC800B21D2DFD5000B516E0 /* abbreviated_console_output.rb in Resources */,
 				9CC800A21D2DFD5000B516E0 /* image_asserter in Resources */,
 				9CC800801D2DFD5000B516E0 /* misc.xml in Resources */,
-				9CC8009C1D2DFD5000B516E0 /* specialPerformance.js in Resources */,
 				9CC800841D2DFD5000B516E0 /* vcs.xml in Resources */,
 				9CC800BA1D2DFD5000B516E0 /* run in Resources */,
 				9CC800A41D2DFD5000B516E0 /* image_assertion.js in Resources */,
-				9CC8009E1D2DFD5000B516E0 /* test.js in Resources */,
-				9CC800981D2DFD5000B516E0 /* payTypeCase.js in Resources */,
 				9CC800861D2DFD5000B516E0 /* workspace.xml in Resources */,
 				9CC8007E1D2DFD5000B516E0 /* demo.iml in Resources */,
 				9CC800C01D2DFD5000B516E0 /* tuneup_js.podspec in Resources */,
@@ -4416,13 +4399,10 @@
 				9CC800A01D2DFD5000B516E0 /* assertions.js in Resources */,
 				844AFE4B1B14438700EE29C8 /* FZZHJW.TTF in Resources */,
 				9CC800B81D2DFD5000B516E0 /* preprocessor.rb in Resources */,
-				9CC8008A1D2DFD5000B516E0 /* baseClass.js in Resources */,
-				9CC800881D2DFD5000B516E0 /* accountTestCase.js in Resources */,
 				9CC800B61D2DFD5000B516E0 /* console_output.rb in Resources */,
 				9CC800BE1D2DFD5000B516E0 /* tuneup.js in Resources */,
 				9CC800A61D2DFD5000B516E0 /* image_assertion.rb in Resources */,
 				9CC800B01D2DFD5000B516E0 /* test.js in Resources */,
-				9CC800961D2DFD5000B516E0 /* orderListCase.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
