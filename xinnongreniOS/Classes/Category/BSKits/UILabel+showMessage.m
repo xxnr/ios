@@ -28,7 +28,7 @@
     CGSize LabelSize = CGSizeZero;
     if ([message isKindOfClass:[NSString class]]) {
         
-        LabelSize = [message sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(30)] maxSize:CGSizeMake(ScreenWidth-PX_TO_PT(40), MAXFLOAT)];
+    LabelSize = [message sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(30)] maxSize:CGSizeMake(ScreenWidth-PX_TO_PT(40), MAXFLOAT)];
 
     }
     label.frame = CGRectMake(PX_TO_PT(20), PX_TO_PT(10), LabelSize.width+PX_TO_PT(8), LabelSize.height);
@@ -77,9 +77,9 @@
     [showview addSubview:label];
     showview.frame = CGRectMake((SCREEN_WIDTH - LabelSize.width - 20)/2, SCREEN_HEIGHT - 100, LabelSize.width+20, LabelSize.height+10);
     [UIView animateWithDuration:3.0 animations:^{
-        showview.alpha = 0;
+//        showview.alpha = 0;
     } completion:^(BOOL finished) {
-        [showview removeFromSuperview];
+//        [showview removeFromSuperview];
     }];
     
     

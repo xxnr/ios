@@ -29,6 +29,7 @@ xxnrElementClass.navTitle = function (window) {
 xxnrElementClass.tab = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
         homeTab:function () {
             return window.tabBar().buttons()["首页"];
         },
@@ -42,6 +43,8 @@ xxnrElementClass.tab = function (window) {
             return window.tabBar().buttons()["我的"];
         }
 =======
+=======
+>>>>>>> ynn_ios
     homeTab:function () {
         return window.tabBar().buttons()["首页"];
     },
@@ -54,6 +57,9 @@ xxnrElementClass.tab = function (window) {
     mineTab:function () {
         return window.tabBar().buttons()["我的"];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
@@ -62,6 +68,7 @@ xxnrElementClass.home = function(window)
 {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
         fer_specialBtn:function () {
             return window.collectionViews()[0].buttons()[5];
         },
@@ -69,18 +76,24 @@ xxnrElementClass.home = function(window)
             return window.collectionViews()[0].buttons()[6];
         }
 =======
+=======
+>>>>>>> ynn_ios
     fer_specialBtn:function () {
         return window.collectionViews()[0].buttons()[5];
     },
     car_specialBtn:function () {
         return window.collectionViews()[0].buttons()[6];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //专场
 xxnrElementClass.special = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         cell1:function () {
             return window.tableViews()[0].cells()["江淮汽车 - 第二代瑞风S3 - 2015款"];
@@ -104,6 +117,8 @@ xxnrElementClass.special = function (window) {
             return window.buttons()["筛选"];
         }
 =======
+=======
+>>>>>>> ynn_ios
     cell1:function () {
         return window.tableViews()[0].cells()["江淮汽车 - 第二代瑞风S3 - 2015款"];
     },
@@ -125,12 +140,16 @@ xxnrElementClass.special = function (window) {
     filterBtn:function () {
         return window.buttons()["筛选"];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //筛选页
 xxnrElementClass.filter = function (window) {
     return {
+<<<<<<< HEAD
 <<<<<<< HEAD
         cell:function (index) {
             return window.collectionViews()[0].cells()[index];
@@ -145,6 +164,8 @@ xxnrElementClass.filter = function (window) {
             return window.buttons()["重置"];
         }
 =======
+=======
+>>>>>>> ynn_ios
     cell:function (index) {
         return window.collectionViews()[0].cells()[index];
     },
@@ -157,12 +178,16 @@ xxnrElementClass.filter = function (window) {
     resetBtn:function () {
         return window.buttons()["重置"];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //商品详情
 xxnrElementClass.goodDetail = function (window) {
     return {
+<<<<<<< HEAD
 <<<<<<< HEAD
         purchaseBtn:function () {
             return window.buttons()["立即购买"];
@@ -181,6 +206,8 @@ xxnrElementClass.goodDetail = function (window) {
         }
 
 =======
+=======
+>>>>>>> ynn_ios
     purchaseBtn:function () {
         return window.buttons()["立即购买"];
     },
@@ -197,12 +224,16 @@ xxnrElementClass.goodDetail = function (window) {
         return window.navigationBar().buttons()["icon shopcar white"];
     }
         
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //资讯列表
 xxnrElementClass.news = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         tableView:function () {
             return window.tableViews()[0];
@@ -214,6 +245,8 @@ xxnrElementClass.news = function (window) {
             return window.tableViews()[0].cells()[index];
         },
 =======
+=======
+>>>>>>> ynn_ios
     tableView:function () {
         return window.tableViews()[0];
     },
@@ -223,12 +256,16 @@ xxnrElementClass.news = function (window) {
     cell:function (index) {
         return window.tableViews()[0].cells()[index];
     },
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //资讯详情
 xxnrElementClass.newsDetail = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         navShare:function () {
             return window.navigationBar().buttons()[2];
@@ -246,6 +283,8 @@ xxnrElementClass.newsDetail = function (window) {
             return window.buttons()[3];
         }
 =======
+=======
+>>>>>>> ynn_ios
     navShare:function () {
         return window.navigationBar().buttons()[2];
     },
@@ -261,12 +300,16 @@ xxnrElementClass.newsDetail = function (window) {
     QQSpace:function () {
         return window.buttons()[3];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //购物车
 xxnrElementClass.shoppingCar = function (window) {
     return {
+<<<<<<< HEAD
 <<<<<<< HEAD
         sel_Group:function (index) {
             return window.tableViews()[0].groups()[index].buttons()["shopCar circle"];
@@ -275,18 +318,24 @@ xxnrElementClass.shoppingCar = function (window) {
             return window.buttons()[index];
         }
 =======
+=======
+>>>>>>> ynn_ios
     sel_Group:function (index) {
         return window.tableViews()[0].groups()[index].buttons()["shopCar circle"];
     },
     go_settle:function (index) {
         return window.buttons()[index];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //结算页
 xxnrElementClass.submitOrder = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         carryBtn:function () {
             return window.tableViews()[0].buttons()["网点自提"];
@@ -320,6 +369,8 @@ xxnrElementClass.submitOrder = function (window) {
         }
 
 =======
+=======
+>>>>>>> ynn_ios
     carryBtn:function () {
         return window.tableViews()[0].buttons()["网点自提"];
     },
@@ -351,12 +402,16 @@ xxnrElementClass.submitOrder = function (window) {
         return window.buttons()[0];
     }
         
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //收货地址
 xxnrElementClass.receiveAddress = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         cells:function () {
             return window.tableViews()[0].cells();
@@ -383,6 +438,8 @@ xxnrElementClass.receiveAddress = function (window) {
             return window.buttons()[2];
         }
 =======
+=======
+>>>>>>> ynn_ios
     cells:function () {
         return window.tableViews()[0].cells();
     },
@@ -407,12 +464,16 @@ xxnrElementClass.receiveAddress = function (window) {
     makeSureBtn:function () {
         return window.buttons()[2];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //添加收货地址
 xxnrElementClass.addAddress = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         nameTextField:function () {
             return window.textFields()[0].textFields()[0];
@@ -445,6 +506,8 @@ xxnrElementClass.addAddress = function (window) {
             return window.staticTexts()[7].value();
         }
 =======
+=======
+>>>>>>> ynn_ios
     nameTextField:function () {
         return window.textFields()[0].textFields()[0];
     },
@@ -475,12 +538,16 @@ xxnrElementClass.addAddress = function (window) {
     warning:function () {
         return window.staticTexts()[7].value();
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //选择自提网点
 xxnrElementClass.selWebsite = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         proviceBtn:function () {
             return window.buttons()[0];
@@ -514,6 +581,8 @@ xxnrElementClass.selWebsite = function (window) {
         }
 
 =======
+=======
+>>>>>>> ynn_ios
     proviceBtn:function () {
         return window.buttons()[0];
     },
@@ -545,12 +614,16 @@ xxnrElementClass.selWebsite = function (window) {
         return window.buttons()["确定"];
     }
         
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //选择收货人
 xxnrElementClass.selContact = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         nameTextField:function () {
             return window.textFields()[0].textFields()[0];
@@ -571,6 +644,8 @@ xxnrElementClass.selContact = function (window) {
             return window.tableViews()[0].cells()[index];
         }
 =======
+=======
+>>>>>>> ynn_ios
     nameTextField:function () {
         return window.textFields()[0].textFields()[0];
     },
@@ -589,12 +664,16 @@ xxnrElementClass.selContact = function (window) {
     contactCell:function (index) {
         return window.tableViews()[0].cells()[index];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //我的新农人页
 xxnrElementClass.mine = function (window) {
     return {
+<<<<<<< HEAD
 <<<<<<< HEAD
         loginBtn:function () {
             return window.tableViews()[0].images()["icon_bgView"].buttons()["登录"];
@@ -617,6 +696,8 @@ xxnrElementClass.mine = function (window) {
             return window.tableViews()[0].cells()[index];
         }
 =======
+=======
+>>>>>>> ynn_ios
     loginBtn:function () {
         return window.tableViews()[0].images()["icon_bgView"].buttons()["登录"];
     },
@@ -637,6 +718,9 @@ xxnrElementClass.mine = function (window) {
     cell:function (index) {
         return window.tableViews()[0].cells()[index];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     };
 }
@@ -644,6 +728,7 @@ xxnrElementClass.mine = function (window) {
 //选择支付方式
 xxnrElementClass.selPayType = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         fullPay:function () {
             return window.buttons()["全额支付"];
@@ -664,6 +749,8 @@ xxnrElementClass.selPayType = function (window) {
             return window.buttons()[6];
         }
 =======
+=======
+>>>>>>> ynn_ios
     fullPay:function () {
         return window.buttons()["全额支付"];
     },
@@ -682,12 +769,16 @@ xxnrElementClass.selPayType = function (window) {
     offLineBtn:function () {
         return window.buttons()[6];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //支付宝
 xxnrElementClass.alipay = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         ALipayBack:function () {
             return window.scrollViews()[0].webViews()[0].links()["返回"];
@@ -696,18 +787,24 @@ xxnrElementClass.alipay = function (window) {
             return window.scrollViews()[0].webViews()[0].links()["是"];
         }
 =======
+=======
+>>>>>>> ynn_ios
     ALipayBack:function () {
         return window.scrollViews()[0].webViews()[0].links()["返回"];
     },
     ALipayBackYes:function () {
         return window.scrollViews()[0].webViews()[0].links()["是"];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 // 银联
 xxnrElementClass.unionpay = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         UnionpayBack:function () {
             return window.buttons()[0];
@@ -716,18 +813,24 @@ xxnrElementClass.unionpay = function (window) {
             return window.buttons()["OK"];
         }
 =======
+=======
+>>>>>>> ynn_ios
     UnionpayBack:function () {
         return window.buttons()[0];
     },
     UnionpayBackYes:function () {
         return window.buttons()["OK"];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //登录页
 xxnrElementClass.login = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         phone:function(){
             return window.images()[0].textFields()[0].textFields()[0].value();
@@ -760,6 +863,8 @@ xxnrElementClass.login = function (window) {
             return window.images()[0].buttons()[4];
         }
 =======
+=======
+>>>>>>> ynn_ios
     phone:function(){
         return window.images()[0].textFields()[0].textFields()[0].value();
     },
@@ -790,6 +895,9 @@ xxnrElementClass.login = function (window) {
     register:function () {
         return window.images()[0].buttons()[4];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
@@ -797,6 +905,7 @@ xxnrElementClass.login = function (window) {
 //我的订单列表
 xxnrElementClass.myorder = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         totalTab:function () {
             return window.staticTexts()["全部"];
@@ -928,6 +1037,8 @@ xxnrElementClass.orderDetail = function (window) {
             return window.buttons()[0];
         }
 =======
+=======
+>>>>>>> ynn_ios
     totalTab:function () {
         return window.staticTexts()["全部"];
     },
@@ -1072,6 +1183,9 @@ xxnrElementClass.orderDetail = function (window) {
     btmbutton:function () {
         return window.buttons()[0];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
@@ -1080,6 +1194,7 @@ xxnrElementClass.orderDetail = function (window) {
 xxnrElementClass.carry = function (window) {
     return {
 <<<<<<< HEAD
+<<<<<<< HEAD
         carryNum:function () {
            return window.tableViews()[0].staticTexts()[1];
         },
@@ -1087,18 +1202,24 @@ xxnrElementClass.carry = function (window) {
 return window.tableViews()[0].cells();
         }
 =======
+=======
+>>>>>>> ynn_ios
     carryNum:function () {
         return window.tableViews()[0].staticTexts()[1];
     },
     cells:function () {
         return window.tableViews()[0].cells();
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //县级订单列表
 xxnrElementClass.RSCOrder = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         totalTab:function () {
             return window.buttons()["全部"];
@@ -1159,6 +1280,8 @@ xxnrElementClass.RSCOrder = function (window) {
         }
 
 =======
+=======
+>>>>>>> ynn_ios
     totalTab:function () {
         return window.buttons()["全部"];
     },
@@ -1217,6 +1340,9 @@ xxnrElementClass.RSCOrder = function (window) {
         return target.frontMostApp().windows()[1].toolbar().buttons()["完成"];
     }
         
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     };
 }
@@ -1224,6 +1350,7 @@ xxnrElementClass.RSCOrder = function (window) {
 //新农代表
 xxnrElementClass.xxnrRepesent = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         myclientTab:function () {
             return window.buttons()["我的客户"];
@@ -1235,6 +1362,8 @@ xxnrElementClass.xxnrRepesent = function (window) {
             return window.buttons()["客户登记"];
         }
 =======
+=======
+>>>>>>> ynn_ios
     myclientTab:function () {
         return window.buttons()["我的客户"];
     },
@@ -1244,12 +1373,16 @@ xxnrElementClass.xxnrRepesent = function (window) {
     clientRegisterTab:function () {
         return window.buttons()["客户登记"];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //我的客户
 xxnrElementClass.xxnrRepesent_client = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         inviteLabel:function () {
             return window.tableViews()[0].staticTexts()[0];
@@ -1267,6 +1400,8 @@ xxnrElementClass.xxnrRepesent_client = function (window) {
             return window.staticTexts()[0].isVisible();
         }
 =======
+=======
+>>>>>>> ynn_ios
     inviteLabel:function () {
         return window.tableViews()[0].staticTexts()[0];
     },
@@ -1282,12 +1417,16 @@ xxnrElementClass.xxnrRepesent_client = function (window) {
     isInviteFriend:function () {
         return window.staticTexts()[0].isVisible();
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //客户登记
 xxnrElementClass.xxnrClientRegister = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         totalNum:function () {
             return window.staticTexts()[1].value();
@@ -1305,6 +1444,8 @@ xxnrElementClass.xxnrClientRegister = function (window) {
             return window.buttons()[0];
         }
 =======
+=======
+>>>>>>> ynn_ios
     totalNum:function () {
         return window.staticTexts()[1].value();
     },
@@ -1320,12 +1461,16 @@ xxnrElementClass.xxnrClientRegister = function (window) {
     addBtn:function () {
         return window.buttons()[0];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //添加潜在客户
 xxnrElementClass.addClient = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         nameTextField:function () {
             return window.textFields()[0].textFields()[0];
@@ -1355,6 +1500,8 @@ xxnrElementClass.addClient = function (window) {
             return window.staticTexts()[message];
         }
 =======
+=======
+>>>>>>> ynn_ios
     nameTextField:function () {
         return window.textFields()[0].textFields()[0];
     },
@@ -1382,12 +1529,16 @@ xxnrElementClass.addClient = function (window) {
     warningStaticText:function (message) {
         return window.staticTexts()[message];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
 //选择意向商品
 xxnrElementClass.selPro = function (window) {
     return{
+<<<<<<< HEAD
 <<<<<<< HEAD
         makeSureBtn:function () {
             return window.buttons()["确定"];
@@ -1396,12 +1547,17 @@ xxnrElementClass.selPro = function (window) {
             return window.tableViews()[0];
         }
 =======
+=======
+>>>>>>> ynn_ios
     makeSureBtn:function () {
         return window.buttons()["确定"];
     },
     tableView:function () {
         return window.tableViews()[0];
     }
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
 >>>>>>> ynn_ios
     }
 }
@@ -1409,9 +1565,15 @@ xxnrElementClass.selPro = function (window) {
 xxnrElementClass.clientDetail = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
         phone:function () {
             return window.staticTexts()[3].value();
         }
+=======
+    phone:function () {
+        return window.staticTexts()[3].value();
+    }
+>>>>>>> ynn_ios
 =======
     phone:function () {
         return window.staticTexts()[3].value();

@@ -617,6 +617,7 @@
     indicator.frame = CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44));
     [self.picImageBtn addSubview:indicator];
     [indicator startAnimating];
+
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:[DataCenter account].token?[DataCenter account].token:@"" forKey:@"token"];
     [dic setObject:@"IOS-v2.0" forKey:@"user-agent"];

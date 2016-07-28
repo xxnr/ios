@@ -89,20 +89,20 @@ xxnrClass.mine(window).rscOrderBtn().tap();
             var deliverNumber ="123456";
             xxnrClass.rscOrders(window).inputTakeNumber().tap();
             xxnrClass.rscOrders(window).inputTakeNumber().setValue(deliverNumber);
-            window.views()[0].buttons()["确定"].tap;
+            xxnrClass.rscOrders(window).admireBtn().tap();
             var warning = window.staticTexts()[0].value();
             assertEquals("请输入自提码",warning);
             target.delay(2);
 
 
             var deliverNumber ="1234567";
-            window.textFields()[0].textFields()[0].tap();
-            window.textFields()[0].textFields()[0].setValue(deliverNumber);
-            window.views()[0].buttons()["确定"].tap;
+            xxnrClass.rscOrders(window).inputTakeNumber().tap();
+            xxnrClass.rscOrders(window).inputTakeNumber().setValue(deliverNumber);
+            xxnrClass.rscOrders(window).admireBtn().tap();
             var warning = window.staticTexts()[0].value();
             assertEquals("自提码错误，请重新输入",warning);
             for(var i = 0; i<2; i++){
-                window.views()[0].buttons()["确定"].tap;
+                xxnrClass.rscOrders(window).admireBtn().tap();
             }
             var warning = window.staticTexts()[0].value();
             assertEquals("您输入错误次数较多，请一分钟后再试",warning);
@@ -111,11 +111,12 @@ xxnrClass.mine(window).rscOrderBtn().tap();
 
 
             var deliverNumber ="正确的自提码";
-            window.textFields()[0].textFields()[0].tap();
-            window.textFields()[0].textFields()[0].setValue(deliverNumber);
-            window.views()[0].buttons()["确定"].tap;
+            xxnrClass.rscOrders(window).inputTakeNumber().tap();
+            xxnrClass.rscOrders(window).inputTakeNumber().setValue(deliverNumber);
+            xxnrClass.rscOrders(window).admireBtn().tap();
             assertTrue("自提成功",window.views()[0].staticTexts()[0].value);
         });
+
         test("订单详情页测试",function(target,app){
             window.scrollViews()[0].tableViews()[0].cells()[0].tap();
             assertEquals("订单详情",window.navigationBar().name());
