@@ -399,10 +399,10 @@
     }else if (self.nameLength>12){
         [UILabel showMessage:@"您的输入超过限制"];
     
-    }else if (self.storeNameLength>20){
+    }else if (self.storeNameLength>40){
         [UILabel showMessage:@"您的输入超过限制"];
     
-    }else if (self.detailAddressLength>30){
+    }else if (self.detailAddressLength>60){
         [UILabel showMessage:@"您的输入超过限制"];
     
     }else{

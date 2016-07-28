@@ -18,7 +18,6 @@
     UINavigationBar *navBar = [UINavigationBar appearance];
     [navBar setBackgroundImage:[UIImage imageNamed:@"icon_navbg"] forBarMetrics:UIBarMetricsDefault];
 
-    
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     navBar.shadowImage = [[UIImage alloc] init];
     navBar.barTintColor = R_G_B_16(0x00b38a);
@@ -72,7 +71,6 @@
 -(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
     if ([self respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.interactivePopGestureRecognizer.enabled = YES;
-       
         if (navigationController.viewControllers.count ==1) {
             self.interactivePopGestureRecognizer.enabled =NO;
         }
@@ -86,9 +84,7 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 
 {
-    
     return [gestureRecognizer isKindOfClass:UIScreenEdgePanGestureRecognizer.class];
-    
 }
 
 /*

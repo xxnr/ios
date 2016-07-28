@@ -286,7 +286,7 @@
         _angle = 0;
     }
 //        [UIView animateWithDuration:0.5 animations:^{
-    self.circleImage.transform = CGAffineTransformMakeRotation(M_PI);
+    self.circleImage.transform = CGAffineTransformMakeRotation(_angle);
 //        }];
 }
 
