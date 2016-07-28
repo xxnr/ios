@@ -1244,7 +1244,7 @@
             return;
         }
         
-        params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"deliveryType":[NSNumber numberWithInt:_deliveryType],@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"RSCId":self.RSCId?self.RSCId:@"",@"consigneePhone":self.consigneePhone,@"consigneeName":self.consigneeName,@"SKUs":self.dataArray,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"payType":@"1",@"user-agent":@"IOS-v2.0"};
+        params = @{@"userId":[DataCenter account].userid,@"shopCartId":[DataCenter account].cartId,@"deliveryType":[NSNumber numberWithInt:_deliveryType],@"addressId":self.nextAddresModel.addressId?self.nextAddresModel.addressId:@"",@"RSCId":self.RSCId?self.RSCId:@"",@"consigneePhone":self.consigneePhone?self.consigneePhone:@"",@"consigneeName":self.consigneeName?self.consigneeName:@"",@"SKUs":self.dataArray,@"token":[DataCenter account].token?[DataCenter account].token:@"",@"payType":@"1",@"user-agent":@"IOS-v2.0"};
         
     }
     else

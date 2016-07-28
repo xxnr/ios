@@ -232,6 +232,8 @@ test("cell中确认收货按钮点击",function(target,app){
 
             if(xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].buttons()[0].name() == "确认收货" && name)
             {
+                var orderid = xxnrElementClass.myorder(window).userOrderId(i*2);
+
                 name = false;
                 xxnrdelay(1);
 
@@ -242,6 +244,48 @@ test("cell中确认收货按钮点击",function(target,app){
 
                 window.buttons()[5].tapWithOptions({tapOffset:{x:0.75, y:0.40}});
                 window.buttons()[5].tapWithOptions({tapOffset:{x:0.56, y:0.97}});
+
+                xxnrdelay(3);
+
+
+
+                var refresh = false;
+                for(var j=0;j<count;j++)
+                {
+                      var noworderid = xxnrElementClass.myorder(window).userOrderId(j*2);
+                      if(orderid == noworderid)
+                      {
+                      refresh = true;
+
+                      xxnrElementClass.myorder(window).tableViewsgroups()[(j+1)*2-1].buttons()[0].tap();
+                       xxnrdelay(2);
+                       assertEquals(1,window.buttons()[5].isVisible());
+                       window.buttons()[5].tapWithOptions({tapOffset:{x:0.75, y:0.40}});
+                       window.buttons()[5].tapWithOptions({tapOffset:{x:0.56, y:0.97}});
+
+                       xxnrdelay(3);
+
+                       xxnrElementClass.myorder(window).commentTab().tapWithOptions({tapOffset:{x:0.34, y:0.68}});
+
+                       for(var m=0;m<count;j++)
+                      {
+                         var secondOrderid = xxnrElementClass.myorder(window).userOrderId(m*2);
+                         var secondRefresh = false;
+
+                        if(secondOrderid == orderid)
+                        {
+                            secondRefresh = true;
+                            break;
+                        }
+                        }
+                        assertEquals(secondRefresh,true,"第二次刷新失败");
+                        break;
+                      }
+                }
+                assertEquals(refresh,true,"第一次刷新失败");
+
+
+
                 break;
             }
         }
