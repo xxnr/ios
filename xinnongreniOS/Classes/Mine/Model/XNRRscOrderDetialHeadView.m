@@ -9,6 +9,7 @@
 #import "XNRRscOrderDetialHeadView.h"
 #import "XNRRscOrderDetailModel.h"
 #import "XNRRscOrderModel.h"
+#import "UILabel+ZSC.h"
 @interface XNRRscOrderDetialHeadView()
 
 @property (nonatomic, weak) UIView *tableHeadView;
@@ -141,14 +142,14 @@
         
         CGSize size = [model.consigneeAddress sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), MAXFLOAT)];
         UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(addressImage.frame) + PX_TO_PT(20), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(20), ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), size.height)];
+//        [addressLabel verticalUpAlignmentWithText:model.consigneeAddress maxHeight:size.height+PX_TO_PT(20)];
         addressLabel.textColor = R_G_B_16(0xc7c7c7);
         addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-//        addressLabel.adjustsFontSizeToFitWidth = YES;
         addressLabel.numberOfLines = 0;
         addressLabel.text = model.consigneeAddress;
         [middleView addSubview:addressLabel];
         
-        UIImageView *bottomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(addressLabel.frame), ScreenWidth, PX_TO_PT(7))];
+        UIImageView *bottomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(addressLabel.frame)+PX_TO_PT(20), ScreenWidth, PX_TO_PT(7))];
         [bottomImageView setImage:[UIImage imageNamed:@"orderInfo_down"]];
         [middleView addSubview:bottomImageView];
         
@@ -157,7 +158,7 @@
         [middleView addSubview:middleMarginView];
         
         UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth, 1)];
-        topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        topLine.backgroundColor = R_G_B_16(0xe0e0e0);
         [middleView addSubview:topLine];
         
         middleView.frame = CGRectMake(0, CGRectGetMaxY(self.headView.frame), ScreenWidth, CGRectGetMaxY(middleMarginView.frame));
@@ -204,11 +205,11 @@
     [headView addSubview:bottomMarginView];
     
     UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth, 1)];
-    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    topLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [headView addSubview:topLine];
     
     UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(130), ScreenWidth, 1)];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [headView addSubview:bottomLine];
     
 }
@@ -258,16 +259,16 @@
     [middleView addSubview:middleMarginView];
     
     UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    topLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [middleView addSubview:topLine];
     
     UIView *middleLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, 1)];
-    middleLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    middleLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [middleView addSubview:middleLine];
     
     
     UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(160), ScreenWidth, 1)];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [middleView addSubview:bottomLine];
 }
 
@@ -286,11 +287,11 @@
         
         
         UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-        topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        topLine.backgroundColor = R_G_B_16(0xe0e0e0);
         [bottomView addSubview:topLine];
         
         UIView *topLine1 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80),ScreenWidth, 1)];
-        topLine1.backgroundColor = R_G_B_16(0xc7c7c7);
+        topLine1.backgroundColor = R_G_B_16(0xe0e0e0);
         [bottomView addSubview:topLine1];
         
         
@@ -316,7 +317,7 @@
         
         
         UIView *topLine2 = [[UIView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), PX_TO_PT(210),ScreenWidth-PX_TO_PT(60), 1)];
-        topLine2.backgroundColor = R_G_B_16(0xc7c7c7);
+        topLine2.backgroundColor = R_G_B_16(0xe0e0e0);
         [bottomView addSubview:topLine2];
         
         
@@ -346,7 +347,7 @@
         
         
         UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(340), ScreenWidth, 1)];
-        bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
         [bottomView addSubview:bottomLine];
         
         UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(bottomMarginView.frame), ScreenWidth, PX_TO_PT(88))];
@@ -360,7 +361,7 @@
         [sectionView addSubview:sectionLabel];
         
         UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-        sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        sectionLine.backgroundColor = R_G_B_16(0xe0e0e0);
         [sectionView addSubview:sectionLine];
         
         _headViewHeight = CGRectGetMaxY(bottomView.frame);
@@ -378,11 +379,11 @@
         
         
         UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-        topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        topLine.backgroundColor = R_G_B_16(0xe0e0e0);
         [bottomView addSubview:topLine];
         
         UIView *topLine1 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80),ScreenWidth, 1)];
-        topLine1.backgroundColor = R_G_B_16(0xc7c7c7);
+        topLine1.backgroundColor = R_G_B_16(0xe0e0e0);
         [bottomView addSubview:topLine1];
         
         
@@ -411,7 +412,7 @@
         [bottomView addSubview:bottomMarginView];
         
         UIView *topLine2 = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(210),ScreenWidth, 1)];
-        topLine2.backgroundColor = R_G_B_16(0xc7c7c7);
+        topLine2.backgroundColor = R_G_B_16(0xe0e0e0);
         [bottomView addSubview:topLine2];
 
         
@@ -426,7 +427,7 @@
         [sectionView addSubview:sectionLabel];
         
         UIView *sectionLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-        sectionLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        sectionLine.backgroundColor = R_G_B_16(0xe0e0e0);
         [sectionView addSubview:sectionLine];
         
         _headViewHeight = CGRectGetMaxY(bottomView.frame);

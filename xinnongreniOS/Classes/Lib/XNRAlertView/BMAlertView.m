@@ -37,7 +37,6 @@
         UILabel *label = [UILabel labelWithFrame:CGRectMake(25, 16, alertWidth, 0) font:[UIFont systemFontOfSize:PX_TO_PT(36)] text:content textColor:R_G_B_16(0x323232) alignment:NSTextAlignmentCenter superView:view lineSpacing:7.0 firstLineHeadIndent:0];
         label.center = CGPointMake(view.width/2, label.center.y);
         view.height = 50;
-        
         [self setUpAlertWithTitle:title view:view chooseBtns:btns];
     }
     return self;
@@ -98,11 +97,9 @@
         lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [btnView addSubview:lineView];
         for (int i = 0; i < btns.count; i++) {
-            UIButton *btn = [UIButton textBtnWithTitle:btns[i] titleColor:R_G_B_16(0x00b38a) font:[UIFont systemFontOfSize:PX_TO_PT(36)] frame:CGRectMake(btnWidth*i+(i*1), 0, btnWidth, 45) target:self action:@selector(chooseBtnClicked:)];
-//            btn.backgroundColor = [UIColor redColor];
+            UIButton *btn = [UIButton textBtnWithTitle:btns[i] titleColor:R_G_B_16(0x00b38a) font:[UIFont systemFontOfSize:PX_TO_PT(36)] frame:CGRectMake(btnWidth*i, 0, btnWidth, 45) target:self action:@selector(chooseBtnClicked:)];
             btn.tag = i+ 10;
             if (i == btns.count - 1) {
-//                [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             }
             
             [btnView addSubview:btn];

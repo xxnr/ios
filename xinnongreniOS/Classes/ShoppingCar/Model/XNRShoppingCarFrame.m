@@ -150,21 +150,58 @@
             CGFloat numTextFieldW = PX_TO_PT(84);
             CGFloat numTextFieldH = PX_TO_PT(49);
             _numTextFieldF = CGRectMake(numTextFieldX, numTextFieldY, numTextFieldW, numTextFieldH);
-            
-            CGFloat textTopLineX = CGRectGetMaxX(_leftBtnF);
-            CGFloat textTopLineY = CGRectGetMaxY(_picImageViewF)+margin;
-            CGFloat textTopLineW = PX_TO_PT(84);
-            CGFloat textTopLineH = PX_TO_PT(2);
-            _textTopLineF = CGRectMake(textTopLineX, textTopLineY, textTopLineW, textTopLineH);
-            
-            CGFloat bottomLineX = CGRectGetMaxX(_leftBtnF);
-            
-            CGFloat bottomLineY = CGRectGetMaxY(_numTextFieldF);
-            CGFloat bottomLineW = PX_TO_PT(84);
-            CGFloat bottomLineH = PX_TO_PT(2);
-            _textbottomLineF = CGRectMake(bottomLineX, bottomLineY-PX_TO_PT(2), bottomLineW, bottomLineH);
 
-            
+            if (IS_IPHONE_6) {
+                CGFloat textTopLineX = CGRectGetMaxX(_leftBtnF);
+                CGFloat textTopLineY = CGRectGetMaxY(_picImageViewF)+margin;
+                CGFloat textTopLineW = PX_TO_PT(86);
+                CGFloat textTopLineH = PX_TO_PT(1);
+                _textTopLineF = CGRectMake(textTopLineX, textTopLineY, textTopLineW, textTopLineH);
+                
+                CGFloat bottomLineX = CGRectGetMaxX(_leftBtnF);
+                CGFloat bottomLineY = CGRectGetMaxY(_numTextFieldF);
+                CGFloat bottomLineW = PX_TO_PT(84);
+                CGFloat bottomLineH = PX_TO_PT(1);
+                _textbottomLineF = CGRectMake(bottomLineX, bottomLineY-PX_TO_PT(2), bottomLineW, bottomLineH);
+
+            }else if (IS_IPHONE_6P){
+                CGFloat textTopLineX = CGRectGetMaxX(_leftBtnF)-PX_TO_PT(2);
+                CGFloat textTopLineY = CGRectGetMaxY(_picImageViewF)+PX_TO_PT(23);
+                CGFloat textTopLineW = PX_TO_PT(88);
+                CGFloat textTopLineH = PX_TO_PT(2);
+                _textTopLineF = CGRectMake(textTopLineX, textTopLineY, textTopLineW, textTopLineH);
+                
+                CGFloat bottomLineX = CGRectGetMaxX(_leftBtnF)-PX_TO_PT(2);
+                CGFloat bottomLineY = CGRectGetMaxY(_numTextFieldF)-PX_TO_PT(5);
+                CGFloat bottomLineW = PX_TO_PT(88);
+                CGFloat bottomLineH = PX_TO_PT(2);
+                _textbottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
+
+            }else if (IS_IPHONE_5){
+                CGFloat textTopLineX = CGRectGetMaxX(_leftBtnF);
+                CGFloat textTopLineY = CGRectGetMaxY(_picImageViewF)+margin;
+                CGFloat textTopLineW = PX_TO_PT(86);
+                CGFloat textTopLineH = PX_TO_PT(1);
+                _textTopLineF = CGRectMake(textTopLineX, textTopLineY, textTopLineW, textTopLineH);
+                
+                CGFloat bottomLineX = CGRectGetMaxX(_leftBtnF);
+                CGFloat bottomLineY = CGRectGetMaxY(_numTextFieldF)-PX_TO_PT(1);
+                CGFloat bottomLineW = PX_TO_PT(84);
+                CGFloat bottomLineH = PX_TO_PT(1);
+                _textbottomLineF = CGRectMake(bottomLineX, bottomLineY, bottomLineW, bottomLineH);
+            }else{
+                CGFloat textTopLineX = CGRectGetMaxX(_leftBtnF);
+                CGFloat textTopLineY = CGRectGetMaxY(_picImageViewF)+margin;
+                CGFloat textTopLineW = PX_TO_PT(86);
+                CGFloat textTopLineH = PX_TO_PT(1);
+                _textTopLineF = CGRectMake(textTopLineX, textTopLineY, textTopLineW, textTopLineH);
+                
+                CGFloat bottomLineX = CGRectGetMaxX(_leftBtnF);
+                CGFloat bottomLineY = CGRectGetMaxY(_numTextFieldF);
+                CGFloat bottomLineW = PX_TO_PT(84);
+                CGFloat bottomLineH = PX_TO_PT(1);
+                _textbottomLineF = CGRectMake(bottomLineX, bottomLineY-PX_TO_PT(2), bottomLineW, bottomLineH);
+            }
             //右边按钮
             CGFloat rightBtnX = CGRectGetMaxX(_numTextFieldF);
             CGFloat rightBtnY = CGRectGetMaxY(_picImageViewF)+margin;

@@ -713,6 +713,7 @@
     titleLabel.text = _tempTitle;
     self.navigationItem.titleView = titleLabel;
     
+
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.frame = CGRectMake(0, 0, 30, 44);
 //    backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -60, 0, 0);

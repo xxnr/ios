@@ -92,10 +92,10 @@ static BOOL isPay = NO;
         [self.contentView addSubview:_payTypeLabel];
     
     UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(58),ScreenWidth - PX_TO_PT(66), 1)];
-    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    line1.backgroundColor = R_G_B_16(0xe0e0e0);
     
     UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    line2.backgroundColor = R_G_B_16(0xe0e0e0);
     
     [self.contentView addSubview:line1];
     

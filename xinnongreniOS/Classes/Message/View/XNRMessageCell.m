@@ -48,7 +48,7 @@
     CGFloat marginLabel = PX_TO_PT(26);
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(20), PX_TO_PT(200), PX_TO_PT(150))];
     imgView.layer.borderWidth = 1.0;
-    imgView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    imgView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
 
     self.imgView = imgView;
     [self addSubview:imgView];

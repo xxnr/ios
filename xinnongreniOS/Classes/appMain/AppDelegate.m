@@ -90,7 +90,7 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
-    //    友盟分享
+    //  友盟分享
     [UMSocialData setAppKey:UM_APPKEY];
     
     [UMSocialWechatHandler setWXAppId:wechatAppId appSecret:wechatAppSecret url:APPURL];
@@ -99,7 +99,6 @@
 
     [UMessage setLogEnabled:YES];
     
-
     // 启动bugtags
 //    [XNRBugTagsTool openBugTags];
     
@@ -108,10 +107,8 @@
     if (remoteNotification != nil) {
         _is_Notification = YES;
     }
-
     return YES;
 }
-
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     //如果极简 SDK 不可用,会跳转支付宝钱包进行支付,需要将支付宝钱包的支付结果回传给 SDK if ([url.host isEqualToString:@"safepay"]) {
@@ -119,9 +116,7 @@
         
         NSLog(@"result = %@",resultDic);
         
-        
         [[NSNotificationCenter defaultCenter]postNotificationName:@"alipayResult" object:[resultDic objectForKey:@"resultStatus"]];
-        
         
     }];
     if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回 authCode
@@ -185,7 +180,7 @@
 {
     _deviceToken = [[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]                  stringByReplacingOccurrencesOfString: @">" withString: @""]                 stringByReplacingOccurrencesOfString: @" " withString: @""];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"remaindUserToUpdate" object:nil];
+     [[NSNotificationCenter defaultCenter] postNotificationName:@"remaindUserToUpdate" object:nil];
     //获取设备号
     NSLog(@"deviceToken%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]                  stringByReplacingOccurrencesOfString: @">" withString: @""]                 stringByReplacingOccurrencesOfString: @" " withString: @""]);
 
@@ -199,7 +194,6 @@
     NSLog(@"---------------------Failed to get token, error:%@", error_str);
     
 }
-
 
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo

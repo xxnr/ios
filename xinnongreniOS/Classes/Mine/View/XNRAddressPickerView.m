@@ -85,11 +85,11 @@
     [bgView addSubview:rightBtn];
     
     UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-    topView.backgroundColor = R_G_B_16(0xc7c7c7);
+    topView.backgroundColor = R_G_B_16(0xe0e0e0);
     [bgView addSubview:topView];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(70), ScreenWidth, 1)];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [bgView addSubview:lineView];
 }
 

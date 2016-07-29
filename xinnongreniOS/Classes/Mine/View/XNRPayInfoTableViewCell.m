@@ -75,10 +75,10 @@
     [self.contentView addSubview:successPay];
     
     UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(59),ScreenWidth - PX_TO_PT(65), 1)];
-    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    line1.backgroundColor = R_G_B_16(0xe0e0e0);
     
     UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(222), ScreenWidth, 1)];
-    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    line2.backgroundColor = R_G_B_16(0xe0e0e0);
     self.line2 = line2;
     [self.contentView addSubview:line1];
     

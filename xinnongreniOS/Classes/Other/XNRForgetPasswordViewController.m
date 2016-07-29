@@ -642,13 +642,16 @@
     
     [self.picImage removeFromSuperview];
     
-    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44))];
-    circleImage.image = [UIImage imageNamed:@"spinner_gray-0"];
-    self.circleImage = circleImage;
-    [self.picImageBtn addSubview:circleImage];
-    [self startAnimation];
-
-//    _timer = [NSTimer scheduledTimerWithTimeInterval:0.8 target:self selector:@selector(transformAction) userInfo:nil repeats:YES];
+//    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44))];
+//    circleImage.image = [UIImage imageNamed:@"spinner_gray-0"];
+//    self.circleImage = circleImage;
+//    [self.picImageBtn addSubview:circleImage];
+//    [self startAnimation];
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    indicator.frame = CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44));
+    [self.picImageBtn addSubview:indicator];
+    [indicator startAnimating];
 
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:[DataCenter account].token?[DataCenter account].token:@"" forKey:@"token"];
@@ -668,7 +671,8 @@
     [manager GET:URL parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSLog(@"---------返回数据:---------%@",responseObject);
-        [circleImage removeFromSuperview];
+        [indicator stopAnimating];
+//        [circleImage removeFromSuperview];
         UIImageView *picImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(190), PX_TO_PT(68))];
         picImage.image = [UIImage imageWithData:responseObject];
         self.picImage = picImage;
@@ -679,7 +683,9 @@
         [self.warnLabel removeFromSuperview];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [circleImage removeFromSuperview];
+//        [circleImage removeFromSuperview];
+        [indicator stopAnimating];
+
         self.picImage.image = [UIImage imageNamed:@"load-failed"];
     }];
     
@@ -696,15 +702,21 @@
 // 确定
 -(void)admireBtnClick
 {
-    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44))];
-    circleImage.image = [UIImage imageNamed:@"spinner_gray-0"];
-    self.circleImage = circleImage;
-    [self.picImageBtn addSubview:circleImage];
-    [self startAnimation];
-//    _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(transformAction) userInfo:nil repeats:YES];
+//    UIImageView *circleImage = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44))];
+//    circleImage.image = [UIImage imageNamed:@"spinner_gray-0"];
+//    self.circleImage = circleImage;
+//    [self.picImageBtn addSubview:circleImage];
+//    [self startAnimation];
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    indicator.frame = CGRectMake(PX_TO_PT(73),PX_TO_PT(12), PX_TO_PT(44), PX_TO_PT(44));
+    [self.picImageBtn addSubview:indicator];
+    [indicator startAnimating];
 
     if ([self.identifyCodeTF.text isEqualToString:@""] || self.identifyCodeTF.text == nil) {
-        [circleImage removeFromSuperview];
+//        [circleImage removeFromSuperview];
+        [indicator stopAnimating];
+
         [self showWarn:nil];
     }else{
         [self.picImage removeFromSuperview];
@@ -714,7 +726,9 @@
                 XNRIdentifyCodeModel *model = [[XNRIdentifyCodeModel alloc] init];
                 model = [XNRIdentifyCodeModel objectWithKeyValues:result];
                 if (model.captcha) {
-                    [circleImage removeFromSuperview];
+//                    [circleImage removeFromSuperview];
+                    [indicator stopAnimating];
+
                     UIImageView *picImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PX_TO_PT(190), PX_TO_PT(68))];
                     [picImage sd_setImageWithURL:[NSURL URLWithString:model.captcha] placeholderImage:nil];
                     self.picImage = picImage;
@@ -733,7 +747,9 @@
                 }
                 
             }else{
-                [circleImage removeFromSuperview];
+//                [circleImage removeFromSuperview];
+                [indicator stopAnimating];
+
                 [self showWarn:result[@"message"]];
             }
             
@@ -759,16 +775,6 @@
     [self startAnimation];
 }
 
-
--(void)transformAction {
-    _angle += 0.5;//angle角度 double angle;
-    if (_angle > 6.28) {//大于 M_PI*2(360度) 角度再次从0开始
-        _angle = 0;
-    }
-    //    [UIView animateWithDuration:0.1 animations:^{
-    self.circleImage.transform = CGAffineTransformMakeRotation(_angle);
-    //    }];
-}
 
 
 -(void)showWarn:(NSString *)toast{

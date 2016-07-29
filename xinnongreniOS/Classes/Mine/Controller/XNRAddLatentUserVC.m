@@ -181,7 +181,7 @@
     self.userTypeLabel = userTypeLabel;
     
     UIView *lastLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*4, ScreenWidth, 1)];
-    lastLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    lastLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.line = lastLine;
     [self.bottomView addSubview:lastLine];
     
@@ -249,7 +249,7 @@
     [self.view addSubview:nameTf];
     
     UIView *line1View = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
-    line1View.backgroundColor = R_G_B_16(0xc7c7c7);
+    line1View.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.view addSubview:line1View];
 
     UIView *phoneView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(nameTf.frame) + PX_TO_PT(24), ScreenWidth, PX_TO_PT(99))];
@@ -276,7 +276,7 @@
     phonelabel.text = @"手机号";
     
     UIView *line2View = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
-    line2View.backgroundColor = R_G_B_16(0xc7c7c7);
+    line2View.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.bottomView addSubview:line2View];
     
     [phoneView addSubview:line2View];
@@ -381,11 +381,11 @@
 
     for (int i = 1; i<4; i++) {
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, 1)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [self.bottomView addSubview:lineView];
     }
     UIView *lastLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*4, ScreenWidth, 1)];
-    lastLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    lastLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.line = lastLine;
     [self.bottomView addSubview:lastLine];
     
@@ -501,7 +501,7 @@
                     self.phoneView.frame = CGRectMake(0, CGRectGetMaxY(self.nameTf.frame) + PX_TO_PT(24), ScreenWidth, PX_TO_PT(198));
                     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(197), ScreenWidth, 1)];
                     self.warnView = line;
-                    line.backgroundColor = R_G_B_16(0xc7c7c7);
+                    line.backgroundColor = R_G_B_16(0xe0e0e0);
                     [self.phoneView addSubview:line];
                     
                     [self.warnLabel removeFromSuperview];

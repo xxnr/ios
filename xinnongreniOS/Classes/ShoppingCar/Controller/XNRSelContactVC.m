@@ -244,7 +244,7 @@
     for (int i=0; i<3; i++)
     {
         UIView *line2View = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i+1, ScreenWidth, PX_TO_PT(2))];
-        line2View.backgroundColor = R_G_B_16(0xc7c7c7);
+        line2View.backgroundColor = R_G_B_16(0xe0e0e0);
         [writeInfoView addSubview:line2View];
     }
     
@@ -272,7 +272,7 @@
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
-    line.backgroundColor = R_G_B_16(0xc7c7c7);
+    line.backgroundColor = R_G_B_16(0xe0e0e0);
     [contactView addSubview:imageView];
     [contactView addSubview:titleLabel];
     [contactView addSubview:line];

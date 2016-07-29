@@ -52,11 +52,11 @@
     [bgView addSubview:nickNameTF];
     
     UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    topLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [bgView addSubview:topLine];
     
     UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [bgView addSubview:bottomLine];
     
     UILabel *warnLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.bgView.frame)+PX_TO_PT(24), ScreenWidth, PX_TO_PT(20))];

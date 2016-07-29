@@ -348,7 +348,7 @@ static bool isBroker;
     
     self.selectedBtn = _leftBtn;
     UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, btnH)];
-    line2.backgroundColor = R_G_B_16(0xc7c7c7);
+    line2.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.bookBtn addSubview:line2];
 
     if (isBroker) {
@@ -359,7 +359,7 @@ static bool isBroker;
     }
     
     UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame)-1, 0, PX_TO_PT(2), btnH)];
-    line1.backgroundColor = R_G_B_16(0xc7c7c7);
+    line1.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.leftBtn addSubview:line1];
 
 }
@@ -1041,7 +1041,7 @@ static bool isBroker;
     [_topView addSubview:customerLabel];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, 1)];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [_topView addSubview:lineView];
 
 }
@@ -1181,7 +1181,7 @@ static bool isBroker;
     [myRepTopView addSubview:myRepLabel];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, 1)];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [myRepTopView addSubview:lineView];
 
     
@@ -1211,11 +1211,11 @@ static bool isBroker;
     [myRepView addSubview:phoneNumLabel];
     
     UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-    topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    topLineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [myRepView addSubview:topLineView];
     
     UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, 1)];
-    bottomLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [myRepView addSubview:bottomLineView];
 
 }

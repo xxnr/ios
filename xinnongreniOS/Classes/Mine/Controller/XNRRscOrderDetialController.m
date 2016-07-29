@@ -182,7 +182,7 @@
     [self.footView addSubview:footButton];
     
     UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(2))];
-    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    topLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.footView addSubview:topLine];
     
     NSDictionary *dict = model.orderStatus;
@@ -248,7 +248,7 @@
     [totalPriceLabel setAttributedText:AttributedStringPrice];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, 1)];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [sectionFootView addSubview:lineView];
 
     return sectionFootView;

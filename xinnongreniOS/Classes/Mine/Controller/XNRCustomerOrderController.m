@@ -183,7 +183,7 @@
         }
         
         if (_dataArray.count == 0) {
-            self.totalLabel.backgroundColor = R_G_B_16(0xc7c7c7);
+            self.totalLabel.backgroundColor = R_G_B_16(0xe0e0e0);
             self.tableView.scrollEnabled = NO;
             [self emptyView];
         }
@@ -260,7 +260,7 @@
         }
         
         UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-        topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        topLineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:topLineView];
         
         return headView;
@@ -302,12 +302,12 @@
         
         
         UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-        topLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        topLineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [footView addSubview:topLineView];
 
         
         UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(80), ScreenWidth, 1)];
-        bottomLineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        bottomLineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [footView addSubview:bottomLineView];
 
         return footView;

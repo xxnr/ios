@@ -49,7 +49,7 @@
     CGFloat margin = PX_TO_PT(20);
     UIImageView *image = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(20), PX_TO_PT(200), PX_TO_PT(200))];
     image.layer.borderWidth = 1.0;
-    image.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    image.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     self.image = image;
     [self addSubview:image];
     

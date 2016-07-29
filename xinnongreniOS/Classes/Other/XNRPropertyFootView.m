@@ -127,11 +127,11 @@
     [bgView addSubview:rightBtn];
     
     UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), PX_TO_PT(27), PX_TO_PT(79), 1)];
-    topLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    topLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [bgView addSubview:topLine];
     
     UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftBtn.frame), PX_TO_PT(72), PX_TO_PT(79), 1)];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [bgView addSubview:bottomLine];
     
 }

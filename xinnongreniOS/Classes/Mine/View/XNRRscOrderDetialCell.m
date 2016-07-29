@@ -56,7 +56,7 @@
     }else{
         imageView.layer.borderWidth = 1;
     }
-    imageView.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    imageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     self.goodsImageView = imageView;
     [self.contentView addSubview:imageView];
     
@@ -97,7 +97,7 @@
     [self.contentView addSubview:addtionsLabel];
     
     UIView *lineView = [[UIView alloc] init];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     self.lineView = lineView;
     [self.contentView addSubview:lineView];
     

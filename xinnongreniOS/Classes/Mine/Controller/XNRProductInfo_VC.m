@@ -38,6 +38,8 @@
 
 }
 @property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) UIScrollView *mainScrollView;
+
 @property(nonatomic,strong) UITableView *tableView;
 @property(nonatomic,strong) UIWebView *webView;
 @property(nonatomic,weak) UIImageView *headView;
@@ -155,6 +157,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    UIScrollView *mainScrollView = [MyControl createUIScrollViewWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) contentSize:CGSizeMake(ScreenWidth, 600*SCALE) pagingEnabled:NO showsHorizontalScrollIndicator:NO showsVerticalScrollIndicator:NO delegate:self];
+    self.mainScrollView = mainScrollView;
+    [self.scrollView addSubview:mainScrollView];
     // 获取网络数据
     [self getData];
     _goodsArray  = [NSMutableArray array];
@@ -168,7 +174,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     [self.view addSubview:self.scrollView];
-    [self.scrollView addSubview:self.tableView];
+    [self.mainScrollView addSubview:self.tableView];
     [self.scrollView addSubview:self.webView];
     
     
@@ -204,6 +210,7 @@
 -(void)loadMoreData{
     [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionLayoutSubviews animations:^{
         self.scrollView.contentOffset = CGPointMake(0, ScreenHeight);
+
     } completion:^(BOOL finished) {
         //结束加载
         [self.tableView.mj_footer endRefreshing];
@@ -214,6 +221,7 @@
     //下拉执行对应的操作
     [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionLayoutSubviews animations:^{
         self.scrollView.contentOffset = CGPointMake(0, 0);
+        self.tableView.contentOffset = CGPointMake(0, 0);
     } completion:^(BOOL finished) {
         //结束加载
         [self.webView.scrollView.mj_header endRefreshing];
@@ -312,7 +320,7 @@
     
     for (int i = 1; i<3; i++) {
         UIView *dividedLine = [[UIView alloc] initWithFrame:CGRectMake(ScreenWidth/3*i, PX_TO_PT(20), 1, PX_TO_PT(40))];
-        dividedLine.backgroundColor = R_G_B_16(0xc7c7c7);
+        dividedLine.backgroundColor = R_G_B_16(0xe0e0e0);
         [midView addSubview:dividedLine];
         
     }
@@ -332,8 +340,7 @@
         self.tempBtn.selected = NO;
         button.selected = YES;
         self.tempBtn = button;
-        
-        
+    
         self.tempLabel.textColor = R_G_B_16(0x646464);
         titleLabel.textColor = R_G_B_16(0x00b38a);
         self.tempLabel = titleLabel;
@@ -435,7 +442,7 @@
         XNRProductInfo_frame *frame = [_goodsArray lastObject];
         if ([frame.infoModel.app_body_url isEqualToString:@""] &&[frame.infoModel.app_standard_url isEqualToString:@""] && [frame.infoModel.app_support_url isEqualToString:@""]) {
                 _tableView.scrollEnabled = NO;
-            }
+        }
         
         [self.tableView reloadData];
         [BMProgressView LoadViewDisappear:self.view];
@@ -497,7 +504,7 @@
     [bgExpectView addSubview:expectLabel];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [bgExpectView addSubview:lineView];
     
     UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight-64-PX_TO_PT(80), ScreenWidth, PX_TO_PT(80))];
@@ -524,7 +531,7 @@
     
     //分割线
     UIView *line=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,1 )];
-    line.backgroundColor=R_G_B_16(0xc7c7c7);
+    line.backgroundColor=R_G_B_16(0xe0e0e0);
     [bgView addSubview:line];
     
 }

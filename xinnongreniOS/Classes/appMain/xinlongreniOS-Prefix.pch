@@ -121,6 +121,11 @@ alpha:1.0]
 //是否为4inch
 #define IS_FourInch ([UIScreen mainScreen].bounds.size.height == 568.0)
 
+#define IS_IPHONE_4_OR_LESS (IS_IPHONE && ScreenHeight < 568.0)
+#define IS_IPHONE_5 ([UIScreen mainScreen].bounds.size.height == 568.0)
+#define IS_IPHONE_6 ([UIScreen mainScreen].bounds.size.height == 667.0)
+#define IS_IPHONE_6P ([UIScreen mainScreen].bounds.size.height == 736.0)
+
 #define PATH_OF_DOCUMENT    [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]
 #define USER [NSUserDefaults standardUserDefaults]
 

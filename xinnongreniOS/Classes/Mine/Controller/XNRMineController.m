@@ -518,7 +518,7 @@
     
     CALayer *storeLineLayer = [[CALayer alloc] init];
     storeLineLayer.frame = CGRectMake(0, PX_TO_PT(94), ScreenWidth, 1);
-    storeLineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
+    storeLineLayer.backgroundColor = R_G_B_16(0xe0e0e0).CGColor;
     [myStoreBtn.layer addSublayer:storeLineLayer];
 
     // 图标
@@ -551,7 +551,7 @@
     
     CALayer *lineLayer = [[CALayer alloc] init];
     lineLayer.frame = CGRectMake(0, PX_TO_PT(95), ScreenWidth, 1);
-    lineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
+    lineLayer.backgroundColor = R_G_B_16(0xe0e0e0).CGColor;
     [orderBtn.layer addSublayer:lineLayer];
 
     // 我的订单的状态
@@ -595,7 +595,7 @@
     
     CALayer *orderlineLayer = [[CALayer alloc] init];
     orderlineLayer.frame = CGRectMake(0, PX_TO_PT(129), ScreenWidth, 1);
-    orderlineLayer.backgroundColor = R_G_B_16(0xc7c7c7).CGColor;
+    orderlineLayer.backgroundColor = R_G_B_16(0xe0e0e0).CGColor;
     [orderStateView.layer addSublayer:orderlineLayer];
 
     

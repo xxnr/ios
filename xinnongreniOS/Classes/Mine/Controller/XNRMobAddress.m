@@ -165,7 +165,7 @@
 
     for (int i = 0; i<3; i++) {
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, i*PX_TO_PT(98), ScreenWidth, 1)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [bgView addSubview:lineView];
     }
     

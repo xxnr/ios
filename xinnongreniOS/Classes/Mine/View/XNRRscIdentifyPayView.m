@@ -118,7 +118,7 @@
         [self.identifyView addSubview:titleLabel];
         
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(88)*(i+1), ScreenWidth, 1)];
-        line.backgroundColor = R_G_B_16(0xc7c7c7);
+        line.backgroundColor = R_G_B_16(0xe0e0e0);
         [self.identifyView addSubview:line];
         
     }
@@ -178,7 +178,7 @@
     [self.identifyView addSubview:bottomView];
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-    line.backgroundColor = R_G_B_16(0xc7c7c7);
+    line.backgroundColor = R_G_B_16(0xe0e0e0);
     [bottomView addSubview:line];
     
     UIButton *admireBtn = [UIButton buttonWithType:UIButtonTypeCustom];

@@ -286,6 +286,11 @@ test("cell中确认收货按钮点击",function(target,app){
 
 
 
+                xxnrdelay(2);
+                assertEquals(1,window.buttons()[5].isVisible());
+
+                window.buttons()[5].tapWithOptions({tapOffset:{x:0.75, y:0.40}});
+                window.buttons()[5].tapWithOptions({tapOffset:{x:0.56, y:0.97}});
                 break;
             }
         }

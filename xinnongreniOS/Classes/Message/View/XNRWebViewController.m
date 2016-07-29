@@ -36,16 +36,20 @@
 {
     [UMSocialConfig setFinishToastIsHidden:YES  position:UMSocialiToastPositionCenter];
     
-        NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:_model.image]];
-        UIImage *shareImage = [UIImage imageWithData:data];
+    NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:_model.image]];
+     UIImage *shareImage = [UIImage imageWithData:data];
     if (_model.image == nil || [_model.image isEqualToString:@""]) {
         shareImage = [UIImage imageNamed:@"share_icon"];
+    }else{
+        if (data.length == 0) {
+            shareImage = [UIImage imageNamed:@"share_icon"];
+        }
     }
-    
     NSString *contentString = [NSString stringWithFormat:@"%@",_model.newsabstract];
     if (_model.newsabstract == nil || [_model.newsabstract isEqualToString:@""]) {
         contentString = @"分享自@新新农人";
     }
+    NSLog(@"shareImage===%@",shareImage);
     if (type == wechatbtn_type) {
         [UMSocialData defaultData].extConfig.wechatSessionData.url = _model.shareurl;
         [UMSocialData defaultData].extConfig.wechatSessionData.title = _model.title;

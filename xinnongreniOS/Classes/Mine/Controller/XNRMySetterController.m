@@ -286,7 +286,7 @@
         _angle = 0;
     }
 //        [UIView animateWithDuration:0.5 animations:^{
-    self.circleImage.transform = CGAffineTransformMakeRotation(M_PI);
+    self.circleImage.transform = CGAffineTransformMakeRotation(_angle);
 //        }];
 }
 
@@ -352,7 +352,7 @@
         [sectionHeadView addSubview:sectionTitleLabel];
         
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, 1)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [sectionHeadView addSubview:lineView];
         
         return sectionHeadView;
@@ -363,7 +363,7 @@
         [self.view addSubview:sectionHeadView];
         
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, 1)];
-        lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+        lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [sectionHeadView addSubview:lineView];
 
 

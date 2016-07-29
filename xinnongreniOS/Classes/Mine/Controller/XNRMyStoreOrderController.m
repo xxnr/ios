@@ -175,12 +175,11 @@
         if (i == 0) {
             [self titleBtnClick:titleBtn];
         }
-        
     }
     
     for (int i = 0; i<2; i++) {
         UIView *line = [[UIView  alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*i, ScreenWidth, 1)];
-        line.backgroundColor = R_G_B_16(0xc7c7c7);
+        line.backgroundColor = R_G_B_16(0xe0e0e0);
         [headView addSubview:line];
     }
     UIView *selectedLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(95), ScreenWidth/5, PX_TO_PT(5))];

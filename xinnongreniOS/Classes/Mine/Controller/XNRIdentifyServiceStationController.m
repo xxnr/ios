@@ -242,28 +242,28 @@
     for (int i = 0; i<5; i++) {
         if (IS_FourInch) {
             lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, 1)];
-            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+            lineView.backgroundColor = R_G_B_16(0xe0e0e0);
             [self.view addSubview:lineView];
         }else{
             lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, 1)];
-            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+            lineView.backgroundColor = R_G_B_16(0xe0e0e0);
             [self.view addSubview:lineView];
         }
        
     }
     
     lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*5, ScreenWidth, 1)];
-    lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.view addSubview:lineView];
     
     for (int i = 6; i<8; i++) {
         if (IS_FourInch) {
             lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, 1)];
-            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+            lineView.backgroundColor = R_G_B_16(0xe0e0e0);
             [self.view addSubview:lineView];
         }else{
             lineView = [[UIView alloc] initWithFrame:CGRectMake(0, margin+PX_TO_PT(88)*i, ScreenWidth, 1)];
-            lineView.backgroundColor = R_G_B_16(0xc7c7c7);
+            lineView.backgroundColor = R_G_B_16(0xe0e0e0);
             [self.view addSubview:lineView];
         }
        
@@ -338,7 +338,7 @@
             
         }
         self.storeNameLength = strlength;
-        if (strlength > 20) {
+        if (strlength > 40) {
             [UILabel showMessage:[NSString stringWithFormat:@"您的输入超过限制"]];
         }
 
@@ -357,7 +357,7 @@
             
         }
         self.detailAddressLength = strlength;
-        if (strlength > 30) {
+        if (strlength > 60) {
             [UILabel showMessage:[NSString stringWithFormat:@"您的输入超过限制"]];
         }
 
@@ -366,6 +366,26 @@
     
 
 }
+
+//-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+//{
+//    if (textField == self.nameTF) {
+//        NSString *toBeString = [self.nameTF.text stringByReplacingCharactersInRange:range withString:string];
+//        if (toBeString.length>6 && range.length != 1) {
+//            self.nameTF.text = [toBeString substringFromIndex:6];
+//            [self.nameTF resignFirstResponder];
+//            [UILabel showMessage:[NSString stringWithFormat:@"您的输入超过限制"]];
+//            return NO;
+//        }
+//
+//    }else if (self.storeNameTF){
+//    
+//    }else if (self.detailAddressTF){
+//    
+//    }
+//
+//    return YES;
+//}
 
 -(void)submitbtnClick
 {
@@ -379,10 +399,10 @@
     }else if (self.nameLength>12){
         [UILabel showMessage:@"您的输入超过限制"];
     
-    }else if (self.storeNameLength>20){
+    }else if (self.storeNameLength>40){
         [UILabel showMessage:@"您的输入超过限制"];
     
-    }else if (self.detailAddressLength>30){
+    }else if (self.detailAddressLength>60){
         [UILabel showMessage:@"您的输入超过限制"];
     
     }else{

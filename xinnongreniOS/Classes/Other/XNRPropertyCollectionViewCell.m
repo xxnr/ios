@@ -20,15 +20,11 @@
 -(void)createView
 {
     UILabel *itemTitleLabel = [[UILabel alloc] init];
-//    itemTitleLabel.frame = self.bounds;
     itemTitleLabel.layer.cornerRadius = 5.0;
     itemTitleLabel.layer.masksToBounds = YES;
-//    itemTitleLabel.layer.borderWidth = 1.0;
-//    itemTitleLabel.layer.borderColor = [R_G_B_16(0xf0f0f0) CGColor];
 
     itemTitleLabel.textColor = R_G_B_16(0x323232);
     itemTitleLabel.backgroundColor = R_G_B_16(0xf0f0f0);
-//    itemTitleLabel.backgroundColor = [UIColor redColor];
     itemTitleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     itemTitleLabel.textAlignment = NSTextAlignmentCenter;
     self.itemTitleLabel = itemTitleLabel;
@@ -43,9 +39,12 @@
         self.itemTitleLabel.text = skuCellModel.cellValue;
         
     CGSize strSize = [skuCellModel.cellValue sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(28)]}];
-        self.itemTitleLabel.frame = CGRectMake(0, 0, strSize.width+PX_TO_PT(13), strSize.height+PX_TO_PT(10));
-//        self.itemTitleLabel.layer.borderColor = skuCellModel.isSelected?[R_G_B_16(0xfe9b00) CGColor]:[R_G_B_16(0xf0f0f0) CGColor];
-
+        if (strSize.width>ScreenWidth) {
+            self.itemTitleLabel.frame = CGRectMake(0, 0, ScreenWidth-PX_TO_PT(60), strSize.height+PX_TO_PT(10));
+        }else{
+            self.itemTitleLabel.frame = CGRectMake(0, 0, strSize.width+PX_TO_PT(13), strSize.height+PX_TO_PT(10));
+        }
+     
         self.itemTitleLabel.textColor = skuCellModel.isEnable?R_G_B_16(0x323232):R_G_B_16(0xD0D0D0);
         self.itemTitleLabel.backgroundColor = skuCellModel.isSelected?R_G_B_16(0xfe9b00):R_G_B_16(0xf0f0f0);
 
@@ -56,9 +55,11 @@
         XNRAddtionsModel *addModel = (XNRAddtionsModel *)cellM;
         self.itemTitleLabel.text = [NSString stringWithFormat:@"%@(+%@)",addModel.name,addModel.price];
         CGSize strSize = [self.itemTitleLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(28)]}];
-        self.itemTitleLabel.frame = CGRectMake(0, 0, strSize.width+ PX_TO_PT(13), strSize.height+ PX_TO_PT(10));
-//        self.itemTitleLabel.layer.borderColor = addModel.isSelected?[R_G_B_16(0xfe9b00) CGColor]:[R_G_B_16(0xf0f0f0) CGColor];
-
+        if (strSize.width>ScreenWidth) {
+            self.itemTitleLabel.frame = CGRectMake(0, 0, ScreenWidth-PX_TO_PT(60), strSize.height+PX_TO_PT(10));
+        }else{
+            self.itemTitleLabel.frame = CGRectMake(0, 0, strSize.width+PX_TO_PT(13), strSize.height+PX_TO_PT(10));
+        }
         self.itemTitleLabel.backgroundColor = addModel.isSelected?R_G_B_16(0xfe9b00):R_G_B_16(0xf0f0f0);
         self.itemTitleLabel.textColor = addModel.isSelected?R_G_B_16(0xffffff):R_G_B_16(0x323232);
     }

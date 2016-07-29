@@ -94,12 +94,12 @@
     
     for (int i = 1; i<3; i++) {
         UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(i*(ScreenWidth/3), 0, 1, PX_TO_PT(89))];
-        midView.backgroundColor = R_G_B_16(0xc7c7c7);
+        midView.backgroundColor = R_G_B_16(0xe0e0e0);
         [self addSubview:midView];
     }
     
     UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
-    bottomLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    bottomLine.backgroundColor = R_G_B_16(0xe0e0e0);
     [self addSubview:bottomLine];
 
 }

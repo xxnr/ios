@@ -31,7 +31,7 @@
     itemTitleLabel.textColor = R_G_B_16(0x646464);
     itemTitleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     itemTitleLabel.textAlignment = NSTextAlignmentCenter;
-    itemTitleLabel.layer.borderColor = R_G_B_16(0xc7c7c7).CGColor;
+    itemTitleLabel.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     itemTitleLabel.layer.borderWidth = .5;
     self.itemTitleLabel = itemTitleLabel;
     [self.contentView addSubview:self.itemTitleLabel];

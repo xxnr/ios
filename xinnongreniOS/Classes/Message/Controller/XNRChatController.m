@@ -140,7 +140,6 @@
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"新农资讯";
     self.navigationItem.titleView = titleLabel;
-    
 
 }
 -(void)setupTableView
