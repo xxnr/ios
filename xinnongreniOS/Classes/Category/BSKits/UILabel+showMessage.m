@@ -76,9 +76,9 @@
     [showview addSubview:label];
     showview.frame = CGRectMake((SCREEN_WIDTH - LabelSize.width - 20)/2, SCREEN_HEIGHT - 100, LabelSize.width+20, LabelSize.height+10);
     [UIView animateWithDuration:3.0 animations:^{
-//        showview.alpha = 0;
+        showview.alpha = 0;
     } completion:^(BOOL finished) {
-//        [showview removeFromSuperview];
+        [showview removeFromSuperview];
     }];
     
     
