@@ -190,7 +190,6 @@ xxnrClass.shoppingCar = function (window) {
             return window.navigationBar().buttons()["完成"];
         },
         allSelectBtn:function () {
-            return target.tap({x:16,y:587});
         },
         goPayBtn:function () {
             return window.buttons()["去结算"];
@@ -398,9 +397,11 @@ xxnrClass.rscOrders = function (window) {
             },
             waitVerifyTab:function () {
                 return window.buttons()["待审核"];
+
             },
             waitDeliverTab:function () {
                 return window.buttons()["待配送"];
+
             },
             waitTakeTab:function () {
                 return window.buttons()["待自提"];
@@ -410,6 +411,7 @@ xxnrClass.rscOrders = function (window) {
             },
             identifyPayBtn:function () {
                 return window.scrollViews()[0].tableViews()[0].groups()["网点自提"].buttons()["审核付款"];
+
             },
             eposeBtn:function () {
                 return window.buttons()["线下POS机"];
@@ -420,34 +422,15 @@ xxnrClass.rscOrders = function (window) {
             admireBtn:function () {
                 return window.buttons()["确定"];
             },
-            admireBtn1:function () {
-                return window.buttons()["确定(1)"];
-
-            }
             closeBtn:function () {
                 return window.buttons()["close"];
+
             },
             startDeliverBtn:function () {
                 return window.scrollViews()[0].tableViews()[0].groups()["配送到户"].buttons()["开始配送"];
             },
-            cellBnt:function () {
-                return window.tableViews()[0].cell()[0].tap();
-            },
-            userTakeBtn:function () {
-              return  window.scrollViews()[0].tableViews()[0].groups()["网点自提"].buttons()["客户自提"];
-            },
-            nextStepBtn:function () {
-               return window.views()[0].buttons()["下一步"];
 
-            }
-            nextStepBtn1:function () {
-                return window.views()[0].buttons()["下一步(1)"];
-
-            }
-            inputTakeNumber:function () {
-                return window.textFields()[0].textFields()[0];
-
-            }
+            
             
         }
 }

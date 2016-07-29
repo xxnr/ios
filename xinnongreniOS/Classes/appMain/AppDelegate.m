@@ -107,7 +107,6 @@
     if (remoteNotification != nil) {
         _is_Notification = YES;
     }
-
     return YES;
 }
 

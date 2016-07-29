@@ -8,7 +8,6 @@ test("购物车测试",function(target,app){
      test("商品的选择测试",function(target,app){
           xxnrClass.home(window).shoppingCarTab().tap();
           window.logElementTree();
-
           // 全选
           xxnrClass.shoppingCar(window).allSelectBtn().tap();
           target.delay(1);
@@ -132,7 +131,7 @@ test("购物车测试",function(target,app){
           var target = UIATarget.localTarget();         
 
           window.tabBar().buttons()["我的"].tap();
-          xxnrClass().home(window).mineTab().tap();
+          xxnrClass.home(window).mineTab().tap();
           login(18211101020,123456);
           target.delay(1);
 
