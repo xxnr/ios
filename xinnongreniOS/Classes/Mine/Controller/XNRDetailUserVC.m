@@ -18,6 +18,8 @@
 @property (nonatomic,strong)XNRPotentialCustomer *customer;
 @property (nonatomic,strong)NSMutableArray *intentionArr;
 @property (nonatomic,strong)NSMutableArray *detailLabels;
+@property (nonatomic,weak)UIView *remarksLB;
+@property (nonatomic,copy)NSString *phone;
 @end
 
 @implementation XNRDetailUserVC
@@ -36,7 +38,7 @@
 }
 -(void)createView
 {
-    NSArray *nameArr = @[@"姓名",@"手机号",@"性别",@"地区",@"街道",@"意向商品"];
+    NSArray *nameArr = @[@"姓名",@"手机号",@"性别",@"地区",@"街道",@"意向商品",@"备注"];
     
     for (int i=0; i<nameArr.count; i++) {
         UIView *cell = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i, PX_TO_PT(140), PX_TO_PT(99))];
@@ -44,6 +46,10 @@
         name.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         name.textColor = R_G_B_16(0x323232);
         name.text = nameArr[i];
+        if ([name.text isEqualToString:@"备注"]) {
+            self.remarksLB = cell;
+            self.remarksLB.hidden = YES;
+        }
         [cell addSubview:name];
         
         if (i+1 < nameArr.count) {
@@ -53,7 +59,24 @@
         }
         [self.view addSubview:cell];
     }
+    
 }
+-(void)call
+{
+    if (self.phone) {
+        
+        if(TARGET_IPHONE_SIMULATOR){
+            [UILabel showMessage:@"模拟器不支持打电话，请用真机测试"];
+        } else {
+            
+            UIWebView*phoneCallWebView = [[UIWebView alloc] initWithFrame:CGRectZero];
+            NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",self.phone]];
+            [phoneCallWebView loadRequest:[NSURLRequest requestWithURL:phoneURL]];
+            [self.view addSubview:phoneCallWebView];
+        }
+    }
+}
+
 -(void)getData
 {
     [KSHttpRequest get:KGetPotentialCustomer parameters:@{@"_id":self._id} success:^(id result) {
@@ -61,6 +84,7 @@
             XNRPotentialCustomer *user = [[XNRPotentialCustomer alloc]init];
             user = [XNRPotentialCustomer objectWithKeyValues:result[@"potentialCustomer"]];
             self.customer = user;
+            self.phone =user.phone;
             _intentionArr = [NSMutableArray arrayWithArray:[XNRBuyIntentionModel objectArrayWithKeyValuesArray:result[@"potentialCustomer"][@"buyIntentions"]]];
             NSMutableString *pro = [[NSMutableString alloc]init];
             [pro appendString:@""];
@@ -121,6 +145,11 @@
                 NSLog(@"%@",self.view.subviews);
             }
            
+            UIButton *phoneBtn = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth/2+PX_TO_PT(40), PX_TO_PT(35)+PX_TO_PT(99)*1, PX_TO_PT(24), PX_TO_PT(30))];
+            [phoneBtn setImage:[UIImage imageNamed:@"phone-icon"] forState:UIControlStateNormal];
+            [phoneBtn addTarget:self action:@selector(call) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:phoneBtn];
+
             CGSize size = [pro sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(ScreenWidth - PX_TO_PT(192), MAXFLOAT)];
 
             UILabel *interestLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(192), PX_TO_PT(35)+PX_TO_PT(99)*5, ScreenWidth - PX_TO_PT(192),size.height)];
@@ -135,9 +164,27 @@
             lastLine.backgroundColor = R_G_B_16(0xE0E0E0);
             [self.view addSubview:lastLine];
             
-//            UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastLine.frame)+1, ScreenWidth, ScreenHeight -CGRectGetMaxY(lastLine.frame)-1)];
+            CGFloat bgY =CGRectGetMaxY(lastLine.frame)+PX_TO_PT(1);
+            
+            if (user.remarks) {
+                self.remarksLB.hidden = NO;
+                CGSize remarksSize = [user.remarks sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(ScreenWidth - PX_TO_PT(192), MAXFLOAT)];
+                UILabel *remarksLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(192), CGRectGetMaxY(lastLine.frame)+PX_TO_PT(35), ScreenWidth - PX_TO_PT(192),remarksSize.height)];
+                remarksLabel.numberOfLines = 0;
+                remarksLabel.text = user.remarks;
+                remarksLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+                remarksLabel.textColor = R_G_B_16(0x646464);
+                [self.view addSubview:remarksLabel];
+                
+                self.remarksLB.frame =CGRectMake(0,  CGRectGetMaxY(lastLine.frame), PX_TO_PT(140), PX_TO_PT(99));
+                
+                UIView *remarksLine = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(remarksLabel.frame)+PX_TO_PT(35),ScreenWidth, PX_TO_PT(1.5))];
+                remarksLine.backgroundColor = R_G_B_16(0xE0E0E0);
+                [self.view addSubview:remarksLine];
 
-            UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastLine.frame)+PX_TO_PT(1), ScreenWidth, ScreenHeight -CGRectGetMaxY(lastLine.frame))];
+                    bgY = CGRectGetMaxY(remarksLine.frame)+PX_TO_PT(1);
+            }
+            UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, bgY, ScreenWidth, ScreenHeight -CGRectGetMaxY(lastLine.frame))];
 
             bgView.backgroundColor = R_G_B_16(0xf8f8f8);
             [self.view addSubview:bgView];

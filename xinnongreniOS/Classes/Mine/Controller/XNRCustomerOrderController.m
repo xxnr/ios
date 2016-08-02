@@ -27,6 +27,12 @@
 
 @property (nonatomic ,weak) UILabel *phoneNum;
 
+@property (nonatomic ,weak) UIButton *phoneBtn;
+
+@property (nonatomic ,copy) NSString *phone;
+
+@property (nonatomic ,weak) UILabel *address;
+
 @property (nonatomic ,weak) UILabel *totalLabel;
 
 @property (nonatomic, weak) XNRCustomerOrderEmptyView *emptyView;
@@ -161,6 +167,35 @@
                 self.nameLabel.text = @"该好友未填姓名";
             }
             self.phoneNum.text = [NSString stringWithFormat:@"手机号：%@",datas[@"account"]];
+            self.phone = datas[@"account"];
+            NSMutableAttributedString *AttributedString = [[NSMutableAttributedString alloc]initWithString:self.phoneNum.text];
+            NSDictionary *dict=@{
+                                 
+                                 NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(32)]
+                                 };
+            
+            [AttributedString addAttributes:dict range:NSMakeRange(4,self.phoneNum.text.length-4)];
+            
+            [self.phoneNum setAttributedText:AttributedString];
+
+            CGFloat phoneNumWidth = [self.phoneNum.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)]].width;
+            CGRect rect = self.phoneNum.frame;
+            rect.size.width = phoneNumWidth;
+            self.phoneNum.frame = rect;
+            
+            CGFloat phoneBtnX = CGRectGetMaxX(self.phoneNum.frame)+PX_TO_PT(5);
+            CGRect phoneBtnRect = self.phoneBtn.frame;
+            phoneBtnRect.origin.x = phoneBtnX;
+            self.phoneBtn.frame = phoneBtnRect;
+            
+            NSDictionary *address = datas[@"address"];
+            NSString *province = [NSString stringWithFormat:@"%@ ",address[@"province"][@"name"]];
+            NSString *city = [NSString stringWithFormat:@"%@ ",address[@"city"][@"name"]];
+            NSString *county = [NSString stringWithFormat:@"%@ ",address[@"county"][@"name"]];
+            NSString *town = [NSString stringWithFormat:@"%@",address[@"town"][@"name"]];
+            
+            self.address.text = [NSString stringWithFormat:@"所在地区：%@%@%@%@",address[@"province"][@"name"]?province:@"",address[@"city"][@"name"]?city:@"",address[@"county"][@"name"]?county:@"",address[@"town"][@"name"]?town:@""];
+
             self.totalLabel.text = [NSString stringWithFormat:@"%@",datas[@"total"]];
             
             NSArray *rows = datas[@"rows"];
@@ -321,24 +356,37 @@
 
 -(void)createHeadView
 {
-    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(140))];
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(195))];
     headView.backgroundColor = [UIColor whiteColor];
     self.headView = headView;
     [self.view addSubview:headView];
             
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(23), ScreenWidth/2, PX_TO_PT(32))];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(23), ScreenWidth/2, PX_TO_PT(28))];
     nameLabel.textColor = R_G_B_16(0x323232);
-    nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.nameLabel = nameLabel;
     [headView addSubview:nameLabel];
             
-    UILabel *phoneNum = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(30), ScreenWidth, PX_TO_PT(32))];
+    UILabel *phoneNum = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(28), ScreenWidth, PX_TO_PT(32))];
     phoneNum.textColor = R_G_B_16(0x323232);
-    phoneNum.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    phoneNum.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.phoneNum = phoneNum;
     [headView addSubview:phoneNum];
+    
+    UIButton *phoneBtn = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(333), CGRectGetMinY(phoneNum.frame), PX_TO_PT(23), PX_TO_PT(29))];
+    self.phoneBtn = phoneBtn;
+    [phoneBtn setImage:[UIImage imageNamed:@"phone-icon"] forState:UIControlStateNormal];
+    [phoneBtn addTarget:self action:@selector(call) forControlEvents:UIControlEventTouchUpInside];
+    [headView addSubview:phoneBtn];
+
+    UILabel *address = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), CGRectGetMaxY(phoneNum.frame) + PX_TO_PT(28), ScreenWidth, PX_TO_PT(32))];
+    address.textColor = R_G_B_16(0x323232);
+    address.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    self.address = address;
+    [headView addSubview:address];
+    
             
-    UILabel *totalLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(112), PX_TO_PT(30), PX_TO_PT(80), PX_TO_PT(80))];
+    UILabel *totalLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(112), PX_TO_PT(30), PX_TO_PT(82), PX_TO_PT(82))];
     totalLabel.layer.cornerRadius = PX_TO_PT(40);
     totalLabel.layer.masksToBounds = YES;
     totalLabel.backgroundColor = R_G_B_16(0xfe9b00);
@@ -347,7 +395,7 @@
     self.totalLabel = totalLabel;
     [headView addSubview:totalLabel];
             
-    UILabel *orderNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(56), ScreenWidth/2-PX_TO_PT(130), PX_TO_PT(28))];
+    UILabel *orderNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, PX_TO_PT(31), ScreenWidth-PX_TO_PT(500), PX_TO_PT(28))];
     orderNumLabel.textColor = R_G_B_16(0x323232);
     orderNumLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     orderNumLabel.textAlignment = NSTextAlignmentRight;
@@ -355,6 +403,22 @@
     [headView addSubview:orderNumLabel];
     
 }
+-(void)call
+{
+    if (self.phone) {
+        
+        if(TARGET_IPHONE_SIMULATOR){
+            [UILabel showMessage:@"模拟器不支持打电话，请用真机测试"];
+        } else {
+            
+            UIWebView*phoneCallWebView = [[UIWebView alloc] initWithFrame:CGRectZero];
+            NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",self.phone]];
+            [phoneCallWebView loadRequest:[NSURLRequest requestWithURL:phoneURL]];
+            [self.view addSubview:phoneCallWebView];
+        }
+    }
+}
+
 -(void)createTableView
 {
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64) style:UITableViewStyleGrouped];

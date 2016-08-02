@@ -30,5 +30,5 @@
 
 @property (nonatomic ,assign) int newOrdersNumber;
 
-
+@property (nonatomic,assign) BOOL sex;
 @end

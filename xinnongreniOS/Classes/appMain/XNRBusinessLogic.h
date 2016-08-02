@@ -62,8 +62,16 @@
  */
 #define KUserGetInvitee [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/user/getInvitee"]
 
-//获取新农代表
+//获取新农代表的客户列表，按拼音字母排序
+#define KGetInviteeOrderbyName [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/user/getInviteeOrderbyName"]
+
+
+//获取推荐的新农代表
 #define KGetNominatedInviter [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/user/getNominatedInviter"]
+
+//获取新农代表
+#define KGetInviter [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/user/getInviter/"]
+
 
 /**
  *  用户绑定邀请人
@@ -237,6 +245,12 @@
  *  获取报备用户列表
  */
 #define KGetQuery [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/potentialCustomer/query"]
+
+//获取全部报备用户列表
+#define KGetAllQuery [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/potentialCustomer/queryAllOrderbyName"]
+
+//获取按姓名pinyin排序报备用户列表是否需要更新，并获取今天剩余报备人数
+#define KGetIsLatest [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/potentialCustomer/isLatest"]
 
 /**
  *  添加用户
