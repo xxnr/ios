@@ -940,12 +940,7 @@
     }else{
             [self.shopCarView show];
             self.editeBtn.hidden = YES;
-//            self.navigationItem.title = @"购物车";
-//        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-//        titleLabel.backgroundColor = [UIColor clearColor];
-//        titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
-//        titleLabel.textColor = R_G_B_16(0xfbffff);
-//        titleLabel.textAlignment = NSTextAlignmentCenter;
+
         self.titleLabel.text = @"购物车";
         self.navigationItem.titleView = self.titleLabel;
 
@@ -958,7 +953,6 @@
     for (XNRShopCarSectionModel *sectionModel in _dataArr) {
         for (XNRShoppingCarFrame *model in sectionModel.SKUFrameList) {
             if ([model.shoppingCarModel.online integerValue] == 1) {
-//                isAllAll = isAllAll && sectionModel.isSelected;
                 isAllAll = isAllAll && model.shoppingCarModel.selectState;
 
             }
@@ -980,14 +974,6 @@
                 NSLog(@"------取消选中:%@",carModel.shoppingCarModel._id);
                 [_MapOfAllStateArr removeObject:carModel.shoppingCarModel._id];
             }
-            
-//            if ([_MapOfAllStateArr containsObject:carModel._id]&&!carModel.selectState) {
-//                [_MapOfAllStateArr removeObject:carModel._id];
-//            }
-//            
-//            if (carModel.selectState) {
-//                [_MapOfAllStateArr addObject:carModel._id];
-//            }
         }
     }
     
@@ -1025,6 +1011,24 @@
         }
     }
 
+}
+
+#pragma tableViewDelete
+-(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+// 改变删除按钮的title
+-(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"删除";
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+    }
 }
 
 

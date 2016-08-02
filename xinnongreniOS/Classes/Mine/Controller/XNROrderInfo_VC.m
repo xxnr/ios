@@ -859,7 +859,6 @@
             _addressDetail.text = [NSString stringWithFormat:@"%@%@",address1,model.address];
         }else{
             _addressDetail.text = [NSString stringWithFormat:@"%@%@%@",address1,model.townName,model.address];
-            
         }
         
     }else{
@@ -1350,6 +1349,7 @@
         vc.recieveName = self.recipientNameLabel.text;
         vc.recievePhone = self.recipientPhoneLabel.text;
         vc.recieveAddress = _addressDetail.text;
+        vc.model = self.RSCdetailModel;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if (self.numOrder == 2)

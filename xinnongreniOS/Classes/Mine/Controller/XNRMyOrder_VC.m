@@ -122,12 +122,13 @@
         [self.mainScrollView addSubview:self.ServeView];
         __weak __typeof(&*self)weakSelf=self;
         
-        [self.ServeView setPayBlock:^(NSString *orderID,NSString *money){
+        [self.ServeView setPayBlock:^(NSString *orderID,NSString *money,XNRRSCDetailModel *rscOrderModel){
             XNRPayType_VC*vc = [[XNRPayType_VC alloc]init];
             vc.hidesBottomBarWhenPushed = YES;
             vc.orderID = orderID;
             vc.payMoney = money;
-
+            vc.model = rscOrderModel;
+            vc.isfromOrderVC = YES;
             [weakSelf.navigationController pushViewController:vc animated:YES];
         }];
         // 查看订单

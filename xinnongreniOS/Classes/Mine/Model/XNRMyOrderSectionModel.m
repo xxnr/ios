@@ -36,6 +36,13 @@
     return _orderFrameArray;
 }
 
+- (NSMutableDictionary *)RSCInfo {
+    if (!_RSCInfo) {
+        _RSCInfo = [NSMutableDictionary dictionary];
+    }
+    return _RSCInfo;
+}
+
 
 
 

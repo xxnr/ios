@@ -1,23 +1,23 @@
 //
-//  XNRSelWebSiteVC.m
+//  XNREposAddressViewController.m
 //  xinnongreniOS
 //
-//  Created by 杨宁 on 16/4/18.
+//  Created by xxnr on 16/8/1.
 //  Copyright © 2016年 qxhiOS. All rights reserved.
 //
 
-#import "XNRSelWebSiteVC.h"
-#import "XNRSelWebSiteCell.h"
+#import "XNREposAddressViewController.h"
+#import "XNREposAddressCell.h"
+//#import "XNRSelWebSiteCell.h"
 #import "XNRCityCell.h"
-#import "XNRSelWebBtn.h"
+//#import "XNRSelWebBtn.h"
 #import "XNRRSCModel.h"
 #import "XNRRSCDetailModel.h"
 #import "XNRCompanyAddressModel.h"
 #import "XNRCityDetailModel.h"
-
 #define Tag 1000
 #define TableViewTag 2000
-@interface XNRSelWebSiteVC ()<UITableViewDataSource,UITableViewDelegate>
+@interface XNREposAddressViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     int currentPage;
 }
@@ -28,14 +28,13 @@
 @property (nonatomic,weak)UIButton *cityBtn;
 @property (nonatomic,weak) UIButton *areaBtn;
 @property (nonatomic,weak) UIButton *currentBtn;
-@property (nonatomic,weak) XNRSelWebBtn *iconBtn;
+//@property (nonatomic,weak) XNRSelWebBtn *iconBtn;
 @property (nonatomic,weak)UIView *coverView;
 @property (nonatomic,weak)UIView *rollView;
 @property (nonatomic,strong)NSString *proviceId;
 @property (nonatomic,strong)NSString *cityId;
 @property (nonatomic,strong)NSString *areaId;
 @property (nonatomic,strong) NSMutableArray *dataArr;
-//@property (nonatomic,strong) NSMutableArray *selProArr;
 @property (nonatomic,strong) XNRRSCModel *currentModel;
 @property (nonatomic,strong) NSMutableArray *iconArr;
 @property (nonatomic,strong) NSMutableArray *provinceList;
@@ -48,7 +47,21 @@
 @property (nonatomic,strong) NSIndexPath *areaIndexPath;
 @end
 
-@implementation XNRSelWebSiteVC
+@implementation XNREposAddressViewController
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self createNavgation];
+    _dataArr = [NSMutableArray array];
+    _iconArr = [NSMutableArray array];
+    currentPage = 1;
+    [self getData];
+    [self createTop];
+    
+    [self createMidView];
+    
+    [self setupTotalRefresh];
+}
 
 -(NSMutableArray *)currentCityArr
 {
@@ -82,49 +95,49 @@
 -(void)getData
 {
     
-    [KSHttpRequest get:KgetRSC parameters:@{@"products":self.proId,@"province":self.proviceId?self.proviceId:@"",@"city":self.cityId?self.cityId:@"",@"county":self.areaId?self.areaId:@"",@"page":[NSNumber numberWithInt:currentPage],@"max":@10} success:^(id result)
+    [KSHttpRequest get:KgetRSC parameters:@{@"EPOS":@"true",@"province":self.proviceId?self.proviceId:@"",@"city":self.cityId?self.cityId:@"",@"county":self.areaId?self.areaId:@"",@"page":[NSNumber numberWithInt:currentPage],@"max":@10} success:^(id result)
      {
-        if ([result[@"code"]integerValue] == 1000) {
-            
+         if ([result[@"code"]integerValue] == 1000) {
+             
              if(currentPage == 1)
              {
                  [_dataArr removeAllObjects];
              }
-            NSMutableArray *arr = (NSMutableArray *)[XNRRSCModel objectArrayWithKeyValuesArray:result[@"RSCs"]];
-            [_dataArr addObjectsFromArray:arr];
-            
-            if (_dataArr.count == 0) {
-                [UILabel showMessage:result[@"message"]];
-            }
-            else
-            {
-                [self.tableView reloadData];
-            }
-            
-            //如果到达最后一页 就消除footer
-            
-            NSInteger pages = [result[@"datas"][@"pages"] integerValue];
-            NSInteger page = [result[@"datas"][@"page"] integerValue];
-            self.tableView.mj_footer.hidden = pages==page;
-            
-            [self.tableView.mj_header endRefreshing];
-            [self.tableView.mj_footer endRefreshing];
-            [BMProgressView LoadViewDisappear:self.view];
-
-        }
+             NSMutableArray *arr = (NSMutableArray *)[XNRRSCModel objectArrayWithKeyValuesArray:result[@"RSCs"]];
+             [_dataArr addObjectsFromArray:arr];
+             
+             if (_dataArr.count == 0) {
+                 [UILabel showMessage:result[@"message"]];
+             }
+             else
+             {
+                 [self.tableView reloadData];
+             }
+             
+             //如果到达最后一页 就消除footer
+             
+             NSInteger pages = [result[@"datas"][@"pages"] integerValue];
+             NSInteger page = [result[@"datas"][@"page"] integerValue];
+             self.tableView.mj_footer.hidden = pages==page;
+             
+             [self.tableView.mj_header endRefreshing];
+             [self.tableView.mj_footer endRefreshing];
+             [BMProgressView LoadViewDisappear:self.view];
+             
+         }
          else
          {
              [self.tableView.mj_header endRefreshing];
              [self.tableView.mj_footer endRefreshing];
          }
          
-    } failure:^(NSError *error) {
-        [self.tableView.mj_header endRefreshing];
-        [self.tableView.mj_footer endRefreshing];
-        [BMProgressView LoadViewDisappear:self.view];
-        
-
-    }];
+     } failure:^(NSError *error) {
+         [self.tableView.mj_header endRefreshing];
+         [self.tableView.mj_footer endRefreshing];
+         [BMProgressView LoadViewDisappear:self.view];
+         
+         
+     }];
 }
 #pragma mark - 刷新
 -(void)setupTotalRefresh{
@@ -183,27 +196,10 @@
     
     currentPage ++;
     [self getData];
-
+    
     
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    [self setNav];
-    _dataArr = [NSMutableArray array];
-    _iconArr = [NSMutableArray array];
-    currentPage = 1;
-    [self getData];
-    [self createTop];
-    
-    [self createBottom];
-
-    [self createMidView];
-
-    [self setupTotalRefresh];
-    // Do any additional setup after loading the view.
-}
 -(void)createTop{
     UIButton *proviceBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     proviceBtn.frame = CGRectMake(0,0, ScreenWidth/3, PX_TO_PT(89));
@@ -217,11 +213,11 @@
     UIImage *image = [UIImage imageNamed:@"bottom-arrow"];
     [proviceBtn setImage:image forState:UIControlStateNormal];
     [proviceBtn setImage:[UIImage imageNamed:@"top--arrow"] forState:UIControlStateSelected];
-
+    
     proviceBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     
     [proviceBtn setImageEdgeInsets:UIEdgeInsetsMake(0, PX_TO_PT(180), 0, 0)];
-
+    
     
     [proviceBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, image.size.width+PX_TO_PT(30))];
     
@@ -234,7 +230,7 @@
     cityBtn.tag = Tag+1;
     [cityBtn setTitle:@"全部地区" forState:UIControlStateNormal];
     cityBtn.backgroundColor = [UIColor whiteColor];
-
+    
     cityBtn.adjustsImageWhenHighlighted = NO;
     cityBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [cityBtn setTitleColor:R_G_B_16(0x323232) forState:UIControlStateNormal];
@@ -244,12 +240,12 @@
     
     [cityBtn setImage:[UIImage imageNamed:@"bottom-arrow"] forState:UIControlStateNormal];
     [cityBtn setImage:[UIImage imageNamed:@"top--arrow"] forState:UIControlStateSelected];
-
-   
+    
+    
     [cityBtn setImageEdgeInsets:UIEdgeInsetsMake(0, PX_TO_PT(180), 0, 0)];
-
+    
     [cityBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, image.size.width+PX_TO_PT(30))];
-
+    
     
     self.cityBtn = cityBtn;
     [self.view addSubview:cityBtn];
@@ -267,7 +263,7 @@
     [areaBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [areaBtn setImage:[UIImage imageNamed:@"bottom-arrow"] forState:UIControlStateNormal];
     [areaBtn setImage:[UIImage imageNamed:@"top--arrow"] forState:UIControlStateSelected];
-
+    
     [areaBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, image.size.width+PX_TO_PT(30))];
     [areaBtn setImageEdgeInsets:UIEdgeInsetsMake(0, PX_TO_PT(180), 0, 0)];
     
@@ -290,43 +286,12 @@
     rollView.hidden = YES;
     rollView.backgroundColor = R_G_B_16(0xFF4E00);
     [self.view addSubview:rollView];
-    
-    
 }
--(void)createBottom
-{
-    UIView *bottomView = [[UIView alloc]initWithFrame:CGRectMake(0,ScreenHeight - PX_TO_PT(99)-64, ScreenWidth, PX_TO_PT(99))];
-    bottomView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:bottomView];
-    
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(2))];
-    line.backgroundColor = R_G_B_16(0xe0e0e0);
-    [bottomView addSubview:line];
-    
-    UIButton *sureBtn = [[UIButton alloc]initWithFrame:CGRectMake((ScreenWidth-PX_TO_PT(161))/2, (PX_TO_PT(99)-PX_TO_PT(52))/2, PX_TO_PT(161), PX_TO_PT(52))];
-    sureBtn.backgroundColor = R_G_B_16(0xFE9B00);
-    [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
-    sureBtn.titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-    sureBtn.layer.cornerRadius = PX_TO_PT(10);
-    [sureBtn addTarget:self action:@selector(sureBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [bottomView addSubview:sureBtn];
-}
-//确认按钮
--(void)sureBtnClick
-{
-    if (self.currentModel) {
-        self.RSCDetailChoseBlock(self.currentModel);
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else
-    {
-        [UILabel showMessage:@"请选择一个自提网点"];
-    }
-}
+
 -(void)createMidView
 {
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.proviceBtn.frame), ScreenWidth, self.view.height-CGRectGetMaxY(self.proviceBtn.frame)-PX_TO_PT(99)-64) style:UITableViewStylePlain];
-//    self.tableView.backgroundColor = [UIColor clearColor];
+    //    self.tableView.backgroundColor = [UIColor clearColor];
     tableView.backgroundColor = R_G_B_16(0xf9f9f9);
     tableView.tag = TableViewTag;
     tableView.delegate = self;
@@ -341,10 +306,10 @@
     coverView.alpha = 0.3;
     coverView.hidden = YES;
     [self.view addSubview:coverView];
-
+    
     UITableView *tableView2 = [[UITableView alloc]initWithFrame:CGRectMake(0, -(ScreenHeight-CGRectGetMaxY(self.proviceBtn.frame)), ScreenWidth, self.view.height-self.proviceBtn.height) style:UITableViewStylePlain];
-//    tableView2.backgroundColor = [UIColor blackColor];
-//    tableView2.alpha = 0.3;
+    //    tableView2.backgroundColor = [UIColor blackColor];
+    //    tableView2.alpha = 0.3;
     tableView2.backgroundColor = [UIColor clearColor];
     tableView2.tag = TableViewTag+1;
     tableView2.delegate = self;
@@ -361,7 +326,7 @@
     self.rollView.hidden = NO;
     
     self.coverView.hidden = NO;
-
+    
     [UIView animateWithDuration:0.1f animations:^{
         self.tableView2.frame = CGRectMake(0, CGRectGetMaxY(self.proviceBtn.frame), ScreenWidth, ScreenHeight-self.proviceBtn.height);
     }];
@@ -380,7 +345,7 @@
         self.proviceBtn.selected = NO;
         self.cityBtn.selected = NO;
         self.areaBtn.selected = NO;
-
+        
         sender.selected = YES;
     }
     
@@ -398,18 +363,18 @@
     {
         [self getAreaData];
     }
- }
+}
 -(void)getProviceData
 {
     [self.provinceList removeAllObjects];
     [self.currentCityArr removeAllObjects];
-
-    [KSHttpRequest get:KgetProvince parameters:@{@"userId":[DataCenter account].userid,@"products":self.proId} success:^(id result) {
+    
+    [KSHttpRequest get:KgetProvince parameters:@{@"userId":[DataCenter account].userid,@"EPOS":@"true"} success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             self.provinceList = (NSMutableArray *)[XNRCityDetailModel objectArrayWithKeyValuesArray:result[@"provinceList"]];
             
             [self.currentCityArr setArray:self.provinceList];
-
+            
             [self.tableView2 reloadData];
         }
         else
@@ -424,14 +389,12 @@
 {
     [self.cityList removeAllObjects];
     [self.currentCityArr removeAllObjects];
-    [KSHttpRequest get:KgetCity parameters:@{@"userId":[DataCenter account].userid,@"products":self.proId,@"province":self.proviceId?self.proviceId:@"5649bd6c8eba3c20360afa0a"} success:^(id result) {
+    [KSHttpRequest get:KgetCity parameters:@{@"userId":[DataCenter account].userid,@"EPOS":@"true",@"province":self.proviceId?self.proviceId:@"5649bd6c8eba3c20360afa0a"} success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             self.cityList = (NSMutableArray *)[XNRCityDetailModel objectArrayWithKeyValuesArray:result[@"cityList"]];
             XNRCityDetailModel *model = [[XNRCityDetailModel alloc]init];
             model.name = @"全部地区";
-            
-//            [self.cityList setObject:model atIndexedSubscript:0];
-            [self.cityList insertObject:model atIndex:0];
+                        [self.cityList insertObject:model atIndex:0];
             [self.currentCityArr setArray:self.cityList];
             [self.tableView2 reloadData];
         }
@@ -448,14 +411,14 @@
 {
     [self.areaList removeAllObjects];
     [self.currentCityArr removeAllObjects];
-
-    [KSHttpRequest get:KgetCounty parameters:@{@"userId":[DataCenter account].userid,@"products":self.proId,@"province":self.proviceId?self.proviceId:@"5649bd6c8eba3c20360afa0a",@"city":self.cityId} success:^(id result) {
+    
+    [KSHttpRequest get:KgetCounty parameters:@{@"userId":[DataCenter account].userid,@"EPOS":@"true",@"province":self.proviceId?self.proviceId:@"5649bd6c8eba3c20360afa0a",@"city":self.cityId} success:^(id result) {
         if ([result[@"code"]integerValue] == 1000) {
             self.areaList = (NSMutableArray *)[XNRCityDetailModel objectArrayWithKeyValuesArray:result[@"countyList"]];
-
+            
             XNRCityDetailModel *model = [[XNRCityDetailModel alloc]init];
             model.name = @"全部地区";
-
+            
             [self.areaList insertObject:model atIndex:0];
             [self.currentCityArr setArray:self.areaList];
             [self.tableView2 reloadData];
@@ -485,9 +448,9 @@
     
     if (tableView.tag == TableViewTag) {
         NSString static *cellID1 = @"cell1";
-        XNRSelWebSiteCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1];
+        XNREposAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1];
         if (!cell) {
-            cell = [[XNRSelWebSiteCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID1];
+            cell = [[XNREposAddressCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID1];
         }
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -497,27 +460,27 @@
         {
             [(UIView*)[cell.contentView.subviews lastObject] removeFromSuperview];
         }
-//        for (XNRSelWebBtn *btn in cell.contentView.subviews) {
-//            [btn removeFromSuperview];
-//        }
-    
+        //        for (XNRSelWebBtn *btn in cell.contentView.subviews) {
+        //            [btn removeFromSuperview];
+        //        }
+        
         XNRRSCModel *RSCmodel = [self.dataArr objectAtIndex:indexPath.row];
         XNRRSCDetailModel *model = [XNRRSCDetailModel objectWithKeyValues:RSCmodel.RSCInfo];
         cell.model = model;
         
-        XNRSelWebBtn *iconBtn = [[XNRSelWebBtn alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, cell.height)];
-
-        [iconBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
-        [iconBtn setImage:[UIImage imageNamed:@"address_right"] forState:UIControlStateSelected];
-
-        [iconBtn addTarget:self action:@selector(iconClick:) forControlEvents:UIControlEventTouchDown];
-        iconBtn.tag = indexPath.row;
-        
-        if (self.currentModel == self.dataArr[iconBtn.tag]) {
-                iconBtn.selected = YES;
-            }
-        [cell.contentView addSubview:iconBtn];
-        [_iconArr addObject:iconBtn];
+//        XNRSelWebBtn *iconBtn = [[XNRSelWebBtn alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, cell.height)];
+//        
+//        [iconBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
+//        [iconBtn setImage:[UIImage imageNamed:@"address_right"] forState:UIControlStateSelected];
+//        
+//        [iconBtn addTarget:self action:@selector(iconClick:) forControlEvents:UIControlEventTouchDown];
+//        iconBtn.tag = indexPath.row;
+//        
+//        if (self.currentModel == self.dataArr[iconBtn.tag]) {
+//            iconBtn.selected = YES;
+//        }
+//        [cell.contentView addSubview:iconBtn];
+//        [_iconArr addObject:iconBtn];
         return cell;
     }
     else if(tableView.tag == TableViewTag+1)
@@ -529,7 +492,7 @@
         }
         XNRCityDetailModel *model = self.currentCityArr[indexPath.row];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        cell.nameLabel.highlightedTextColor = R_G_B_16(0xFF4E00);
+        //        cell.nameLabel.highlightedTextColor = R_G_B_16(0xFF4E00);
         
         cell.name = model.name;
         
@@ -542,7 +505,7 @@
         if (_currentBtn.tag == Tag+2 && indexPath ==_areaIndexPath) {
             cell.nameLabel.textColor = R_G_B_16(0xFF4E00);
         }
-
+        
         return cell;
     }
     return nil;
@@ -555,18 +518,18 @@
         XNRCityDetailModel *model = [_currentCityArr objectAtIndex:indexPath.row];
         self.coverView.hidden = YES;
         self.rollView.hidden = YES;
-
+        
         if (_currentBtn.tag == Tag) {
             
             [_proviceBtn setTitle:model.name forState:UIControlStateSelected | UIControlStateNormal];
             [_proviceBtn setTitle:model.name forState: UIControlStateNormal];
-
+            
             [_cityBtn setTitle:@"全部地区" forState: UIControlStateNormal];
             [_cityBtn setTitle:@"全部地区" forState:UIControlStateSelected];
-
+            
             [_areaBtn setTitle:@"全部地区" forState: UIControlStateNormal];
             [_areaBtn setTitle:@"全部地区" forState:UIControlStateSelected];
-
+            
             
             _proviceId = model._id;
             _cityId = nil;
@@ -580,12 +543,12 @@
             
             [_cityBtn setTitle:model.name forState:UIControlStateSelected | UIControlStateNormal];
             [_cityBtn setTitle:model.name forState: UIControlStateNormal];
-
+            
             [_areaBtn setTitle:@"全部地区" forState: UIControlStateNormal];
             [_areaBtn setTitle:@"全部地区" forState:UIControlStateSelected];
             _cityId = model._id;
             _areaId = nil;
-
+            
             if (_cityId) {
                 self.areaBtn.enabled = YES;
             }
@@ -599,7 +562,7 @@
         else if (_currentBtn.tag == Tag+2) {
             [_areaBtn setTitle:model.name forState:UIControlStateSelected | UIControlStateNormal];
             [_areaBtn setTitle:model.name forState: UIControlStateNormal];
-
+            
             _areaId = model._id;
             _areaIndexPath = indexPath;
         }
@@ -608,8 +571,8 @@
             self.tableView2.frame = CGRectMake(0, -self.tableView2.height, self.tableView2.width, self.tableView2.height);
         }];
         currentPage = 1;
-//        [self.dataArr removeAllObjects];
-//        [self.tableView2 reloadData];
+        //        [self.dataArr removeAllObjects];
+        //        [self.tableView2 reloadData];
         [self getData];
     }
     
@@ -642,7 +605,7 @@
         UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-(self.currentCityArr.count+1)*PX_TO_PT(81))];
         footView.backgroundColor = [UIColor clearColor];
         return footView;
-
+        
     }
     return nil;
 }
@@ -653,16 +616,16 @@
     }
     return 0;
 }
-#pragma mark  - 设置导航
-- (void)setNav
-{
-    
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
+
+
+#pragma mark - 创建导航栏
+-(void)createNavgation{
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 200, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
-    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
+    titleLabel.textColor = R_G_B_16(0xfbffff);
     titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.text = @"选择自提网点";
+    titleLabel.text = @"EPOS刷卡网点";
     self.navigationItem.titleView = titleLabel;
     
     UIButton*backButton=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -671,19 +634,12 @@
     [backButton setImage:[UIImage imageNamed:@"top_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"arrow_press"] forState:UIControlStateHighlighted];
     backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -PX_TO_PT(32), 0, 0);
-
     UIBarButtonItem*leftItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
-    self.navigationItem.leftBarButtonItem=leftItem;
+    self.navigationItem.leftBarButtonItem = leftItem;
 }
 
-- (void)backClick:(UIButton *)btn
-{
+-(void)backClick:(UIButton *)button{
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 

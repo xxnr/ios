@@ -608,7 +608,6 @@
     NSLog(@"被点击了");
     XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
     self.checkOrderBlock(sectionModel.orderId,sectionModel);
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -640,10 +639,7 @@
         XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
         cell.orderFrame = frameModel;
     }
-    
     return cell;
-    
-    
 }
 
 -(void)dealloc

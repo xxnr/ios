@@ -12,5 +12,7 @@
 @property (nonatomic,strong)NSString *name;
 @property (nonatomic,strong)NSString *phone;
 @property (nonatomic,strong)NSString *companyName;
+@property (nonatomic,strong)NSString *RSCAddress;
+@property (nonatomic,strong)NSString *RSCPhone;
 @property (nonatomic,strong)NSMutableDictionary *companyAddress;
 @end

@@ -220,7 +220,6 @@
     [self createSelectedBtn];
     // cell上按钮点击跳转
     [self createPushBtn];
-    
 }
 -(void)createPushBtn
 {

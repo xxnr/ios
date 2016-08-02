@@ -33,6 +33,8 @@
 @property (nonatomic,assign)BOOL isMakesureOwn;
 @property (nonatomic,assign)BOOL isHoldOwn;
 @property (nonatomic,assign)BOOL isRefresh;
+@property (nonatomic,strong) XNRRSCDetailModel *RSCdetailModel;
+
 @end
 @implementation XNRServeView
 
@@ -208,7 +210,7 @@
                 sectionModel.orderId = subDic[@"orderId"];
                 sectionModel.payType = subDic[@"payType"];
                 sectionModel.duePrice = subDic[@"duePrice"];
-
+                sectionModel.RSCInfo = subDic[@"RSCInfo"];
                 NSDictionary *orders = subDic[@"order"];
                 sectionModel.totalPrice = orders[@"totalPrice"];
                 sectionModel.deposit = orders[@"deposit"];
@@ -348,8 +350,6 @@
             }
         }
         
-
-   
         if (sectionModel.type ==  1 || sectionModel.type == 2) {
             
             bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
@@ -658,10 +658,12 @@
 
 -(void)sectionFourClick:(UIButton *)sender{
     XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
+    XNRRSCDetailModel *RSCDetailModel = [XNRRSCDetailModel objectWithKeyValues:sectionModel.RSCInfo];
     if (sectionModel.deposit && [sectionModel.deposit doubleValue]>0) {
-        self.payBlock(sectionModel.orderId,sectionModel.deposit);
+
+        self.payBlock(sectionModel.orderId,sectionModel.deposit,RSCDetailModel);
     }else{
-        self.payBlock(sectionModel.orderId,sectionModel.totalPrice);
+        self.payBlock(sectionModel.orderId,sectionModel.totalPrice,RSCDetailModel);
     }
 
 }

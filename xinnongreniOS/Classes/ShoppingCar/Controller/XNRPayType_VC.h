@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "XNRRSCDetailModel.h"
 @interface XNRPayType_VC : UIViewController
 @property (nonatomic,copy) NSString *fromType; //来自哪个界面
 @property (nonatomic, copy) NSString *paymentId;
@@ -17,5 +17,7 @@
 @property (nonatomic, copy) NSString *recieveName;
 @property (nonatomic, copy) NSString *recievePhone;
 @property (nonatomic, copy) NSString *recieveAddress;
+@property (nonatomic, strong) XNRRSCDetailModel *model;
+@property (nonatomic, assign) BOOL isfromOrderVC;
 
 @end
