@@ -262,7 +262,6 @@
             XNRNavigationController *orderNavVC = [[XNRNavigationController alloc]initWithRootViewController:vc];
             
             [myorderVC presentViewController:orderNavVC animated:NO completion:nil];
-
         }
         else
         {

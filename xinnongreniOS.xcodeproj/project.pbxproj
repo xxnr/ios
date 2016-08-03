@@ -608,6 +608,8 @@
 		9C6BCEA41CAE8F0C00463096 /* XNRBuyIntentionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BCEA31CAE8F0C00463096 /* XNRBuyIntentionModel.m */; };
 		9C7D6A9F1D4EE6B00014DC08 /* XNRTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7D6A9E1D4EE6B00014DC08 /* XNRTextView.m */; };
 		9C7D6AA41D50442F0014DC08 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C7D6AA31D50442F0014DC08 /* libsqlite3.0.tbd */; };
+		9C7D6AA71D50480B0014DC08 /* XNRRepData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7D6AA61D50480B0014DC08 /* XNRRepData.m */; };
+		9C7D6AA81D50480B0014DC08 /* XNRRepData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7D6AA61D50480B0014DC08 /* XNRRepData.m */; };
 		9C920B0F1D069EE700C187DB /* UMSocialLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C920AF51D069EE700C187DB /* UMSocialLocalizable.strings */; };
 		9C920B101D069EE700C187DB /* libUMSocial_Sdk_5.2.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C920B031D069EE700C187DB /* libUMSocial_Sdk_5.2.1.a */; };
 		9C920B111D069EE700C187DB /* UMSCommentDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C920B051D069EE700C187DB /* UMSCommentDetailController.xib */; };
@@ -1786,6 +1788,8 @@
 		9C7D6A9E1D4EE6B00014DC08 /* XNRTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRTextView.m; sourceTree = "<group>"; };
 		9C7D6AA21D5044110014DC08 /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
 		9C7D6AA31D50442F0014DC08 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		9C7D6AA51D50480B0014DC08 /* XNRRepData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRepData.h; sourceTree = "<group>"; };
+		9C7D6AA61D50480B0014DC08 /* XNRRepData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRepData.m; sourceTree = "<group>"; };
 		9C920AF61D069EE700C187DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UMSocialLocalizable.strings; sourceTree = "<group>"; };
 		9C920AF81D069EE700C187DB /* UMSocial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMSocial.h; sourceTree = "<group>"; };
 		9C920AF91D069EE700C187DB /* UMSocialAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMSocialAccountManager.h; sourceTree = "<group>"; };
@@ -2538,6 +2542,8 @@
 				4917552F1CC5DC65001A2E2E /* NSString+File.m */,
 				496713761CD8198500782C12 /* XNRSearchBar.h */,
 				496713771CD8198500782C12 /* XNRSearchBar.m */,
+				9C7D6AA51D50480B0014DC08 /* XNRRepData.h */,
+				9C7D6AA61D50480B0014DC08 /* XNRRepData.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -4474,6 +4480,7 @@
 				9CF8AC071C981D5500F27563 /* XNRSelectItemArrModel.m in Sources */,
 				4940EF851CC7654600C1622E /* XNRIdentifyServiceStationController.m in Sources */,
 				9CF8AA351CAD321D0058D8B9 /* XNRAddLatentUserVC.m in Sources */,
+				9C7D6AA71D50480B0014DC08 /* XNRRepData.m in Sources */,
 				499181561CF7F56E006A077D /* UIView+WebCacheOperation.m in Sources */,
 				49EC52621BEBBA5E00AA8898 /* UIApplication+BSExt.m in Sources */,
 				499181691CF7F811006A077D /* TADotView.m in Sources */,
@@ -4846,6 +4853,7 @@
 			files = (
 				9C42B4A71D4AF635005C044E /* XNRElements.m in Sources */,
 				1F1532EF1B09C58800CA374B /* xinnongreniOSTests.m in Sources */,
+				9C7D6AA81D50480B0014DC08 /* XNRRepData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

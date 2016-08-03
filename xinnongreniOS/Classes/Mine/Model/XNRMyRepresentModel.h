@@ -18,7 +18,7 @@
  */
 @property (nonatomic, copy) NSString *nickname;
 /**
- *  头像
+ *  
  */
 @property (nonatomic, copy) NSString *photo;
 /**
