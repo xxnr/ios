@@ -135,7 +135,6 @@
     [self createShoppingCarTableView];
     //创建底部视图
     [self createBottomView];
-  
     // 删除完
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:@"refreshTableView" object:nil];
 }
@@ -226,7 +225,6 @@
 
 #pragma mark - 创建导航栏
 -(void)createNavgation{
-//    self.navigationItem.title = @"购物车";
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 200, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
@@ -257,7 +255,6 @@
         _deleteBtn.hidden = NO;
         // 回到正常状态
         [[NSNotificationCenter defaultCenter] postNotificationName:@"cancelBtnPresent" object:nil];
-
     }else{// 编辑
         [self.editeBtn setTitle:@"编辑" forState:UIControlStateNormal];
         _totalPriceLabel.hidden  = NO;
@@ -265,7 +262,6 @@
         _deleteBtn.hidden = YES;
         // 下架商品变成可删除的状态
         [[NSNotificationCenter defaultCenter] postNotificationName:@"normalBtnPresent" object:nil];
-
     }
 }
 
@@ -362,17 +358,12 @@
         alertView.chooseBlock = ^void(UIButton *btn){
             
             if (btn.tag == 11) {
-                
                 XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
                 login.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:login animated:YES];
-                
             }
-            
         };
-        
         [alertView BMAlertShow];
-
     }
 }
 
@@ -667,7 +658,6 @@
 - (void)createShoppingCarTableView
 {
     UITableView *shoppingCarTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(88)) style:UITableViewStyleGrouped];
-//    shoppingCarTableView.backgroundColor = [UIColor clearColor];
     shoppingCarTableView.showsVerticalScrollIndicator = YES;
     shoppingCarTableView.delegate = self;
     shoppingCarTableView.dataSource = self;
@@ -838,7 +828,7 @@
     if (section == _dataArr.count-1) {
         return 0.0;
     }
-        return 10.0;
+    return 10.0;
 }
 
 //设置段数
@@ -853,9 +843,9 @@
     if (_dataArr.count > 0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[section];
         return sectionModel.SKUFrameList.count;
-    } else {
+    }else{
         return 0;
-  }
+    }
 }
 
 //行高
@@ -1013,23 +1003,23 @@
 
 }
 
-#pragma tableViewDelete
--(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
-// 改变删除按钮的title
--(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return @"删除";
-}
-
--(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
-    }
-}
+//#pragma tableViewDelete
+//-(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return UITableViewCellEditingStyleDelete;
+//}
+//// 改变删除按钮的title
+//-(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return @"删除";
+//}
+//
+//-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        
+//    }
+//}
 
 
 - (void)didReceiveMemoryWarning {

@@ -13,8 +13,13 @@
 #import "XNRShoppingCarFrame.h"
 #define kLeftBtn  1000
 #define kRightBtn 2000
+#define YX_CELL_PAN_BTN_WIDTH   PX_TO_PT(110)
+#define YX_CELL_PAN_LEFT_EDGE   -YX_CELL_PAN_BTN_WIDTH
+#define YX_CELL_PAN_RIGHT_EDGE  0
+#define kView_X(view) (view.frame.origin.x)
 
-@interface XNRShoppingCartTableViewCell ()<UITextFieldDelegate,UIAlertViewDelegate,XNRToolBarBtnDelegate>
+
+@interface XNRShoppingCartTableViewCell ()<UITextFieldDelegate,UIAlertViewDelegate,XNRToolBarBtnDelegate,UIGestureRecognizerDelegate>
 {
     UIView *_bgView;                  //键盘遮罩
     NSMutableArray*_tempShopCarArr;   //本地临时数据
@@ -69,6 +74,8 @@
 @property (nonatomic, weak) UIButton *cancelBtn;
 
 @property (nonatomic, copy) void(^com)(NSIndexPath *indexPath);
+@property (nonatomic ,weak) UIView *maskView;
+
 @end
 
 @implementation XNRShoppingCartTableViewCell
@@ -78,7 +85,10 @@
         self.com = com;
         self.contentView.userInteractionEnabled = YES;
         self.contentView.backgroundColor = [UIColor clearColor];
+        [self initBackgroundBtn];
         [self createUI];
+        [self addPanGesture];
+
         
         // 注册消息通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
@@ -157,17 +167,151 @@
         self.rightBtn.enabled = YES;
     }
 }
+-(void)initBackgroundBtn
+{
+    UIButton *deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    deleteBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(110), 0, PX_TO_PT(110), PX_TO_PT(210));
+    deleteBtn.backgroundColor = R_G_B_16(0xff4e30);
+    [deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
+    [deleteBtn setTitleColor:R_G_B_16(0xffffff) forState:UIControlStateNormal];
+    [self.contentView addSubview:deleteBtn];
+}
+
+-(void)addPanGesture{
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapGes:)];
+    tap.delegate = self;
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    [self.maskView addGestureRecognizer:tap];
+    
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panGes:)];
+    pan.delegate = self;
+    pan.delaysTouchesBegan = YES;
+    pan.cancelsTouchesInView = NO;
+    [self.maskView addGestureRecognizer:pan];
+}
+
+#pragma mark * UIPanGestureRecognizer delegate
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        CGPoint translation = [(UIPanGestureRecognizer *)gestureRecognizer translationInView:self];
+        return fabs(translation.x) > fabs(translation.y);
+    }
+    
+//    if (!self.statusView.hidden)
+//    {
+//        CGRect upR = CGRectMake(0, 0, kWindowWidth, 40);
+//        
+//        CGPoint p = [gestureRecognizer locationInView:_maskView];
+//        
+//        if (CGRectContainsPoint(upR, p))
+//        {
+//            YXSMSResendBlock(_indexPath);
+//        }
+//        else
+//        {
+//            YXSMSDetailBlock(_indexPath);
+//        }
+//    }
+    
+    return YES;
+}
+
+
+-(void)tapGes:(UIGestureRecognizer *)ges{
+    
+    if (kView_X(_maskView) == YX_CELL_PAN_LEFT_EDGE)
+    {
+        [self rebounceAnimation];
+        
+        return;
+    }
+    
+//    if (self.statusView.hidden)
+//    {
+//        YXSMSDetailBlock(_indexPath);
+//    }
+    
+}
+
+
+//Pan gesture.
+-(void)panGes:(UIPanGestureRecognizer *)ges
+{
+    CGPoint _movePoint = [ges translationInView:_maskView];
+    CGFloat _startX = kView_X(_maskView);   //Gesture location in view's original x.
+    
+    switch (ges.state) {
+        case UIGestureRecognizerStateBegan:
+            break;
+        case UIGestureRecognizerStateChanged:
+            if (_movePoint.x<0) //offset.x <0
+            {
+                [self reframeWithX:_movePoint.x];  //to left
+            }
+            else                //_moveView.x < 0
+            {
+                [self reframeWithX:_startX + _movePoint.x];  //to right
+            }
+            break;
+        case UIGestureRecognizerStateEnded:
+            [self rebounceAnimation];
+            break;
+        case UIGestureRecognizerStateCancelled:
+            [self rebounceAnimation];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+-(void)rebounceAnimation{
+    [UIView animateWithDuration:0.25 animations:^{
+        
+        if (kView_X(_maskView) < YX_CELL_PAN_LEFT_EDGE) {
+            //left
+            [self reframeWithX:YX_CELL_PAN_LEFT_EDGE];
+        }else{
+            //normal
+            [self reframeWithX:YX_CELL_PAN_RIGHT_EDGE];
+        }
+    }];
+}
+-(void)reframeWithX:(CGFloat)x{
+    if (x>0) {
+        return;
+    }
+//    UIReframeWithX(_maskView, x);
+    CGRect rect = _maskView.frame;
+    rect.origin.x = x;
+    _maskView.frame = rect;
+}
+-(void)reframeToNormal{
+    if (kView_X(_maskView) != 0) {
+//        UIReframeWithX(_maskView, 0);
+        CGRect rect = _maskView.frame;
+        rect.origin.x = 0;
+        _maskView.frame = rect;
+    }
+}
 
 
 - (void)createUI
 {
+    UIView *maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(210))];
+    maskView.backgroundColor = R_G_B_16(0xffffff);
+    self.maskView = maskView;
+    [self.contentView addSubview:maskView];
     // 选择按钮
     UIButton *selectedBtn = [[UIButton alloc] init];
     [selectedBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [selectedBtn setImage:[UIImage imageNamed:@"address_circle"] forState:UIControlStateNormal];
     [selectedBtn setImage:[UIImage imageNamed:@"orange-icon"] forState:UIControlStateSelected];
     self.selectedBtn = selectedBtn;
-    [self.contentView addSubview:selectedBtn];
+    [maskView addSubview:selectedBtn];
     
     // 图片
     UIImageView *picImageView = [[UIImageView alloc]init];
@@ -175,7 +319,7 @@
     picImageView.layer.borderWidth = PX_TO_PT(2);
     picImageView.layer.borderColor = R_G_B_16(0xe0e0e0).CGColor;
     self.picImageView = picImageView;
-    [self.contentView addSubview:picImageView];
+    [maskView addSubview:picImageView];
     
     // 商品名
     UILabel *goodNameLabel = [[UILabel alloc] init];
@@ -183,7 +327,7 @@
     goodNameLabel.numberOfLines = 0;
     goodNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     self.goodNameLabel = goodNameLabel;
-    [self.contentView addSubview:goodNameLabel];
+    [maskView addSubview:goodNameLabel];
     
     // 删除按钮
     UIButton *cancelBtn = [[UIButton alloc] init];
@@ -200,7 +344,7 @@
     introduceLabel.numberOfLines = 0;
     introduceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     self.introduceLabel = introduceLabel;
-    [self.contentView addSubview:introduceLabel];
+    [maskView addSubview:introduceLabel];
     
     // 数量
     [self createNumTextField];
@@ -220,6 +364,7 @@
     [self createSelectedBtn];
     // cell上按钮点击跳转
     [self createPushBtn];
+    
 }
 -(void)createPushBtn
 {
