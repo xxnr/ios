@@ -56,6 +56,8 @@
 -(void)setModel:(XNRBookUser *)model
 {
     self.registerLabel.hidden = YES;
+    self.registerImage.hidden = YES;
+    
     self.nameLabel.text = model.name;
     if ([model.sex integerValue] == 0) {
         [self.icon setImage:[UIImage imageNamed:@"boy1-icon"]];

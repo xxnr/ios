@@ -88,14 +88,16 @@
         [self.verifiedTypes removeAllObjects];
         [XNRMyRepresentViewController SetisBroker:NO];
         
-        if ([[DataCenter account].verifiedTypes[0] isKindOfClass:[NSDictionary class]]) {
-            for (int i=0 ; i<Arr.count; i++) {
-                NSString *name =[DataCenter account].verifiedTypes[i][@"typeName"];
-                [self.verifiedTypes addObject:name];
-                if ([name isEqualToString:@"新农经纪人"]) {
-                    [XNRMyRepresentViewController SetisBroker:YES];
+        if ([DataCenter account].verifiedTypes.count > 0) {
+            if ([[DataCenter account].verifiedTypes[0] isKindOfClass:[NSDictionary class]]) {
+                for (int i=0 ; i<Arr.count; i++) {
+                    NSString *name =[DataCenter account].verifiedTypes[i][@"typeName"];
+                    [self.verifiedTypes addObject:name];
+                    if ([name isEqualToString:@"新农经纪人"]) {
+                        [XNRMyRepresentViewController SetisBroker:YES];
+                    }
                 }
-        }
+            }
         }
 
     //

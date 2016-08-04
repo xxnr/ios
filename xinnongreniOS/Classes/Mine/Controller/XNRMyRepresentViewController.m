@@ -162,13 +162,13 @@ static bool isBroker;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        //创建数据库表
+//        //创建数据库表
 //        if (![self.dataDB executeUpdate:@"drop table registerCustomerTable"])
 //        {
 //            NSLog(@"删除表失败");
 //        }
-        
-        if(![self.dataDB executeUpdate:@"create table if not exists registerCustomerTable(sex integer,name text,register integer,phone text,_id text)"])
+//
+        if(![self.dataDB executeUpdate:@"create table if not exists registerCustomerTable(sex text,name text,register integer,phone text,_id text)"])
         {
             NSLog(@"表创建失败");
         }
@@ -273,7 +273,7 @@ static bool isBroker;
         while ([resultSet next]) {
             XNRBookUser *bookUser = [[XNRBookUser alloc]init];
             
-            bookUser.sex = [NSNumber numberWithInt:[resultSet intForColumn:@"icon"]];
+            bookUser.sex = [resultSet stringForColumn:@"sex"];
             bookUser.name = [resultSet stringForColumn:@"name"];
             bookUser.isRegistered = [NSNumber numberWithInt:[resultSet intForColumn:@"register"]];
             bookUser.phone = [resultSet stringForColumn:@"phone"];
@@ -483,6 +483,7 @@ static bool isBroker;
         [self.mrv removeFromSuperview];
         
         [self creatBookView];
+        
         [self rep_isUpdata];
 
     }
@@ -884,7 +885,9 @@ static bool isBroker;
             [_userArr removeAllObjects];
             
             for (NSDictionary *dict in arr) {
-                NSString *sql =[NSString stringWithFormat:@"insert into registerCustomerTable (sex,name,register,phone,_id) VALUES ('%d','%@','%d','%@','%@')", [dict[@"sex"] intValue],dict[@"name"],[dict[@"register"]intValue],dict[@"phone"],dict[@"_id"]];
+                NSString *s = dict[@"sex"];
+//                NSInteger e = []
+                NSString *sql =[NSString stringWithFormat:@"insert into registerCustomerTable (sex,name,register,phone,_id) VALUES ('%@','%@','%d','%@','%@')",dict[@"sex"],dict[@"name"],[dict[@"isRegistered"]intValue],dict[@"phone"],dict[@"_id"]];
                 
                 if (![self.dataDB executeUpdate:sql]){
                     NSLog(@"插入失败");

@@ -215,7 +215,7 @@
     BOOL sex = [self.model.sex integerValue] == [self.customer.sex integerValue];
     BOOL isregister = [self.model.isRegistered integerValue] == [self.customer.isRegistered integerValue];
     
-    if (!name && !phone &&!sex && !isregister) {
+    if (!name || !phone ||!sex || !isregister) {
         self.refreshListBlock(YES);
     }
     else
