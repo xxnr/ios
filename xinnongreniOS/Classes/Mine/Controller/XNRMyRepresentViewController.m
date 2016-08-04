@@ -19,8 +19,7 @@
 #import "BMProgressView.h"
 #import "XNRRepData.h"
 #import "FMDB.h"
-#import "XNRSearchBar.h"
-
+#import "XNRResultViewController.h"
 
 #define btnTag 1000
 #define tbTag 2000
@@ -30,12 +29,9 @@
 #define IS_IPhone6 (667 == [[UIScreen mainScreen] bounds].size.height ? YES : NO)
 #define IS_IPhone6plus (736 == [[UIScreen mainScreen] bounds].size.height ? YES : NO)
 
-@interface XNRMyRepresentViewController ()<UITableViewDelegate,UITableViewDataSource,XNRMyRepresentViewAddBtnDelegate,LumAlertViewDelegate>
+@interface XNRMyRepresentViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchResultsUpdating,XNRMyRepresentViewAddBtnDelegate,LumAlertViewDelegate>
 {
     NSMutableArray *_dataArr;
-//    int currentPage;
-//    int registerCurrentPage;
-    UITableView *currentTableView;
 }
 
 @property (nonatomic, weak) UIButton *leftBtn;
@@ -95,7 +91,6 @@
 @property (nonatomic,assign)BOOL isadd;
 @property (nonatomic,assign)BOOL isfirst;
 @property (nonatomic,assign)BOOL isFirstTableView;
-@property (nonatomic,assign)BOOL isuserDetail;
 
 @property (nonatomic,strong) NSMutableArray *customer_indexTitleArr;
 @property (nonatomic,strong) NSMutableArray *Rep_indexTitleArr;
@@ -104,12 +99,15 @@
 @property (nonatomic,strong)NSString *rep_todayCount;
 
 @property (strong,nonatomic)FMDatabase *dataDB;
+@property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic, strong) NSMutableArray *searchResultArr;
 
-@property (nonatomic, weak) XNRSearchBar *searchBar;
+@property (nonatomic,strong)NSArray *AllUserCount;
 
 @end
 
 @implementation XNRMyRepresentViewController
+
 static bool isBroker;
 
 -(BMProgressView *)progressView{
@@ -131,20 +129,9 @@ static bool isBroker;
     [super viewWillAppear:YES];
     if (_isadd) {
         [self creatBookView];
-//        [self.userArr removeAllObjects];
         [self rep_isUpdata];
-        currentTableView = self.tableView2;
     }
-    else if (_isuserDetail) {
-        currentTableView = self.tableView2;
-    }
-    else
-    {
-        currentTableView = self.tableView;
-    }
-    
-    [self setupCustomerRefresh];
-
+    _isadd = NO;
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -181,7 +168,7 @@ static bool isBroker;
 //            NSLog(@"删除表失败");
 //        }
         
-        if(![self.dataDB executeUpdate:@"create table if not exists registerCustomerTable(sex integer,name text,register integer,phone text)"])
+        if(![self.dataDB executeUpdate:@"create table if not exists registerCustomerTable(sex integer,name text,register integer,phone text,_id text)"])
         {
             NSLog(@"表创建失败");
         }
@@ -190,6 +177,7 @@ static bool isBroker;
 - (void)viewDidLoad {
     [super viewDidLoad];
     _userArr = [NSMutableArray array];
+    _AllUserCount = [NSArray array];
     _dataArr = [[NSMutableArray alloc] init];
     _customer_indexTitleArr = [NSMutableArray array];
     _Rep_indexTitleArr = [NSMutableArray array];
@@ -198,7 +186,7 @@ static bool isBroker;
     [self.dataDB open];
     [self createCustomerTable];
     [self createReprentTable];
-
+//    [self creatSearchVC];
     
     self.isfirst = YES;
     
@@ -211,18 +199,26 @@ static bool isBroker;
 
     [self myCustomerModel];
     [self registerCustomerModel];
-
-    
-
-//    [_dataArr removeAllObjects];
     [self getCustomerData];
-    currentTableView = self.tableView;
+}
+-(void)creatSearchVC
+{
+    XNRResultViewController *searchVC = [[XNRResultViewController alloc] init];
+
+    searchVC.dataArr = _dataArr;
+    searchVC.userArr = _userArr;
+    
+    searchVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:searchVC animated:NO];
+
+
 }
 -(void)myCustomerModel
 {
      FMResultSet *resultSet = [self.dataDB executeQuery:@"select * from myCustomerTable"];
     
     [_dataArr removeAllObjects];
+    
      while ([resultSet next]) {
          XNRMyRepresentModel *customer = [[XNRMyRepresentModel alloc]init];
          
@@ -281,9 +277,11 @@ static bool isBroker;
             bookUser.name = [resultSet stringForColumn:@"name"];
             bookUser.isRegistered = [NSNumber numberWithInt:[resultSet intForColumn:@"register"]];
             bookUser.phone = [resultSet stringForColumn:@"phone"];
-            
+            bookUser._id = [resultSet stringForColumn:@"_id"];
             [_userArr addObject:bookUser];
         }
+    
+    _AllUserCount = _userArr;
     
     self.bookTopTotalLabel.text = [NSString stringWithFormat:@"共登记%lu名客户",_userArr.count];
     self.bookTopRemainLabel.text = [NSString stringWithFormat:@"今日还可添加%@名",self.rep_todayCount];
@@ -322,65 +320,6 @@ static bool isBroker;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-#pragma mark - 刷新
-
--(void)setupCustomerRefresh{
-    
-    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headRefresh)];
-    
-    NSMutableArray *idleImage = [NSMutableArray array];
-    
-    
-    
-    for (int i = 1; i<21; i++) {
-        
-        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
-        
-        
-        
-        [idleImage addObject:image];
-        
-    }
-    
-    NSMutableArray *RefreshImage = [NSMutableArray array];
-    
-    for (int i = 1; i<21; i++) {
-        
-        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
-        
-        [RefreshImage addObject:image];
-        
-        
-    }
-    
-    [header setImages:idleImage forState:MJRefreshStateIdle];
-    
-    [header setImages:RefreshImage forState:MJRefreshStatePulling];
-    
-    [header setImages:RefreshImage forState:MJRefreshStateRefreshing];
-    
-    // 隐藏时
-    
-    header.lastUpdatedTimeLabel.hidden = YES;
-    
-    // 隐藏状态
-    
-    header.stateLabel.hidden = YES;
-
-    currentTableView.mj_header = header;
-
-}
-
--(void)headRefresh{
-    
-    if (currentTableView.tag == tbTag) {
-        [self getCustomerData];
-    }
-    else
-    {
-        [self bookViewGetData];
-    }
-}
 
 #pragma mark -  导航
 -(void)setNavigationbarTitle
@@ -409,15 +348,8 @@ static bool isBroker;
     [searchBtn setImage:[UIImage imageNamed:@"search-"] forState:UIControlStateNormal];
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:searchBtn];
     self.navigationItem.rightBarButtonItem = rightItem;
-    [searchBtn addTarget:self action:@selector(searchBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [searchBtn addTarget:self action:@selector(creatSearchVC) forControlEvents:UIControlEventTouchUpInside];
 }
--(void)searchBtnClick
-{
-    XNRRscSearchController *searchVC = [[XNRRscSearchController alloc] init];
-    searchVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:searchVC animated:YES];
-}
-
 
 -(void)backButtonClick
 {
@@ -515,22 +447,19 @@ static bool isBroker;
         
 //        [_dataArr removeAllObjects];
         self.isadd = NO;
-        self.isuserDetail = NO;
-        _tableView.hidden = NO;
-        self.topView.hidden = NO;
+//        _tableView.hidden = NO;
+//        self.topView.hidden = NO;
         
         [self.middleView removeFromSuperview];
         [self.thirdView removeFromSuperview];
         [self.mrv removeFromSuperview];
         
         [self getCustomerData];
-        currentTableView = self.tableView;
         
         self.isFirstTableView = YES;
     } else if(sender.tag == btnTag + 1){
         self.isFirstTableView = NO;
         self.isadd = NO;
-        self.isuserDetail = NO;
         
         _tableView.hidden = YES;
         self.topView.hidden = YES;
@@ -555,13 +484,9 @@ static bool isBroker;
         
         [self creatBookView];
         [self rep_isUpdata];
-//        [self registerCustomerModel];
-//        [self bookViewGetData];
 
-        currentTableView = self.tableView2;
     }
     
-    [self setupCustomerRefresh];
     
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
@@ -661,19 +586,17 @@ static bool isBroker;
 }
 -(void)creatBookView
 {
-
-
+    [self.thirdView removeFromSuperview];
+    [self.bgview removeFromSuperview];
+    
     //添加顶部视图
     UIView *thirdView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(98))];
     thirdView.backgroundColor = [UIColor clearColor];
     self.thirdView = thirdView;
     
     UIView *headView = [[UIView alloc] init];
-//    self.repHeadView = headView;
-//    headView.backgroundColor = [UIColor whiteColor];
     [self.thirdView addSubview:headView];
 
-    
     UIView *BooktopView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(220))];
     BooktopView.backgroundColor = [UIColor whiteColor];
     [headView addSubview:BooktopView];
@@ -702,9 +625,7 @@ static bool isBroker;
         top2Label.frame = CGRectMake(PX_TO_PT(33), CGRectGetMaxY(top1Label.frame)+PX_TO_PT(10), ScreenWidth/2, PX_TO_PT(32));
         top1Label.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         top2Label.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
- 
     }
-
 
     UIButton *addBtn = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(80)-PX_TO_PT(34), PX_TO_PT(29),PX_TO_PT(80), PX_TO_PT(80))];
     [addBtn setBackgroundImage:[UIImage imageNamed:@"6add-orange"] forState:UIControlStateNormal];
@@ -771,7 +692,6 @@ static bool isBroker;
     
     [self.view addSubview:self.thirdView];
     
-//    [self bookViewGetData];
     [self registerCustomerModel];
 
 }
@@ -783,10 +703,10 @@ static bool isBroker;
 }
 -(void)rep_isUpdata
 {
-//    self.rep_totalCount = @12;
-    [KSHttpRequest get:KGetIsLatest parameters:@{@"count":[NSString stringWithFormat:@"%ld",_userArr.count]} success:^(id result) {
+
+    [KSHttpRequest get:KGetIsLatest parameters:@{@"count":[NSString stringWithFormat:@"%ld",_AllUserCount.count]} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
-//            self.rep_totalCount = result[@"count"];
+
             self.rep_todayCount = result[@"countLeftToday"];
             if([result[@"count"]integerValue] == 0){
                 BOOL isadd = [[NSUserDefaults standardUserDefaults]boolForKey:@"key"];
@@ -842,7 +762,6 @@ static bool isBroker;
                         addbtn.layer.cornerRadius = PX_TO_PT(64)/2;
                         coverView.layer.cornerRadius = PX_TO_PT(80)/2;
                         
-                        
                     }
                     else if (IS_IPhone6){
                         UIImage *image = [UIImage imageNamed:@"text_icon6"];
@@ -854,8 +773,6 @@ static bool isBroker;
                         
                         addbtn.layer.cornerRadius = PX_TO_PT(80)/2;
                         coverView.layer.cornerRadius = PX_TO_PT(96)/2;
-                        
-                        
                     }
                     else if (IS_IPhone6plus){
                         UIImage *image = [UIImage imageNamed:@"text_icon6p"];
@@ -920,23 +837,43 @@ static bool isBroker;
                 self.addbtn.enabled = YES;
             }
             
-
+            //超过24小时更新客户列表
+           NSDate *time = [[NSUserDefaults standardUserDefaults]valueForKey:@"updateTime"];
+            if (!time) {
+                [[NSUserDefaults standardUserDefaults]setValue:[NSDate date] forKey:@"updateTime"];
+            }
             
+            NSDate *now = [NSDate date];
+//            NSDate *dd = [NSDate dateWithTimeInterval:86400 sinceDate:time];
+            NSTimeInterval dif = [now timeIntervalSinceDate:time];
+
             if ([result[@"needUpdate"] integerValue] == 1) {
-//                [self.Rep_indexTitleArr removeAllObjects];
                 [self bookViewGetData];
+            }
+            else if (dif >= 86400)
+            {
+                [self bookViewGetData];
+            }
+            else
+            {
+                [self registerCustomerModel];
             }
         }
     } failure:^(NSError *error) {
         
     }];
 }
+
 -(void)bookViewGetData
 {
 
     [KSHttpRequest get:KGetAllQuery parameters:@{@"userId":[DataCenter account].userid} success:^(id result) {
 
         if ([result[@"code"] integerValue] == 1000) {
+            
+
+            [[NSUserDefaults standardUserDefaults]setValue:[NSDate date] forKey:@"updateTime"];
+
             
             NSMutableArray *arr = result[@"potentialCustomers"];
                 
@@ -947,7 +884,7 @@ static bool isBroker;
             [_userArr removeAllObjects];
             
             for (NSDictionary *dict in arr) {
-                NSString *sql =[NSString stringWithFormat:@"insert into registerCustomerTable (sex,name,register,phone) VALUES ('%d','%@','%d','%@')", [dict[@"sex"] intValue],dict[@"name"],[dict[@"register"]intValue],dict[@"phone"]];
+                NSString *sql =[NSString stringWithFormat:@"insert into registerCustomerTable (sex,name,register,phone,_id) VALUES ('%d','%@','%d','%@','%@')", [dict[@"sex"] intValue],dict[@"name"],[dict[@"register"]intValue],dict[@"phone"],dict[@"_id"]];
                 
                 if (![self.dataDB executeUpdate:sql]){
                     NSLog(@"插入失败");
@@ -955,14 +892,6 @@ static bool isBroker;
             }
             
             [self registerCustomerModel];
-
-//            
-//            [_userArr addObjectsFromArray:arr];
-//            
-//            [self LoadIndex:self.tableView2 sourceArr:_userArr IndexTitleArr:_Rep_indexTitleArr];
-////
-            [self.tableView2.mj_header endRefreshing];
-
         }
         else if([result[@"code"] integerValue] == 1401)
         {
@@ -984,7 +913,6 @@ static bool isBroker;
         }
     } failure:^(NSError *error) {
         [self registerCustomerModel];
-        [self.tableView2.mj_header endRefreshing];
 
     }];
 }
@@ -1110,15 +1038,9 @@ static bool isBroker;
             [UILabel showMessage:result[@"message"]];
         }
         
-        //
-        [self.tableView.mj_header endRefreshing];
-        
 
     } failure:^(NSError *error) {
         [self myCustomerModel];
-    [self.tableView.mj_header endRefreshing];
-        
-        
     }];
 
 }
@@ -1195,17 +1117,6 @@ static bool isBroker;
         
     }];
     
-    
-//    [sectionTmpArr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-//        
-//        NSMutableArray *itemArr = sectionArr[idx];
-//        
-//        NSArray *sortedArr = [collation sortedArrayFromArray:itemArr collationStringSelector:@selector(name)];
-//        
-//        sectionArr[idx] = [sortedArr mutableCopy];
-//        
-//    }];
-    
     if (tableView.tag == tbTag) {
         _dataArr = sectionTmpArr;
     }
@@ -1214,7 +1125,6 @@ static bool isBroker;
         _userArr= sectionTmpArr;
     }
     
-//    [tableView reloadData];
 }
 -(void)createCustomerLabel{
     [self.topView removeFromSuperview];
@@ -1568,9 +1478,14 @@ static bool isBroker;
         XNRDetailUserVC *detailUser = [[XNRDetailUserVC alloc]init];
         detailUser.hidesBottomBarWhenPushed = YES;
         self.isadd = NO;
-        self.isuserDetail = YES;
         XNRBookUser *user = _userArr[indexPath.section][indexPath.row];
+        detailUser.model = user;
         detailUser._id = user._id;
+        [detailUser setRefreshListBlock:^(BOOL isrefresh) {
+            if (isrefresh) {
+                [self bookViewGetData];
+            }
+        }];
         [self.navigationController pushViewController:detailUser animated:YES];
     }
 
@@ -1610,6 +1525,8 @@ static bool isBroker;
         return cell2;
     }
 }
+
+
 
 -(void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -52,7 +52,7 @@
         }
         [cell addSubview:name];
         
-        if (i+1 < nameArr.count) {
+        if (i+1 < (nameArr.count-1)) {
             UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(1.5))];
             line.backgroundColor = R_G_B_16(0xE0E0E0);
             [self.view addSubview:line];
@@ -114,7 +114,6 @@
             }
             XNRAddressModel *address = [XNRAddressModel objectWithKeyValues:result[@"potentialCustomer"][@"address"] ];
             
-            
             NSMutableString *city = [NSMutableString string];
             [city appendString:@""];
             if (address.province != 0) {
@@ -160,7 +159,7 @@
             [self.view addSubview:interestLabel];
             
             
-            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(69),ScreenWidth, PX_TO_PT(1.5))];
+            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(70),ScreenWidth, PX_TO_PT(1.5))];
             lastLine.backgroundColor = R_G_B_16(0xE0E0E0);
             [self.view addSubview:lastLine];
             
@@ -188,6 +187,8 @@
 
             bgView.backgroundColor = R_G_B_16(0xf8f8f8);
             [self.view addSubview:bgView];
+            
+            [self compareModel];
         }
         else
         {
@@ -207,7 +208,21 @@
         
     }];
 }
-
+-(void)compareModel
+{
+    BOOL name = [self.model.name isEqualToString:self.customer.name];
+    BOOL phone = [self.model.phone isEqualToString:self.customer.phone];
+    BOOL sex = [self.model.sex integerValue] == [self.customer.sex integerValue];
+    BOOL isregister = [self.model.isRegistered integerValue] == [self.customer.isRegistered integerValue];
+    
+    if (!name && !phone &&!sex && !isregister) {
+        self.refreshListBlock(YES);
+    }
+    else
+    {
+        self.refreshListBlock(NO);
+    }
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

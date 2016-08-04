@@ -35,7 +35,6 @@
         
         // 设置左边的view永远显示
         self.leftViewMode = UITextFieldViewModeAlways;
-        
         // 设置右边永远显示清除按钮
         self.clearButtonMode = UITextFieldViewModeAlways;
     }

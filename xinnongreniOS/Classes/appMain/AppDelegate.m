@@ -47,6 +47,9 @@
     
 //    [UMessage startWithAppkey:UM_APPKEY launchOptions:launchOptions];
 
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    
+
     self.launchOptions = launchOptions;
     // 键盘的管理
     IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
