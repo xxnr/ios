@@ -145,13 +145,13 @@ static bool isBroker;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        //创建数据库表
+//        创建数据库表
 //        if (![self.dataDB executeUpdate:@"drop table myCustomerTable"])
 //        {
 //            NSLog(@"删除表失败");
 //        }
         //创建数据库表
-        if(![self.dataDB executeUpdate:@"create table if not exists myCustomerTable(sex integer,red integer,name text,phone text,userId text)"])
+        if(![self.dataDB executeUpdate:@"create table if not exists myCustomerTable(sex integer,red integer,name text,namePinyin text,nameInitial text,phone text,userId text)"])
         {
             NSLog(@"表创建失败");
         }
@@ -162,13 +162,13 @@ static bool isBroker;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-//        //创建数据库表
+        //创建数据库表
 //        if (![self.dataDB executeUpdate:@"drop table registerCustomerTable"])
 //        {
 //            NSLog(@"删除表失败");
 //        }
 //
-        if(![self.dataDB executeUpdate:@"create table if not exists registerCustomerTable(sex text,name text,register integer,phone text,_id text)"])
+        if(![self.dataDB executeUpdate:@"create table if not exists registerCustomerTable(sex text,name text,namePinyin text,nameInitial text,register integer,phone text,_id text)"])
         {
             NSLog(@"表创建失败");
         }
@@ -225,6 +225,8 @@ static bool isBroker;
          customer.sex = [resultSet boolForColumn:@"sex"];
          customer.newOrdersNumber = [resultSet intForColumn:@"red"];
          customer.name = [resultSet stringForColumn:@"name"];
+         customer.namePinyin = [resultSet stringForColumn:@"namePinyin"];
+         customer.nameInitial = [resultSet stringForColumn:@"nameInitial"];
          customer.account = [resultSet stringForColumn:@"phone"];
          customer.userId = [resultSet stringForColumn:@"userId"];
          [_dataArr addObject:customer];
@@ -275,6 +277,8 @@ static bool isBroker;
             
             bookUser.sex = [resultSet stringForColumn:@"sex"];
             bookUser.name = [resultSet stringForColumn:@"name"];
+            bookUser.namePinyin = [resultSet stringForColumn:@"namePinyin"];
+            bookUser.nameInitial = [resultSet stringForColumn:@"nameInitial"];
             bookUser.isRegistered = [NSNumber numberWithInt:[resultSet intForColumn:@"register"]];
             bookUser.phone = [resultSet stringForColumn:@"phone"];
             bookUser._id = [resultSet stringForColumn:@"_id"];
@@ -284,13 +288,13 @@ static bool isBroker;
     _AllUserCount = _userArr;
     
     self.bookTopTotalLabel.text = [NSString stringWithFormat:@"共登记%lu名客户",_userArr.count];
-    self.bookTopRemainLabel.text = [NSString stringWithFormat:@"今日还可添加%@名",self.rep_todayCount];
+    self.bookTopRemainLabel.text = [NSString stringWithFormat:@"今日还可添加%ld名",[self.rep_todayCount integerValue]];
     
     
     if (self.bookTopTotalLabel) {
         
         NSString *total = [NSString stringWithFormat:@"%ld",_userArr.count];
-        NSString *remain = [NSString stringWithFormat:@"%@",self.rep_todayCount];
+        NSString *remain = [NSString stringWithFormat:@"%ld",[self.rep_todayCount integerValue]];
         
         if (IS_IPHONE4 || IS_IPHONE5) {
             [self setbookTopTotalLabelDifFontandlength:total.length andFont:[UIFont systemFontOfSize:PX_TO_PT(32)]];
@@ -438,7 +442,6 @@ static bool isBroker;
     if (self.selectedBtn.tag == sender.tag) {
         return;
     }
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     self.selectedBtn.selected = NO;
     sender.selected = YES;
     self.selectedBtn = sender;
@@ -458,6 +461,7 @@ static bool isBroker;
         
         self.isFirstTableView = YES;
     } else if(sender.tag == btnTag + 1){
+        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         self.isFirstTableView = NO;
         self.isadd = NO;
         
@@ -885,9 +889,8 @@ static bool isBroker;
             [_userArr removeAllObjects];
             
             for (NSDictionary *dict in arr) {
-                NSString *s = dict[@"sex"];
 //                NSInteger e = []
-                NSString *sql =[NSString stringWithFormat:@"insert into registerCustomerTable (sex,name,register,phone,_id) VALUES ('%@','%@','%d','%@','%@')",dict[@"sex"],dict[@"name"],[dict[@"isRegistered"]intValue],dict[@"phone"],dict[@"_id"]];
+                NSString *sql =[NSString stringWithFormat:@"insert into registerCustomerTable (sex,name,namePinyin,nameInitial,register,phone,_id) VALUES ('%@','%@','%@','%@','%d','%@','%@')",dict[@"sex"]?dict[@"sex"]:@"",dict[@"name"]?dict[@"name"]:@"",dict[@"namePinyin"]?dict[@"namePinyin"]:@"",dict[@"nameInitial"]?dict[@"nameInitial"]:@"",[dict[@"isRegistered"]intValue],dict[@"phone"],dict[@"_id"]];
                 
                 if (![self.dataDB executeUpdate:sql]){
                     NSLog(@"插入失败");
@@ -1027,7 +1030,7 @@ static bool isBroker;
             
             [_dataArr removeAllObjects];
             for (NSDictionary *dict in arr) {
-                NSString *sql =[NSString stringWithFormat:@"insert into myCustomerTable (sex,red,name,phone,userId) VALUES ('%d','%d','%@','%@','%@')", [dict[@"sex"] intValue],[dict[@"newOrdersNumber"] intValue],dict[@"name"]?dict[@"name"]:@"",dict[@"account"]?dict[@"account"]:@"",dict[@"userId"]];
+                NSString *sql =[NSString stringWithFormat:@"insert into myCustomerTable (sex,red,name,namePinyin,nameInitial,phone,userId) VALUES ('%d','%d','%@','%@','%@','%@','%@')", [dict[@"sex"] intValue],[dict[@"newOrdersNumber"] intValue],dict[@"name"]?dict[@"name"]:@"",dict[@"namePinyin"]?dict[@"namePinyin"]:@"", dict[@"nameInitial"]?dict[@"nameInitial"]:@"",dict[@"account"]?dict[@"account"]:@"",dict[@"userId"]];
                 
                 if (![self.dataDB executeUpdate:sql]){
                     NSLog(@"插入失败");

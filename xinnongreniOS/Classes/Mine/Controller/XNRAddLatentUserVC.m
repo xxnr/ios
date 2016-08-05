@@ -54,6 +54,7 @@
 @property (nonatomic,weak) UILabel *warnLabel;
 @property (nonatomic,weak)UIView *warnView;
 @property (nonatomic,assign)BOOL iswarn;
+@property (nonatomic,copy)NSMutableArray *intersestedModelArr;
 @property (nonatomic,copy)NSMutableArray *interestedProArr;
 @property (nonatomic,copy)NSMutableArray *interestedProIdArr;
 @property (nonatomic,assign)int nameLength;
@@ -63,6 +64,13 @@
 @end
 
 @implementation XNRAddLatentUserVC
+-(NSMutableArray *)intersestedModelArr
+{
+    if (!_intersestedModelArr) {
+        _intersestedModelArr = [NSMutableArray array];
+    }
+    return _intersestedModelArr;
+}
 
 -(NSMutableArray *)interestedProArr
 {
@@ -167,50 +175,36 @@
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardChange:) name:UIKeyboardDidChangeFrameNotification object:nil];
     
 }
-//-(void)keyboardChange:(NSNotification *)note
-//{
-//    // 0.取出键盘动画的时间
-//    CGFloat duration = [note.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-//    
-//    // 1.取得键盘最后的frame
-//    CGRect keyboardFrame = [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-//    
-//    // 2.计算控制器的view需要平移的距离
-//    CGFloat transformY = keyboardFrame.origin.y - self.remarksTextField.frame.origin.y;
-//    
-//    // 3.执行动画
-//    [UIView animateWithDuration:duration animations:^{
-//        self.view.transform = CGAffineTransformMakeTranslation(0, transformY);
-//    }];
-//}
 -(void)notification:(NSNotification *)notification
 {
-//    [_userTypeBtn removeFromSuperview];
-//    [_userTypeLabel removeFromSuperview];
-//    [_line removeFromSuperview];
-//    
-//    // 类型
-//    UIButton *userTypeBtn = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(_streetBtn.frame), ScreenWidth, PX_TO_PT(98))];
-//    [userTypeBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
-//    userTypeBtn.tag = 1002;
-//    self.userTypeBtn = userTypeBtn;
-//    //    [self.bottomView addSubview:userTypeBtn];
-//    
-//    UILabel *userTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,PX_TO_PT(38), ScreenWidth, PX_TO_PT(33))];
-//    userTypeLabel.textColor = R_G_B_16(0x909090);
-//    userTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-//    userTypeLabel.text = @"选择客户想买的商品";
-//    self.userTypeLabel = userTypeLabel;
-//    
-//    UIView *lastLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*4, ScreenWidth, 1)];
-//    lastLine.backgroundColor = R_G_B_16(0xe0e0e0);
-//    self.line = lastLine;
-//    [self.bottomView addSubview:lastLine];
+    [_userTypeBtn removeFromSuperview];
+    [_userTypeLabel removeFromSuperview];
+    [_line removeFromSuperview];
     
+    // 类型
+    UIButton *userTypeBtn = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(_streetBtn.frame), ScreenWidth, PX_TO_PT(98))];
+    [userTypeBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    userTypeBtn.tag = 1002;
+    self.userTypeBtn = userTypeBtn;
+    //    [self.bottomView addSubview:userTypeBtn];
+    
+    UILabel *userTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,PX_TO_PT(38), ScreenWidth, PX_TO_PT(33))];
+    userTypeLabel.textColor = R_G_B_16(0x909090);
+    userTypeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    userTypeLabel.text = @"选择客户想买的商品";
+    self.userTypeLabel = userTypeLabel;
+    
+    UIView *lastLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*4, ScreenWidth, 1)];
+    lastLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    self.line = lastLine;
+    [self.bottomView addSubview:lastLine];
+
+    self.intersestedModelArr = [notification.userInfo valueForKey:@"selPro"];
     
     self.interestedProArr = [notification.userInfo valueForKey:@"selProArr"];
     
     self.interestedProIdArr = [notification.userInfo valueForKey:@"selProId_Arr"];
+    
     
     NSMutableString *str = [[NSMutableString alloc]init];
     for (NSString *name in self.interestedProArr) {
@@ -241,15 +235,14 @@
         remarksTFRect.origin.y = CGRectGetMinY(self.remarksLabel.frame);
         self.remarksTextField.frame = remarksTFRect;
         
-        self.remarksLine.frame = CGRectMake(0, CGRectGetMaxY(self.remarksTextField.frame)+PX_TO_PT(0), ScreenWidth, PX_TO_PT(1));
+        self.remarksLine.frame = CGRectMake(0, CGRectGetMaxY(self.remarksTextField.frame)+PX_TO_PT(0), ScreenWidth, PX_TO_PT(2));
         
         self.bottomView.frame = CGRectMake(0, CGRectGetMaxY(self.phoneView.frame), ScreenWidth, CGRectGetMaxY(self.remarksTextField.frame));
     }
 
-
-//    [_userTypeBtn addSubview:_userTypeLabel];
-//    [self.bottomView addSubview:_userTypeBtn];
-//    [self.bottomView addSubview:_line];
+    [_userTypeBtn addSubview:_userTypeLabel];
+    [self.bottomView addSubview:_userTypeBtn];
+    [self.bottomView addSubview:_line];
     
 }
 -(void)keyboardWillBeHidden:(NSNotification *)note
@@ -513,8 +506,9 @@
         [self.addressManagerView hide];
         [self.townManagerView hide];
         XNRSelProVC *selProVC = [[XNRSelProVC alloc]init];
-        selProVC.selPro = self.interestedProArr;
-        selProVC.selProId = self.interestedProIdArr;
+//        selProVC.selPro = self.interestedProArr;
+//        selProVC.selProId = self.interestedProIdArr;
+        selProVC.selPro = [NSMutableArray arrayWithArray:self.intersestedModelArr];
         [self.navigationController pushViewController:selProVC animated:YES];
     }
     
@@ -613,10 +607,6 @@
 
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
-//    if ([self.remarksTextField.text isEqualToString:@"请填写备注信息（30字以内）"]) {
-//        self.remarksTextField.text = @"";
-//    }
-//    self.remarksTextField.textColor = R_G_B_16(0x646464);
     [self.addressManagerView hide];
     [self.townManagerView hide];
 }
@@ -628,14 +618,6 @@
     }
   
 }
-//-(BOOL)textViewShouldEndEditing:(UITextView *)textView
-//{
-//    if (self.remarksLength <= 0) {
-//        self.remarksTextField.text = @"请填写备注信息（30字以内）";
-//    }
-//    return YES;
-//}
-
 - (float) heightForString:(NSString *)value fontSize:(float)fontSize andWidth:(float)width{
     UITextView *detailTextView = [[UITextView alloc]initWithFrame:CGRectMake(0, 0, width, 0)];
     detailTextView.font = [UIFont systemFontOfSize:fontSize];
@@ -647,7 +629,7 @@
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
 
-    self.remarksLine.frame = CGRectMake(0, CGRectGetMaxY(self.remarksTextField.frame)+PX_TO_PT(0), ScreenWidth, PX_TO_PT(1));
+    self.remarksLine.frame = CGRectMake(0, CGRectGetMaxY(self.remarksTextField.frame)+PX_TO_PT(0), ScreenWidth, PX_TO_PT(2));
 
     self.remarksLength = [self charLength:self.remarksTextField.text];
     if (self.remarksLength > 60&&![text isEqualToString:@""]) {

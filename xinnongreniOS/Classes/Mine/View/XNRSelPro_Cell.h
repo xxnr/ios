@@ -10,4 +10,6 @@
 
 @interface XNRSelPro_Cell : UITableViewCell
 @property (nonatomic,copy)NSString *name;
+@property (nonatomic,weak)UILabel *proName;
+
 @end

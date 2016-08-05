@@ -31,4 +31,7 @@
 @property (nonatomic ,assign) int newOrdersNumber;
 
 @property (nonatomic,assign) BOOL sex;
+
+@property (nonatomic,copy) NSString *namePinyin;
+@property (nonatomic,copy)NSString *nameInitial;
 @end

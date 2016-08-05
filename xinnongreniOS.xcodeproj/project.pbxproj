@@ -659,6 +659,8 @@
 		9CF8AC071C981D5500F27563 /* XNRSelectItemArrModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AC061C981D5500F27563 /* XNRSelectItemArrModel.m */; };
 		9CF8AC0C1C981DB300F27563 /* XNRHomeSelectBrandView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AC091C981DB200F27563 /* XNRHomeSelectBrandView.m */; };
 		9CF8AC0D1C981DB300F27563 /* XNRHomeSelectedCellectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AC0B1C981DB300F27563 /* XNRHomeSelectedCellectionCell.m */; };
+		9CFF6A701D5428340083FC46 /* XNRInterestGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF6A6F1D5428340083FC46 /* XNRInterestGroup.m */; };
+		9CFF6A731D5434E20083FC46 /* XNRInterestProModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFF6A721D5434E20083FC46 /* XNRInterestProModel.m */; };
 		C54CFAFA1B2AC30C004D5C54 /* checkbox1_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = C54CFAF41B2AC30C004D5C54 /* checkbox1_checked.png */; };
 		C54CFAFB1B2AC30C004D5C54 /* checkbox1_checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C54CFAF51B2AC30C004D5C54 /* checkbox1_checked@2x.png */; };
 		C54CFAFC1B2AC30C004D5C54 /* checkbox1_unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = C54CFAF61B2AC30C004D5C54 /* checkbox1_unchecked.png */; };
@@ -1876,6 +1878,10 @@
 		9CF8AC091C981DB200F27563 /* XNRHomeSelectBrandView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRHomeSelectBrandView.m; sourceTree = "<group>"; };
 		9CF8AC0A1C981DB200F27563 /* XNRHomeSelectedCellectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRHomeSelectedCellectionCell.h; sourceTree = "<group>"; };
 		9CF8AC0B1C981DB300F27563 /* XNRHomeSelectedCellectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRHomeSelectedCellectionCell.m; sourceTree = "<group>"; };
+		9CFF6A6E1D5428340083FC46 /* XNRInterestGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRInterestGroup.h; sourceTree = "<group>"; };
+		9CFF6A6F1D5428340083FC46 /* XNRInterestGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRInterestGroup.m; sourceTree = "<group>"; };
+		9CFF6A711D5434E20083FC46 /* XNRInterestProModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRInterestProModel.h; sourceTree = "<group>"; };
+		9CFF6A721D5434E20083FC46 /* XNRInterestProModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRInterestProModel.m; sourceTree = "<group>"; };
 		A8FD127E739A7D58D54B536C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		C54CFAF41B2AC30C004D5C54 /* checkbox1_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox1_checked.png; sourceTree = "<group>"; };
 		C54CFAF51B2AC30C004D5C54 /* checkbox1_checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox1_checked@2x.png"; sourceTree = "<group>"; };
@@ -2353,6 +2359,10 @@
 				4967137D1CD8922D00782C12 /* XNRRscFootFrameModel.m */,
 				4967137F1CD89E7600782C12 /* XNRRscDetialFootFrameModel.h */,
 				496713801CD89E7600782C12 /* XNRRscDetialFootFrameModel.m */,
+				9CFF6A6E1D5428340083FC46 /* XNRInterestGroup.h */,
+				9CFF6A6F1D5428340083FC46 /* XNRInterestGroup.m */,
+				9CFF6A711D5434E20083FC46 /* XNRInterestProModel.h */,
+				9CFF6A721D5434E20083FC46 /* XNRInterestProModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4758,6 +4768,7 @@
 				4916FCAD1CE1AD5F007378E2 /* XNRManagerAddressCell.m in Sources */,
 				53445EB21B148712009F79E5 /* XNRShoppingCartModel.m in Sources */,
 				8446C2A51B1D6D19005CA932 /* POPMath.mm in Sources */,
+				9CFF6A701D5428340083FC46 /* XNRInterestGroup.m in Sources */,
 				9C3F9B431CBFA43F00E44BA8 /* XNRDeliveryCell.m in Sources */,
 				9C3FAC6D1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.m in Sources */,
 				49CD5E3E1C0BEC4E004235C4 /* XNRMessageCell.m in Sources */,
@@ -4819,6 +4830,7 @@
 				84AAA58A1B4391ED005AA154 /* XNROrderInfo_VC.m in Sources */,
 				4976FC241BE9A2AA0002E8F8 /* DataVerifier.m in Sources */,
 				491611291C8D189400F1E243 /* IQKeyboardReturnKeyHandler.m in Sources */,
+				9CFF6A731D5434E20083FC46 /* XNRInterestProModel.m in Sources */,
 				49E895D21BEDAC3400B3671E /* DatabaseManager.m in Sources */,
 				499181491CF7F56E006A077D /* SDImageCache.m in Sources */,
 				C54CFAFE1B2AC30C004D5C54 /* QCheckBox.m in Sources */,
@@ -4992,7 +5004,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = xinnongreniOS/xinnongreniOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/Alipay",
@@ -5050,7 +5062,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = xinnongreniOS/xinnongreniOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/xinnongreniOS/Classes/Lib/Alipay",

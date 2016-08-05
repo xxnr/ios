@@ -79,7 +79,9 @@
  
     [self createView];
     
+    [searchBar addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 }
+
 - (void)createView
 {
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
@@ -224,7 +226,7 @@
         {
             cell = [[XNRMyRepresent_cell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MyRepresent_cell"];
         }
-        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         XNRMyRepresentModel *model = self.searchResultArr[indexPath.section][indexPath.row];
         cell.model = model;
         return cell;
@@ -237,7 +239,7 @@
         {
             cell = [[XNRUser_Cell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"User_Cell"];
         }
-        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         XNRBookUser *model = self.searchResultArr[indexPath.section][indexPath.row];
         cell.model = model;
         return cell;
@@ -253,6 +255,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self.searchBar resignFirstResponder];
 
     if (self.searchResultArr.count <= 0) {
         return ;
@@ -278,73 +281,71 @@
         
         XNRBookUser *user = self.searchResultArr[indexPath.section][indexPath.row];
         detailUser._id = user._id;
+//        detailUser.model = user;
         [self.navigationController pushViewController:detailUser animated:YES];
     }
 }
-
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
+//-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+//{
+//    UITouch *touch = [touches anyObject];
+//    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY( self.searchBar.frame), ScreenWidth, ScreenHeight-64-self.searchBar.frame.size.height)];
+//    CGPoint point = [touch  locationInView:view];
+//    
+//    CGRect rect = CGRectMake(0, 0, ScreenWidth, ScreenHeight/2);
+//    if (CGRectContainsPoint(rect, point)) {
+//            [self.searchBar resignFirstResponder];
+//    }
+//
+// }
+- (void) textFieldDidChange:(id) sender {
+    
     self.NoUserView.hidden = YES;
-    
-    NSMutableString *currentStr = [NSMutableString stringWithString:textField.text];
-    
-    if (/*[string isEqualToString:@""] && */range.length) {
-        [currentStr deleteCharactersInRange:range];
-    }
-    else
-    {
-        [currentStr insertString:string atIndex:range.location];
-    }
-    
-    if (currentStr.length == 0 && range.location == 0) {
-        [self.searchResultArr removeAllObjects];
-        [self.tableView reloadData];
-        return YES;
-    }
 
-        [self.searchResultArr removeAllObjects];
+    NSString *currentStr = self.searchBar.text;
     
-        __block NSMutableArray *resultArr = [NSMutableArray array];
-
-        [_dataArr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [self.searchResultArr removeAllObjects];
+    
+    __block NSMutableArray *resultArr = [NSMutableArray array];
+    
+    [_dataArr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        
+        NSArray *arr = (NSArray *)obj;
+        
+        [arr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             
-            NSArray *arr = (NSArray *)obj;
+            XNRMyRepresentModel *model = (XNRMyRepresentModel *)obj;
             
-            [arr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                
-                XNRMyRepresentModel *model = (XNRMyRepresentModel *)obj;
-                
-                if ([model.name containsString:currentStr] ||[model.account isEqualToString:currentStr])
-                {
-                    [resultArr addObject:model];
-                }
-                
-            }];
-
+            if ([model.namePinyin containsString:currentStr]||[model.name containsString:currentStr] ||[model.nameInitial containsString:currentStr] ||[model.account isEqualToString:currentStr])
+            {
+                [resultArr addObject:model];
+            }
+            
         }];
+        
+    }];
     
     [self.searchResultArr addObject:resultArr];
-
+    
     
     __block NSMutableArray *userresultArr = [NSMutableArray array];
-
-        [_userArr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    
+    [_userArr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        
+        NSArray *arr = (NSArray *)obj;
+        
+        [arr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             
-            NSArray *arr = (NSArray *)obj;
+            XNRBookUser *model = (XNRBookUser *)obj;
             
-            [arr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                
-                XNRBookUser *model = (XNRBookUser *)obj;
-                
-                if ([model.name containsString:currentStr] ||[model.phone isEqualToString:currentStr])
-                {
-                    [userresultArr addObject:model];
-                }
-
-            }];
+            if ([model.namePinyin containsString:currentStr] ||[model.name containsString:currentStr]||[model.nameInitial containsString:currentStr] ||[model.phone isEqualToString:currentStr])
+            {
+                [userresultArr addObject:model];
+            }
             
         }];
-
+        
+    }];
+    
     [self.searchResultArr addObject:userresultArr];
     [self.tableView reloadData];
     
@@ -354,8 +355,9 @@
     {
         self.NoUserView.hidden = NO;
     }
-    return YES;
 }
+
+
 - (BOOL)textFieldShouldClear:(UITextField *)textField
 {
     self.NoUserView.hidden = YES;
@@ -366,9 +368,13 @@
 }
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    [self.searchBar resignFirstResponder];
     [self.tableView reloadData];
     return YES;
 }
-
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
 
 @end

@@ -267,6 +267,9 @@
  */
 #define KGetIntentionProducts [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.1/intentionProducts"]
 
+//获取意向商品列表（包含品牌二级列表)
+#define KGetIntentionProductsTwo [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.3/intentionProducts"]
+
 /**
  *  获取报备用户详情
  */

@@ -188,7 +188,9 @@
             bgView.backgroundColor = R_G_B_16(0xf8f8f8);
             [self.view addSubview:bgView];
             
-            [self compareModel];
+            if (self.model) {
+                [self compareModel];
+            }
         }
         else
         {
@@ -207,6 +209,7 @@
       } failure:^(NSError *error) {
         
     }];
+    
 }
 -(void)compareModel
 {
@@ -214,6 +217,7 @@
     BOOL phone = [self.model.phone isEqualToString:self.customer.phone];
     BOOL sex = [self.model.sex integerValue] == [self.customer.sex integerValue];
     BOOL isregister = [self.model.isRegistered integerValue] == [self.customer.isRegistered integerValue];
+    
     
     if (!name || !phone ||!sex || !isregister) {
         self.refreshListBlock(YES);
