@@ -195,7 +195,7 @@
     self.userTypeLabel = userTypeLabel;
     
     UIView *lastLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98)*4, ScreenWidth, 1)];
-    lastLine.backgroundColor = R_G_B_16(0xc7c7c7);
+    lastLine.backgroundColor = R_G_B_16(0xe0e0e0);
     self.line = lastLine;
     [self.bottomView addSubview:lastLine];
 
@@ -220,7 +220,7 @@
         
         self.userTypeLabel.text = str;
         self.userTypeLabel.textColor = R_G_B_16(0x646464);
-        CGSize size = [self.userTypeLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(ScreenWidth - CGRectGetMaxX(self.titleLabel.frame)-PX_TO_PT(60), MAXFLOAT)];
+        CGSize size = [self.userTypeLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(32)] constrainedToSize:CGSizeMake(ScreenWidth - CGRectGetMaxX(self.titleLabel.frame)-PX_TO_PT(90), MAXFLOAT)];
         self.userTypeLabel.numberOfLines = 0;
         self.userTypeLabel.frame = CGRectMake(0,PX_TO_PT(38), size.width,size.height);
         self.userTypeBtn.frame = CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+PX_TO_PT(60), CGRectGetMaxY(_streetBtn.frame), ScreenWidth - CGRectGetMaxX(self.titleLabel.frame)-PX_TO_PT(60), size.height+PX_TO_PT(68));
@@ -232,7 +232,7 @@
         self.remarksLabel.frame = remarksLabelRect;
         
         CGRect remarksTFRect = self.remarksTextField.frame;
-        remarksTFRect.origin.y = CGRectGetMinY(self.remarksLabel.frame);
+        remarksTFRect.origin.y = CGRectGetMinY(self.remarksLabel.frame)-PX_TO_PT(16);
         self.remarksTextField.frame = remarksTFRect;
         
         self.remarksLine.frame = CGRectMake(0, CGRectGetMaxY(self.remarksTextField.frame)+PX_TO_PT(0), ScreenWidth, PX_TO_PT(2));

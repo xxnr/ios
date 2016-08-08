@@ -7,6 +7,7 @@
 
 var errorformatPhone = "11100002334";
 var addPhone = "188";
+
 for(var i=0;i<8;i++)
 {
     var num = Math.floor(Math.random()*10).toString();

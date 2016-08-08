@@ -435,6 +435,9 @@ static bool isBroker;
     line1.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.leftBtn addSubview:line1];
 
+    UIView *cross = [[UIView alloc]initWithFrame:CGRectMake(0,btnY  , ScreenWidth, PX_TO_PT(1))];
+    cross.backgroundColor = R_G_B_16(0xe0e0e0);
+    [self.view addSubview:cross];
 }
 
 - (void)bottomBtnClicked:(UIButton *)sender {

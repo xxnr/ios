@@ -648,6 +648,8 @@
 		9CC8DE5C1CC7713500277CF3 /* XNRCityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8DE5B1CC7713500277CF3 /* XNRCityCell.m */; };
 		9CC8DE5F1CCA086900277CF3 /* XNROffLine_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8DE5E1CCA086900277CF3 /* XNROffLine_VC.m */; };
 		9CEFB0211D0525630072B318 /* libUMessage_Sdk_1.3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CEFB01F1D0525630072B318 /* libUMessage_Sdk_1.3.0.a */; };
+		9CF290C31D58297000268050 /* representTextase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF290C21D58297000268050 /* representTextase.m */; };
+		9CF290C51D5829A800268050 /* representunitTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF290C41D5829A800268050 /* representunitTC.m */; };
 		9CF687A41CBDF353005F1A5F /* XNRDeliveryTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687A31CBDF353005F1A5F /* XNRDeliveryTypeModel.m */; };
 		9CF687AA1CBE0FE1005F1A5F /* XNRRSCInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687A91CBE0FE1005F1A5F /* XNRRSCInfoModel.m */; };
 		9CF687AD1CBE3C56005F1A5F /* XNROfflinePayTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687AC1CBE3C56005F1A5F /* XNROfflinePayTypeModel.m */; };
@@ -1856,6 +1858,8 @@
 		9CC8DE5E1CCA086900277CF3 /* XNROffLine_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNROffLine_VC.m; sourceTree = "<group>"; };
 		9CEFB01F1D0525630072B318 /* libUMessage_Sdk_1.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMessage_Sdk_1.3.0.a; sourceTree = "<group>"; };
 		9CEFB0201D0525630072B318 /* UMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMessage.h; sourceTree = "<group>"; };
+		9CF290C21D58297000268050 /* representTextase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = representTextase.m; sourceTree = "<group>"; };
+		9CF290C41D5829A800268050 /* representunitTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = representunitTC.m; sourceTree = "<group>"; };
 		9CF687A21CBDF353005F1A5F /* XNRDeliveryTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRDeliveryTypeModel.h; sourceTree = "<group>"; };
 		9CF687A31CBDF353005F1A5F /* XNRDeliveryTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRDeliveryTypeModel.m; sourceTree = "<group>"; };
 		9CF687A81CBE0FE1005F1A5F /* XNRRSCInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRSCInfoModel.h; sourceTree = "<group>"; };
@@ -2064,6 +2068,8 @@
 			isa = PBXGroup;
 			children = (
 				1F1532EE1B09C58800CA374B /* xinnongreniOSTests.m */,
+				9CF290C41D5829A800268050 /* representunitTC.m */,
+				9CF290C21D58297000268050 /* representTextase.m */,
 				9C42B4A61D4AF635005C044E /* XNRElements.m */,
 				1F1532EC1B09C58800CA374B /* Supporting Files */,
 			);
@@ -4870,8 +4876,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C42B4A71D4AF635005C044E /* XNRElements.m in Sources */,
+				9CF290C51D5829A800268050 /* representunitTC.m in Sources */,
 				1F1532EF1B09C58800CA374B /* xinnongreniOSTests.m in Sources */,
 				9C7D6AA81D50480B0014DC08 /* XNRRepData.m in Sources */,
+				9CF290C31D58297000268050 /* representTextase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -53,7 +53,7 @@
         [cell addSubview:name];
         
         if (i+1 < (nameArr.count-1)) {
-            UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(1.5))];
+            UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(1))];
             line.backgroundColor = R_G_B_16(0xE0E0E0);
             [self.view addSubview:line];
         }
@@ -159,11 +159,11 @@
             [self.view addSubview:interestLabel];
             
             
-            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(70),ScreenWidth, PX_TO_PT(1.5))];
+            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(71),ScreenWidth, PX_TO_PT(1))];
             lastLine.backgroundColor = R_G_B_16(0xE0E0E0);
             [self.view addSubview:lastLine];
             
-            CGFloat bgY =CGRectGetMaxY(lastLine.frame)+PX_TO_PT(1);
+            CGFloat bgY =CGRectGetMaxY(lastLine.frame);
             
             if (user.remarks) {
                 self.remarksLB.hidden = NO;
@@ -177,13 +177,13 @@
                 
                 self.remarksLB.frame =CGRectMake(0,  CGRectGetMaxY(lastLine.frame), PX_TO_PT(140), PX_TO_PT(99));
                 
-                UIView *remarksLine = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(remarksLabel.frame)+PX_TO_PT(35),ScreenWidth, PX_TO_PT(1.5))];
+                UIView *remarksLine = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(remarksLabel.frame)+PX_TO_PT(33),ScreenWidth, PX_TO_PT(1))];
                 remarksLine.backgroundColor = R_G_B_16(0xE0E0E0);
                 [self.view addSubview:remarksLine];
 
-                    bgY = CGRectGetMaxY(remarksLine.frame)+PX_TO_PT(1);
+                    bgY = CGRectGetMaxY(remarksLine.frame);
             }
-            UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, bgY, ScreenWidth, ScreenHeight -CGRectGetMaxY(lastLine.frame))];
+            UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, bgY, ScreenWidth, ScreenHeight -bgY)];
 
             bgView.backgroundColor = R_G_B_16(0xf8f8f8);
             [self.view addSubview:bgView];
