@@ -131,6 +131,10 @@ static FMDatabase*_db;
     [AppKeyWindow addSubview:coverView];
     
     UIView *upDataAlertView = [[UIView alloc] init];
+<<<<<<< HEAD
+=======
+//                               WithFrame:CGRectMake(PX_TO_PT(80), (ScreenHeight-PX_TO_PT(432))*0.5, PX_TO_PT(590), PX_TO_PT(432))];
+>>>>>>> ynn_ios
     upDataAlertView.backgroundColor = [UIColor whiteColor];
     upDataAlertView.layer.cornerRadius = 5.0;
     upDataAlertView.layer.masksToBounds = YES;
@@ -149,6 +153,16 @@ static FMDatabase*_db;
     versionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [upDataAlertView addSubview:versionLabel];
     
+<<<<<<< HEAD
+=======
+//    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), CGRectGetMaxY(versionLabel.frame)+PX_TO_PT(32), PX_TO_PT(530), PX_TO_PT(126))];
+//    tableView.delegate = self;
+//    tableView.dataSource = self;
+//    tableView.separatorStyle = NO;
+//    _messageArray = [NSMutableArray array];
+//    [upDataAlertView addSubview:tableView];
+    
+>>>>>>> ynn_ios
     UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(versionLabel.frame)+PX_TO_PT(32), PX_TO_PT(530), PX_TO_PT(500))];
     messageLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
     messageLabel.textColor = R_G_B_16(0x323232);
@@ -210,6 +224,30 @@ static FMDatabase*_db;
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://itunes.apple.com/cn/app/xin-xin-nong-ren-hu-lian-wang/id%@?l=en&mt=8", kStoreAppId]];
     [[UIApplication sharedApplication] openURL:url]; 
 }
+<<<<<<< HEAD
+=======
+
+//-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+//{
+//    return 1;
+//}
+//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    NSString *message = [_messageArray firstObject];
+//    CGSize messageSize = [message sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(24)]}];
+//    return messageSize.height;
+//}
+//-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//   
+//    XNRUpdataCell *cell = [XNRUpdataCell cellWithTableView:tableView];
+//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//
+//    [cell upDataWithData:_messageArray];
+//    
+//    return cell;
+//}
+>>>>>>> ynn_ios
 
 -(void)openOrderIdController:(NSNotification *)notification
 {
@@ -261,7 +299,10 @@ static FMDatabase*_db;
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
+<<<<<<< HEAD
 
+=======
+>>>>>>> ynn_ios
     titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"新新农人";

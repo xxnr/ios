@@ -51,4 +51,11 @@
         return nil;
     }
 }
+-(NSMutableArray *)verifiedTypes
+{
+    if (!_verifiedTypes) {
+        _verifiedTypes = [NSMutableArray array];
+    }
+    return _verifiedTypes;
+}
 @end

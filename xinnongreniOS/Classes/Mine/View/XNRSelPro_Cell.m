@@ -9,8 +9,8 @@
 #import "XNRSelPro_Cell.h"
 #import "XNRBtn.h"
 @interface XNRSelPro_Cell()
-@property (nonatomic,weak)UIImageView *icon;
-@property (nonatomic,weak)UILabel *proName;
+@property (nonatomic,weak)UIView *line;
+
 @end
 @implementation XNRSelPro_Cell
 
@@ -18,25 +18,35 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self creatCell];
+//        [self creatCell];
     }
     return self;
 }
 -(void)creatCell
 {
     
-    UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(102), PX_TO_PT(24), ScreenWidth, PX_TO_PT(40))];
-    nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
+    UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(24), ScreenWidth, PX_TO_PT(40))];
+    nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
+    
     self.proName = nameLabel;
     [self.contentView addSubview:nameLabel];
     
+<<<<<<< HEAD
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(87), ScreenWidth, 1)];
+=======
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(87), ScreenWidth-PX_TO_PT(32), 1)];
+    self.line = line;
+>>>>>>> ynn_ios
     line.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.contentView addSubview:line];
-    
 }
+
+
 -(void)setName:(NSString *)name
 {
+    [self.proName removeFromSuperview];
+    [self.line removeFromSuperview];
+    [self creatCell];
     self.proName.text = name;
 }
 @end

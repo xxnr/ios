@@ -611,6 +611,10 @@
 
 -(void)refreshIdentifyPicture{
     [self.picImage removeFromSuperview];
+<<<<<<< HEAD
+=======
+
+>>>>>>> ynn_ios
     
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     

@@ -47,6 +47,9 @@
     
 //    [UMessage startWithAppkey:UM_APPKEY launchOptions:launchOptions];
 
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    
+
     self.launchOptions = launchOptions;
     // 键盘的管理
     IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
@@ -107,7 +110,6 @@
     if (remoteNotification != nil) {
         _is_Notification = YES;
     }
-
     return YES;
 }
 
@@ -263,7 +265,6 @@
             XNRNavigationController *orderNavVC = [[XNRNavigationController alloc]initWithRootViewController:vc];
             
             [myorderVC presentViewController:orderNavVC animated:NO completion:nil];
-
         }
         else
         {

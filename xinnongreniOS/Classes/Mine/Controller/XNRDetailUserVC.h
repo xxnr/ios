@@ -10,4 +10,6 @@
 #import "XNRBookUser.h"
 @interface XNRDetailUserVC : UIViewController
 @property (nonatomic,copy)NSString *_id;
+@property (nonatomic,strong)XNRBookUser *model;
+@property (nonatomic,strong)void(^refreshListBlock)(BOOL isrefresh);
 @end

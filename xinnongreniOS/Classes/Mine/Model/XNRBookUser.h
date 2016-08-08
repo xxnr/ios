@@ -14,5 +14,7 @@
 @property (nonatomic,copy)NSString *phone;
 @property (nonatomic,copy)NSString *remarks;
 @property (nonatomic,copy)NSNumber *isRegistered;
-@property (nonatomic,copy)NSNumber *sex;
+@property (nonatomic,copy)NSString *sex;
+@property (nonatomic,copy)NSString *namePinyin;
+@property (nonatomic,copy)NSString *nameInitial;
 @end

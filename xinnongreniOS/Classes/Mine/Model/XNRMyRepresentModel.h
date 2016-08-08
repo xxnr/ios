@@ -18,7 +18,7 @@
  */
 @property (nonatomic, copy) NSString *nickname;
 /**
- *  头像
+ *  
  */
 @property (nonatomic, copy) NSString *photo;
 /**
@@ -30,5 +30,8 @@
 
 @property (nonatomic ,assign) int newOrdersNumber;
 
+@property (nonatomic,assign) BOOL sex;
 
+@property (nonatomic,copy) NSString *namePinyin;
+@property (nonatomic,copy)NSString *nameInitial;
 @end

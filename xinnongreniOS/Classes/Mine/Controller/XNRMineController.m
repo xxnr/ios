@@ -79,7 +79,28 @@
     [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"icon_navbg"] forBarMetrics:UIBarMetricsDefault];
     
     if(IS_Login == YES){
-    [_userArray removeAllObjects];
+        [_userArray addObject:[DataCenter account]];
+
+//    [_userArray removeAllObjects];
+        
+        //初始化类型列表
+        NSArray *Arr = [DataCenter account].verifiedTypes;
+        [self.verifiedTypes removeAllObjects];
+        [XNRMyRepresentViewController SetisBroker:NO];
+        
+        if ([DataCenter account].verifiedTypes.count > 0) {
+            if ([[DataCenter account].verifiedTypes[0] isKindOfClass:[NSDictionary class]]) {
+                for (int i=0 ; i<Arr.count; i++) {
+                    NSString *name =[DataCenter account].verifiedTypes[i][@"typeName"];
+                    [self.verifiedTypes addObject:name];
+                    if ([name isEqualToString:@"新农经纪人"]) {
+                        [XNRMyRepresentViewController SetisBroker:YES];
+                    }
+                }
+            }
+        }
+
+    //
     [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
     if([result[@"code"] integerValue] == 1000){
@@ -99,17 +120,17 @@
         info.type = dict[@"userType"];
         info.typeName = dict[@"userTypeInName"];
         info.sex = dict[@"sex"];
+        info.isRSC = dict[@"isRSC"];
+        info.verifiedTypes = dict[@"verifiedTypesInJson"];
         
         NSArray *Arr = dict[@"verifiedTypesInJson"];
         [self.verifiedTypes removeAllObjects];
-//        self.isBroker = NO;
         [XNRMyRepresentViewController SetisBroker:NO];
 
         for (int i=0 ; i<Arr.count; i++) {
             NSString *name =dict[@"verifiedTypesInJson"][i][@"typeName"];
             [self.verifiedTypes addObject:name];
             if ([name isEqualToString:@"新农经纪人"]) {
-//                self.isBroker = YES;
                 [XNRMyRepresentViewController SetisBroker:YES];
             }
         }
@@ -119,7 +140,7 @@
         info.countyID = county[@"id"];
         [DataCenter saveAccount:info];
             
-        
+        [_userArray removeAllObjects];
         XNRUserInfoModel *model = [[XNRUserInfoModel alloc] init];
         [model setValuesForKeysWithDictionary:dict];
         [_userArray addObject:model];
@@ -135,23 +156,45 @@
             model.town = town[@"name"];
         }
         if (IS_Login) {
-            // 创建TabelView
+//            // 创建TabelView
+//            [self createMainTableView];
+//            [self createLoginTopView];
+//            [self createMiddleView];
             [self createMainTableView];
             [self createLoginTopView];
             [self createMiddleView];
-            
+            [self refreshTop];
+
         }
-        // 设置视图的数据
+         //设置视图的数据
         [self setupDatas:model];
     }
     
     } failure:^(NSError *error) {
+        [self createMainTableView];
+        [self createLoginTopView];
+        [self createMiddleView];
+        [self refreshTop];
         
+//        NSArray *Arr = [DataCenter account].verifiedTypes;
+//        [self.verifiedTypes removeAllObjects];
+//        [XNRMyRepresentViewController SetisBroker:NO];
+//        
+//        for (int i=0 ; i<Arr.count; i++) {
+//            NSString *name =[DataCenter account].verifiedTypes[i][@"typeName"];
+//            [self.verifiedTypes addObject:name];
+//            if ([name isEqualToString:@"新农经纪人"]) {
+//                [XNRMyRepresentViewController SetisBroker:YES];
+//            }
+//        }
+
         [UILabel showMessage:@"网络请求失败"];
             
         }];
     }else{
         // 创建TabelView
+        
+        [_userArray removeAllObjects];
         [self createMainTableView];
         [self createNotLoginTopView];
         [self createMiddleView];
@@ -345,7 +388,63 @@
     mainTableView.tableHeaderView = topBgView;
     [self.view addSubview:mainTableView];
 }
-
+-(void)refreshTop
+{
+    // 头像
+    if (![DataCenter account].photo) {// 没有头像
+        self.icon.image=[UIImage imageNamed:@"icon_head"];
+        
+    }else{
+        NSString *imageUrl = [DataCenter account].photo;
+        
+        if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
+            [self.icon setImage:[UIImage imageNamed:@"icon_head"]];
+        }else{
+            [self.icon sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_head"]];
+        }
+    }
+    // 昵称
+        self.introduceLabel.text = [DataCenter account].nickname?[DataCenter account].nickname:[NSString stringWithFormat:@"昵称: 新新农人"];
+    // 地址
+    if (![DataCenter account].province) {
+        self.addressLabel.text = [NSString stringWithFormat:@"地区: %@",@"还没有填写哦~"];
+    }else{
+        if (![DataCenter account].county) {
+            if (![DataCenter account].town) {
+                self.addressLabel.text = [NSString stringWithFormat:@"地区: %@%@",[DataCenter account].province,[DataCenter account].city];
+            }else{
+                self.addressLabel.text = [NSString stringWithFormat:@"地区: %@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].town];
+            }
+            
+        }else{
+            if (![DataCenter account].town) {
+                NSString *address = [NSString stringWithFormat:@"%@",[DataCenter account].county];
+                self.addressLabel.text = [NSString stringWithFormat:@"地区: %@%@%@",[DataCenter account].province,[DataCenter account].city,address];
+            }else{
+                NSString *address = [NSString stringWithFormat:@"%@%@",[DataCenter account].county,[DataCenter account].town];
+                self.addressLabel.text = [NSString stringWithFormat:@"地区: %@%@%@",[DataCenter account].province,[DataCenter account].city,address];
+            }
+        }
+    }
+    
+    // 类型
+    self.typeLabel.text = [DataCenter account].typeName?[NSString stringWithFormat:@"类型: %@",[DataCenter account].typeName]:@"类型: 还没有填写哦~";
+    CGSize size = [self.typeLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(26)]}];
+    self.typeLabel.frame = CGRectMake(PX_TO_PT(200), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), size.width, PX_TO_PT(24));
+    
+    
+    // 徽章
+    if ([DataCenter account].typeName) {
+        for (int i=0; i<self.verifiedTypes.count; i++) {
+            if ([self.verifiedTypes[i] isEqualToString:[DataCenter account].typeName]) {
+                self.badgeImage.frame = CGRectMake(CGRectGetMaxX(self.typeLabel.frame) + PX_TO_PT(14), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), PX_TO_PT(28), PX_TO_PT(36));
+                
+                self.badgeImage.hidden = NO;
+                break;
+            }
+        }
+    }
+}
 -(void)createLoginTopView
 {
     UIImageView *bgLoginView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(320))];
@@ -714,6 +813,9 @@
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"我的新农人";
     self.navigationItem.titleView = titleLabel;
+
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {

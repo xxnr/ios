@@ -119,7 +119,11 @@ xxnrClass.mine(window).rscOrderBtn().tap();
 
         test("订单详情页测试",function(target,app){
 
+<<<<<<< HEAD
             xxnrClass.rscOrders(window).orderDetail().tap();
+=======
+            xxnrClass.rscOrders(window).orderDetialCell().tap();
+>>>>>>> ynn_ios
             assertEquals("订单详情",window.navigationBar().name());
             // 待审核按钮点击
             window.tableViews()[0].buttons()["审核付款"].tap();

@@ -196,12 +196,17 @@
                 [self createReceiveView];
                 isfirst = NO;
             }
+<<<<<<< HEAD
             
             [self getRSCWebSiteData];
             
             //        [self createDeliveryView:self.RSCDetailAddress andContact:self.RSCContactInfo];
             
             
+=======
+            
+            [self getRSCWebSiteData];
+>>>>>>> ynn_ios
 
             if ([_currrentBtn.titleLabel.text isEqualToString:@"网点自提"]) {
                 _NoDeliverView.hidden = NO;

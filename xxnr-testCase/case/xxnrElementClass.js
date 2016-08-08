@@ -30,6 +30,11 @@ xxnrElementClass.tab = function (window) {
     return{
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+<<<<<<< HEAD
         homeTab:function () {
             return window.tabBar().buttons()["首页"];
         },
@@ -45,6 +50,10 @@ xxnrElementClass.tab = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     homeTab:function () {
         return window.tabBar().buttons()["首页"];
     },
@@ -58,8 +67,17 @@ xxnrElementClass.tab = function (window) {
         return window.tabBar().buttons()["我的"];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -68,6 +86,11 @@ xxnrElementClass.home = function(window)
 {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         fer_specialBtn:function () {
             return window.collectionViews()[0].buttons()[5];
@@ -78,6 +101,10 @@ xxnrElementClass.home = function(window)
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     fer_specialBtn:function () {
         return window.collectionViews()[0].buttons()[5];
     },
@@ -85,8 +112,17 @@ xxnrElementClass.home = function(window)
         return window.collectionViews()[0].buttons()[6];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -94,6 +130,11 @@ xxnrElementClass.home = function(window)
 xxnrElementClass.special = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         cell1:function () {
             return window.tableViews()[0].cells()["江淮汽车 - 第二代瑞风S3 - 2015款"];
@@ -119,6 +160,10 @@ xxnrElementClass.special = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     cell1:function () {
         return window.tableViews()[0].cells()["江淮汽车 - 第二代瑞风S3 - 2015款"];
     },
@@ -141,8 +186,17 @@ xxnrElementClass.special = function (window) {
         return window.buttons()["筛选"];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -150,6 +204,11 @@ xxnrElementClass.special = function (window) {
 xxnrElementClass.filter = function (window) {
     return {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         cell:function (index) {
             return window.collectionViews()[0].cells()[index];
@@ -166,6 +225,10 @@ xxnrElementClass.filter = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     cell:function (index) {
         return window.collectionViews()[0].cells()[index];
     },
@@ -179,8 +242,17 @@ xxnrElementClass.filter = function (window) {
         return window.buttons()["重置"];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -188,6 +260,11 @@ xxnrElementClass.filter = function (window) {
 xxnrElementClass.goodDetail = function (window) {
     return {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         purchaseBtn:function () {
             return window.buttons()["立即购买"];
@@ -208,6 +285,10 @@ xxnrElementClass.goodDetail = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     purchaseBtn:function () {
         return window.buttons()["立即购买"];
     },
@@ -225,8 +306,17 @@ xxnrElementClass.goodDetail = function (window) {
     }
         
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -234,6 +324,11 @@ xxnrElementClass.goodDetail = function (window) {
 xxnrElementClass.news = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         tableView:function () {
             return window.tableViews()[0];
@@ -247,6 +342,10 @@ xxnrElementClass.news = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     tableView:function () {
         return window.tableViews()[0];
     },
@@ -257,8 +356,17 @@ xxnrElementClass.news = function (window) {
         return window.tableViews()[0].cells()[index];
     },
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -266,6 +374,11 @@ xxnrElementClass.news = function (window) {
 xxnrElementClass.newsDetail = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         navShare:function () {
             return window.navigationBar().buttons()[2];
@@ -285,6 +398,10 @@ xxnrElementClass.newsDetail = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     navShare:function () {
         return window.navigationBar().buttons()[2];
     },
@@ -301,8 +418,17 @@ xxnrElementClass.newsDetail = function (window) {
         return window.buttons()[3];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -310,6 +436,11 @@ xxnrElementClass.newsDetail = function (window) {
 xxnrElementClass.shoppingCar = function (window) {
     return {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         sel_Group:function (index) {
             return window.tableViews()[0].groups()[index].buttons()["shopCar circle"];
@@ -320,6 +451,10 @@ xxnrElementClass.shoppingCar = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     sel_Group:function (index) {
         return window.tableViews()[0].groups()[index].buttons()["shopCar circle"];
     },
@@ -327,8 +462,17 @@ xxnrElementClass.shoppingCar = function (window) {
         return window.buttons()[index];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -336,6 +480,11 @@ xxnrElementClass.shoppingCar = function (window) {
 xxnrElementClass.submitOrder = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         carryBtn:function () {
             return window.tableViews()[0].buttons()["网点自提"];
@@ -371,6 +520,10 @@ xxnrElementClass.submitOrder = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     carryBtn:function () {
         return window.tableViews()[0].buttons()["网点自提"];
     },
@@ -403,8 +556,17 @@ xxnrElementClass.submitOrder = function (window) {
     }
         
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -412,6 +574,11 @@ xxnrElementClass.submitOrder = function (window) {
 xxnrElementClass.receiveAddress = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         cells:function () {
             return window.tableViews()[0].cells();
@@ -440,6 +607,10 @@ xxnrElementClass.receiveAddress = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     cells:function () {
         return window.tableViews()[0].cells();
     },
@@ -465,8 +636,17 @@ xxnrElementClass.receiveAddress = function (window) {
         return window.buttons()[2];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -474,6 +654,11 @@ xxnrElementClass.receiveAddress = function (window) {
 xxnrElementClass.addAddress = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         nameTextField:function () {
             return window.textFields()[0].textFields()[0];
@@ -508,6 +693,10 @@ xxnrElementClass.addAddress = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     nameTextField:function () {
         return window.textFields()[0].textFields()[0];
     },
@@ -539,8 +728,17 @@ xxnrElementClass.addAddress = function (window) {
         return window.staticTexts()[7].value();
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -548,6 +746,11 @@ xxnrElementClass.addAddress = function (window) {
 xxnrElementClass.selWebsite = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         proviceBtn:function () {
             return window.buttons()[0];
@@ -583,6 +786,10 @@ xxnrElementClass.selWebsite = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     proviceBtn:function () {
         return window.buttons()[0];
     },
@@ -615,8 +822,17 @@ xxnrElementClass.selWebsite = function (window) {
     }
         
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -624,6 +840,11 @@ xxnrElementClass.selWebsite = function (window) {
 xxnrElementClass.selContact = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         nameTextField:function () {
             return window.textFields()[0].textFields()[0];
@@ -646,6 +867,10 @@ xxnrElementClass.selContact = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     nameTextField:function () {
         return window.textFields()[0].textFields()[0];
     },
@@ -665,8 +890,17 @@ xxnrElementClass.selContact = function (window) {
         return window.tableViews()[0].cells()[index];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -674,6 +908,11 @@ xxnrElementClass.selContact = function (window) {
 xxnrElementClass.mine = function (window) {
     return {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         loginBtn:function () {
             return window.tableViews()[0].images()["icon_bgView"].buttons()["登录"];
@@ -698,6 +937,10 @@ xxnrElementClass.mine = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     loginBtn:function () {
         return window.tableViews()[0].images()["icon_bgView"].buttons()["登录"];
     },
@@ -719,8 +962,17 @@ xxnrElementClass.mine = function (window) {
         return window.tableViews()[0].cells()[index];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     };
 }
@@ -729,6 +981,11 @@ xxnrElementClass.mine = function (window) {
 xxnrElementClass.selPayType = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         fullPay:function () {
             return window.buttons()["全额支付"];
@@ -751,6 +1008,10 @@ xxnrElementClass.selPayType = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     fullPay:function () {
         return window.buttons()["全额支付"];
     },
@@ -770,8 +1031,17 @@ xxnrElementClass.selPayType = function (window) {
         return window.buttons()[6];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -779,6 +1049,11 @@ xxnrElementClass.selPayType = function (window) {
 xxnrElementClass.alipay = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         ALipayBack:function () {
             return window.scrollViews()[0].webViews()[0].links()["返回"];
@@ -789,6 +1064,10 @@ xxnrElementClass.alipay = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     ALipayBack:function () {
         return window.scrollViews()[0].webViews()[0].links()["返回"];
     },
@@ -796,8 +1075,17 @@ xxnrElementClass.alipay = function (window) {
         return window.scrollViews()[0].webViews()[0].links()["是"];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -805,6 +1093,11 @@ xxnrElementClass.alipay = function (window) {
 xxnrElementClass.unionpay = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         UnionpayBack:function () {
             return window.buttons()[0];
@@ -815,6 +1108,10 @@ xxnrElementClass.unionpay = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     UnionpayBack:function () {
         return window.buttons()[0];
     },
@@ -822,8 +1119,17 @@ xxnrElementClass.unionpay = function (window) {
         return window.buttons()["OK"];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -831,6 +1137,11 @@ xxnrElementClass.unionpay = function (window) {
 xxnrElementClass.login = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         phone:function(){
             return window.images()[0].textFields()[0].textFields()[0].value();
@@ -865,6 +1176,10 @@ xxnrElementClass.login = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     phone:function(){
         return window.images()[0].textFields()[0].textFields()[0].value();
     },
@@ -896,8 +1211,17 @@ xxnrElementClass.login = function (window) {
         return window.images()[0].buttons()[4];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -906,6 +1230,11 @@ xxnrElementClass.login = function (window) {
 xxnrElementClass.myorder = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         totalTab:function () {
             return window.staticTexts()["全部"];
@@ -1038,6 +1367,10 @@ xxnrElementClass.orderDetail = function (window) {
         }
 =======
 =======
+>>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     totalTab:function () {
         return window.staticTexts()["全部"];
@@ -1184,8 +1517,17 @@ xxnrElementClass.orderDetail = function (window) {
         return window.buttons()[0];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -1194,6 +1536,11 @@ xxnrElementClass.orderDetail = function (window) {
 xxnrElementClass.carry = function (window) {
     return {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         carryNum:function () {
            return window.tableViews()[0].staticTexts()[1];
@@ -1204,6 +1551,10 @@ return window.tableViews()[0].cells();
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     carryNum:function () {
         return window.tableViews()[0].staticTexts()[1];
     },
@@ -1211,8 +1562,17 @@ return window.tableViews()[0].cells();
         return window.tableViews()[0].cells();
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -1220,6 +1580,11 @@ return window.tableViews()[0].cells();
 xxnrElementClass.RSCOrder = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         totalTab:function () {
             return window.buttons()["全部"];
@@ -1282,6 +1647,10 @@ xxnrElementClass.RSCOrder = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     totalTab:function () {
         return window.buttons()["全部"];
     },
@@ -1341,8 +1710,17 @@ xxnrElementClass.RSCOrder = function (window) {
     }
         
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     };
 }
@@ -1351,6 +1729,11 @@ xxnrElementClass.RSCOrder = function (window) {
 xxnrElementClass.xxnrRepesent = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         myclientTab:function () {
             return window.buttons()["我的客户"];
@@ -1364,6 +1747,10 @@ xxnrElementClass.xxnrRepesent = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     myclientTab:function () {
         return window.buttons()["我的客户"];
     },
@@ -1374,8 +1761,17 @@ xxnrElementClass.xxnrRepesent = function (window) {
         return window.buttons()["客户登记"];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -1383,6 +1779,11 @@ xxnrElementClass.xxnrRepesent = function (window) {
 xxnrElementClass.xxnrRepesent_client = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         inviteLabel:function () {
             return window.tableViews()[0].staticTexts()[0];
@@ -1402,6 +1803,10 @@ xxnrElementClass.xxnrRepesent_client = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     inviteLabel:function () {
         return window.tableViews()[0].staticTexts()[0];
     },
@@ -1418,8 +1823,17 @@ xxnrElementClass.xxnrRepesent_client = function (window) {
         return window.staticTexts()[0].isVisible();
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -1427,6 +1841,11 @@ xxnrElementClass.xxnrRepesent_client = function (window) {
 xxnrElementClass.xxnrClientRegister = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         totalNum:function () {
             return window.staticTexts()[1].value();
@@ -1446,6 +1865,10 @@ xxnrElementClass.xxnrClientRegister = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     totalNum:function () {
         return window.staticTexts()[1].value();
     },
@@ -1462,8 +1885,17 @@ xxnrElementClass.xxnrClientRegister = function (window) {
         return window.buttons()[0];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -1471,6 +1903,11 @@ xxnrElementClass.xxnrClientRegister = function (window) {
 xxnrElementClass.addClient = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         nameTextField:function () {
             return window.textFields()[0].textFields()[0];
@@ -1502,6 +1939,10 @@ xxnrElementClass.addClient = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     nameTextField:function () {
         return window.textFields()[0].textFields()[0];
     },
@@ -1530,8 +1971,17 @@ xxnrElementClass.addClient = function (window) {
         return window.staticTexts()[message];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -1539,6 +1989,11 @@ xxnrElementClass.addClient = function (window) {
 xxnrElementClass.selPro = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         makeSureBtn:function () {
             return window.buttons()["确定"];
@@ -1549,6 +2004,10 @@ xxnrElementClass.selPro = function (window) {
 =======
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
     makeSureBtn:function () {
         return window.buttons()["确定"];
     },
@@ -1556,8 +2015,17 @@ xxnrElementClass.selPro = function (window) {
         return window.tableViews()[0];
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ynn_ios
 =======
+>>>>>>> ynn_ios
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
+=======
+>>>>>>> ynn_ios
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }
@@ -1565,6 +2033,14 @@ xxnrElementClass.selPro = function (window) {
 xxnrElementClass.clientDetail = function (window) {
     return{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    phone:function () {
+        return window.staticTexts()[3].value();
+    }
+=======
+<<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
         phone:function () {
             return window.staticTexts()[3].value();
@@ -1578,6 +2054,10 @@ xxnrElementClass.clientDetail = function (window) {
     phone:function () {
         return window.staticTexts()[3].value();
     }
+>>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
+>>>>>>> origin/version2.2.3
 >>>>>>> ynn_ios
     }
 }

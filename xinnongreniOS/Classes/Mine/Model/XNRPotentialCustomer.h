@@ -11,6 +11,7 @@
 @interface XNRPotentialCustomer : NSObject
 @property (nonatomic,copy)NSString *_id;
 @property (nonatomic,copy)NSString *name;
+@property (nonatomic,copy)NSString *isRegistered;
 @property (nonatomic,copy)NSString *phone;
 @property (nonatomic,copy)NSString *remarks;
 @property (nonatomic,strong)NSMutableArray *buyIntentions;

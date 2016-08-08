@@ -99,6 +99,7 @@
 
 @property (nonatomic ,copy) NSString *currentVersion;
 
+@property (nonatomic,copy)NSString *isRSC;
 
-
+@property (nonatomic,strong)NSMutableArray *verifiedTypes;
 @end

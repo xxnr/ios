@@ -210,6 +210,7 @@
 -(void)loadMoreData{
     [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionLayoutSubviews animations:^{
         self.scrollView.contentOffset = CGPointMake(0, ScreenHeight);
+
     } completion:^(BOOL finished) {
         //结束加载
         [self.tableView.mj_footer endRefreshing];

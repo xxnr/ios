@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface XNRBtn : UIButton
-
+@property (nonatomic,strong)NSIndexPath *indexPath;
 @end
