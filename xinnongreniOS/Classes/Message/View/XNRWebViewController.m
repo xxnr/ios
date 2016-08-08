@@ -87,7 +87,6 @@
                  [UILabel showShareMessage:@"分享失败"];
              }
              [self.shareView cancel];
-
          }];
     
      }else if(type == qzonebtn_type){
@@ -151,7 +150,7 @@
     
     UIButton *shanreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     shanreBtn.frame = CGRectMake(0, 0, 30, 30);
-    [shanreBtn setImage:[UIImage imageNamed:@"share-ios-"] forState:UIControlStateNormal];
+    [shanreBtn setImage:[UIImage imageNamed:@"message_share"] forState:UIControlStateNormal];
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:shanreBtn];
     self.navigationItem.rightBarButtonItem = rightItem;
     [shanreBtn addTarget:self action:@selector(shanreBtnClick) forControlEvents:UIControlEventTouchUpInside];

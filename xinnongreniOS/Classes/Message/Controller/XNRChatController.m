@@ -10,6 +10,7 @@
 #import "XNRMessageModel.h"
 #import "XNRMessageCell.h"
 #import "XNRWebViewController.h"
+#import "FMDatabase.h"
 #define MAX_PAGE_SIZE 10
 
 @interface XNRChatController ()<UITableViewDelegate,UITableViewDataSource>
@@ -55,22 +56,7 @@
             
             [RefreshImage addObject:image];
         }
-//    for (int i = 1; i<21; i++) {
-//        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
-//        
-//        [idleImage addObject:image];
-//    }
-//    NSMutableArray *RefreshImage = [NSMutableArray array];
-//    
-//    for (int i = 1; i<21; i++) {
-//        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"加载%d", i]];
-//        
-//        [RefreshImage addObject:image];
-//        
-//    }
     
-
-        
         [header setImages:idleImage forState:MJRefreshStateIdle];
         
         [header setImages:RefreshImage forState:MJRefreshStatePulling];
@@ -100,8 +86,6 @@
     currentPage = 1;
     [_messageArr removeAllObjects];
     [self getData];
-    
-    
 }
 -(void)footRefresh{
     currentPage ++;
@@ -142,15 +126,6 @@
     titleLabel.text = @"新农资讯";
     self.navigationItem.titleView = titleLabel;
     
-//    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-//    titleLabel.backgroundColor = [UIColor clearColor];
-//    titleLabel.font = [UIFont boldSystemFontOfSize:PX_TO_PT(40)];
-//    titleLabel.textColor = [UIColor colorWithRed:256.0/256.0 green:256.0/256.0 blue:256.0/256.0 alpha:1.0];//设置文本颜色
-//    titleLabel.textAlignment = NSTextAlignmentCenter;
-//    titleLabel.text = @"新农资讯";
-//    self.navigationItem.titleView = titleLabel;
-
-
 }
 -(void)setupTableView
 {
@@ -164,33 +139,85 @@
     [self.view addSubview:tableView];
 }
 
+//#pragma mark-----数据库缓存
+//static FMDatabase*_db;
+//+(void)initialize
+//{
+//    // 1.获得数据库文件的路径
+//    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+//    NSString *fileName = [doc stringByAppendingPathComponent:@"message.sqlite"];
+//    
+//    // 2.得到数据库
+//    _db = [FMDatabase databaseWithPath:fileName];
+//    
+//    // 3.打开数据库
+//    if ([_db open]) {
+//        // 4.创表
+//        BOOL result = [_db executeUpdate:@"CREATE TABLE IF NOT EXISTS t_home_products (id integer PRIMARY KEY AUTOINCREMENT, classId NOT NULL,products_idstr text NOT NULL, products_dict blob NOT NULL);"];
+//        if (result) {
+//            NSLog(@"成功创表");
+//        } else {
+//            NSLog(@"创表失败");
+//        }
+//    }
+//}
+
 -(void)getData
 {
-    [KSHttpRequest get:KMessageNews parameters:@{@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"} success:^(id result) {
-        
-        if ([result[@"code"] integerValue] == 1000) {
-            NSDictionary *dicts = result[@"datas"];
-            NSArray *array = dicts[@"items"];
-            for (NSDictionary *dict in array) {
-                XNRMessageModel *model = [[XNRMessageModel alloc] init];
-                [model setValuesForKeysWithDictionary:dict];
-                [_messageArr addObject:model];
+//    NSString *param = @"products";
+//    NSMutableArray *products = [NSMutableArray array];
+//    // 根据请求参数查询数据
+//    FMResultSet *resultSet = nil;
+//    resultSet = [_db executeQuery:@"SELECT * FROM t_home_products WHERE classId = ?;", param];
+//    
+//    // 遍历查询结果
+//    while (resultSet.next) {
+//        NSData *statusDictData = [resultSet objectForColumnName:@"products_dict"];
+//        NSDictionary *statusDict = [NSKeyedUnarchiver unarchiveObjectWithData:statusDictData];
+//        // 字典转模型
+//        XNRMessageModel *product = [[XNRMessageModel alloc] init];
+//        [product setValuesForKeysWithDictionary:statusDict];
+//        // 添加模型到数组中
+//        [products addObject:product];
+//    }
+//    if (products.count != 0) {
+//        [_messageArr addObjectsFromArray:products];
+//        [self.tableView.mj_header endRefreshing];
+//        [self.tableView.mj_footer endRefreshing];
+//
+//    }else{
+        [KSHttpRequest get:KMessageNews parameters:@{@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"} success:^(id result) {
+            
+            if ([result[@"code"] integerValue] == 1000) {
+                NSDictionary *dicts = result[@"datas"];
+                NSArray *array = dicts[@"items"];
+                for (NSDictionary *dict in array) {
+                    XNRMessageModel *model = [[XNRMessageModel alloc] init];
+                    [model setValuesForKeysWithDictionary:dict];
+                    [_messageArr addObject:model];
+                    
+                    // 把statusDict字典对象序列化成NSData二进制数据
+//                    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict];
+//                    [_db executeUpdate:@"INSERT INTO t_home_products (classId,products_idstr, products_dict) VALUES (?,?,?);",param,@20,data];
+
+                }
             }
-        }
-        //如果到达最后一页 就消除footer
-
-        NSInteger pages = [result[@"datas"][@"pages"] integerValue];
-        NSInteger page = [result[@"datas"][@"page"] integerValue];
-        self.tableView.mj_footer.hidden = pages==page;
-
-        [self.tableView.mj_header endRefreshing];
-        [self.tableView.mj_footer endRefreshing];
-        [self.tableView reloadData];
-
-    } failure:^(NSError *error) {
-        [self.tableView.mj_header endRefreshing];
-        [self.tableView.mj_footer endRefreshing];
-    }];
+            //如果到达最后一页 就消除footer
+            
+            NSInteger pages = [result[@"datas"][@"pages"] integerValue];
+            NSInteger page = [result[@"datas"][@"page"] integerValue];
+            self.tableView.mj_footer.hidden = pages==page;
+            
+            [self.tableView.mj_header endRefreshing];
+            [self.tableView.mj_footer endRefreshing];
+            [self.tableView reloadData];
+            
+        } failure:^(NSError *error) {
+            [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
+            [self.tableView.mj_header endRefreshing];
+            [self.tableView.mj_footer endRefreshing];
+        }];
+//    }
 
 }
 #pragma mark -- tableView代理

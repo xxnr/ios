@@ -10,6 +10,11 @@
 
 @interface XNRShoppingCartModel : NSObject
 
+@property (nonatomic, assign) int code;
+@property (nonatomic, copy) NSArray *datas;
+@property (nonatomic, copy) NSString *message;
+
+
 
 @property (nonatomic,copy) NSString *picUrl;         //图片C
 @property (nonatomic,copy) NSString *goodName;       //商品C

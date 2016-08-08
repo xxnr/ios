@@ -97,6 +97,8 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelBtnPresent) name:@"cancelBtnPresent" object:nil];
         self.cancelBtn.hidden = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenCancelBtn) name:@"hiddenCancelBtn" object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reframToNormal) name:@"reframToNormal" object:nil];
     }
     return self;
 }
@@ -105,6 +107,11 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
+}
+
+-(void)reframToNormal
+{
+    [self reframeToNormal];
 }
 
 -(void)cancelBtnPresent{
@@ -171,10 +178,17 @@
 {
     UIButton *deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     deleteBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(110), 0, PX_TO_PT(110), PX_TO_PT(210));
-    deleteBtn.backgroundColor = R_G_B_16(0xff4e30);
+    deleteBtn.backgroundColor = R_G_B_16(0xfe9b00);
     [deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
     [deleteBtn setTitleColor:R_G_B_16(0xffffff) forState:UIControlStateNormal];
+    [deleteBtn addTarget:self action:@selector(deleteBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:deleteBtn];
+}
+
+-(void)deleteBtnClick{
+    if (self.deleteBtnBlock) {
+        self.deleteBtnBlock(self.indexPath);
+    }
 }
 
 -(void)addPanGesture{
@@ -221,13 +235,15 @@
 
 
 -(void)tapGes:(UIGestureRecognizer *)ges{
-    
-    if (kView_X(_maskView) == YX_CELL_PAN_LEFT_EDGE)
-    {
-        [self rebounceAnimation];
-        
-        return;
-    }
+    [self pushBtnClick];
+//    [self createPushBtn];
+
+//    if (kView_X(_maskView) == YX_CELL_PAN_LEFT_EDGE)
+//    {
+//        [self rebounceAnimation];
+//        
+//        return;
+//    }
     
 //    if (self.statusView.hidden)
 //    {
@@ -284,20 +300,17 @@
     if (x>0) {
         return;
     }
-//    UIReframeWithX(_maskView, x);
     CGRect rect = _maskView.frame;
     rect.origin.x = x;
     _maskView.frame = rect;
 }
 -(void)reframeToNormal{
     if (kView_X(_maskView) != 0) {
-//        UIReframeWithX(_maskView, 0);
         CGRect rect = _maskView.frame;
         rect.origin.x = 0;
         _maskView.frame = rect;
     }
 }
-
 
 - (void)createUI
 {
@@ -363,14 +376,14 @@
     // 下架商品
     [self createSelectedBtn];
     // cell上按钮点击跳转
-    [self createPushBtn];
+//    [self createPushBtn];
     
 }
 -(void)createPushBtn
 {
     UIButton *pushBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [pushBtn addTarget:self action:@selector(pushBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.contentView addSubview:pushBtn];
+    [self.maskView addSubview:pushBtn];
     self.pushBtn = pushBtn;
 }
 
