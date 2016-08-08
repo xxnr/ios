@@ -33,48 +33,48 @@ test("新农代表tab的点击",function(){
         xxnrElementClass.xxnrRepesent(window).clientRegisterTab().tap();
     }
 })
-test("我的客户 下拉刷新",function(){
-    xxnrdelay(2);
-    xxnrElementClass.xxnrRepesent(window).myclientTab().tap();
-    xxnrdelay(2);
-    if (xxnrElementClass.xxnrRepesent_client(window).inviteLabel().isVisible()) {
-        xxnrElementClass.xxnrRepesent(window).myclientTab().dragInsideWithOptions({
-            startOffset: {x: 0.74, y: -3.54},
-            endOffset: {x: 0.83, y: 0.99}
-        });
-        xxnrdelay(2);
-        var label = xxnrElementClass.xxnrRepesent_client(window).inviteNum();
-        var numStr = label.substr(3, label.length - 6);
-
-        var num = parseInt(numStr);
-        var count = xxnrElementClass.xxnrRepesent_client(window).cells().length;
-        assertEquals(num, count);
-    }
-})
-test("我的客户  上滑加载",function(){
-    if (xxnrElementClass.xxnrRepesent_client(window).cells().length > 0)
-    {
-        var label = xxnrElementClass.xxnrRepesent_client(window).inviteNum();
-        var numStr = label.substr(3,label.length-6);
-
-        var num = parseInt(numStr);
-        var count = Math.floor(num/10);
-
-        xxnrlogMessage("'"+count+"'");
-
-        for (var i=0;i<=count;i++)
-        {
-            target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
-            target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
-
-            xxnrdelay(2);
-            window.tableViews()[0].visibleCells()[0].tap();
-            xxnrdelay(2);
-            xxnrlogEleTree(window);
-            xxnrElementClass.navBack(window).tap();
-        }
-    }
-})
+// test("我的客户 下拉刷新",function(){
+//     xxnrdelay(2);
+//     xxnrElementClass.xxnrRepesent(window).myclientTab().tap();
+//     xxnrdelay(2);
+//     if (xxnrElementClass.xxnrRepesent_client(window).inviteLabel().isVisible()) {
+//         xxnrElementClass.xxnrRepesent(window).myclientTab().dragInsideWithOptions({
+//             startOffset: {x: 0.74, y: -3.54},
+//             endOffset: {x: 0.83, y: 0.99}
+//         });
+//         xxnrdelay(2);
+//         var label = xxnrElementClass.xxnrRepesent_client(window).inviteNum();
+//         var numStr = label.substr(3, label.length - 6);
+//
+//         var num = parseInt(numStr);
+//         var count = xxnrElementClass.xxnrRepesent_client(window).cells().length;
+//         assertEquals(num, count);
+//     }
+// })
+// test("我的客户  上滑加载",function(){
+//     if (xxnrElementClass.xxnrRepesent_client(window).cells().length > 0)
+//     {
+//         var label = xxnrElementClass.xxnrRepesent_client(window).inviteNum();
+//         var numStr = label.substr(3,label.length-6);
+//
+//         var num = parseInt(numStr);
+//         var count = Math.floor(num/10);
+//
+//         xxnrlogMessage("'"+count+"'");
+//
+//         for (var i=0;i<=count;i++)
+//         {
+//             target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
+//             target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
+//
+//             xxnrdelay(2);
+//             window.tableViews()[0].visibleCells()[0].tap();
+//             xxnrdelay(2);
+//             xxnrlogEleTree(window);
+//             xxnrElementClass.navBack(window).tap();
+//         }
+//     }
+// })
 
 test("我的客户 邀请好友数",function(){
 

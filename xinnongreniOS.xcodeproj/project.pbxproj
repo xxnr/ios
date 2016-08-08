@@ -574,7 +574,6 @@
 		9C3FAC641CD354D400915DF8 /* XNRRscOrderDetialFrameModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3FAC631CD354D400915DF8 /* XNRRscOrderDetialFrameModel.m */; };
 		9C3FAC6A1CD3643600915DF8 /* XNRRscOrderDetialCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3FAC691CD3643600915DF8 /* XNRRscOrderDetialCell.m */; };
 		9C3FAC6D1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3FAC6C1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.m */; };
-		9C42B4A71D4AF635005C044E /* XNRElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C42B4A61D4AF635005C044E /* XNRElements.m */; };
 		9C441FED1D2FAD68007075C3 /* load-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C441FD61D2FAD68007075C3 /* load-0.png */; };
 		9C441FEE1D2FAD68007075C3 /* load-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C441FD71D2FAD68007075C3 /* load-1.png */; };
 		9C441FEF1D2FAD68007075C3 /* load-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C441FD81D2FAD68007075C3 /* load-2.png */; };
@@ -648,8 +647,6 @@
 		9CC8DE5C1CC7713500277CF3 /* XNRCityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8DE5B1CC7713500277CF3 /* XNRCityCell.m */; };
 		9CC8DE5F1CCA086900277CF3 /* XNROffLine_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8DE5E1CCA086900277CF3 /* XNROffLine_VC.m */; };
 		9CEFB0211D0525630072B318 /* libUMessage_Sdk_1.3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CEFB01F1D0525630072B318 /* libUMessage_Sdk_1.3.0.a */; };
-		9CF290C31D58297000268050 /* representTextase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF290C21D58297000268050 /* representTextase.m */; };
-		9CF290C51D5829A800268050 /* representunitTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF290C41D5829A800268050 /* representunitTC.m */; };
 		9CF687A41CBDF353005F1A5F /* XNRDeliveryTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687A31CBDF353005F1A5F /* XNRDeliveryTypeModel.m */; };
 		9CF687AA1CBE0FE1005F1A5F /* XNRRSCInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687A91CBE0FE1005F1A5F /* XNRRSCInfoModel.m */; };
 		9CF687AD1CBE3C56005F1A5F /* XNROfflinePayTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF687AC1CBE3C56005F1A5F /* XNROfflinePayTypeModel.m */; };
@@ -1748,7 +1745,6 @@
 		9C3FAC691CD3643600915DF8 /* XNRRscOrderDetialCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRRscOrderDetialCell.m; sourceTree = "<group>"; };
 		9C3FAC6B1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XNRRscOrderDetialHeadView.h; path = ../Model/XNRRscOrderDetialHeadView.h; sourceTree = "<group>"; };
 		9C3FAC6C1CD36EC500915DF8 /* XNRRscOrderDetialHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XNRRscOrderDetialHeadView.m; path = ../Model/XNRRscOrderDetialHeadView.m; sourceTree = "<group>"; };
-		9C42B4A61D4AF635005C044E /* XNRElements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRElements.m; sourceTree = "<group>"; };
 		9C441FD61D2FAD68007075C3 /* load-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "load-0.png"; sourceTree = "<group>"; };
 		9C441FD71D2FAD68007075C3 /* load-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "load-1.png"; sourceTree = "<group>"; };
 		9C441FD81D2FAD68007075C3 /* load-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "load-2.png"; sourceTree = "<group>"; };
@@ -1858,8 +1854,6 @@
 		9CC8DE5E1CCA086900277CF3 /* XNROffLine_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNROffLine_VC.m; sourceTree = "<group>"; };
 		9CEFB01F1D0525630072B318 /* libUMessage_Sdk_1.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMessage_Sdk_1.3.0.a; sourceTree = "<group>"; };
 		9CEFB0201D0525630072B318 /* UMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMessage.h; sourceTree = "<group>"; };
-		9CF290C21D58297000268050 /* representTextase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = representTextase.m; sourceTree = "<group>"; };
-		9CF290C41D5829A800268050 /* representunitTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = representunitTC.m; sourceTree = "<group>"; };
 		9CF687A21CBDF353005F1A5F /* XNRDeliveryTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRDeliveryTypeModel.h; sourceTree = "<group>"; };
 		9CF687A31CBDF353005F1A5F /* XNRDeliveryTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRDeliveryTypeModel.m; sourceTree = "<group>"; };
 		9CF687A81CBE0FE1005F1A5F /* XNRRSCInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRRSCInfoModel.h; sourceTree = "<group>"; };
@@ -2068,9 +2062,6 @@
 			isa = PBXGroup;
 			children = (
 				1F1532EE1B09C58800CA374B /* xinnongreniOSTests.m */,
-				9CF290C41D5829A800268050 /* representunitTC.m */,
-				9CF290C21D58297000268050 /* representTextase.m */,
-				9C42B4A61D4AF635005C044E /* XNRElements.m */,
 				1F1532EC1B09C58800CA374B /* Supporting Files */,
 			);
 			path = xinnongreniOSTests;
@@ -4875,11 +4866,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C42B4A71D4AF635005C044E /* XNRElements.m in Sources */,
-				9CF290C51D5829A800268050 /* representunitTC.m in Sources */,
 				1F1532EF1B09C58800CA374B /* xinnongreniOSTests.m in Sources */,
 				9C7D6AA81D50480B0014DC08 /* XNRRepData.m in Sources */,
-				9CF290C31D58297000268050 /* representTextase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

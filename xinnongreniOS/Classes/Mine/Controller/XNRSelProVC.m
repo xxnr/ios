@@ -18,6 +18,8 @@
 @property (nonatomic,strong)NSMutableArray *allProGroup;
 @property (nonatomic,strong)NSMutableArray *selProArr;
 @property (nonatomic,weak)UIButton *isSelBtn;
+@property (nonatomic,weak)UIButton *saveBtn;
+@property (nonatomic,weak)UIView *bottomview;
 @end
 
 @implementation XNRSelProVC
@@ -219,6 +221,14 @@
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
     
     [self alrealySel:sender.indexPath.section];
+    if (self.selPro.count>0) {
+    [self.saveBtn setTitle:[NSString stringWithFormat:@"确定(%ld)",self.selPro.count] forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.saveBtn setTitle:@"确定" forState:UIControlStateNormal];
+        
+    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -237,7 +247,16 @@
     
     UIButton *saveBtn = [[UIButton alloc] initWithFrame:CGRectMake(PX_TO_PT(32), PX_TO_PT(15), PX_TO_PT(657), PX_TO_PT(81))];
     saveBtn.backgroundColor = R_G_B_16(0x00b38a);
-    [saveBtn setTitle:@"确定" forState:UIControlStateNormal];
+    self.saveBtn = saveBtn;
+    
+    if (self.selPro.count>0) {
+        [self.saveBtn setTitle:[NSString stringWithFormat:@"确定(%ld)",self.selPro.count] forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.saveBtn setTitle:@"确定" forState:UIControlStateNormal];
+        
+    }
     [saveBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     saveBtn.layer.cornerRadius = PX_TO_PT(10);
     saveBtn.layer.masksToBounds = YES;
@@ -246,6 +265,8 @@
     [bottomview addSubview:saveBtn];
     
 }
+
+
 -(void)OKBtn
 {
     NSMutableArray *selpro = [[NSMutableArray alloc]init];
