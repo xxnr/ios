@@ -28,6 +28,8 @@
 #import "XNRRSCInfoModel.h"
 #import "MJExtension.h"
 #import "UILabel+ZSC.h"
+#import "XNROrderStateVC.h"
+#import "XNROrderStatusOrderDetailModel.h"
 
 @interface XNRCheckOrderVC ()<UITableViewDataSource,UITableViewDelegate>{
     
@@ -43,6 +45,7 @@
 @property (nonatomic ,weak) UILabel *phoneNum;
 @property (nonatomic ,weak) UILabel *addressLabel;
 @property (nonatomic,strong) NSString *value;
+@property (nonatomic,strong) XNROrderStatusOrderDetailModel *orderStatus;
 @property (nonatomic,assign)BOOL isHoldBtm;
 @property (nonatomic,assign)BOOL ismakeSureBtm;
 @property (nonatomic,assign)CGFloat cellHeight;
@@ -259,13 +262,15 @@
                 }
             }
             NSDictionary *order = datasDic[@"rows"][@"order"];
+            XNROrderStatusOrderDetailModel *orderDetail = [XNROrderStatusOrderDetailModel objectWithKeyValues:order];
+            self.orderStatus = orderDetail;
+            
             sectionModel.totalPrice = order[@"totalPrice"];
             sectionModel.deposit = order[@"deposit"];
             
             
             NSDictionary *orderStatus = order[@"orderStatus"];
             sectionModel.type = orderStatus[@"type"];
-            
             sectionModel.RSCInfo =datasDic[@"rows"][@"RSCInfo"];
             if (sectionModel.RSCInfo) {
                 self.RSCInfoModel = [XNRRSCInfoModel objectWithKeyValues:sectionModel.RSCInfo];
@@ -598,6 +603,15 @@
     self.orderLabel = orderLabel;
     [orderView addSubview:orderLabel];
     
+    UIButton *stateBtn = [[UIButton alloc]init];
+    stateBtn.frame = self.headView.frame;
+    [stateBtn addTarget:self action:@selector(stateClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.headView addSubview:stateBtn];
+    
+    UIImageView *stateImageView = [[UIImageView alloc]initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(32)-PX_TO_PT(21), PX_TO_PT(46), PX_TO_PT(21), PX_TO_PT(37))];
+    stateImageView.image = [UIImage imageNamed:@"arrow"];
+    [stateBtn addSubview:stateImageView];
+    
     // 交易状态
     UILabel *payTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(28), CGRectGetMaxY(orderLabel.frame) + PX_TO_PT(16), ScreenWidth, PX_TO_PT(28))];
     payTypeLabel.textColor = R_G_B_16(0x323232);
@@ -773,12 +787,17 @@
     
 }
 
+-(void)stateClick:(UIButton *)sender
+{
+    XNROrderStateVC *orderStateVC = [[XNROrderStateVC alloc]init];
+    orderStateVC.orderStatusModel = self.orderStatus;
+    [self.navigationController pushViewController:orderStateVC animated:YES];
+}
 #pragma mark - tableView代理方法
 //段头高度
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-//        return self.headView.frame.size.height;
         return PX_TO_PT(98);
     }
     else if (section == 1)
@@ -858,49 +877,6 @@
         if (indexPath.section == 1) {
             UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
             return cell.height;
-            //            if (sectionModel.SKUList.count > 0) {
-//                XNRCheckOrderModel *model = sectionModel.SKUList[indexPath.row];
-//                if ([model.deposit floatValue] == 0.00) {
-//                    if (model.additions.count == 0) {
-////                        return self.cellHeight;
-//                        return cell.height;
-//                    }else{
-//                        return cell.height+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-//                    }
-//                }
-//                else{
-//                    if (model.additions.count == 0) {
-//                        return cell.height;// + PX_TO_PT(150);
-//                        
-//                    }
-//                    else{
-//                        return cell.height +model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-//                    }
-//                }
-//
-//            }
-            
-//            else
-//            {
-//                XNRCheckOrderModel *model = sectionModel.orderGoodsList[indexPath.row];
-//                if ([model.deposit floatValue] == 0.00) {
-//                    if (model.additions.count == 0) {
-//                        return cell.height;
-//                    }else{
-//                        return cell.height+model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-//                    }
-//                }
-//                else{
-//                    if (model.additions.count == 0) {
-//                        return cell.height;// + PX_TO_PT(150);
-//                        
-//                    }
-//                    else{
-//                        return cell.height +model.additions.count*PX_TO_PT(45)+PX_TO_PT(20);
-//                    }
-//                }
-//
-//            }
         }
         else if (indexPath.section == 0)
         {
