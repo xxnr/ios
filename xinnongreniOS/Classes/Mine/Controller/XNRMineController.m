@@ -714,9 +714,6 @@
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = @"我的新农人";
     self.navigationItem.titleView = titleLabel;
-
-    
-    
 }
 
 - (void)didReceiveMemoryWarning {
