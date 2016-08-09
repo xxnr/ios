@@ -4672,11 +4672,8 @@
 				84AAA58D1B439335005AA154 /* XNROderInfo_Cell.m in Sources */,
 				490F0B151CA0FA8000BDC7E0 /* XNRProductInfo_frame.m in Sources */,
 				496BB4441CC4A2A0007F034F /* XNRMySetterCell.m in Sources */,
-<<<<<<< HEAD
 				49164E5F1D530AFC001C2334 /* XNRBaseParam.m in Sources */,
-=======
 				9CF290CB1D58747300268050 /* XNROrderStatusOrderDetailModel.m in Sources */,
->>>>>>> ynn_ios
 				497662631C5AE32300FB041D /* XNRToolBar.m in Sources */,
 				1F1533271B09D75F00CA374B /* XNRNavigationController.m in Sources */,
 				1FE1D60C1B12EE2600F0D158 /* MJIvar.m in Sources */,

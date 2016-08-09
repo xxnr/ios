@@ -137,53 +137,53 @@
     [self.view addSubview:tableView];
 }
 
-//#pragma mark-----数据库缓存
-//static FMDatabase*_db;
-//+(void)initialize
-//{
-//    // 1.获得数据库文件的路径
-//    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-//    NSString *fileName = [doc stringByAppendingPathComponent:@"message.sqlite"];
-//    
-//    // 2.得到数据库
-//    _db = [FMDatabase databaseWithPath:fileName];
-//    
-//    // 3.打开数据库
-//    if ([_db open]) {
-//        // 4.创表
-//        BOOL result = [_db executeUpdate:@"CREATE TABLE IF NOT EXISTS t_home_products (id integer PRIMARY KEY AUTOINCREMENT, classId NOT NULL,products_idstr text NOT NULL, products_dict blob NOT NULL);"];
-//        if (result) {
-//            NSLog(@"成功创表");
-//        } else {
-//            NSLog(@"创表失败");
-//        }
-//    }
-//}
+#pragma mark-----数据库缓存
+static FMDatabase*_db;
++(void)initialize
+{
+    // 1.获得数据库文件的路径
+    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *fileName = [doc stringByAppendingPathComponent:@"message.sqlite"];
+    
+    // 2.得到数据库
+    _db = [FMDatabase databaseWithPath:fileName];
+    
+    // 3.打开数据库
+    if ([_db open]) {
+        // 4.创表
+        BOOL result = [_db executeUpdate:@"CREATE TABLE IF NOT EXISTS t_home_products (id integer PRIMARY KEY AUTOINCREMENT, classId NOT NULL,products_idstr text NOT NULL, products_dict blob NOT NULL);"];
+        if (result) {
+            NSLog(@"成功创表");
+        } else {
+            NSLog(@"创表失败");
+        }
+    }
+}
 
 -(void)getData
 {
-//    NSString *param = @"products";
-//    NSMutableArray *products = [NSMutableArray array];
-//    // 根据请求参数查询数据
-//    FMResultSet *resultSet = nil;
-//    resultSet = [_db executeQuery:@"SELECT * FROM t_home_products WHERE classId = ?;", param];
-//    
-//    // 遍历查询结果
-//    while (resultSet.next) {
-//        NSData *statusDictData = [resultSet objectForColumnName:@"products_dict"];
-//        NSDictionary *statusDict = [NSKeyedUnarchiver unarchiveObjectWithData:statusDictData];
-//        // 字典转模型
-//        XNRMessageModel *product = [[XNRMessageModel alloc] init];
-//        [product setValuesForKeysWithDictionary:statusDict];
-//        // 添加模型到数组中
-//        [products addObject:product];
-//    }
-//    if (products.count != 0) {
-//        [_messageArr addObjectsFromArray:products];
-//        [self.tableView.mj_header endRefreshing];
-//        [self.tableView.mj_footer endRefreshing];
-//
-//    }else{
+    NSString *param = @"products";
+    NSMutableArray *products = [NSMutableArray array];
+    // 根据请求参数查询数据
+    FMResultSet *resultSet = nil;
+    resultSet = [_db executeQuery:@"SELECT * FROM t_home_products WHERE classId = ?;", param];
+    
+    // 遍历查询结果
+    while (resultSet.next) {
+        NSData *statusDictData = [resultSet objectForColumnName:@"products_dict"];
+        NSDictionary *statusDict = [NSKeyedUnarchiver unarchiveObjectWithData:statusDictData];
+        // 字典转模型
+        XNRMessageModel *product = [[XNRMessageModel alloc] init];
+        [product setValuesForKeysWithDictionary:statusDict];
+        // 添加模型到数组中
+        [products addObject:product];
+    }
+    if (products.count != 0) {
+        [_messageArr addObjectsFromArray:products];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+
+    }else{
         [KSHttpRequest get:KMessageNews parameters:@{@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"} success:^(id result) {
             
             if ([result[@"code"] integerValue] == 1000) {
@@ -195,8 +195,8 @@
                     [_messageArr addObject:model];
                     
                     // 把statusDict字典对象序列化成NSData二进制数据
-//                    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict];
-//                    [_db executeUpdate:@"INSERT INTO t_home_products (classId,products_idstr, products_dict) VALUES (?,?,?);",param,@20,data];
+                    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict];
+                    [_db executeUpdate:@"INSERT INTO t_home_products (classId,products_idstr, products_dict) VALUES (?,?,?);",param,@20,data];
 
                 }
             }
@@ -215,7 +215,7 @@
             [self.tableView.mj_header endRefreshing];
             [self.tableView.mj_footer endRefreshing];
         }];
-//    }
+    }
 
 }
 #pragma mark -- tableView代理

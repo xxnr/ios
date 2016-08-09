@@ -409,6 +409,8 @@
             info.name = datasDic[@"name"];
             info.typeName = datasDic[@"userTypeInName"];
             info.type = datasDic[@"userType"];
+            info.verifiedTypes = datasDic[@"verifiedTypesInJson"];
+
             [DataCenter saveAccount:info];
             
              //上传购物车数据

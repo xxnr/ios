@@ -132,11 +132,17 @@
         
         bgView.frame = CGRectMake(0, CGRectGetMaxY(middleView.frame), ScreenWidth, PX_TO_PT(540));
         
-        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth, PX_TO_PT(1))];
+        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(0), ScreenWidth, PX_TO_PT(1))];
         topLine.backgroundColor = R_G_B_16(0xe0e0e0);
         [bgView addSubview:topLine];
         
+        
+        UIView *middleLine = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(90), ScreenWidth, PX_TO_PT(1))];
+        middleLine.backgroundColor = R_G_B_16(0xe0e0e0);
+        [bgView addSubview:middleLine];
+        
         UIView *Line = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(360), ScreenWidth, PX_TO_PT(1))];
+        
         Line.backgroundColor = R_G_B_16(0xe0e0e0);
         [bgView addSubview:Line];
         
