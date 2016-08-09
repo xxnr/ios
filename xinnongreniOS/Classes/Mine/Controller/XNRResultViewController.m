@@ -285,18 +285,7 @@
         [self.navigationController pushViewController:detailUser animated:YES];
     }
 }
-//-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-//{
-//    UITouch *touch = [touches anyObject];
-//    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY( self.searchBar.frame), ScreenWidth, ScreenHeight-64-self.searchBar.frame.size.height)];
-//    CGPoint point = [touch  locationInView:view];
-//    
-//    CGRect rect = CGRectMake(0, 0, ScreenWidth, ScreenHeight/2);
-//    if (CGRectContainsPoint(rect, point)) {
-//            [self.searchBar resignFirstResponder];
-//    }
-//
-// }
+
 - (void) textFieldDidChange:(id) sender {
     
     self.NoUserView.hidden = YES;
@@ -304,6 +293,12 @@
     NSString *currentStr = self.searchBar.text;
     
     [self.searchResultArr removeAllObjects];
+    
+    if ([currentStr isEqualToString:@""]) {
+        [self.tableView reloadData];
+        return;
+    }
+
     
     __block NSMutableArray *resultArr = [NSMutableArray array];
     
