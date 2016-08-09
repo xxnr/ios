@@ -393,17 +393,22 @@
             info.token = result[@"token"];
             info.photo = datasDic[@"photo"];
             info.province = province[@"name"];
+            info.provinceID = city[@"provinceid"];
+
             info.city = city[@"name"];
+            info.cityID = county[@"cityid"];
             if (![KSHttpRequest isNULL:county]) {
                 info.county = county[@"name"];
             }
             if (![KSHttpRequest isNULL:town]) {
                 info.town = town[@"name"];
+                info.countyID = town[@"countyid"];
             }
             info.cartId = datasDic[@"cartId"];
             
             info.name = datasDic[@"name"];
-            info.type = datasDic[@"userTypeInName"];
+            info.typeName = datasDic[@"userTypeInName"];
+            info.type = datasDic[@"userType"];
             [DataCenter saveAccount:info];
             
              //上传购物车数据
@@ -416,7 +421,6 @@
                 // 清空购物车列表
                 [dataManager deleteShoppingCar];
             }
-            
             
             //发送刷新通知
             [[NSNotificationCenter defaultCenter] postNotificationName:@"PageRefresh" object:nil];

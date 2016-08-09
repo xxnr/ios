@@ -662,8 +662,10 @@
     if (sectionModel.deposit && [sectionModel.deposit doubleValue]>0) {
 
         self.payBlock(sectionModel.orderId,sectionModel.deposit,RSCDetailModel);
+        
     }else{
         self.payBlock(sectionModel.orderId,sectionModel.totalPrice,RSCDetailModel);
+        
     }
 
 }

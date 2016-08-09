@@ -63,6 +63,10 @@
     //获取某一指定文件的信息
     NSString *size = [NSString stringWithFormat:@"%.2fK",[[fileManager attributesOfItemAtPath:image_path error:nil] fileSize]/1024.0];
     ;
+//    NSString *photo = [[NSString alloc] initWithData:image_data encoding:NSUTF8StringEncoding];
+//    UserInfo *info = [DataCenter account];
+//    info.photo = photo;
+//    [DataCenter saveAccount:info];
     
     return size;
 }

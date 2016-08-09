@@ -227,10 +227,6 @@
 
 #pragma mark - 创建导航栏
 -(void)createNavgation{
-<<<<<<< HEAD
-=======
-//    self.navigationItem.title = @"购物车";
->>>>>>> ynn_ios
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 200, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
@@ -452,15 +448,6 @@
                 if (_dataArr.count == 0) {
                     [self.shopCarView show];
                     self.editeBtn.hidden = YES;
-<<<<<<< HEAD
-=======
-//                    self.navigationItem.title = @"购物车";
-//                    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-//                    titleLabel.backgroundColor = [UIColor clearColor];
-//                    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
-//                    titleLabel.textColor = R_G_B_16(0xfbffff);
-//                    titleLabel.textAlignment = NSTextAlignmentCenter;
->>>>>>> ynn_ios
                     self.titleLabel.text = @"购物车";
                     self.navigationItem.titleView = self.titleLabel;
 
@@ -546,15 +533,6 @@
         if (_dataArr.count == 0) {
             [self.shopCarView show];
             self.editeBtn.hidden = YES;
-<<<<<<< HEAD
-=======
-//            self.navigationItem.title = @"购物车";
-//            UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-//            titleLabel.backgroundColor = [UIColor clearColor];
-//            titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
-//            titleLabel.textColor = R_G_B_16(0xfbffff);
-//            titleLabel.textAlignment = NSTextAlignmentCenter;
->>>>>>> ynn_ios
             self.titleLabel.text = @"购物车";
             self.navigationItem.titleView = self.titleLabel;
 
@@ -576,16 +554,6 @@
     NSArray *allGoodArr = [dbManager queryAllGood];
     // 如果购物车为空
     if (allGoodArr.count == 0) {
-<<<<<<< HEAD
-
-=======
-//        self.navigationItem.title = @"购物车";
-//        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-//        titleLabel.backgroundColor = [UIColor clearColor];
-//        titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
-//        titleLabel.textColor = R_G_B_16(0xfbffff);
-//        titleLabel.textAlignment = NSTextAlignmentCenter;
->>>>>>> ynn_ios
         self.titleLabel.text = @"购物车";
         self.navigationItem.titleView = self.titleLabel;
 
@@ -643,15 +611,6 @@
                 if (_dataArr.count == 0) {
                     [self.shopCarView show];
                     self.editeBtn.hidden = YES;
-<<<<<<< HEAD
-=======
-//                    self.navigationItem.title = @"购物车";
-//                    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-//                    titleLabel.backgroundColor = [UIColor clearColor];
-//                    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
-//                    titleLabel.textColor = R_G_B_16(0xfbffff);
-//                    titleLabel.textAlignment = NSTextAlignmentCenter;
->>>>>>> ynn_ios
                     self.titleLabel.text = @"购物车";
                     self.navigationItem.titleView = self.titleLabel;
 
@@ -1034,16 +993,6 @@
     }else{
             [self.shopCarView show];
             self.editeBtn.hidden = YES;
-<<<<<<< HEAD
-
-=======
-//            self.navigationItem.title = @"购物车";
-//        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-//        titleLabel.backgroundColor = [UIColor clearColor];
-//        titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
-//        titleLabel.textColor = R_G_B_16(0xfbffff);
-//        titleLabel.textAlignment = NSTextAlignmentCenter;
->>>>>>> ynn_ios
         self.titleLabel.text = @"购物车";
         self.navigationItem.titleView = self.titleLabel;
 

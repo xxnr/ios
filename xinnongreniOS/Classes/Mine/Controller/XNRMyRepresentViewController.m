@@ -1333,45 +1333,6 @@ static bool isBroker;
     self.myRepLabel = myRepLabel;
     [topView addSubview:myRepLabel];
     
-<<<<<<< HEAD
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0,PX_TO_PT(260), ScreenWidth, 1)];
-    lineView.backgroundColor = R_G_B_16(0xe0e0e0);
-    [myRepTopView addSubview:lineView];
-
-    
-    UIView *myRepView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.myRepTopView.frame), ScreenWidth, PX_TO_PT(96))];
-    myRepView.backgroundColor = [UIColor whiteColor];
-    self.myRepView = myRepView;
-    [self.middleView addSubview:myRepView];
-    
-    CGFloat nickNameLabelY = (PX_TO_PT(96) - PX_TO_PT(60))*0.5;
-//    UILabel *nickNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32),nickNameLabelY , PX_TO_PT(220), PX_TO_PT(60))];
-    UILabel *nickNameLabel = [[UILabel alloc] init];
-    nickNameLabel.backgroundColor = R_G_B_16(0x00b38a);
-    nickNameLabel.layer.cornerRadius = 5.0;
-    nickNameLabel.layer.masksToBounds = YES;
-    nickNameLabel.adjustsFontSizeToFitWidth = YES;
-    nickNameLabel.textColor = R_G_B_16(0xffffff);
-    nickNameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
-    nickNameLabel.textAlignment = NSTextAlignmentCenter;
-    self.nickNameLabel = nickNameLabel;
-    [myRepView addSubview:nickNameLabel];
-    
-    UILabel *phoneNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2, nickNameLabelY, ScreenWidth/2-PX_TO_PT(32), PX_TO_PT(60))];
-    phoneNumLabel.textAlignment = NSTextAlignmentRight;
-    phoneNumLabel.textColor = R_G_B_16(0x00b38a);
-    phoneNumLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
-    self.phoneNumLabel = phoneNumLabel;
-    [myRepView addSubview:phoneNumLabel];
-    
-    UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 1)];
-    topLineView.backgroundColor = R_G_B_16(0xe0e0e0);
-    [myRepView addSubview:topLineView];
-    
-    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(96), ScreenWidth, 1)];
-    bottomLineView.backgroundColor = R_G_B_16(0xe0e0e0);
-    [myRepView addSubview:bottomLineView];
-=======
     UIImageView *sexImage = [[UIImageView alloc]init];
     self.sexImage = sexImage;
     [topView addSubview:sexImage];
@@ -1393,7 +1354,6 @@ static bool isBroker;
     UILabel *rep_userType = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(type.frame)+PX_TO_PT(10), PX_TO_PT(325), PX_TO_PT(160), PX_TO_PT(31))];
     self.rep_userType = rep_userType;
     rep_userType.textColor = R_G_B_16(0x646464);
->>>>>>> ynn_ios
 
     rep_userType.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [self.middleView addSubview:rep_userType];

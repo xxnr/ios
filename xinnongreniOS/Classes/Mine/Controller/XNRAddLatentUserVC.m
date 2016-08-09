@@ -598,11 +598,7 @@
 
        self.nameLength = [self charLength:textField.text];
 
-<<<<<<< HEAD
-        if (strlength > 12) {
-=======
         if (self.nameLength > 12) {
->>>>>>> ynn_ios
             [UILabel showMessage:[NSString stringWithFormat:@"请输入小于6个汉字或12个英文字符"]];
         }
    }
@@ -722,17 +718,12 @@
                      
     }
     else if(self.iswarn)
-<<<<<<< HEAD
-    {
-        [UILabel showMessage:@"请修改填写的手机号"];
-=======
     {
         [UILabel showMessage:@"请修改填写的手机号"];
     }
     else if(self.remarksLength>60)
     {
         [UILabel showMessage:@"请输入小于30个汉字或60个英文字符"];
->>>>>>> ynn_ios
     }
     else{
         NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];

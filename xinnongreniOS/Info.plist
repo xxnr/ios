@@ -39,17 +39,6 @@
 	<array>
 		<string>zh</string>
 	</array>
-<<<<<<< HEAD
-	<key>CFBundleName</key>
-	<string>新新农人</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>2.2.1</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-=======
->>>>>>> ynn_ios
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -97,17 +86,12 @@
 			<string>Editor</string>
 		</dict>
 	</array>
-<<<<<<< HEAD
-	<key>CFBundleVersion</key>
-	<string>2.2.1</string>
-=======
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
->>>>>>> ynn_ios
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>wechat</string>

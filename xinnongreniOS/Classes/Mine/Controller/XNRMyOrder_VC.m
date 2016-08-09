@@ -149,11 +149,13 @@
         self.PayView=[[XNRPayView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,ScreenHeight-64) UrlString:@"pay"];
         __weak __typeof(&*self)weakSelf=self;
         //单笔结算
-        [self.PayView setPayBlock:^(NSString *orderID,NSString *money){
+        [self.PayView setPayBlock:^(NSString *orderID,NSString *money,XNRRSCDetailModel *rscOrderModel){
             XNRPayType_VC*vc=[[XNRPayType_VC alloc]init];
             vc.hidesBottomBarWhenPushed=YES;
             vc.orderID = orderID;
             vc.payMoney = money;
+            vc.model = rscOrderModel;
+            vc.isfromOrderVC = YES;
             [weakSelf.navigationController pushViewController:vc animated:YES];
             
         }];

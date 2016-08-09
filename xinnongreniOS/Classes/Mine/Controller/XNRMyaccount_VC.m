@@ -372,7 +372,8 @@
             
             UserInfo *info = [DataCenter account];
             info.typeName = typeName;
-            info.typeNum = typeNum;
+//            info.typeNum = typeNum;
+            info.type = typeNum;
             [DataCenter saveAccount:info];
             
             if ([self.typeNum integerValue] == 5) {
@@ -572,9 +573,9 @@
         [self.typeView hide];
         [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"type":self.typeNum?self.typeNum:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
-                UserInfo *info = [DataCenter account];
-                info.type = self.typeLabel.text;
-                [DataCenter saveAccount:info];
+//                UserInfo *info = [DataCenter account];
+//                info.type = self.typeLabel.text;
+//                [DataCenter saveAccount:info];
             }
             
         } failure:^(NSError *error) {
@@ -747,6 +748,15 @@
                     [UILabel showMessage:@"头像上传成功"];
                     [BMProgressView LoadViewDisappear:self.view];
                     [_icon setImage:croppedImage forState:UIControlStateNormal];
+                    
+                    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+                        NSDictionary *dict = result[@"datas"];
+                        UserInfo *info = [DataCenter account];
+                        info.photo = dict[@"photo"];
+                        [DataCenter saveAccount:info];
+                    } failure:^(NSError *error) {
+                        
+                    }];
                 }else{
                     [UILabel showMessage:result[@"message"]];
                 }

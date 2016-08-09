@@ -209,7 +209,7 @@
                 sectionModel.orderId = subDic[@"orderId"];
                 sectionModel.payType = subDic[@"payType"];
                 sectionModel.duePrice = subDic[@"duePrice"];
-                
+                sectionModel.RSCInfo = subDic[@"RSCInfo"];
                 NSDictionary *orders = subDic[@"order"];
                 sectionModel.deposit = orders[@"deposit"];
                 sectionModel.totalPrice = orders[@"totalPrice"];
@@ -520,12 +520,18 @@
 }
 -(void)sectionFourClick:(UIButton *)sender{
     XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
+    XNRRSCDetailModel *RSCDetailModel = [XNRRSCDetailModel objectWithKeyValues:sectionModel.RSCInfo];
     if (sectionModel.deposit && [sectionModel.deposit doubleValue]>0) {
-        self.payBlock(sectionModel.orderId,sectionModel.deposit);
+        
+        self.payBlock(sectionModel.orderId,sectionModel.deposit,RSCDetailModel);
         
     }else{
-        self.payBlock(sectionModel.orderId,sectionModel.totalPrice);
+        self.payBlock(sectionModel.orderId,sectionModel.totalPrice,RSCDetailModel);
+        
     }
+
+    
+    
     
 }
 -(void)reviseBtnClick:(UIButton *)sender

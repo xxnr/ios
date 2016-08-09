@@ -29,10 +29,6 @@
 
 -(void)createView{
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ynn_ios
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth/2-PX_TO_PT(92), PX_TO_PT(170), PX_TO_PT(148), PX_TO_PT(200))];
     [imageView setImage:[UIImage imageNamed:@"blank-space"]];
     
