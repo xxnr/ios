@@ -123,13 +123,19 @@
     self.addtionView = addtionView;
     [self.contentView addSubview:addtionView];
     
-    for (int i = 0; i<_model.additions.count; i++) {
+    CGFloat attributesLabelY = 0;
+    for (int i = 0; i<_model.additions.count; i++)
+    {
         NSDictionary *subDic = _model.additions[i];
+        
+        CGSize size = [subDic[@"name"] sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(24)] constrainedToSize:CGSizeMake(ScreenWidth/2, MAXFLOAT)];
 
         CGFloat attributesLabelX = PX_TO_PT(30);
-        CGFloat attributesLabelY = PX_TO_PT(44) * i;
+//        CGFloat attributesLabelY = PX_TO_PT(44) * i;
         CGFloat attributesLabelW = ScreenWidth -PX_TO_PT(60);
-        CGFloat  attributesLabelH = PX_TO_PT(44);
+//        CGFloat  attributesLabelH = PX_TO_PT(44);
+        CGFloat  attributesLabelH = ceil(size.height)+PX_TO_PT(20);
+
         UILabel *addtionLabel = [[UILabel alloc] init];
         addtionLabel.backgroundColor = R_G_B_16(0xf0f0f0);
         [addtionLabel.layer setMasksToBounds:YES];
@@ -138,25 +144,29 @@
          addtionLabel.frame = CGRectMake(attributesLabelX, attributesLabelY, attributesLabelW, attributesLabelH);
         [addtionView addSubview:addtionLabel];
 
-        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(8), 0, ScreenWidth/2, PX_TO_PT(44))];
+        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(8), PX_TO_PT(10), ScreenWidth/2, ceil(size.height))];
         nameLabel.textColor = R_G_B_16(0x909090);
+        nameLabel.numberOfLines = 0;
         nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
         nameLabel.textAlignment = NSTextAlignmentLeft;
         self.nameLabel = nameLabel;
         nameLabel.text = [NSString stringWithFormat:@"%@",subDic[@"name"]];
         [addtionLabel addSubview:nameLabel];
         
-        UILabel *addtionPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth-PX_TO_PT(70), PX_TO_PT(44))];
+        UILabel *addtionPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (addtionLabel.height-PX_TO_PT(20))/2, ScreenWidth-PX_TO_PT(70), PX_TO_PT(20))];
         addtionPriceLabel.textColor = R_G_B_16(0x323232);
         addtionPriceLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
         addtionPriceLabel.textAlignment = NSTextAlignmentRight;
         addtionPriceLabel.text = [NSString stringWithFormat:@"¥%.2f",[subDic[@"price"] floatValue ]];
+        
         self.addtionPriceLabel = addtionPriceLabel;
         [addtionLabel addSubview:addtionPriceLabel];
         
         
         CGFloat attributesLineViewX = PX_TO_PT(30);
-        CGFloat attributesLineViewY = i*CGRectGetMaxY(nameLabel.frame);
+//        CGFloat attributesLineViewY = i*CGRectGetMaxY(nameLabel.frame);
+        CGFloat attributesLineViewY = CGRectGetMaxY(addtionLabel.frame);
+
         CGFloat attributesLineViewW = ScreenWidth - PX_TO_PT(60);
         CGFloat  attributesLineViewH = PX_TO_PT(3);
         UIView *addtionsLine = [[UIView alloc] init];
@@ -165,7 +175,7 @@
         addtionsLine.frame = CGRectMake(attributesLineViewX, attributesLineViewY, attributesLineViewW, attributesLineViewH);
         [addtionView addSubview:addtionsLine];
 
-
+        attributesLabelY = CGRectGetMaxY(addtionsLine.frame);
     }
 }
 
