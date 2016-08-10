@@ -94,6 +94,7 @@
     
     UILabel *selLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2-PX_TO_PT(73), sectionView.height)];
     self.selLabel  = selLabel;
+    self.selLabel.tag = section;
     selLabel.textAlignment = NSTextAlignmentRight;
     selLabel.textColor = R_G_B_16(0x909090);
     selLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
@@ -115,23 +116,22 @@
 }
 -(void)alrealySel:(NSInteger)section
 {
-    self.selLabel.hidden = NO;
-    int count = 0;
-    XNRInterestGroup *group = self.allProGroup[section];
-    for (int i=0; i<group.products.count; i++) {
-        if ([self.selPro containsObject:group.products[i]]) {
-            count+=1;
+        self.selLabel.hidden = NO;
+        int count = 0;
+        XNRInterestGroup *group = self.allProGroup[section];
+        for (int i=0; i<group.products.count; i++) {
+            if ([self.selPro containsObject:group.products[i]]) {
+                count+=1;
+            }
         }
-    }
-    if (count == 0) {
-        self.selLabel.hidden = YES;
-    }
-    else
-    {
-        self.selLabel.text = [NSString stringWithFormat:@"已选%d项",count];
-    }
+        if (count == 0) {
+            self.selLabel.hidden = YES;
+        }
+        else
+        {
+            self.selLabel.text = [NSString stringWithFormat:@"已选%d项",count];
+        }
     
-
 }
 - (void)buttonPress:(UIButton *)sender//headButton点击
 {
@@ -220,7 +220,9 @@
     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:sender.indexPath.row inSection:sender.indexPath.section];
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
     
-    [self alrealySel:sender.indexPath.section];
+//    [self alrealySel:sender.indexPath.section];
+    NSIndexSet *indexset = [NSIndexSet indexSetWithIndex:sender.indexPath.section];
+    [self.tableView reloadSections:indexset withRowAnimation:UITableViewRowAnimationNone];
     if (self.selPro.count>0) {
     [self.saveBtn setTitle:[NSString stringWithFormat:@"确定(%ld)",self.selPro.count] forState:UIControlStateNormal];
     }

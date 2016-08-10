@@ -37,7 +37,7 @@
 - (void)textDidChange{
     
     self.placehoderLabel.hidden = self.text.length != 0;
-    
+    [self createView];
 }
 
 - (void)setText:(NSString *)text{
@@ -82,6 +82,19 @@
     
         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, textFrame.size.height+PX_TO_PT(50));
 //    }
+}
+-(void)createView
+{
+    CGSize maxSize = CGSizeMake(self.placehoderLabel.frame.size.width-10, MAXFLOAT);
+    CGRect LabelFrame = [self.placehoder boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:self.placehoderLabel.font,NSFontAttributeName, nil] context:nil];
+    self.placehoderLabel.frame = CGRectMake(0, PX_TO_PT(16), self.frame.size.width - 10, LabelFrame.size.height);
+    
+    CGRect textFrame = [self.text boundingRectWithSize:CGSizeMake(self.frame.size.width-10,MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:self.font,NSFontAttributeName, nil] context:nil];
+    
+    
+    //    if (textFrame.size.height > self.frame.size.height && self.isAutoHeight) {
+    
+    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, textFrame.size.height+PX_TO_PT(50));
 }
 
 - (void)dealloc{

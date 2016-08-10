@@ -172,9 +172,16 @@
     [self createBottomView];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(notification:) name:@"selPro" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textEnd) name:UITextViewTextDidChangeNotification object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardChange:) name:UIKeyboardDidChangeFrameNotification object:nil];
     
 }
+-(void)textEnd
+{
+    self.remarksLine.frame = CGRectMake(0, CGRectGetMaxY(self.remarksTextField.frame)+PX_TO_PT(0), ScreenWidth, PX_TO_PT(2));
+    self.bottomView.frame = CGRectMake(0, CGRectGetMaxY(self.phoneView.frame), ScreenWidth, CGRectGetMaxY(self.remarksTextField.frame));
+}
+
 -(void)notification:(NSNotification *)notification
 {
     [_userTypeBtn removeFromSuperview];
@@ -625,20 +632,40 @@
     CGSize deSize = [detailTextView sizeThatFits:CGSizeMake(width,CGFLOAT_MAX)];
     return deSize.height;
 }
+//////
+//-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+//{
 
--(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
 
-    self.remarksLine.frame = CGRectMake(0, CGRectGetMaxY(self.remarksTextField.frame)+PX_TO_PT(0), ScreenWidth, PX_TO_PT(2));
+////
+////    NSMutableString *string = [NSMutableString stringWithString:self.remarksTextField.text];
+////    [string insertString:text atIndex:range.location];
+////
+////    self.remarksLength = [self charLength:string];
+////    
+////    if (self.remarksLength > 60&&![text isEqualToString:@""]) {
+////        
+////        self.remarksTextField.text = [string substringToIndex:60];
+////        
+////        [UILabel showMessage:[NSString stringWithFormat:@"请输入小于30个汉字或60个英文字符"]];
+////        return NO;
+////}
+//    
+//    self.remarksLine.frame = CGRectMake(0, CGRectGetMaxY(self.remarksTextField.frame)+PX_TO_PT(0), ScreenWidth, PX_TO_PT(2));
+//    NSMutableString *string = [NSMutableString stringWithString:self.remarksTextField.text];
+//    [string insertString:text atIndex:range.location];
+//
+//    
+//    if ([self charLength:string] > 60&&![text isEqualToString:@""]) {
+//        
+//        [UILabel showMessage:[NSString stringWithFormat:@"请输入小于30个汉字或60个英文字符"]];
+//        return NO;
+//    }
+//
+//    return YES;
+//}
 
-    self.remarksLength = [self charLength:self.remarksTextField.text];
-    if (self.remarksLength > 60&&![text isEqualToString:@""]) {
-        
-        [UILabel showMessage:[NSString stringWithFormat:@"请输入小于30个汉字或60个英文字符"]];
-        return NO;
-}
-    return YES;
-}
+
 -(int)charLength:(NSString *)str
 {
     int strlength = 0;
