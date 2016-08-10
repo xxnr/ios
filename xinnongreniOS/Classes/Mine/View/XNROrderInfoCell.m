@@ -187,7 +187,7 @@
             NSDictionary *subDic = addtionsModel.additions[i];
             CGSize size = [subDic[@"name"] sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(ScreenWidth/2, MAXFLOAT)];
 
-            UILabel *addtionLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), attributesLabelY, ScreenWidth-PX_TO_PT(64), size.height+PX_TO_PT(20))];
+            UILabel *addtionLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(32), attributesLabelY, ScreenWidth-PX_TO_PT(64), ceil(size.height)+PX_TO_PT(20))];
             addtionLabel.backgroundColor = R_G_B_16(0xf0f0f0);
             addtionLabel.layer.cornerRadius = 7.0;
             addtionLabel.layer.masksToBounds = YES;

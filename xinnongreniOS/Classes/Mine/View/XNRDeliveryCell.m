@@ -12,6 +12,7 @@
 @interface XNRDeliveryCell()
 @property (nonatomic,weak)UILabel *titleLabel;
 @property (nonatomic,weak)UILabel *detailLabel;
+
 @property (nonatomic,weak)UILabel *numLabel;
 @property (nonatomic,weak)UIView *line;
 @end
@@ -84,18 +85,22 @@
         [str appendString:@"附加项目："];
         
     }
-    for (NSDictionary *dic in model.additions) {
-        [str appendString:[NSString stringWithFormat:@"%@;",dic[@"name"]]];
-    }
+
     //    self.detailLabel.text = str;
 
     CGSize size = [str sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(PX_TO_PT(653), MAXFLOAT)];
     
     self.detailLabel.frame = CGRectMake(PX_TO_PT(32), CGRectGetMaxY(self.titleLabel.frame)+PX_TO_PT(16), PX_TO_PT(653), size.height);
     self.detailLabel.numberOfLines = 0;
+    
+    for (NSDictionary *dic in model.additions) {
+        [str appendString:[NSString stringWithFormat:@"%@;",dic[@"name"]]];
+    }
     self.detailLabel.text = str;
 
     [self.contentView addSubview:self.detailLabel];
+    
+    
     
     self.numLabel.text = [NSString stringWithFormat:@"x%@",model.count];
     [self.contentView addSubview:self.numLabel];
