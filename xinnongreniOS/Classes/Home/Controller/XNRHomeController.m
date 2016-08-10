@@ -56,7 +56,7 @@
     // 创建导航栏按钮
     [self setNavigationbarBtn];
     // 创建轮播数据
-    [self getCircleData];
+//    [self getCircleData];
     // 获取网络数据
     [self getFerData];
     // 设置返回到顶部按钮

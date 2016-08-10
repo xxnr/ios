@@ -3414,7 +3414,6 @@
 				49933D4E1D3627F500D89DEB /* register.js */,
 				49933D501D3627F500D89DEB /* representCase.js */,
 				49933D511D3627F500D89DEB /* rscOrder.js */,
-				49933D521D3627F500D89DEB /* shoppingcar.js */,
 				49933D531D3627F500D89DEB /* specialPerformance.js */,
 				9C7D6A9B1D4B2B7C0014DC08 /* specialPerformance.js */,
 				49933D521D3627F500D89DEB /* shoppingcar.js */,
@@ -4393,7 +4392,6 @@
 				4922D6941D2B7AFF0008CB7A /* yonghuxieyi.html in Resources */,
 				8446C2971B1D6D19005CA932 /* pop-Info.plist in Resources */,
 				49D739DE1D4B1BE700A83D71 /* the-pay_logo-@3x.png in Resources */,
-
 				49C7E9B11D3DC66F00CC8DCE /* image_assertion.rb in Resources */,
 				491610D01C8C422200F1E243 /* ImageSelectedOff@3x.png in Resources */,
 				C54CFAFC1B2AC30C004D5C54 /* checkbox1_unchecked.png in Resources */,
@@ -4415,7 +4413,6 @@
 				499551E41CC09CED00F3B1F9 /* wechat-friends@3x.png in Resources */,
 				9C441FFF1D2FAD68007075C3 /* load-18.png in Resources */,
 				49D739CE1D4B1BC000A83D71 /* branches-@2x.png in Resources */,
-
 				49C7E9BE1D3DC66F00CC8DCE /* tuneup_js.podspec in Resources */,
 				491280FE1CC8C2B9009E67C4 /* the-order_icon@2x.png in Resources */,
 				499551E21CC09CED00F3B1F9 /* share-ios-@3x.png in Resources */,
@@ -4432,7 +4429,6 @@
 				4912810A1CC8C2B9009E67C4 /* branch_icon@2x.png in Resources */,
 				49F7A5AA1C5906C200A1FA45 /* 加载16.png in Resources */,
 				49D739D11D4B1BC000A83D71 /* star@2x.png in Resources */,
-
 				9C441FF61D2FAD68007075C3 /* load-9.png in Resources */,
 				9C920B171D069EE700C187DB /* UMSnsAccountViewController.xib in Resources */,
 				49F7A5AD1C5906C200A1FA45 /* 加载19.png in Resources */,
@@ -4504,7 +4500,6 @@
 				491610D21C8C422200F1E243 /* ImageSelectedOn@2x.png in Resources */,
 				49933D651D3627F500D89DEB /* shoppingcar.js in Resources */,
 				49D739D01D4B1BC000A83D71 /* offline_payment_icon1@2x.png in Resources */,
-
 				4912810B1CC8C2B9009E67C4 /* branch_icon@3x.png in Resources */,
 				49F7A5A91C5906C200A1FA45 /* 加载15.png in Resources */,
 				9C441FEE1D2FAD68007075C3 /* load-1.png in Resources */,
@@ -5091,7 +5086,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -5135,7 +5130,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -5175,7 +5170,7 @@
 					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5233,7 +5228,7 @@
 					"\"$(SRCROOT)/Bugtags\"",
 				);
 				INFOPLIST_FILE = xinnongreniOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

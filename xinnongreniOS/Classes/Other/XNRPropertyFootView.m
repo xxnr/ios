@@ -30,10 +30,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-//        self.backgroundColor = [UIColor redColor];
         [self createView];
         // 注册消息通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
+        
     }
     return self;
 }
@@ -64,7 +64,7 @@
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     
-    if ([self.numTextField.text isEqualToString:@"0"] || [self.numTextField.text isEqualToString:@""]) {
+    if ([self.numTextField.text isEqualToString:@"0"] || [self.numTextField.text isEqualToString:@""]||[self.numTextField.text isEqualToString:@"00"]||[self.numTextField.text isEqualToString:@"000"]) {
         
         self.numTextField.text = @"1";
     }

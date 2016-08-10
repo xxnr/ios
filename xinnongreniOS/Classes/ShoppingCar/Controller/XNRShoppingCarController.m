@@ -376,24 +376,19 @@
         [UILabel showMessage:@"请至少选择一件商品"];
     }else{
         BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确认要删除该商品吗?" chooseBtns:@[@"取消",@"确定"]];
-        
         alertView.chooseBlock = ^void(UIButton *btn){
-            
             if (btn.tag == 11) {
-                
                 NSMutableArray *arr1 = [NSMutableArray array];
                 NSMutableArray *arr2 = [NSMutableArray array];
-                
                 //1.先删除购物车 中的数据 并且用arr1、arr2记录要删除的数据
                 for (XNRShopCarSectionModel *sectionModel in _dataArr) {
-                    
                     if (sectionModel.isSelected) {
-                        if (!IS_Login) { //未登录时 把数据库这条数据删除
+                        if (!IS_Login) { // 未登录时 把数据库这条数据删除
                             for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
                                 DatabaseManager *manager = [DatabaseManager sharedInstance];
                                 [manager deleteShoppingCarWithModel:carModel.shoppingCarModel];
                             }
-                        } else { //TODO:服务器调用接口 让服务器把这条数据删除
+                        } else { // TODO:服务器调用接口 让服务器把这条数据删除
                             for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
                                 NSDictionary *params1 = @{@"userId":[DataCenter account].userid,@"SKUId":carModel.shoppingCarModel._id,@"quantity":@"0",@"additions":carModel.shoppingCarModel.additions,@"user-agent":@"IOS-v2.0"};
                                 [KSHttpRequest post:KchangeShopCarNum parameters:params1 success:^(id result) {
@@ -401,12 +396,11 @@
                                         [UILabel showMessage:@"删除成功"];
                                     }
                                 } failure:^(NSError *error) {
-                                    
-                                }];
-                            }
+                            }];
                         }
+                    }
                         
-                        [arr1 addObject:sectionModel];
+                    [arr1 addObject:sectionModel];
                         
                     } else {
                         for (XNRShoppingCarFrame *model in sectionModel.SKUFrameList) {
@@ -423,7 +417,7 @@
                                         }
                                     } failure:^(NSError *error) {
                                         
-                                    }];
+                                  }];
                                 }
                                 [arr2 addObject:model];
                             }
@@ -441,7 +435,6 @@
                         [sectionModel.SKUFrameList removeObject:cellModel];
                         
                     }
-                    NSLog(@"sectionModel.SKUFrameList%tu",sectionModel.SKUFrameList.count);
                 }
                 [self.shoppingCarTableView reloadData];
                 
@@ -450,15 +443,12 @@
                     self.editeBtn.hidden = YES;
                     self.titleLabel.text = @"购物车";
                     self.navigationItem.titleView = self.titleLabel;
-
                 }else{
                     [self.shopCarView removeFromSuperview];
                 }
             }
-            // 改变底部
             [self changeBottom];
         };
-        
         [alertView BMAlertShow];
     }
 }
@@ -884,8 +874,8 @@
                 XNRProductInfo_VC *info_VC = [[XNRProductInfo_VC alloc] init];
                 info_VC.hidesBottomBarWhenPushed = YES;
                 XNRShopCarSectionModel *sectionModel = _dataArr[indexP.section];
-                XNRShoppingCartModel *model = sectionModel.SKUList[indexP.row];
-                info_VC.model = model;
+                XNRShoppingCarFrame *model = sectionModel.SKUFrameList[indexP.row];
+                info_VC.model = model.shoppingCarModel;
                 NSLog(@"model.goodIdmodel===%@",model);
                 NSLog(@"----+++__+%@",indexP);
                 info_VC.isFrom = YES;
@@ -951,7 +941,6 @@
             for (XNRShopCarSectionModel *sectionModel in _dataArr) {
                 for (XNRShoppingCarFrame *cellModel in arr2) {
                     [sectionModel.SKUFrameList removeObject:cellModel];
-                    
                 }
                 [cell reframeToNormal];
                 NSLog(@"sectionModel.SKUFrameList%tu",sectionModel.SKUFrameList.count);
