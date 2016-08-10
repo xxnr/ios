@@ -36,7 +36,7 @@
 
 @property (nonatomic, assign)XNRType loadType;//类型
 
-@property (nonatomic, strong)NSMutableArray *categorys;//类型，汽车 or 化肥
+@property (nonatomic, strong)NSMutableDictionary *categorys;//类型，汽车 or 化肥
 
 @property (nonatomic ,strong)NSMutableArray *resArr;//品牌数组
 
@@ -149,9 +149,11 @@
     
     [KSHttpRequest get:KHomeCategories parameters:nil success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
-            _categorys = [[NSMutableArray alloc]initWithCapacity:2];
+            _categorys = [[NSMutableDictionary alloc]initWithCapacity:2];
             for (NSDictionary *dic in result[@"categories"]) {
-                [_categorys addObject:dic[@"id"]];
+
+                [_categorys setObject:dic[@"id"] forKey:dic[@"name"]];
+                
             }
             
             _param = [NSArray array];
@@ -178,11 +180,12 @@
     NSLog(@"-=-=-=-=-=-=-=%@",params);
     if (self.loadType == eXNRFerType) {
         
-        self.currentCategory = _categorys[1];
+//        self.currentCategory = _categorys[1];
+        self.currentCategory = [_categorys valueForKey:@"化肥"];
         
         // 获取化肥类别的属性
         NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
-        [param setObject:_categorys[1] forKey:@"category"];
+        [param setObject:self.currentCategory forKey:@"category"];
         [param setObject:@"0" forKey:@"brand"];
         [KSHttpRequest get:KBrands parameters:param success:^(id result) {
             
@@ -322,11 +325,13 @@
     
     else if(self.loadType == eXNRCarType){
         
-        self.currentCategory = _categorys[0];
+//        self.currentCategory = _categorys[0];
+        self.currentCategory = [_categorys valueForKey:@"汽车"];
+
         
         // 获取汽车类别的属性
         NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
-        [param setObject:_categorys[0] forKey:@"category"];
+        [param setObject:self.currentCategory forKey:@"category"];
         [param setObject:@"0" forKey:@"brand"];
         [KSHttpRequest get:KBrands parameters:param success:^(id result) {
             

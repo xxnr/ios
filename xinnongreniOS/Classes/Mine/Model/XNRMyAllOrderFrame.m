@@ -89,15 +89,16 @@
         CGFloat addtionsLabelX = PX_TO_PT(30);
         CGFloat addtionsLabelY = CGRectGetMaxY(_productNumLabelF)+PX_TO_PT(32);
         CGFloat addtionsLabelW = PX_TO_PT(424);
-        CGSize  addtionsLabelMaxSize = CGSizeMake(addtionsLabelW, MAXFLOAT);
+        CGSize  addtionsLabelMaxSize = CGSizeMake(addtionsLabelW, PX_TO_PT(60));
+        
         CGSize  addtionsLabelSize = [addtionsStr sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(24)] maxSize:addtionsLabelMaxSize];
-        _addtionLabelF = CGRectMake(addtionsLabelX, addtionsLabelY, addtionsLabelW, addtionsLabelSize.height);
+        _addtionLabelF = CGRectMake(addtionsLabelX, addtionsLabelY, addtionsLabelW, ceil(addtionsLabelSize.height));
         
         // 附加选项价格
         CGFloat addtionPriceLabelX = ScreenWidth/2;
-        CGFloat addtionPriceLabelY = CGRectGetMaxY(_productNumLabelF)+PX_TO_PT(32);
+        CGFloat addtionPriceLabelY = CGRectGetMinY(_addtionLabelF)+((addtionsLabelSize.height)-PX_TO_PT(26))/2;
         CGFloat addtionPriceLabelW = ScreenWidth/2-PX_TO_PT(30);
-        CGFloat addtionPriceLabelH = addtionsLabelSize.height;
+        CGFloat addtionPriceLabelH = PX_TO_PT(26);
         _addtionPriceLabelF = CGRectMake(addtionPriceLabelX, addtionPriceLabelY, addtionPriceLabelW, addtionPriceLabelH);
 
 

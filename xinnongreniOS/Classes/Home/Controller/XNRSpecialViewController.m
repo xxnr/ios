@@ -372,7 +372,6 @@
         
         NSLog(@"筛选");
         self.kind = @"车系";
-//        [_filterArr removeAllObjects];
         isCancel = !isCancel;
         NSLog(@"_____+=====%d",isCancel);
         if (isCancel) {

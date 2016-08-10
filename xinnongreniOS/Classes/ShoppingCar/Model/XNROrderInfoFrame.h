@@ -28,8 +28,8 @@
 
 
 @property (nonatomic ,assign ,readonly) CGRect addtionsLabelF;
-@property (nonatomic ,assign ,readonly) CGRect addtionslineViewF;
 
+@property (nonatomic ,assign ,readonly) CGRect addtionslineViewF;
 
 @property (nonatomic ,assign ,readonly) CGRect addtionPriceLabelF;
 

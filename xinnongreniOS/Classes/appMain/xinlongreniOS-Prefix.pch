@@ -72,7 +72,13 @@
 #else
 
 #define HOST @"http://101.200.194.203"
+<<<<<<< HEAD
 //#define HOST @"http://192.168.1.15:8070"
+=======
+
+
+//#define HOST @"http://192.168.1.15"
+>>>>>>> ynn_ios
 
 #endif
 
@@ -87,6 +93,8 @@
 
 #define Host @"http://101.200.194.203"
 //#define Host @"http://192.168.1.15:8070"
+
+
 
 
 #endif

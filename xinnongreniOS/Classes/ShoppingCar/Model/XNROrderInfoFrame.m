@@ -76,20 +76,31 @@
     }
     
 
+    
     // 商品附加选型
+    CGFloat additionalLabelY = CGRectGetMaxY(_PriceLabelF)+margin;
+
     for (int i = 0; i<self.shoppingCarModel.additions.count; i++) {
         
+        NSDictionary *subDic = self.shoppingCarModel.additions[i];
+        
+        CGSize size = [subDic[@"name"] sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(24)] constrainedToSize:CGSizeMake(ScreenWidth/2, MAXFLOAT)];
+
+        
         CGFloat attributesLabelX = PX_TO_PT(30);
-        CGFloat attributesLabelY = PX_TO_PT(44) * i+CGRectGetMaxY(_PriceLabelF)+margin;
+//        CGFloat attributesLabelY = PX_TO_PT(44) * i+CGRectGetMaxY(_PriceLabelF)+margin;
         CGFloat attributesLabelW = ScreenWidth -PX_TO_PT(60);
-        CGFloat  attributesLabelH = PX_TO_PT(44);
-        _addtionsLabelF = CGRectMake(attributesLabelX, attributesLabelY, attributesLabelW, attributesLabelH);
+        CGFloat  attributesLabelH = size.height+PX_TO_PT(20);
+        _addtionsLabelF = CGRectMake(attributesLabelX, additionalLabelY, attributesLabelW, attributesLabelH);
         
         CGFloat attributesLineViewX = PX_TO_PT(30);
         CGFloat attributesLineViewY = CGRectGetMaxY(_addtionsLabelF);
         CGFloat attributesLineViewW = ScreenWidth - PX_TO_PT(60);
         CGFloat  attributesLineViewH = PX_TO_PT(4);
         _addtionslineViewF = CGRectMake(attributesLineViewX, attributesLineViewY, attributesLineViewW, attributesLineViewH);
+        
+        additionalLabelY = CGRectGetMaxY(_addtionslineViewF);
+        
     }
     
    
@@ -114,7 +125,7 @@
     CGFloat topLineW = ScreenWidth;
     CGFloat topLineY;
     if (self.shoppingCarModel.additions.count>0) {
-        topLineY = CGRectGetMaxY(_addtionsLabelF);
+        topLineY = CGRectGetMaxY(_addtionslineViewF);
     }else{
         topLineY =  CGRectGetMaxY(_PriceLabelF);
         

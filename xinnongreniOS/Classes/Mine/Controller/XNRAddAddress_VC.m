@@ -410,9 +410,12 @@
         flag = 0;
         title = @"请填写正确的手机号";
     
-    }else if ([self.addressLabel.text isEqualToString:@""] || self.addressLabel.text == nil){
+    }else if ([self.addressLabel.text isEqualToString:@"请选择地区"] || self.addressLabel.text == nil){
         flag = 0;
         title = @"请选择城市";
+    }else if ([self.townLabel.text isEqualToString:@"请选择乡镇"] || self.townLabel.text == nil){
+        flag = 0;
+        title = @"请选择乡镇";
     }else if ([self.detailAddressTF.text isEqualToString:@""] || self.detailAddressTF.text == nil){
         flag = 0;
         title = @"请填写详细地址";

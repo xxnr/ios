@@ -66,16 +66,16 @@
         [str appendString:@"\n附加项目："];
 
     }
+
+    CGSize detailSize = [str sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(PX_TO_PT(597), MAXFLOAT)];
     
+    self.detailLabel.frame = CGRectMake(PX_TO_PT(96), CGRectGetMaxY(self.titleLabel.frame)+PX_TO_PT(16), PX_TO_PT(597), ceil(detailSize.height));
+
     for (NSDictionary *dic in model.additions) {
         [str appendString:[NSString stringWithFormat:@"%@;",dic[@"name"]]];
     }
     self.detailLabel.text = str;
 
-    CGSize size = [self.detailLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(PX_TO_PT(597), MAXFLOAT)];
-    
-    self.detailLabel.frame = CGRectMake(PX_TO_PT(96), CGRectGetMaxY(self.titleLabel.frame)+PX_TO_PT(16), PX_TO_PT(597), size.height);
-    
     [self.contentView addSubview:self.detailLabel];
 
     

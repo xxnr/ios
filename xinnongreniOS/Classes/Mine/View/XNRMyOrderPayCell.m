@@ -248,6 +248,7 @@
         totalPrice = totalPrice + [price doubleValue];
     }
     // 附加选项
+    
     self.addtionsLabel.text = [NSString stringWithFormat:@"附加项目:%@",addtionStr];
     
     // 附加选项价格
