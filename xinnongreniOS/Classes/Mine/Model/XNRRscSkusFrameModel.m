@@ -71,7 +71,7 @@
             CGFloat addtionsLabelX = PX_TO_PT(30);
             CGFloat addtionsLabelY = CGRectGetMaxY(_attributesLabelF)+PX_TO_PT(20);
             CGFloat addtionsLabelW = ScreenWidth-PX_TO_PT(60);
-            CGSize  addtionsLabelMaxSize = CGSizeMake(addtionsLabelW, MAXFLOAT);
+            CGSize  addtionsLabelMaxSize = CGSizeMake(addtionsLabelW, PX_TO_PT(60));
             CGSize  addtionsLabelSize = [addtionsStr sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(24)] maxSize:addtionsLabelMaxSize];
             _addtionsLabelF = CGRectMake(addtionsLabelX, addtionsLabelY, addtionsLabelW, addtionsLabelSize.height);
         }else{
@@ -82,7 +82,7 @@
             CGFloat addtionsLabelX = PX_TO_PT(30);
             CGFloat addtionsLabelY = CGRectGetMaxY(_imageViewF)+PX_TO_PT(20);
             CGFloat addtionsLabelW = ScreenWidth-PX_TO_PT(60);
-            CGSize  addtionsLabelMaxSize = CGSizeMake(addtionsLabelW, MAXFLOAT);
+            CGSize  addtionsLabelMaxSize = CGSizeMake(addtionsLabelW, PX_TO_PT(60));
             CGSize  addtionsLabelSize = [addtionsStr sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(24)] maxSize:addtionsLabelMaxSize];
             _addtionsLabelF = CGRectMake(addtionsLabelX, addtionsLabelY, addtionsLabelW, addtionsLabelSize.height);
         }
