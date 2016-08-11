@@ -185,7 +185,7 @@
 {
     UIButton *deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     deleteBtn.frame = CGRectMake(ScreenWidth-PX_TO_PT(110), 0, PX_TO_PT(110), PX_TO_PT(210));
-    deleteBtn.backgroundColor = R_G_B_16(0xfe9b00);
+    deleteBtn.backgroundColor = R_G_B_16(0xff4e30);
     [deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
     [deleteBtn setTitleColor:R_G_B_16(0xffffff) forState:UIControlStateNormal];
     [deleteBtn addTarget:self action:@selector(deleteBtnClick) forControlEvents:UIControlEventTouchUpInside];
@@ -312,11 +312,13 @@
     _maskView.frame = rect;
 }
 -(void)reframeToNormal{
-    if (kView_X(_maskView) != 0) {
-        CGRect rect = _maskView.frame;
-        rect.origin.x = 0;
-        _maskView.frame = rect;
-    }
+    [UIView animateWithDuration:0.5 animations:^{
+        if (kView_X(_maskView) != 0) {
+            CGRect rect = _maskView.frame;
+            rect.origin.x = 0;
+            _maskView.frame = rect;
+        }
+    }];
 }
 
 - (void)createUI
@@ -462,7 +464,7 @@
     offLineLabel.layer.masksToBounds = YES;
     offLineLabel.textAlignment = NSTextAlignmentCenter;
     self.offLineLabel = offLineLabel;
-    [self.contentView addSubview:offLineLabel];
+    [self.maskView addSubview:offLineLabel];
 
 }
 
@@ -848,6 +850,7 @@
         self.offLineLabel.hidden = NO;
                 
         self.backgroundColor = R_G_B_16(0xf0f0f0);
+        self.maskView.backgroundColor = R_G_B_16(0xf0f0f0);
         self.goodNameLabel.textColor = R_G_B_16(0x909090);
         self.presentPriceLabel.textColor = R_G_B_16(0x909090);
         self.sectionOneLabel.textColor = R_G_B_16(0x909090);
@@ -867,6 +870,7 @@
 
     }else{   // 非下架
         self.backgroundColor = [UIColor whiteColor];
+        self.maskView.backgroundColor = [UIColor whiteColor];
         self.selectedBtn.hidden = NO;
         self.offLineLabel.hidden = YES;
         self.leftBtn.hidden = NO;
