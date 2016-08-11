@@ -275,7 +275,7 @@
     if ([KSHttpRequest isBlankString:[DataCenter account].type]) {
         userTypeLabel.text = @"选择用户类型";
     }else{
-        userTypeLabel.text = [DataCenter account].type;
+        userTypeLabel.text = [DataCenter account].typeName;
     }
     self.userTypeLabel = userTypeLabel;
     [userTypeBtn addSubview:userTypeLabel];

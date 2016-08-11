@@ -247,7 +247,7 @@
             if ([[DataCenter account].verifiedTypes[0] isKindOfClass:[NSDictionary class]]) {
                 for (int i=0; i<Arr.count; i++) {
                     NSString *name =[DataCenter account].verifiedTypes[i][@"typeName"];
-                    if ([name isEqualToString:[DataCenter account].type]) {
+                    if ([name isEqualToString:[DataCenter account].typeName]) {
                         self.badgeImage.frame = CGRectMake(CGRectGetMaxX(self.typeLabel.frame) + PX_TO_PT(14), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), PX_TO_PT(28), PX_TO_PT(36));
                         
                         self.badgeImage.hidden = NO;
