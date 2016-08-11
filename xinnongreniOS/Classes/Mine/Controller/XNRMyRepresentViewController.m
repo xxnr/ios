@@ -604,12 +604,11 @@ static bool isBroker;
     thirdView.backgroundColor = [UIColor clearColor];
     self.thirdView = thirdView;
     
-    UIView *headView = [[UIView alloc] init];
-    [self.thirdView addSubview:headView];
+//    UIView *headView = [[UIView alloc] init];
+//    [self.thirdView addSubview:headView];
     
     UIView *BooktopView = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(220))];
     BooktopView.backgroundColor = [UIColor whiteColor];
-    [headView addSubview:BooktopView];
     
     UIView *bgview = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(20), ScreenWidth, PX_TO_PT(140))];
     bgview.backgroundColor = [UIColor whiteColor];
@@ -676,19 +675,18 @@ static bool isBroker;
         
     }
     
-    UIView *top2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(BooktopView.frame)+PX_TO_PT(19), ScreenWidth, PX_TO_PT(80))];
+    UIView *top2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(80))];
     top2.backgroundColor = [UIColor whiteColor];
-    [headView addSubview:top2];
     
     UILabel *top3Label = [[UILabel alloc]initWithFrame:CGRectMake(PX_TO_PT(33), PX_TO_PT(25), PX_TO_PT(200), PX_TO_PT(32))];
     top3Label.text = @"已登记客户";
     top3Label.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     top3Label.textColor = R_G_B_16(0x323232);
     [top2 addSubview:top3Label];
+
+    [self.thirdView addSubview:BooktopView];
     
-    headView.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(top2.frame));
-    
-    UITableView *tableView2 = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64 - PX_TO_PT(98)) style:UITableViewStylePlain];
+    UITableView *tableView2 = [[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(BooktopView.frame)+PX_TO_PT(20), ScreenWidth, ScreenHeight-CGRectGetMaxY(BooktopView.frame)- PX_TO_PT(20) - 64 - PX_TO_PT(98)) style:UITableViewStylePlain];
     tableView2.backgroundColor = [UIColor clearColor];
     tableView2.delegate = self;
     tableView2.dataSource = self;
@@ -696,7 +694,7 @@ static bool isBroker;
     tableView2.sectionIndexColor = R_G_B_16(0x909090);
     tableView2.sectionIndexBackgroundColor = [UIColor clearColor];
     self.tableView2 = tableView2;
-    self.tableView2.tableHeaderView = headView;
+    self.tableView2.tableHeaderView = top2;
     _tableView2.tag = tbTag + 1;
     [self.thirdView addSubview:tableView2];
     
@@ -901,7 +899,7 @@ static bool isBroker;
                                 dict[@"namePinyin"]?dict[@"namePinyin"]:@"",
                                 dict[@"nameInitial"]?dict[@"nameInitial"]:@"",
                                 [dict[@"isRegistered"]intValue],
-                                dict[@"phone"],
+                                dict[@"phone"]?dict[@"phone"]:@"",
                                 dict[@"_id"]];
                 
                 if (![self.dataDB executeUpdate:sql]){
@@ -1048,7 +1046,8 @@ static bool isBroker;
                                 dict[@"sex"]?dict[@"sex"]:@"",
                                 dict[@"newOrdersNumber"]?dict[@"newOrdersNumber"]:@"",
                                 dict[@"name"]?dict[@"name"]:@"",
-                                dict[@"namePinyin"]?dict[@"namePinyin"]:@"", dict[@"nameInitial"]?dict[@"nameInitial"]:@"",
+                                dict[@"namePinyin"]?dict[@"namePinyin"]:@"",
+                                dict[@"nameInitial"]?dict[@"nameInitial"]:@"",
                                 dict[@"account"]?dict[@"account"]:@"",
                                 dict[@"userId"]];
                 
@@ -1225,6 +1224,7 @@ static bool isBroker;
         return self.Rep_indexTitleArr;
     }
 }
+
 -(NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
     [self showView:title];
