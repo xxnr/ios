@@ -433,7 +433,11 @@
                 fmdc.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:fmdc animated:YES];
             }else{
-                [self.navigationController popToRootViewControllerAnimated:YES];
+                if (_loginFromProductInfo == YES) {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }else{
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                }
             }
             NSString *userName = self.usernameTextField.text;
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
