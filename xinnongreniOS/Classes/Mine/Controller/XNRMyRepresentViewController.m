@@ -151,7 +151,7 @@ static bool isBroker;
 //            NSLog(@"删除表失败");
 //        }
         //创建数据库表
-        if(![self.dataDB executeUpdate:@"create table if not exists myCustomerTable(sex integer,red integer,name text,namePinyin text,nameInitial text,phone text,userId text)"])
+        if(![self.dataDB executeUpdate:@"create table if not exists myCustomerTable(sex text,red text,name text,namePinyin text,nameInitial text,phone text,userId text)"])
         {
             NSLog(@"表创建失败");
         }
@@ -222,8 +222,8 @@ static bool isBroker;
      while ([resultSet next]) {
          XNRMyRepresentModel *customer = [[XNRMyRepresentModel alloc]init];
          
-         customer.sex = [resultSet boolForColumn:@"sex"];
-         customer.newOrdersNumber = [resultSet intForColumn:@"red"];
+         customer.sex = [[resultSet stringForColumn:@"sex"] boolValue];
+         customer.newOrdersNumber = [[resultSet stringForColumn:@"red"] intValue];
          customer.name = [resultSet stringForColumn:@"name"];
          customer.namePinyin = [resultSet stringForColumn:@"namePinyin"];
          customer.nameInitial = [resultSet stringForColumn:@"nameInitial"];
@@ -459,6 +459,8 @@ static bool isBroker;
         [self.middleView removeFromSuperview];
         [self.thirdView removeFromSuperview];
         [self.mrv removeFromSuperview];
+        
+        [self myCustomerModel];
         
         [self getCustomerData];
         
@@ -893,7 +895,14 @@ static bool isBroker;
             
             for (NSDictionary *dict in arr) {
 //                NSInteger e = []
-                NSString *sql =[NSString stringWithFormat:@"insert into registerCustomerTable (sex,name,namePinyin,nameInitial,register,phone,_id) VALUES ('%@','%@','%@','%@','%d','%@','%@')",dict[@"sex"]?dict[@"sex"]:@"",dict[@"name"]?dict[@"name"]:@"",dict[@"namePinyin"]?dict[@"namePinyin"]:@"",dict[@"nameInitial"]?dict[@"nameInitial"]:@"",[dict[@"isRegistered"]intValue],dict[@"phone"],dict[@"_id"]];
+                NSString *sql =[NSString stringWithFormat:@"insert into registerCustomerTable (sex,name,namePinyin,nameInitial,register,phone,_id) VALUES ('%@','%@','%@','%@','%d','%@','%@')",
+                                dict[@"sex"]?dict[@"sex"]:@"",
+                                dict[@"name"]?dict[@"name"]:@"",
+                                dict[@"namePinyin"]?dict[@"namePinyin"]:@"",
+                                dict[@"nameInitial"]?dict[@"nameInitial"]:@"",
+                                [dict[@"isRegistered"]intValue],
+                                dict[@"phone"],
+                                dict[@"_id"]];
                 
                 if (![self.dataDB executeUpdate:sql]){
                     NSLog(@"插入失败");
@@ -1033,7 +1042,15 @@ static bool isBroker;
             
             [_dataArr removeAllObjects];
             for (NSDictionary *dict in arr) {
-                NSString *sql =[NSString stringWithFormat:@"insert into myCustomerTable (sex,red,name,namePinyin,nameInitial,phone,userId) VALUES ('%d','%d','%@','%@','%@','%@','%@')", [dict[@"sex"] intValue],[dict[@"newOrdersNumber"] intValue],dict[@"name"]?dict[@"name"]:@"",dict[@"namePinyin"]?dict[@"namePinyin"]:@"", dict[@"nameInitial"]?dict[@"nameInitial"]:@"",dict[@"account"]?dict[@"account"]:@"",dict[@"userId"]];
+
+                NSString *sql =[NSString stringWithFormat:@"insert into myCustomerTable (sex,red,name,namePinyin,nameInitial,phone,userId) VALUES ('%@','%@','%@','%@','%@','%@','%@')",
+                                
+                                dict[@"sex"]?dict[@"sex"]:@"",
+                                dict[@"newOrdersNumber"]?dict[@"newOrdersNumber"]:@"",
+                                dict[@"name"]?dict[@"name"]:@"",
+                                dict[@"namePinyin"]?dict[@"namePinyin"]:@"", dict[@"nameInitial"]?dict[@"nameInitial"]:@"",
+                                dict[@"account"]?dict[@"account"]:@"",
+                                dict[@"userId"]];
                 
                 if (![self.dataDB executeUpdate:sql]){
                     NSLog(@"插入失败");
