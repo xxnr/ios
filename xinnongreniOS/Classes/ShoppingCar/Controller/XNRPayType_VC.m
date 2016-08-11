@@ -442,13 +442,13 @@
     //付款的几种方式
     UIView *payTypeDetailView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(fkType.frame), ScreenWidth, PX_TO_PT(356))];
     [self.subView addSubview:payTypeDetailView];
-    NSArray *arr = [NSArray arrayWithObjects:@"支付宝支付",@"银联支付",@"EPOS刷卡",@"线下支付", nil];
+    NSArray *arr = [NSArray arrayWithObjects:@"支付宝支付",@"银联支付",@"线下支付", nil];
     
     UIImage *iamge0 = [UIImage imageNamed:@"支付宝logo-0"];
     UIImage *image1 = [UIImage imageNamed:@"银联logo"];
-    UIImage *image2 = [UIImage imageNamed:@"the-pay_logo-"];
-    UIImage *image3 = [UIImage imageNamed:@"offline_payment_icon1"];
-    NSArray *imagesarr = [NSArray arrayWithObjects:iamge0,image1,image2,image3,nil];
+//    UIImage *image2 = [UIImage imageNamed:@"the-pay_logo-"];
+    UIImage *image2 = [UIImage imageNamed:@"offline_payment_icon1"];
+    NSArray *imagesarr = [NSArray arrayWithObjects:iamge0,image1,image2,nil];
     
     self.currentSelBtn = [[UIButton alloc] init];
     
@@ -486,10 +486,10 @@
         else if (i == 1) {
             self.selectedBtnTwo = selbtn;
         }
-        else if (i == 2) {
-            self.selectedBtnFour = selbtn;
-        }
-        else if(i == 3)
+//        else if (i == 2) {
+//            self.selectedBtnFour = selbtn;
+//        }
+        else if(i == 2)
         {
             self.selectedBtnThree = selbtn;
         }
@@ -500,7 +500,7 @@
             selbtn.enabled = NO;
         }
         
-        if (i == 0 || i == 1 || i == 2 || i==3) {
+        if (i == 0 || i == 1 || i == 2) {
             
             [btn addSubview:selbtn];
             [btn addSubview:imageView];
@@ -758,13 +758,15 @@
         _payType = 2;
         [self payType];
         
-    }else if (self.currentSelBtn.tag == kSelectedBtn + 2){
-        self.selectedBtnFour.selected = YES;
-        self.selectedBtnOne.selected = NO;
-        self.selectedBtnTwo.selected = NO;
-        self.selectedBtnThree.selected = NO;
-    
-    }else if (self.currentSelBtn.tag == kSelectedBtn + 3){
+    }
+//    else if (self.currentSelBtn.tag == kSelectedBtn + 2){
+//        self.selectedBtnFour.selected = YES;
+//        self.selectedBtnOne.selected = NO;
+//        self.selectedBtnTwo.selected = NO;
+//        self.selectedBtnThree.selected = NO;
+//    
+//    }
+    else if (self.currentSelBtn.tag == kSelectedBtn + 2){
         self.selectedBtnThree.selected = YES;
         self.selectedBtnOne.selected = NO;
         self.selectedBtnTwo.selected = NO;
@@ -824,16 +826,18 @@
         }];
         
         
-    }else if (self.currentSelBtn.tag == kSelectedBtn +2){
-        XNREposViewController *eposVC = [[XNREposViewController alloc] init];
-        eposVC.orderId = self.orderID;
-        eposVC.price = _Money;
-        eposVC.rscModel = _model;
-        eposVC.isfromOrderVC = _isfromOrderVC;
-        eposVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:eposVC animated:YES];
-        
-    }else if (self.currentSelBtn.tag == kSelectedBtn + 3){
+    }
+//    else if (self.currentSelBtn.tag == kSelectedBtn +2){
+//        XNREposViewController *eposVC = [[XNREposViewController alloc] init];
+//        eposVC.orderId = self.orderID;
+//        eposVC.price = _Money;
+//        eposVC.rscModel = _model;
+//        eposVC.isfromOrderVC = _isfromOrderVC;
+//        eposVC.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:eposVC animated:YES];
+//        
+//    }
+    else if (self.currentSelBtn.tag == kSelectedBtn + 2){
         [KSHttpRequest get:KOfflinepay parameters:@{@"orderId":self.orderID,@"price":_Money} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
                 XNROffLine_VC *offlineVC = [[XNROffLine_VC alloc]init];
