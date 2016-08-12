@@ -483,7 +483,6 @@
         if (i == 0) {
             self.selectedBtnOne = selbtn;
             self.currentSelBtn = selbtn;
-            //            [self selectedBtnClick:selbtn];
             [self selectedBtnClick:btn];
         }
         else if (i == 1) {

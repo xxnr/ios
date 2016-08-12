@@ -44,7 +44,7 @@
                         self.orderStatusModel.dateCreated?[self transformTime:self.orderStatusModel.dateCreated]:@"",
                         self.orderStatusModel.datePaid?[self transformTime:self.orderStatusModel.datePaid]:@"",
                         self.orderStatusModel.datePendingDeliver?[self transformTime:self.orderStatusModel.datePendingDeliver]:@"",
-                        self.orderStatusModel.dateDelivered?[self transformTime:self.orderStatusModel.dateDelivered]:@"",
+                       /* self.orderStatusModel.dateDelivered?[self transformTime:self.orderStatusModel.dateDelivered]:@"",*/
                         self.orderStatusModel.dateCompleted?[self transformTime:self.orderStatusModel.dateCompleted]:@"",
                         nil];
     
@@ -140,14 +140,25 @@
         }
         
 
-        UIButton *icon = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(19), PX_TO_PT(35), PX_TO_PT(42), PX_TO_PT(42))];
+//        UIButton *icon = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(19), PX_TO_PT(35), PX_TO_PT(42), PX_TO_PT(42))];
+//        [icon setBackgroundColor:R_G_B_16(0xB0B0B0)];
+//        [icon setImage:firstDic[@"icon"] forState:UIControlStateNormal];
+//        icon.layer.cornerRadius = PX_TO_PT(21);
+//        icon.layer.masksToBounds = YES;
+//        icon.enabled = NO;
+//        [firstView addSubview:icon];
+        
+        
+        UIView *icon = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(19), PX_TO_PT(35), PX_TO_PT(42), PX_TO_PT(42))];
         [icon setBackgroundColor:R_G_B_16(0xB0B0B0)];
-        [icon setImage:firstDic[@"icon"] forState:UIControlStateNormal];
+        UIImage *image =firstDic[@"icon"];
+        UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake((icon.size.width-image.size.width)/2, (icon.size.height-image.size.height)/2, image.size.width, image.size.height)];
+        [imageview setImage:image];
+        [icon addSubview:imageview];
         icon.layer.cornerRadius = PX_TO_PT(21);
         icon.layer.masksToBounds = YES;
-        icon.enabled = NO;
         [firstView addSubview:icon];
-        
+
         CGRect rect = verticalline.frame;
         rect.origin.x = icon.centerX;
         verticalline.frame = rect;

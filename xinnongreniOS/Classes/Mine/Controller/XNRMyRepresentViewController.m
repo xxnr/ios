@@ -103,7 +103,7 @@
 @property (nonatomic, strong) NSMutableArray *searchResultArr;
 
 @property (nonatomic,strong)NSArray *AllUserCount;
-
+@property (nonatomic,strong)NSMutableDictionary *myrepresent;
 @end
 
 @implementation XNRMyRepresentViewController
@@ -200,6 +200,8 @@ static bool isBroker;
     [self myCustomerModel];
     [self registerCustomerModel];
     [self getCustomerData];
+    [self rep_isUpdata];
+
 }
 -(void)creatSearchVC
 {
@@ -451,7 +453,7 @@ static bool isBroker;
     self.selectedBtn = sender;
     [self.customer_indexTitleArr removeAllObjects];
     if (sender.tag == btnTag) {
-        [BMProgressView XXNRshowCoverWithTarget:self.view color:nil isNavigation:YES];
+//        [BMProgressView XXNRshowCoverWithTarget:self.view color:nil isNavigation:YES];
 
         //        [_dataArr removeAllObjects];
         self.isadd = NO;
@@ -464,7 +466,7 @@ static bool isBroker;
         
         [self myCustomerModel];
         
-        [self getCustomerData];
+//        [self getCustomerData];
         
         self.isFirstTableView = YES;
     } else if(sender.tag == btnTag + 1){
@@ -479,12 +481,15 @@ static bool isBroker;
         [self createMrv];
         [self createMyRepresentUI];
         
-        [self getrepresent];
+//        if (self.fromMine) {
+            [self getrepresent];
+//            self.fromMine = NO;
+//        }
         
     }
     else if(sender.tag == btnTag + 2)
     {
-        [BMProgressView XXNRshowCoverWithTarget:self.view color:nil isNavigation:YES];
+//        [BMProgressView XXNRshowCoverWithTarget:self.view color:nil isNavigation:YES];
         self.isFirstTableView = NO;
         _tableView.hidden = YES;
         self.topView.hidden = YES;
@@ -495,8 +500,6 @@ static bool isBroker;
         [self.mrv removeFromSuperview];
         
         [self creatBookView];
-        
-        [self rep_isUpdata];
         
     }
     
@@ -509,6 +512,7 @@ static bool isBroker;
 }
 -(void)getrepresent
 {
+    self.myrepresent = [NSMutableDictionary dictionary];
     [KSHttpRequest get:KGetInviter parameters:nil success:^(id result) {
         if ([result[@"code"] integerValue]==1000) {
             
@@ -519,6 +523,7 @@ static bool isBroker;
             if (self.phoneNum && self.phoneNum.length>0) {
                 [self.mrv removeFromSuperview];
                 self.middleView.hidden = NO;
+                
                 self.myRepLabel.text = result[@"datas"][@"inviterName"]?result[@"datas"][@"inviterName"]:@"好友未填姓名";
                 CGSize size = [self.myRepLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(40)] constrainedToSize:CGSizeMake(ScreenWidth, MAXFLOAT)];
                 
@@ -1410,13 +1415,13 @@ static bool isBroker;
     rep_address.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [self.middleView addSubview:rep_address];
     
-    UILabel *rep_phone = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(type.frame)+PX_TO_PT(10), CGRectGetMaxY(rep_address.frame)+PX_TO_PT(28), PX_TO_PT(195), PX_TO_PT(31))];
+    UILabel *rep_phone = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(type.frame)+PX_TO_PT(10), CGRectGetMaxY(rep_address.frame)+PX_TO_PT(28), PX_TO_PT(210), PX_TO_PT(31))];
     self.rep_phone = rep_phone;
     rep_phone.textColor = R_G_B_16(0x646464);
     rep_phone.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     [self.middleView addSubview:rep_phone];
     
-    UIButton *phoneBtn = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(rep_phone.frame)+PX_TO_PT(17), CGRectGetMaxY(rep_address.frame)+PX_TO_PT(26), PX_TO_PT(24), PX_TO_PT(30))];
+    UIButton *phoneBtn = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(rep_phone.frame)+PX_TO_PT(5), CGRectGetMaxY(rep_address.frame)+PX_TO_PT(26), PX_TO_PT(24), PX_TO_PT(30))];
     [phoneBtn setImage:[UIImage imageNamed:@"phone-icon"] forState:UIControlStateNormal];
     [phoneBtn addTarget:self action:@selector(call) forControlEvents:UIControlEventTouchUpInside];
     [self.middleView addSubview:phoneBtn];

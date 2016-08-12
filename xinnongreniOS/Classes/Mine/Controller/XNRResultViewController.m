@@ -84,11 +84,11 @@
 
 - (void)createView
 {
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(1))];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(2))];
     line.backgroundColor = R_G_B_16(0xe0e0e0);
     [self.view addSubview:line];
     
-        UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(1), ScreenWidth, ScreenHeight)style:UITableViewStylePlain];
+        UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(2), ScreenWidth, ScreenHeight)style:UITableViewStyleGrouped];
 
         tableView.backgroundColor = [UIColor clearColor];
         tableView.showsVerticalScrollIndicator = YES;
@@ -96,7 +96,10 @@
         tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight);
         tableView.dataSource = self;
         tableView.separatorStyle =UITableViewCellSeparatorStyleNone;
+        tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 0.1f)];
+
         self.tableView = tableView;
+
         [self.view addSubview:tableView];
 
     UIView *Nouser = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(235), PX_TO_PT(188), PX_TO_PT(252), PX_TO_PT(282))];
@@ -184,9 +187,15 @@
     }
     return PX_TO_PT(80);
 }
-
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.1f;
+}
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    if (self.searchResultArr.count <= 0) {
+        return nil;
+    }
     UIView *topView = [[UIView alloc]init];
     UIView *headView = [[UIView alloc]init];
 
