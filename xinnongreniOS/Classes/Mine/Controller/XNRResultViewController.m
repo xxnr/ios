@@ -118,7 +118,8 @@
     [self.view addSubview:self.NoUserView];
 }
 -(void)setNavigationBar{
-
+    self.navigationController.navigationBar.backItem.title = @"";
+    
     UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     searchBtn.frame = CGRectMake(PX_TO_PT(10), 0, PX_TO_PT(60), 40);
     [searchBtn setTitle:@"取消" forState:UIControlStateNormal];
