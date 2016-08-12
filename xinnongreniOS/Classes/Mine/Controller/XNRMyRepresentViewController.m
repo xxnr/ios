@@ -450,7 +450,8 @@ static bool isBroker;
     self.selectedBtn = sender;
     [self.customer_indexTitleArr removeAllObjects];
     if (sender.tag == btnTag) {
-        
+        [BMProgressView XXNRshowCoverWithTarget:self.view color:nil isNavigation:YES];
+
         //        [_dataArr removeAllObjects];
         self.isadd = NO;
         //        _tableView.hidden = NO;
@@ -466,7 +467,7 @@ static bool isBroker;
         
         self.isFirstTableView = YES;
     } else if(sender.tag == btnTag + 1){
-        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+        [BMProgressView XXNRshowCoverWithTarget:self.view color:nil isNavigation:YES];
         self.isFirstTableView = NO;
         self.isadd = NO;
         
@@ -482,6 +483,7 @@ static bool isBroker;
     }
     else if(sender.tag == btnTag + 2)
     {
+        [BMProgressView XXNRshowCoverWithTarget:self.view color:nil isNavigation:YES];
         self.isFirstTableView = NO;
         _tableView.hidden = YES;
         self.topView.hidden = YES;
