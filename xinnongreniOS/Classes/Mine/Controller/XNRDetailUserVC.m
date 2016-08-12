@@ -53,7 +53,7 @@
         [cell addSubview:name];
         
         if (i+1 < (nameArr.count-1)) {
-            UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(1))];
+            UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*i+PX_TO_PT(98),ScreenWidth, PX_TO_PT(1.5))];
             line.backgroundColor = R_G_B_16(0xE0E0E0);
             [self.view addSubview:line];
         }
@@ -159,7 +159,7 @@
             [self.view addSubview:interestLabel];
             
             
-            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(71),ScreenWidth, PX_TO_PT(1))];
+            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(0, PX_TO_PT(99)*5+size.height+PX_TO_PT(71),ScreenWidth, PX_TO_PT(1.5))];
             lastLine.backgroundColor = R_G_B_16(0xE0E0E0);
             [self.view addSubview:lastLine];
             
@@ -177,7 +177,7 @@
                 
                 self.remarksLB.frame =CGRectMake(0,  CGRectGetMaxY(lastLine.frame), PX_TO_PT(140), PX_TO_PT(99));
                 
-                UIView *remarksLine = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(remarksLabel.frame)+PX_TO_PT(33),ScreenWidth, PX_TO_PT(1))];
+                UIView *remarksLine = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(remarksLabel.frame)+PX_TO_PT(33),ScreenWidth, PX_TO_PT(1.5))];
                 remarksLine.backgroundColor = R_G_B_16(0xE0E0E0);
                 [self.view addSubview:remarksLine];
 
