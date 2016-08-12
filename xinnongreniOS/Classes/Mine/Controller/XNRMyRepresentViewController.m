@@ -103,7 +103,7 @@
 @property (nonatomic, strong) NSMutableArray *searchResultArr;
 
 @property (nonatomic,strong)NSArray *AllUserCount;
-@property (nonatomic,strong)NSMutableDictionary *myrepresent;
+@property (nonatomic,strong)NSString *myRepresent;
 @end
 
 @implementation XNRMyRepresentViewController
@@ -197,10 +197,12 @@ static bool isBroker;
     [self createTableView];
     [self createCustomerLabel];
     
+    [self createMrv];
+    [self createMyRepresentUI];
+    
     [self myCustomerModel];
     [self registerCustomerModel];
     [self getCustomerData];
-    [self rep_isUpdata];
 
 }
 -(void)creatSearchVC
@@ -460,9 +462,12 @@ static bool isBroker;
         //        _tableView.hidden = NO;
         //        self.topView.hidden = NO;
         
-        [self.middleView removeFromSuperview];
+        self.middleView.hidden = YES;
+        self.mrv.hidden = YES;
+        
+//        [self.middleView removeFromSuperview];
         [self.thirdView removeFromSuperview];
-        [self.mrv removeFromSuperview];
+//        [self.mrv removeFromSuperview];
         
         [self myCustomerModel];
         
@@ -470,7 +475,7 @@ static bool isBroker;
         
         self.isFirstTableView = YES;
     } else if(sender.tag == btnTag + 1){
-        [BMProgressView XXNRshowCoverWithTarget:self.view color:nil isNavigation:YES];
+//        [BMProgressView XXNRshowCoverWithTarget:self.view color:nil isNavigation:YES];
         self.isFirstTableView = NO;
         self.isadd = NO;
         
@@ -478,13 +483,18 @@ static bool isBroker;
         self.topView.hidden = YES;
         [self.thirdView removeFromSuperview];
         
-        [self createMrv];
-        [self createMyRepresentUI];
+        if ([self.myRepresent isEqualToString:@"yes"]) {
+            self.middleView.hidden = NO;
+        }
+        else if([self.myRepresent isEqualToString:@"no"])
+        {
+            self.mrv.hidden = NO;
+        }
         
-//        if (self.fromMine) {
+        if (self.fromMine) {
             [self getrepresent];
-//            self.fromMine = NO;
-//        }
+            self.fromMine = NO;
+        }
         
     }
     else if(sender.tag == btnTag + 2)
@@ -495,11 +505,18 @@ static bool isBroker;
         self.topView.hidden = YES;
         
         self.mrv.hidden = YES;
-        [self.middleView removeFromSuperview];
+//        [self.middleView removeFromSuperview];
         [self.thirdView removeFromSuperview];
-        [self.mrv removeFromSuperview];
+//        [self.mrv removeFromSuperview];
+        self.middleView.hidden = YES;
+        self.mrv.hidden = YES;
         
         [self creatBookView];
+        
+        if (self.bookfromMine) {
+            [self rep_isUpdata];
+            self.bookfromMine = NO;
+        }
         
     }
     
@@ -512,7 +529,7 @@ static bool isBroker;
 }
 -(void)getrepresent
 {
-    self.myrepresent = [NSMutableDictionary dictionary];
+//    self.myrepresent = [NSMutableDictionary dictionary];
     [KSHttpRequest get:KGetInviter parameters:nil success:^(id result) {
         if ([result[@"code"] integerValue]==1000) {
             
@@ -521,6 +538,7 @@ static bool isBroker;
             self.phoneNum = result[@"datas"][@"inviterPhone"];
             
             if (self.phoneNum && self.phoneNum.length>0) {
+                self.myRepresent = @"yes";
                 [self.mrv removeFromSuperview];
                 self.middleView.hidden = NO;
                 
@@ -559,6 +577,7 @@ static bool isBroker;
                 [self.middleView removeFromSuperview];
                 
                 if (self.isfirst) {
+                    self.myRepresent = @"no";
                     [self getNominatedInviter];
                 }
                 self.isfirst = NO;

@@ -353,6 +353,7 @@
                 if (indexPath.row == 1) {
                    XNRMyRepresentViewController *destVc = (XNRMyRepresentViewController *)[[item.destVcClass alloc] init];
                     destVc.fromMine = YES;
+                    destVc.bookfromMine = YES;
                     destVc.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:destVc animated:YES];
                 }
