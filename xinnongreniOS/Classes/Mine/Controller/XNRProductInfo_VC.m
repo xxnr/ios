@@ -28,7 +28,7 @@
 
 #define KbtnTag 1000
 #define KlabelTag 2000
-@interface XNRProductInfo_VC ()<UITextFieldDelegate,UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource,XNRProductInfo_cellDelegate,XNRToolBarBtnDelegate,UIScrollViewDelegate,MWPhotoBrowserDelegate>{
+@interface XNRProductInfo_VC ()<UITextFieldDelegate,UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource,XNRProductInfo_cellDelegate,XNRToolBarBtnDelegate,UIScrollViewDelegate,MWPhotoBrowserDelegate,UIWebViewDelegate>{
     CGRect oldTableRect;
     CGFloat preY;
     NSMutableArray *_goodsArray;
@@ -269,6 +269,7 @@
     {
         _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, ScreenHeight+PX_TO_PT(80), ScreenWidth, ScreenHeight-PX_TO_PT(160)-64)];
         _webView.backgroundColor = R_G_B_16(0xf2f2f2);
+        _webView.delegate = self;
     }
     return _webView;
 }
@@ -347,7 +348,7 @@
         [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_body_url]];
         [self.webView loadRequest:request];
-        [SVProgressHUD dismiss];
+//        [SVProgressHUD dismiss];
         
         
     }else if (button.tag == KbtnTag + 1)
@@ -359,7 +360,7 @@
         [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_standard_url]];
         [self.webView loadRequest:request];
-        [SVProgressHUD dismiss];
+//        [SVProgressHUD dismiss];
         
         self.tempLabel.textColor = R_G_B_16(0x646464);
         titleLabel.textColor = R_G_B_16(0x00b38a);
@@ -377,10 +378,14 @@
         [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_support_url]];
         [self.webView loadRequest:request];
-        [SVProgressHUD dismiss];
+//        [SVProgressHUD dismiss];
     }
 }
 
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [SVProgressHUD dismiss];
+}
 -(void)createTableView:(NSMutableArray *)infoModelArray{
     _infoModelArray = infoModelArray;
     XNRProductInfo_frame *frame = [infoModelArray lastObject];
