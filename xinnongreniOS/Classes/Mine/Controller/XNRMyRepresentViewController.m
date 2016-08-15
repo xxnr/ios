@@ -143,8 +143,8 @@ static bool isBroker;
 
 -(void)createCustomerTable
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
         //        创建数据库表
         //        if (![self.dataDB executeUpdate:@"drop table myCustomerTable"])
         //        {
@@ -155,13 +155,13 @@ static bool isBroker;
         {
             NSLog(@"表创建失败");
         }
-    });
+//    });
 }
 
 -(void)createReprentTable
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
         //创建数据库表
         //        if (![self.dataDB executeUpdate:@"drop table registerCustomerTable"])
         //        {
@@ -172,7 +172,7 @@ static bool isBroker;
         {
             NSLog(@"表创建失败");
         }
-    });
+//    });
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -186,7 +186,8 @@ static bool isBroker;
     [self.dataDB open];
     [self createCustomerTable];
     [self createReprentTable];
-    //    [self creatSearchVC];
+
+        //    [self creatSearchVC];
     
     self.isfirst = YES;
     
