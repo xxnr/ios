@@ -429,7 +429,7 @@
     [warnView addSubview:manBtn];
     
     UIImageView *womanImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), CGRectGetMaxY(manBtn.frame)+PX_TO_PT(20), PX_TO_PT(60), PX_TO_PT(60))];
-    womanImageView.image = [UIImage imageNamed:@"my_girl"];
+    womanImageView.image = [UIImage imageNamed:@"my_girl1-ico"];
     [warnView addSubview:womanImageView];
     
     UILabel *womanLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(womanImageView.frame)+PX_TO_PT(20), CGRectGetMaxY(manBtn.frame), PX_TO_PT(100), PX_TO_PT(100))];
@@ -452,7 +452,7 @@
     [warnView addSubview:cancelBtn];
     
     for (int i = 1; i<4; i++) {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100)*i, ScreenWidth-PX_TO_PT(200), 1)];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(100)*i, warnView.width, 1)];
         lineView.backgroundColor = R_G_B_16(0xe0e0e0);
         [warnView addSubview:lineView];
     }

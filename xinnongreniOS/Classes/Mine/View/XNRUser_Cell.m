@@ -64,7 +64,7 @@
     }
     else
     {
-        [self.icon setImage:[UIImage imageNamed:@"girl1-ico"]];
+        [self.icon setImage:[UIImage imageNamed:@"girl1-ico-0"]];
     }
     if ([model.isRegistered integerValue] == 1) {
         self.registerImage.hidden = NO;

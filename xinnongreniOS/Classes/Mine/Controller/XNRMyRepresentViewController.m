@@ -547,7 +547,7 @@ static bool isBroker;
                 CGSize size = [self.myRepLabel.text sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(40)] constrainedToSize:CGSizeMake(ScreenWidth, MAXFLOAT)];
                 
                 self.myRepLabel.frame =CGRectMake(0, 0, size.width, size.height);
-                self.sexImage.image = [result[@"datas"][@"inviterSex"] boolValue] == true?[UIImage imageNamed:@"girl1-ico"]:[UIImage imageNamed:@"boy1-ico"];
+                self.sexImage.image = [result[@"datas"][@"inviterSex"] boolValue] == true?[UIImage imageNamed:@"girl1-ico-0"]:[UIImage imageNamed:@"boy1-ico"];
                 self.sexImage.frame = CGRectMake(CGRectGetMaxX(self.myRepLabel.frame)+PX_TO_PT(19), PX_TO_PT(5), PX_TO_PT(35), PX_TO_PT(35));
                 
                 CGFloat topWidth = self.myRepLabel.width + self.sexImage.size.width+PX_TO_PT(19);
