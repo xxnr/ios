@@ -196,6 +196,11 @@
     if (self.searchResultArr.count <= 0) {
         return nil;
     }
+    NSArray *Arr =self.searchResultArr[section];
+    if (Arr.count <=0) {
+        return nil;
+    }
+    
     UIView *topView = [[UIView alloc]init];
     UIView *headView = [[UIView alloc]init];
 

@@ -1250,6 +1250,8 @@ static bool isBroker;
     _tableView.backgroundColor = [UIColor colorWithHexString_Ext:@"#EEEEEE"];
     _tableView.separatorColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    [_tableView setSeparatorInset:(UIEdgeInsetsMake(0, 0, 0, 0))];
+
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.sectionIndexColor = R_G_B_16(0x909090);
