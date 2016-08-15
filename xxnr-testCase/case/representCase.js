@@ -358,9 +358,10 @@ if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
 
              xxnrElementClass.xxnrSearchUser(window).cells(0).tap();
              assertEquals("客户订单" || "客户详情",xxnrElementClass.navTitle());
+
              xxnrElementClass.navBack().tap();
-        target.frontMostApp().mainWindow().tableViews()[0].cells()["Qqqqqqqqqqqq"].tap();
-        target.frontMostApp().navigationBar().buttons()["top back"].tap();
+
+
         target.frontMostApp().navigationBar().buttons()["取消"].tap();
     })
 
