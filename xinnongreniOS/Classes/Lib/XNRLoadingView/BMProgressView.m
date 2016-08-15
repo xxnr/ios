@@ -38,7 +38,6 @@
     showView.alpha = 0.35;
     showView.layer.cornerRadius = 5;
     [bcView addSubview:showView];
-
     
     UIImageView *loadView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"xxnr_loading"]];
     loadView.center = showView.center;
@@ -46,6 +45,33 @@
     [bcView addSubview:loadView];
     
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:bcView selector:@selector(transformAction) userInfo:nil repeats:YES];
+    return bcView;
+}
++(BMProgressView *)XXNRshowCoverWithTarget:(UIView *)target color:(UIColor *)bcColor isNavigation:(BOOL)isNavigation
+{
+    
+    BMProgressView *bcView = [[BMProgressView alloc] initWithFrame:target.bounds];
+    //    bcView.isError = NO;
+    bcView.backgroundColor = bcColor;
+    [target addSubview:bcView];
+    [target bringSubviewToFront:bcView];
+    
+    UIView *showView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 80, 80)];
+    showView.center = CGPointMake(bcView.width/2, bcView.height/2);
+    //    if (isNavigation) {
+    //        showView.y -= 64;
+    //    }
+    showView.backgroundColor = [UIColor clearColor];
+    showView.alpha = 0.35;
+    showView.layer.cornerRadius = 5;
+    [bcView addSubview:showView];
+    
+    //    UIImageView *loadView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"xxnr_loading"]];
+    //    loadView.center = showView.center;
+    //    bcView.loadView = loadView;
+    //    [bcView addSubview:loadView];
+    
+    //    [NSTimer scheduledTimerWithTimeInterval:0.1 target:bcView selector:@selector(transformAction) userInfo:nil repeats:YES];
     return bcView;
 }
 

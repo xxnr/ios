@@ -12,6 +12,8 @@ typedef void (^errorBlock)();
 @interface BMProgressView : UIView
 @property(nonatomic,copy)errorBlock block;
 +(BMProgressView *)showCoverWithTarget:(UIView *)target color:(UIColor *)bcColor isNavigation:(BOOL)isNavigation;
++(BMProgressView *)XXNRshowCoverWithTarget:(UIView *)target color:(UIColor *)bcColor isNavigation:(BOOL)isNavigation;
+
 -(instancetype)initWithTarget:(UIView *)target color:(UIColor *)bcColor isNavigation:(BOOL)isNavigation;
 +(BMProgressView *)showErrorViewWtihTarget:(UIView *)target;
 +(BMProgressView *)showEmptyWithTarget:(UIView *)target;

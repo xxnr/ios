@@ -410,9 +410,21 @@
             [self.navigationController pushViewController:destVc animated:YES];
         }else{
             if (IS_Login) {
-                UIViewController *destVc = [[item.destVcClass alloc] init];
-                destVc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:destVc animated:YES];
+//                UIViewController *destVc = [[item.destVcClass alloc] init];
+                if (indexPath.row == 1) {
+                   XNRMyRepresentViewController *destVc = (XNRMyRepresentViewController *)[[item.destVcClass alloc] init];
+                    destVc.fromMine = YES;
+                    destVc.bookfromMine = YES;
+                    destVc.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:destVc animated:YES];
+                }
+                else
+                {
+                    UIViewController *destVc = [[item.destVcClass alloc] init];
+                    destVc.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:destVc animated:YES];
+
+                }
             }else{
                 [[CommonTool sharedInstance]openLogin:self];
                 

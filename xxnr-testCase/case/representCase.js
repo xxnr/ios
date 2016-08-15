@@ -121,6 +121,7 @@ test("我的客户  上滑加载",function(){
 //     }
 // })
 
+
 test("我的客户 邀请好友数",function(){
 
     if (xxnrElementClass.xxnrRepesent_client(window).cells().length > 0)
@@ -210,6 +211,7 @@ if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
             var num = parseFloat(numStr);
             var count = xxnrElementClass.xxnrClientRegister(window).cells().length;
             assertEquals(num,count);
+
         }
     })
     test("客户登记  今日添加",function () {
@@ -283,6 +285,10 @@ if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
             xxnrElementClass.addClient(window).saveBtn().tap();
             assertNotNull(xxnrElementClass.addClient(window).warningStaticText("请完善信息"));
         })
+        test("选择意向商品" ,function(){
+
+        })
+        }
         test("没有手机号" ,function () {
             xxnrElementClass.addClient(window).selProBtn().tap();
             xxnrElementClass.selPro(window).tableView().tapWithOptions({tapOffset:{x:0.47, y:0.05}});
@@ -323,4 +329,72 @@ if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
             assertEquals(newtodaynum+1,todaynum);
         })
     })
+
+    test("搜索用户",function(){
+//        target.frontMostApp().navigationBar().buttons()["search "].tap();
+        xxnrElementClass.xxnrRepesent_client(window).search().tap();
+        assertNotNull(xxnrElementClass.xxnrSearchUser(window).buttons()["取消"]);
+        assertEquals("Empty list",xxnrElementClass.xxnrSearchUser(window).tableView().name());
+
+        xxnrElementClass.xxnrSearchUser(window).searchTextField().setValue("H");
+        if(xxnrElementClass.xxnrSearchUser(window).cells().length>0)
+        {
+            xxnrElementClass.xxnrSearchUser(window).cell(0).tap();
+            assertEquals("客户订单" || "客户详情",xxnrElementClass.navTitle());
+            xxnrElementClass.navBack().tap();
+        }
+
+        xxnrElementClass.xxnrSearchUser(window).ClearTextBtn().tap();
+        assertEquals("Empty list",xxnrElementClass.xxnrSearchUser(window).tableView().name());
+
+        var text = "Hh";
+        xxnrElementClass.xxnrSearchUser(window).searchTextField().setValue(text);
+        for(var i=0;i<xxnrElementClass.xxnrSearchUser(window).cells().length;i++)
+        {
+            var name = xxnrElementClass.xxnrSearchUser(window).cell(i).staticTexts()[0].name();
+            assertNotEquals(-1,text.indexOf(name));
+
+        }
+
+             xxnrElementClass.xxnrSearchUser(window).cells(0).tap();
+             assertEquals("客户订单" || "客户详情",xxnrElementClass.navTitle());
+             xxnrElementClass.navBack().tap();
+        target.frontMostApp().mainWindow().tableViews()[0].cells()["Qqqqqqqqqqqq"].tap();
+        target.frontMostApp().navigationBar().buttons()["top back"].tap();
+        target.frontMostApp().navigationBar().buttons()["取消"].tap();
+    })
+
+
+    target.frontMostApp().tabBar().buttons()["我的"].tap();
+
+target.frontMostApp().mainWindow().tableViews()[0].tap();
+    xxnrlogMessage("hahahahahaha");
+    xxnrlogEleTree(window);
+    //assertEquals(xxnrElementClass.xxnrRepesent_client(window).inviteNum(),xxnrElementClass.xxnrRepesent_client(window).cells().length);
+
+    target.frontMostApp().mainWindow().tableViews()[0].elements()[2].tapWithOptions({tapOffset:{x:0.63, y:0.49}});
+    target.frontMostApp().mainWindow().tableViews()[0].elements()[2].tapWithOptions({tapOffset:{x:0.77, y:0.53}});
+    target.frontMostApp().mainWindow().tableViews()[0].elements()[2].tapWithOptions({tapOffset:{x:0.70, y:0.50}});
+    xxnrlogEleTree(window);
+
+    target.frontMostApp().mainWindow().buttons()["我的代表"].tap();
+    target.frontMostApp().mainWindow().buttons()["客户登记"].tap();
+    target.frontMostApp().mainWindow().tableViews()[1].cells()[3].tap();
+    target.frontMostApp().navigationBar().buttons()["top back"].tap();
+
+    target.frontMostApp().navigationBar().buttons()["search "].tap();
+    target.frontMostApp().mainWindow().tableViews()[0].cells()["Qqqqqqqqqqqq"].tap();
+    target.frontMostApp().navigationBar().buttons()["top back"].tap();
+    target.frontMostApp().navigationBar().buttons()["取消"].tap();
+    target.frontMostApp().mainWindow().buttons()["我的客户"].tap();
+    target.frontMostApp().mainWindow().buttons()["我的代表"].tap();
+   target.frontMostApp().mainWindow().buttons()["客户登记"].tap();
+    target.frontMostApp().mainWindow().tableViews()[1].buttons()[0].tap();
+    target.frontMostApp().mainWindow().buttons()[4].tap();
+    target.frontMostApp().navigationBar().buttons()["top back"].tap();
+    target.frontMostApp().mainWindow().textViews()[0].staticTexts()["请填写备注信息（30字以内）"].tapWithOptions({tapOffset:{x:0.06, y:0.97}});
+    target.frontMostApp().navigationBar().tap();
+    target.frontMostApp().mainWindow().tableViews()[1].cells()["Ad"].scrollToVisible();
+    target.frontMostApp().statusBar().elements()["4:50 PM"].dragInsideWithOptions({startOffset:{x:1.74, y:23.27}, endOffset:{x:1.79, y:0.03}});
+
 

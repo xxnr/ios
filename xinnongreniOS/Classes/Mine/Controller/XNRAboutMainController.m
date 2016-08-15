@@ -45,7 +45,12 @@
     versionLabel.textColor = R_G_B_16(0xffffff);
     versionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
     versionLabel.textAlignment = NSTextAlignmentCenter;
+<<<<<<< HEAD
     versionLabel.text = @"V2.2.4";
+=======
+//    versionLabel.text = @"V2.2.1";
+    versionLabel.text = [[[NSBundle mainBundle] infoDictionary]valueForKey:@"CFBundleShortVersionString"];
+>>>>>>> ynn_ios
     [bgImageView addSubview:versionLabel];
     
     UILabel *companyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, ScreenHeight-64-PX_TO_PT(100), ScreenWidth, PX_TO_PT(24))];

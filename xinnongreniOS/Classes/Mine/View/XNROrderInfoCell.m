@@ -177,7 +177,7 @@
         UIView *addtionView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(topView.frame), ScreenWidth, addtionsModel.additions.count*PX_TO_PT(45))];
         self.addtionView = addtionView;
         //        addtionView.backgroundColor = [UIColor redColor];
-        [self.contentView addSubview:addtionView];
+//        [self.contentView addSubview:addtionView];
         
             
             CGFloat attributesLabelY = 0;
@@ -222,8 +222,13 @@
         CGRect rect = self.addtionView.frame;
         rect.size.height = attributesLabelY;
         self.addtionView.frame = rect;
+        
+        [self.topView addSubview:self.addtionView];
+        CGRect topRect = self.topView.frame;
+        topRect.size.height = CGRectGetMaxY(self.addtionView.frame);
+        self.topView.frame = topRect;
     }
-    NSNumber *num = [[NSNumber alloc]initWithFloat:self.topView.height + self.midView.height];
+    NSNumber *num = [[NSNumber alloc]initWithFloat:self.topView.height +self.addtionView.height+ self.midView.height];
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:num,@"key", nil];
     NSNotification *notification = [[NSNotification alloc]initWithName:@"height" object:self userInfo:dic];
     [[NSNotificationCenter defaultCenter]postNotification:notification];
@@ -271,7 +276,7 @@
     self.remainPriceLabel = remainPriceLabel;
     [self.midView addSubview:remainPriceLabel];
 
-    NSNumber *num = [[NSNumber alloc]initWithFloat:self.topView.height + self.midView.height];
+    NSNumber *num = [[NSNumber alloc]initWithFloat:self.topView.height +self.addtionView.height+ self.midView.height];
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:num,@"key", nil];
     NSNotification *notification = [[NSNotification alloc]initWithName:@"height" object:self userInfo:dic];
     [[NSNotificationCenter defaultCenter]postNotification:notification];

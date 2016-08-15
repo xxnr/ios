@@ -93,15 +93,16 @@
     [sectionView addSubview:arrow];
     
     UILabel *selLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth/2, 0, ScreenWidth/2-PX_TO_PT(73), sectionView.height)];
+    selLabel.tag = section+100;
     self.selLabel  = selLabel;
-    self.selLabel.tag = section;
     selLabel.textAlignment = NSTextAlignmentRight;
     selLabel.textColor = R_G_B_16(0x909090);
     selLabel.font = [UIFont systemFontOfSize:PX_TO_PT(24)];
     [self alrealySel:section];
-    
     [sectionView addSubview:selLabel];
     
+//    [self refreshSeaction:section];
+
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, sectionView.height-PX_TO_PT(2), ScreenWidth, PX_TO_PT(2))];
     line.backgroundColor = R_G_B_16(0xe0e0e0);
     [sectionView addSubview:line];
@@ -133,11 +134,32 @@
         }
     
 }
+-(void)refreshSeaction:(NSInteger)section
+{
+    UILabel *label = (UILabel *)[self.view viewWithTag:section+100];
+    
+    label.hidden = NO;
+    int count = 0;
+    XNRInterestGroup *group = self.allProGroup[section];
+    for (int i=0; i<group.products.count; i++) {
+        if ([self.selPro containsObject:group.products[i]]) {
+            count+=1;
+        }
+    }
+    if (count == 0) {
+        label.hidden = YES;
+    }
+    else
+    {
+        label.text = [NSString stringWithFormat:@"已选%d项",count];
+    }
+}
 - (void)buttonPress:(UIButton *)sender//headButton点击
 {
     XNRInterestGroup *groupModel = self.allProGroup[sender.tag];
 
     groupModel.isOpen = !groupModel.isOpen;
+    
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sender.tag] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
@@ -220,9 +242,11 @@
     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:sender.indexPath.row inSection:sender.indexPath.section];
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
     
+    [self refreshSeaction:sender.indexPath.section];
+    
 //    [self alrealySel:sender.indexPath.section];
-    NSIndexSet *indexset = [NSIndexSet indexSetWithIndex:sender.indexPath.section];
-    [self.tableView reloadSections:indexset withRowAnimation:UITableViewRowAnimationNone];
+//    NSIndexSet *indexset = [NSIndexSet indexSetWithIndex:sender.indexPath.section];
+//    [self.tableView reloadSections:indexset withRowAnimation:UITableViewRowAnimationNone];
     if (self.selPro.count>0) {
     [self.saveBtn setTitle:[NSString stringWithFormat:@"确定(%ld)",self.selPro.count] forState:UIControlStateNormal];
     }

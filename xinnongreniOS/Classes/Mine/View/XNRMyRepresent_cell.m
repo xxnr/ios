@@ -14,6 +14,7 @@
 @property (nonatomic, weak) UILabel *nickNameLabel;
 @property (nonatomic, weak) UILabel *phoneNumLabel;
 @property(nonatomic,weak)UIView *myRepView;
+@property (nonatomic,weak)UIView *line;
 //@property (nonatomic ,weak) UIImageView *redImageView;
 @end
 
@@ -39,6 +40,7 @@
     [_nickNameLabel removeFromSuperview];
     [_phoneNumLabel removeFromSuperview];
     [_redImageView removeFromSuperview];
+    [_line removeFromSuperview];
     
     CGFloat myRepLabelH = PX_TO_PT(99);
     UIView *myRepView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, myRepLabelH)];
@@ -75,6 +77,7 @@
 
     UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, PX_TO_PT(98), ScreenWidth, PX_TO_PT(1))];
     bottomLineView.backgroundColor = R_G_B_16(0xe0e0e0);
+    self.line = bottomLineView;
     [myRepView addSubview:bottomLineView];
     
 
@@ -95,4 +98,23 @@
     self.phoneNumLabel.text = model.account;
 
 }
+
+
+
+//- (void)drawRect:(CGRect)rect {
+//    
+//    CGContextRef context = UIGraphicsGetCurrentContext();
+//    CGContextSetFillColorWithColor(context, [UIColor clearColor].CGColor);
+//    CGContextFillRect(context, rect);
+//    
+//    //    //上分割线，
+//    //    CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:198/255.0 green:198/255.0 blue:198/255.0 alpha:1].CGColor);
+//    //    CGContextStrokeRect(context, CGRectMake(0, 0, rect.size.width, 1));
+//    //
+//    //下分割线
+//    CGContextSetStrokeColorWithColor(context, R_G_B_16(0xe0e0e0).CGColor);
+//    CGContextStrokeRect(context, CGRectMake(0, 1, rect.size.width, PX_TO_PT(1)));
+//
+//}
+
 @end
