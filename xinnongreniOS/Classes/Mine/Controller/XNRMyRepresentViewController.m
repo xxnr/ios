@@ -223,19 +223,6 @@ static bool isBroker;
     
     [_dataArr removeAllObjects];
     
-<<<<<<< HEAD
-     while ([resultSet next]) {
-         XNRMyRepresentModel *customer = [[XNRMyRepresentModel alloc]init];
-         
-         customer.sex = [[resultSet stringForColumn:@"sex"] boolValue];
-         customer.newOrdersNumber = [[resultSet stringForColumn:@"red"] intValue];
-         customer.name = [resultSet stringForColumn:@"name"];
-         customer.namePinyin = [resultSet stringForColumn:@"namePinyin"];
-         customer.nameInitial = [resultSet stringForColumn:@"nameInitial"];
-         customer.account = [resultSet stringForColumn:@"phone"];
-         customer.userId = [resultSet stringForColumn:@"userId"];
-         [_dataArr addObject:customer];
-=======
     while ([resultSet next]) {
         XNRMyRepresentModel *customer = [[XNRMyRepresentModel alloc]init];
         
@@ -247,7 +234,6 @@ static bool isBroker;
         customer.account = [resultSet stringForColumn:@"phone"];
         customer.userId = [resultSet stringForColumn:@"userId"];
         [_dataArr addObject:customer];
->>>>>>> ynn_ios
     }
     
     self.headLabel.text = [NSString stringWithFormat:@"已邀请%lu位好友",_dataArr.count];
@@ -484,19 +470,12 @@ static bool isBroker;
 //        [self.mrv removeFromSuperview];
         
         [self myCustomerModel];
-        
-<<<<<<< HEAD
-        [self getCustomerData];
-        
-        self.isFirstTableView = YES;
-    } else if(sender.tag == btnTag + 1){
-=======
+
 //        [self getCustomerData];
         
         self.isFirstTableView = YES;
     } else if(sender.tag == btnTag + 1){
 //        [BMProgressView XXNRshowCoverWithTarget:self.view color:nil isNavigation:YES];
->>>>>>> ynn_ios
         self.isFirstTableView = NO;
         self.isadd = NO;
         
@@ -540,12 +519,6 @@ static bool isBroker;
         }
         
     }
-<<<<<<< HEAD
-}
--(void)getrepresent
-{
-    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
-=======
     
     
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
@@ -557,7 +530,6 @@ static bool isBroker;
 -(void)getrepresent
 {
 //    self.myrepresent = [NSMutableDictionary dictionary];
->>>>>>> ynn_ios
     [KSHttpRequest get:KGetInviter parameters:nil success:^(id result) {
         if ([result[@"code"] integerValue]==1000) {
             
@@ -768,11 +740,6 @@ static bool isBroker;
 }
 -(void)rep_isUpdata
 {
-<<<<<<< HEAD
-//    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
-=======
-    
->>>>>>> ynn_ios
     [KSHttpRequest get:KGetIsLatest parameters:@{@"count":[NSString stringWithFormat:@"%ld",_AllUserCount.count]} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             
@@ -955,22 +922,13 @@ static bool isBroker;
             [_userArr removeAllObjects];
             
             for (NSDictionary *dict in arr) {
-<<<<<<< HEAD
-//                NSInteger e = []
-=======
-                //                NSInteger e = []
->>>>>>> ynn_ios
                 NSString *sql =[NSString stringWithFormat:@"insert into registerCustomerTable (sex,name,namePinyin,nameInitial,register,phone,_id) VALUES ('%@','%@','%@','%@','%d','%@','%@')",
                                 dict[@"sex"]?dict[@"sex"]:@"",
                                 dict[@"name"]?dict[@"name"]:@"",
                                 dict[@"namePinyin"]?dict[@"namePinyin"]:@"",
                                 dict[@"nameInitial"]?dict[@"nameInitial"]:@"",
                                 [dict[@"isRegistered"]intValue],
-<<<<<<< HEAD
-                                dict[@"phone"],
-=======
                                 dict[@"phone"]?dict[@"phone"]:@"",
->>>>>>> ynn_ios
                                 dict[@"_id"]];
                 
                 if (![self.dataDB executeUpdate:sql]){
@@ -1112,22 +1070,13 @@ static bool isBroker;
             
             [_dataArr removeAllObjects];
             for (NSDictionary *dict in arr) {
-<<<<<<< HEAD
-
-=======
-                
->>>>>>> ynn_ios
                 NSString *sql =[NSString stringWithFormat:@"insert into myCustomerTable (sex,red,name,namePinyin,nameInitial,phone,userId) VALUES ('%@','%@','%@','%@','%@','%@','%@')",
                                 
                                 dict[@"sex"]?dict[@"sex"]:@"",
                                 dict[@"newOrdersNumber"]?dict[@"newOrdersNumber"]:@"",
                                 dict[@"name"]?dict[@"name"]:@"",
-<<<<<<< HEAD
-                                dict[@"namePinyin"]?dict[@"namePinyin"]:@"", dict[@"nameInitial"]?dict[@"nameInitial"]:@"",
-=======
                                 dict[@"namePinyin"]?dict[@"namePinyin"]:@"",
                                 dict[@"nameInitial"]?dict[@"nameInitial"]:@"",
->>>>>>> ynn_ios
                                 dict[@"account"]?dict[@"account"]:@"",
                                 dict[@"userId"]];
                 
@@ -1143,11 +1092,6 @@ static bool isBroker;
             [UILabel showMessage:result[@"message"]];
         }
         
-<<<<<<< HEAD
-//        [SVProgressHUD dismiss];
-=======
-        
->>>>>>> ynn_ios
     } failure:^(NSError *error) {
 //        [SVProgressHUD dismiss];
 //        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
