@@ -75,7 +75,7 @@
 - (void)getData
 {
  
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     [KSHttpRequest post:KGetUserAddressList parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         [BMProgressView LoadViewDisappear:self.view];
@@ -99,8 +99,8 @@
         } else {
             
             [UILabel showMessage:result[@"message"]];
-            [BMProgressView LoadViewDisappear:self.view];
         }
+        [SVProgressHUD dismiss];
         if (_dataArr.count == 0) {
             [self.emptyView show];
         }else{
@@ -108,7 +108,7 @@
         }
         
     } failure:^(NSError *error) {
-        
+        [SVProgressHUD dismiss];
     }];
 }
 

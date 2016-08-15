@@ -23,6 +23,9 @@
 #import "XNRUMengPushTool.h"
 #import "XNRCheckOrderVC.h"
 #import "BSHelper.h"
+#import "FMDatabase.h"
+#import "XNRLogicTool.h"
+#import "XNRHttpTool.h"
 #define kStoreAppId  @"1021223448"  // （appid数字串）
 
 @interface XNRHomeController ()<UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,UICollectionViewDelegate,XNRHomeCollectionHeaderViewAddBtnDelegate,XNRFerSelectAddBtnDelegate>
@@ -53,12 +56,11 @@
     // 创建导航栏按钮
     [self setNavigationbarBtn];
     // 创建轮播数据
-    [self getCircleData];
+//    [self getCircleData];
     // 获取网络数据
     [self getFerData];
     // 设置返回到顶部按钮
     [self createbackBtn];
-    
 
     // 调用友盟的方法
     NSDictionary *launchOptions = [AppDelegate shareAppDelegate].launchOptions;
@@ -71,6 +73,28 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openWebSiteController:) name:@"openWebSiteController" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(remaindUserToUpdate) name:@"remaindUserToUpdate" object:nil];
+}
+#pragma mark-----数据库缓存
+static FMDatabase*_db;
++(void)initialize
+{
+    // 1.获得数据库文件的路径
+    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *fileName = [doc stringByAppendingPathComponent:@"home.sqlite"];
+    
+    // 2.得到数据库
+    _db = [FMDatabase databaseWithPath:fileName];
+    
+    // 3.打开数据库
+    if ([_db open]) {
+        // 4.创表
+        BOOL result = [_db executeUpdate:@"CREATE TABLE IF NOT EXISTS t_home_products (id integer PRIMARY KEY AUTOINCREMENT, classId NOT NULL, products_dict blob NOT NULL);"];
+        if (result) {
+            NSLog(@"成功创表");
+        } else {
+            NSLog(@"创表失败");
+        }
+    }
 }
 
 -(void)remaindUserToUpdate
@@ -96,7 +120,6 @@
         
     }];
 
-//    [XNRRemaindUserUpdataTool remaindUserUpData:deviceToken];
 }
 
 -(void)createUpdataAlertView:(NSString *)message
@@ -108,7 +131,6 @@
     [AppKeyWindow addSubview:coverView];
     
     UIView *upDataAlertView = [[UIView alloc] init];
-//                               WithFrame:CGRectMake(PX_TO_PT(80), (ScreenHeight-PX_TO_PT(432))*0.5, PX_TO_PT(590), PX_TO_PT(432))];
     upDataAlertView.backgroundColor = [UIColor whiteColor];
     upDataAlertView.layer.cornerRadius = 5.0;
     upDataAlertView.layer.masksToBounds = YES;
@@ -126,13 +148,6 @@
     versionLabel.textColor = R_G_B_16(0x323232);
     versionLabel.font = [UIFont systemFontOfSize:PX_TO_PT(36)];
     [upDataAlertView addSubview:versionLabel];
-    
-//    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(PX_TO_PT(30), CGRectGetMaxY(versionLabel.frame)+PX_TO_PT(32), PX_TO_PT(530), PX_TO_PT(126))];
-//    tableView.delegate = self;
-//    tableView.dataSource = self;
-//    tableView.separatorStyle = NO;
-//    _messageArray = [NSMutableArray array];
-//    [upDataAlertView addSubview:tableView];
     
     UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(versionLabel.frame)+PX_TO_PT(32), PX_TO_PT(530), PX_TO_PT(500))];
     messageLabel.font = [UIFont systemFontOfSize:PX_TO_PT(30)];
@@ -196,38 +211,12 @@
     [[UIApplication sharedApplication] openURL:url]; 
 }
 
-//-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-//{
-//    return 1;
-//}
-//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    NSString *message = [_messageArray firstObject];
-//    CGSize messageSize = [message sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(24)]}];
-//    return messageSize.height;
-//}
-//-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//   
-//    XNRUpdataCell *cell = [XNRUpdataCell cellWithTableView:tableView];
-//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//
-//    [cell upDataWithData:_messageArray];
-//    
-//    return cell;
-//}
-
 -(void)openOrderIdController:(NSNotification *)notification
 {
     
     XNRCheckOrderVC *orderVC = [[XNRCheckOrderVC alloc]init];
     orderVC.orderID = (NSString *)notification.userInfo;
     [self.navigationController pushViewController:orderVC animated:orderVC];
-}
-
--(void)openWebSiteController:(NSNotification *)notification
-{
-
 }
 
 #pragma mark - 页面刷新
@@ -302,7 +291,7 @@
 
 - (void)requestSignIn
 {
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+    [SVProgressHUD showWithStatus:@"签到中..." maskType:SVProgressHUDMaskTypeClear];
     [KSHttpRequest post:KUserSign parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
@@ -322,17 +311,16 @@
         }
         else if([result[@"code"] integerValue] == 1010){
             [UILabel showMessage:result[@"message"]];
-            [BMProgressView LoadViewDisappear:self.view];
         }else{
             [UILabel showMessage:@"未查询到积分规则"];
-            [BMProgressView LoadViewDisappear:self.view];
 
         }
+        [SVProgressHUD dismiss];
         
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
         [UILabel showMessage:@"签到失败"];
-        [BMProgressView LoadViewDisappear:self.view];
 
 
     }];
@@ -352,24 +340,46 @@
 
 #pragma mark - 获取轮播数据
 -(void)getCircleData{
-    [_cyclePicArr removeAllObjects];
-    [KSHttpRequest post:KHomeGetAdList parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
-       if ([result[@"code"] integerValue] == 1000) {
-           NSDictionary *datasDic = result[@"datas"];
-           NSArray *rowsArr = datasDic[@"rows"];
-           for (NSDictionary *subDic in rowsArr) {
-               XNRCyclePicModel *model = [[XNRCyclePicModel alloc]init];
-               [model setValuesForKeysWithDictionary:subDic];
-               [_cyclePicArr addObject:model];
-           }
-       }
-      
-       [self.homeCollectionView reloadData];
-    
-
-   } failure:^(NSError *error) {
-       
-   }];
+//    NSString *param = @"cyclePicture";
+//    NSMutableArray *products = [NSMutableArray array];
+//    // 根据请求参数查询数据
+//    FMResultSet *resultSet = nil;
+//    resultSet = [_db executeQuery:@"SELECT * FROM t_home_products WHERE classId = ?;", param];
+//    
+//    // 遍历查询结果
+//    while (resultSet.next) {
+//        NSData *statusDictData = [resultSet objectForColumnName:@"products_dict"];
+//        NSDictionary *statusDict = [NSKeyedUnarchiver unarchiveObjectWithData:statusDictData];
+//        // 字典转模型
+//        XNRCyclePicModel *product = [[XNRCyclePicModel alloc] init];
+//        [product setValuesForKeysWithDictionary:statusDict];
+//        // 添加模型到数组中
+//        [products addObject:product];
+//    }
+//    if (products.count != 0) {
+//        [_cyclePicArr addObjectsFromArray:products];
+//    }else{
+        [_cyclePicArr removeAllObjects];
+        [KSHttpRequest post:KHomeGetAdList parameters:@{@"user-agent":@"IOS-v2.0"} success:^(id result) {
+            if ([result[@"code"] integerValue] == 1000) {
+                NSDictionary *datasDic = result[@"datas"];
+                NSArray *rowsArr = datasDic[@"rows"];
+                for (NSDictionary *subDic in rowsArr) {
+                    XNRCyclePicModel *model = [[XNRCyclePicModel alloc]init];
+                    [model setValuesForKeysWithDictionary:subDic];
+                    [_cyclePicArr addObject:model];
+                    // 把statusDict字典对象序列化成NSData二进制数据
+//                    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:subDic];
+//                    [_db executeUpdate:@"INSERT INTO t_home_products (classId, products_dict) VALUES (?,?);",param,data];
+                }
+            }
+            
+            [self.homeCollectionView reloadData];
+            
+        } failure:^(NSError *error) {
+            
+        }];
+//    }
 }
 #pragma mark - 创建列表
 - (void)createHomeCollectionView {
@@ -603,45 +613,104 @@
         }
     }
 }
+
+
 #pragma mark - 获取汽车化肥数据
 -(void)getFerData
 {
-    [_huafeiArr removeAllObjects];
-    [KSHttpRequest post:KHomeGetProductsListPage parameters:@{@"locationUserId":IS_Login?[DataCenter account].userid:@"",@"classId":@"531680A5",@"user-agent":@"IOS-v2.0"} success:^(id result) {
-        if ([result[@"code"] integerValue] == 1000) {
-            NSDictionary *dicts = result[@"datas"];
-            NSArray *arr = dicts[@"rows"];
-            for (NSDictionary *dict in arr) {
-                XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
-                [model setValuesForKeysWithDictionary:dict];
-                [_huafeiArr addObject:model];
+    [self getCircleData];
+//    // 从数据库中读取（加载）缓存数据(微博模型数组)
+//    NSString *param = @"531680A5";
+//    NSMutableArray *products = [NSMutableArray array];
+//    // 根据请求参数查询数据
+//    FMResultSet *resultSet = nil;
+//    resultSet = [_db executeQuery:@"SELECT * FROM t_home_products WHERE classId = ?;", param];
+//    
+//    // 遍历查询结果
+//    while (resultSet.next) {
+//        NSData *statusDictData = [resultSet objectForColumnName:@"products_dict"];
+//        NSDictionary *statusDict = [NSKeyedUnarchiver unarchiveObjectWithData:statusDictData];
+//        // 字典转模型
+//        XNRShoppingCartModel *product = [[XNRShoppingCartModel alloc] init];
+//        [product setValuesForKeysWithDictionary:statusDict];
+//        // 添加模型到数组中
+//        [products addObject:product];
+//    }
+//    if (products.count != 0) {  // 有缓存
+//        [_huafeiArr addObjectsFromArray:products];
+//        [self getCarData];
+//
+//    }else{
+        [_huafeiArr removeAllObjects];
+        [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":@"531680A5"} success:^(id result) {
+            if ([result[@"code"] integerValue] == 1000) {
+                NSDictionary *dicts = result[@"datas"];
+                NSArray *arr = dicts[@"rows"];
+                for (NSDictionary *dict in arr) {
+                    XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
+                    [model setValuesForKeysWithDictionary:dict];
+                    [_huafeiArr addObject:model];
+                    // 把statusDict字典对象序列化成NSData二进制数据
+//                    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict];
+//                    [_db executeUpdate:@"INSERT INTO t_home_products (classId, products_dict) VALUES (?,?);",param,data];
+                }
             }
-        }
-        [self getCarData];
+            [self getCarData];
         } failure:^(NSError *error) {
-    }];
+            [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
+            [self.homeCollectionView.mj_header endRefreshing];
+
+        }];
+//    }
 }
+    
 -(void)getCarData
 {
-    [_carArr removeAllObjects];
-    [KSHttpRequest post:KHomeGetProductsListPage parameters:@{@"locationUserId":IS_Login?[DataCenter account].userid:@"",@"classId":@"6C7D8F66",@"user-agent":@"IOS-v2.0"} success:^(id result) {
-        if ([result[@"code"] integerValue] == 1000) {
-            NSDictionary *dicts = result[@"datas"];
-            NSArray *arr = dicts[@"rows"];
-            for (NSDictionary *dict in arr) {
-                XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
-                [model setValuesForKeysWithDictionary:dict];
-                [_carArr addObject:model];
-            }
-        }
-        [self.homeCollectionView reloadData];
-        [self.homeCollectionView.mj_header endRefreshing];
+//    NSString *param = @"6C7D8F66";
+//    NSMutableArray *products = [NSMutableArray array];
+//    // 根据请求参数查询数据
+//    FMResultSet *resultSet = nil;
+//    resultSet = [_db executeQuery:@"SELECT * FROM t_home_products WHERE classId = ?;", param];
+//    
+//    // 遍历查询结果
+//    while (resultSet.next) {
+//        NSData *statusDictData = [resultSet objectForColumnName:@"products_dict"];
+//        NSDictionary *statusDict = [NSKeyedUnarchiver unarchiveObjectWithData:statusDictData];
+//        // 字典转模型
+//        XNRShoppingCartModel *product = [[XNRShoppingCartModel alloc] init];
+//        [product setValuesForKeysWithDictionary:statusDict];
+//        // 添加模型到数组中
+//        [products addObject:product];
+//        }
+//        if (products.count != 0) {
+//            [_carArr addObjectsFromArray:products];
+//            [self.homeCollectionView.mj_header endRefreshing];
+//
+//        }else{
+            [_carArr removeAllObjects];
+            [KSHttpRequest get:KHomeGetProductsListPage parameters:@{@"classId":@"6C7D8F66"} success:^(id result) {
+                if ([result[@"code"] integerValue] == 1000) {
+                    NSDictionary *dicts = result[@"datas"];
+                    NSArray *arr = dicts[@"rows"];
+                    for (NSDictionary *dict in arr) {
+                        XNRShoppingCartModel *model = [[XNRShoppingCartModel alloc] init];
+                        [model setValuesForKeysWithDictionary:dict];
+                        [_carArr addObject:model];
+                        // 把statusDict字典对象序列化成NSData二进制数据
+//                        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict];
+//                        [_db executeUpdate:@"INSERT INTO t_home_products (classId, products_dict) VALUES (?,?);",param,data];
+                    }
+                }
+                [self.homeCollectionView reloadData];
+                [self.homeCollectionView.mj_header endRefreshing];
+                
+            } failure:^(NSError *error) {
+                [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
+            }];
 
-    } failure:^(NSError *error) {
-        
-
-    }];
+//        }
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }

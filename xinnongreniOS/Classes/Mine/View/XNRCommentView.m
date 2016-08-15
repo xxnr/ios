@@ -85,14 +85,14 @@
 
 -(void)commentHeadRefresh
 {
-    [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
+//    [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
     
     _isRefresh = YES;
     [self headRefresh];
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        [BMProgressView LoadViewDisappear:self];
-    });
+//    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+//    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+//        [BMProgressView LoadViewDisappear:self];
+//    });
 }
 #pragma mark - 滑动到顶部按钮
 
@@ -232,6 +232,7 @@
     [self.orderEmptyView removeFromSuperview];
 
     //typeValue说明：1为待支付（代付款）：3为商品准备中（待发货），4已发货（待收货
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"typeValue":@"4",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *datasDic = result[@"datas"];
@@ -308,13 +309,17 @@
         [self.tableView.mj_header endRefreshing];
         
         [self.tableView.mj_footer endRefreshing];
+        [SVProgressHUD dismiss];
         
+ 
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
-        
         [self.tableView.mj_footer endRefreshing];
-
+        [SVProgressHUD dismiss];
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
         
+
+
     }];
 }
 

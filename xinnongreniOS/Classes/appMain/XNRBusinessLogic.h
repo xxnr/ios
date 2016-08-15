@@ -322,6 +322,10 @@
  *   线下支付方式
  */
 #define KGetOfflinePayType [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.2/getOfflinePayType"]
+/**
+ *  EPOS支付
+ */
+#define KEPOSpay [NSString stringWithFormat:@"%@/%@",HOST,@"/EPOSpay"]
 
 /**
  *  支付宝支付成功页面
@@ -331,14 +335,10 @@
  *  支付宝确认
  */
 #define KDynamic [NSString stringWithFormat:@"%@/%@",HOST,@"dynamic/alipay/nofity.asp"]
-
-
 /**
  *  获取支付的最小额度
  */
 #define KgetMinPayPrice [NSString stringWithFormat:@"%@/%@",HOST,@"api/v2.0/getMinPayPrice/"]
-
-
 /**
  *  确认收货
  */

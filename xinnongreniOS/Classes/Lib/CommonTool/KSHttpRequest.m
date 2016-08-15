@@ -8,7 +8,6 @@
 
 #import "KSHttpRequest.h"
 #import "AppDelegate.h"
-//#import "XNRPushLoginVC.h"
 @implementation KSHttpRequest
 static int loginCount = 0;
 /**
@@ -66,11 +65,7 @@ static int loginCount = 0;
          }
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-       
         failure(error);
-        
-     
     }];
     
     

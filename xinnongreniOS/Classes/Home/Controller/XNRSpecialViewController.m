@@ -470,7 +470,7 @@
 }
 
 -(void)getPriceDataWith:(NSString *)sort{
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -519,16 +519,17 @@
         [self.tableView reloadData];
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
-        
-        [BMProgressView LoadViewDisappear:self.view];
+        [SVProgressHUD dismiss];
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [SVProgressHUD dismiss];
+        
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
         
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         
-        [BMProgressView LoadViewDisappear:self.view];
         
     }];
     

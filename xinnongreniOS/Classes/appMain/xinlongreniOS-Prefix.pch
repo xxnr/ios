@@ -72,10 +72,7 @@
 #else
 
 #define HOST @"http://101.200.194.203"
-
-
-//#define HOST @"http://192.168.1.15"
-
+//#define HOST @"http://192.168.1.15:8070"
 #endif
 
 ///0-测试地址 1-生产地址
@@ -88,6 +85,8 @@
 #else
 
 #define Host @"http://101.200.194.203"
+//#define Host @"http://192.168.1.15:8070"
+
 
 
 

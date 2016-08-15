@@ -49,6 +49,7 @@
 @end
 
 @implementation XNRSelWebSiteVC
+
 -(NSMutableArray *)currentCityArr
 {
     if (!_currentCityArr) {
@@ -77,27 +78,6 @@
     }
     return _areaList;
 }
-//-(NSMutableArray *)iconArr
-//{
-//    if (!_iconArr) {
-//        _iconArr = [NSMutableArray array];
-//    }
-//    return _iconArr;
-//}
-//-(NSMutableArray *)selProArr
-//{
-//    if (!_selProArr) {
-//        _selProArr = [NSMutableArray array];
-//    }
-//    return  _selProArr;
-//}
-//-(NSMutableArray *)dataArr
-//{
-//    if (!_dataArr) {
-//        _dataArr = [NSMutableArray array];
-//    }
-//    return _dataArr;
-//}
 
 -(void)getData
 {
@@ -195,9 +175,7 @@
 }
 -(void)headRefresh{
     currentPage = 1;
-//    [_dataArr removeAllObjects];
     [self getData];
-//    [self.tableView reloadData];
     
     
 }
@@ -205,7 +183,6 @@
     
     currentPage ++;
     [self getData];
-//    [self.tableView reloadData];
 
     
 }
@@ -247,11 +224,9 @@
 
     
     [proviceBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, image.size.width+PX_TO_PT(30))];
-//    [proviceBtn setImageEdgeInsets:UIEdgeInsetsMake(0, size.width+image.size.width+PX_TO_PT(20), 0, -size.width-image.size.width-PX_TO_PT(20))];
     
     
     self.proviceBtn = proviceBtn;
-//    [self btnClick:proviceBtn];
     [self.view addSubview:proviceBtn];
     
     UIButton *cityBtn = [UIButton buttonWithType:UIButtonTypeCustom];

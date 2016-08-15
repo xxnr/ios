@@ -471,7 +471,7 @@ static bool isBroker;
 //        [self.mrv removeFromSuperview];
         
         [self myCustomerModel];
-        
+
 //        [self getCustomerData];
         
         self.isFirstTableView = YES;
@@ -599,8 +599,10 @@ static bool isBroker;
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
         }
+        [SVProgressHUD dismiss];
     } failure:^(NSError *error) {
-        
+        [SVProgressHUD dismiss];
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
     }];
     
 }
@@ -739,7 +741,6 @@ static bool isBroker;
 }
 -(void)rep_isUpdata
 {
-    
     [KSHttpRequest get:KGetIsLatest parameters:@{@"count":[NSString stringWithFormat:@"%ld",_AllUserCount.count]} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             
@@ -895,8 +896,10 @@ static bool isBroker;
                 [self registerCustomerModel];
             }
         }
+//        [SVProgressHUD dismiss];
     } failure:^(NSError *error) {
-        
+//        [SVProgressHUD dismiss];
+//        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
     }];
 }
 
@@ -920,7 +923,6 @@ static bool isBroker;
             [_userArr removeAllObjects];
             
             for (NSDictionary *dict in arr) {
-                //                NSInteger e = []
                 NSString *sql =[NSString stringWithFormat:@"insert into registerCustomerTable (sex,name,namePinyin,nameInitial,register,phone,_id) VALUES ('%@','%@','%@','%@','%d','%@','%@')",
                                 dict[@"sex"]?dict[@"sex"]:@"",
                                 dict[@"name"]?dict[@"name"]:@"",
@@ -1058,6 +1060,7 @@ static bool isBroker;
 }
 -(void)getCustomerData
 {
+//    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     [KSHttpRequest get:KGetInviteeOrderbyName parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *arr = result[@"invitee"];
@@ -1068,7 +1071,6 @@ static bool isBroker;
             
             [_dataArr removeAllObjects];
             for (NSDictionary *dict in arr) {
-                
                 NSString *sql =[NSString stringWithFormat:@"insert into myCustomerTable (sex,red,name,namePinyin,nameInitial,phone,userId) VALUES ('%@','%@','%@','%@','%@','%@','%@')",
                                 
                                 dict[@"sex"]?dict[@"sex"]:@"",
@@ -1091,8 +1093,10 @@ static bool isBroker;
             [UILabel showMessage:result[@"message"]];
         }
         
-        
     } failure:^(NSError *error) {
+//        [SVProgressHUD dismiss];
+//        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
+        
         [self myCustomerModel];
     }];
     

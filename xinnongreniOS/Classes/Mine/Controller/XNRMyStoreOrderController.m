@@ -194,8 +194,6 @@
     self.tempBtn.selected = NO;
     button.selected = YES;
     self.tempBtn = button;
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
-   
     [UIView animateWithDuration:.3 animations:^{
     self.selectedLineView.frame=CGRectMake((button.tag - KtitleBtn)*ScreenWidth/5.0,  PX_TO_PT(95), ScreenWidth/5.0, PX_TO_PT(5));
         }];
@@ -220,7 +218,6 @@
         self.RscWaitTakeView.isRefresh = YES;
 
     }
-    [BMProgressView LoadViewDisappear:self.view];
 }
 
 

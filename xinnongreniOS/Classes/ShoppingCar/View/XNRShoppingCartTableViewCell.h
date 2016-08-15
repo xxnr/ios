@@ -12,6 +12,9 @@
 
 typedef void(^XNRShoppingCartTableViewCellBlock)(NSIndexPath *indexP);
 
+typedef void(^XNRShoppingCartTableViewCellDeleteBtnBlock)(NSIndexPath *indexP);
+
+
 
 @protocol XNRShoppingCartTableViewCellDelegate <NSObject>
 @optional;
@@ -28,13 +31,20 @@ typedef void(^XNRShoppingCartTableViewCellBlock)(NSIndexPath *indexP);
 @property (nonatomic, copy) void(^deleteBlock)();
 
 @property(assign,nonatomic) BOOL selectState;//选中状态
+
 @property (nonatomic, strong) NSIndexPath *indexPath;
 
 @property (nonatomic, strong) XNRShoppingCarFrame *shoppingCarFrame;
 
 @property (nonatomic, copy) XNRShoppingCartTableViewCellBlock pushBlock;
 
+@property (nonatomic, copy) XNRShoppingCartTableViewCellDeleteBtnBlock deleteBtnBlock;
+
+
 @property (nonatomic, copy) NSString *rightString;
+
+-(void)reframeToNormal;
+
 
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier andCom:(void(^)(NSIndexPath *indexPath))com;

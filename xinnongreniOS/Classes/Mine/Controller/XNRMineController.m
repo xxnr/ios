@@ -80,8 +80,6 @@
     
     if(IS_Login == YES){
         [_userArray addObject:[DataCenter account]];
-
-//    [_userArray removeAllObjects];
         
         //初始化类型列表
         NSArray *Arr = [DataCenter account].verifiedTypes;
@@ -99,98 +97,92 @@
                 }
             }
         }
-
-    //
-    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
-    if([result[@"code"] integerValue] == 1000){
-        
-        NSDictionary *dict = result[@"datas"];
-        NSDictionary *address = dict[@"address"];
-        NSDictionary *province = address[@"province"];
-        NSDictionary *city = address[@"city"];
-        NSDictionary *county = address[@"county"];
-        NSDictionary *town = address[@"town"];
-
-        UserInfo *info = [DataCenter account];
-        info.photo = dict[@"photo"];
-        info.phone = dict[@"phone"];
-        info.nickname = dict[@"nickname"];
-        info.name = dict[@"name"];
-        info.type = dict[@"userType"];
-        info.typeName = dict[@"userTypeInName"];
-        info.sex = dict[@"sex"];
-        info.isRSC = dict[@"isRSC"];
-        info.verifiedTypes = dict[@"verifiedTypesInJson"];
-        
-        NSArray *Arr = dict[@"verifiedTypesInJson"];
-        [self.verifiedTypes removeAllObjects];
-        [XNRMyRepresentViewController SetisBroker:NO];
-
-        for (int i=0 ; i<Arr.count; i++) {
-            NSString *name =dict[@"verifiedTypesInJson"][i][@"typeName"];
-            [self.verifiedTypes addObject:name];
-            if ([name isEqualToString:@"新农经纪人"]) {
-                [XNRMyRepresentViewController SetisBroker:YES];
+        if (_userArray.count>0) {
+            if (IS_Login) {
+                [self createMainTableView];
+                [self createLoginTopView];
+                [self createMiddleView];
+                
             }
+            [self setupDatasWithcache];
+        }else{
+            [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+                
+                if([result[@"code"] integerValue] == 1000){
+                    
+                    NSDictionary *dict = result[@"datas"];
+                    NSDictionary *address = dict[@"address"];
+                    NSDictionary *province = address[@"province"];
+                    NSDictionary *city = address[@"city"];
+                    NSDictionary *county = address[@"county"];
+                    NSDictionary *town = address[@"town"];
+                    
+                    UserInfo *info = [DataCenter account];
+                    info.photo = dict[@"photo"];
+                    info.phone = dict[@"phone"];
+                    info.nickname = dict[@"nickname"];
+                    info.name = dict[@"name"];
+                    info.type = dict[@"userType"];
+                    info.typeName = dict[@"userTypeInName"];
+                    info.sex = dict[@"sex"];
+                    info.isRSC = dict[@"isRSC"];
+                    info.verifiedTypes = dict[@"verifiedTypesInJson"];
+                    
+                    NSArray *Arr = dict[@"verifiedTypesInJson"];
+                    [self.verifiedTypes removeAllObjects];
+                    [XNRMyRepresentViewController SetisBroker:NO];
+                    
+                    for (int i=0 ; i<Arr.count; i++) {
+                        NSString *name =dict[@"verifiedTypesInJson"][i][@"typeName"];
+                        [self.verifiedTypes addObject:name];
+                        if ([name isEqualToString:@"新农经纪人"]) {
+                            [XNRMyRepresentViewController SetisBroker:YES];
+                        }
+                    }
+                    
+                    info.provinceID = province[@"id"];
+                    info.cityID = city[@"id"];
+                    info.countyID = county[@"id"];
+                    [DataCenter saveAccount:info];
+                    
+                    [_userArray removeAllObjects];
+                    XNRUserInfoModel *model = [[XNRUserInfoModel alloc] init];
+                    [model setValuesForKeysWithDictionary:dict];
+                    [_userArray addObject:model];
+                    
+                    model.province = province[@"name"];
+                    model.city = city[@"name"];
+                    
+                    if (![KSHttpRequest isNULL:county]) {
+                        model.county = county[@"name"];
+                        
+                    }
+                    if (![KSHttpRequest isNULL:town]) {
+                        model.town = town[@"name"];
+                    }
+                    if (IS_Login) {
+                        [self createMainTableView];
+                        [self createLoginTopView];
+                        [self createMiddleView];
+                        [self refreshTop];
+                        
+                    }
+                    //设置视图的数据
+                    [self setupDatas:model];
+                }
+                
+            } failure:^(NSError *error) {
+                [self createMainTableView];
+                [self createLoginTopView];
+                [self createMiddleView];
+                [self refreshTop];
+                
+                [UILabel showMessage:@"网络请求失败"];
+                
+            }];
         }
-        
-        info.provinceID = province[@"id"];
-        info.cityID = city[@"id"];
-        info.countyID = county[@"id"];
-        [DataCenter saveAccount:info];
-            
-        [_userArray removeAllObjects];
-        XNRUserInfoModel *model = [[XNRUserInfoModel alloc] init];
-        [model setValuesForKeysWithDictionary:dict];
-        [_userArray addObject:model];
-            
-        model.province = province[@"name"];
-        model.city = city[@"name"];
-            
-        if (![KSHttpRequest isNULL:county]) {
-            model.county = county[@"name"];
 
-        }
-        if (![KSHttpRequest isNULL:town]) {
-            model.town = town[@"name"];
-        }
-        if (IS_Login) {
-//            // 创建TabelView
-//            [self createMainTableView];
-//            [self createLoginTopView];
-//            [self createMiddleView];
-            [self createMainTableView];
-            [self createLoginTopView];
-            [self createMiddleView];
-            [self refreshTop];
-
-        }
-         //设置视图的数据
-        [self setupDatas:model];
-    }
-    
-    } failure:^(NSError *error) {
-        [self createMainTableView];
-        [self createLoginTopView];
-        [self createMiddleView];
-        [self refreshTop];
-        
-//        NSArray *Arr = [DataCenter account].verifiedTypes;
-//        [self.verifiedTypes removeAllObjects];
-//        [XNRMyRepresentViewController SetisBroker:NO];
-//        
-//        for (int i=0 ; i<Arr.count; i++) {
-//            NSString *name =[DataCenter account].verifiedTypes[i][@"typeName"];
-//            [self.verifiedTypes addObject:name];
-//            if ([name isEqualToString:@"新农经纪人"]) {
-//                [XNRMyRepresentViewController SetisBroker:YES];
-//            }
-//        }
-
-        [UILabel showMessage:@"网络请求失败"];
-            
-        }];
     }else{
         // 创建TabelView
         
@@ -199,6 +191,75 @@
         [self createNotLoginTopView];
         [self createMiddleView];
     }
+}
+
+-(void)setupDatasWithcache
+{
+    // 头像
+    if ([KSHttpRequest isBlankString:[DataCenter account].photo]) {// 没有头像
+        self.icon.image=[UIImage imageNamed:@"icon_head"];
+        
+    }else{
+        NSString *imageUrl = [NSString stringWithFormat:@"%@%@",HOST,[DataCenter account].photo];
+        
+        if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
+            [self.icon setImage:[UIImage imageNamed:@"icon_head"]];
+        }else{
+            [self.icon sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_head"]];
+        }
+    }
+    // 昵称
+    if ([KSHttpRequest isBlankString:[DataCenter account].nickname]) {
+        self.introduceLabel.text = [NSString stringWithFormat:@"昵称: 新新农人"];
+    }else{
+        self.introduceLabel.text = [NSString stringWithFormat:@"昵称: %@",[DataCenter account].nickname];
+    }
+    // 地址
+    if ([KSHttpRequest isBlankString:[DataCenter account].province]) {
+        self.addressLabel.text = [NSString stringWithFormat:@"地区: %@",@"还没有填写哦~"];
+    }else{
+        if ([KSHttpRequest isBlankString:[DataCenter account].county]) {
+            if ([KSHttpRequest isNULL:[DataCenter account].town]) {
+                self.addressLabel.text = [NSString stringWithFormat:@"地区: %@%@",[DataCenter account].province,[DataCenter account].city];
+            }else{
+                self.addressLabel.text = [NSString stringWithFormat:@"地区: %@%@%@",[DataCenter account].province,[DataCenter account].city,[DataCenter account].town];
+            }
+            
+        }else{
+            if ([KSHttpRequest isNULL:[DataCenter account].town]) {
+                NSString *address = [NSString stringWithFormat:@"%@",[DataCenter account].county];
+                self.addressLabel.text = [NSString stringWithFormat:@"地区: %@%@%@",[DataCenter account].province,[DataCenter account].city,address];
+            }else{
+                NSString *address = [NSString stringWithFormat:@"%@%@",[DataCenter account].county,[DataCenter account].town];
+                self.addressLabel.text = [NSString stringWithFormat:@"地区: %@%@%@",[DataCenter account].province,[DataCenter account].city,address];
+            }
+        }
+    }
+    
+    // 类型
+    self.typeLabel.text = [DataCenter account].typeName?[NSString stringWithFormat:@"类型: %@",[DataCenter account].typeName]:@"类型: 还没有填写哦~";
+    CGSize size = [self.typeLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:PX_TO_PT(26)]}];
+    self.typeLabel.frame = CGRectMake(PX_TO_PT(200), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), size.width, PX_TO_PT(24));
+    // 徽章
+    if ([DataCenter account].type) {
+        NSArray *Arr = [DataCenter account].verifiedTypes;
+        if ([DataCenter account].verifiedTypes.count>0) {
+            if ([[DataCenter account].verifiedTypes[0] isKindOfClass:[NSDictionary class]]) {
+                for (int i=0; i<Arr.count; i++) {
+                    NSString *name =[DataCenter account].verifiedTypes[i][@"typeName"];
+                    if ([name isEqualToString:[DataCenter account].typeName]) {
+                        self.badgeImage.frame = CGRectMake(CGRectGetMaxX(self.typeLabel.frame) + PX_TO_PT(14), CGRectGetMaxY(self.addressLabel.frame) + PX_TO_PT(16), PX_TO_PT(28), PX_TO_PT(36));
+                        
+                        self.badgeImage.hidden = NO;
+                        break;
+                    }
+                }
+            }
+
+        }
+    }
+
+
 }
 
 -(void)setupDatas:(XNRUserInfoModel *)model

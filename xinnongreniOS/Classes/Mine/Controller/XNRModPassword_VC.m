@@ -205,9 +205,8 @@
     NSString *newPassword = [GBAlipayManager encryptString:newPwd publicKey:self.pubKey];
     
 
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
     NSString *userID = [DataCenter account].userid;
-    
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     [KSHttpRequest post:KUserModifypwd parameters:@{@"userId":userID, @"oldPwd":oldPassword,@"newPwd":newPassword,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         NSLog(@"%@",result[@"message"]);
@@ -226,14 +225,13 @@
             [self.navigationController pushViewController:login animated:YES];
                         
         }else{
-    
-            [BMProgressView LoadViewDisappear:self.view];
-            [UILabel showMessage:result[@"message"]];
+                [UILabel showMessage:result[@"message"]];
         }
+        [SVProgressHUD dismiss];
         
     } failure:^(NSError *error) {
-        
-        [UILabel showMessage:@"网络失败"];
+        [SVProgressHUD dismiss];
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
         
     }];
 

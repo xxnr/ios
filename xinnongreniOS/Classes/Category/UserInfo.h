@@ -102,4 +102,6 @@
 @property (nonatomic,copy)NSString *isRSC;
 
 @property (nonatomic,strong)NSMutableArray *verifiedTypes;
+
+
 @end

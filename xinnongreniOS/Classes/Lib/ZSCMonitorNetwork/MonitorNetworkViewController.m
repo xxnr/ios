@@ -63,7 +63,7 @@
 - (void)warning
 {
     
-    [UILabel showMessage:@"未连接网络"];
+//    [UILabel showMessage:@"未连接网络"];
 
 }
 

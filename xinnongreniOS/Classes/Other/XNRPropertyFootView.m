@@ -30,10 +30,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-//        self.backgroundColor = [UIColor redColor];
         [self createView];
         // 注册消息通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChanged:) name:UITextFieldTextDidChangeNotification object:_numTextField];
+        
     }
     return self;
 }
@@ -64,7 +64,7 @@
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     
-    if ([self.numTextField.text isEqualToString:@"0"] || [self.numTextField.text isEqualToString:@""]) {
+    if ([self.numTextField.text isEqualToString:@"0"] || [self.numTextField.text isEqualToString:@""]||[self.numTextField.text isEqualToString:@"00"]||[self.numTextField.text isEqualToString:@"000"]) {
         
         self.numTextField.text = @"1";
     }
@@ -74,6 +74,29 @@
 
     
 }
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    return [self validateNumber:string];
+}
+
+-(BOOL)validateNumber:(NSString *)number
+{
+    BOOL res = YES;
+    NSCharacterSet* tmpSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
+    int i = 0;
+    while (i < number.length) {
+        NSString * string = [number substringWithRange:NSMakeRange(i, 1)];
+        NSRange range = [string rangeOfCharacterFromSet:tmpSet];
+        if (range.length == 0) {
+            res = NO;
+            break;
+        }
+        i++;
+    }
+    return res;
+}
+
 
 -(void)createView{
     UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(100))];

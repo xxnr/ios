@@ -91,14 +91,14 @@
 
 -(void)payHeadRefresh
 {
-    [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
+//    [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
     
     _isRefresh = YES;
     [self headRefresh];
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        [BMProgressView LoadViewDisappear:self];
-    });
+//    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+//    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+//        [BMProgressView LoadViewDisappear:self];
+//    });
 }
 
 #pragma mark - 滑动到顶部按钮
@@ -197,7 +197,7 @@
 - (void)getData
 {
     [self.orderEmptyView removeFromSuperview];
-
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     //typeValue说明：1为待付款，2为待发货，3已发货（待收货），4已收货
     [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid,@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"typeValue":@"1",@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
@@ -209,7 +209,7 @@
                 sectionModel.orderId = subDic[@"orderId"];
                 sectionModel.payType = subDic[@"payType"];
                 sectionModel.duePrice = subDic[@"duePrice"];
-                
+                sectionModel.RSCInfo = subDic[@"RSCInfo"];
                 NSDictionary *orders = subDic[@"order"];
                 sectionModel.deposit = orders[@"deposit"];
                 sectionModel.totalPrice = orders[@"totalPrice"];
@@ -274,9 +274,11 @@
         
         [self.tableView.mj_footer endRefreshing];
         
-        
+        [SVProgressHUD dismiss];
     } failure:^(NSError *error) {
-        
+        [SVProgressHUD dismiss];
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
+    
         [self.tableView.mj_header endRefreshing];
         
         [self.tableView.mj_footer endRefreshing];
@@ -520,12 +522,18 @@
 }
 -(void)sectionFourClick:(UIButton *)sender{
     XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
+    XNRRSCDetailModel *RSCDetailModel = [XNRRSCDetailModel objectWithKeyValues:sectionModel.RSCInfo];
     if (sectionModel.deposit && [sectionModel.deposit doubleValue]>0) {
-        self.payBlock(sectionModel.orderId,sectionModel.deposit);
+        
+        self.payBlock(sectionModel.orderId,sectionModel.deposit,RSCDetailModel);
         
     }else{
-        self.payBlock(sectionModel.orderId,sectionModel.totalPrice);
+        self.payBlock(sectionModel.orderId,sectionModel.totalPrice,RSCDetailModel);
+        
     }
+
+    
+    
     
 }
 -(void)reviseBtnClick:(UIButton *)sender
@@ -608,7 +616,6 @@
     NSLog(@"被点击了");
     XNRMyOrderSectionModel *sectionModel = _dataArr[indexPath.section];
     self.checkOrderBlock(sectionModel.orderId,sectionModel);
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -640,10 +647,7 @@
         XNRMyAllOrderFrame *frameModel = sectionModel.orderFrameArray[indexPath.row];
         cell.orderFrame = frameModel;
     }
-    
     return cell;
-    
-    
 }
 
 -(void)dealloc

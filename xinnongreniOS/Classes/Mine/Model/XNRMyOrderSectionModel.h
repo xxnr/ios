@@ -27,6 +27,7 @@
 
 @property (nonatomic, strong) NSMutableArray *skus;
 
+@property (nonatomic, strong) NSMutableDictionary *RSCInfo;
 
 //@property (nonatomic ,copy) NSString *type;
 

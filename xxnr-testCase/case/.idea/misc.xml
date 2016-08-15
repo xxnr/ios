@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
   <component name="EclipseCodeFormatter">
     <option name="defaultSettings" value="true" />
     <option name="id" value="1469604228060" />
@@ -11,6 +13,7 @@
   </component>
 =======
 <<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -32,7 +35,10 @@
     <entry_points version="2.0" />
   </component>
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
 >>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
@@ -45,8 +51,11 @@
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_3" default="true" assert-keyword="false" jdk-15="false" />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
 =======
 <<<<<<< HEAD
+>>>>>>> ynn_ios
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -73,5 +82,8 @@
 >>>>>>> ynn_ios
 =======
 >>>>>>> ynn_ios
+<<<<<<< HEAD
+=======
 >>>>>>> origin/version2.2.3
+>>>>>>> ynn_ios
 </project>

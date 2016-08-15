@@ -372,7 +372,8 @@
             
             UserInfo *info = [DataCenter account];
             info.typeName = typeName;
-            info.typeNum = typeNum;
+//            info.typeNum = typeNum;
+            info.type = typeNum;
             [DataCenter saveAccount:info];
             
             if ([self.typeNum integerValue] == 5) {
@@ -572,9 +573,9 @@
         [self.typeView hide];
         [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"type":self.typeNum?self.typeNum:@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
-                UserInfo *info = [DataCenter account];
-                info.type = self.typeLabel.text;
-                [DataCenter saveAccount:info];
+//                UserInfo *info = [DataCenter account];
+//                info.type = self.typeLabel.text;
+//                [DataCenter saveAccount:info];
             }
             
         } failure:^(NSError *error) {
@@ -736,7 +737,7 @@
  */
 - (void)cropViewController:(PECropViewController *)controller didFinishCroppingImage:(UIImage *)croppedImage
 {
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     [controller dismissViewControllerAnimated:YES completion:NULL];
     NSString *urlString = [NSString stringWithFormat:@"%@",KUserUploadPortrait];
    NSString *picSize = [CommonTool uploadPicUrl:urlString params:@{@"userId":[DataCenter account].userid} file:@"icon" picImage:croppedImage success:^(id result) {
@@ -745,8 +746,16 @@
             [KSHttpRequest post:KUserModify parameters:@{@"userId":[DataCenter account].userid,@"userPhoto":result[@"imageUrl"],@"user-agent":@"IOS-v2.0"} success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
                     [UILabel showMessage:@"头像上传成功"];
-                    [BMProgressView LoadViewDisappear:self.view];
                     [_icon setImage:croppedImage forState:UIControlStateNormal];
+                    
+                    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+                        NSDictionary *dict = result[@"datas"];
+                        UserInfo *info = [DataCenter account];
+                        info.photo = dict[@"photo"];
+                        [DataCenter saveAccount:info];
+                    } failure:^(NSError *error) {
+                        
+                    }];
                 }else{
                     [UILabel showMessage:result[@"message"]];
                 }
@@ -764,11 +773,10 @@
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
         }
+       [SVProgressHUD dismiss];
     } failure:^(NSError *error) {
-        
-        [UILabel showMessage:@"网络请求失败"];
-        [BMProgressView LoadViewDisappear:self.view];
-      
+        [SVProgressHUD dismiss];
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
         NSLog(@"error = %@",error);
     }];
     NSLog(@"头像图片大小%@",picSize);

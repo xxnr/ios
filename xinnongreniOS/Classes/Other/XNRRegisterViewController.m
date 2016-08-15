@@ -211,7 +211,6 @@
         [UILabel showMessage:@"请输入正确的手机号"];
         
     }else{
-        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         [self sendIentifyCode];
     }
 }
@@ -349,7 +348,7 @@
             [UILabel showMessage:@"请同意网站使用协议"];
         
         }else{
-            [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+            [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
             [KSHttpRequest get:KUserPubkey parameters:nil success:^(id result) {
                 if ([result[@"code"] integerValue] == 1000) {
                     NSString *pubKey = result[@"public_key"];
@@ -383,9 +382,7 @@
         
         NSLog(@"result-->%@",result);
         NSLog(@"%@",result[@"message"]);
-        
-        [BMProgressView LoadViewDisappear:self.view];
-        NSDictionary *datasDic = result[@"datas"];
+                NSDictionary *datasDic = result[@"datas"];
         if([result[@"code"] integerValue] == 1000){
             
         [UILabel showMessage:result[@"message"]];
@@ -399,8 +396,10 @@
         [UILabel showMessage:result[@"message"]];
             
         }
+        [SVProgressHUD dismiss];
     } failure:^(NSError *error) {
-        
+        [SVProgressHUD dismiss];
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
     }];
 
 
@@ -611,7 +610,6 @@
 
 -(void)refreshIdentifyPicture{
     [self.picImage removeFromSuperview];
-
     
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
@@ -748,7 +746,7 @@
             
         } failure:^(NSError *error) {
             self.picImage.image = [UIImage imageNamed:@"load-failed"];
-            [UILabel showMessage:@"网络错误"];
+            [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
         }];
     }
 }
@@ -776,6 +774,7 @@
 
 
 -(void)sendIentifyCode{
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     if([[NSUserDefaults standardUserDefaults]objectForKey:@"GBVerifyEnterAgainRegister"]==NO){
         
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"GBVerifyEnterAgainRegister"];
@@ -786,7 +785,6 @@
             NSLog(@"%@",result);
             
             if([result[@"code"] integerValue] == 1000){
-                [BMProgressView LoadViewDisappear:self.view];
                 XNRIdentifyCodeModel *model = [[XNRIdentifyCodeModel alloc] init];
                 model = [XNRIdentifyCodeModel objectWithKeyValues:result];
                 if (model.captcha) {
@@ -804,11 +802,13 @@
                 
             }
             else{
-                [BMProgressView LoadViewDisappear:self.view];
                 [UILabel showMessage:result[@"message"]];
             }
+            [SVProgressHUD dismiss];
+
         } failure:^(NSError *error) {
-            [UILabel showMessage:@"网络错误"];
+            [SVProgressHUD dismiss];
+            [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
             NSLog(@"%@",error);
         }];
         //读秒开始记录时间
@@ -836,7 +836,6 @@
         
         [KSHttpRequest post:KUserSms parameters:@{@"bizcode":@"register",@"tel":self.phoneNumTextField.text,@"authCode":self.identifyCodeTF.text?self.identifyCodeTF.text:@""} success:^(id result) {
             if([result[@"code"] integerValue] == 1000){
-                [BMProgressView LoadViewDisappear:self.view];
                 XNRIdentifyCodeModel *model = [[XNRIdentifyCodeModel alloc] init];
                 model = [XNRIdentifyCodeModel objectWithKeyValues:result];
                 if (model.captcha) {
@@ -852,13 +851,14 @@
 
                 }
             }else{
-                [BMProgressView LoadViewDisappear:self.view];
                 [UILabel showMessage:result[@"message"]];
             }
+            [SVProgressHUD dismiss];
             
         } failure:^(NSError *error) {
+            [SVProgressHUD dismiss];
+            [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
             
-            [UILabel showMessage:@"网络错误"];
         }];
     }
 

@@ -33,6 +33,8 @@
 @property (nonatomic,assign)BOOL isMakesureOwn;
 @property (nonatomic,assign)BOOL isHoldOwn;
 @property (nonatomic,assign)BOOL isRefresh;
+@property (nonatomic,strong) XNRRSCDetailModel *RSCdetailModel;
+
 @end
 @implementation XNRServeView
 
@@ -121,14 +123,14 @@
 
 -(void)serveHeadRefresh
 {
-    [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
+//    [BMProgressView showCoverWithTarget:self color:nil isNavigation:YES];
 
     _isRefresh = YES;
     [self headRefresh];
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        [BMProgressView LoadViewDisappear:self];
-    });
+//    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+//    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+//        [BMProgressView LoadViewDisappear:self];
+//    });
 }
 #pragma mark - 刷新
 -(void)setupAllViewRefresh{
@@ -197,7 +199,7 @@
 - (void)getData
 {
     [self.orderEmptyView removeFromSuperview];
-
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     // typeValue说明：1未付款 ，2待发货，3已发货，4已收货  全部订单为空
     [KSHttpRequest post:KGetOderList parameters:@{@"userId":[DataCenter account].userid?[DataCenter account].userid:@"",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"typeValue":@"",@"user-agent":@"IOS-v2.0"} success:^(id result) {
             if ([result[@"code"] integerValue] == 1000) {
@@ -208,7 +210,7 @@
                 sectionModel.orderId = subDic[@"orderId"];
                 sectionModel.payType = subDic[@"payType"];
                 sectionModel.duePrice = subDic[@"duePrice"];
-
+                sectionModel.RSCInfo = subDic[@"RSCInfo"];
                 NSDictionary *orders = subDic[@"order"];
                 sectionModel.totalPrice = orders[@"totalPrice"];
                 sectionModel.deposit = orders[@"deposit"];
@@ -263,8 +265,11 @@
         [self.tableView reloadData];
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
-        
+        [SVProgressHUD dismiss];
+    
     } failure:^(NSError *error) {
+        [SVProgressHUD dismiss];
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
 
@@ -348,8 +353,6 @@
             }
         }
         
-
-   
         if (sectionModel.type ==  1 || sectionModel.type == 2) {
             
             bottomView.frame = CGRectMake(0, 0, ScreenWidth, PX_TO_PT(180));
@@ -658,10 +661,14 @@
 
 -(void)sectionFourClick:(UIButton *)sender{
     XNRMyOrderSectionModel *sectionModel = _dataArr[sender.tag - 1000];
+    XNRRSCDetailModel *RSCDetailModel = [XNRRSCDetailModel objectWithKeyValues:sectionModel.RSCInfo];
     if (sectionModel.deposit && [sectionModel.deposit doubleValue]>0) {
-        self.payBlock(sectionModel.orderId,sectionModel.deposit);
+
+        self.payBlock(sectionModel.orderId,sectionModel.deposit,RSCDetailModel);
+        
     }else{
-        self.payBlock(sectionModel.orderId,sectionModel.totalPrice);
+        self.payBlock(sectionModel.orderId,sectionModel.totalPrice,RSCDetailModel);
+        
     }
 
 }

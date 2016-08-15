@@ -232,6 +232,13 @@ test("cell中确认收货按钮点击",function(target,app){
 
             if(xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].buttons()[0].name() == "确认收货" && name)
             {
+<<<<<<< HEAD
+                name = false;
+                xxnrdelay(1);
+
+                xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].buttons()[0].tap();
+
+=======
                 var orderid = xxnrElementClass.myorder(window).userOrderId(i*2);
 
                 name = false;
@@ -286,6 +293,7 @@ test("cell中确认收货按钮点击",function(target,app){
 
 
 
+>>>>>>> ynn_ios
                 xxnrdelay(2);
                 assertEquals(1,window.buttons()[5].isVisible());
 

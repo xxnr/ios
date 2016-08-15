@@ -306,20 +306,23 @@
 
 -(void)townBtnClick:(UIButton *)button
 {
-    [self.addressManagerView hide];
-    [self.recivePersonTF resignFirstResponder];
-    [self.phoneNumTF resignFirstResponder];
-    [self.detailAddressTF resignFirstResponder];
-    [self.eMailTF resignFirstResponder];
-
-    __weak __typeof(&*self)weakSelf = self;
-    [self.townManagerView show];
-    self.townManagerView.com = ^(NSString *townName,NSString *townId,NSString *town_id){
+    if ([self.addressLabel.text isEqualToString:@"请选择地区"]) {
+        [UILabel showMessage:@"您还没有选择地区"];
+    }else{
+        [self.addressManagerView hide];
+        [self.recivePersonTF resignFirstResponder];
+        [self.phoneNumTF resignFirstResponder];
+        [self.detailAddressTF resignFirstResponder];
+        [self.eMailTF resignFirstResponder];
         
-        weakSelf.townLabel.text = townName;
-        weakSelf.townID = townId;
-    
-    };
+        __weak __typeof(&*self)weakSelf = self;
+        [self.townManagerView show];
+        self.townManagerView.com = ^(NSString *townName,NSString *townId,NSString *town_id){
+            
+            weakSelf.townLabel.text = townName;
+            weakSelf.townID = townId;
+        };
+    }
 }
 #pragma mark --UITextFieldDelegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField

@@ -23,7 +23,7 @@
 #import "XNRSKUAttributesModel.h"
 #import "XNRAddtionsModel.h"
 
-@interface XNRShoppingCarController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,XNRShopcarViewBtnDelegate,XNRShoppingCartTableViewCellDelegate,UITextFieldDelegate>
+@interface XNRShoppingCarController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,XNRShopcarViewBtnDelegate,XNRShoppingCartTableViewCellDelegate,UITextFieldDelegate,UIScrollViewDelegate>
 {
     NSMutableArray *_MapOfAllStateArr;
     NSMutableArray *_dataArr;    //购物车数据
@@ -64,7 +64,7 @@
 @implementation XNRShoppingCarController
 
 
-#pragma mark - 购物车为空
+#pragma mark - 购物车为空视图加载
 - (XNRShopcarView *)shopCarView {
     if (_shopCarView == nil) {
         XNRShopcarView *shopCarView = [[XNRShopcarView alloc] init];
@@ -120,6 +120,8 @@
         [self setupShopCarOfflineRefresh];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCancelBtn" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reframToNormal" object:self];
+
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -135,7 +137,6 @@
     [self createShoppingCarTableView];
     //创建底部视图
     [self createBottomView];
-  
     // 删除完
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:@"refreshTableView" object:nil];
 }
@@ -226,7 +227,6 @@
 
 #pragma mark - 创建导航栏
 -(void)createNavgation{
-//    self.navigationItem.title = @"购物车";
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 200, 44)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
@@ -257,7 +257,6 @@
         _deleteBtn.hidden = NO;
         // 回到正常状态
         [[NSNotificationCenter defaultCenter] postNotificationName:@"cancelBtnPresent" object:nil];
-
     }else{// 编辑
         [self.editeBtn setTitle:@"编辑" forState:UIControlStateNormal];
         _totalPriceLabel.hidden  = NO;
@@ -265,7 +264,6 @@
         _deleteBtn.hidden = YES;
         // 下架商品变成可删除的状态
         [[NSNotificationCenter defaultCenter] postNotificationName:@"normalBtnPresent" object:nil];
-
     }
 }
 
@@ -362,17 +360,12 @@
         alertView.chooseBlock = ^void(UIButton *btn){
             
             if (btn.tag == 11) {
-                
                 XNRLoginViewController *login = [[XNRLoginViewController alloc]init];
                 login.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:login animated:YES];
-                
             }
-            
         };
-        
         [alertView BMAlertShow];
-
     }
 }
 
@@ -383,24 +376,19 @@
         [UILabel showMessage:@"请至少选择一件商品"];
     }else{
         BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确认要删除该商品吗?" chooseBtns:@[@"取消",@"确定"]];
-        
         alertView.chooseBlock = ^void(UIButton *btn){
-            
             if (btn.tag == 11) {
-                
                 NSMutableArray *arr1 = [NSMutableArray array];
                 NSMutableArray *arr2 = [NSMutableArray array];
-                
                 //1.先删除购物车 中的数据 并且用arr1、arr2记录要删除的数据
                 for (XNRShopCarSectionModel *sectionModel in _dataArr) {
-                    
                     if (sectionModel.isSelected) {
-                        if (!IS_Login) { //未登录时 把数据库这条数据删除
+                        if (!IS_Login) { // 未登录时 把数据库这条数据删除
                             for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
                                 DatabaseManager *manager = [DatabaseManager sharedInstance];
                                 [manager deleteShoppingCarWithModel:carModel.shoppingCarModel];
                             }
-                        } else { //TODO:服务器调用接口 让服务器把这条数据删除
+                        } else { // TODO:服务器调用接口 让服务器把这条数据删除
                             for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
                                 NSDictionary *params1 = @{@"userId":[DataCenter account].userid,@"SKUId":carModel.shoppingCarModel._id,@"quantity":@"0",@"additions":carModel.shoppingCarModel.additions,@"user-agent":@"IOS-v2.0"};
                                 [KSHttpRequest post:KchangeShopCarNum parameters:params1 success:^(id result) {
@@ -408,12 +396,11 @@
                                         [UILabel showMessage:@"删除成功"];
                                     }
                                 } failure:^(NSError *error) {
-                                    
-                                }];
-                            }
+                            }];
                         }
+                    }
                         
-                        [arr1 addObject:sectionModel];
+                    [arr1 addObject:sectionModel];
                         
                     } else {
                         for (XNRShoppingCarFrame *model in sectionModel.SKUFrameList) {
@@ -430,7 +417,7 @@
                                         }
                                     } failure:^(NSError *error) {
                                         
-                                    }];
+                                  }];
                                 }
                                 [arr2 addObject:model];
                             }
@@ -448,30 +435,20 @@
                         [sectionModel.SKUFrameList removeObject:cellModel];
                         
                     }
-                    NSLog(@"sectionModel.SKUFrameList%tu",sectionModel.SKUFrameList.count);
                 }
                 [self.shoppingCarTableView reloadData];
                 
                 if (_dataArr.count == 0) {
                     [self.shopCarView show];
                     self.editeBtn.hidden = YES;
-//                    self.navigationItem.title = @"购物车";
-//                    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-//                    titleLabel.backgroundColor = [UIColor clearColor];
-//                    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
-//                    titleLabel.textColor = R_G_B_16(0xfbffff);
-//                    titleLabel.textAlignment = NSTextAlignmentCenter;
                     self.titleLabel.text = @"购物车";
                     self.navigationItem.titleView = self.titleLabel;
-
                 }else{
                     [self.shopCarView removeFromSuperview];
                 }
             }
-            // 改变底部
             [self changeBottom];
         };
-        
         [alertView BMAlertShow];
     }
 }
@@ -546,12 +523,6 @@
         if (_dataArr.count == 0) {
             [self.shopCarView show];
             self.editeBtn.hidden = YES;
-//            self.navigationItem.title = @"购物车";
-//            UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-//            titleLabel.backgroundColor = [UIColor clearColor];
-//            titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
-//            titleLabel.textColor = R_G_B_16(0xfbffff);
-//            titleLabel.textAlignment = NSTextAlignmentCenter;
             self.titleLabel.text = @"购物车";
             self.navigationItem.titleView = self.titleLabel;
 
@@ -560,8 +531,8 @@
         }
         [self.shoppingCarTableView.mj_header endRefreshing];
     } failure:^(NSError *error) {
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
         [self.shoppingCarTableView.mj_header endRefreshing];
-        [UILabel showMessage:@"购物车列表获取失败"];
 
     }];
 }
@@ -573,12 +544,6 @@
     NSArray *allGoodArr = [dbManager queryAllGood];
     // 如果购物车为空
     if (allGoodArr.count == 0) {
-//        self.navigationItem.title = @"购物车";
-//        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-//        titleLabel.backgroundColor = [UIColor clearColor];
-//        titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
-//        titleLabel.textColor = R_G_B_16(0xfbffff);
-//        titleLabel.textAlignment = NSTextAlignmentCenter;
         self.titleLabel.text = @"购物车";
         self.navigationItem.titleView = self.titleLabel;
 
@@ -636,12 +601,6 @@
                 if (_dataArr.count == 0) {
                     [self.shopCarView show];
                     self.editeBtn.hidden = YES;
-//                    self.navigationItem.title = @"购物车";
-//                    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-//                    titleLabel.backgroundColor = [UIColor clearColor];
-//                    titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
-//                    titleLabel.textColor = R_G_B_16(0xfbffff);
-//                    titleLabel.textAlignment = NSTextAlignmentCenter;
                     self.titleLabel.text = @"购物车";
                     self.navigationItem.titleView = self.titleLabel;
 
@@ -667,7 +626,6 @@
 - (void)createShoppingCarTableView
 {
     UITableView *shoppingCarTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64-PX_TO_PT(88)) style:UITableViewStyleGrouped];
-//    shoppingCarTableView.backgroundColor = [UIColor clearColor];
     shoppingCarTableView.showsVerticalScrollIndicator = YES;
     shoppingCarTableView.delegate = self;
     shoppingCarTableView.dataSource = self;
@@ -822,6 +780,11 @@
     }
 
 }
+#pragma mark --- 当tableView滚动的时候
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reframToNormal" object:self];
+}
 
 
 #pragma mark  - TableViewDelegate
@@ -838,8 +801,9 @@
     if (section == _dataArr.count-1) {
         return 0.0;
     }
-        return 10.0;
+    return 10.0;
 }
+
 
 //设置段数
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -853,9 +817,9 @@
     if (_dataArr.count > 0) {
         XNRShopCarSectionModel *sectionModel = _dataArr[section];
         return sectionModel.SKUFrameList.count;
-    } else {
+    }else{
         return 0;
-  }
+    }
 }
 
 //行高
@@ -905,21 +869,99 @@
         }];
         // 自定义跳转
         cell.pushBlock = ^(NSIndexPath *indexP){
+            NSLog(@"pushBlock=====%@",indexP);
             if (_dataArr.count > 0) {
-                
                 XNRProductInfo_VC *info_VC = [[XNRProductInfo_VC alloc] init];
                 info_VC.hidesBottomBarWhenPushed = YES;
                 XNRShopCarSectionModel *sectionModel = _dataArr[indexP.section];
-                XNRShoppingCartModel *model = sectionModel.SKUList[indexP.row];
-                info_VC.model = model;
+                XNRShoppingCarFrame *model = sectionModel.SKUFrameList[indexP.row];
+                info_VC.model = model.shoppingCarModel;
                 NSLog(@"model.goodIdmodel===%@",model);
                 NSLog(@"----+++__+%@",indexP);
-                
                 info_VC.isFrom = YES;
                 [self.navigationController pushViewController:info_VC animated:YES];
-                
             }
         };
+        // 删除
+        cell.deleteBtnBlock = ^(NSIndexPath *indexP){
+            NSLog(@"deleteBtnBlock=====%@",indexP);
+            BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确认要删除该商品吗?" chooseBtns:@[@"取消",@"确定"]];
+
+            alertView.chooseBlock = ^void(UIButton *btn){
+                if (btn.tag == 11) {
+                 NSMutableArray *arr1 = [NSMutableArray array];
+                 NSMutableArray *arr2 = [NSMutableArray array];
+            
+                XNRShopCarSectionModel *sectionModel = _dataArr[indexP.section];
+                XNRShoppingCarFrame *model = sectionModel.SKUFrameList[indexP.row];
+            if (sectionModel.SKUFrameList.count == 1) {
+                if (!IS_Login) { //未登录时 把数据库这条数据删除
+                    for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
+                        DatabaseManager *manager = [DatabaseManager sharedInstance];
+                        [manager deleteShoppingCarWithModel:carModel.shoppingCarModel];
+                    }
+                    [UILabel showMessage:@"删除成功"];
+                } else { //TODO:服务器调用接口 让服务器把这条数据删除
+                    for (XNRShoppingCarFrame *carModel in sectionModel.SKUFrameList) {
+                        NSDictionary *params1 = @{@"userId":[DataCenter account].userid,@"SKUId":carModel.shoppingCarModel._id,@"quantity":@"0",@"additions":carModel.shoppingCarModel.additions,@"user-agent":@"IOS-v2.0"};
+                        [KSHttpRequest post:KchangeShopCarNum parameters:params1 success:^(id result) {
+                            if ([result[@"code"] integerValue] == 1000) {
+                                [UILabel showMessage:@"删除成功"];
+                            }
+                        } failure:^(NSError *error) {
+                            
+                        }];
+                    }
+                }
+                
+                [arr1 addObject:sectionModel];
+
+            }else{
+                if (!IS_Login) {//未登录时 把数据库这条数据删除
+                    DatabaseManager *manager = [DatabaseManager sharedInstance];
+                    [manager deleteShoppingCarWithModel:model.shoppingCarModel];
+                } else {
+                    //TODO:服务器调用接口 让服务器把这条数据删除
+                    NSDictionary *params2 = @{@"userId":[DataCenter account].userid,@"SKUId":model.shoppingCarModel._id,@"quantity":@"0",@"additions":model.shoppingCarModel.additions,@"user-agent":@"IOS-v2.0"};
+                    [KSHttpRequest post:KchangeShopCarNum parameters:params2 success:^(id result) {
+                        if ([result[@"code"] integerValue] == 1000) {
+                            [UILabel showMessage:@"删除成功"];
+                        }
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                }
+                [arr2 addObject:model];
+            }
+            //2.删除数据源里面的记录的数据
+            for (int i = 0; i < arr1.count; i++) {
+                XNRShopCarSectionModel *sectionModel = arr1[i];
+                [_dataArr removeObject:sectionModel];
+            }
+            for (XNRShopCarSectionModel *sectionModel in _dataArr) {
+                for (XNRShoppingCarFrame *cellModel in arr2) {
+                    [sectionModel.SKUFrameList removeObject:cellModel];
+                }
+                [cell reframeToNormal];
+                NSLog(@"sectionModel.SKUFrameList%tu",sectionModel.SKUFrameList.count);
+            }
+//            [self getDataFromNetwork];
+            [self.shoppingCarTableView reloadData];
+            
+            if (_dataArr.count == 0) {
+                [self.shopCarView show];
+                self.editeBtn.hidden = YES;
+                self.titleLabel.text = @"购物车";
+                self.navigationItem.titleView = self.titleLabel;
+                
+            }else{
+                [self.shopCarView removeFromSuperview];
+            }
+        }
+            [self changeBottom];
+    };
+            [alertView BMAlertShow];
+};
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.delegate = self;
         cell.rightString = self.editeBtn.titleLabel.text;
@@ -940,12 +982,6 @@
     }else{
             [self.shopCarView show];
             self.editeBtn.hidden = YES;
-//            self.navigationItem.title = @"购物车";
-//        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-//        titleLabel.backgroundColor = [UIColor clearColor];
-//        titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(40)];
-//        titleLabel.textColor = R_G_B_16(0xfbffff);
-//        titleLabel.textAlignment = NSTextAlignmentCenter;
         self.titleLabel.text = @"购物车";
         self.navigationItem.titleView = self.titleLabel;
 
@@ -958,7 +994,6 @@
     for (XNRShopCarSectionModel *sectionModel in _dataArr) {
         for (XNRShoppingCarFrame *model in sectionModel.SKUFrameList) {
             if ([model.shoppingCarModel.online integerValue] == 1) {
-//                isAllAll = isAllAll && sectionModel.isSelected;
                 isAllAll = isAllAll && model.shoppingCarModel.selectState;
 
             }
@@ -980,14 +1015,6 @@
                 NSLog(@"------取消选中:%@",carModel.shoppingCarModel._id);
                 [_MapOfAllStateArr removeObject:carModel.shoppingCarModel._id];
             }
-            
-//            if ([_MapOfAllStateArr containsObject:carModel._id]&&!carModel.selectState) {
-//                [_MapOfAllStateArr removeObject:carModel._id];
-//            }
-//            
-//            if (carModel.selectState) {
-//                [_MapOfAllStateArr addObject:carModel._id];
-//            }
         }
     }
     

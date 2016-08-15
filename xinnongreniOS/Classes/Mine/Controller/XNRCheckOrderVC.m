@@ -242,6 +242,7 @@
             sectionModel.recipientPhone = datasDic[@"rows"][@"recipientPhone"];
             sectionModel.payStatus = datasDic[@"rows"][@"payStatus"];
             sectionModel.duePrice = datasDic[@"rows"][@"duePrice"];
+            sectionModel.RSCInfo = datasDic[@"rows"][@"RSCInfo"];
             sectionModel.payType = datasDic[@"rows"][@"payType"];
             sectionModel.paySubOrderType = datasDic[@"rows"][@"paySubOrderType"];
             NSDictionary *payment = datasDic[@"rows"][@"payment"];
@@ -580,6 +581,9 @@
     vc.hidesBottomBarWhenPushed = YES;
     vc.orderID = sectionModel.id;
     vc.payMoney = sectionModel.deposit;
+    XNRRSCDetailModel *RSCDetailModel = [XNRRSCDetailModel objectWithKeyValues:sectionModel.RSCInfo];
+    vc.model = RSCDetailModel;
+    vc.isfromOrderVC = YES;
     [self.navigationController pushViewController:vc animated:YES];
     
 }
