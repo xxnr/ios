@@ -25,7 +25,6 @@
 {
     
     BMProgressView *bcView = [[BMProgressView alloc] initWithFrame:target.bounds];
-//    bcView.isError = NO;
     bcView.backgroundColor = bcColor;
     [target addSubview:bcView];
     [target bringSubviewToFront:bcView];
@@ -127,7 +126,6 @@
             if ([subView isKindOfClass:[BMProgressView class]]) {
                 [UIView animateWithDuration:3 animations:^{
                     [subView removeFromSuperview];
-                    
                 }];
             }
         }

@@ -466,7 +466,6 @@ static bool isBroker;
         
         self.isFirstTableView = YES;
     } else if(sender.tag == btnTag + 1){
-        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         self.isFirstTableView = NO;
         self.isadd = NO;
         
@@ -496,16 +495,10 @@ static bool isBroker;
         [self rep_isUpdata];
 
     }
-    
-    
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        [BMProgressView LoadViewDisappear:self.view];
-    });
-
 }
 -(void)getrepresent
 {
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     [KSHttpRequest get:KGetInviter parameters:nil success:^(id result) {
         if ([result[@"code"] integerValue]==1000) {
             
@@ -571,8 +564,10 @@ static bool isBroker;
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
         }
+        [SVProgressHUD dismiss];
     } failure:^(NSError *error) {
-        
+        [SVProgressHUD dismiss];
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
     }];
     
 }
@@ -713,7 +708,7 @@ static bool isBroker;
 }
 -(void)rep_isUpdata
 {
-
+//    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     [KSHttpRequest get:KGetIsLatest parameters:@{@"count":[NSString stringWithFormat:@"%ld",_AllUserCount.count]} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
 
@@ -869,8 +864,10 @@ static bool isBroker;
                 [self registerCustomerModel];
             }
         }
+//        [SVProgressHUD dismiss];
     } failure:^(NSError *error) {
-        
+//        [SVProgressHUD dismiss];
+//        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
     }];
 }
 
@@ -1032,6 +1029,7 @@ static bool isBroker;
 }
 -(void)getCustomerData
 {
+//    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     [KSHttpRequest get:KGetInviteeOrderbyName parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *arr = result[@"invitee"];
@@ -1064,8 +1062,11 @@ static bool isBroker;
             [UILabel showMessage:result[@"message"]];
         }
         
-
+//        [SVProgressHUD dismiss];
     } failure:^(NSError *error) {
+//        [SVProgressHUD dismiss];
+//        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
+        
         [self myCustomerModel];
     }];
 

@@ -291,7 +291,7 @@ static FMDatabase*_db;
 
 - (void)requestSignIn
 {
-    [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+    [SVProgressHUD showWithStatus:@"签到中..." maskType:SVProgressHUDMaskTypeClear];
     [KSHttpRequest post:KUserSign parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
         if ([result[@"code"] integerValue] == 1000) {
@@ -311,17 +311,16 @@ static FMDatabase*_db;
         }
         else if([result[@"code"] integerValue] == 1010){
             [UILabel showMessage:result[@"message"]];
-            [BMProgressView LoadViewDisappear:self.view];
         }else{
             [UILabel showMessage:@"未查询到积分规则"];
-            [BMProgressView LoadViewDisappear:self.view];
 
         }
+        [SVProgressHUD dismiss];
         
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
         [UILabel showMessage:@"签到失败"];
-        [BMProgressView LoadViewDisappear:self.view];
 
 
     }];

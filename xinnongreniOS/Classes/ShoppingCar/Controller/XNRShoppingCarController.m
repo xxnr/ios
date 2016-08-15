@@ -64,7 +64,7 @@
 @implementation XNRShoppingCarController
 
 
-#pragma mark - 购物车为空
+#pragma mark - 购物车为空视图加载
 - (XNRShopcarView *)shopCarView {
     if (_shopCarView == nil) {
         XNRShopcarView *shopCarView = [[XNRShopcarView alloc] init];

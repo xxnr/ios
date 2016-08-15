@@ -508,7 +508,7 @@
             [btn addSubview:lineView];
             [payTypeDetailView addSubview:btn];
         }
-        if (i == 3) {
+        if (i == 2) {
             self.realityBtn = btn;
         }
     }

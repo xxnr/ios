@@ -165,8 +165,8 @@
 
         
     }else{
-        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
-
+        
+        [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
         [self sendIentifyCode];
 //        if([[NSUserDefaults standardUserDefaults]objectForKey:@"GBVerifyEnterAgainForgetPassword"] == NO){
 //            
@@ -368,8 +368,6 @@
         [UILabel showMessage:@"两次密码输入不一致，请重新输入"];
         
     }else{
-        
-        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
         [KSHttpRequest get:KUserPubkey parameters:nil success:^(id result) {
                 NSLog(@"======%@",result);
                 if ([result[@"code"] integerValue] == 1000) {
@@ -392,11 +390,10 @@
 {
     NSString *newPassWord = self.newpasswordTextField.text;
     NSString *encry = [GBAlipayManager encryptString:newPassWord publicKey:self.pubKey];
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     [KSHttpRequest post:KUserResetpwd parameters:@{@"account":_phoneNumTextField.text, @"newPwd":encry,@"smsCode":_verifyNumTextField.text,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         NSLog(@"%@",result[@"message"]);
-        
-        [BMProgressView LoadViewDisappear:self.view];
-        if([result[@"code"] integerValue] == 1000){
+                if([result[@"code"] integerValue] == 1000){
             
             [UILabel showMessage:result[@"message"]];
 
@@ -410,9 +407,10 @@
             [UILabel showMessage:result[@"message"]];
             
         }
+        [SVProgressHUD dismiss];
     } failure:^(NSError *error) {
-        
-        
+        [SVProgressHUD dismiss];
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
     }];
 
 
@@ -811,8 +809,6 @@
             NSLog(@"%@",result);
             
             if([result[@"code"] integerValue] == 1000){
-                [BMProgressView LoadViewDisappear:self.view];
-
                 XNRIdentifyCodeModel *model = [[XNRIdentifyCodeModel alloc] init];
                 model = [XNRIdentifyCodeModel objectWithKeyValues:result];
                 if (model.captcha) {
@@ -829,12 +825,12 @@
                 }
                 
             }else{
-                [BMProgressView LoadViewDisappear:self.view];
-
                 [UILabel showMessage:result[@"message"]];
             }
+            [SVProgressHUD dismiss];
         } failure:^(NSError *error) {
-            [UILabel showMessage:@"网络错误"];
+            [SVProgressHUD dismiss];
+            [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
         }];
         //读秒开始记录时间
         NSDate *datenow = [NSDate date];

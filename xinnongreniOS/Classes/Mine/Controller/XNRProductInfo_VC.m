@@ -344,10 +344,11 @@
         self.tempLabel.textColor = R_G_B_16(0x646464);
         titleLabel.textColor = R_G_B_16(0x00b38a);
         self.tempLabel = titleLabel;
-        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+        [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_body_url]];
         [self.webView loadRequest:request];
-        [BMProgressView LoadViewDisappear:self.view];
+        [SVProgressHUD dismiss];
+        
         
     }else if (button.tag == KbtnTag + 1)
     {
@@ -355,10 +356,10 @@
         button.selected = YES;
         self.tempBtn = button;
         
-        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+        [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_standard_url]];
         [self.webView loadRequest:request];
-        [BMProgressView LoadViewDisappear:self.view];
+        [SVProgressHUD dismiss];
         
         self.tempLabel.textColor = R_G_B_16(0x646464);
         titleLabel.textColor = R_G_B_16(0x00b38a);
@@ -373,10 +374,10 @@
         titleLabel.textColor = R_G_B_16(0x00b38a);
         self.tempLabel = titleLabel;
         
-        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:YES];
+        [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_support_url]];
         [self.webView loadRequest:request];
-        [BMProgressView LoadViewDisappear:self.view];
+        [SVProgressHUD dismiss];
     }
 }
 
@@ -392,8 +393,8 @@
 
 #pragma mark-获取网络数据
 -(void)getData {
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];    
     [KSHttpRequest post:KHomeGetAppProductDetails parameters:@{@"productId":_model.goodsId,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-        [BMProgressView showCoverWithTarget:self.view color: nil isNavigation:YES];
 
         if ([result[@"code"] integerValue] == 1000) {
             NSDictionary *dic =result[@"datas"];
@@ -443,11 +444,12 @@
         if ([frame.infoModel.app_body_url isEqualToString:@""] &&[frame.infoModel.app_standard_url isEqualToString:@""] && [frame.infoModel.app_support_url isEqualToString:@""]) {
                 _tableView.scrollEnabled = NO;
         }
-        
+        [SVProgressHUD dismiss];
         [self.tableView reloadData];
-        [BMProgressView LoadViewDisappear:self.view];
+        
     } failure:^(NSError *error) {
-        [BMProgressView LoadViewDisappear:self.view];
+        [SVProgressHUD dismiss];
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
     }];
 }
 
@@ -675,7 +677,7 @@
 }
 
 -(void)backClick{
-    
+    [SVProgressHUD dismiss];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

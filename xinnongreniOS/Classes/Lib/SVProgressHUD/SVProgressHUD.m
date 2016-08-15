@@ -23,9 +23,13 @@
 @property (nonatomic, strong, readonly) UIView *hudView;
 @property (nonatomic, strong, readonly) UILabel *stringLabel;
 @property (nonatomic, strong, readonly) UIImageView *imageView;
-@property (nonatomic, strong, readonly) UIActivityIndicatorView *spinnerView;
+//@property (nonatomic, strong, readonly) UIActivityIndicatorView *spinnerView;
+@property (nonatomic, strong, readonly) UIImageView *spinnerView;
+
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
+@property (nonatomic, assign) double angle;
+
 
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show;
 - (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration;
@@ -375,7 +379,9 @@
         self.maskType = hudMaskType;
         
         [self setStatus:string];
-        [self.spinnerView startAnimating];
+        [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(startAnimation) userInfo:nil repeats:YES];
+
+//        [self startAnimation];
         
         if(self.maskType != SVProgressHUDMaskTypeNone) {
             self.overlayWindow.userInteractionEnabled = YES;
@@ -404,6 +410,21 @@
     });
 }
 
+-(void)startAnimation{
+    _angle += 5;//angle角度 double angle;
+//    if (_angle > 6.28) {//大于 M_PI*2(360度) 角度再次从0开始
+//        _angle = 0;
+//    }
+    //    [UIView animateWithDuration:0.1 animations:^{
+    self.spinnerView.transform = CGAffineTransformMakeRotation(_angle*(M_PI / 180.0f));
+    //    }];
+}
+
+//-(void)stopAnimating{
+//    [self.spinnerView removeFromSuperview];
+//}
+
+
 
 - (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration {
     if(![SVProgressHUD isVisible])
@@ -418,7 +439,7 @@
         self.imageView.image = image;
         self.imageView.hidden = NO;
         [self setStatus:string];
-        [self.spinnerView stopAnimating];
+//        [self stopAnimating];
         
         if (duration != 0.0f) {
             self.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
@@ -478,7 +499,8 @@
     if(!hudView) {
         hudView = [[UIView alloc] initWithFrame:CGRectZero];
         hudView.layer.cornerRadius = 10;
-		hudView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+//		hudView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+        hudView.backgroundColor = [UIColor clearColor];
         hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
                                     UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
         
@@ -490,7 +512,9 @@
 - (UILabel *)stringLabel {
     if (stringLabel == nil) {
         stringLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-		stringLabel.textColor = [UIColor whiteColor];
+//		stringLabel.textColor = [UIColor whiteColor];
+        stringLabel.textColor = R_G_B_16(0x00b38a);
+
 		stringLabel.backgroundColor = [UIColor clearColor];
 		stringLabel.adjustsFontSizeToFitWidth = YES;
 		stringLabel.textAlignment = NSTextAlignmentCenter;
@@ -501,8 +525,8 @@
 //#endif
 		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 		stringLabel.font = [UIFont systemFontOfSize:16];
-		stringLabel.shadowColor = [UIColor blackColor];
-		stringLabel.shadowOffset = CGSizeMake(0, -1);
+//		stringLabel.shadowColor = [UIColor blackColor];
+//		stringLabel.shadowOffset = CGSizeMake(0, -1);
         stringLabel.numberOfLines = 0;
     }
     
@@ -515,25 +539,38 @@
 - (UIImageView *)imageView {
     if (imageView == nil)
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-    
     if(!imageView.superview)
         [self.hudView addSubview:imageView];
     
     return imageView;
 }
 
-- (UIActivityIndicatorView *)spinnerView {
+//- (UIActivityIndicatorView *)spinnerView {
+//    if (spinnerView == nil) {
+//        spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+//		spinnerView.hidesWhenStopped = YES;
+//		spinnerView.bounds = CGRectMake(0, 0, 37, 37);
+//    }
+//    
+//    if(!spinnerView.superview)
+//        [self.hudView addSubview:spinnerView];
+//    
+//    return spinnerView;
+//}
+
+- (UIImageView *)spinnerView {
     if (spinnerView == nil) {
-        spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-		spinnerView.hidesWhenStopped = YES;
-		spinnerView.bounds = CGRectMake(0, 0, 37, 37);
+        spinnerView = [[UIImageView alloc] init];
+        [spinnerView setImage:[UIImage imageNamed:@"xxnr_loading"]];
+        spinnerView.bounds = CGRectMake(0, 0, 37, 37);
+        spinnerView.center = CGPointMake(ScreenWidth/2, ScreenHeight/2);
     }
     
     if(!spinnerView.superview)
         [self.hudView addSubview:spinnerView];
-    
     return spinnerView;
 }
+
 
 - (CGFloat)visibleKeyboardHeight {
         

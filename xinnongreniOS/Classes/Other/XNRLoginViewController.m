@@ -332,7 +332,8 @@
         title= @"请输入密码";
     }else{
         
-        [BMProgressView showCoverWithTarget:self.view color:nil isNavigation:NO];
+        [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
+        
         [KSHttpRequest get:KUserPubkey parameters:nil success:^(id result) {
             NSLog(@"======%@",result);
             if ([result[@"code"] integerValue] == 1000) {
@@ -341,14 +342,13 @@
                 [self getNetwork];
                 NSLog(@"======%@",pubKey);
                 
-            }
-            else
-            {
+            }else{
                 [UILabel showMessage:result[@"message"]];
             }
-            
+            [SVProgressHUD dismiss];
         } failure:^(NSError *error) {
-            
+            [SVProgressHUD dismiss];
+            [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
         }];
 
         
