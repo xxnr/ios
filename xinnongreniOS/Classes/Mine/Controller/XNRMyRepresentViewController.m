@@ -521,11 +521,11 @@ static bool isBroker;
     }
     
     
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        [BMProgressView LoadViewDisappear:self.view];
-    });
-    
+//    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+//    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+//        [BMProgressView LoadViewDisappear:self.view];
+//    });
+//    
 }
 -(void)getrepresent
 {
@@ -1499,16 +1499,21 @@ static bool isBroker;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    
     NSArray *itemArr = [NSArray array];
     NSString *title;
     if (tableView.tag == tbTag) {
         itemArr =_dataArr[section];
-        title =self.customer_indexTitleArr[section];
+        if (self.customer_indexTitleArr.count>0) {
+            title =self.customer_indexTitleArr[section];
+        }
     }
     else
     {
         itemArr = _userArr[section];
-        title = self.Rep_indexTitleArr[section];
+        if (self.Rep_indexTitleArr.count > 0) {
+            title = self.Rep_indexTitleArr[section];
+        }
     }
     if ([itemArr count] > 0) {
         UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, PX_TO_PT(45))];
