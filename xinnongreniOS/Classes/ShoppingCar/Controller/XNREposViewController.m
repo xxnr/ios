@@ -38,6 +38,7 @@
 {
     UIScrollView *mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     self.mainScrollView = mainScrollView;
+    
     [self.view addSubview:mainScrollView];
     
     [self createTopView];
@@ -258,8 +259,6 @@
         [bgView addSubview:Line];
 
     }
-    
-    
 }
 
 -(void)checkBtnClick
@@ -281,7 +280,7 @@
 -(void)payBtnClick
 {
     // 设备激活
-//    [UMSCashierPlugin setupDevice:@"111" BillsTID:@"222" WithViewController:self Delegate:self];
+//    [UMSCashierPlugin setupDevice:@"shouji000000004" BillsTID:@"sj000001" WithViewController:self Delegate:self];
 }
 
 // 定义设备设置、激活回调
