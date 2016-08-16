@@ -8,7 +8,6 @@
 
 #import "XNREposViewController.h"
 #import "XNREposAddressViewController.h"
-//#import "UMSCashierPlugin.h"
 @interface XNREposViewController()
 
 @property (nonatomic, weak) UIScrollView *mainScrollView;
