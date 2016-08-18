@@ -35,4 +35,6 @@ typedef void(^XNRPropertyViewLoginBlock)();
 
 @property (nonatomic ,copy) XNRPropertyViewLoginBlock loginBlock;
 
+@property (nonatomic,strong) void(^XNRAddShoppingCarBlock)();
+
 @end

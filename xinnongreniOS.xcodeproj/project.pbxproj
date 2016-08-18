@@ -620,6 +620,8 @@
 		9C4420021D2FAD68007075C3 /* loader22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C441FEB1D2FAD68007075C3 /* loader22@2x.png */; };
 		9C4420031D2FAD68007075C3 /* loader23@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C441FEC1D2FAD68007075C3 /* loader23@2x.png */; };
 		9C4420051D2FB190007075C3 /* 加载21.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C4420041D2FB190007075C3 /* 加载21.png */; };
+		9C47BCC91D62E63C0016672F /* UINavigationBar+PS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C47BCC81D62E63C0016672F /* UINavigationBar+PS.m */; };
+		9C47BCCC1D62E9A10016672F /* UINavigationBar+Awesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C47BCCB1D62E9A10016672F /* UINavigationBar+Awesome.m */; };
 		9C4B2EBA1CE98FBB00A9ACD6 /* XNRoffthestocksVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4B2EB91CE98FBB00A9ACD6 /* XNRoffthestocksVC.m */; };
 		9C4FCB451C8FFDFD00C5B427 /* XNBrandsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4FCB441C8FFDFD00C5B427 /* XNBrandsModel.m */; };
 		9C63D88F1C9FDE12004AFE0F /* XNROrderInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C63D88E1C9FDE12004AFE0F /* XNROrderInfoCell.m */; };
@@ -1824,6 +1826,10 @@
 		9C441FEB1D2FAD68007075C3 /* loader22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loader22@2x.png"; sourceTree = "<group>"; };
 		9C441FEC1D2FAD68007075C3 /* loader23@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loader23@2x.png"; sourceTree = "<group>"; };
 		9C4420041D2FB190007075C3 /* 加载21.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "加载21.png"; sourceTree = "<group>"; };
+		9C47BCC71D62E63C0016672F /* UINavigationBar+PS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+PS.h"; sourceTree = "<group>"; };
+		9C47BCC81D62E63C0016672F /* UINavigationBar+PS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+PS.m"; sourceTree = "<group>"; };
+		9C47BCCA1D62E9A10016672F /* UINavigationBar+Awesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Awesome.h"; sourceTree = "<group>"; };
+		9C47BCCB1D62E9A10016672F /* UINavigationBar+Awesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Awesome.m"; sourceTree = "<group>"; };
 		9C4B2EB81CE98FBB00A9ACD6 /* XNRoffthestocksVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNRoffthestocksVC.h; sourceTree = "<group>"; };
 		9C4B2EB91CE98FBB00A9ACD6 /* XNRoffthestocksVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNRoffthestocksVC.m; sourceTree = "<group>"; };
 		9C4FCB431C8FFDFD00C5B427 /* XNBrandsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNBrandsModel.h; sourceTree = "<group>"; };
@@ -2541,6 +2547,8 @@
 		1F15330C1B09D2CE00CA374B /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				9C47BCCA1D62E9A10016672F /* UINavigationBar+Awesome.h */,
+				9C47BCCB1D62E9A10016672F /* UINavigationBar+Awesome.m */,
 				53031B841B299736004B4B07 /* CommonTool */,
 				499181571CF7F811006A077D /* SDCycleScrollView */,
 				499181251CF7F56E006A077D /* SDWebImage */,
@@ -3796,6 +3804,8 @@
 		53445E8E1B14127F009F79E5 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				9C47BCC71D62E63C0016672F /* UINavigationBar+PS.h */,
+				9C47BCC81D62E63C0016672F /* UINavigationBar+PS.m */,
 				4922D6931D2B7AFF0008CB7A /* yonghuxieyi.html */,
 				4922D6951D2B7B7F0008CB7A /* XNRUserProtocolViewController.h */,
 				4922D6961D2B7B7F0008CB7A /* XNRUserProtocolViewController.m */,
@@ -4787,6 +4797,7 @@
 				9C7D6A9F1D4EE6B00014DC08 /* XNRTextView.m in Sources */,
 				9CF8AA391CAE199D0058D8B9 /* XNRSelProVC.m in Sources */,
 				49F7A5771C58469400A1FA45 /* MJRefreshComponent.m in Sources */,
+				9C47BCCC1D62E9A10016672F /* UINavigationBar+Awesome.m in Sources */,
 				9CF8AC0D1C981DB300F27563 /* XNRHomeSelectedCellectionCell.m in Sources */,
 				491281411CCF5FBC009E67C4 /* XNRRscIdentifyPayView.m in Sources */,
 				491610EE1C8C422200F1E243 /* MWGridViewController.m in Sources */,
@@ -4937,6 +4948,7 @@
 				49E164861C12F0F00063E6EC /* XNRWebViewController.m in Sources */,
 				9C3F9B521CC4E02700E44BA8 /* XNRRSCDetailModel.m in Sources */,
 				8446C2A21B1D6D19005CA932 /* POPDecayAnimation.mm in Sources */,
+				9C47BCC91D62E63C0016672F /* UINavigationBar+PS.m in Sources */,
 				4936F61D1C05CE7A0023183B /* XNRFerSelect.m in Sources */,
 				4991814A1CF7F56E006A077D /* SDWebImageCompat.m in Sources */,
 				8446C29D1B1D6D19005CA932 /* POPAnimationTracer.mm in Sources */,

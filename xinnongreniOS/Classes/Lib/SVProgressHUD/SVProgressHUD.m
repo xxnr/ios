@@ -396,7 +396,7 @@
             [self registerNotifications];
             self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
             
-            [UIView animateWithDuration:0.15
+            [UIView animateWithDuration:0.5f
                                   delay:0
                                 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
                              animations:^{	

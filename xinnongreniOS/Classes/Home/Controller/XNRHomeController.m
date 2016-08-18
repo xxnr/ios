@@ -26,6 +26,8 @@
 #import "FMDatabase.h"
 #import "XNRLogicTool.h"
 #import "XNRHttpTool.h"
+#import "UINavigationBar+PS.h"
+
 #define kStoreAppId  @"1021223448"  // （appid数字串）
 
 @interface XNRHomeController ()<UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,UICollectionViewDelegate,XNRHomeCollectionHeaderViewAddBtnDelegate,XNRFerSelectAddBtnDelegate>
@@ -583,6 +585,8 @@ static FMDatabase*_db;
         vc.model=_huafeiArr[indexPath.row];
     }
     vc.hidesBottomBarWhenPushed=YES;
+//    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+//    self.navigationController
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark - 专场按钮
@@ -710,7 +714,11 @@ static FMDatabase*_db;
 
 //        }
 }
-
+//-(void)viewWillDisappear:(BOOL)animated
+//{
+//    [self.navigationController.navigationBar ps_setBackgroundColor:[R_G_B_16(0x00B38A)  colorWithAlphaComponent:1]];
+//
+//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
