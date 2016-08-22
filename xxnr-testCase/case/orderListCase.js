@@ -232,13 +232,7 @@ test("cell中确认收货按钮点击",function(target,app){
 
             if(xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].buttons()[0].name() == "确认收货" && name)
             {
-<<<<<<< HEAD
-                name = false;
-                xxnrdelay(1);
 
-                xxnrElementClass.myorder(window).tableViewsgroups()[(i+1)*2-1].buttons()[0].tap();
-
-=======
                 var orderid = xxnrElementClass.myorder(window).userOrderId(i*2);
 
                 name = false;
@@ -292,8 +286,6 @@ test("cell中确认收货按钮点击",function(target,app){
                 assertEquals(refresh,true,"第一次刷新失败");
 
 
-
->>>>>>> ynn_ios
                 xxnrdelay(2);
                 assertEquals(1,window.buttons()[5].isVisible());
 
@@ -627,7 +619,7 @@ test("跳转订单详情",function(target,app){
                
                for (p; p < parseInt(xxnrElementClass.orderDetail(window).cells().length); p++) {
                var cell = xxnrElementClass.orderDetail(window).cell(p);
-               //                                   xxnrlogMessage("'" + xxnrElementClass.orderDetail(window).consignmentState(cell).value() + "'");
+               xxnrlogMessage("'" + xxnrElementClass.orderDetail(window).consignmentState(cell).value() + "'");
                if (xxnrElementClass.orderDetail(window).consignmentState(cell).name() == "配送中") {
                  Secondisdispatch = true;
                  assertNotNull(xxnrElementClass.orderDetail(window).receiveGoods());
