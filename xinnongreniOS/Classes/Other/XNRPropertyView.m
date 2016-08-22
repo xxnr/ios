@@ -1,3 +1,4 @@
+
 //
 //  XNRPropertyView.m
 //  xinnongreniOS
@@ -20,6 +21,7 @@
 #import "AppDelegate.h"
 #import "XNRCollectionViewFlowLayout.h"
 #import "XNRShoppingCartModel.h"
+#import "XNRProductInfo_VC.h"
 
 #define coll_cell_margin  PX_TO_PT(20)
 #define coll_section_margin PX_TO_PT(40)
@@ -619,43 +621,16 @@
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
+//    [self XNRAddShoppingCarBlock];
+    
     XNRProductInfo_model *model = [self.goodsArray lastObject];
     if (model.SKUAttributes.count == _recordeSelected) {
         if(IS_Login == YES) {
-            
             [self synchShoppingCarData];
             
         } else {
-                BOOL b;
-                DatabaseManager *manager = [DatabaseManager sharedInstance];
-                // 查询数据库是否有该商品
-                NSArray *modelArr = [manager queryGoodWithModel:self.shopcarModel];
-                // 数据库没有该商品(插入)
-                if (modelArr.count == 0) {
-                    self.shopcarModel.timeStamp = [CommonTool timeSp];  //时间戳
-                    self.shopcarModel.num = _numText?_numText:@"1";
-                    self.shopcarModel.shoppingCarCount = [manager shoppingCarCount];
-                    b = [manager insertShoppingCarWithModel:self.shopcarModel];
-                    self.shopcarModel.num = @"0";
-                }
-                //数据库有该商品(更新)
-                else{
-                    XNRShoppingCartModel *model = [modelArr firstObject];
-                    model.num = [NSString stringWithFormat:@"%d",model.num.intValue+([_numText intValue]?[_numText intValue]:[@"1" intValue])];
-                    model.timeStamp = [CommonTool timeSp];  //时间戳
-                    model.shoppingCarCount = [manager shoppingCarCount];
-                    model.additions = self.shopcarModel.additions;
-                    b = [manager updateShoppingCarWithModel:model];
-                }
-                if (b) {
-                    
-                    [UILabel showMessage:@"加入购物车成功"];
-                    [self cancelBtnClick];
-                }else{
-                    
-                    [UILabel showMessage:@"加入购物车失败"];
-                    [self cancelBtnClick];
-                }
+            [self cancelBtnClick];
+            [self successOrfail];
         }
 
     }else{
@@ -664,7 +639,42 @@
     }
 
 }
+-(void)successOrfail
+{
+    BOOL b;
+    DatabaseManager *manager = [DatabaseManager sharedInstance];
+    // 查询数据库是否有该商品
+    NSArray *modelArr = [manager queryGoodWithModel:self.shopcarModel];
+    // 数据库没有该商品(插入)
+    if (modelArr.count == 0) {
+        self.shopcarModel.timeStamp = [CommonTool timeSp];  //时间戳
+        self.shopcarModel.num = _numText?_numText:@"1";
+        self.shopcarModel.shoppingCarCount = [manager shoppingCarCount];
+        b = [manager insertShoppingCarWithModel:self.shopcarModel];
+        self.shopcarModel.num = @"0";
+    }
+    //数据库有该商品(更新)
+    else{
+        XNRShoppingCartModel *model = [modelArr firstObject];
+        model.num = [NSString stringWithFormat:@"%d",model.num.intValue+([_numText intValue]?[_numText intValue]:[@"1" intValue])];
+        model.timeStamp = [CommonTool timeSp];  //时间戳
+        model.shoppingCarCount = [manager shoppingCarCount];
+        model.additions = self.shopcarModel.additions;
+        b = [manager updateShoppingCarWithModel:model];
+    }
+    if (b) {
+        self.XNRAddShoppingCarBlock();
+        
+        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.3 * NSEC_PER_SEC));
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            [UILabel showMessage:@"加入购物车成功"];
+        });
+    }else{
+        
+        [UILabel showMessage:@"加入购物车失败"];
+    }
 
+}
 -(void)synchShoppingCarDataWithoutToast
 {
     XNRProductInfo_model *infoModel = [self.goodsArray lastObject];
@@ -758,14 +768,27 @@
             resultDic = (NSDictionary *)resultObj;
         }
         if ([resultObj[@"code"] integerValue] == 1000) {
-            [UILabel showMessage:@"加入购物车成功"];
+//            [UILabel showMessage:@"加入购物车成功"];
             // 把选择的属性值传过去
             [self pressAttributes];
             [self cancelBtnClick];
+<<<<<<< HEAD
             
         }else{
         [self cancelBtnClick];
         _state = NO;
+=======
+            [self successOrfail];
+            [BMProgressView LoadViewDisappear:self];
+            
+            
+        }
+        else{
+            [UILabel showMessage:resultDic[@"message"]];
+            [self cancelBtnClick];
+            [BMProgressView LoadViewDisappear:self];
+            _state = NO;
+>>>>>>> ynn_ios
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"===%@",error);

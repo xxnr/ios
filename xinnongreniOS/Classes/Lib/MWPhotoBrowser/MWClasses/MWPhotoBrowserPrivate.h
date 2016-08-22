@@ -77,6 +77,7 @@
 // Properties
 @property (nonatomic) UIActivityViewController *activityViewController;
 
+//@property (assign,nonatomic)BOOL didSavePreviousStateOfNavBar;
 // Layout
 - (void)layoutVisiblePages;
 - (void)performLayout;

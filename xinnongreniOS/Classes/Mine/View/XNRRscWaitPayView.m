@@ -140,6 +140,8 @@
 -(void)getData
 {
     NSDictionary *params = @{@"type":@"1",@"page":[NSString stringWithFormat:@"%d",_currentPage],@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE]};
+    
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     [KSHttpRequest get:KRscOrders parameters:params success:^(id result) {
         if ([result[@"code"] integerValue] == 1000) {
             NSArray *ordersArray = result[@"orders"];
@@ -194,8 +196,13 @@
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
 
-    } failure:^(NSError *error) {
+        [SVProgressHUD dismiss];
         
+    } failure:^(NSError *error) {
+        [SVProgressHUD dismiss];
+        
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
+
     }];
 }
 

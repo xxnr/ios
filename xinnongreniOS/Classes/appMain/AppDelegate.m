@@ -49,7 +49,7 @@
 
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
-
+    
     self.launchOptions = launchOptions;
     // 键盘的管理
     IQKeyboardManager *manager = [IQKeyboardManager sharedManager];

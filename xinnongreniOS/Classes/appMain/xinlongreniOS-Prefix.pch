@@ -154,6 +154,10 @@ alpha:1.0]
 #define XNRFER @"531680A5"
 #define XNRCAR @"6C7D8F66"
 
+#if !defined(MIN)
+#define __NSMIN_IMPL__(A,B,L) ({ __typeof__(A) __NSX_PASTE__(__a,L) = (A); __typeof__(B) __NSX_PASTE__(__b,L) = (B); (__NSX_PASTE__(__a,L) < __NSX_PASTE__(__b,L)) ? __NSX_PASTE__(__a,L) : __NSX_PASTE__(__b,L); })
+#define MIN(A,B) __NSMIN_IMPL__(A,B,__COUNTER__)
+#endif
 
 
 /**
