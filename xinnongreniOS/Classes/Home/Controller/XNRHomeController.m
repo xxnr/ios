@@ -305,7 +305,6 @@ static FMDatabase*_db;
                 [weakSelf.signInView removeFromSuperview];
                 weakSelf.signInView = nil;
             };
-            [BMProgressView LoadViewDisappear:self.view];
             //保存签到
             [CommonTool saveSignIn];
         }
@@ -503,7 +502,7 @@ static FMDatabase*_db;
 
 -(void)dismiss
 {
-     [BMProgressView LoadViewDisappear:self.view];
+    [SVProgressHUD dismiss];
 }
 // 展示Section的个数
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView

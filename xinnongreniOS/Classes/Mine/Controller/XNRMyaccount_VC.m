@@ -760,11 +760,8 @@
                     [UILabel showMessage:result[@"message"]];
                 }
             } failure:^(NSError *error) {
-                [BMProgressView LoadViewDisappear:self.view]; 
             }];
         }else if([result[@"code"] integerValue] == 1401){
-            [BMProgressView LoadViewDisappear:self.view];
-
             [UILabel showMessage:result[@"message"]];
             UserInfo *infos = [[UserInfo alloc]init];
             infos.loginState = NO;

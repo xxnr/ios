@@ -45,8 +45,6 @@
 
 @property (nonatomic ,weak) XNRNoSelectView *noSelectView;
 
-@property (nonatomic ,weak) BMProgressView *progressView;
-
 @property (nonatomic ,copy) NSString *brandName;
 
 @property (nonatomic ,copy) NSString *modelName;
@@ -77,15 +75,6 @@
     }
     return _selectBrandView;
     
-}
-
--(BMProgressView *)progressView{
-    if (!_progressView) {
-        BMProgressView *progressView = [[BMProgressView alloc] init];
-        self.progressView = progressView;
-        [self.view addSubview:progressView];
-    }
-    return _progressView;
 }
 
 #pragma mark  - 筛选为空的视图
@@ -456,14 +445,12 @@
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         
-        [BMProgressView LoadViewDisappear:self.view];
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         
-        [BMProgressView LoadViewDisappear:self.view];
         
     }];
     
@@ -656,14 +643,10 @@
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         
-        [BMProgressView LoadViewDisappear:self.view];
-        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
-        
-        [BMProgressView LoadViewDisappear:self.view];
         
     }];
     

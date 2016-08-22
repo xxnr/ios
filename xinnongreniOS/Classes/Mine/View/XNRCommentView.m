@@ -14,14 +14,12 @@
 #import "XNROrderEmptyView.h"
 #import "XNRMyOrderServe_Cell.h"
 #import "XNRMyAllOrderFrame.h"
-#import "BMProgressView.h"
 
 #define MAX_PAGE_SIZE 20
 @interface XNRCommentView()<XNROrderEmptyViewBtnDelegate>
 @property (nonatomic ,strong) UITableView *tableView;
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
 @property (nonatomic, weak) UIButton *backtoTopBtn;
-@property (nonatomic ,weak) BMProgressView *progressView;
 
 @property (nonatomic,assign) BOOL isRefresh;
 @end
@@ -73,15 +71,6 @@
     }
     return self;
 }
--(BMProgressView *)progressView{
-    if (!_progressView) {
-        BMProgressView *progressView = [[BMProgressView alloc] init];
-        self.progressView = progressView;
-        [self addSubview:progressView];
-    }
-    return _progressView;
-}
-
 
 -(void)commentHeadRefresh
 {

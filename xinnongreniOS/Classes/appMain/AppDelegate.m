@@ -12,7 +12,7 @@
 //#import "XNRNewFeatureViewController.h"
 #import "UMessage.h"
 #import "IQKeyboardManager.h"
-#import <Bugtags/Bugtags.h>
+//#import <Bugtags/Bugtags.h>
 
 #import "XNRControllerTool.h"
 #import "XNRNetWorkTool.h"

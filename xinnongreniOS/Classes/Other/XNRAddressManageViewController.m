@@ -78,8 +78,6 @@
     [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
     [KSHttpRequest post:KGetUserAddressList parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
         
-        [BMProgressView LoadViewDisappear:self.view];
-
         if([result[@"code"] integerValue] == 1000){
             [_dataArr removeAllObjects];
             for(NSDictionary *dic in result[@"datas"][@"rows"]){

@@ -10,7 +10,6 @@
 #import "XNRRegisterViewController.h"
 #import "XNRForgetPasswordViewController.h"
 #import "XNRTabBarController.h"
-#import "QCheckBox.h"
 #import "XNRTabBarController.h"
 #import "KSHttpRequest.h"
 #import "UserInfo.h"
@@ -22,7 +21,7 @@
 #import "XNRAddtionsModel.h"
 #import "UMessage.h"
 
-@interface XNRLoginViewController ()<UITextFieldDelegate,QCheckBoxDelegate>{
+@interface XNRLoginViewController ()<UITextFieldDelegate>{
     
     BOOL isRemmeber;
     
@@ -204,37 +203,6 @@
     [self.midView addSubview:passwordTextField];
 }
 
- #pragma mark - QCheckBoxDelegate
-- (void)didSelectedCheckBox:(QCheckBox *)checkbox checked:(BOOL)checked{
-    
-    if(checked==NO){
-        NSLog(@"选中");
-        isRemmeber = YES;
-        [USER setBool:isRemmeber forKey:@"isRemmeber"];
-        [USER synchronize];
-        
-        if([USER boolForKey:@"Login"] == NO){
-            NSLog(@"第一次进入");
-            return;
-            
-        }
-        NSString*Account =[USER objectForKey:@"Account"];
-        NSString*Password=[USER objectForKey:@"password"];
-        self.usernameTextField.text=Account;
-        self.passwordTextField.text=Password;
-
-    }else {
-        
-         NSLog(@"未选中");
-        isRemmeber=NO;
-        [USER setBool:isRemmeber forKey:@"isRemmeber"];
-        [USER synchronize];
-        self.usernameTextField.text=@"";
-        self.passwordTextField.text=@"";
-    }
-    
-    
-}
 
 #pragma mark - 忘记密码
 - (void)createForgetBtn
@@ -357,9 +325,7 @@
     if (flag == 0) {
         
         [UILabel showMessage:title];
-        
-        [BMProgressView LoadViewDisappear:self.view];
-        
+        [SVProgressHUD dismiss];
         return;
     }
 }
@@ -376,7 +342,6 @@
             
             [UILabel showMessage:result[@"message"]];
             
-            [BMProgressView LoadViewDisappear:self.view];
             //本地归档保存用户账户信息
             NSDictionary *datasDic = result[@"datas"];
             NSDictionary *address = datasDic[@"userAddress"];
@@ -453,14 +418,12 @@
         }else{
             
             [UILabel showMessage:result[@"message"]];
-            [BMProgressView LoadViewDisappear:self.view];
         }
         
         
     } failure:^(NSError *error) {
         
         [UILabel showMessage:@"登录失败"];
-        [BMProgressView LoadViewDisappear:self.view];
 
     }];
 

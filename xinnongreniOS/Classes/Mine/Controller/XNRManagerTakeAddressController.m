@@ -89,7 +89,6 @@
         } else {
             
             [UILabel showMessage:result[@"message"]];
-            [BMProgressView LoadViewDisappear:self.view];
         }
         if (_dataArray.count == 0) {
             [self.emptyView show];

@@ -16,7 +16,6 @@
 #import "XNRUser_Cell.h"
 #import "XNRAddLatentUserVC.h"
 #import "XNRDetailUserVC.h"
-#import "BMProgressView.h"
 #import "XNRRepData.h"
 #import "FMDB.h"
 #import "XNRResultViewController.h"
@@ -87,7 +86,6 @@
 @property (nonatomic,weak)UIView *bgview;
 @property (nonatomic,weak) UIButton *addbtn;
 @property (nonatomic,weak)UIView *circleView;
-@property (nonatomic ,weak) BMProgressView *progressView;
 @property (nonatomic,assign)BOOL isadd;
 @property (nonatomic,assign)BOOL isfirst;
 @property (nonatomic,assign)BOOL isFirstTableView;
@@ -109,15 +107,6 @@
 @implementation XNRMyRepresentViewController
 
 static bool isBroker;
-
--(BMProgressView *)progressView{
-    if (!_progressView) {
-        BMProgressView *progressView = [[BMProgressView alloc] init];
-        self.progressView = progressView;
-        [self.view addSubview:progressView];
-    }
-    return _progressView;
-}
 
 +(void)SetisBroker:(BOOL)broker
 {

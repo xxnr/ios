@@ -51,8 +51,6 @@
 
 @property (nonatomic, weak) UIWebView *webView;
 
-@property (nonatomic ,weak) BMProgressView *progressView;
-
 @property (nonatomic ,weak) UIScrollView *scrollView;
 
 @property (nonatomic ,weak) UIPageControl *pageControl;
@@ -74,15 +72,6 @@
 @end
 
 @implementation XNRProductInfo_cell
-
--(BMProgressView *)progressView{
-    if (!_progressView) {
-        BMProgressView *progressView = [[BMProgressView alloc] init];
-        self.progressView = progressView;
-        [self addSubview:progressView];
-    }
-    return _progressView;
-}
 
 -(XNRPropertyView *)propertyView{
     XNRPropertyView *propertyView = [XNRPropertyView sharedInstanceWithModel:_shopcarModel];

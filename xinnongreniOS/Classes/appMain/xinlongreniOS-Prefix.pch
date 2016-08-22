@@ -29,7 +29,6 @@
 #import "XNRRegisterViewController.h"
 #import "XNRBusinessLogic.h"
 #import "XNRTabBarController.h"
-#import "BMProgressView.h"    // 自定义loadingView
 #import "MJExtension.h"
 #import "BMAlertView.h"
 #import "MJRefresh.h"

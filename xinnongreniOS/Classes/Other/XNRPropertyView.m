@@ -699,8 +699,6 @@
             // 把选择的属性值传过去
             [self pressAttributes];
             [self cancelBtnClick];
-            [BMProgressView LoadViewDisappear:self];
-            
         }else{
             [UILabel showMessage:resultObj[@"message"]];
             [self cancelBtnClick];
@@ -764,12 +762,9 @@
             // 把选择的属性值传过去
             [self pressAttributes];
             [self cancelBtnClick];
-            [BMProgressView LoadViewDisappear:self];
-            
             
         }else{
         [self cancelBtnClick];
-        [BMProgressView LoadViewDisappear:self];
         _state = NO;
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

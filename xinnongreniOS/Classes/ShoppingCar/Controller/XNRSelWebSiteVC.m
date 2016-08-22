@@ -109,7 +109,6 @@
             
             [self.tableView.mj_header endRefreshing];
             [self.tableView.mj_footer endRefreshing];
-            [BMProgressView LoadViewDisappear:self.view];
 
         }
          else
@@ -121,7 +120,6 @@
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
-        [BMProgressView LoadViewDisappear:self.view];
         
 
     }];

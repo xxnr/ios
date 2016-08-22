@@ -20,7 +20,6 @@
 #import "XNRMakeSureView.h"
 #import "XNRMyOrderModel.h"
 #import "XNRCarryVC.h"
-#import "BMProgressView.h"
 #define MAX_PAGE_SIZE 10
 
 @interface XNRServeView()<XNROrderEmptyViewBtnDelegate>
@@ -29,7 +28,6 @@
 @property (nonatomic ,weak) XNROrderEmptyView *orderEmptyView;
 @property (nonatomic ,weak) UIButton *backtoTopBtn;
 @property (nonatomic,strong)XNRMyOrderSectionModel *currentModel;
-@property (nonatomic ,weak) BMProgressView *progressView;
 @property (nonatomic,assign)BOOL isMakesureOwn;
 @property (nonatomic,assign)BOOL isHoldOwn;
 @property (nonatomic,assign)BOOL isRefresh;
@@ -109,15 +107,6 @@
 
     }
     return self;
-}
-
--(BMProgressView *)progressView{
-    if (!_progressView) {
-        BMProgressView *progressView = [[BMProgressView alloc] init];
-        self.progressView = progressView;
-        [self addSubview:progressView];
-    }
-    return _progressView;
 }
 
 

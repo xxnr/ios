@@ -6,7 +6,6 @@
 //  Copyright (c) 2015年 qxhiOS. All rights reserved.
 
 #import "XNRProductInfo_VC.h"
-#import "CWStarRateView.h"
 #import "XNRShoppingCartModel.h"
 #import "UIImageView+WebCache.h"
 #import "XNRTabBarController.h"
@@ -59,7 +58,6 @@
 @property (nonatomic,weak) UILabel *tempLabel;
 @property (nonatomic,weak) UIScrollView *bottomScrollView;
 
-@property (nonatomic ,weak) BMProgressView *progressView;
 
 @property (nonatomic ,weak) UIView *bgView;
 @property (nonatomic ,weak) UIView *bgExpectView;
@@ -83,14 +81,6 @@
     return _picBrowserList;
 }
 
--(BMProgressView *)progressView{
-    if (!_progressView) {
-        BMProgressView *progressView = [[BMProgressView alloc] init];
-        self.progressView = progressView;
-        [self.view addSubview:progressView];
-    }
-    return _progressView;
-}
 
 -(XNRPropertyView *)propertyView{
     
@@ -710,10 +700,8 @@
         if([result[@"code"] integerValue] == 1000){
 
             [UILabel showMessage:@"加入购物车成功"];
-            [BMProgressView LoadViewDisappear:self.view];
         }else {
             [UILabel showMessage:result[@"message"]];
-            [BMProgressView LoadViewDisappear:self.view];
         }
         
     } failure:^(NSError *error) {

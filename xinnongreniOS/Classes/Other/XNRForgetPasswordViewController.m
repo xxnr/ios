@@ -857,8 +857,6 @@
         
         [KSHttpRequest post:KUserSms parameters:@{@"bizcode":@"resetpwd",@"tel":self.phoneNumTextField.text,@"authCode":self.identifyCodeTF.text?self.identifyCodeTF.text:@""} success:^(id result) {
             if([result[@"code"] integerValue] == 1000){
-                [BMProgressView LoadViewDisappear:self.view];
-
                 XNRIdentifyCodeModel *model = [[XNRIdentifyCodeModel alloc] init];
                 model = [XNRIdentifyCodeModel objectWithKeyValues:result];
                 if (model.captcha) {
@@ -874,7 +872,6 @@
                     
                 }
             }else{
-                [BMProgressView LoadViewDisappear:self.view];
                 [UILabel showMessage:result[@"message"]];
             }
             

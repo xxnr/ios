@@ -17,7 +17,6 @@
 #import "XNRCheckOrderVC.h"       // 查看订单
 #import "XNRMyOrder_VC.h"          // 我的订单
 #import "XNRMyStoreOrderController.h"
-#import "SJAvatarBrowser.h"       // 浏览头像
 #import "UIImageView+WebCache.h"
 #import "XNRUserInfoModel.h"
 #import "XNROffLine_VC.h"

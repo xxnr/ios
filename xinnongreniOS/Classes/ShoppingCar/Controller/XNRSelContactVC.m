@@ -139,7 +139,6 @@
             [self.tableView reloadData];
             [self.tableView.mj_header endRefreshing];
             [self.tableView.mj_footer endRefreshing];
-            [BMProgressView LoadViewDisappear:self.view];
             
 
         }
@@ -151,9 +150,6 @@
         
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
-        [BMProgressView LoadViewDisappear:self.view];
-        
-
     }];
 }
 //用户选择自提方式时保存收货人信息

@@ -8,6 +8,7 @@
 
 #import "XNREposViewController.h"
 #import "XNREposAddressViewController.h"
+//#import "UMSCashierPlugin.h"
 @interface XNREposViewController()
 
 @property (nonatomic, weak) UIScrollView *mainScrollView;
@@ -283,14 +284,14 @@
 }
 
 // 定义设备设置、激活回调
-//-(void)onUMSSetupDevice:(BOOL) resultStatus resultInfo:(NSString *)resultInfo withDeviceId:(NSString *)deviceId
-//{
-//    if(resultStatus == YES){ // 设备激活成功
-//    
-//    }else {
-//    
-//    }
-//}
+-(void)onUMSSetupDevice:(BOOL) resultStatus resultInfo:(NSString *)resultInfo withDeviceId:(NSString *)deviceId
+{
+    if(resultStatus == YES){ // 设备激活成功
+    
+    }else {
+    
+    }
+}
 
 -(void)getData
 {
