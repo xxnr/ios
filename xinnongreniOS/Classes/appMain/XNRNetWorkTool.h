@@ -8,7 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+
+
 @interface XNRNetWorkTool : NSObject
+/**
+ *  是否打开网络
+ */
++(BOOL)isOpen;
+
 /**
  *  监控网络
  */

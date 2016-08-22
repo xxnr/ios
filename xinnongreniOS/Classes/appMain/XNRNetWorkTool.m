@@ -17,6 +17,11 @@
     [mnvc monitorNetworkType];
 }
 
++(BOOL)isOpen{
+    MonitorNetworkViewController *mnvc = [MonitorNetworkViewController sharedInstance];
+    return mnvc.isOpen;
+}
+
 
 
 

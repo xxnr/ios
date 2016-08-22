@@ -11,6 +11,7 @@
 #import "XNRMessageCell.h"
 #import "XNRWebViewController.h"
 #import "FMDatabase.h"
+#import "XNRNetWorkTool.h"
 #define MAX_PAGE_SIZE 10
 
 @interface XNRChatController ()<UITableViewDelegate,UITableViewDataSource>
@@ -163,61 +164,74 @@ static FMDatabase*_db;
 -(void)getData
 {
     NSString *param = @"products";
-    NSMutableArray *products = [NSMutableArray array];
-    // 根据请求参数查询数据
-    FMResultSet *resultSet = nil;
-    resultSet = [_db executeQuery:@"SELECT * FROM t_home_products WHERE classId = ?;", param];
-    
-    // 遍历查询结果
-    while (resultSet.next) {
-        NSData *statusDictData = [resultSet objectForColumnName:@"products_dict"];
-        NSDictionary *statusDict = [NSKeyedUnarchiver unarchiveObjectWithData:statusDictData];
-        // 字典转模型
-        XNRMessageModel *product = [[XNRMessageModel alloc] init];
-        [product setValuesForKeysWithDictionary:statusDict];
-        // 添加模型到数组中
-        [products addObject:product];
-    }
-    if (products.count != 0) {
-        [_messageArr addObjectsFromArray:products];
-        [self.tableView.mj_header endRefreshing];
-        [self.tableView.mj_footer endRefreshing];
 
+    if ([XNRNetWorkTool isOpen]) {
+        [self loadDataFromSever:param];
     }else{
-        [KSHttpRequest get:KMessageNews parameters:@{@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"} success:^(id result) {
-            
-            if ([result[@"code"] integerValue] == 1000) {
-                NSDictionary *dicts = result[@"datas"];
-                NSArray *array = dicts[@"items"];
-                for (NSDictionary *dict in array) {
-                    XNRMessageModel *model = [[XNRMessageModel alloc] init];
-                    [model setValuesForKeysWithDictionary:dict];
-                    [_messageArr addObject:model];
-                    
-                    // 把statusDict字典对象序列化成NSData二进制数据
-                    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict];
-                    [_db executeUpdate:@"INSERT INTO t_home_products (classId,products_idstr, products_dict) VALUES (?,?,?);",param,@20,data];
-
-                }
-            }
-            //如果到达最后一页 就消除footer
-            
-            NSInteger pages = [result[@"datas"][@"pages"] integerValue];
-            NSInteger page = [result[@"datas"][@"page"] integerValue];
-            self.tableView.mj_footer.hidden = pages==page;
-            
+        NSMutableArray *products = [NSMutableArray array];
+        // 根据请求参数查询数据
+        FMResultSet *resultSet = nil;
+        resultSet = [_db executeQuery:@"SELECT * FROM t_home_products WHERE classId = ?;", param];
+        
+        // 遍历查询结果
+        while (resultSet.next) {
+            NSData *statusDictData = [resultSet objectForColumnName:@"products_dict"];
+            NSDictionary *statusDict = [NSKeyedUnarchiver unarchiveObjectWithData:statusDictData];
+            // 字典转模型
+            XNRMessageModel *product = [[XNRMessageModel alloc] init];
+            [product setValuesForKeysWithDictionary:statusDict];
+            // 添加模型到数组中
+            [products addObject:product];
+        }
+        if (products.count != 0) {
+            [_messageArr addObjectsFromArray:products];
             [self.tableView.mj_header endRefreshing];
             [self.tableView.mj_footer endRefreshing];
-            [self.tableView reloadData];
-            
-        } failure:^(NSError *error) {
             [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
-            [self.tableView.mj_header endRefreshing];
-            [self.tableView.mj_footer endRefreshing];
-        }];
+            
+        }else{
+            [self loadDataFromSever:param];
+        }
     }
 
 }
+
+-(void)loadDataFromSever:(NSString *)param{
+    [KSHttpRequest get:KMessageNews parameters:@{@"max":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",currentPage],@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        
+        if ([result[@"code"] integerValue] == 1000) {
+            NSDictionary *dicts = result[@"datas"];
+            NSArray *array = dicts[@"items"];
+            for (NSDictionary *dict in array) {
+                XNRMessageModel *model = [[XNRMessageModel alloc] init];
+                [model setValuesForKeysWithDictionary:dict];
+                [_messageArr addObject:model];
+                
+                // 把statusDict字典对象序列化成NSData二进制数据
+                if ([param isEqualToString:@"products"]) {
+                    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict];
+                    [_db executeUpdate:@"INSERT INTO t_home_products (classId,products_idstr, products_dict) VALUES (?,?,?);",param,@10,data];
+                }
+            }
+        }
+        //如果到达最后一页 就消除footer
+        
+        NSInteger pages = [result[@"datas"][@"pages"] integerValue];
+        NSInteger page = [result[@"datas"][@"page"] integerValue];
+        self.tableView.mj_footer.hidden = pages==page;
+        
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+        [self.tableView reloadData];
+        
+    } failure:^(NSError *error) {
+        [UILabel showMessage:@"您的网络不太顺畅，重试或检查下网络吧~"];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+    }];
+
+}
+
 #pragma mark -- tableView代理
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
