@@ -66,6 +66,10 @@
 
 + (void)showSelectedBrandViewWith:(brandViewBlock)com andTarget:(UIView *)target andType:(XNRType)type andParam:(NSArray *)param andShowTx:(NSArray *)txarr andkind:(NSString *)kind{
     
+    UIWindow *kXNRWindow = [[[UIApplication sharedApplication] delegate] window];
+    XNRHomeSelectBrandView *selectView = [kXNRWindow viewWithTag:10240];
+    [selectView removeFromSuperview];
+    
     XNRHomeSelectBrandView *selectedView = [[XNRHomeSelectBrandView alloc] initWithFrame:initialRect andType:type and:param and:txarr andkind:kind];
     selectedView.com = com;
     selectedView.tag = 10240;

@@ -83,6 +83,8 @@
 
 @property (nonatomic ,strong) NSMutableArray *addtionsArray;
 
+@property (nonatomic,strong)UIView *productView;
+
 @end
 
 @implementation XNRPropertyView
@@ -618,10 +620,54 @@
     
 }
 
+//-(void)addshoppingCar
+//{
+//    self.productView.hidden = NO;
+//    //    __weak __typeof(self)weakSelf = self;
+//    
+//    [UIView animateWithDuration:0.2f animations:^{
+//        self.productView.transform = CGAffineTransformMakeScale(1.5, 1.5);
+//    }completion:^(BOOL finished) {
+//        [UIView animateWithDuration:0.2f animations:^{
+//            self.productView.transform = CGAffineTransformIdentity;
+//        } completion:^(BOOL finished) {
+//            [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionTransitionNone animations:^{
+//                self.productView.transform = CGAffineTransformMakeScale(0.4, 0.4);
+//                self.productView.alpha = 0.1;
+//                CGRect rect = self.productView.frame;
+//                //                rect.origin = CGPointMake(ScreenWidth-PX_TO_PT(50), 30);
+//                rect.origin.x = self.shopcarButton.center.x-PX_TO_PT(5);
+//                rect.origin.y = self.shopcarButton.center.y+PX_TO_PT(5);
+//                self.productView.frame = rect;
+//                
+//            } completion:^(BOOL finished) {
+//                [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionTransitionNone animations:^{
+//                    self.productView.alpha = 0;
+//                    self.shopcarButton.transform = CGAffineTransformMakeScale(0.8, 0.8);
+//                } completion:^(BOOL finished) {
+//                    [UIView animateWithDuration:0.2f animations:^{
+//                        self.shopcarButton.transform = CGAffineTransformIdentity;
+//                        
+//                    } completion:^(BOOL finished) {
+//                        self.productView.hidden = YES;
+//                        self.productView.alpha = 1;
+//                        self.productView.transform = CGAffineTransformIdentity;
+//                        self.productView.frame =CGRectMake(ScreenWidth/2, ScreenHeight/2, 100, 100);
+//                    }];
+//                }];
+//            }];
+//        }];
+//    }];
+//    
+//}
+
+
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
 //    [self XNRAddShoppingCarBlock];
+    
+    
     
     XNRProductInfo_model *model = [self.goodsArray lastObject];
     if (model.SKUAttributes.count == _recordeSelected) {
@@ -663,9 +709,16 @@
         b = [manager updateShoppingCarWithModel:model];
     }
     if (b) {
+<<<<<<< HEAD
         if (self.XNRAddShoppingCarBlock) {
             self.XNRAddShoppingCarBlock();
         }
+=======
+//        self.XNRAddShoppingCarBlock();
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addshoppingCar) name:@"addShoppingCar" object:nil];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"addShoppingCar" object:nil];
+>>>>>>> ynn_ios
         
         dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.3 * NSEC_PER_SEC));
         dispatch_after(delayTime, dispatch_get_main_queue(), ^{

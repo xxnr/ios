@@ -13,7 +13,6 @@
 #import "XNRTabBarController.h"
 #import "XNRHomeSelectBrandView.h"
 #import "XNRNoSelectView.h"
-
 #import "XNRSelectItemArrModel.h"
 
 #define MAX_PAGE_SIZE 10
@@ -355,7 +354,7 @@
         
         _lastType = type;
     }else if(type == XNRferView_DoSelectType){   // 筛选
-
+        
         self.currentBtn = 3;
         filterCurPage = 1;
         
@@ -363,6 +362,7 @@
         self.kind = @"车系";
         isCancel = !isCancel;
         NSLog(@"_____+=====%d",isCancel);
+        
         if (isCancel) {
             __weak typeof(self) weakSelf=self;
             
@@ -392,10 +392,11 @@
             [self.view bringSubviewToFront:self.ferView];
             
         }else{
+            
             _fertype = _lastType;
             [XNRHomeSelectBrandView cancelSelectedBrandView];
-            
         }
+
     }
 }
 -(void)getTotalData{

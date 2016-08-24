@@ -24,103 +24,15 @@ var window = target.frontMostApp().windows()[0];
 test("新农代表tab的点击",function(){
     xxnrElementClass.tab(window).mineTab().tap();
     xxnrElementClass.mine(window).cell(1).tap();
-
     xxnrElementClass.xxnrRepesent(window).myrepesentTab().tap();
     xxnrdelay(2);
 
     if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
     {
         xxnrElementClass.xxnrRepesent(window).clientRegisterTab().tap();
-<<<<<<< HEAD
+
     }
 })
-test("我的客户 下拉刷新",function(){
-    xxnrdelay(2);
-    xxnrElementClass.xxnrRepesent(window).myclientTab().tap();
-    xxnrdelay(2);
-    if (xxnrElementClass.xxnrRepesent_client(window).inviteLabel().isVisible()) {
-        xxnrElementClass.xxnrRepesent(window).myclientTab().dragInsideWithOptions({
-            startOffset: {x: 0.74, y: -3.54},
-            endOffset: {x: 0.83, y: 0.99}
-        });
-        xxnrdelay(2);
-        var label = xxnrElementClass.xxnrRepesent_client(window).inviteNum();
-        var numStr = label.substr(3, label.length - 6);
-
-        var num = parseInt(numStr);
-        var count = xxnrElementClass.xxnrRepesent_client(window).cells().length;
-        assertEquals(num, count);
-    }
-})
-test("我的客户  上滑加载",function(){
-    if (xxnrElementClass.xxnrRepesent_client(window).cells().length > 0)
-    {
-        var label = xxnrElementClass.xxnrRepesent_client(window).inviteNum();
-        var numStr = label.substr(3,label.length-6);
-
-        var num = parseInt(numStr);
-        var count = Math.floor(num/10);
-
-        xxnrlogMessage("'"+count+"'");
-
-        for (var i=0;i<=count;i++)
-        {
-            target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
-            target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
-
-            xxnrdelay(2);
-            window.tableViews()[0].visibleCells()[0].tap();
-            xxnrdelay(2);
-            xxnrlogEleTree(window);
-            xxnrElementClass.navBack(window).tap();
-        }
-=======
->>>>>>> ynn_ios
-    }
-})
-// test("我的客户 下拉刷新",function(){
-//     xxnrdelay(2);
-//     xxnrElementClass.xxnrRepesent(window).myclientTab().tap();
-//     xxnrdelay(2);
-//     if (xxnrElementClass.xxnrRepesent_client(window).inviteLabel().isVisible()) {
-//         xxnrElementClass.xxnrRepesent(window).myclientTab().dragInsideWithOptions({
-//             startOffset: {x: 0.74, y: -3.54},
-//             endOffset: {x: 0.83, y: 0.99}
-//         });
-//         xxnrdelay(2);
-//         var label = xxnrElementClass.xxnrRepesent_client(window).inviteNum();
-//         var numStr = label.substr(3, label.length - 6);
-//
-//         var num = parseInt(numStr);
-//         var count = xxnrElementClass.xxnrRepesent_client(window).cells().length;
-//         assertEquals(num, count);
-//     }
-// })
-// test("我的客户  上滑加载",function(){
-//     if (xxnrElementClass.xxnrRepesent_client(window).cells().length > 0)
-//     {
-//         var label = xxnrElementClass.xxnrRepesent_client(window).inviteNum();
-//         var numStr = label.substr(3,label.length-6);
-//
-//         var num = parseInt(numStr);
-//         var count = Math.floor(num/10);
-//
-//         xxnrlogMessage("'"+count+"'");
-//
-//         for (var i=0;i<=count;i++)
-//         {
-//             target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
-//             target.dragFromToForDuration({x:209.00, y:487.50}, {x:237.50, y:21.00}, 1.4);
-//
-//             xxnrdelay(2);
-//             window.tableViews()[0].visibleCells()[0].tap();
-//             xxnrdelay(2);
-//             xxnrlogEleTree(window);
-//             xxnrElementClass.navBack(window).tap();
-//         }
-//     }
-// })
-
 
 test("我的客户 邀请好友数",function(){
 
@@ -238,9 +150,11 @@ if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
         var todaynum = parseFloat(todaynumStr);
 
         xxnrlogMessage("'"+register+"'");
-
+        xxnrlogEleTree(window);
         xxnrElementClass.xxnrClientRegister(window).addBtn().tap();
         test("没有信息",function () {
+             xxnrdelay(1);
+             xxnrlogEleTree(window);
             xxnrElementClass.addClient(window).saveBtn().tap();
             xxnrlogEleTree(window);
 
@@ -271,11 +185,14 @@ if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
             xxnrElementClass.addClient(window).addressBtn().tap();
             window.pickers()[0   ].wheels()[1].tapWithOptions({tapOffset:{x:0.81, y:0.34}});
             window.pickers()[0].wheels()[2].tapWithOptions({tapOffset:{x:0.44, y:0.49}});
+            xxnrlogEleTree(window);
+             xxnrElementClass.selPro(window).makeSure().tap();
             xxnrElementClass.selPro(window).makeSureBtn().tap();
 
             xxnrElementClass.addClient(window).streetBtn().tap();
             window.pickers()[0].wheels()[0].tapWithOptions({tapOffset:{x:0.65, y:0.52}});
             xxnrdelay(1);
+             xxnrElementClass.selPro(window).makeSure().tap();
             xxnrElementClass.selPro(window).makeSureBtn().tap();
 
             xxnrElementClass.addClient(window).selProBtn().tap();
@@ -286,18 +203,37 @@ if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
             assertNotNull(xxnrElementClass.addClient(window).warningStaticText("请完善信息"));
         })
         test("选择意向商品" ,function(){
-
-        })
-        }
-        test("没有手机号" ,function () {
+            xxnrdelay(1);
             xxnrElementClass.addClient(window).selProBtn().tap();
-            xxnrElementClass.selPro(window).tableView().tapWithOptions({tapOffset:{x:0.47, y:0.05}});
+            xxnrdelay(1);
+            assertEquals("选择意向商品",xxnrElementClass.navTitle(window));
+            var groups = xxnrElementClass.selPro(window).groups();
+            for(var i=0;i<groups.length;i++)
+            {
+                assertNull(xxnrElementClass.selPro(window).groupSel(i).name());
+            }
+            xxnrdelay(1);
+
+            xxnrElementClass.selPro(window).groupBtn(0).tap();
+             xxnrlogEleTree(window);
+            xxnrElementClass.selPro(window).cell(0).tap();
+            xxnrElementClass.selPro(window).cell(1).tap();
+            xxnrdelay(2);
+             xxnrlogEleTree(window);
+           // assertEquals("已选2项",xxnrElementClass.selPro(window).groupSel(0).name());
+            xxnrdelay(1);
             xxnrElementClass.selPro(window).makeSureBtn().tap();
+        })
+
+
+        test("没有手机号",function(){
+//            xxnrElementClass.selPro(window).tableView().tapWithOptions({tapOffset:{x:0.47, y:0.05}});
             xxnrElementClass.addClient(window).phoneTextField().tap();
             xxnrElementClass.addClient(window).phoneTextField().setValue("");
             xxnrElementClass.addClient(window).saveBtn().tap();
             assertNotNull(xxnrElementClass.addClient(window).warningStaticText("请完善信息"));
         })
+
         test("手机号格式错误" ,function () {
             xxnrElementClass.addClient(window).phoneTextField().tap();
             xxnrElementClass.addClient(window).phoneTextField().setValue(errorformatPhone);
@@ -329,23 +265,25 @@ if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
             assertEquals(newtodaynum+1,todaynum);
         })
     })
-
+}
     test("搜索用户",function(){
 //        target.frontMostApp().navigationBar().buttons()["search "].tap();
-        xxnrElementClass.xxnrRepesent_client(window).search().tap();
-        assertNotNull(xxnrElementClass.xxnrSearchUser(window).buttons()["取消"]);
-        assertEquals("Empty list",xxnrElementClass.xxnrSearchUser(window).tableView().name());
+        xxnrElementClass.xxnrRepesent_client(window).searchBtn().tap();
+        assertNotNull(xxnrElementClass.xxnrSearchUser(window).cancelBtn());
+        //assertEquals("Empty list",xxnrElementClass.xxnrSearchUser(window).tableView().name());
 
         xxnrElementClass.xxnrSearchUser(window).searchTextField().setValue("H");
         if(xxnrElementClass.xxnrSearchUser(window).cells().length>0)
         {
             xxnrElementClass.xxnrSearchUser(window).cell(0).tap();
-            assertEquals("客户订单" || "客户详情",xxnrElementClass.navTitle());
-            xxnrElementClass.navBack().tap();
+            assertEquals("客户订单" || "客户详情",xxnrElementClass.navTitle(window));
+            xxnrdelay(1);
+            xxnrlogEleTree(window);
+            xxnrElementClass.navBack(window).tap();
         }
 
         xxnrElementClass.xxnrSearchUser(window).ClearTextBtn().tap();
-        assertEquals("Empty list",xxnrElementClass.xxnrSearchUser(window).tableView().name());
+        //assertEquals("Empty list",xxnrElementClass.xxnrSearchUser(window).tableView().name());
 
         var text = "Hh";
         xxnrElementClass.xxnrSearchUser(window).searchTextField().setValue(text);
@@ -356,46 +294,10 @@ if (xxnrElementClass.xxnrRepesent(window).clientRegisterTab().isVisible())
 
         }
 
-             xxnrElementClass.xxnrSearchUser(window).cells(0).tap();
-             assertEquals("客户订单" || "客户详情",xxnrElementClass.navTitle());
-
-             xxnrElementClass.navBack().tap();
-
-
-        target.frontMostApp().navigationBar().buttons()["取消"].tap();
+            xxnrElementClass.xxnrSearchUser(window).cell(0).tap();
+        assertEquals("客户详情",xxnrElementClass.navTitle(window));
+        xxnrdelay(2);
+        xxnrElementClass.navBack(window).tap();
+        xxnrdelay(2);
+        xxnrElementClass.xxnrSearchUser(window).cancelBtn().tap();
     })
-
-
-    target.frontMostApp().tabBar().buttons()["我的"].tap();
-
-target.frontMostApp().mainWindow().tableViews()[0].tap();
-    xxnrlogMessage("hahahahahaha");
-    xxnrlogEleTree(window);
-    //assertEquals(xxnrElementClass.xxnrRepesent_client(window).inviteNum(),xxnrElementClass.xxnrRepesent_client(window).cells().length);
-
-    target.frontMostApp().mainWindow().tableViews()[0].elements()[2].tapWithOptions({tapOffset:{x:0.63, y:0.49}});
-    target.frontMostApp().mainWindow().tableViews()[0].elements()[2].tapWithOptions({tapOffset:{x:0.77, y:0.53}});
-    target.frontMostApp().mainWindow().tableViews()[0].elements()[2].tapWithOptions({tapOffset:{x:0.70, y:0.50}});
-    xxnrlogEleTree(window);
-
-    target.frontMostApp().mainWindow().buttons()["我的代表"].tap();
-    target.frontMostApp().mainWindow().buttons()["客户登记"].tap();
-    target.frontMostApp().mainWindow().tableViews()[1].cells()[3].tap();
-    target.frontMostApp().navigationBar().buttons()["top back"].tap();
-
-    target.frontMostApp().navigationBar().buttons()["search "].tap();
-    target.frontMostApp().mainWindow().tableViews()[0].cells()["Qqqqqqqqqqqq"].tap();
-    target.frontMostApp().navigationBar().buttons()["top back"].tap();
-    target.frontMostApp().navigationBar().buttons()["取消"].tap();
-    target.frontMostApp().mainWindow().buttons()["我的客户"].tap();
-    target.frontMostApp().mainWindow().buttons()["我的代表"].tap();
-   target.frontMostApp().mainWindow().buttons()["客户登记"].tap();
-    target.frontMostApp().mainWindow().tableViews()[1].buttons()[0].tap();
-    target.frontMostApp().mainWindow().buttons()[4].tap();
-    target.frontMostApp().navigationBar().buttons()["top back"].tap();
-    target.frontMostApp().mainWindow().textViews()[0].staticTexts()["请填写备注信息（30字以内）"].tapWithOptions({tapOffset:{x:0.06, y:0.97}});
-    target.frontMostApp().navigationBar().tap();
-    target.frontMostApp().mainWindow().tableViews()[1].cells()["Ad"].scrollToVisible();
-    target.frontMostApp().statusBar().elements()["4:50 PM"].dragInsideWithOptions({startOffset:{x:1.74, y:23.27}, endOffset:{x:1.79, y:0.03}});
-
-
