@@ -96,6 +96,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"icon_navbg"] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.alpha = 1;
+    
+    self.navigationController.navigationBar.translucent = NO;
+
     // 创建导航栏
     [self createNavgation];
 

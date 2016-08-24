@@ -44,7 +44,7 @@
     bgView.layer.masksToBounds = YES;
     [self.contentView addSubview:bgView];
     
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(20), PX_TO_PT(20), ScreenWidth, PX_TO_PT(32))];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(PX_TO_PT(20), PX_TO_PT(20), ScreenWidth/2, PX_TO_PT(32))];
     nameLabel.textAlignment = NSTextAlignmentLeft;
     nameLabel.textColor = R_G_B_16(0x323232);
     nameLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
