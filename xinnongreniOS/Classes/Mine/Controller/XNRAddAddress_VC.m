@@ -343,6 +343,31 @@
     return YES;
 }
 
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField == self.recivePersonTF) {
+        NSString * mstr = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        if (mstr.length>12) {
+            textField.text = [mstr substringFromIndex:12];
+            [self.recivePersonTF resignFirstResponder];
+            [UILabel showMessage:@"您的输入超过限制"];
+            return NO;
+        }
+
+    }else if (textField == self.detailAddressTF){
+        NSString * mstr = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        if (mstr.length>30) {
+            textField.text = [mstr substringFromIndex:30];
+            [self.detailAddressTF resignFirstResponder];
+            [UILabel showMessage:@"您的输入超过限制"];
+            return NO;
+        }
+
+    }
+      return YES;
+}
+
+
 -(void)createMidView{
     UIView *midView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.topBgView.frame) + MARGIN, ScreenWidth, PX_TO_PT(98))];
     midView.backgroundColor = [UIColor whiteColor];

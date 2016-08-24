@@ -201,10 +201,8 @@
     // 加密
     NSString *oldPwd = self.newpasswordTextField.text;
     NSString *newPwd = self.againPasswordTextField.text;
-    NSString *oldPassword;
-//    = [GBAlipayManager encryptString:oldPwd publicKey:self.pubKey];
-    NSString *newPassword;
-//    = [GBAlipayManager encryptString:newPwd publicKey:self.pubKey];
+    NSString *oldPassword = [GBAlipayManager encryptString:oldPwd publicKey:self.pubKey];
+    NSString *newPassword = [GBAlipayManager encryptString:newPwd publicKey:self.pubKey];
     
 
     NSString *userID = [DataCenter account].userid;

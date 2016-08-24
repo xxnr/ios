@@ -149,13 +149,9 @@
 
 - (void)deleteBtnClick:(UIButton *)button
 {
-    BMAlertView *alertView = [[BMAlertView alloc] initTextAlertWithTitle:nil content:@"确认要删除该地址吗?" chooseBtns:@[@"取消",@"确定"]];
-    alertView.chooseBlock = ^void(UIButton *btn){
-        if (btn.tag == 11) {
-            self.deleteCellBlock();
-        }
-    };
-    [alertView BMAlertShow];
+    if (self.deleteCellBlock) {
+        self.deleteCellBlock();
+    }
 }
 
 #pragma mark - 设置model数据模型的数据

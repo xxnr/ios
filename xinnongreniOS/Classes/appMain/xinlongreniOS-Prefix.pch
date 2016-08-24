@@ -62,7 +62,7 @@
 //网络是否打开
 #define NETWORK_OPEN [[MonitorNetworkViewController sharedInstance] isOpen]
 ///0-测试地址 1-生产地址
-#define kYBNetworkRelease 1
+#define kYBNetworkRelease 0
 
 #if kYBNetworkRelease
 
@@ -75,7 +75,7 @@
 #endif
 
 ///0-测试地址 1-生产地址
-#define kXNRNetworkRelease 1
+#define kXNRNetworkRelease 0
 
 #if kXNRNetworkRelease
 

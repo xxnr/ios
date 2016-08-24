@@ -623,8 +623,9 @@
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
+    __weak __typeof(self)weakSelf = self;
     [self.propertyView setXNRAddShoppingCarBlock:^{
-        [self addshoppingCar];
+        [weakSelf addshoppingCar];
     }];
     [self.propertyView show:XNRAddCartType];
     _bottomBtnClick = YES;
