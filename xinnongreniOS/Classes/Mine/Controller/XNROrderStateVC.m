@@ -112,7 +112,7 @@
     [self.view addSubview:view];
     
     UIView *verticalline = [[UIView alloc]init];
-    verticalline.frame = CGRectMake(PX_TO_PT(37),PX_TO_PT(65), PX_TO_PT(4), view.height-PX_TO_PT(100)-PX_TO_PT(65));
+    verticalline.frame = CGRectMake(PX_TO_PT(37),PX_TO_PT(65), PX_TO_PT(4), view.height-PX_TO_PT(176));
     verticalline.backgroundColor = R_G_B_16(0xe3e3e3);
 
     if (self.statusArr.count > 1) {
@@ -139,17 +139,7 @@
 
         }
         
-
-//        UIButton *icon = [[UIButton alloc]initWithFrame:CGRectMake(PX_TO_PT(19), PX_TO_PT(35), PX_TO_PT(42), PX_TO_PT(42))];
-//        [icon setBackgroundColor:R_G_B_16(0xB0B0B0)];
-//        [icon setImage:firstDic[@"icon"] forState:UIControlStateNormal];
-//        icon.layer.cornerRadius = PX_TO_PT(21);
-//        icon.layer.masksToBounds = YES;
-//        icon.enabled = NO;
-//        [firstView addSubview:icon];
-        
-        
-        UIView *icon = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(19), PX_TO_PT(35), PX_TO_PT(42), PX_TO_PT(42))];
+        UIView *icon = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(19), PX_TO_PT(33), PX_TO_PT(42), PX_TO_PT(42))];
         [icon setBackgroundColor:R_G_B_16(0xB0B0B0)];
         UIImage *image =firstDic[@"icon"];
         UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake((icon.size.width-image.size.width)/2, (icon.size.height-image.size.height)/2, image.size.width, image.size.height)];
@@ -163,36 +153,36 @@
         rect.origin.x = icon.centerX;
         verticalline.frame = rect;
         
-        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(icon.frame)+PX_TO_PT(27), PX_TO_PT(38), ScreenWidth/3, PX_TO_PT(30))];
+        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(icon.frame)+PX_TO_PT(27), PX_TO_PT(36), ScreenWidth/3, PX_TO_PT(32))];
         titleLabel.text = firstDic[@"name"];
         titleLabel.textColor = R_G_B_16(0xB0B0B0);
         titleLabel.font = [UIFont systemFontOfSize:PX_TO_PT(32)];
         [firstView addSubview:titleLabel];
         CGFloat timeLabelY = CGRectGetMaxY(titleLabel.frame)+PX_TO_PT(20);
-        CGFloat lineY = CGRectGetMaxY(titleLabel.frame)+PX_TO_PT(34);
+        CGFloat lineY = CGRectGetMaxY(titleLabel.frame)+PX_TO_PT(36);
 
         if (i ==0) {
-            UILabel *remarkLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(titleLabel.frame), CGRectGetMaxY(titleLabel.frame)+PX_TO_PT(18), PX_TO_PT(585), PX_TO_PT(70))];
+            UILabel *remarkLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(titleLabel.frame), CGRectGetMaxY(titleLabel.frame)+PX_TO_PT(18), PX_TO_PT(601), PX_TO_PT(70))];
             remarkLabel.text = firstDic[@"warning"];
             remarkLabel.textColor = R_G_B_16(0x00B38A);
             remarkLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
             remarkLabel.numberOfLines = 0;
             [firstView addSubview:remarkLabel];
             
-            timeLabelY =CGRectGetMaxY(remarkLabel.frame)+PX_TO_PT(20);
-            lineY =CGRectGetMaxY(remarkLabel.frame)+PX_TO_PT(34);
+            timeLabelY =CGRectGetMaxY(remarkLabel.frame)+PX_TO_PT(18);
+            lineY =CGRectGetMaxY(remarkLabel.frame)+PX_TO_PT(36);
 
         }
         UILabel *timeLabel =[[UILabel alloc]init];
         if (firstDic[@"time"] && ![firstDic[@"time"]isEqualToString:@""])
         {
-        timeLabel.frame = CGRectMake(CGRectGetMinX(titleLabel.frame), timeLabelY, ScreenWidth, PX_TO_PT(22));
+        timeLabel.frame = CGRectMake(CGRectGetMinX(titleLabel.frame), timeLabelY, ScreenWidth, PX_TO_PT(30));
         timeLabel.text = firstDic[@"time"];
         timeLabel.textColor = R_G_B_16(0xB0B0B0);
         timeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         [firstView addSubview:timeLabel];
             
-            lineY =CGRectGetMaxY(timeLabel.frame)+PX_TO_PT(34);
+            lineY =CGRectGetMaxY(timeLabel.frame)+PX_TO_PT(36);
 
         }
         
@@ -210,6 +200,9 @@
             }
         }
         
+        CGRect firstViewrect = firstView.frame;
+        firstViewrect.size.height = lineY+PX_TO_PT(2);
+        firstView.frame = firstViewrect;
         
         [view addSubview:firstView];
         currentY = CGRectGetMaxY(firstView.frame)+PX_TO_PT(2);
@@ -219,6 +212,8 @@
     CGRect rect = view.frame;
     rect.size.height = currentY;
     view.frame = rect;
+    verticalline.frame = CGRectMake(PX_TO_PT(37),PX_TO_PT(65), PX_TO_PT(4), view.height-PX_TO_PT(176));
+
     
     for (int i=0; i<2; i++) {
         UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 0+view.height*i, ScreenWidth, PX_TO_PT(2))];
