@@ -176,7 +176,6 @@
     
     //    self.mainScrollView.delegate = nil;
     [self.blowView removeFromSuperview];
-    
     [super viewWillDisappear:animated];
     [self.layer removeFromSuperlayer];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"icon_navbg"] forBarMetrics:UIBarMetricsDefault];

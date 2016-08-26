@@ -77,7 +77,7 @@
     UILabel *addtionsLabel = [[UILabel alloc] init];
     addtionsLabel.textColor = R_G_B_16(0x909090);
     addtionsLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
-    addtionsLabel.numberOfLines = 0;
+//    addtionsLabel.numberOfLines = 0;
     self.addtionsLabel = addtionsLabel;
     [self.contentView addSubview:addtionsLabel];
     
