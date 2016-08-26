@@ -194,6 +194,8 @@
     {
         filterCurPage = 1;
         [_filterArr removeAllObjects];
+        [_totalArray removeAllObjects];
+        [_compositorArr removeAllObjects];
         [self getselectDataWithName:self.brands and:self.gxArr and:self.txArr and:self.reservePrice and:self.kinds];
     }
     [self.tableView reloadData];
@@ -354,6 +356,9 @@
         
         _lastType = type;
     }else if(type == XNRferView_DoSelectType){   // 筛选
+        
+         [_compositorArr removeAllObjects];
+        [_totalArray removeAllObjects];
         
         self.currentBtn = 3;
         filterCurPage = 1;
@@ -587,7 +592,7 @@
         dic =@{@"brand":str?str:@"",@"classId":_classId?_classId:@"",@"reservePrice":param4?param4:@"",@"rowCount":[NSString stringWithFormat:@"%d",MAX_PAGE_SIZE],@"page":[NSString stringWithFormat:@"%d",filterCurPage],@"token":[DataCenter account].token?[DataCenter account].token:@"",@"user-agent":@"IOS-v2.0"};
     }
     [manager POST:KHomeGetProductsListPage parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self.filterArr removeAllObjects];
+//        [self.filterArr removeAllObjects];
         id resultObj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
         NSDictionary *resultDic;
@@ -603,22 +608,22 @@
                 [model setValuesForKeysWithDictionary:dicts];
                 [_filterArr addObject:model];
             }
-            [self.tableView reloadData];
+//            [self.tableView reloadData];
             
         }
         
         // 筛选为空
         [self noselectViewShowAndHidden:_filterArr];
         //        self.tableView.legendFooter.hidden = YES;
-        self.tableView.mj_footer.hidden = YES;
+//        self.tableView.mj_footer.hidden = YES;
 //        [self.tableView reloadData];
         
         if (!istotal) {
         
             _fertype = XNRferView_DoPriceType;
             _lastType =XNRferView_DoPriceType;
-            compositorCurPage = 1;
-            [_compositorArr removeAllObjects];
+            compositorCurPage = filterCurPage;
+//            [_compositorArr removeAllObjects];
             if (isSort) { // 正序
                 NSLog(@"正序");
                 [self getPriceDataWith:@"price-asc"];
@@ -631,8 +636,8 @@
         {
             _fertype = XNRferView_DoTotalType;
             _lastType =XNRferView_DoTotalType;
-            totalCurPage = 1;
-            [_totalArray removeAllObjects];
+            totalCurPage = filterCurPage;
+//            [_totalArray removeAllObjects];
             [self getTotalData];
         }
         //  如果到达最后一页 就消除footer
