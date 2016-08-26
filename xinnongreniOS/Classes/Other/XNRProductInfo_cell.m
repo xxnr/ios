@@ -218,7 +218,7 @@
 -(void)setupPageController
 {
     if (_model.pictures.count>1) {
-        UILabel *noLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(112), PX_TO_PT(700)-80, PX_TO_PT(80), PX_TO_PT(80))];
+        UILabel *noLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth-PX_TO_PT(110), PX_TO_PT(700)-80, PX_TO_PT(80), PX_TO_PT(80))];
         noLabel.text = [NSString stringWithFormat:@"1/%tu",_model.pictures.count];
         noLabel.textAlignment = NSTextAlignmentCenter;
         noLabel.layer.cornerRadius = PX_TO_PT(40);
@@ -403,31 +403,44 @@
     // 添加图片
     CGFloat imageW = self.scrollView.width;
     CGFloat imageH = self.scrollView.height;
-    for (int i = 0; i<self.model.pictures.count; i++) {
-        UIImageView *headView = [[UIImageView alloc] init];
-        // 设置frame
-        headView.y = 0;
-        headView.width = imageW;
-        headView.height = imageH;
-        headView.x =i * imageW;
-        headView.userInteractionEnabled = YES;
-        self.headView = headView;
-        [self.scrollView addSubview:headView];
-        
-        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoTap:)];
-        [headView addGestureRecognizer:gestureRecognizer];    //商品图片
-        XNRProductPhotoModel *photoModel = self.model.pictures[i];
-        
-        NSString *imageUrl=[HOST stringByAppendingString:photoModel.imgUrl];
-        [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            
-        if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
+    if (self.model.pictures.count == 0) {
+        for (int i = 0; i<1; i++) {
+            UIImageView *headView = [[UIImageView alloc] init];
+            // 设置frame
+            headView.y = 0;
+            headView.width = imageW;
+            headView.height = imageH;
+            headView.x =i * imageW;
+            headView.userInteractionEnabled = YES;
             [headView setImage:[UIImage imageNamed:@"icon_placehold"]];
-        }else{
-            [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
-        }}];
-    
-    }
+            self.headView = headView;
+            [self.scrollView addSubview:headView];
+        }
+    }else{
+        for (int i = 0; i<self.model.pictures.count; i++) {
+            UIImageView *headView = [[UIImageView alloc] init];
+            // 设置frame
+            headView.y = 0;
+            headView.width = imageW;
+            headView.height = imageH;
+            headView.x =i * imageW;
+            headView.backgroundColor = [UIColor redColor];
+            headView.userInteractionEnabled = YES;
+            self.headView = headView;
+            [self.scrollView addSubview:headView];
+            
+            UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoTap:)];
+            [headView addGestureRecognizer:gestureRecognizer];    //商品图片
+            XNRProductPhotoModel *photoModel = self.model.pictures[i];
+            NSString *imageUrl=[HOST stringByAppendingString:photoModel.imgUrl];
+            [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_placehold"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                if (imageUrl == nil || [imageUrl isEqualToString:@""]) {
+                    [headView setImage:[UIImage imageNamed:@"icon_placehold"]];
+                }else{
+                    [headView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"icon_loading_wrong"]];
+                }}];
+            }
+        }
     // 3.设置其他属性
     self.scrollView.contentSize = CGSizeMake(self.model.pictures.count * imageW, 0);
     self.scrollView.pagingEnabled = YES;

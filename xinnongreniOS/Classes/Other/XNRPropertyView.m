@@ -665,23 +665,16 @@
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
-//    [self XNRAddShoppingCarBlock];
-    
-    
-    
     XNRProductInfo_model *model = [self.goodsArray lastObject];
     if (model.SKUAttributes.count == _recordeSelected) {
         if(IS_Login == YES) {
             [self synchShoppingCarData];
-            
         } else {
             [self cancelBtnClick];
             [self successOrfail];
         }
-
     }else{
         [UILabel showMessage:@"请选择商品信息"];
-
     }
 
 }
@@ -709,23 +702,12 @@
         b = [manager updateShoppingCarWithModel:model];
     }
     if (b) {
-<<<<<<< HEAD
-        if (self.XNRAddShoppingCarBlock) {
-            self.XNRAddShoppingCarBlock();
-        }
-=======
-//        self.XNRAddShoppingCarBlock();
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addshoppingCar) name:@"addShoppingCar" object:nil];
-
         [[NSNotificationCenter defaultCenter] postNotificationName:@"addShoppingCar" object:nil];
->>>>>>> ynn_ios
-        
         dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.3 * NSEC_PER_SEC));
         dispatch_after(delayTime, dispatch_get_main_queue(), ^{
             [UILabel showMessage:@"加入购物车成功"];
         });
     }else{
-        
         [UILabel showMessage:@"加入购物车失败"];
     }
 

@@ -403,7 +403,6 @@
         [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_standard_url]];
         [self.webView loadRequest:request];
-        //        [SVProgressHUD dismiss];
         
         self.tempLabel.textColor = R_G_B_16(0x646464);
         titleLabel.textColor = R_G_B_16(0x00b38a);
@@ -421,7 +420,6 @@
         [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeClear];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:frameModel.infoModel.app_support_url]];
         [self.webView loadRequest:request];
-        //        [SVProgressHUD dismiss];
     }
 }
 
@@ -627,17 +625,7 @@
 #pragma mark-加入购物车
 -(void)addBuyCar
 {
-<<<<<<< HEAD
-    __weak __typeof(self)weakSelf = self;
-    [self.propertyView setXNRAddShoppingCarBlock:^{
-        [weakSelf addshoppingCar];
-    }];
-=======
     
-//    [self.propertyView setXNRAddShoppingCarBlock:^{
-//        [self addshoppingCar];
-//    }];
->>>>>>> ynn_ios
     [self.propertyView show:XNRAddCartType];
     _bottomBtnClick = YES;
     
