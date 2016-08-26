@@ -415,6 +415,10 @@
             [headView setImage:[UIImage imageNamed:@"icon_placehold"]];
             self.headView = headView;
             [self.scrollView addSubview:headView];
+            
+            UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoTap:)];
+            [headView addGestureRecognizer:gestureRecognizer];
+
         }
     }else{
         for (int i = 0; i<self.model.pictures.count; i++) {

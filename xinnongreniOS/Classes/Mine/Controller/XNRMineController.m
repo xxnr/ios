@@ -105,81 +105,10 @@
                 
             }
             [self setupDatasWithcache];
+            [self setupDatasWithNetWork];
+
         }else{
-            [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
-                
-                if([result[@"code"] integerValue] == 1000){
-                    
-                    NSDictionary *dict = result[@"datas"];
-                    NSDictionary *address = dict[@"address"];
-                    NSDictionary *province = address[@"province"];
-                    NSDictionary *city = address[@"city"];
-                    NSDictionary *county = address[@"county"];
-                    NSDictionary *town = address[@"town"];
-                    
-                    UserInfo *info = [DataCenter account];
-                    info.photo = dict[@"photo"];
-                    info.phone = dict[@"phone"];
-                    info.nickname = dict[@"nickname"];
-                    info.name = dict[@"name"];
-                    info.type = dict[@"userType"];
-                    info.typeName = dict[@"userTypeInName"];
-                    info.sex = dict[@"sex"];
-                    info.isRSC = dict[@"isRSC"];
-                    info.verifiedTypes = dict[@"verifiedTypesInJson"];
-                    
-                    NSArray *Arr = dict[@"verifiedTypesInJson"];
-                    [self.verifiedTypes removeAllObjects];
-                    [XNRMyRepresentViewController SetisBroker:NO];
-                    
-                    for (int i=0 ; i<Arr.count; i++) {
-                        NSString *name =dict[@"verifiedTypesInJson"][i][@"typeName"];
-                        [self.verifiedTypes addObject:name];
-                        if ([name isEqualToString:@"新农经纪人"]) {
-                            [XNRMyRepresentViewController SetisBroker:YES];
-                        }
-                    }
-                    
-                    info.provinceID = province[@"id"];
-                    info.cityID = city[@"id"];
-                    info.countyID = county[@"id"];
-                    [DataCenter saveAccount:info];
-                    
-                    [_userArray removeAllObjects];
-                    XNRUserInfoModel *model = [[XNRUserInfoModel alloc] init];
-                    [model setValuesForKeysWithDictionary:dict];
-                    [_userArray addObject:model];
-                    
-                    model.province = province[@"name"];
-                    model.city = city[@"name"];
-                    
-                    if (![KSHttpRequest isNULL:county]) {
-                        model.county = county[@"name"];
-                        
-                    }
-                    if (![KSHttpRequest isNULL:town]) {
-                        model.town = town[@"name"];
-                    }
-                    if (IS_Login) {
-                        [self createMainTableView];
-                        [self createLoginTopView];
-                        [self createMiddleView];
-                        [self refreshTop];
-                        
-                    }
-                    //设置视图的数据
-                    [self setupDatas:model];
-                }
-                
-            } failure:^(NSError *error) {
-                [self createMainTableView];
-                [self createLoginTopView];
-                [self createMiddleView];
-                [self refreshTop];
-                
-                [UILabel showMessage:@"网络请求失败"];
-                
-            }];
+            [self setupDatasWithNetWork];
         }
 
     }else{
@@ -258,6 +187,85 @@
         }
     }
 
+
+}
+
+-(void)setupDatasWithNetWork
+{
+    [KSHttpRequest post:KUserGet parameters:@{@"userId":[DataCenter account].userid,@"user-agent":@"IOS-v2.0"} success:^(id result) {
+        
+        if([result[@"code"] integerValue] == 1000){
+            
+            NSDictionary *dict = result[@"datas"];
+            NSDictionary *address = dict[@"address"];
+            NSDictionary *province = address[@"province"];
+            NSDictionary *city = address[@"city"];
+            NSDictionary *county = address[@"county"];
+            NSDictionary *town = address[@"town"];
+            
+            UserInfo *info = [DataCenter account];
+            info.photo = dict[@"photo"];
+            info.phone = dict[@"phone"];
+            info.nickname = dict[@"nickname"];
+            info.name = dict[@"name"];
+            info.type = dict[@"userType"];
+            info.typeName = dict[@"userTypeInName"];
+            info.sex = dict[@"sex"];
+            info.isRSC = dict[@"isRSC"];
+            info.verifiedTypes = dict[@"verifiedTypesInJson"];
+            
+            NSArray *Arr = dict[@"verifiedTypesInJson"];
+            [self.verifiedTypes removeAllObjects];
+            [XNRMyRepresentViewController SetisBroker:NO];
+            
+            for (int i=0 ; i<Arr.count; i++) {
+                NSString *name =dict[@"verifiedTypesInJson"][i][@"typeName"];
+                [self.verifiedTypes addObject:name];
+                if ([name isEqualToString:@"新农经纪人"]) {
+                    [XNRMyRepresentViewController SetisBroker:YES];
+                }
+            }
+            
+            info.provinceID = province[@"id"];
+            info.cityID = city[@"id"];
+            info.countyID = county[@"id"];
+            [DataCenter saveAccount:info];
+            
+            [_userArray removeAllObjects];
+            XNRUserInfoModel *model = [[XNRUserInfoModel alloc] init];
+            [model setValuesForKeysWithDictionary:dict];
+            [_userArray addObject:model];
+            
+            model.province = province[@"name"];
+            model.city = city[@"name"];
+            
+            if (![KSHttpRequest isNULL:county]) {
+                model.county = county[@"name"];
+                
+            }
+            if (![KSHttpRequest isNULL:town]) {
+                model.town = town[@"name"];
+            }
+            if (IS_Login) {
+                [self createMainTableView];
+                [self createLoginTopView];
+                [self createMiddleView];
+                [self refreshTop];
+                
+            }
+            //设置视图的数据
+            [self setupDatas:model];
+        }
+        
+    } failure:^(NSError *error) {
+        [self createMainTableView];
+        [self createLoginTopView];
+        [self createMiddleView];
+        [self refreshTop];
+        
+        [UILabel showMessage:@"网络请求失败"];
+        
+    }];
 
 }
 

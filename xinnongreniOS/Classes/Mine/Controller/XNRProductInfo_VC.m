@@ -633,12 +633,6 @@
 -(void)addBuyCar
 {
     
-<<<<<<< HEAD
-=======
-    //    [self.propertyView setXNRAddShoppingCarBlock:^{
-    //        [self addshoppingCar];
-    //    }];
->>>>>>> ynn_ios
     [self.propertyView show:XNRAddCartType];
     _bottomBtnClick = YES;
     
@@ -767,11 +761,20 @@
     [self.picBrowserList removeAllObjects];
     NSInteger count = frame.infoModel.pictures.count;
     
-    for (int i = 0; i<count; i++) {
-        XNRProductPhotoModel *photoModel = frame.infoModel.pictures[i];
-        MWPhoto *photo=[MWPhoto photoWithURL:[NSURL URLWithString:[HOST stringByAppendingString:photoModel.originalUrl]]];
-        [self.picBrowserList addObject:photo];
+    if (count == 0) {
+        for (int i = 0; i<1; i++) {
+            MWPhoto *photo=[MWPhoto photoWithImage:[UIImage imageNamed:@"icon_placehold"]];
+            [self.picBrowserList addObject:photo];
+        }
+
+    }else{
+        for (int i = 0; i<count; i++) {
+            XNRProductPhotoModel *photoModel = frame.infoModel.pictures[i];
+            MWPhoto *photo=[MWPhoto photoWithURL:[NSURL URLWithString:[HOST stringByAppendingString:photoModel.originalUrl]]];
+            [self.picBrowserList addObject:photo];
+        }
     }
+    
     
     MWPhotoBrowser *photoBrowser=[[MWPhotoBrowser alloc] initWithDelegate:self];
     photoBrowser.displayActionButton=NO;

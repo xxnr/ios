@@ -328,7 +328,7 @@
     typeLabel.textColor = R_G_B_16(0x909090);
     typeLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
     typeLabel.text = [DataCenter account].typeName?[DataCenter account].typeName:@"选择";
-    if ([[DataCenter account].typeNum integerValue] == 5 || [_model.userType integerValue] == 5) {
+    if ([[DataCenter account].type integerValue] == 5 || [_model.userType integerValue] == 5) {
         [self createRscView];
     }else{
         [self.RscBtn removeFromSuperview];
