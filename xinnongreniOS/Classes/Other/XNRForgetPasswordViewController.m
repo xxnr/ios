@@ -874,9 +874,10 @@
             }else{
                 [UILabel showMessage:result[@"message"]];
             }
-            
+            [SVProgressHUD dismiss];
+
         } failure:^(NSError *error) {
-            
+            [SVProgressHUD dismiss];
             [UILabel showMessage:@"网络错误"];
         }];
     }
