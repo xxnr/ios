@@ -706,7 +706,7 @@
         
         CGSize size = [sectionModel.address sizeWithFont:[UIFont systemFontOfSize:PX_TO_PT(28)] constrainedToSize:CGSizeMake(ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), MAXFLOAT)];
         UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(addressImage.frame) + PX_TO_PT(20), CGRectGetMaxY(nameLabel.frame) + PX_TO_PT(32), ScreenWidth-CGRectGetMaxX(addressImage.frame) - PX_TO_PT(52), size.height)];
-        addressLabel.textColor = R_G_B_16(0xe0e0e0);
+        addressLabel.textColor = R_G_B_16(0x323232);
         addressLabel.font = [UIFont systemFontOfSize:PX_TO_PT(28)];
         addressLabel.numberOfLines = 0;
         addressLabel.text = sectionModel.address;

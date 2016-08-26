@@ -89,7 +89,7 @@
 @property (nonatomic,weak)CAGradientLayer *layer;
 @property (nonatomic,assign) BOOL is_loading;
 @property (nonatomic,weak)UIView *blowView;
-@property (nonatomic,assign)BOOL isPhotoVC;
+@property (nonatomic,assign)BOOL changeTableViewFrame;
 @end
 
 @implementation XNRProductInfo_VC
@@ -160,13 +160,12 @@
 
 -(void)viewWillDisappear:(BOOL)animated{
     
-//    [[NSNotificationCenter defaultCenter]removeObserver:self];
-
+    //    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"addShoppingCar" object:nil];
     
     //    self.mainScrollView.delegate = nil;
     [self.blowView removeFromSuperview];
-    
     [super viewWillDisappear:animated];
     [self.layer removeFromSuperlayer];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"icon_navbg"] forBarMetrics:UIBarMetricsDefault];
@@ -191,8 +190,10 @@
     UIScrollView *mainScrollView = [MyControl createUIScrollViewWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) contentSize:CGSizeMake(ScreenWidth, 600*SCALE) pagingEnabled:NO showsHorizontalScrollIndicator:NO showsVerticalScrollIndicator:NO delegate:self];
     self.mainScrollView.delegate = self;
     self.mainScrollView = mainScrollView;
+    self.mainScrollView.scrollEnabled = NO;
+    
     [self.scrollView addSubview:mainScrollView];
-//    self.automaticallyAdjustsScrollViewInsets = NO;
+    //    self.automaticallyAdjustsScrollViewInsets = NO;
     // 获取网络数据
     [self getData];
     _goodsArray  = [NSMutableArray array];
@@ -208,6 +209,7 @@
     [self.view addSubview:self.scrollView];
     [self.mainScrollView addSubview:self.tableView];
     [self.scrollView addSubview:self.webView];
+    self.changeTableViewFrame = YES;
     
     
     // 设置UITableView的上拉加载
@@ -228,6 +230,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notSelectedAttributes) name:@"notSelectedAttributes" object:nil];
     
+    
 }
 
 -(void)notSelectedAttributes
@@ -238,6 +241,9 @@
 
 -(void)loadMoreData{
     
+    _midView.frame = CGRectMake(0, ScreenHeight+64+64, ScreenWidth, PX_TO_PT(80));
+    _webView.frame = CGRectMake(0, ScreenHeight+PX_TO_PT(80)+64+64, ScreenWidth, ScreenHeight-PX_TO_PT(160)-PX_TO_PT(80)-PX_TO_PT(40));
+    
     _is_loading = YES;
     [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionLayoutSubviews animations:^{
         self.scrollView.contentOffset = CGPointMake(0, ScreenHeight);
@@ -247,7 +253,6 @@
     } completion:^(BOOL finished) {
         //结束加载
         [self.tableView.mj_footer endRefreshing];
-        //        [self.navigationController.navigationBar ps_setBackgroundColor:[UIColor clearColor]];
         
         
     }];
@@ -258,7 +263,9 @@
     //下拉执行对应的操作
     [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionLayoutSubviews animations:^{
         self.scrollView.contentOffset = CGPointMake(0, 0);
-        self.tableView.frame = CGRectMake(0, 64, ScreenWidth, ScreenHeight - 64);
+        //        self.tableView.frame = CGRectMake(0, 64, ScreenWidth, ScreenHeight - PX_TO_PT(80));
+        
+        self.mainScrollView.frame =CGRectMake(0, 64, ScreenWidth, ScreenHeight-PX_TO_PT(80));
         
         self.tableView.contentOffset = CGPointMake(0, 0);
         [self.navigationController.navigationBar ps_setBackgroundColor:[NavigationBarBGColor colorWithAlphaComponent:0]];
@@ -297,7 +304,7 @@
 {
     if (_tableView == nil)
     {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - PX_TO_PT(80)) style:UITableViewStylePlain];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         UIView * view = [[UIView alloc] init];
@@ -626,6 +633,12 @@
 -(void)addBuyCar
 {
     
+<<<<<<< HEAD
+=======
+    //    [self.propertyView setXNRAddShoppingCarBlock:^{
+    //        [self addshoppingCar];
+    //    }];
+>>>>>>> ynn_ios
     [self.propertyView show:XNRAddCartType];
     _bottomBtnClick = YES;
     
@@ -634,8 +647,8 @@
 -(void)addshoppingCar
 {
     self.productView.hidden = NO;
-//    __weak __typeof(self)weakSelf = self;
-
+    //    __weak __typeof(self)weakSelf = self;
+    
     [UIView animateWithDuration:0.2f animations:^{
         self.productView.transform = CGAffineTransformMakeScale(1.5, 1.5);
     }completion:^(BOOL finished) {
@@ -646,11 +659,11 @@
                 self.productView.transform = CGAffineTransformMakeScale(0.4, 0.4);
                 self.productView.alpha = 0.1;
                 CGRect rect = self.productView.frame;
-//                rect.origin = CGPointMake(ScreenWidth-PX_TO_PT(50), 30);
+                //                rect.origin = CGPointMake(ScreenWidth-PX_TO_PT(50), 30);
                 rect.origin.x = self.shopcarButton.center.x-PX_TO_PT(5);
                 rect.origin.y = self.shopcarButton.center.y+PX_TO_PT(5);
                 self.productView.frame = rect;
-
+                
             } completion:^(BOOL finished) {
                 [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionTransitionNone animations:^{
                     self.productView.alpha = 0;
@@ -764,7 +777,6 @@
     photoBrowser.displayActionButton=NO;
     photoBrowser.alwaysShowControls=NO;
     [photoBrowser setCurrentPhotoIndex:page];
-    self.isPhotoVC = YES;
     [self.navigationController pushViewController:photoBrowser animated:YES];
     
 }
@@ -781,7 +793,7 @@
     [self.navigationController.navigationBar ps_setBackgroundColor:[NavigationBarBGColor colorWithAlphaComponent:0]];
     self.navigationController.navigationBar.translucent = YES;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-
+    
     
     UIColor *colorOne = [UIColor colorWithRed:(33/255.0)  green:(33/255.0)  blue:(33/255.0)  alpha:0.3];
     UIColor *colorTwo = [UIColor colorWithRed:(33/255.0)  green:(33/255.0)  blue:(33/255.0)  alpha:0.0];
@@ -800,6 +812,22 @@
     [self.navigationController.navigationBar.layer insertSublayer:headerLayer atIndex:0];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addshoppingCar) name:@"addShoppingCar" object:nil];
+    
+    if (!self.changeTableViewFrame) {
+        self.mainScrollView.frame =CGRectMake(0, 64, ScreenWidth, ScreenHeight-PX_TO_PT(80));
+    }
+    else
+    {
+        self.changeTableViewFrame = NO;
+    }
+    
+    if ([self.navigationItem.title isEqualToString:@"商品详情"]) {
+        //        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"icon_navbg"] forBarMetrics:UIBarMetricsDefault];
+        [self.navigationController.navigationBar ps_setBackgroundColor:[NavigationBarBGColor colorWithAlphaComponent:1]];
+        
+        _webView.frame = CGRectMake(0, ScreenHeight+PX_TO_PT(80)+64, ScreenWidth, ScreenHeight-PX_TO_PT(160)-PX_TO_PT(80)-PX_TO_PT(40));
+        _midView.frame = CGRectMake(0, ScreenHeight+64, ScreenWidth, PX_TO_PT(80));
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -819,7 +847,7 @@
         else
         {
             self.navigationItem.title = @"";
-
+            
             [self.navigationController.navigationBar ps_setBackgroundColor:[NavigationBarBGColor colorWithAlphaComponent:0]];
             
         }

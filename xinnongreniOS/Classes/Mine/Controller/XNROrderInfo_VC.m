@@ -609,9 +609,14 @@
     [addressBtn addSubview:addressLabel];
     
     // 地址图标
-    UIImageView *addressImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(31), PX_TO_PT(23), PX_TO_PT(27), PX_TO_PT(36))];
+    UIImageView *addressImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(31), (addressBtn.height-PX_TO_PT(36))/2, PX_TO_PT(27), PX_TO_PT(36))];
     [addressImageView setImage:[UIImage imageNamed:@"location"]];
     [addressBtn addSubview:addressImageView];
+    
+    UIImage *image = [UIImage imageNamed:@"arrow-0"];
+    UIImageView *addressArrow = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-image.size.width-PX_TO_PT(31), (addressBtn.height-image.size.height)/2,image.size.width,image.size.height)];
+    [addressArrow setImage:image];
+    [addressBtn addSubview:addressArrow];
     
     UIView *line = [[UIView alloc]initWithFrame:CGRectMake(PX_TO_PT(31),addressBtn.height-PX_TO_PT(2), ScreenWidth - PX_TO_PT(31), PX_TO_PT(2))];
     line.backgroundColor = R_G_B_16(0xe7e7e7);
@@ -639,12 +644,16 @@
     [contactBtn addSubview:contactLabel];
     
     // 联系人图标
-    UIImageView *contactImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(31), PX_TO_PT(23), PX_TO_PT(27), PX_TO_PT(36))];
-    [contactImageView setImage:[UIImage imageNamed:@"contact-0"]];
+    UIImageView *contactImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PX_TO_PT(31), (contactBtn.height-PX_TO_PT(36))/2, PX_TO_PT(27), PX_TO_PT(36))];
+    [contactImageView setImage
+     :[UIImage imageNamed:@"contact-0"]];
     contactImageView.contentMode = UIViewContentModeScaleAspectFit;
     [contactBtn addSubview:contactImageView];
     
-    
+    UIImageView *contactArrow = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth-image.size.width-PX_TO_PT(31), (contactBtn.height-image.size.height)/2,image.size.width,image.size.height)];
+    [contactArrow setImage:image];
+    [contactBtn addSubview:contactArrow];
+
     downImageView.frame = CGRectMake(0, contactBtn.height - PX_TO_PT(7), ScreenWidth, PX_TO_PT(7));
     
     

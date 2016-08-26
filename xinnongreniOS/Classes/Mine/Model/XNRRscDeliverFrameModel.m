@@ -51,10 +51,10 @@
         }
         CGFloat addtionsLabelX = PX_TO_PT(100);
         CGFloat addtionsLabelY = CGRectGetMaxY(_attributesLabelF)+PX_TO_PT(20);
-        CGFloat addtionsLabelW = ScreenWidth-PX_TO_PT(60);
-        CGSize  addtionsLabelMaxSize = CGSizeMake(addtionsLabelW, MAXFLOAT);
-        CGSize  addtionsLabelSize = [addtionsStr sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(24)] maxSize:addtionsLabelMaxSize];
-        _addtionsLabelF = CGRectMake(addtionsLabelX, addtionsLabelY, addtionsLabelW, addtionsLabelSize.height);
+//        CGFloat addtionsLabelW = ScreenWidth-PX_TO_PT(60);
+//        CGSize  addtionsLabelMaxSize = CGSizeMake(attributesLabelW, MAXFLOAT);
+//        CGSize  addtionsLabelSize = [addtionsStr sizeWithFont_BSExt:[UIFont systemFontOfSize:PX_TO_PT(24)] maxSize:addtionsLabelMaxSize];
+        _addtionsLabelF = CGRectMake(addtionsLabelX, addtionsLabelY, attributesLabelW, PX_TO_PT(25));
         
         CGFloat bottomLineX = 0;
         CGFloat bottomLineY = CGRectGetMaxY(_addtionsLabelF)+PX_TO_PT(30);
